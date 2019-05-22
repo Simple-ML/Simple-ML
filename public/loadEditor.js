@@ -1,4 +1,4 @@
-(function loadEditor() {
+function loadEditor(reactInitCallback) {
     require.config({
         baseUrl: window.location.pathname,
         paths: {
@@ -31,8 +31,10 @@
                 endpoint: endpoint,
                 enableCors: true
             });
+
+            reactInitCallback();
         })
     });
-})();
+};
 
 
