@@ -1,4 +1,4 @@
-function loadEditor(reactInitCallback) {
+function loadEditor(xtextEndpoint, reactInitCallback) {
     require.config({
         baseUrl: window.location.pathname,
         paths: {
@@ -9,16 +9,6 @@ function loadEditor(reactInitCallback) {
 
     require(["xtext/webjars/ace"], function () {
         require(["xtext/xtext-ace"], function (xtext) {
-            var endpoint = {
-                hash: "",
-                host: "localhost:8080",
-                hostname: "localhost",
-                href: "http://localhost:8080/",
-                origin: "http://localhost:8080",
-                pathname: "/",
-                port: "8080",
-                protocol: "http:"
-            };
 
             let xtextDiv = document.createElement("div");
             xtextDiv.id = "xtext-text";
@@ -28,7 +18,7 @@ function loadEditor(reactInitCallback) {
                 syntaxDefinition: "xtext-resources/generated/mode-mydsl",
                 xtextLang: "mydsl",
                 parent: xtextDiv,
-                endpoint: endpoint,
+                endpoint: xtextEndpoint,
                 enableCors: true
             });
             window.editorViewer.xtextServices.editorContext.setText("\n" +
