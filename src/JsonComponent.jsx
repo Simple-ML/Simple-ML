@@ -1,13 +1,13 @@
 import React from 'react';
+import ReactDOM from 'react-dom'
 import XtextServices from "./ServerConnection/xtextServices";
-
+import {mxClient, mxGraph, mxUtils} from "mxgraph-js"
 class JsonComponent extends React.Component{
     constructor() {
         super()
-
         XtextServices.addSuccessListener((serviceType, result) => {
             if (serviceType === 'json') {
-                console.log("consturctor");
+
             }
         });
     }
@@ -19,7 +19,7 @@ class JsonComponent extends React.Component{
             }
         });
         return (
-            <div> </div>
+            <div className="container" ref="mxgraphDiv"> </div>
         );
     }
 }
