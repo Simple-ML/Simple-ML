@@ -7,3 +7,7 @@ def read_tsv(path):
 
 def project(dataframe, rows):
     return dataframe[rows]
+
+
+def write(obj):
+    print(obj)
