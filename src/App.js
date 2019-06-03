@@ -14,7 +14,7 @@ class App extends React.Component {
                 console.log(result);
             }
         });
-        let temp = new JsonComponent()
+     //   let temp = new JsonComponent()
     }
 
     render() {
