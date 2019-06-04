@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import "./JsonComponent.css"
 import XtextServices from "./ServerConnection/xtextServices";
-import {mxClient, mxGraph, mxUtils, mxGraphView} from "mxgraph-js"
+import {mxClient, mxGraph, mxUtils, mxCodec, mxGraphModel} from "mxgraph-js"
 class JsonComponent extends React.Component{
     constructor() {
         super()
@@ -50,14 +50,99 @@ class JsonComponent extends React.Component{
              }
              finally{
                 graph.getModel().endUpdate();
-                console.log(graph.getModel().updateLevel)
+                console.log(graph.getModel())
              }
+             //get XML
+             var encoder = new mxCodec();
+             var graph2_model_result=encoder.encode(graph.getModel());
+             console.log(graph2_model_result)
+             var graph2_xml=mxUtils.getXml(graph2_model_result);
+             console.log(graph2_xml)
+
+             //merge xml into graph
+             var cells = []
+             var dx = (dx != null) ? dx : 0;
+             var dy = (dy != null) ? dy : 0;
+             var doc = mxUtils.parseXml(graph2_xml);
+             var node = doc.documentElement;
+             var graph2= new mxGraph(container2);
+             if (node != null)
+						{
+							var model = new mxGraphModel();
+							var codec = new mxCodec(node.ownerDocument);
+							codec.decode(node, model);
+							
+							var childCount = model.getChildCount(model.getRoot());
+							var targetChildCount = graph2.model.getChildCount(graph2.model.getRoot());
+							
+							// Merges existing layers and adds new layers
+							graph2.model.beginUpdate();
+							try
+							{
+								for (var i = 0; i < childCount; i++)
+								{
+									var parent = model.getChildAt(model.getRoot(), i);
+									
+									// Adds cells to existing layers if not locked
+									if (targetChildCount > i)
+									{
+										// Inserts into active layer if only one layer is being pasted
+										var target = (childCount == 1) ? graph2.getDefaultParent() : graph2.model.getChildAt(graph2.model.getRoot(), i);
+										
+										if (!graph2.isCellLocked(target))
+										{								
+											var children = model.getChildren(parent);
+                                            cells = cells.concat(graph2.importCells(children, dx, dy, target));
+                                            console.log(cells)
+										}
+									}
+									else
+									{
+										// Delta is non cascading, needs separate move for layers
+										parent = graph2.importCells([parent], 0, 0, graph2.model.getRoot())[0];
+										var children = graph2.model.getChildren(parent);
+										graph2.moveCells(children, dx, dy);
+                                        cells = cells.concat(children);
+                                        console.log(cells)
+									}
+								}
+							}
+							finally
+							{
+                                graph2.model.endUpdate();
+                                console.log(graph2.getModel())
+							}
+						}
 
 
+
+            // let modelstring =mxUtils.toString(graph.getModel());
+             //JSON.parse(modelstring);
              var container2 = ReactDOM.findDOMNode(this.refs.mxgraphDiv2);
-             const graph2_model=Object.assign(graph.getModel());
+             /*var encoder = new mxCodec();
+             var graph2_model_result=encoder.encode(graph.getModel());
+             console.log(graph2_model_result)
+             var graph2_xml=mxUtils.getXml(graph2_model_result);
+             console.log(graph2_xml)
+             var doc= mxUtils.parseXml(graph2_xml);
+             console.log(doc)
+             var decoder= new mxCodec(doc);*/
+             //var new_model = mxUtils.clone(graph.getModel())
+             //var graph2_model=decoder.decode(doc.documentElement);
+             //console.log(graph2_model)
              //const graph2 = new mxGraph(container2);
-             const graph2 = new mxGraph(container2, graph2_model);
+             //const graph2 = new mxGraph(container2, graph2_model);
+             
+             /*var elt = doc.documentElement.firstChild;
+             var cells= [];
+
+             while(elt!=null){
+                 cells.push(decoder.decode(elt));
+                 elt =elt.nextSibling;
+             }
+             console.log(cells)
+             const graph2 = new mxGraph(container2);
+             //graph2.addCells(cells)*/
              //this.setState({graph}) //CAUTION! calls render()
           }
     }
