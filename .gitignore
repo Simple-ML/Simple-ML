@@ -1,3 +1,4 @@
 # Folder
 __pycache__/
 .idea/
+*.egg-info/

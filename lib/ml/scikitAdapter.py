@@ -5,7 +5,6 @@ def regression(x, y, config=None):
     if config is None:
         config = {}
     config.setdefault("alpha", 0.5)
-
     return linear_model.Ridge(alpha=config["alpha"]).fit(x, y)
 
 
