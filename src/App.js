@@ -9,7 +9,7 @@ class App extends React.Component {
 
     render() {
 
-        let styleLeft = {
+        let styleGraphicalEditor= {
             display: 'block',
             position: 'absolute',
             top: 0,
@@ -18,25 +18,41 @@ class App extends React.Component {
             width: '450px',
             margin: '20px'
         };
-        let styleRight = {
+        let styleTextEditor = {
             display: 'block',
             position: 'absolute',
             top: 0,
             bottom: 0,
-            left: '480px',
+            left: '500px',
             width: '450px',
             margin: '20px'
         };
+        let styleButtons = {
+            display: 'block',
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: '1000px',
+            width: '450px',
+            margin: '20px'
+        }
 
-         return (
+        XtextServices.addSuccessListener((serviceType, result) => {
+            console.log({serviceType, result});
+        });
+
+        return (
             <div className="App">
                 <header className="App-header">
 
                 </header>
-                <div style={styleLeft}>
+                <div className={''} style={styleGraphicalEditor}>
+
+                </div>
+                <div style={styleTextEditor}>
                     <TextEditor />
                 </div>
-                <div style={styleRight}>
+                <div style={styleButtons}>
                     <button onClick={() => { XtextServices.getEmfModel(); }}>
                         {'Get EMF-Model'}
                     </button>
