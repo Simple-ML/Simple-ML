@@ -56,6 +56,12 @@ class App extends React.Component {
                     <button onClick={() => { XtextServices.getEmfModel(); }}>
                         {'Get EMF-Model'}
                     </button>
+                    <button onClick={() => { XtextServices.creatableEntityProposals(); }}>
+                        {'Get Proposals'}
+                    </button>
+                    <button onClick={() => { XtextServices.getEntityAttributes([{className:'org.xtext.example.mydsl.myDsl.ElementCollection'}]); }}>
+                        {'Get Entityattributes'}
+                    </button>
                 </div>
             </div>
         );

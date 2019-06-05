@@ -74,7 +74,7 @@ export default class XtextServices {
         let classNames = entities.map((entity) => {
             return entity.className
         });
-        TextEditorWrapper.editor.xtextServices.getEntityAttributeDefinition(classNames);
+        TextEditorWrapper.editor.xtextServices.getEntityAttributeDefinition({classNameArray: classNames});
     }
 
     /**
