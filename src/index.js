@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import TextEditorWrapper from './Components/TextEditor/TextEditorWrapper'
+import TextEditorWrapper from './Components/TextEditor/TextEditorWrapper';
 
 window.loadEditor((xtextEditor) => {
 
@@ -22,6 +22,8 @@ window.loadEditor((xtextEditor) => {
         "collection collection2 db2 \"some text\" 334444455\n" +
         "\n" +
         "function combine input db1 server12 ml-method ml1\n");
+
+    window.loadEditor = undefined;
 
     ReactDOM.render(<App/>, document.getElementById('root'));
 

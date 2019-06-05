@@ -1,4 +1,4 @@
-
+import TextEditorWrapper from '../Components/TextEditor/TextEditorWrapper'
 
 /***
  * (static) Service-Class for calling Xtext-Services from Xtext-Server
@@ -11,11 +11,11 @@
 export default class XtextServices {
 
     static getEmfModel() {
-        window.editorViewer.xtextServices.getJson();
+        TextEditorWrapper.editor.xtextServices.getJson();
     }
 
     static creatableEntityProposals() {
-        window.editorViewer.xtextServices.creatableObjectProposals();
+        TextEditorWrapper.editor.xtextServices.creatableObjectProposals();
     }
 
     /**
@@ -23,7 +23,7 @@ export default class XtextServices {
      * @param entity: {name: string, className: string}
      */
     static createEntity(entity) {
-        window.editorViewer.xtextServices.createObject(entity);
+        TextEditorWrapper.editor.xtextServices.createObject(entity);
     }
 
     /**
@@ -31,7 +31,7 @@ export default class XtextServices {
      * @param entity: {name: string}
      */
     static deleteEntity(entity) {
-        window.editorViewer.xtextServices.deleteEntity(entity.name);
+        TextEditorWrapper.editor.xtextServices.deleteEntity(entity.name);
     }
 
     /**
@@ -46,7 +46,7 @@ export default class XtextServices {
             toName: entityTo.name,
             toClassName: entityTo.className
         };
-        window.editorViewer.xtextServices.associate(association);
+        TextEditorWrapper.editor.xtextServices.associate(association);
     }
 
     /**
@@ -74,7 +74,7 @@ export default class XtextServices {
         let classNames = entities.map((entity) => {
             return entity.className
         });
-        window.editorViewer.xtextServices.getEntityAttributeDefinition(classNames);
+        TextEditorWrapper.editor.xtextServices.getEntityAttributeDefinition(classNames);
     }
 
     /**
@@ -89,7 +89,7 @@ export default class XtextServices {
      *                                  },...]
      */
     static setEntityAttributes(setEntityAttributeDTOs) {
-        window.editorViewer.xtextServices.setEntityAttribute({classDTOs: setEntityAttributeDTOs});
+        TextEditorWrapper.editor.xtextServices.setEntityAttribute({classDTOs: setEntityAttributeDTOs});
     }
 
 
@@ -99,6 +99,6 @@ export default class XtextServices {
      * @param listener: function(serviceType: string, result: any)
      */
     static addSuccessListener(listener) {
-        window.editorViewer.xtextServices.successListeners.push(listener);
+        TextEditorWrapper.editor.xtextServices.successListeners.push(listener);
     }
 }
