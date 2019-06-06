@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import XtextServices from "./ServerConnection/xtextServices";
 
-import JsonComponent from './JsonComponent'
+import GraphComponent from './GraphComponent'
 
 class App extends React.Component {
 
@@ -20,7 +20,7 @@ class App extends React.Component {
     render() {
         return (
             <div className="App">
-                <JsonComponent />
+                <GraphComponent />
             </div>
         );
   }
