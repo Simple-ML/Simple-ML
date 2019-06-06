@@ -14,7 +14,7 @@ class App extends React.Component {
                 console.log(result);
             }
         });
-     //   let temp = new JsonComponent()
+        //   let temp = new JsonComponent()
     }
 
     render() {
@@ -23,7 +23,7 @@ class App extends React.Component {
                 <GraphComponent />
             </div>
         );
-  }
+    }
 }
 
 export default App;
