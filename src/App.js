@@ -46,13 +46,13 @@ class App extends React.Component {
                 <header className="App-header">
 
                 </header>
-                <div className={''} style={styleGraphicalEditor}>
+                <div className={'graphicalEditor'} style={styleGraphicalEditor}>
 
                 </div>
-                <div style={styleTextEditor}>
+                <div className={'textEditor'} style={styleTextEditor}>
                     <TextEditor />
                 </div>
-                <div style={styleButtons}>
+                <div className={'buttons'} style={styleButtons}>
                     <button onClick={() => { XtextServices.getEmfModel(); }}>
                         {'Get EMF-Model'}
                     </button>
@@ -65,7 +65,7 @@ class App extends React.Component {
                 </div>
             </div>
         );
-  }
+    }
 }
 
 export default App;
