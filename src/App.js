@@ -4,6 +4,7 @@ import './App.css';
 import XtextServices from './ServerConnection/xtextServices';
 
 import TextEditor from './Components/TextEditor/TextEditor';
+import GraphComponent from './Components/GraphicalEditor/GraphComponent'
 
 class App extends React.Component {
 
@@ -47,7 +48,7 @@ class App extends React.Component {
 
                 </header>
                 <div className={'graphicalEditor'} style={styleGraphicalEditor}>
-
+                    <GraphComponent />
                 </div>
                 <div className={'textEditor'} style={styleTextEditor}>
                     <TextEditor />
