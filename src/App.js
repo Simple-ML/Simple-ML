@@ -11,10 +11,10 @@ class App extends React.Component {
 
         XtextServices.addSuccessListener((serviceType, result) => {
             if (serviceType === 'json') {
-                console.log(result);
+
             }
         });
-        //   let temp = new JsonComponent()
+
     }
 
     render() {

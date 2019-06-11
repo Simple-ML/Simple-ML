@@ -57,22 +57,11 @@ class GraphComponent extends React.Component {
             mxUtils.error("Browser is not supported!", 200, false);
         } else {
             let graph = new mxGraph(container);
-            let parent = graph.getDefaultParent();
-            graph.getModel().beginUpdate();
-            try {
-                let v1 = graph.insertVertex(parent, null, 'Hello,', 20, 20, 80, 30);
-                let v2 = graph.insertVertex(parent, null, 'World!', 200, 150, 80, 30);
-                graph.insertEdge(parent, null, '', v1, v2);
-            }
-            finally {
-                graph.getModel().endUpdate();
-            }
             this.setState({ graph: graph });
         }
     }
 
     render() {
-        console.log("render")
         return (
             <div className={this.props.name} ref="graphDiv"> </div>
         );
