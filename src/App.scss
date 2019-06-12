@@ -3,15 +3,35 @@
   background-color: #290B2E;
   width:100%;
   height:100%;
+
   .app-header {
     min-height: 135px;
   }
+  .view-toggler{
+    background-color:white;
+    text-align:left;
+    padding-top: 32px;
+    padding-bottom:32px;
+    width:100%;
+    border:0px;
+
+    border-top-left-radius:20px;
+    border-top-right-radius:20px;
+
+    font-family: DIN-regular;
+    font-size: 16px;	
+    letter-spacing: 0.23px;	
+    line-height: 22px;
+
+  }
   .ide-container {
+    padding-left:32px;
+    padding-right:32px;
     min-height:800px;
-    background-image: url("background-circle.svg");
-    border-radius:20px;
+    background-image: url("./images/background-circle.svg");
     background-color:#ffffff;
-   
-    background-repeat: repeat;
+
+    border-top-left-radius:20px;
+    border-top-right-radius:20px;
   }
 }

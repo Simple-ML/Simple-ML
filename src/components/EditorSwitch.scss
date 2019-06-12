@@ -1,0 +1,21 @@
+.view-label{
+    padding-right:5px;
+}
+.switch-icon{ 
+    .MuiSwitch-switchBase{
+        color:#B991BD;
+        opacity:100%;
+    }
+    .MuiSwitch-track{
+        background-color:white;
+        opacity:1;
+        border-color:#B991BD;
+        border-style: solid;
+        border-width: 1px;
+        border-radius:12px;
+
+    }
+    .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
+        opacity: 1;
+    }
+}
