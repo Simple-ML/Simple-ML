@@ -1,7 +1,8 @@
 export default class MxGraphConfig {
 
     constructor() {
-        this.configs = this.defineConfig()
+        this.configs = this.defineConfig();
+        this.addNewConfig("new", this.configs);
     }
 
     defineConfig() {

@@ -86,24 +86,42 @@ define([
 	 * be further configured using the Ace API.
 	 */
 	exports.createEditor = function(options) {
-		if (!options)
-			options = {};
+        if (!options)
+            options = {};
 
-    var parent = options.parent;
-    var editor = ace.edit(parent);
-    editor.$blockScrolling = Infinity;
-    if (options.position)
-      jQuery(parent).css('position', options.position);
+        var query;
+        if (jQuery.type(options.parent) === 'string') {
+            query = jQuery('#' + options.parent, options.document);
+        } else if (options.parent) {
+            query = jQuery(options.parent);
+        } else if (jQuery.type(options.parentClass) === 'string') {
+            query = jQuery('.' + options.parentClass, options.document);
+        } else {
+            query = jQuery('#xtext-editor', options.document);
+            if (query.length == 0)
+                query = jQuery('.xtext-editor', options.document);
+        }
 
-    var editorOptions = ServiceBuilder.mergeParentOptions(parent, options);
-    exports.createServices(editor, editorOptions);
-    if (editorOptions.theme)
-      editor.setTheme(editorOptions.theme);
-    else
-      editor.setTheme('ace/theme/eclipse');
+        var editors = [];
+        query.each(function(index, parent) {
+            var editor = ace.edit(parent);
+            editor.$blockScrolling = Infinity;
+            if (options.position)
+                jQuery(parent).css('position', options.position);
 
-      editor.htmlElement = parent;
-      return editor;
+            var editorOptions = ServiceBuilder.mergeParentOptions(parent, options);
+            exports.createServices(editor, editorOptions);
+            if (editorOptions.theme)
+                editor.setTheme(editorOptions.theme);
+            else
+                editor.setTheme('ace/theme/eclipse');
+            editors[index] = editor;
+        });
+
+        if (editors.length == 1)
+            return editors[0];
+        else
+            return editors;
 	}
 
 	function AceServiceBuilder(editor, xtextServices) {

@@ -26,10 +26,6 @@ define(['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery)
 
     CreatableObjectProposalsService.prototype._getSuccessCallback = function(editorContext, params, deferred) {
         return function(result) {
-            var listeners = editorContext.updateServerState(result.fullText, result.stateId);
-            for (var i = 0; i < listeners.length; i++) {
-                listeners[i](params);
-            }
             deferred.resolve(result);
         }
     }

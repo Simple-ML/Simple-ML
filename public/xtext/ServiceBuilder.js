@@ -166,41 +166,40 @@ define([
 			}
 		}
 
+		services.creatableObjectProposalsService = new CreatableObjectProposalsService(options.serviceUrl, options.resourceId);
+		services.creatableObjectProposals = function(addParams) {
+				return services.creatableObjectProposalsService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
+		}
 
-				services.creatableObjectProposalsService = new CreatableObjectProposalsService(options.serviceUrl, options.resourceId);
-				services.creatableObjectProposals = function(addParams) {
-						return services.creatableObjectProposalsService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
-				}
-
-				services.createObjectService = new CreateObjectService(options.serviceUrl, options.resourceId);
-				services.createObject = function(addParams) {
-						return services.createObjectService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
-				}
+		services.createObjectService = new CreateObjectService(options.serviceUrl, options.resourceId);
+		services.createObject = function(addParams) {
+				return services.createObjectService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
+		}
 
 		services.getJsonService = new GetJsonService(options.serviceUrl, options.resourceId);
-				services.getJson = function(addParams) {
-						return services.getJsonService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
-				}
+		services.getJson = function(addParams) {
+				return services.getJsonService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
+		}
 
-				services.associationService = new AssociationService(options.serviceUrl, options.resourceId);
-				services.associate = function(addParams) {
-						return services.associationService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
-				}
+		services.associationService = new AssociationService(options.serviceUrl, options.resourceId);
+		services.associate = function(addParams) {
+				return services.associationService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
+		}
 
-				services.getEntityAttributeDefinitionService = new GetEntityAttributeDefinitionService(options.serviceUrl, options.resourceId);
-				services.getEntityAttributeDefinition = function(addParams) {
-						return services.getEntityAttributeDefinitionService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
-				}
+		services.getEntityAttributeDefinitionService = new GetEntityAttributeDefinitionService(options.serviceUrl, options.resourceId);
+		services.getEntityAttributeDefinition = function(addParams) {
+				return services.getEntityAttributeDefinitionService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
+		}
 
-				services.setEntityAttributeService = new SetEntityAttributeService(options.serviceUrl, options.resourceId);
-				services.setEntityAttribute = function(addParams) {
-						return services.setEntityAttributeService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
-				}
+		services.setEntityAttributeService = new SetEntityAttributeService(options.serviceUrl, options.resourceId);
+		services.setEntityAttribute = function(addParams) {
+				return services.setEntityAttributeService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
+		}
 
-				services.deleteEntityService = new DeleteEntityService(options.serviceUrl, options.resourceId);
-				services.deleteEntity = function(addParams) {
-						return services.deleteEntityService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
-				}
+		services.deleteEntityService = new DeleteEntityService(options.serviceUrl, options.resourceId);
+		services.deleteEntity = function(addParams) {
+				return services.deleteEntityService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
+		}
 
 		if (options.dirtyElement) {
 			var doc = options.document || document;
