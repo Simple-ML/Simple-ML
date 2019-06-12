@@ -1,30 +1,21 @@
 import React from 'react';
 import './App.scss';
-import GraphComponent from './GraphComponent'
+import GraphComponent from './components/GraphicalEditor/GraphComponent'
 import XtextServices from './ServerConnection/xtextServices';
 
-import TextEditor from './Components/TextEditor/TextEditor';
+import TextEditor from './components/TextEditor/TextEditor';
 import EditorSwitch from './components/EditorSwitch'
 import Header from "./components/Header"
 
 class App extends React.Component {
     constructor(){
+        super();
         this.state={
             view:"graphical"
         }
     }
     renderEditor(){
         const {view}= this.state;
-        switch(view){
-            case "graphical":
-                return <GraphComponent name="graph-container"/>
-            case "textual":
-                return <div/>
-        }
-
-    }
-    render() {
-        //TODO: get rid of styles at this place
         let styleGraphicalEditor= {
             display: 'block',
             position: 'absolute',
@@ -43,6 +34,26 @@ class App extends React.Component {
             width: '450px',
             margin: '20px'
         };
+        switch(view){
+            case "graphical":
+                return(    
+                    <div className={'graphicalEditor'} style={styleGraphicalEditor}>
+                        <GraphComponent name="graph-container"/>
+                    </div>)
+
+            case "textual":
+                return (
+                    <div className={'textEditor'} style={styleTextEditor}>
+                        <TextEditor />
+                    </div>)
+            default:
+                return <div/>
+        }
+
+    }
+    render() {
+        //TODO: get rid of styles at this place
+ 
         let styleButtons = {
             display: 'block',
             position: 'absolute',
@@ -59,19 +70,12 @@ class App extends React.Component {
 
         return (
             <div className="App">
-
                 <Header/>
                 <div className="ide-container">
                     <div className="view-toggler" style={{ display:"inline-block"}}>
                         <EditorSwitch style={{ display:"inline-block"}}/>
                     </div>
-                    <GraphComponent name="graph-container"/>
-                </div>
-                <div className={'graphicalEditor'} style={styleGraphicalEditor}>
-                    <GraphComponent />
-                </div>
-                <div className={'textEditor'} style={styleTextEditor}>
-                    <TextEditor />
+                    {this.renderEditor()}
                 </div>
                 <div className={'buttons'} style={styleButtons}>
                     <button onClick={() => { XtextServices.getEmfModel(); }}>
