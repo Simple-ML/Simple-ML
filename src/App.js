@@ -4,11 +4,12 @@ import './App.css';
 import XtextServices from './ServerConnection/xtextServices';
 
 import TextEditor from './Components/TextEditor/TextEditor';
+import GraphComponent from './Components/GraphicalEditor/GraphComponent'
 
 class App extends React.Component {
 
     render() {
-
+        //TODO: get rid of styles at this place
         let styleGraphicalEditor= {
             display: 'block',
             position: 'absolute',
@@ -35,7 +36,7 @@ class App extends React.Component {
             left: '1000px',
             width: '450px',
             margin: '20px'
-        }
+        };
 
         XtextServices.addSuccessListener((serviceType, result) => {
             console.log({serviceType, result});
@@ -47,7 +48,7 @@ class App extends React.Component {
 
                 </header>
                 <div className={'graphicalEditor'} style={styleGraphicalEditor}>
-
+                    <GraphComponent />
                 </div>
                 <div className={'textEditor'} style={styleTextEditor}>
                     <TextEditor />
@@ -58,9 +59,6 @@ class App extends React.Component {
                     </button>
                     <button onClick={() => { XtextServices.creatableEntityProposals(); }}>
                         {'Get Proposals'}
-                    </button>
-                    <button onClick={() => { XtextServices.getEntityAttributes([{className:'org.xtext.example.mydsl.myDsl.ElementCollection'}]); }}>
-                        {'Get Entityattributes'}
                     </button>
                 </div>
             </div>
