@@ -7,7 +7,7 @@ class TextEditorWrapper {
     static editor;
     static editorDiv;
 
-    static create = (xtextEditor) => {
+    static create(xtextEditor) {
         TextEditorWrapper.editorDiv = window.jQuery('<div id="xtext-editor"></div>', document);
 
         TextEditorWrapper.editor = xtextEditor.createEditor({
@@ -21,7 +21,7 @@ class TextEditorWrapper {
         });
     }
 
-    static setText = (text) => {
+    static setText(text) {
         TextEditorWrapper.editor.xtextServices.editorContext.setText(text);
     }
 }

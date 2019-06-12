@@ -10,11 +10,11 @@ import MxGraphConfig from "./mxGraphConfig"
 
 class GraphComponent extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
         const graph = new mxGraph();
         this.state = {
             graph: graph
-        }
+        };
         XtextServices.addSuccessListener((serviceType, result) => {
             if (serviceType === 'json') {
                 console.log("constructor success listener")
@@ -47,7 +47,7 @@ class GraphComponent extends React.Component {
         });
     }
 
-    componentDidMount = () => {
+    componentDidMount() {
         let container = ReactDOM.findDOMNode(this.refs.graphDiv);
 
         if (!mxClient.isBrowserSupported()) {
