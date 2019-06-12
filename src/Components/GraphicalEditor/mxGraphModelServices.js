@@ -5,9 +5,9 @@ export default class MxGraphModelServices {
     renderFullText(fullText, parent, graph, config) {
         var workflow = JSON.parse(fullText);
         var vertices = [];
-        if (workflow.entities) {
-            vertices = this.addAllNodes(workflow.entities, parent, graph, config);
-            this.addAllEdges(workflow.entities, vertices, parent, graph);
+        if (workflow.statements) {
+            vertices = this.addAllNodes(workflow.statements, parent, graph, config);
+            this.addAllEdges(workflow.statements, vertices, parent, graph);
         }
     }
 

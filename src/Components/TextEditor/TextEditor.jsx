@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './textEditor.css';
 
 import TextEditorWrapper from './TextEditorWrapper'
 
