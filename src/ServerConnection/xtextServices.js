@@ -1,4 +1,4 @@
-import TextEditorWrapper from '../components/TextEditor/TextEditorWrapper'
+import TextEditorWrapper from '../components/editorView/TextEditor/TextEditorWrapper'
 
 /***
  * (static) Service-Class for calling Xtext-Services from Xtext-Server

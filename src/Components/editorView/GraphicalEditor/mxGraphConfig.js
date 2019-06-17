@@ -7,7 +7,6 @@ export default class MxGraphConfig {
 
     defineConfig() {
         /* defines the short name, class name, style, image and a template for new objects of the class. */
-        //console.log("define Configs");
         var configs = [];
         configs.push(
             {
@@ -62,16 +61,15 @@ export default class MxGraphConfig {
         var requiredClass = configs.filter(function (key) {
             return key.className === className;
         });
-        if (requiredClass.length === 0) {
+        if ( requiredClass.length === 0 ) {
             var newClassConfigs = this.addNewConfig(className, configs);
             requiredClass.push(newClassConfigs);
         }
-        if (requiredClass[0][key]) {
+        if ( requiredClass[0][key] ) {
             return requiredClass[0][key];
         }
         else {
             return null;
         }
     }
-
 }

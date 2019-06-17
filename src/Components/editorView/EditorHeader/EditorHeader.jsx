@@ -1,9 +1,9 @@
 import React from "react";
-import logo from "./../images/logo.png"
-import "./Header.scss"
+import logo from "./../../../images/logo.png"
+import "./EditorHeader.scss"
 
 
-class Header extends React.Component{
+class EditorHeader extends React.Component{
     constructor(props){
         super(props)
         this.state={
@@ -17,10 +17,9 @@ class Header extends React.Component{
              <img src={logo} alt={"logo"} className="logo"></img>
             </div>
         )
-
     }
 
 }
 
 
-export default Header;
+export default EditorHeader;

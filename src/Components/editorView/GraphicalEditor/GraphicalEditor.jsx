@@ -1,14 +1,14 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom'
-import XtextServices from "../../ServerConnection/xtextServices";
+import XtextServices from "../../../ServerConnection/xtextServices";
 import { mxClient, mxGraph, mxUtils, mxHierarchicalLayout } from "mxgraph-js"
 
 import MxGraphModelServices from './mxGraphModelServices';
 import MxGraphConfig from "./mxGraphConfig"
 
 
-class GraphComponent extends React.Component {
+class GraphicalEditor extends React.Component {
     constructor(props) {
         super(props);
         const graph = new mxGraph();
@@ -16,10 +16,8 @@ class GraphComponent extends React.Component {
             graph: graph
         };
         XtextServices.addSuccessListener((serviceType, result) => {
-            if (serviceType === 'json') {
-                console.log("constructor success listener")
+            if ( serviceType === 'json' ) {
                 let { graph } = this.state;
-
 
                 //define mxgraphservices and configure layout;
                 let parent = graph.getDefaultParent();
@@ -35,13 +33,11 @@ class GraphComponent extends React.Component {
                 //add nodes array to graph.view
                 graph.getModel().beginUpdate();
                 try {
-                    console.log(result.fullText)
                     graphService.renderFullText(result.fullText, parent, graph, config);
                     layout.execute(parent);
                 }
                 finally {
                     graph.getModel().endUpdate();
-                    console.log(graph.getModel());
                 }
 
                 this.setState({ graph: graph });
@@ -62,9 +58,9 @@ class GraphComponent extends React.Component {
     }
 
     render() {
-        return (
-            <div className={this.props.name} ref="graphDiv"> </div>
+        return(
+            <div className = { this.props.name } ref = "graphDiv"> </div>
         );
     }
 }
-export default GraphComponent;
+export default GraphicalEditor;
