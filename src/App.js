@@ -11,80 +11,72 @@ class App extends React.Component {
     constructor(){
         super();
         this.state={
-            view:"graphical"
+            displayGraphicalEditor:'block',
+            displayTextEditor:'block'
+
         }
     }
-    renderEditor(){
-        const {view}= this.state;
-        let styleGraphicalEditor= {
-            display: 'block',
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            left: 0,
-            width: '450px',
-            margin: '20px'
-        };
-        let styleTextEditor = {
-            display: 'block',
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            left: '500px',
-            width: '450px',
-            margin: '20px'
-        };
-        switch(view){
-            case "graphical":
-                return(    
-                    <div className={'graphicalEditor'} style={styleGraphicalEditor}>
-                        <GraphComponent name="graph-container"/>
-                    </div>)
 
-            case "textual":
-                return (
-                    <div className={'textEditor'} style={styleTextEditor}>
-                        <TextEditor />
-                    </div>)
-            default:
-                return <div/>
+    switchView=(isGraphical)=>{
+        console.log(isGraphical)
+        if(isGraphical==="true"){
+            this.setState({ displayTextEditor:'none'})
         }
-
+        else{
+            this.setState({displayTextEditor:'block'})
+        }
     }
     render() {
         //TODO: get rid of styles at this place
- 
+        let {displayGraphicalEditor, displayTextEditor}=this.state;
         let styleButtons = {
-            display: 'block',
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            left: '1000px',
+            display: 'inline',
+            position: 'relative',
             width: '450px',
-            margin: '20px'
+            margin: '20px', 
         };
-
+        let styleTextEditor = {
+            display: displayTextEditor,
+            position: 'relative',
+            minWidth: '450px',
+            minHeight: '400px',
+            margin: '0px'
+        };
+        let styleGraphicalEditor= {
+            display: displayGraphicalEditor,
+            position: 'relative',
+            minWidth: '450px',
+            minHeight: '400px',
+            marginTop: '20px'
+        };
         XtextServices.addSuccessListener((serviceType, result) => {
             console.log({serviceType, result});
         });
+        let switchView=(isGraphical)=>this.switchView(isGraphical);
 
         return (
             <div className="App">
                 <Header/>
-                <div className="ide-container">
-                    <div className="view-toggler" style={{ display:"inline-block"}}>
-                        <EditorSwitch style={{ display:"inline-block"}}/>
-                    </div>
-                    {this.renderEditor()}
-                </div>
                 <div className={'buttons'} style={styleButtons}>
-                    <button onClick={() => { XtextServices.getEmfModel(); }}>
+                    <button style={{color:'white'}} onClick={() => { XtextServices.getEmfModel(); }}>
                         {'Get EMF-Model'}
                     </button>
-                    <button onClick={() => { XtextServices.creatableEntityProposals(); }}>
+                    <button style={{color:'white'}} onClick={() => { XtextServices.creatableEntityProposals(); }}>
                         {'Get Proposals'}
                     </button>
                 </div>
+                <div className="ide-container">
+                    <div className="view-toggler" style={{ display:"inline-block"}}>
+                        <EditorSwitch style={{ display:"inline-block"}} switchView={switchView}/>
+                    </div>
+                    <div className={'textEditor'} style={styleTextEditor}>
+                        <TextEditor />
+                    </div>
+                    <div className={'graphicalEditor'} style={styleGraphicalEditor}>
+                        <GraphComponent name="graph-container"/>
+                    </div>
+                </div>
+
             </div>
         );
     }

@@ -35,11 +35,13 @@ class GraphComponent extends React.Component {
                 //add nodes array to graph.view
                 graph.getModel().beginUpdate();
                 try {
+                    console.log(result.fullText)
                     graphService.renderFullText(result.fullText, parent, graph, config);
                     layout.execute(parent);
                 }
                 finally {
                     graph.getModel().endUpdate();
+                    console.log(graph.getModel());
                 }
 
                 this.setState({ graph: graph });

@@ -8,25 +8,25 @@ class EditorSwitch extends React.Component{
     constructor(props){
         super(props)
         this.state={
-            checked:true,
+            isGraphical:true,
         }
     }
     handleChange = name => event => {
-        console.log(this.state.checked)
         this.setState({ ...this.state, [name]: event.target.checked });
+        this.props.switchView(event.target.value);
       };
     
     render() {
-        let {checked}=this.state;
+        let {isGraphical}=this.state;
         let handleChange=(name)=>this.handleChange(name);
         return(
             <Grid component="label" container alignItems="center" spacing={1}>
                 <span className="view-label">View: </span>
-                <Grid item style={{color:checked? '#7C7C7C':'black'}}>graphical</Grid>
+                <Grid item style={{color:isGraphical? '#7C7C7C':'black'}}>graphical</Grid>
                 <Grid item>
-                    <Switch checked={checked} onChange={handleChange('checked')} value="checked" color="default" className="switch-icon"/>
+                    <Switch checked={isGraphical} onChange={handleChange('isGraphical')} value={isGraphical} color="default" className="switch-icon"/>
                 </Grid>
-                <Grid item style={{color:checked? 'black':'#7C7C7C'}}>textual</Grid>
+                <Grid item style={{color:isGraphical? 'black':'#7C7C7C'}}>textual</Grid>
             </Grid>
         )
 
