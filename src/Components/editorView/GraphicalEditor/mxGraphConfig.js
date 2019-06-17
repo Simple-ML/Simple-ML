@@ -49,7 +49,7 @@ export default class MxGraphConfig {
             style: "default",
             image: "editors/images/symbols/error.png",
             newNameTemplate: "unknownObject"
-        }
+        };
         configs.push(newClassConfigs);
         return newClassConfigs;
     }

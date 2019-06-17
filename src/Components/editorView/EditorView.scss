@@ -1,31 +1,46 @@
+.view-toggler {
+  background-color: white;
+  text-align: left;
+  padding-top: 32px;
+  padding-bottom: 32px;
+  width: 100%;
+  border: 0px;
 
-  .app-header {
-    min-height: 135px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+
+  font-family: DIN-regular;
+  font-size: 16px;	
+  letter-spacing: 0.23px;	
+  line-height: 22px;
+}
+
+.ide-container {
+  padding-left: 32px;
+  padding-right: 32px;
+  min-height: 800px;
+  background-image: url( "./../../images/background-circle.svg" );
+  background-color: #ffffff;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+
+  .textEditor {
+    position: relative;
+    min-width: 450px;
+    min-height: 400px;
+    margin: 0px
   }
-  .view-toggler{
-    background-color: white;
-    text-align: left;
-    padding-top: 32px;
-    padding-bottom: 32px;
-    width: 100%;
-    border: 0px;
 
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-
-    font-family: DIN-regular;
-    font-size: 16px;	
-    letter-spacing: 0.23px;	
-    line-height: 22px;
-
+  .graphicalEditor {
+    position: relative;
+    min-width: 450px;
+    min-height: 400px;
+    margin-top: 20px;
   }
-  .ide-container {
-    padding-left: 32px;
-    padding-right: 32px;
-    min-height: 800px;
-    background-image: url( "./../../images/background-circle.svg" );
-    background-color: #ffffff;
+}
 
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-  }
+.buttons {
+  display: inline;
+  position: relative;
+  margin: 20px; 
+}

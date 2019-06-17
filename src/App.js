@@ -10,7 +10,7 @@ class App extends React.Component {
             console.log({ serviceType, result });
         });
         return (
-            <div className  ="App">
+            <div className="App">
                 <EditorVIew/>
             </div>
         );
