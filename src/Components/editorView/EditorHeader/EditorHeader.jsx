@@ -14,7 +14,7 @@ class EditorHeader extends React.Component{
     render() {
         return(
             <div className = "app-header">
-                <img src = { logo } alt = { "logo" } className= "logo"></img>
+                <img src = { logo } alt = { "logo" } className = "logo"></img>
             </div>
         )
     }
