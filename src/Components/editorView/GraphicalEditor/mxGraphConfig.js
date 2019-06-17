@@ -61,11 +61,11 @@ export default class MxGraphConfig {
         var requiredClass = configs.filter(function (key) {
             return key.className === className;
         });
-        if ( requiredClass.length === 0 ) {
+        if (requiredClass.length === 0) {
             var newClassConfigs = this.addNewConfig(className, configs);
             requiredClass.push(newClassConfigs);
         }
-        if ( requiredClass[0][key] ) {
+        if (requiredClass[0][key]) {
             return requiredClass[0][key];
         }
         else {

@@ -20,7 +20,7 @@ export default class MxGraphModelServices {
     addAllNodes(entities, parent, graph, config) {
         var vertices = {};
 
-        for (var i in entities)  {
+        for (var i in entities) {
             var encodedEntity = this.encode(entities[i]);
             var entityStyle = config.getConfig(entities[i].className, "style", config.configs);
             var encodedFunctionNode = graph.insertVertex(parent, null, encodedEntity, 20, 20, 50, 50, entityStyle);
@@ -69,9 +69,9 @@ export default class MxGraphModelServices {
         *returns an array temp with temp[0]: class whih the reference refers to, and temp [1]: the index of that specific object in this class,
         *otherwise if no reference found returns null*/
         var ref = key["$ref"];
-        if ( ref ) {
-            ref = ref.replace( "//@", "" );
-            var temp = ref.split( "." );
+        if (ref) {
+            ref = ref.replace("//@", "");
+            var temp = ref.split(".");
             return temp;
         }
         else {
