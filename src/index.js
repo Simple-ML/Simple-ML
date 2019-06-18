@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import TextEditorWrapper from './Components/TextEditor/TextEditorWrapper';
+import TextEditorWrapper from './components/EditorView/TextEditor/TextEditorWrapper';
 
 window.loadEditor((xtextEditor) => {
 

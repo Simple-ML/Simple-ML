@@ -7,7 +7,6 @@ export default class MxGraphConfig {
 
     defineConfig() {
         /* defines the short name, class name, style, image and a template for new objects of the class. */
-        //console.log("define Configs");
         var configs = [];
         configs.push(
             {
@@ -50,7 +49,7 @@ export default class MxGraphConfig {
             style: "default",
             image: "editors/images/symbols/error.png",
             newNameTemplate: "unknownObject"
-        }
+        };
         configs.push(newClassConfigs);
         return newClassConfigs;
     }
@@ -73,5 +72,4 @@ export default class MxGraphConfig {
             return null;
         }
     }
-
 }

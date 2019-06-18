@@ -1,4 +1,4 @@
-import xtextEndpoint from '../../ServerConnection/xtextEndpoint';
+import xtextEndpoint from '../../../serverConnection/xtextEndpoint';
 
 
 //TODO: bessere Lösung finden als static-class

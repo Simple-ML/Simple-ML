@@ -1,8 +1,9 @@
+//node_modules
 import React, { Component } from 'react';
-import './textEditor.css';
-
+//React.Components
 import TextEditorWrapper from './TextEditorWrapper'
-
+//style
+import './textEditor.css';
 class TextEditor extends Component {
 
     componentDidMount() {

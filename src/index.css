@@ -1,8 +1,15 @@
+@font-face {
+  font-family: 'DIN-Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('DIN-Regular'), url("./fonts/DIN-Regular.ttf") format('truetype')
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+    sans-serif, DIN-Regular;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

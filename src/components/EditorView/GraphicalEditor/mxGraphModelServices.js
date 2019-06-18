@@ -1,13 +1,14 @@
-import { mxUtils } from "mxgraph-js"
+//node_modules
+import { mxUtils } from "mxgraph-js";
 
 
 export default class MxGraphModelServices {
     renderFullText(fullText, parent, graph, config) {
         var workflow = JSON.parse(fullText);
         var vertices = [];
-        if (workflow.statements) {
-            vertices = this.addAllNodes(workflow.statements, parent, graph, config);
-            this.addAllEdges(workflow.statements, vertices, parent, graph);
+        if (workflow.entities) {
+            vertices = this.addAllNodes(workflow.entities, parent, graph, config);
+            this.addAllEdges(workflow.entities, vertices, parent, graph);
         }
     }
 
@@ -63,14 +64,14 @@ export default class MxGraphModelServices {
         /*help function to find if there is a reference in the key,
         *returns an array temp with temp[0]: class whih the reference refers to, and temp [1]: the index of that specific object in this class,
         *otherwise if no reference found returns null*/
-        var ref = key["$ref"]
+        var ref = key["$ref"];
         if (ref) {
-            ref = ref.replace("//@", "")
-            var temp = ref.split(".")
+            ref = ref.replace("//@", "");
+            var temp = ref.split(".");
             return temp;
         }
         else {
-            return null
+            return null;
         }
     }
 

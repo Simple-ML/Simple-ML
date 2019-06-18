@@ -1,14 +1,14 @@
-
+//node_modules
 import React from 'react';
-import ReactDOM from 'react-dom'
-import XtextServices from "../../ServerConnection/xtextServices";
-import { mxClient, mxGraph, mxUtils, mxHierarchicalLayout } from "mxgraph-js"
-
+import ReactDOM from 'react-dom';
+import { mxClient, mxGraph, mxUtils, mxHierarchicalLayout } from "mxgraph-js";
+//services
+import XtextServices from "../../../serverConnection/XtextServices";
 import MxGraphModelServices from './mxGraphModelServices';
-import MxGraphConfig from "./mxGraphConfig"
+import MxGraphConfig from "./mxGraphConfig";
 
 
-class GraphComponent extends React.Component {
+class GraphicalEditor extends React.Component {
     constructor(props) {
         super(props);
         const graph = new mxGraph();
@@ -17,9 +17,7 @@ class GraphComponent extends React.Component {
         };
         XtextServices.addSuccessListener((serviceType, result) => {
             if (serviceType === 'json') {
-                console.log("constructor success listener")
                 let { graph } = this.state;
-
 
                 //define mxgraphservices and configure layout;
                 let parent = graph.getDefaultParent();
@@ -60,9 +58,9 @@ class GraphComponent extends React.Component {
     }
 
     render() {
-        return (
-            <div className={this.props.name} ref="graphDiv"> </div>
+        return(
+            <div className={ this.props.name } ref="graphDiv"> </div>
         );
     }
 }
-export default GraphComponent;
+export default GraphicalEditor;
