@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { mxClient, mxGraph, mxUtils, mxHierarchicalLayout } from "mxgraph-js";
 //services
-import XtextServices from "../../../ServerConnection/xtextServices";
+import XtextServices from "../../../serverConnection/XtextServices";
 import MxGraphModelServices from './mxGraphModelServices';
 import MxGraphConfig from "./mxGraphConfig";
 

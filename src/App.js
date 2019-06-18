@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.scss';
-import XtextServices from './ServerConnection/xtextServices';
-import EditorVIew from './components/editorView/EditorView'
+import XtextServices from './serverConnection/XtextServices';
+import EditorView from './components/EditorView/EditorView';
 
 
 class App extends React.Component {
@@ -11,7 +11,7 @@ class App extends React.Component {
         });
         return (
             <div className="App">
-                <EditorVIew/>
+                <EditorView/>
             </div>
         );
     }

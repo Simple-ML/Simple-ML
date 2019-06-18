@@ -3,7 +3,7 @@ import React from "react";
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 //style
-import './EditorSwitch.scss';
+import './editorSwitch.scss';
 
 
 class EditorSwitch extends React.Component{
@@ -13,12 +13,12 @@ class EditorSwitch extends React.Component{
             isGraphical: true,
         }
     }
-    
+
     handleChange = name => event => {
         this.setState({ ...this.state, [name]: event.target.checked });
         this.props.switchView(event.target.value);
       };
-    
+
     render() {
         let { isGraphical } = this.state;
         let handleChange = (name) => this.handleChange(name);

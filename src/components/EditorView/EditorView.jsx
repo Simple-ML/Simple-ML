@@ -1,12 +1,12 @@
 //node_modules
 import React from 'react';
 //React.Components
-import EditorHeader from './editorHeader/EditorHeader'
-import GraphicalEditor from './graphicalEditor/GraphicalEditor'
-import TextEditor from './textEditor/TextEditor'
-import EditorSwitch from './editorSwitch/EditorSwitch'
+import EditorHeader from './EditorHeader/EditorHeader'
+import GraphicalEditor from './GraphicalEditor/GraphicalEditor'
+import TextEditor from './TextEditor/TextEditor'
+import EditorSwitch from './EditorSwitch/EditorSwitch'
 //serivces
-import XtextServices from './../../ServerConnection/xtextServices';
+import XtextServices from '../../serverConnection/XtextServices';
 //style
 import './editorView.scss'
 
