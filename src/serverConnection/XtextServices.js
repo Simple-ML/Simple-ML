@@ -11,7 +11,7 @@ import TextEditorWrapper from '../components/EditorView/TextEditor/TextEditorWra
 export default class XtextServices {
 
     static getEmfModel() {
-        TextEditorWrapper.editor.xtextServices.getJson();
+        TextEditorWrapper.editor.xtextServices.getEmfModel();
     }
 
     static creatableEntityProposals() {
