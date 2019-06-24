@@ -11,24 +11,24 @@ define(['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery)
     /**
      * Service class for loading resources. The resulting text is passed to the editor context.
      */
-    function GetJsonService(serviceUrl, resourceId) {
-        this.initialize(serviceUrl, 'json', resourceId);
+    function GetEmfModelService(serviceUrl, resourceId) {
+        this.initialize(serviceUrl, 'getEmfModel', resourceId);
     };
 
-    GetJsonService.prototype = new XtextService();
+    GetEmfModelService.prototype = new XtextService();
 
-    GetJsonService.prototype._initServerData = function(serverData, editorContext, params) {
+    GetEmfModelService.prototype._initServerData = function(serverData, editorContext, params) {
         return {
             suppressContent: true,
             httpMethod: 'GET'
         };
     };
 
-    GetJsonService.prototype._getSuccessCallback = function(editorContext, params, deferred) {
+    GetEmfModelService.prototype._getSuccessCallback = function(editorContext, params, deferred) {
         return function(result) {
             deferred.resolve(result);
         }
     };
 
-    return GetJsonService;
+    return GetEmfModelService;
 });

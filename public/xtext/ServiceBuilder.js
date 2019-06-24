@@ -6,11 +6,11 @@
  ******************************************************************************/
 
 define([
-		'jquery',
-		'xtext/services/XtextService',
-		'xtext/services/CreatableObjectProposalsService',
-		'xtext/services/CreateObjectService',
-	'xtext/services/GetJsonService',
+	'jquery',
+	'xtext/services/XtextService',
+    'xtext/services/GetEmfModelService',
+	'xtext/services/CreatableObjectProposalsService',
+	'xtext/services/CreateObjectService',
 	'xtext/services/GetEntityAttributeDefinitionService',
 	'xtext/services/SetEntityAttributeService',
 	'xtext/services/AssociationService',
@@ -24,7 +24,7 @@ define([
 	'xtext/services/HoverService',
 	'xtext/services/OccurrencesService',
 	'xtext/services/FormattingService'
-], function(jQuery, XtextService, CreatableObjectProposalsService, CreateObjectService, GetJsonService, GetEntityAttributeDefinitionService,
+], function(jQuery, XtextService, GetEmfModelService, CreatableObjectProposalsService, CreateObjectService, GetEntityAttributeDefinitionService,
 			SetEntityAttributeService, AssociationService, DeleteEntityService, LoadResourceService, SaveResourceService, HighlightingService, ValidationService, UpdateService,
 			ContentAssistService, HoverService, OccurrencesService, FormattingService) {
 
@@ -166,6 +166,11 @@ define([
 			}
 		}
 
+        services.getEmfModelService = new GetEmfModelService(options.serviceUrl, options.resourceId);
+        services.getEmfModel = function(addParams) {
+            return services.getEmfModelService .invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
+        }
+
 		services.creatableObjectProposalsService = new CreatableObjectProposalsService(options.serviceUrl, options.resourceId);
 		services.creatableObjectProposals = function(addParams) {
 				return services.creatableObjectProposalsService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
@@ -174,11 +179,6 @@ define([
 		services.createObjectService = new CreateObjectService(options.serviceUrl, options.resourceId);
 		services.createObject = function(addParams) {
 				return services.createObjectService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
-		}
-
-		services.getJsonService = new GetJsonService(options.serviceUrl, options.resourceId);
-		services.getJson = function(addParams) {
-				return services.getJsonService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
 		}
 
 		services.associationService = new AssociationService(options.serviceUrl, options.resourceId);
