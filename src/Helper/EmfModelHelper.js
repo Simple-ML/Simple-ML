@@ -1,22 +1,46 @@
 
 
-export default class EmfModelHelper {
+class EmfModelHelper {
 
-    flattenEmfModelTree(emfModelTree) {
+    /**
+     * Flattens the hierarchical structure of the given EMF-Model (from backend).
+     *
+     * @param emfModelTree: comes from backend
+     * @returns     [{
+     *                  data: EmfModelData,
+     *                  parent: ,
+     *                  children: ,
+     *                  self: name of property in parent
+     *              },
+     *              ...]
+     */
+    static flattenEmfModelTree(emfModelTree) {
         let flatEmfModel = [];
 
         this.recursion(flatEmfModel, emfModelTree, undefined, undefined);
-
         return flatEmfModel;
     }
 
-    getFullHierarchy(emfEntity, suffix = '') {
+    /**
+     * Concatenates own name with parents name. Creates a string witch represents the complete hierarchy.
+     *
+     * @param emfEntity
+     * @param suffix
+     * @returns string
+     */
+    static getFullHierarchy(emfEntity, suffix = '') {
         if(emfEntity.parent !== undefined)
             return this.getFullHierarchy(emfEntity.parent, emfEntity.self + '/' + suffix);
         return suffix;
     }
 
-    createMetaObject(emfEntity) {
+    /**
+     * Creates a different representation of EmfEntity for easier processing.
+     *
+     * @param emfEntity
+     * @returns {{data: Object, arrays: Array, objects: Array}}
+     */
+    static createMetaObject(emfEntity) {
         let data = {};
         let arrays = [];
         let objects = [];
@@ -38,11 +62,19 @@ export default class EmfModelHelper {
                 data[propertyName] = property;
             }
         }
-
         return { data, arrays, objects };
     }
 
-    recursion(emfEntityList, emfEntity, parent, self) {
+    /**
+     * Traverses the given EmfModel-Hierarchy and creates an Array of all elements
+     *
+     * @param emfEntityList
+     * @param emfEntity
+     * @param parent
+     * @param self
+     * @returns {{data: Object, parent: Object, children: Array, self: string}}
+     */
+    static recursion(emfEntityList, emfEntity, parent, self) {
         let { data, arrays, objects } = this.createMetaObject(emfEntity);
         let flatEntity = { data, parent, children: [], self };
 
@@ -54,9 +86,12 @@ export default class EmfModelHelper {
         objects.forEach((object) => {
             flatEntity.children.push(this.recursion(emfEntityList, object.data, flatEntity, object.name));
         });
-
-        emfEntityList.unshift(flatEntity);
+        emfEntityList.push(flatEntity);
         return flatEntity;
     }
 }
 
+export default {
+    flattenEmfModelTree: (emfModelTree) => EmfModelHelper.flattenEmfModelTree(emfModelTree),
+    getFullHierarchy: (emfEntity) => EmfModelHelper.getFullHierarchy(emfEntity)
+}
