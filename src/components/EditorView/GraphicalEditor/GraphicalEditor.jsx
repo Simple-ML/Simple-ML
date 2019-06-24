@@ -6,7 +6,8 @@ import { mxClient, mxGraph, mxUtils, mxHierarchicalLayout } from "mxgraph-js";
 import XtextServices from "../../../serverConnection/XtextServices";
 import MxGraphModelServices from './mxGraphModelServices';
 import MxGraphConfig from "./mxGraphConfig";
-
+//helper
+import EmfModelHelper from "../../../Helper/EmfModelHelper";
 
 class GraphicalEditor extends React.Component {
     constructor(props) {
@@ -16,7 +17,11 @@ class GraphicalEditor extends React.Component {
             graph: graph
         };
         XtextServices.addSuccessListener((serviceType, result) => {
-            if (serviceType === 'json') {
+            if (serviceType === 'getEmfModel') {
+
+                console.log((new EmfModelHelper).flattenEmfModelTree(JSON.parse(result.fullText)));
+
+
                 let { graph } = this.state;
 
                 //define mxgraphservices and configure layout;

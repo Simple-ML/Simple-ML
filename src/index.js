@@ -9,19 +9,15 @@ import TextEditorWrapper from './components/EditorView/TextEditor/TextEditorWrap
 window.loadEditor((xtextEditor) => {
 
     TextEditorWrapper.create(xtextEditor);
-    TextEditorWrapper.setText("\n" +
-        "source db1\n" +
-        "source db2\n" +
-        "source server12\n" +
-        "\n" +
-        "method ml1\n" +
-        "method ml2\n" +
-        "\n" +
-        "collection someCollection db1[12] \"some text\" 987\n" +
-        "\n" +
-        "collection collection2 db2 \"some text\" 334444455\n" +
-        "\n" +
-        "function combine input db1 server12 ml-method ml1\n");
+    TextEditorWrapper.setText('\n' +
+        'dataframe1 = read_tsv("data/data.tsv")\n' +
+        'dataframe2 = read_tsv("data/data2.tsv")\n' +
+        'x = project(dataframe1, ["dow"])\n' +
+        'y = project(dataframe1, dataframe2, x)\n' +
+        '\n' +
+        '$UNCONNECTED NODES (only relevant for graphical DSL)$\n\n' +
+        'TIME 01:03:05\n' +
+        'read_tsv("something")');
 
     window.loadEditor = undefined;
 
