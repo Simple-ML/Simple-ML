@@ -2,7 +2,7 @@
 
 export default class EmfModelHelper {
 
-    flattenEmfModelTree = (emfModelTree) => {
+    flattenEmfModelTree(emfModelTree) {
         let flatEmfModel = [];
 
         this.recursion(flatEmfModel, emfModelTree, undefined, undefined);
@@ -10,7 +10,13 @@ export default class EmfModelHelper {
         return flatEmfModel;
     }
 
-    createMetaObject = (emfEntity) => {
+    getFullHierarchy(emfEntity, suffix = '') {
+        if(emfEntity.parent !== undefined)
+            return this.getFullHierarchy(emfEntity.parent, emfEntity.self + '/' + suffix);
+        return suffix;
+    }
+
+    createMetaObject(emfEntity) {
         let data = {};
         let arrays = [];
         let objects = [];
@@ -36,13 +42,13 @@ export default class EmfModelHelper {
         return { data, arrays, objects };
     }
 
-    recursion = (emfEntityList, emfEntity, parent, self) => {
+    recursion(emfEntityList, emfEntity, parent, self) {
         let { data, arrays, objects } = this.createMetaObject(emfEntity);
         let flatEntity = { data, parent, children: [], self };
 
         arrays.forEach((array) => {
             array.data.forEach((element, index) => {
-                flatEntity.children.push(this.recursion(emfEntityList, element, flatEntity, array.name + "|" + index));
+                flatEntity.children.push(this.recursion(emfEntityList, element, flatEntity, array.name + "[" + index + ']'));
             });
         });
         objects.forEach((object) => {

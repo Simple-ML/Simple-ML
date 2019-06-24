@@ -19,8 +19,13 @@ class GraphicalEditor extends React.Component {
         XtextServices.addSuccessListener((serviceType, result) => {
             if (serviceType === 'getEmfModel') {
 
-                console.log((new EmfModelHelper).flattenEmfModelTree(JSON.parse(result.fullText)));
+                let temp = (new EmfModelHelper).flattenEmfModelTree(JSON.parse(result.fullText));
 
+                console.log(temp)
+
+                temp.forEach((element) => {
+                    console.log((new EmfModelHelper).getFullHierarchy(element));
+                })
 
                 let { graph } = this.state;
 
