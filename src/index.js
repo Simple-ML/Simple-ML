@@ -6,20 +6,24 @@ import * as serviceWorker from './serviceWorker';
 
 import TextEditorWrapper from './components/EditorView/TextEditor/TextEditorWrapper';
 
+import afterReactInit from './debugging/afterReactInit';
+import exposeToBrowserConsole from "./debugging/exposeToBrowserConsole";
+
 window.loadEditor((xtextEditor) => {
 
     TextEditorWrapper.create(xtextEditor);
     TextEditorWrapper.setText('\n' +
         'dataframe1 = read_tsv("data/data.tsv")\n' +
-        'dataframe2 = read_tsv("data/data2.tsv")\n' +
         'x = project(dataframe1, ["dow"])\n' +
-        'y = project(dataframe1, dataframe2, x)\n' +
         '\n' +
-        '$UNCONNECTED NODES (only relevant for graphical DSL)$\n\n' +
-        'TIME 01:03:05\n' +
+        '$UNCONNECTED NODES (only relevant for graphical DSL)$\n' +
+        '\n' +
         'read_tsv("something")');
 
     window.loadEditor = undefined;
+
+    afterReactInit();
+    exposeToBrowserConsole();
 
     ReactDOM.render(<App/>, document.getElementById('root'));
 
