@@ -18,10 +18,6 @@ class GraphicalEditor extends React.Component {
         };
         XtextServices.addSuccessListener((serviceType, result) => {
             if (serviceType === 'getEmfModel') {
-
-                console.log((new EmfModelHelper).flattenEmfModelTree(JSON.parse(result.fullText)));
-
-
                 let { graph } = this.state;
 
                 //define mxgraphservices and configure layout;
