@@ -10,20 +10,9 @@ import afterReactInit from './debugging/afterReactInit';
 import exposeToBrowserConsole from "./debugging/exposeToBrowserConsole";
 
 window.loadEditor((xtextEditor) => {
-
-    TextEditorWrapper.create(xtextEditor);
-    TextEditorWrapper.setText('\n' +
-        'dataframe1 = read_tsv("data/data.tsv")\n' +
-        'x = project(dataframe1, ["dow"])\n' +
-        '\n' +
-        '$UNCONNECTED NODES (only relevant for graphical DSL)$\n' +
-        '\n' +
-        'read_tsv("something")');
-
     window.loadEditor = undefined;
 
-    afterReactInit();
-    exposeToBrowserConsole();
+    TextEditorWrapper.create(xtextEditor);
 
     ReactDOM.render(<App/>, document.getElementById('root'));
 
@@ -31,4 +20,7 @@ window.loadEditor((xtextEditor) => {
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
     serviceWorker.unregister();
+
+    afterReactInit();
+    exposeToBrowserConsole();
 })
