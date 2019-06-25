@@ -7,7 +7,7 @@ import XtextServices from "../../../serverConnection/XtextServices";
 import MxGraphModelServices from './mxGraphModelServices';
 import MxGraphConfig from "./mxGraphConfig";
 //helper
-import EmfModelHelper from "../../../Helper/EmfModelHelper";
+import EmfModelHelper from "../../../helper/EmfModelHelper";
 
 class GraphicalEditor extends React.Component {
     constructor(props) {
@@ -34,7 +34,7 @@ class GraphicalEditor extends React.Component {
                 //add nodes array to graph.view
                 graph.getModel().beginUpdate();
                 try {
-                    graphService.renderFullText(result.fullText, parent, graph, config);
+                    graphService.renderFullText(result.emfModel, parent, graph, config);
                     layout.execute(parent);
                 }
                 finally {
