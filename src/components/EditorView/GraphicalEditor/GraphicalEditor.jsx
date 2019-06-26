@@ -6,8 +6,6 @@ import { mxClient, mxGraph, mxUtils, mxHierarchicalLayout } from "mxgraph-js";
 import XtextServices from "../../../serverConnection/XtextServices";
 import MxGraphModelServices from './mxGraphModelServices';
 import MxGraphConfig from "./mxGraphConfig";
-//helper
-import EmfModelHelper from "../../../helper/EmfModelHelper";
 
 class GraphicalEditor extends React.Component {
     constructor(props) {
