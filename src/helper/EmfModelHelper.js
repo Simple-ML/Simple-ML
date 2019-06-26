@@ -32,6 +32,8 @@ class EmfModelHelper {
      * @returns string
      */
     static getFullHierarchy(emfEntity, suffix = '') {
+        if(suffix === '' && emfEntity.data.className !== undefined)
+            suffix = emfEntity.data.className.split('.').pop();
         if(emfEntity.parent !== undefined)
             return this.getFullHierarchy(emfEntity.parent, emfEntity.parent.data.className.split('.').pop() + '(' + emfEntity.self + ')/' + suffix);
         return suffix
@@ -44,7 +46,7 @@ class EmfModelHelper {
      * @param suffix
      * @returns string
      */
-    static getFullHierarchy2(emfEntity, suffix = '') {
+    static getFullHierarchy2(emfEntity, suffix = undefined) {
         if(emfEntity.parent !== undefined)
             return this.getFullHierarchy2(emfEntity.parent, emfEntity.self + '/' + suffix);
         return suffix;
