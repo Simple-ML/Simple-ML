@@ -22,7 +22,10 @@ class EmfModelHelper {
     }
 
     /**
-     * Concatenates own name with parents name. Creates a string witch represents the complete hierarchy.
+     * Creates a string witch represents the complete hierarchy up to the root-node (separated by '/').
+     * Example: Workflow(statement[3])/.../ProcessCall(arguments[0])
+     *          Workflow: ClassName of parent
+     *          statement[3]: PropertyName from parent and array-index if is one
      *
      * @param emfEntity
      * @param suffix
@@ -30,7 +33,20 @@ class EmfModelHelper {
      */
     static getFullHierarchy(emfEntity, suffix = '') {
         if(emfEntity.parent !== undefined)
-            return this.getFullHierarchy(emfEntity.parent, emfEntity.self + '/' + suffix);
+            return this.getFullHierarchy(emfEntity.parent, emfEntity.parent.data.className.split('.').pop() + '(' + emfEntity.self + ')/' + suffix);
+        return suffix
+    }
+
+    /**
+     * Like getFullHierarchy(...) but without parent-className.
+     *
+     * @param emfEntity
+     * @param suffix
+     * @returns string
+     */
+    static getFullHierarchy2(emfEntity, suffix = '') {
+        if(emfEntity.parent !== undefined)
+            return this.getFullHierarchy2(emfEntity.parent, emfEntity.self + '/' + suffix);
         return suffix;
     }
 
@@ -93,5 +109,6 @@ class EmfModelHelper {
 
 export default {
     flattenEmfModelTree: (emfModelTree) => EmfModelHelper.flattenEmfModelTree(emfModelTree),
-    getFullHierarchy: (emfEntity) => EmfModelHelper.getFullHierarchy(emfEntity)
+    getFullHierarchy: (emfEntity) => EmfModelHelper.getFullHierarchy(emfEntity),
+    getFullHierarchy2: (emfEntity) => EmfModelHelper.getFullHierarchy2(emfEntity)
 }
