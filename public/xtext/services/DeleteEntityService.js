@@ -47,7 +47,7 @@ define(['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery)
         }
 
         var serverData = {
-            entityName: params.entityName
+            entityPath: params.entityPath
         };
 
         knownServerState.updateInProgress = true;
