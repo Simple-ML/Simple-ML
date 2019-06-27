@@ -46,7 +46,7 @@ class EmfModelHelper {
      * @param suffix
      * @returns string
      */
-    static getFullHierarchy2(emfEntity, suffix = undefined) {
+    static getFullHierarchy2(emfEntity, suffix = '') {
         if(emfEntity.parent !== undefined)
             return this.getFullHierarchy2(emfEntity.parent, emfEntity.self + '/' + suffix);
         return suffix;
