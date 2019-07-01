@@ -65,7 +65,9 @@ export default class MxGraphModelServices {
         for (var key in flatModelEntity) {
             if (Array.isArray(flatModelEntity[key])) {
                 /*looks for new edges in the attribute if the attribute is an array*/
+                console.log("is array")
                 for (var j in flatModelEntity[key]) {
+                    console.log(flatModelEntity[key])
                     let refIndex = this.findReference(flatModelEntity[key][j]);
                     if (refIndex) {
                         allNodeEdges.push(graph.insertEdge(parent, null, flatModelEntity["name"], vertice, otherVertices[refIndex[1]], "strokeColor=lightgreen"));
@@ -97,6 +99,8 @@ export default class MxGraphModelServices {
         *returns an array temp with temp[0]: class whih the reference refers to, and temp [1]: the index of that specific object in this class,
         *otherwise if no reference found returns null*/
         var ref = key["$ref"];
+        var children = key['children']
+        console.log(children);
         if (ref) {
             ref = ref.replace("//@", "");
             var temp = ref.split(".");
@@ -104,6 +108,9 @@ export default class MxGraphModelServices {
         }
         else {
             return null;
+        }
+        if (children){
+            
         }
     }
 
