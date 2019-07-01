@@ -9,7 +9,7 @@ import TextEditorWrapper from './components/EditorView/TextEditor/TextEditorWrap
 window.loadEditor((xtextEditor) => {
 
     TextEditorWrapper.create(xtextEditor);
-    TextEditorWrapper.setText('\n' +
+    /*TextEditorWrapper.setText('\n' +
         'dataframe1 = read_tsv("data/data.tsv")\n' +
         'dataframe2 = read_tsv("data/data2.tsv")\n' +
         'x = project(dataframe1, ["dow"])\n' +
@@ -17,8 +17,9 @@ window.loadEditor((xtextEditor) => {
         '\n' +
         '$UNCONNECTED NODES (only relevant for graphical DSL)$\n\n' +
         'TIME 01:03:05\n' +
-        'read_tsv("something")');
-
+        'read_tsv("something")');*/
+    TextEditorWrapper.setText('\n' +
+    'dataframe1 = read_tsv("data/data.tsv")\n')
     window.loadEditor = undefined;
 
     ReactDOM.render(<App/>, document.getElementById('root'));
