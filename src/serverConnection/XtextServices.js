@@ -28,10 +28,10 @@ export default class XtextServices {
 
     /**
      *
-     * @param entity: {name: string}
+     * @param entityPath: string
      */
-    static deleteEntity(entity) {
-        TextEditorWrapper.editor.xtextServices.deleteEntity(entity.name);
+    static deleteEntity(entityPath) {
+        TextEditorWrapper.editor.xtextServices.deleteEntity({entityPath});
     }
 
     /**

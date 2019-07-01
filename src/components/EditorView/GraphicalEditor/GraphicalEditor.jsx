@@ -7,7 +7,6 @@ import XtextServices from "../../../serverConnection/XtextServices";
 import MxGraphModelServices from './mxGraphModelServices';
 import MxGraphConfig from "./mxGraphConfig";
 
-
 class GraphicalEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -17,7 +16,6 @@ class GraphicalEditor extends React.Component {
         };
         XtextServices.addSuccessListener((serviceType, result) => {
             if (serviceType === 'getEmfModel') {
-
                 let { graph } = this.state;
 
                 //define mxgraphservices and configure layout;
