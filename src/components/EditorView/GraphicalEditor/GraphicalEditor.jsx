@@ -32,7 +32,7 @@ class GraphicalEditor extends React.Component {
                 //add nodes array to graph.view
                 graph.getModel().beginUpdate();
                 try {
-                    graphService.renderFullText(result.fullText, parent, graph, config);
+                    graphService.renderFullText(result.emfModel, parent, graph, config);
                     //graphService.renderFullText(flatModel, parent, graph, config);
                     layout.execute(parent);
                 }

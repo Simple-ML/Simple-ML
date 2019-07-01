@@ -1,11 +1,11 @@
 //node_modules
 import { mxUtils } from "mxgraph-js";
 //helper
-import EmfModelHelper from "../../../Helper/EmfModelHelper";
+import EmfModelHelper from "../../../helper/EmfModelHelper";
 
 export default class MxGraphModelServices {
     renderFullText(fullText, parent, graph, config) {
-        let flatModel= (new EmfModelHelper()).flattenEmfModelTree(JSON.parse(fullText));
+        let flatModel=EmfModelHelper.flattenEmfModelTree(JSON.parse(fullText));
         console.log(flatModel)
         var vertices = this.addAllNodes(flatModel, parent, graph, config);
         this.addAllEdges2(flatModel, vertices, parent, graph);
