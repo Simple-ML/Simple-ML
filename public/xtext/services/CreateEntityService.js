@@ -12,7 +12,7 @@ define(['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery)
      * Service class for loading resources. The resulting text is passed to the editor context.
      */
     function CreateEntityService(serviceUrl, resourceId) {
-        this.initialize(serviceUrl, 'createObject', resourceId);
+        this.initialize(serviceUrl, 'createEntity', resourceId);
         this._completionCallbacks = [];
     };
 

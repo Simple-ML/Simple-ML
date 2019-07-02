@@ -176,9 +176,9 @@ define([
 			return services.creatableObjectProposalsService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
 		}
 
-		services.createObjectService = new CreateEntityService(options.serviceUrl, options.resourceId);
+		services.createEntityService = new CreateEntityService(options.serviceUrl, options.resourceId);
 		services.createEntity = function(addParams) {
-			return services.createObjectService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
+			return services.createEntityService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
 		}
 
         services.deleteEntityService = new DeleteEntityService(options.serviceUrl, options.resourceId);

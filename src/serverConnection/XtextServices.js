@@ -29,7 +29,7 @@ export default class XtextServices {
      *      }
      */
     static createEntity(entityDescription) {
-        TextEditorWrapper.editor.xtextServices.createEntity({createEntityDTO: entityDescription});
+        TextEditorWrapper.editor.xtextServices.createEntity({createEntityDTO: JSON.stringify(entityDescription)});
     }
 
     /**
