@@ -5,7 +5,6 @@ import torch.nn.functional as F
 
 
 def NN(x, y, config=None):
-
     class Net(nn.Module):
         def __init__(self):
             super(Net, self).__init__()
@@ -29,12 +28,11 @@ def NN(x, y, config=None):
 
 
 def loss_function():
-
     criterion = nn.CrossEntropyLoss()
     return criterion
 
 
-def create_optimizer(model,config=None):
+def create_optimizer(model, config=None):
     optimizer_type = None
     if config is None:
         config = {"lr": 0.001, "momentum": 0.9}
