@@ -20,10 +20,16 @@ export default class XtextServices {
 
     /**
      *
-     * @param entity: {name: string, className: string}
+     * @param entityDescription:  CreateEntityDTO
+     *
+     *      CreateEntityDTO: {
+     *          name: string,
+     *          className: string,
+     *          children: CreateEntityDTO[]
+     *      }
      */
-    static createEntity(entity) {
-        TextEditorWrapper.editor.xtextServices.createObject(entity);
+    static createEntity(entityDescription) {
+        TextEditorWrapper.editor.xtextServices.createEntity({createEntityDTO: entityDescription});
     }
 
     /**

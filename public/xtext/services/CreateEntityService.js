@@ -11,14 +11,14 @@ define(['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery)
     /**
      * Service class for loading resources. The resulting text is passed to the editor context.
      */
-    function CreatableObjectService(serviceUrl, resourceId) {
+    function CreateEntityService(serviceUrl, resourceId) {
         this.initialize(serviceUrl, 'createObject', resourceId);
         this._completionCallbacks = [];
     };
 
-    CreatableObjectService.prototype = new XtextService();
+    CreateEntityService.prototype = new XtextService();
 
-    CreatableObjectService.prototype.onComplete = function(xhr, textStatus) {
+    CreateEntityService.prototype.onComplete = function(xhr, textStatus) {
         var callbacks = this._completionCallbacks;
         this._completionCallbacks = [];
         for (var i = 0; i < callbacks.length; i++) {
@@ -31,11 +31,11 @@ define(['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery)
     /**
      * Add a callback to be invoked when the service call has completed.
      */
-    CreatableObjectService.prototype.addCompletionCallback = function(callback, params) {
+    CreateEntityService.prototype.addCompletionCallback = function(callback, params) {
         this._completionCallbacks.push({callback: callback, params: params});
     }
 
-    CreatableObjectService.prototype.invoke = function(editorContext, params, deferred) {
+    CreateEntityService.prototype.invoke = function(editorContext, params, deferred) {
         if (deferred === undefined) {
             deferred = jQuery.Deferred();
         }
@@ -48,8 +48,7 @@ define(['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery)
 
         var serverData = {
             contentType: params.contentType,
-            name: params.name,
-            className: params.className,
+            createEntityDTO: params.createEntityDTO
         };
 
         knownServerState.updateInProgress = true;
@@ -87,7 +86,7 @@ define(['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery)
         });
     };
 
-    CreatableObjectService.prototype._getSuccessCallback = function(editorContext, params, deferred) {
+    CreateEntityService.prototype._getSuccessCallback = function(editorContext, params, deferred) {
         return function(result) {
             editorContext.setText(result.fullText);
             var listeners = editorContext.updateServerState(result.fullText, result.stateId);
@@ -98,5 +97,5 @@ define(['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery)
         }
     }
 
-    return CreatableObjectService;
+    return CreateEntityService;
 });

@@ -10,11 +10,11 @@ define([
 	'xtext/services/XtextService',
     'xtext/services/GetEmfModelService',
 	'xtext/services/CreatableObjectProposalsService',
-	'xtext/services/CreateObjectService',
+	'xtext/services/CreateEntityService',
+    'xtext/services/DeleteEntityService',
 	'xtext/services/GetEntityAttributeDefinitionService',
 	'xtext/services/SetEntityAttributeService',
 	'xtext/services/AssociationService',
-	'xtext/services/DeleteEntityService',
 	'xtext/services/LoadResourceService',
 	'xtext/services/SaveResourceService',
 	'xtext/services/HighlightingService',
@@ -24,8 +24,8 @@ define([
 	'xtext/services/HoverService',
 	'xtext/services/OccurrencesService',
 	'xtext/services/FormattingService'
-], function(jQuery, XtextService, GetEmfModelService, CreatableObjectProposalsService, CreateObjectService, GetEntityAttributeDefinitionService,
-			SetEntityAttributeService, AssociationService, DeleteEntityService, LoadResourceService, SaveResourceService, HighlightingService, ValidationService, UpdateService,
+], function(jQuery, XtextService, GetEmfModelService, CreatableObjectProposalsService, CreateEntityService, DeleteEntityService, GetEntityAttributeDefinitionService,
+			SetEntityAttributeService, AssociationService, LoadResourceService, SaveResourceService, HighlightingService, ValidationService, UpdateService,
 			ContentAssistService, HoverService, OccurrencesService, FormattingService) {
 
 	/**
@@ -176,10 +176,15 @@ define([
 			return services.creatableObjectProposalsService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
 		}
 
-		services.createObjectService = new CreateObjectService(options.serviceUrl, options.resourceId);
-		services.createObject = function(addParams) {
+		services.createObjectService = new CreateEntityService(options.serviceUrl, options.resourceId);
+		services.createEntity = function(addParams) {
 			return services.createObjectService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
 		}
+
+        services.deleteEntityService = new DeleteEntityService(options.serviceUrl, options.resourceId);
+        services.deleteEntity = function(addParams) {
+            return services.deleteEntityService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
+        }
 
 		services.associationService = new AssociationService(options.serviceUrl, options.resourceId);
 		services.associate = function(addParams) {
@@ -194,11 +199,6 @@ define([
 		services.setEntityAttributeService = new SetEntityAttributeService(options.serviceUrl, options.resourceId);
 		services.setEntityAttribute = function(addParams) {
 			return services.setEntityAttributeService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
-		}
-
-		services.deleteEntityService = new DeleteEntityService(options.serviceUrl, options.resourceId);
-		services.deleteEntity = function(addParams) {
-			return services.deleteEntityService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
 		}
 
 		if (options.dirtyElement) {
