@@ -16,7 +16,6 @@ let afterReactInit = () => {
         'TIME 01:03:05\n' +
         'read_tsv("something")');
 
-
     XtextServices.addSuccessListener((serviceType, result) => {
         debugInterface.d.lsr = result
     });
