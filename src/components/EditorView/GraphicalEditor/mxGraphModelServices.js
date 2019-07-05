@@ -101,7 +101,6 @@ export default class MxGraphModelServices {
         const xmlDoc = mxUtils.createXmlDocument();
         var newObject2 = xmlDoc.createElement("object");
         for (let prop in value) {
-            if(value[prop]){}
             newObject2.setAttribute(prop, value[prop]);
         }
         return newObject2;

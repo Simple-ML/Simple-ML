@@ -33,7 +33,6 @@ class GraphicalEditor extends React.Component {
                 graph.getModel().beginUpdate();
                 try {
                     graphService.renderFullText(result.emfModel, parent, graph, config);
-                    //graphService.renderFullText(flatModel, parent, graph, config);
                     layout.execute(parent);
                 }
                 finally {
