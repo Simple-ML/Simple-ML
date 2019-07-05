@@ -12,9 +12,9 @@ define([
 	'xtext/services/CreatableObjectProposalsService',
 	'xtext/services/CreateEntityService',
     'xtext/services/DeleteEntityService',
+    'xtext/services/CreateAssociationService',
 	'xtext/services/GetEntityAttributeDefinitionService',
 	'xtext/services/SetEntityAttributeService',
-	'xtext/services/AssociationService',
 	'xtext/services/LoadResourceService',
 	'xtext/services/SaveResourceService',
 	'xtext/services/HighlightingService',
@@ -24,8 +24,9 @@ define([
 	'xtext/services/HoverService',
 	'xtext/services/OccurrencesService',
 	'xtext/services/FormattingService'
-], function(jQuery, XtextService, GetEmfModelService, CreatableObjectProposalsService, CreateEntityService, DeleteEntityService, GetEntityAttributeDefinitionService,
-			SetEntityAttributeService, AssociationService, LoadResourceService, SaveResourceService, HighlightingService, ValidationService, UpdateService,
+], function(jQuery, XtextService, GetEmfModelService, CreatableObjectProposalsService, CreateEntityService, DeleteEntityService,
+            CreateAssociationService, GetEntityAttributeDefinitionService,
+			SetEntityAttributeService, LoadResourceService, SaveResourceService, HighlightingService, ValidationService, UpdateService,
 			ContentAssistService, HoverService, OccurrencesService, FormattingService) {
 
 	/**
@@ -186,9 +187,9 @@ define([
             return services.deleteEntityService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
         }
 
-		services.associationService = new AssociationService(options.serviceUrl, options.resourceId);
-		services.associate = function(addParams) {
-			return services.associationService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
+		services.createAssociationService = new CreateAssociationService(options.serviceUrl, options.resourceId);
+		services.createAssociation = function(addParams) {
+			return services.createAssociationService .invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
 		}
 
 		services.getEntityAttributeDefinitionService = new GetEntityAttributeDefinitionService(options.serviceUrl, options.resourceId);

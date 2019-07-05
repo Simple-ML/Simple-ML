@@ -11,14 +11,14 @@ define(['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery)
     /**
      * Service class for loading resources. The resulting text is passed to the editor context.
      */
-    function AssociationService(serviceUrl, resourceId) {
-        this.initialize(serviceUrl, 'associate', resourceId);
+    function CreateAssociationService(serviceUrl, resourceId) {
+        this.initialize(serviceUrl, 'createAssociation', resourceId);
         this._completionCallbacks = [];
     };
 
-    AssociationService.prototype = new XtextService();
+    CreateAssociationService.prototype = new XtextService();
 
-    AssociationService.prototype.onComplete = function(xhr, textStatus) {
+    CreateAssociationService.prototype.onComplete = function(xhr, textStatus) {
         var callbacks = this._completionCallbacks;
         this._completionCallbacks = [];
         for (var i = 0; i < callbacks.length; i++) {
@@ -31,11 +31,11 @@ define(['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery)
     /**
      * Add a callback to be invoked when the service call has completed.
      */
-    AssociationService.prototype.addCompletionCallback = function(callback, params) {
+    CreateAssociationService.prototype.addCompletionCallback = function(callback, params) {
         this._completionCallbacks.push({callback: callback, params: params});
     }
 
-    AssociationService.prototype.invoke = function(editorContext, params, deferred) {
+    CreateAssociationService.prototype.invoke = function(editorContext, params, deferred) {
         if (deferred === undefined) {
             deferred = jQuery.Deferred();
         }
@@ -48,10 +48,8 @@ define(['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery)
 
         var serverData = {
             contentType: params.contentType,
-            fromName: params.fromName,
-            fromClassName: params.fromClassName,
-            toName: params.toName,
-            toClassName: params.toClassName
+            from: params.from,
+            to: params.to
         };
 
         knownServerState.updateInProgress = true;
@@ -89,7 +87,7 @@ define(['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery)
         });
     };
 
-    AssociationService.prototype._getSuccessCallback = function(editorContext, params, deferred) {
+    CreateAssociationService.prototype._getSuccessCallback = function(editorContext, params, deferred) {
         return function(result) {
             editorContext.setText(result.fullText);
             var listeners = editorContext.updateServerState(result.fullText, result.stateId);
@@ -100,5 +98,5 @@ define(['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery)
         }
     }
 
-    return AssociationService;
+    return CreateAssociationService;
 });
