@@ -1,6 +1,8 @@
 import EmfModelHelper from "../helper/EmfModelHelper";
 import XtextServices from "../serverConnection/XtextServices";
 import TextEditorWrapper from "../components/EditorView/TextEditor/TextEditorWrapper";
+import { debugInterface } from "./exposeToBrowserConsole"
+
 
 let afterReactInit = () => {
 
@@ -16,6 +18,7 @@ let afterReactInit = () => {
 
     XtextServices.addSuccessListener((serviceType, result) => {
         console.log({serviceType, result});
+        debugInterface.d.lsr = result
     });
 
     XtextServices.addSuccessListener((serviceType, result) => {
@@ -27,7 +30,7 @@ let afterReactInit = () => {
     XtextServices.addSuccessListener((serviceType, result) => {
         if (serviceType === 'getEmfModel') {
             EmfModelHelper.flattenEmfModelTree(JSON.parse(result.emfModel)).forEach((element) => {
-                console.log(EmfModelHelper.getFullHierarchy(element));
+                console.log(EmfModelHelper.getFullHierarchy2(element));
             });
         }
     });

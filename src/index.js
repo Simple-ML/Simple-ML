@@ -7,7 +7,7 @@ import * as serviceWorker from './serviceWorker';
 import TextEditorWrapper from './components/EditorView/TextEditor/TextEditorWrapper';
 
 import afterReactInit from './debugging/afterReactInit';
-import exposeToBrowserConsole from "./debugging/exposeToBrowserConsole";
+import { exposeToBrowserConsole } from "./debugging/exposeToBrowserConsole";
 
 window.loadEditor((xtextEditor) => {
     window.loadEditor = undefined;

@@ -20,10 +20,16 @@ export default class XtextServices {
 
     /**
      *
-     * @param entity: {name: string, className: string}
+     * @param entityDescription:  CreateEntityDTO
+     *
+     *      CreateEntityDTO: {
+     *          name: string,
+     *          className: string,
+     *          children: CreateEntityDTO[]
+     *      }
      */
-    static createEntity(entity) {
-        TextEditorWrapper.editor.xtextServices.createObject(entity);
+    static createEntity(entityDescription) {
+        TextEditorWrapper.editor.xtextServices.createEntity({createEntityDTO: JSON.stringify(entityDescription)});
     }
 
     /**
@@ -36,17 +42,15 @@ export default class XtextServices {
 
     /**
      *
-     * @param entityFrom: {name: string, className: string}
-     * @param entityTo: {name: string, className: string}
+     * @param from: string
+     * @param to: string
      */
-    static createAssociation(entityFrom, entityTo) {
+    static createAssociation(from, to) {
         let association = {
-            fromName: entityFrom.name,
-            fromClassName: entityFrom.className,
-            toName: entityTo.name,
-            toClassName: entityTo.className
+            from: from,
+            to: to
         };
-        TextEditorWrapper.editor.xtextServices.associate(association);
+        TextEditorWrapper.editor.xtextServices.createAssociation(association);
     }
 
     /**
