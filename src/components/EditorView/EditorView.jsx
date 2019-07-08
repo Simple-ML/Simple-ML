@@ -38,9 +38,10 @@ class EditorView extends React.Component {
             <div className='EditorView'>
                 <EditorHeader/>
                 <div className={ 'buttons' }>
-                    <button style={{ color: 'white' }} onClick={ () => { XtextServices.getEmfModel(); }}>
+                    <button style={{ color: 'black' }} onClick={ () => { XtextServices.getEmfModel(); }}>
                         { 'Get EMF-Model' }
                     </button>
+
                 </div>
                 <div className='ide-container' >
                     <div className='view-toggler' style={{ display: 'inline-block' }}>

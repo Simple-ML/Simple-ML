@@ -6,6 +6,7 @@ import EmfModelHelper from "../../../helper/EmfModelHelper";
 
 export default class MxGraphModelServices {
     renderFullText(fullText, parent, graph, config) {
+
         let flatModel = EmfModelHelper.flattenEmfModelTree(JSON.parse(fullText));
         //adding all visible nodes at once
         var vertices = this.addAllNodes(flatModel, parent, graph, config);
@@ -15,7 +16,7 @@ export default class MxGraphModelServices {
            var parentCell = this.findVisibleParent(vertices[i].value);
            var childCell = vertices[i].value['cellObject'];
            if(parentCell !== undefined){
-                 edges.push(graph.insertEdge(graph.getDefaultParent(), null, null,parentCell, childCell));
+                 edges.push(graph.insertEdge(graph.getDefaultParent(), null, null, childCell, parentCell));
             }
         }
         //adding $ref edges
@@ -26,6 +27,7 @@ export default class MxGraphModelServices {
     addAllNodes(flatModel, parent, graph, config) {
         var vertices = {};
         for (var i in flatModel) {
+            console.log(EmfModelHelper.getFullHierarchy2(flatModel[i]));
             var encodedEntity = this.encode(flatModel[i]);
             flatModel[i]['visible'] = this.isVisible(flatModel[i]);
             var entityStyle = config.getConfig(flatModel[i].data.className, "style", config.configs);
@@ -88,7 +90,7 @@ export default class MxGraphModelServices {
                     source = potentialSource['cellObject'];
                 }
                 //connect target and source and add them to array of edges
-                refEdges.push(graph.insertEdge(graph.getDefaultParent(), null, null,target, source));
+                refEdges.push(graph.insertEdge(graph.getDefaultParent(), null, null, source, target));
             }
         }
         return refEdges;
