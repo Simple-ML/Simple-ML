@@ -1,7 +1,9 @@
 //node_modules
-import { mxUtils } from "mxgraph-js";
+import { mxUtils, mxEvent } from "mxgraph-js";
 //helper
 import EmfModelHelper from "../../../helper/EmfModelHelper";
+//services
+import XtextServices from "../../../serverConnection/XtextServices";
 
 
 export default class MxGraphModelServices {
@@ -21,12 +23,18 @@ export default class MxGraphModelServices {
         }
         //adding $ref edges
         edges = edges.concat(this.connectReferences(flatModel,graph));
+
+        //adding the listeners
+
+        //dragEdgeListener
+        this.addCreateAssociationListener(graph);
     }
 
     /*adds all nodes, returns an array with all added nodes*/
     addAllNodes(flatModel, parent, graph, config) {
         var vertices = {};
         for (var i in flatModel) {
+            console.log(flatModel[i])
             console.log(EmfModelHelper.getFullHierarchy2(flatModel[i]));
             var encodedEntity = this.encode(flatModel[i]);
             flatModel[i]['visible'] = this.isVisible(flatModel[i]);
@@ -135,5 +143,18 @@ export default class MxGraphModelServices {
             }
             return '';
         };
+    }
+
+   addCreateAssociationListener(graph){
+    graph.connectionHandler.addListener(mxEvent.CONNECT, function (sender,evt, graph){
+        /*reacts to adding of a new edge in existing view, validate via xtext and re-render the view */
+        var edge = evt.getProperty('cell');
+        var sourceEntity=edge.source.value;
+        var targetEntity=edge.target.value;
+        var from=EmfModelHelper.getFullHierarchy2(sourceEntity);
+        var to=EmfModelHelper.getFullHierarchy2(targetEntity);
+        XtextServices.createAssociation(from,to);
+    })
+
     }
 }

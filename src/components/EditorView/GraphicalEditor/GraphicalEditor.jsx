@@ -15,24 +15,24 @@ class GraphicalEditor extends React.Component {
             graph: graph
         };
         XtextServices.addSuccessListener((serviceType, result) => {
+            let { graph } = this.state;
+
+            //define mxgraphservices and configure layout;
+            let parent = graph.getDefaultParent();
+            var config = new MxGraphConfig();
+            var graphService = new MxGraphModelServices();
+            var layout = new mxHierarchicalLayout(graph);
+            mxConnectionHandler.prototype.connectImage = new mxImage('../../../images/conncent.jpg',25,25);
+            mxConnectionHandler.prototype.moveIconFront=true;
+            layout.intraCellSpacing = 20;
+            graph.htmlLabels = true;
+            graph.setConnectable(true);
+            graphService.labelDisplayOveride(graph);
+            //clear the graph.view
+            graph.removeCells(graph.getChildCells(parent, true, true));
             switch(serviceType){
                case 'getEmfModel':
                    {
-                    let { graph } = this.state;
-
-                    //define mxgraphservices and configure layout;
-                    let parent = graph.getDefaultParent();
-                    var config = new MxGraphConfig();
-                    var graphService = new MxGraphModelServices();
-                    var layout = new mxHierarchicalLayout(graph);
-                    mxConnectionHandler.prototype.connectImage = new mxImage('/../../images/background-circle.svg');
-                    layout.intraCellSpacing = 20;
-                    graph.htmlLabels = true;
-                    graph.setConnectable(true);
-                    graphService.labelDisplayOveride(graph);
-    
-                    //clear the graph.view
-                    graph.removeCells(graph.getChildCells(parent, true, true));
                     //add nodes array to graph.view
                     graph.getModel().beginUpdate();
                     try {
@@ -42,14 +42,19 @@ class GraphicalEditor extends React.Component {
                     finally {
                         graph.getModel().endUpdate();
                     }
-    
                     this.setState({ graph: graph });
                     break;
                    }
                 case 'createAssociation':
                     {
-                    let { graph } = this.state;
-                        console.log(result);
+                        graph.getModel().beginUpdate();
+                        try {
+                            graphService.renderFullText(result.emfModel, parent, graph, config);
+                            layout.execute(parent);
+                        }
+                        finally {
+                            graph.getModel().endUpdate();
+                        }
                     break;
                     }
                 default: break;    
@@ -74,9 +79,6 @@ class GraphicalEditor extends React.Component {
     render() {
         return(
             <div className={ this.props.name } ref="graphDiv"> 
-                                <button style={{ color: 'black' }} onClick={ () => { XtextServices.createAssociation("unconnected[0]/","unconnected[1]/"); }}>
-                        { 'create association' }
-                    </button>
             </div>
         );
     }
