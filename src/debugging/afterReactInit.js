@@ -17,20 +17,17 @@ let afterReactInit = () => {
         'read_tsv("something")');
 
     XtextServices.addSuccessListener((serviceType, result) => {
-        console.log({serviceType, result});
         debugInterface.d.lsr = result
     });
 
     XtextServices.addSuccessListener((serviceType, result) => {
         if (serviceType === 'getEmfModel') {
-            console.log(EmfModelHelper.flattenEmfModelTree(JSON.parse(result.emfModel)));
         }
     });
 
     XtextServices.addSuccessListener((serviceType, result) => {
         if (serviceType === 'getEmfModel') {
             EmfModelHelper.flattenEmfModelTree(JSON.parse(result.emfModel)).forEach((element) => {
-                console.log(EmfModelHelper.getFullHierarchy2(element));
             });
         }
     });
