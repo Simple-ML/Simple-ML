@@ -37,6 +37,24 @@ export default class MxGraphConfig {
                 newNameTemplate: "newMethod"
             }
         );
+        configs.push(
+            {
+                name: "Assignment",
+                className: "org.xtext.example.mydsl.myDsl.Assignment",
+                style: "shape=cylinder;fillColor=#B891BF",
+                image: "editors/images/rectangle.gif",
+                newNameTemplate: "newAssignment"
+            }
+        );
+        configs.push(
+            {
+                name: "ProcessCall",
+                className: "org.xtext.example.mydsl.myDsl.ProcessCall",
+                style: "shape=rectangle;fillColor=#B891BF",
+                image: "editors/images/rectangle.gif",
+                newNameTemplate: "newAssignment"
+            }
+        );
         return configs;
     }
 
@@ -46,7 +64,7 @@ export default class MxGraphConfig {
         {
             name: "unknown",
             className: className,
-            style: "default",
+            style: "shape=hexagon",
             image: "editors/images/symbols/error.png",
             newNameTemplate: "unknownObject"
         };

@@ -13,6 +13,7 @@ window.loadEditor((xtextEditor) => {
     window.loadEditor = undefined;
 
     TextEditorWrapper.create(xtextEditor);
+    window.loadEditor = undefined;
 
     ReactDOM.render(<App/>, document.getElementById('root'));
 
