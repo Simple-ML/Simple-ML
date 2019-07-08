@@ -10,35 +10,6 @@ export default class MxGraphConfig {
         var configs = [];
         configs.push(
             {
-                name: "DataSource",
-                className: "org.xtext.example.mydsl.myDsl.DataSource",
-                style: "fillColor=green",
-                image: "editors/images/rectangle.gif",
-                newNameTemplate: "newDataSource"
-            }
-        );
-
-        configs.push(
-            {
-                name: "Function",
-                className: "org.xtext.example.mydsl.myDsl.Function",
-                style: "shape=ellipse;fillColor=red;",
-                image: "editors/images/ellipse.gif",
-                newNameTemplate: "newFunction"
-            }
-        );
-
-        configs.push(
-            {
-                name: "MlMethod",
-                className: "org.xtext.example.mydsl.myDsl.MlMethod",
-                style: "shape=cloud;fillColor=lightblue;",
-                image: "editors/images/cloud.gif",
-                newNameTemplate: "newMethod"
-            }
-        );
-        configs.push(
-            {
                 name: "Assignment",
                 className: "org.xtext.example.mydsl.myDsl.Assignment",
                 style: "shape=cylinder;fillColor=#B891BF",
@@ -48,7 +19,7 @@ export default class MxGraphConfig {
         );
         configs.push(
             {
-                name: "ProcessCall",
+                name: "PROCESS",
                 className: "org.xtext.example.mydsl.myDsl.ProcessCall",
                 style: "shape=rectangle;fillColor=#B891BF",
                 image: "editors/images/rectangle.gif",
