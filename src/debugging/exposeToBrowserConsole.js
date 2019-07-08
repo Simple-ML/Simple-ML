@@ -8,9 +8,9 @@ var debugInterface = {
             getEmfModel: () => XtextServices.getEmfModel(),
             creatableEntityProposals: () => XtextServices.creatableEntityProposals(),
             createEntity: (entity) => XtextServices.createEntity(entity),
-            deleteEntity: (entity) => XtextServices.deleteEntity(entity),
-            createAssociation: (entityFrom, entityTo) => XtextServices.createAssociation(entityFrom, entityTo),
-            deleteAssociation: (entityFrom, entityTo) => XtextServices.deleteAssociation(entityFrom, entityTo),
+            deleteEntity: (entityPath) => XtextServices.deleteEntity(entityPath),
+            createAssociation: (fromEntityPath, toEntityPath) => XtextServices.createAssociation(fromEntityPath, toEntityPath),
+            deleteAssociation: (fromEntityPath, toEntityPath) => XtextServices.deleteAssociation(fromEntityPath, toEntityPath),
             getEntityAttributes: (entities) => XtextServices.getEntityAttributes(entities),
             setEntityAttributes: (entity) => XtextServices.setEntityAttributes(entity)
         }
