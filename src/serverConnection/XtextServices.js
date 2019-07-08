@@ -42,32 +42,28 @@ export default class XtextServices {
 
     /**
      *
-     * @param from: string
-     * @param to: string
+     * @param fromEntityPath: string
+     * @param toEntityPath: string
      */
-    static createAssociation(from, to) {
+    static createAssociation(fromEntityPath, toEntityPath) {
         let association = {
-            from: from,
-            to: to
+            from: fromEntityPath,
+            to: toEntityPath
         };
         TextEditorWrapper.editor.xtextServices.createAssociation(association);
     }
 
     /**
      *
-     * @param entityFrom: {name: string, className: string}
-     * @param entityTo: {name: string, className: string}
+     * @param fromEntityPath: string
+     * @param toEntityPath: string
      */
-    static deleteAssociation(entityFrom, entityTo) {
-        /*
+    static deleteAssociation(fromEntityPath, toEntityPath) {
         let association = {
-            fromName: entityFrom.name,
-            fromClassName: entityFrom.className,
-            toName: entityTo.name,
-            toClassName: entityTo.className
+            from: fromEntityPath,
+            to: toEntityPath
         };
-        */
-        //TODO: add service
+        TextEditorWrapper.editor.xtextServices.deleteAssociation(association);
     }
 
     /**

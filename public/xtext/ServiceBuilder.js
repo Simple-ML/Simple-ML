@@ -13,6 +13,7 @@ define([
 	'xtext/services/CreateEntityService',
     'xtext/services/DeleteEntityService',
     'xtext/services/CreateAssociationService',
+    'xtext/services/DeleteAssociationService',
 	'xtext/services/GetEntityAttributeDefinitionService',
 	'xtext/services/SetEntityAttributeService',
 	'xtext/services/LoadResourceService',
@@ -25,7 +26,7 @@ define([
 	'xtext/services/OccurrencesService',
 	'xtext/services/FormattingService'
 ], function(jQuery, XtextService, GetEmfModelService, CreatableObjectProposalsService, CreateEntityService, DeleteEntityService,
-            CreateAssociationService, GetEntityAttributeDefinitionService,
+            CreateAssociationService, DeleteAssociationService, GetEntityAttributeDefinitionService,
 			SetEntityAttributeService, LoadResourceService, SaveResourceService, HighlightingService, ValidationService, UpdateService,
 			ContentAssistService, HoverService, OccurrencesService, FormattingService) {
 
@@ -189,8 +190,13 @@ define([
 
 		services.createAssociationService = new CreateAssociationService(options.serviceUrl, options.resourceId);
 		services.createAssociation = function(addParams) {
-			return services.createAssociationService .invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
+			return services.createAssociationService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
 		}
+
+        services.deleteAssociationService = new DeleteAssociationService(options.serviceUrl, options.resourceId);
+        services.deleteAssociation = function(addParams) {
+            return services.deleteAssociationService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
+        }
 
 		services.getEntityAttributeDefinitionService = new GetEntityAttributeDefinitionService(options.serviceUrl, options.resourceId);
 		services.getEntityAttributeDefinition = function(addParams) {
