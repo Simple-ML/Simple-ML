@@ -16,50 +16,32 @@ class GraphicalEditor extends React.Component {
         };
         XtextServices.addSuccessListener((serviceType, result) => {
             let { graph } = this.state;
-
             //define mxgraphservices and configure layout;
             let parent = graph.getDefaultParent();
             var config = new MxGraphConfig();
             var graphService = new MxGraphModelServices();
             var layout = new mxHierarchicalLayout(graph);
-            mxConnectionHandler.prototype.connectImage = new mxImage(connectImage,5,5);
+            mxConnectionHandler.prototype.connectImage = new mxImage(connectImage,10,10);
             mxConnectionHandler.prototype.moveIconFront=true;
             layout.intraCellSpacing = 20;
             graph.htmlLabels = true;
             graph.setConnectable(true);
             graphService.labelDisplayOveride(graph);
-            //clear the graph.view
-            graph.removeCells(graph.getChildCells(parent, true, true));
-            switch(serviceType){
-               case 'getEmfModel':
-                   {
-                    //add nodes array to graph.view
-                    graph.getModel().beginUpdate();
-                    try {
-                        graphService.renderFullText(result.emfModel, parent, graph, config);
-                        layout.execute(parent);
-                    }
-                    finally {
-                        graph.getModel().endUpdate();
-                    }
-                    this.setState({ graph: graph });
-                    break;
-                   }
-                case 'createAssociation':
-                    {
-                        graph.getModel().beginUpdate();
-                        try {
-                            graphService.renderFullText(result.emfModel, parent, graph, config);
-                            layout.execute(parent);
-                        }
-                        finally {
-                            graph.getModel().endUpdate();
-                        }
-                    break;
-                    }
-                default: break;    
+
+            if(serviceType==='getEmfModel'||serviceType==='deleteEntity'||serviceType==='deleteAssociation'||serviceType==='createAssociation'){
+                //clear the graph.view
+                graph.removeCells(graph.getChildCells(parent, true, true));
+                //add nodes array to graph.view
+                graph.getModel().beginUpdate();
+                try {
+                    graphService.renderFullText(result.emfModel, parent, graph, config);
+                    layout.execute(parent);
+                }
+                finally {
+                    graph.getModel().endUpdate();
+                }
+                this.setState({ graph: graph });
             }
-            
         });
     }
 

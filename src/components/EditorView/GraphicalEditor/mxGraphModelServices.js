@@ -145,33 +145,34 @@ export default class MxGraphModelServices {
     }
 
    addCreateAssociationListener(graph){
-    graph.connectionHandler.addListener(mxEvent.CONNECT, function (sender,evt, graph){
-        /*reacts to adding of a new edge in existing view, validate via xtext and re-render the view */
-        var edge = evt.getProperty('cell');
-        var sourceEntity=edge.source.value;
-        var targetEntity=edge.target.value;
-        var from=EmfModelHelper.getFullHierarchy2(sourceEntity);
-        var to=EmfModelHelper.getFullHierarchy2(targetEntity);
-        XtextServices.createAssociation(from,to);
-    })
-
+        graph.connectionHandler.addListener(mxEvent.CONNECT, function (sender,evt, graph){
+            /*reacts to adding of a new edge in existing view, validate via xtext and re-render the view */
+            var edge = evt.getProperty('cell');
+            var sourceEntity=edge.source.value;
+            var targetEntity=edge.target.value;
+            var from=EmfModelHelper.getFullHierarchy2(sourceEntity);
+            var to=EmfModelHelper.getFullHierarchy2(targetEntity);
+            XtextServices.createAssociation(from,to);
+        })
     }
 
     addDeleteOnDoubleClickListener(graph){
         graph.addListener(mxEvent.DOUBLE_CLICK, function(sender, evt){
-        var cell = evt.getProperty('cell');
-        if(cell.vertex === true){
-            var entity = cell.value;
-            var enityPath=EmfModelHelper.getFullHierarchy2(entity);
-            XtextServices.deleteEntity(enityPath);
-        }
-        else{
-            var sourceEntity=cell.source.value;
-            var targetEntity=cell.target.value;
-            var from=EmfModelHelper.getFullHierarchy2(sourceEntity);
-            var to=EmfModelHelper.getFullHierarchy2(targetEntity);
-            XtextServices.deleteAssociation(from,to);
-        }
+            var cell = evt.getProperty('cell');
+            if(cell!==undefined){
+                if(cell.vertex === true){
+                    var entity = cell.value;
+                    var enityPath=EmfModelHelper.getFullHierarchy2(entity);
+                    XtextServices.deleteEntity(enityPath);
+                }
+                else{
+                    var sourceEntity=cell.source.value;
+                    var targetEntity=cell.target.value;
+                    var from=EmfModelHelper.getFullHierarchy2(sourceEntity);
+                    var to=EmfModelHelper.getFullHierarchy2(targetEntity);
+                    XtextServices.deleteAssociation(from,to);
+                }
+            }
         });
     }
 
