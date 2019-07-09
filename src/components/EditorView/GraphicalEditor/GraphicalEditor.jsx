@@ -44,10 +44,7 @@ class GraphicalEditor extends React.Component {
                     finally {
                         graph.getModel().endUpdate();
                     }
-                    this.setState({ graph: graph });
-                    break;
-                default:
-                    break;
+                    this.setState({ graph: graph });     
             }
         });
     }
