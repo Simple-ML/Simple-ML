@@ -28,19 +28,26 @@ class GraphicalEditor extends React.Component {
             graph.setConnectable(true);
             graphService.labelDisplayOveride(graph);
 
-            if(serviceType==='getEmfModel'||serviceType==='deleteEntity'||serviceType==='deleteAssociation'||serviceType==='createAssociation'){
-                //clear the graph.view
-                graph.removeCells(graph.getChildCells(parent, true, true));
-                //add nodes array to graph.view
-                graph.getModel().beginUpdate();
-                try {
-                    graphService.renderFullText(result.emfModel, parent, graph, config);
-                    layout.execute(parent);
-                }
-                finally {
-                    graph.getModel().endUpdate();
-                }
-                this.setState({ graph: graph });
+            switch(serviceType){
+                case 'getEmfModel':
+                case 'deleteEntity':
+                case 'deleteAssociation':
+                case 'createAssociation':
+                    //clear the graph.view
+                    graph.removeCells(graph.getChildCells(parent, true, true));
+                    //add nodes array to graph.view
+                    graph.getModel().beginUpdate();
+                    try {
+                        graphService.renderFullText(result.emfModel, parent, graph, config);
+                        layout.execute(parent);
+                    }
+                    finally {
+                        graph.getModel().endUpdate();
+                    }
+                    this.setState({ graph: graph });
+                    break;
+                default:
+                    break;
             }
         });
     }
