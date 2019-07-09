@@ -28,14 +28,13 @@ export default class MxGraphModelServices {
 
         //dragEdgeListener
         this.addCreateAssociationListener(graph);
+        this.addDeleteOnDoubleClickListener(graph);
     }
 
     /*adds all nodes, returns an array with all added nodes*/
     addAllNodes(flatModel, parent, graph, config) {
         var vertices = {};
         for (var i in flatModel) {
-            console.log(flatModel[i])
-            console.log(EmfModelHelper.getFullHierarchy2(flatModel[i]));
             var encodedEntity = this.encode(flatModel[i]);
             flatModel[i]['visible'] = this.isVisible(flatModel[i]);
             var entityStyle = config.getConfig(flatModel[i].data.className, "style", config.configs);
@@ -157,4 +156,24 @@ export default class MxGraphModelServices {
     })
 
     }
+
+    addDeleteOnDoubleClickListener(graph){
+        graph.addListener(mxEvent.DOUBLE_CLICK, function(sender, evt){
+        var cell = evt.getProperty('cell');
+        if(cell.vertex === true){
+            var entity = cell.value;
+            var enityPath=EmfModelHelper.getFullHierarchy2(entity);
+            XtextServices.deleteEntity(enityPath);
+        }
+        else{
+            var sourceEntity=cell.source.value;
+            var targetEntity=cell.target.value;
+            var from=EmfModelHelper.getFullHierarchy2(sourceEntity);
+            var to=EmfModelHelper.getFullHierarchy2(targetEntity);
+            XtextServices.deleteAssociation(from,to);
+        }
+        });
+    }
+
+
 }

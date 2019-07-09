@@ -6,7 +6,7 @@ import { mxClient, mxGraph, mxUtils, mxHierarchicalLayout,mxConnectionHandler, m
 import XtextServices from "../../../serverConnection/XtextServices";
 import MxGraphModelServices from './mxGraphModelServices';
 import MxGraphConfig from "./mxGraphConfig";
-
+import connectImage from "../../../images/arrow.png"
 class GraphicalEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -22,7 +22,7 @@ class GraphicalEditor extends React.Component {
             var config = new MxGraphConfig();
             var graphService = new MxGraphModelServices();
             var layout = new mxHierarchicalLayout(graph);
-            mxConnectionHandler.prototype.connectImage = new mxImage('../../../images/conncent.jpg',25,25);
+            mxConnectionHandler.prototype.connectImage = new mxImage(connectImage,5,5);
             mxConnectionHandler.prototype.moveIconFront=true;
             layout.intraCellSpacing = 20;
             graph.htmlLabels = true;
