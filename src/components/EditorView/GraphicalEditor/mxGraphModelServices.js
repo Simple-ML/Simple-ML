@@ -1,11 +1,14 @@
 //node_modules
-import { mxUtils } from "mxgraph-js";
+import { mxUtils, mxEvent } from "mxgraph-js";
 //helper
 import EmfModelHelper from "../../../helper/EmfModelHelper";
+//services
+import XtextServices from "../../../serverConnection/XtextServices";
 
 
 export default class MxGraphModelServices {
     renderFullText(fullText, parent, graph, config) {
+
         let flatModel = EmfModelHelper.flattenEmfModelTree(JSON.parse(fullText));
         //adding all visible nodes at once
         var vertices = this.addAllNodes(flatModel, parent, graph, config);
@@ -15,11 +18,17 @@ export default class MxGraphModelServices {
            var parentCell = this.findVisibleParent(vertices[i].value);
            var childCell = vertices[i].value['cellObject'];
            if(parentCell !== undefined){
-                 edges.push(graph.insertEdge(graph.getDefaultParent(), null, null,parentCell, childCell));
+                 edges.push(graph.insertEdge(graph.getDefaultParent(), null, null, childCell, parentCell));
             }
         }
         //adding $ref edges
         edges = edges.concat(this.connectReferences(flatModel,graph));
+
+        //adding the listeners
+
+        //dragEdgeListener
+        this.addCreateAssociationListener(graph);
+        this.addDeleteOnDoubleClickListener(graph);
     }
 
     /*adds all nodes, returns an array with all added nodes*/
@@ -88,7 +97,7 @@ export default class MxGraphModelServices {
                     source = potentialSource['cellObject'];
                 }
                 //connect target and source and add them to array of edges
-                refEdges.push(graph.insertEdge(graph.getDefaultParent(), null, null,target, source));
+                refEdges.push(graph.insertEdge(graph.getDefaultParent(), null, null, source, target));
             }
         }
         return refEdges;
@@ -134,4 +143,38 @@ export default class MxGraphModelServices {
             return '';
         };
     }
+
+   addCreateAssociationListener(graph){
+        graph.connectionHandler.addListener(mxEvent.CONNECT, function (sender,evt, graph){
+            /*reacts to adding of a new edge in existing view, validate via xtext and re-render the view */
+            var edge = evt.getProperty('cell');
+            var sourceEntity=edge.source.value;
+            var targetEntity=edge.target.value;
+            var from=EmfModelHelper.getFullHierarchy2(sourceEntity);
+            var to=EmfModelHelper.getFullHierarchy2(targetEntity);
+            XtextServices.createAssociation(from,to);
+        })
+    }
+
+    addDeleteOnDoubleClickListener(graph){
+        graph.addListener(mxEvent.DOUBLE_CLICK, function(sender, evt){
+            var cell = evt.getProperty('cell');
+            if(cell!==undefined){
+                if(cell.vertex === true){
+                    var entity = cell.value;
+                    var enityPath=EmfModelHelper.getFullHierarchy2(entity);
+                    XtextServices.deleteEntity(enityPath);
+                }
+                else{
+                    var sourceEntity=cell.source.value;
+                    var targetEntity=cell.target.value;
+                    var from=EmfModelHelper.getFullHierarchy2(sourceEntity);
+                    var to=EmfModelHelper.getFullHierarchy2(targetEntity);
+                    XtextServices.deleteAssociation(from,to);
+                }
+            }
+        });
+    }
+
+
 }
