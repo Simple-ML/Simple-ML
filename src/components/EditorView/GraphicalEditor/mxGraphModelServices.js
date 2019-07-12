@@ -23,14 +23,13 @@ export default class MxGraphModelServices {
         }
         //adding $ref edges
         edges = edges.concat(this.connectReferences(flatModel,graph));
-
+    }
+    addAllListeners(graph){
         //adding the listeners
-
         //dragEdgeListener
         this.addCreateAssociationListener(graph);
         this.addDeleteOnDoubleClickListener(graph);
     }
-
     /*adds all nodes, returns an array with all added nodes*/
     addAllNodes(flatModel, parent, graph, config) {
         var vertices = {};

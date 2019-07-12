@@ -20,6 +20,7 @@ class GraphicalEditor extends React.Component {
             let parent = graph.getDefaultParent();
             var config = new MxGraphConfig();
             var graphService = new MxGraphModelServices();
+            graphService.addAllListeners(graph);
             var layout = new mxHierarchicalLayout(graph);
             mxConnectionHandler.prototype.connectImage = new mxImage(connectImage,10,10);
             mxConnectionHandler.prototype.moveIconFront=true;
