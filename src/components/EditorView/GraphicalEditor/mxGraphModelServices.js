@@ -171,6 +171,7 @@ export default class MxGraphModelServices {
                     var to=EmfModelHelper.getFullHierarchy2(targetEntity);
                     XtextServices.deleteAssociation(from,to);
                 }
+                mxEvent.consume(evt);
             }
         });
     }

@@ -1,7 +1,7 @@
 //node_modules
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { mxClient, mxGraph, mxUtils, mxHierarchicalLayout,mxConnectionHandler, mxImage } from "mxgraph-js";
+import { mxClient, mxGraph, mxUtils, mxHierarchicalLayout,mxConnectionHandler, mxImage,mxEvent } from "mxgraph-js";
 //services
 import XtextServices from "../../../serverConnection/XtextServices";
 import MxGraphModelServices from './mxGraphModelServices';
@@ -10,60 +10,65 @@ import connectImage from "../../../images/arrow.png"
 class GraphicalEditor extends React.Component {
     constructor(props) {
         super(props);
-        const graph = new mxGraph();
-        this.state = {
-            graph: graph
-        };
-        XtextServices.addSuccessListener((serviceType, result) => {
-            let { graph } = this.state;
-            //define mxgraphservices and configure layout;
-            let parent = graph.getDefaultParent();
-            var config = new MxGraphConfig();
-            var graphService = new MxGraphModelServices();
-            graphService.addAllListeners(graph);
-            var layout = new mxHierarchicalLayout(graph);
-            mxConnectionHandler.prototype.connectImage = new mxImage(connectImage,10,10);
-            mxConnectionHandler.prototype.moveIconFront=true;
-            layout.intraCellSpacing = 20;
-            graph.htmlLabels = true;
-            graph.setConnectable(true);
-            graphService.labelDisplayOveride(graph);
-
-            switch(serviceType){
-                case 'getEmfModel':
-                case 'deleteEntity':
-                case 'deleteAssociation':
-                case 'createAssociation':
-                    //clear the graph.view
-                    graph.removeCells(graph.getChildCells(parent, true, true));
-                    //add nodes array to graph.view
-                    graph.getModel().beginUpdate();
-                    try {
-                        graphService.renderFullText(result.emfModel, parent, graph, config);
-                        layout.execute(parent);
-                    }
-                    finally {
-                        graph.getModel().endUpdate();
-                    }
-                    this.setState({ graph: graph });     
-            }
-        });
+        this.state={
+            graph: '',
+            connectImage:connectImage
+        }
     }
 
     componentDidMount() {
         let container = ReactDOM.findDOMNode(this.refs.graphDiv);
+        var config = new MxGraphConfig();
+        var graphService = new MxGraphModelServices();
 
         if (!mxClient.isBrowserSupported()) {
             // Displays an error message if the browser is not supported.
             mxUtils.error("Browser is not supported!", 200, false);
         } else {
             let graph = new mxGraph(container);
-            this.setState({ graph: graph });
+            graphService.addAllListeners(graph);
+            XtextServices.addSuccessListener((serviceType, result) => {
+
+                //define mxgraphservices and configure layout;
+                let parent = graph.getDefaultParent();
+                var layout = new mxHierarchicalLayout(graph);
+                layout.intraCellSpacing = 20;
+                graph.htmlLabels = true;
+                graph.setConnectable(true);
+                graphService.labelDisplayOveride(graph);
+
+                switch(serviceType){
+                    case 'getEmfModel':
+                        //clear the graph.view
+                        graph.removeCells(graph.getChildCells(parent, true, true));
+                        //add nodes array to graph.view
+                        graph.getModel().beginUpdate();
+                        try {
+                            graphService.renderFullText(result.emfModel, parent, graph, config);
+                            layout.execute(parent);
+                        }
+                        finally {
+                            graph.getModel().endUpdate();
+                        }
+                        this.setState({ graph: graph }); 
+                        break;
+                    case 'deleteEntity':
+                    case 'deleteAssociation':
+                    case 'createAssociation':  
+                        XtextServices.getEmfModel();
+                        break;
+                    default:
+                        break;
+                }
+            });
+                this.setState({ graph: graph });
         }
 
     }
 
     render() {
+        mxConnectionHandler.prototype.connectImage = new mxImage(connectImage,10,10);
+        mxConnectionHandler.prototype.moveIconFront=true;
         return(
             <div className={ this.props.name } ref="graphDiv"> 
             </div>
