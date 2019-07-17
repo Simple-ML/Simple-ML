@@ -1,5 +1,6 @@
 
 import XtextServices from '../serverConnection/XtextServices';
+import EmfModelHelper from "../helper/EmfModelHelper";
 
 
 var debugInterface = {
@@ -15,8 +16,14 @@ var debugInterface = {
             setEntityAttributes: (entity) => XtextServices.setEntityAttributes(entity)
         }
     },
+    h: {
+        flattenEmfModelTree: (emfModelTree) => EmfModelHelper.flattenEmfModelTree(emfModelTree),
+        getFullHierarchy: (emfEntity) => EmfModelHelper.getFullHierarchy(emfEntity),
+        getFullHierarchy2: (emfEntity) => EmfModelHelper.getFullHierarchy2(emfEntity)
+    },
     d: { //data
         lsr: {}, //lastServiceResult
+        emf: {},
         ce: { //createEntity
             name: 'x',
             className: 'Assignment',
