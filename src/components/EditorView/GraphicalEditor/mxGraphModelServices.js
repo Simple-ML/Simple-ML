@@ -42,7 +42,7 @@ export default class MxGraphModelServices {
                 flatModel[i]['cellObject'] = encodedFunctionNode;
                 encodedFunctionNode.setValue(flatModel[i]);
                 vertices[i] = encodedFunctionNode;
-            }     
+            }
         }
         return vertices;
     }
@@ -53,10 +53,10 @@ export default class MxGraphModelServices {
             var potentialParent = entity['parent'];
             while (potentialParent['parent'] !== undefined && potentialParent['visible'] === false){
                 potentialParent = potentialParent['parent'];
-                } 
+                }
             var parentCell = potentialParent['cellObject'];
             return parentCell;
-              
+
         }
     }
 
@@ -72,7 +72,7 @@ export default class MxGraphModelServices {
         var refEdges = [];
         for (let i in flatModel){
             if (flatModel[i].data['$ref']){
-                //find visible target cell 
+                //find visible target cell
                 var potentialTarget = flatModel[i];
                 var target;
                 if (potentialTarget.visible !== true){
@@ -131,11 +131,11 @@ export default class MxGraphModelServices {
                     return name;
                 }
                 if (cell.value.data.className === "org.xtext.example.mydsl.myDsl.DateLiteral"){
-                    const name = "CONFIG: " + "\n year: " + cell.value.data.year + ", month: " + cell.value.data.month + ", day: " +cell.value.data.day 
+                    const name = "CONFIG: " + "\n year: " + cell.value.data.year + ", month: " + cell.value.data.month + ", day: " +cell.value.data.day
                     return name;
                 }
                 if (cell.value.self === "seconds"){
-                    const name = "CONFIG: " + "\n hours: " + cell.value.parent.data.hours + ", minutes: " + cell.value.parent.data.minutes + ", seconds: " + cell.value.data.seconds; 
+                    const name = "CONFIG: " + "\n hours: " + cell.value.parent.data.hours + ", minutes: " + cell.value.parent.data.minutes + ", seconds: " + cell.value.data.seconds;
                     return name;
                 }
             }
@@ -171,7 +171,6 @@ export default class MxGraphModelServices {
                     var to=EmfModelHelper.getFullHierarchy2(targetEntity);
                     XtextServices.deleteAssociation(from,to);
                 }
-                mxEvent.consume(evt);
             }
         });
     }
