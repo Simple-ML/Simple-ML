@@ -1,7 +1,7 @@
 //node_modules
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { mxClient, mxGraph, mxUtils, mxHierarchicalLayout,mxConnectionHandler, mxImage,mxEvent } from "mxgraph-js";
+import { mxClient, mxGraph, mxUtils, mxHierarchicalLayout,mxConnectionHandler, mxImage, mxConstants } from "mxgraph-js";
 //services
 import XtextServices from "../../../serverConnection/XtextServices";
 import MxGraphModelServices from './mxGraphModelServices';
@@ -12,26 +12,31 @@ class GraphicalEditor extends React.Component {
         super(props);
         this.state={
             graph: '',
-            connectImage:connectImage
+            connectImage:connectImage,
+            viewMode: mxConstants.DIRECTION_WEST
         }
     }
+
 
     componentDidMount() {
         let container = ReactDOM.findDOMNode(this.refs.graphDiv);
         var config = new MxGraphConfig();
         var graphService = new MxGraphModelServices();
-
+        mxConnectionHandler.prototype.connectImage = new mxImage(connectImage,10,10);
+        mxConnectionHandler.prototype.moveIconFront=true;
         if (!mxClient.isBrowserSupported()) {
             // Displays an error message if the browser is not supported.
             mxUtils.error("Browser is not supported!", 200, false);
         } else {
+    
             let graph = new mxGraph(container);
             graphService.addAllListeners(graph);
             XtextServices.addSuccessListener((serviceType, result) => {
 
                 //define mxgraphservices and configure layout;
                 let parent = graph.getDefaultParent();
-                var layout = new mxHierarchicalLayout(graph);
+                var layout = new mxHierarchicalLayout(graph, this.getViewMode());
+                console.log(layout);
                 layout.intraCellSpacing = 20;
                 graph.htmlLabels = true;
                 graph.setConnectable(true);
@@ -61,16 +66,25 @@ class GraphicalEditor extends React.Component {
                         break;
                 }
             });
-                this.setState({ graph: graph });
+                this.setState({ graph: graph, connectImage:mxConnectionHandler.prototype.connectImage  });
         }
 
     }
+    getViewMode=()=>{
+        console.log(this.props.isVertical )
+        if(this.props.isVertical === "true"){
+            this.setState({viewMode: mxConstants.DIRECTION_NORTH})
+        }
+        else{
+            this.setState({viewMode: mxConstants.DIRECTION_WEST})
+        }
+        console.log(this.state.viewMode)
+        return this.state.viewMode
+    }
 
     render() {
-        mxConnectionHandler.prototype.connectImage = new mxImage(connectImage,10,10);
-        mxConnectionHandler.prototype.moveIconFront=true;
         return(
-            <div className={ this.props.name } ref="graphDiv"> 
+            <div className={ this.props.name } isVertical={this.props.isVertical} ref="graphDiv" > 
             </div>
         );
     }
