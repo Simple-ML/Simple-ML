@@ -1,14 +1,17 @@
 //node_modules
 import React from 'react';
+
 //React.Components
 import EditorHeader from './EditorHeader/EditorHeader'
 import GraphicalEditor from './GraphicalEditor/GraphicalEditor'
 import TextEditor from './TextEditor/TextEditor'
 import EditorSwitch from './EditorSwitch/EditorSwitch'
+import {GoldenLayoutComponent} from './../../helper/goldenLayoutServices/goldenLayoutComponent';
 //serivces
 import XtextServices from '../../serverConnection/XtextServices';
 //style
 import './editorView.scss'
+import 'golden-layout/src/css/goldenlayout-base.css';
 
 
 class EditorView extends React.Component {
@@ -60,6 +63,36 @@ class EditorView extends React.Component {
                     <div className='view-toggler' style={{ display: 'inline-block' }}>
                         <EditorSwitch style={{ display: 'inline-block' }} switchView={ switchView }/>
                     </div>
+
+
+                    <GoldenLayoutComponent //config from simple react example: https://golden-layout.com/examples/#qZXEyv
+                            htmlAttrs={{ style: { height: "500px", width: "100%" } }}
+                            config={{
+                                content: [
+                                {
+                                    type: "row",
+                                    content: [
+                                    {
+                                        title: "DSL Editor",
+                                        type: "react-component",
+                                        component: "textEditor",
+                                        props: {className:'textEditor', style:{display: displayTextEditor}}
+                                    },
+                                    {
+                                        title: "Graphical Editor",
+                                        type: "react-component",
+                                        component: "graphicalEditor",
+                                        props:{name:'graph-container', style:{display: displayTextEditor}, isVertical:{isVertical}} 
+                                    }
+                                    ]
+                                }
+                                ]
+                            }}
+                            registerComponents={myLayout => {
+                                myLayout.registerComponent("textEditor", TextEditor);
+                                myLayout.registerComponent("graphicalEditor", GraphicalEditor)
+                            }}
+                            />
                     <div className={ 'textEditor' } style={{  display: displayTextEditor  }}>
                         <TextEditor/>
                     </div>
