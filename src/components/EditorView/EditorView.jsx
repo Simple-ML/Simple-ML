@@ -41,6 +41,7 @@ class EditorView extends React.Component {
         else {
             this.setState({ isVertical: 'true' })
         }
+        console.log(this.state)
     }
 
     render() {
@@ -82,7 +83,8 @@ class EditorView extends React.Component {
                                         title: "Graphical Editor",
                                         type: "react-component",
                                         component: "graphicalEditor",
-                                        props:{name:'graph-container', style:{display: displayTextEditor}, isVertical:{isVertical}} 
+                                        props:{name:'graph-container', style:{display: displayTextEditor}, isVertical:{isVertical}}, 
+                                        componentState: {isVertical: isVertical}
                                     }
                                     ]
                                 }
@@ -91,14 +93,12 @@ class EditorView extends React.Component {
                             registerComponents={myLayout => {
                                 myLayout.registerComponent("textEditor", TextEditor);
                                 myLayout.registerComponent("graphicalEditor", GraphicalEditor)
-                            }}
+                                myLayout.on('stateChanged', function(){
+                                    console.log(isVertical)
+                                })
+                            }
+                            }
                             />
-                    <div className={ 'textEditor' } style={{  display: displayTextEditor  }}>
-                        <TextEditor/>
-                    </div>
-                    <div className={ 'graphicalEditor' } style={{ display: displayGraphicalEditor }}>
-                        <GraphicalEditor name='graph-container'  isVertical={isVertical}/>
-                    </div>
                 </div>
             </div>
         )

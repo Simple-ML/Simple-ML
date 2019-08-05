@@ -71,14 +71,14 @@ class GraphicalEditor extends React.Component {
 
     }
     getViewMode=()=>{
-        console.log(this.props.isVertical )
+        //console.log(this.props.isVertical )
         if(this.props.isVertical === "true"){
             this.setState({viewMode: mxConstants.DIRECTION_NORTH})
         }
         else{
             this.setState({viewMode: mxConstants.DIRECTION_WEST})
         }
-        console.log(this.state.viewMode)
+        //console.log(this.state.viewMode)
         return this.state.viewMode
     }
 
