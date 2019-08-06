@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { mxClient, mxGraph, mxUtils, mxHierarchicalLayout,mxConnectionHandler, mxImage, mxConstants } from "mxgraph-js";
 //services
+import {AppContext} from "./../../../helper/goldenLayoutServices/appContext"
 import XtextServices from "../../../serverConnection/XtextServices";
 import MxGraphModelServices from './mxGraphModelServices';
 import MxGraphConfig from "./mxGraphConfig";
@@ -82,10 +83,16 @@ class GraphicalEditor extends React.Component {
         return this.state.viewMode
     }
 
+    setValue = e => {
+        console.log(e)
+        this.setState({ value: e.target.value });
+    }
     render() {
         return(
-            <div className={ this.props.name } isVertical={this.props.isVertical} ref="graphDiv" > 
-            </div>
+        <AppContext.Consumer>
+           {value=> {return <div className={ this.props.name } isVertical={value} ref="graphDiv" > 
+            </div>}} 
+        </AppContext.Consumer>
         );
     }
 }
