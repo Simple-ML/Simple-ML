@@ -1,4 +1,3 @@
-import EmfModelHelper from "../helper/EmfModelHelper";
 import XtextServices from "../serverConnection/XtextServices";
 import TextEditorWrapper from "../components/EditorView/TextEditor/TextEditorWrapper";
 import { debugInterface } from "./exposeToBrowserConsole"

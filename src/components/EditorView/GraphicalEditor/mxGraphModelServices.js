@@ -119,23 +119,23 @@ export default class MxGraphModelServices {
         graph.convertValueToString = (cell) => {
             if (cell.isVertex()) {
                 if (cell.value.data.ref) {
-                    const name = "PROCESS: " + "\n" + cell.value.data.ref;
+                    const name = "PROCESS: \n" + cell.value.data.ref;
                     return name;
                 }
                 if (cell.value.data.value) {
-                    const name = "CONFIG: " + "\n" + cell.value.data.value;
+                    const name = "CONFIG: \n" + cell.value.data.value;
                     return name;
                 }
                 if (cell.value.data.name) {
-                    const name = "DATASET: " + "\n" + cell.value.data.name;
+                    const name = "DATASET: \n" + cell.value.data.name;
                     return name;
                 }
                 if (cell.value.data.className === "org.xtext.example.mydsl.myDsl.DateLiteral"){
-                    const name = "CONFIG: " + "\n year: " + cell.value.data.year + ", month: " + cell.value.data.month + ", day: " +cell.value.data.day
+                    const name = "CONFIG: \n year: " + cell.value.data.year + ", month: " + cell.value.data.month + ", day: " +cell.value.data.day
                     return name;
                 }
                 if (cell.value.self === "seconds"){
-                    const name = "CONFIG: " + "\n hours: " + cell.value.parent.data.hours + ", minutes: " + cell.value.parent.data.minutes + ", seconds: " + cell.value.data.seconds;
+                    const name = "CONFIG: \n hours: " + cell.value.parent.data.hours + ", minutes: " + cell.value.parent.data.minutes + ", seconds: " + cell.value.data.seconds;
                     return name;
                 }
             }

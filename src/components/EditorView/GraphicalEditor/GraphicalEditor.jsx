@@ -1,8 +1,9 @@
 //node_modules
-import React from 'react';
+import React, {useRef} from 'react';
 import ReactDOM from 'react-dom';
 import { mxClient, mxGraph, mxUtils, mxHierarchicalLayout,mxConnectionHandler, mxImage, mxConstants } from "mxgraph-js";
 //services
+import {AppContext} from "./../../../helper/goldenLayoutServices/appContext"
 import XtextServices from "../../../serverConnection/XtextServices";
 import MxGraphModelServices from './mxGraphModelServices';
 import MxGraphConfig from "./mxGraphConfig";
@@ -10,13 +11,14 @@ import connectImage from "../../../images/arrow.png"
 class GraphicalEditor extends React.Component {
     constructor(props) {
         super(props);
+        let inputRef = useRef("graphDiv");
         this.state={
             graph: '',
             connectImage:connectImage,
-            viewMode: mxConstants.DIRECTION_WEST
+            viewMode: mxConstants.DIRECTION_WEST,
+            inputRef:inputRef
         }
     }
-
 
     componentDidMount() {
         let container = ReactDOM.findDOMNode(this.refs.graphDiv);
@@ -82,10 +84,17 @@ class GraphicalEditor extends React.Component {
         return this.state.viewMode
     }
 
+    setValue = e => {
+        console.log(e)
+        this.setState({ value: e.target.value });
+    }
     render() {
+        let {inputRef}=this.state;
         return(
-            <div className={ this.props.name } isVertical={this.props.isVertical} ref="graphDiv" > 
-            </div>
+        <AppContext.Consumer>
+           {value=> {return <div className={ this.props.name } isVertical={value} ref={inputRef}> 
+            </div>}} 
+        </AppContext.Consumer>
         );
     }
 }

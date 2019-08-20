@@ -5,9 +5,9 @@ import React from 'react';
 import EditorHeader from './EditorHeader/EditorHeader'
 import GraphicalEditor from './GraphicalEditor/GraphicalEditor'
 import TextEditor from './TextEditor/TextEditor'
-import EditorSwitch from './EditorSwitch/EditorSwitch'
 import {GoldenLayoutComponent} from './../../helper/goldenLayoutServices/goldenLayoutComponent';
 //serivces
+import {AppContext} from './../../helper/goldenLayoutServices/appContext'
 import XtextServices from '../../serverConnection/XtextServices';
 //style
 import './editorView.scss'
@@ -20,7 +20,8 @@ class EditorView extends React.Component {
         this.state = {
             displayGraphicalEditor: 'block',
             displayTextEditor: 'block',
-            isVertical:'true'
+            isVertical:'true',
+            myLayout: null
         }
     }
 
@@ -47,7 +48,6 @@ class EditorView extends React.Component {
     render() {
         //TODO: get rid of styles at this place
         let { displayGraphicalEditor, displayTextEditor, isVertical } = this.state;
-        let switchView = (isGraphical) => this.switchView(isGraphical);
         let flipGraph = () => this.flipGraph();
         return(
             <div className='EditorView'>
@@ -60,45 +60,34 @@ class EditorView extends React.Component {
                         { 'Flip The Graph' }
                     </button>
                 </div>
-                <div className='ide-container' >
-                    <div className='view-toggler' style={{ display: 'inline-block' }}>
-                        <EditorSwitch style={{ display: 'inline-block' }} switchView={ switchView }/>
-                    </div>
-
-
-                    <GoldenLayoutComponent //config from simple react example: https://golden-layout.com/examples/#qZXEyv
+                <div className='ide-container'>
+                    <AppContext.Provider value={this.state.isVertical}>
+                        <GoldenLayoutComponent
                             htmlAttrs={{ style: { height: "500px", width: "100%" } }}
                             config={{
-                                content: [
-                                {
+                                content:[{
                                     type: "row",
-                                    content: [
-                                    {
-                                        title: "DSL Editor",
-                                        type: "react-component",
-                                        component: "textEditor",
-                                        props: {className:'textEditor', style:{display: displayTextEditor}}
-                                    },
-                                    {
-                                        title: "Graphical Editor",
-                                        type: "react-component",
-                                        component: "graphicalEditor",
-                                        props:{name:'graph-container', style:{display: displayTextEditor}, isVertical:{isVertical}}, 
-                                        componentState: {isVertical: isVertical}
-                                    }
-                                    ]
-                                }
-                                ]
+                                    content: [{
+                                            title: "DSL Editor",
+                                            type: "react-component",
+                                            component: "textEditor",
+                                            props: {className:'textEditor', style:{display: displayTextEditor}}
+                                        },
+                                        {
+                                            title: "Graphical Editor",
+                                            type: "react-component",
+                                            component: "graphicalEditor",
+                                            props:{name:'graph-container', style:{display: displayGraphicalEditor}, isVertical:isVertical}, 
+                                        }]
+                                }]
                             }}
                             registerComponents={myLayout => {
+                                this.setState({myLayout})
                                 myLayout.registerComponent("textEditor", TextEditor);
                                 myLayout.registerComponent("graphicalEditor", GraphicalEditor)
-                                myLayout.on('stateChanged', function(){
-                                    console.log(isVertical)
-                                })
-                            }
-                            }
-                            />
+                            }}
+                        />
+                    </AppContext.Provider>
                 </div>
             </div>
         )
