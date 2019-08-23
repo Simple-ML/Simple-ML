@@ -7,7 +7,7 @@ import GraphicalEditor from './GraphicalEditor/GraphicalEditor'
 import TextEditor from './TextEditor/TextEditor'
 import {GoldenLayoutComponent} from './../../helper/goldenLayoutServices/goldenLayoutComponent';
 //serivces
-import {AppContext} from './../../helper/goldenLayoutServices/appContext'
+import {EditorContext} from './../../helper/goldenLayoutServices/appContext'
 import XtextServices from '../../serverConnection/XtextServices';
 //style
 import './editorView.scss'
@@ -61,7 +61,7 @@ class EditorView extends React.Component {
                     </button>
                 </div>
                 <div className='ide-container'>
-                    <AppContext.Provider value={this.state.isVertical}>
+                    <EditorContext.Provider value={this.state.isVertical}>
                         <GoldenLayoutComponent
                             htmlAttrs={{ style: { height: "500px", width: "100%" } }}
                             config={{
@@ -87,7 +87,7 @@ class EditorView extends React.Component {
                                 myLayout.registerComponent("graphicalEditor", GraphicalEditor)
                             }}
                         />
-                    </AppContext.Provider>
+                    </EditorContext.Provider>
                 </div>
             </div>
         )

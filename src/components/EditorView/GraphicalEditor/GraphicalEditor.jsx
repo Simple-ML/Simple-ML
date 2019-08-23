@@ -3,7 +3,7 @@ import React, {useRef} from 'react';
 import ReactDOM from 'react-dom';
 import { mxClient, mxGraph, mxUtils, mxHierarchicalLayout,mxConnectionHandler, mxImage, mxConstants } from "mxgraph-js";
 //services
-import {AppContext} from "./../../../helper/goldenLayoutServices/appContext"
+import {EditorContext} from "./../../../helper/goldenLayoutServices/appContext"
 import XtextServices from "../../../serverConnection/XtextServices";
 import MxGraphModelServices from './mxGraphModelServices';
 import MxGraphConfig from "./mxGraphConfig";
@@ -91,10 +91,10 @@ class GraphicalEditor extends React.Component {
     render() {
         let {inputRef}=this.state;
         return(
-        <AppContext.Consumer>
+        <EditorContext.Consumer>
            {value=> {return <div className={ this.props.name } isVertical={value} ref={inputRef}> 
             </div>}} 
-        </AppContext.Consumer>
+        </EditorContext.Consumer>
         );
     }
 }
