@@ -9,12 +9,7 @@ import MxGraphConfig from "./mxGraphConfig";
 import GraphServices from './mxGraphModelServices';
 
 class SMLGraph extends mxGraph {
-
-    constructor(props){
-        super(props);
-    }
-
-
+    
     parent=this.getDefaultParent();
     config={}
     EMFmodel = {}
@@ -84,9 +79,7 @@ class SMLGraph extends mxGraph {
         var cells = [];        
         model.map(entity=>{
             var encodedEntityValue = GraphServices.encode(entity);
-            //entity['visible'] = GraphServices.isVisible(entity);
             entity['visible'] = this.config.isVisibleEntity(entity);
-            //console.log(entity['visible']===this.config.isVisibleEntity(entity))
             var entityStyle = this.config.getStyle(entity.data.className);
             if (entity['visible'] === true){
                 entity['cellObject'] = this.addEntity(encodedEntityValue, entityStyle);
@@ -129,7 +122,7 @@ class SMLGraph extends mxGraph {
     connectToParent(cell){
         var parentCell = GraphServices.findVisibleParent(cell.value);
         if (parentCell !== undefined){
-            var parentEdge=this.addAssociation(cell, parentCell);
+            this.addAssociation(cell, parentCell);
         }
     }
 

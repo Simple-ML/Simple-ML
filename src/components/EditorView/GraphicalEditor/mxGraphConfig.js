@@ -68,10 +68,11 @@ export default class MxGraphConfig {
     }
     /* adds the new class with that name and default values to the config */
     addNewConfig(className) {
+        var name;
         if(className !== undefined){
-            var name = this.getName(className);
+            name = this.getName(className);
         } else{
-            var name = "unknown"
+            name = "unknown";
         }
         var newClassConfigs =
         {

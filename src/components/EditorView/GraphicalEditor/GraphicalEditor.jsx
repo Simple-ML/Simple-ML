@@ -1,5 +1,5 @@
 //node_modules
-import React, {useRef} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { mxClient, mxUtils, mxConstants } from "mxgraph-js";
 //services
@@ -13,7 +13,6 @@ import EmfModelHelper from "../../../helper/EmfModelHelper";
 class GraphicalEditor extends React.Component {
     constructor(props) {
         super(props);
-        let inputRef = useRef("graphDiv");
         this.state={
             graph: '',
             viewMode: mxConstants.DIRECTION_WEST
