@@ -20,7 +20,8 @@ class EditorView extends React.Component {
         this.state = {
             displayGraphicalEditor: 'block',
             displayTextEditor: 'block',
-            isVertical:'true'
+            isVertical:'true',
+            myLayout: null
         }
     }
 
@@ -60,11 +61,6 @@ class EditorView extends React.Component {
                     </button>
                 </div>
                 <div className='ide-container' >
-                    <div className='view-toggler' style={{ display: 'inline-block' }}>
-                        <EditorSwitch style={{ display: 'inline-block' }} switchView={ switchView }/>
-                    </div>
-
-
                     <GoldenLayoutComponent //config from simple react example: https://golden-layout.com/examples/#qZXEyv
                             htmlAttrs={{ style: { height: "500px", width: "100%" } }}
                             config={{
@@ -89,6 +85,7 @@ class EditorView extends React.Component {
                                 ]
                             }}
                             registerComponents={myLayout => {
+                                this.setState({myLayout})
                                 myLayout.registerComponent("textEditor", TextEditor);
                                 myLayout.registerComponent("graphicalEditor", GraphicalEditor)
                             }}
