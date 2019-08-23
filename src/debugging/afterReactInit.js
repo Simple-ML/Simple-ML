@@ -1,4 +1,3 @@
-import EmfModelHelper from "../helper/EmfModelHelper";
 import XtextServices from "../serverConnection/XtextServices";
 import TextEditorWrapper from "../components/EditorView/TextEditor/TextEditorWrapper";
 import { debugInterface } from "./exposeToBrowserConsole"
@@ -17,19 +16,16 @@ let afterReactInit = () => {
         'read_tsv("something")');
 
     XtextServices.addSuccessListener((serviceType, result) => {
-        debugInterface.d.lsr = result
-    });
-
-    XtextServices.addSuccessListener((serviceType, result) => {
-        if (serviceType === 'getEmfModel') {
+        debugInterface.d.lsr = result;
+        if(result.emfModel) {
+            debugInterface.d.emf = {inSync: true, data: JSON.parse(result.emfModel)};
+        } else {
+            debugInterface.d.emf.inSync = false;
         }
     });
 
     XtextServices.addSuccessListener((serviceType, result) => {
-        if (serviceType === 'getEmfModel') {
-            EmfModelHelper.flattenEmfModelTree(JSON.parse(result.emfModel)).forEach((element) => {
-            });
-        }
+        //console.log({serviceType, result})
     });
 }
 

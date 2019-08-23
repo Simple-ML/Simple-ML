@@ -5,7 +5,7 @@ class EmfModelHelper {
     /**
      * Flattens the hierarchical structure of the given EMF-Model (from backend).
      *
-     * @param emfModelTree: comes from backend
+     * @param emfModelTree: {...} //from backend
      * @returns     [{
      *                  data: EmfModelData,
      *                  parent: ,

@@ -1,5 +1,6 @@
 
 import XtextServices from '../serverConnection/XtextServices';
+import EmfModelHelper from "../helper/EmfModelHelper";
 
 
 var debugInterface = {
@@ -8,15 +9,21 @@ var debugInterface = {
             getEmfModel: () => XtextServices.getEmfModel(),
             creatableEntityProposals: () => XtextServices.creatableEntityProposals(),
             createEntity: (entity) => XtextServices.createEntity(entity),
-            deleteEntity: (entity) => XtextServices.deleteEntity(entity),
-            createAssociation: (entityFrom, entityTo) => XtextServices.createAssociation(entityFrom, entityTo),
-            deleteAssociation: (entityFrom, entityTo) => XtextServices.deleteAssociation(entityFrom, entityTo),
+            deleteEntity: (entityPath) => XtextServices.deleteEntity(entityPath),
+            createAssociation: (fromEntityPath, toEntityPath) => XtextServices.createAssociation(fromEntityPath, toEntityPath),
+            deleteAssociation: (fromEntityPath, toEntityPath) => XtextServices.deleteAssociation(fromEntityPath, toEntityPath),
             getEntityAttributes: (entities) => XtextServices.getEntityAttributes(entities),
             setEntityAttributes: (entity) => XtextServices.setEntityAttributes(entity)
         }
     },
+    h: {
+        flattenEmfModelTree: (emfModelTree) => EmfModelHelper.flattenEmfModelTree(emfModelTree),
+        getFullHierarchy: (emfEntity) => EmfModelHelper.getFullHierarchy(emfEntity),
+        getFullHierarchy2: (emfEntity) => EmfModelHelper.getFullHierarchy2(emfEntity)
+    },
     d: { //data
         lsr: {}, //lastServiceResult
+        emf: {},
         ce: { //createEntity
             name: 'x',
             className: 'Assignment',
