@@ -35,6 +35,7 @@ class EditorView extends React.Component {
     }
 
     flipGraph = () =>{
+
         var { isVertical } = this.state;
         if (isVertical === 'true'){
             this.setState({ isVertical: 'false' })
@@ -42,12 +43,9 @@ class EditorView extends React.Component {
         else {
             this.setState({ isVertical: 'true' })
         }
-        console.log(this.state)
     }
 
     render() {
-        //TODO: get rid of styles at this place
-        let { displayGraphicalEditor, displayTextEditor, isVertical } = this.state;
         let flipGraph = () => this.flipGraph();
         return(
             <div className='EditorView'>
@@ -71,20 +69,18 @@ class EditorView extends React.Component {
                                             title: "DSL Editor",
                                             type: "react-component",
                                             component: "textEditor",
-                                            props: {className:'textEditor', style:{display: displayTextEditor}}
                                         },
                                         {
                                             title: "Graphical Editor",
                                             type: "react-component",
                                             component: "graphicalEditor",
-                                            props:{name:'graph-container', style:{display: displayGraphicalEditor}, isVertical:isVertical}, 
                                         }]
                                 }]
                             }}
                             registerComponents={myLayout => {
-                                this.setState({myLayout})
                                 myLayout.registerComponent("textEditor", TextEditor);
                                 myLayout.registerComponent("graphicalEditor", GraphicalEditor)
+                                this.setState({myLayout})
                             }}
                         />
                     </EditorContext.Provider>

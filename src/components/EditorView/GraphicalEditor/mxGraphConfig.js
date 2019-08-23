@@ -1,15 +1,13 @@
 export default class MxGraphConfig {
 
     constructor() {
-        this.dslPrefix="org.xtext.example.mydsl.myDsl."
+        this.dslPrefix = "org.xtext.example.mydsl.myDsl.";
         this.configs = this.defineConfig();
     }
 
     defineConfig() {
         /* defines the short name, class name, style, image and a template for new objects of the class. */
-        var configs = [
-        
-        ];
+        var configs = [];
         configs.push(
             {
                 name: "DataSource",
@@ -60,18 +58,19 @@ export default class MxGraphConfig {
         return configs;
     }
 
-    getName(className){
-        if (className){
+    getName(className) {
+        if (className) {
             return className.replace(this.dslPrefix, "")
         }
         return "";
     }
+
     /* adds the new class with that name and default values to the config */
     addNewConfig(className) {
         var name;
-        if(className !== undefined){
+        if (className !== undefined) {
             name = this.getName(className);
-        } else{
+        } else {
             name = "unknown";
         }
         var newClassConfigs =
@@ -105,9 +104,9 @@ export default class MxGraphConfig {
         }
     }
 
-    getLabelName(cell){
+    getLabelName(cell) {
         var name;
-        switch(true){
+        switch (true) {
             case cell.value.data.ref !== undefined:
                 name = "PROCESS: " + "\n" + cell.value.data.ref;
                 return name;
@@ -116,40 +115,39 @@ export default class MxGraphConfig {
                 return name;
             case cell.value.data.name !== undefined:
                 name = "DATASET: " + "\n" + cell.value.data.name;
-                return name;   
-            case cell.value.data.className === (this.dslPrefix+"DateLiteral"):
-                name = "CONFIG: " + "\n year: " + cell.value.data.year + ", month: " + cell.value.data.month + ", day: " +cell.value.data.day
-                return name; 
+                return name;
+            case cell.value.data.className === (this.dslPrefix + "DateLiteral"):
+                name = "CONFIG: " + "\n year: " + cell.value.data.year + ", month: " + cell.value.data.month + ", day: " + cell.value.data.day
+                return name;
             case cell.value.self === "seconds":
                 name = "CONFIG: " + "\n hours: " + cell.value.parent.data.hours + ", minutes: " + cell.value.parent.data.minutes + ", seconds: " + cell.value.data.seconds;
                 return name;
             case "":
             default:
-                    return '';
+                return '';
         }
     }
 
-    getStyle(className){
+    getStyle(className) {
         return this.getConfig(className, "style");
     }
 
-    isVisibleClass(className){
+    isVisibleClass(className) {
         var name = this.getName(className);
-        switch (name){
+        switch (name) {
             case "Workflow":
             case "Reference":
             case "UnconnectedExpressionStatement":
             case "ArrayLiteral":
             case "TimeLiteral":
-            // case "DateLiteral":
                 return true;
             default:
                 return false;
-            }
+        }
     }
 
-    isVisibleEntity(entity){
-        if (entity.self !== "ref" && !this.isVisibleClass(entity.data.className)){
+    isVisibleEntity(entity) {
+        if (entity.self !== "ref" && !this.isVisibleClass(entity.data.className)) {
             return true;
         } else {
             return false;
