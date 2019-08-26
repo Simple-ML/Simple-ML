@@ -1,7 +1,11 @@
 //node_modules
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { connect } from "react-redux";
 import { mxClient, mxUtils, mxConstants } from "mxgraph-js";
+
+import store from '../../../reduxStore';
 
 //services
 import XtextServices from "../../../serverConnection/XtextServices";
@@ -18,10 +22,20 @@ class GraphicalEditor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            graph: '',
-        }
+            graph: undefined,
+            emfModelFlat: undefined,
+            viewMode: mxConstants.DIRECTION_WEST
+        };
         this.graphRef = React.createRef();
         this.viewMode = mxConstants.DIRECTION_WEST;
+
+        store.subscribe(() => {
+            let state = store.getState();
+            this.setState({
+                emfModelFlat: state.mxGraph.emfModelFlat,
+                viewMode: state.mxGraph.viewMode
+            })
+        });
     }
     static contextType = EditorContext;
 
@@ -33,7 +47,6 @@ class GraphicalEditor extends React.Component {
         } else {
             let graph = new SMLGraph(container);
             graph.addGraphListeners();
-            this.addXtextServiceListeners();
             this.setState({ graph: graph })
         }
     }
@@ -54,43 +67,43 @@ class GraphicalEditor extends React.Component {
     /**
      * @param {Object} result: result in response from xtextServices
      */
-    updateView = (result) => {
-        let { graph } = this.state;
-        let viewMode = this.viewMode;
+    updateView = (emfModelFlat) => {
+        let { graph, viewMode } = this.state;
         graph.clear();
         graph.initView(viewMode);
-        let flatModel = EmfModelHelper.flattenEmfModelTree(JSON.parse(result.emfModel));
-        graph.updateEMFModel(flatModel);
+        graph.updateEMFModel(emfModelFlat);
         graph.render();
-        this.setState({ graph: graph })
-    }
+    };
 
-    addXtextServiceListeners = () => {
-        XtextServices.addSuccessListener((serviceType, result) => {
-            switch (serviceType) {
-                case 'getEmfModel':
-                case 'deleteEntity':
-                case 'deleteAssociation':
-                case 'createAssociation':
-                    this.updateView(result);
-                    break;
-                default:
-                    break;
-            }
-        });
-    }
+
 
     render() {
+        if(this.state.graph !== undefined)
+            this.updateView(this.state.emfModelFlat);
+
         let getViewMode = (mode) => this.getViewMode(mode);
         return (
-            <EditorContext.Consumer>
-                {value => {
-                    this.viewMode = getViewMode(value)
-                    return (<div className={this.props.name} ref={this.graphRef}>
-                    </div>)
-                }}
-            </EditorContext.Consumer>
+            <div className={this.props.name} ref={this.graphRef}></div>
         );
     }
 }
-export default GraphicalEditor;
+
+/*
+<EditorContext.Consumer>
+{value => {
+    this.viewMode = getViewMode(value)
+    return (<div className={this.props.name} ref={this.graphRef}>
+    </div>)
+}}
+</EditorContext.Consumer>
+*/
+
+const mapStateToProps = state => {
+    return {
+        emfModelFlat: state.emfModelFlat
+    }
+};
+
+
+
+export default connect(mapStateToProps)(GraphicalEditor);

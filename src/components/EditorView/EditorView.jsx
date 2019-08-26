@@ -1,5 +1,6 @@
 //node_modules
 import React from 'react';
+import { connect } from "react-redux";
 
 //React.Components
 import EditorHeader from './EditorHeader/EditorHeader'
@@ -23,6 +24,8 @@ class EditorView extends React.Component {
             isVertical:'true',
             myLayout: null
         }
+
+        this.flipGraph = this.flipGraph.bind(this)
     }
 
     switchView = (isGraphical) => {
@@ -36,6 +39,7 @@ class EditorView extends React.Component {
 
     flipGraph = () =>{
 
+        this.props.button();
         var { isVertical } = this.state;
         if (isVertical === 'true'){
             this.setState({ isVertical: 'false' })
@@ -46,7 +50,6 @@ class EditorView extends React.Component {
     }
 
     render() {
-        let flipGraph = () => this.flipGraph();
         return(
             <div className='EditorView'>
                 <EditorHeader/>
@@ -54,7 +57,7 @@ class EditorView extends React.Component {
                     <button style={{ color: 'black' }} onClick={ () => { XtextServices.getEmfModel(); }}>
                         { 'Get EMF-Model' }
                     </button>
-                    <button style={{ color: 'black' }} onClick={ flipGraph }>
+                    <button style={{ color: 'black' }} onClick={ this.flipGraph }>
                         { 'Flip The Graph' }
                     </button>
                 </div>
@@ -79,7 +82,7 @@ class EditorView extends React.Component {
                             }}
                             registerComponents={myLayout => {
                                 myLayout.registerComponent("textEditor", TextEditor);
-                                myLayout.registerComponent("graphicalEditor", GraphicalEditor)
+                                myLayout.registerComponent("graphicalEditor", GraphicalEditor.WrappedComponent)
                                 this.setState({myLayout})
                             }}
                         />
@@ -90,4 +93,12 @@ class EditorView extends React.Component {
     }
 }
 
-export default EditorView;
+function mapDispatchToProps(dispatch) {
+    return {
+        button: () => dispatch({type: 'MX_GRAPH_CHANGE_ALIGNMENT'})
+    }
+}
+
+const EditorViewRedux = connect(null, mapDispatchToProps)(EditorView);
+
+export default EditorViewRedux;

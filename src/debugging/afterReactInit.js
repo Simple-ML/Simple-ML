@@ -2,6 +2,8 @@ import XtextServices from "../serverConnection/XtextServices";
 import TextEditorWrapper from "../components/EditorView/TextEditor/TextEditorWrapper";
 import { debugInterface } from "./exposeToBrowserConsole"
 
+import store from "../reduxStore"
+
 
 let afterReactInit = () => {
 
@@ -14,6 +16,20 @@ let afterReactInit = () => {
         '\n' +
         'TIME 01:03:05\n' +
         'read_tsv("something")');
+
+    XtextServices.addSuccessListener((serviceType, result) => {
+        switch (serviceType) {
+            case 'getEmfModel':
+            case 'deleteEntity':
+            case 'deleteAssociation':
+            case 'createAssociation':
+                store.dispatch({type: 'NEW_EMF_MODEL', payload: result.emfModel})
+                break;
+            default:
+                break;
+        }
+    });
+
 
     XtextServices.addSuccessListener((serviceType, result) => {
         debugInterface.d.lsr = result;
