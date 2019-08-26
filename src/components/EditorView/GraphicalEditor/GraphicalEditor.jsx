@@ -7,7 +7,7 @@ import { mxClient, mxUtils, mxConstants } from "mxgraph-js";
 import XtextServices from "../../../serverConnection/XtextServices";
 
 //classes
-import SMLGraph from "./SMLgraph"
+import SMLGraph from "./SMLGraph"
 
 //helper
 import EmfModelHelper from "../../../helper/EmfModelHelper";

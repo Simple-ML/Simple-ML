@@ -5,9 +5,9 @@ import React from 'react';
 import EditorHeader from './EditorHeader/EditorHeader'
 import GraphicalEditor from './GraphicalEditor/GraphicalEditor'
 import TextEditor from './TextEditor/TextEditor'
-import {GoldenLayoutComponent} from './../../helper/goldenLayoutServices/goldenLayoutComponent';
+import { GoldenLayoutComponent } from './../../helper/goldenLayoutServices/goldenLayoutComponent';
 //serivces
-import {EditorContext} from './../../helper/goldenLayoutServices/appContext'
+import { EditorContext } from './../../helper/goldenLayoutServices/appContext'
 import XtextServices from '../../serverConnection/XtextServices';
 //style
 import './editorView.scss'
@@ -20,13 +20,13 @@ class EditorView extends React.Component {
         this.state = {
             displayGraphicalEditor: 'block',
             displayTextEditor: 'block',
-            isVertical:'true',
+            isVertical: 'true',
             myLayout: null
         }
     }
 
     switchView = (isGraphical) => {
-        if (isGraphical === 'true'){
+        if (isGraphical === 'true') {
             this.setState({ displayTextEditor: 'none' })
         }
         else {
@@ -34,10 +34,10 @@ class EditorView extends React.Component {
         }
     }
 
-    flipGraph = () =>{
+    flipGraph = () => {
 
         var { isVertical } = this.state;
-        if (isVertical === 'true'){
+        if (isVertical === 'true') {
             this.setState({ isVertical: 'false' })
         }
         else {
@@ -47,15 +47,15 @@ class EditorView extends React.Component {
 
     render() {
         let flipGraph = () => this.flipGraph();
-        return(
+        return (
             <div className='EditorView'>
-                <EditorHeader/>
-                <div className={ 'buttons' }>
-                    <button style={{ color: 'black' }} onClick={ () => { XtextServices.getEmfModel(); }}>
-                        { 'Get EMF-Model' }
+                <EditorHeader />
+                <div className={'buttons'}>
+                    <button style={{ color: 'black' }} onClick={() => { XtextServices.getEmfModel(); }}>
+                        {'Get EMF-Model'}
                     </button>
-                    <button style={{ color: 'black' }} onClick={ flipGraph }>
-                        { 'Flip The Graph' }
+                    <button style={{ color: 'black' }} onClick={flipGraph}>
+                        {'Flip The Graph'}
                     </button>
                 </div>
                 <div className='ide-container'>
@@ -63,24 +63,24 @@ class EditorView extends React.Component {
                         <GoldenLayoutComponent
                             htmlAttrs={{ style: { height: "500px", width: "100%" } }}
                             config={{
-                                content:[{
+                                content: [{
                                     type: "row",
                                     content: [{
-                                            title: "DSL Editor",
-                                            type: "react-component",
-                                            component: "textEditor",
-                                        },
-                                        {
-                                            title: "Graphical Editor",
-                                            type: "react-component",
-                                            component: "graphicalEditor",
-                                        }]
+                                        title: "DSL Editor",
+                                        type: "react-component",
+                                        component: "textEditor",
+                                    },
+                                    {
+                                        title: "Graphical Editor",
+                                        type: "react-component",
+                                        component: "graphicalEditor",
+                                    }]
                                 }]
                             }}
                             registerComponents={myLayout => {
                                 myLayout.registerComponent("textEditor", TextEditor);
-                                myLayout.registerComponent("graphicalEditor", GraphicalEditor)
-                                this.setState({myLayout})
+                                myLayout.registerComponent("graphicalEditor", GraphicalEditor);
+                                this.setState({ myLayout });
                             }}
                         />
                     </EditorContext.Provider>
