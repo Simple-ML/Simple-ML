@@ -11,12 +11,25 @@ import TextEditorWrapper from './components/EditorView/TextEditor/TextEditorWrap
 
 import afterReactInit from './debugging/afterReactInit';
 import { exposeToBrowserConsole } from "./debugging/exposeToBrowserConsole";
+import XtextServices from "./serverConnection/XtextServices";
+import { setNewEmfModel } from "./reducers/emfModel";
 
 window.loadEditor((xtextEditor) => {
     window.loadEditor = undefined;
-
     TextEditorWrapper.create(xtextEditor);
-    window.loadEditor = undefined;
+
+    XtextServices.addSuccessListener((serviceType, result) => {
+        switch (serviceType) {
+            case 'getEmfModel':
+            case 'deleteEntity':
+            case 'deleteAssociation':
+            case 'createAssociation':
+                store.dispatch(setNewEmfModel(result.emfModel));
+                break;
+            default:
+                break;
+        }
+    });
 
     ReactDOM.render(
         <Provider store={store}>
@@ -31,4 +44,4 @@ window.loadEditor((xtextEditor) => {
 
     afterReactInit();
     exposeToBrowserConsole();
-})
+});

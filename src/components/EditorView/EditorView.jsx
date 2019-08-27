@@ -1,21 +1,20 @@
 //node_modules
 import React from 'react';
-import { connect } from "react-redux";
-
+import ReactReduxComponent from '../../helper/ReactReduxComponent';
 //React.Components
 import EditorHeader from './EditorHeader/EditorHeader'
 import GraphicalEditor from './GraphicalEditor/GraphicalEditor'
 import TextEditor from './TextEditor/TextEditor'
-import {GoldenLayoutComponent} from './../../helper/goldenLayoutServices/goldenLayoutComponent';
-//serivces
-import {EditorContext} from './../../helper/goldenLayoutServices/appContext'
+import { GoldenLayoutComponent } from './../../helper/goldenLayoutServices/goldenLayoutComponent';
+
 import XtextServices from '../../serverConnection/XtextServices';
+import { changeDirection } from '../../reducers/graphicalEditor';
 //style
 import './editorView.scss'
 import 'golden-layout/src/css/goldenlayout-base.css';
 
 
-class EditorView extends React.Component {
+class EditorView extends ReactReduxComponent {
     constructor() {
         super();
         this.state = {
@@ -39,7 +38,7 @@ class EditorView extends React.Component {
 
     flipGraph = () =>{
 
-        this.props.button();
+        this.dispatchReduxAction(changeDirection());
         var { isVertical } = this.state;
         if (isVertical === 'true'){
             this.setState({ isVertical: 'false' })
@@ -62,43 +61,33 @@ class EditorView extends React.Component {
                     </button>
                 </div>
                 <div className='ide-container'>
-                    <EditorContext.Provider value={this.state.isVertical}>
-                        <GoldenLayoutComponent
-                            htmlAttrs={{ style: { height: "500px", width: "100%" } }}
-                            config={{
-                                content:[{
-                                    type: "row",
-                                    content: [{
-                                            title: "DSL Editor",
-                                            type: "react-component",
-                                            component: "textEditor",
-                                        },
-                                        {
-                                            title: "Graphical Editor",
-                                            type: "react-component",
-                                            component: "graphicalEditor",
-                                        }]
-                                }]
-                            }}
-                            registerComponents={myLayout => {
-                                myLayout.registerComponent("textEditor", TextEditor);
-                                myLayout.registerComponent("graphicalEditor", GraphicalEditor.WrappedComponent)
-                                this.setState({myLayout})
-                            }}
-                        />
-                    </EditorContext.Provider>
+                    <GoldenLayoutComponent
+                        htmlAttrs={{ style: { height: "500px", width: "100%" } }}
+                        config={{
+                            content:[{
+                                type: "row",
+                                content: [{
+                                        title: "DSL Editor",
+                                        type: "react-component",
+                                        component: "textEditor",
+                                    },
+                                    {
+                                        title: "Graphical Editor",
+                                        type: "react-component",
+                                        component: "graphicalEditor",
+                                    }]
+                            }]
+                        }}
+                        registerComponents={myLayout => {
+                            myLayout.registerComponent("textEditor", TextEditor);
+                            myLayout.registerComponent("graphicalEditor", GraphicalEditor)
+                            this.setState({myLayout})
+                        }}
+                    />
                 </div>
             </div>
         )
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        button: () => dispatch({type: 'MX_GRAPH_CHANGE_ALIGNMENT'})
-    }
-}
-
-const EditorViewRedux = connect(null, mapDispatchToProps)(EditorView);
-
-export default EditorViewRedux;
+export default EditorView;

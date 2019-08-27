@@ -1,10 +1,7 @@
-import { createStore, combineReducers } from 'redux';
-import graphicalEditorReducer from './reducers/graphicalEditor';
+import { createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-const rootReducer = combineReducers({
-    mxGraph: graphicalEditorReducer
-});
+import rootReducer from './reducers/root';
 
 const reduxStore = createStore(rootReducer, composeWithDevTools());
 

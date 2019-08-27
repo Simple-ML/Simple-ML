@@ -1,33 +1,38 @@
 import { mxConstants } from "mxgraph-js";
-import EmfModelHelper from "../helper/EmfModelHelper";
 
-
+// State initialisation
 const initialState = {
     viewMode: mxConstants.DIRECTION_WEST,
-    emfModel: {},
-    emfModelFlat: {}
+};
+
+
+// Constants
+const GRAPH_CHANGE_DIRECTION = 'GRAPH_CHANGE_DIRECTION';
+
+
+// Actions
+export const changeDirection = () => {
+    return {
+        type: GRAPH_CHANGE_DIRECTION
+    }
 };
 
 export default (state = initialState, action) =>{
     switch(action.type){
-        case 'NEW_EMF_MODEL':
+        case GRAPH_CHANGE_DIRECTION:
+            let newDirection = (() => {
+                switch(state.viewMode) {
+                    case mxConstants.DIRECTION_WEST:
+                        return mxConstants.DIRECTION_NORTH;
+                    case mxConstants.DIRECTION_NORTH:
+                        return mxConstants.DIRECTION_WEST;
+                    default:
+                        return mxConstants.DIRECTION_NORTH;
+                }
+            })();
             return Object.assign({}, state, {
-                emfModel: action.payload,
-                emfModelFlat: EmfModelHelper.flattenEmfModelTree(JSON.parse(action.payload))
+                viewMode: newDirection
             });
-        case 'MX_GRAPH_CHANGE_ALIGNMENT':
-            switch(state.viewMode) {
-                case mxConstants.DIRECTION_WEST:
-                    return Object.assign({}, state, {
-                        viewMode: mxConstants.DIRECTION_NORTH
-                    });
-                case mxConstants.DIRECTION_NORTH:
-                    return Object.assign({}, state, {
-                        viewMode: mxConstants.DIRECTION_WEST
-                    });
-                default:
-                    return state;
-            }
         default:
             return state;
     }

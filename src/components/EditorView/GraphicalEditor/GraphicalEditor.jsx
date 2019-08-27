@@ -1,43 +1,24 @@
 //node_modules
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { connect } from "react-redux";
-import { mxClient, mxUtils, mxConstants } from "mxgraph-js";
-
 import store from '../../../reduxStore';
-
-//services
-import XtextServices from "../../../serverConnection/XtextServices";
-
+import ReactReduxComponent from '../../../helper/ReactReduxComponent';
+import { mxClient, mxUtils } from "mxgraph-js";
 //classes
 import SMLGraph from "./SMLgraph"
 
-//helper
-import EmfModelHelper from "../../../helper/EmfModelHelper";
-import { EditorContext } from "./../../../helper/goldenLayoutServices/appContext"
-
-class GraphicalEditor extends React.Component {
+class GraphicalEditor extends ReactReduxComponent {
 
     constructor(props) {
-        super(props);
-        this.state = {
-            graph: undefined,
-            emfModelFlat: undefined,
-            viewMode: mxConstants.DIRECTION_WEST
-        };
-        this.graphRef = React.createRef();
-        this.viewMode = mxConstants.DIRECTION_WEST;
-
-        store.subscribe(() => {
+        super(props, () => {
             let state = store.getState();
             this.setState({
-                emfModelFlat: state.mxGraph.emfModelFlat,
-                viewMode: state.mxGraph.viewMode
+                emfModelFlat: state.emfModel.emfModelFlat,
+                viewMode: state.graphicalEditor.viewMode
             })
         });
+        this.graphRef = React.createRef();
     }
-    static contextType = EditorContext;
 
     componentDidMount() {
         let container = ReactDOM.findDOMNode(this.graphRef.current);
@@ -52,19 +33,6 @@ class GraphicalEditor extends React.Component {
     }
 
     /**
-     * @param {boolean} isVertical
-     * @returns mxConstants
-     */
-    getViewMode = (isVertical) => {
-        if (isVertical === "true") {
-            return mxConstants.DIRECTION_NORTH;
-        }
-        else {
-            return mxConstants.DIRECTION_WEST;
-        }
-    }
-
-    /**
      * @param {Object} result: result in response from xtextServices
      */
     updateView = (emfModelFlat) => {
@@ -75,35 +43,14 @@ class GraphicalEditor extends React.Component {
         graph.render();
     };
 
-
-
     render() {
         if(this.state.graph !== undefined)
             this.updateView(this.state.emfModelFlat);
 
-        let getViewMode = (mode) => this.getViewMode(mode);
         return (
             <div className={this.props.name} ref={this.graphRef}></div>
         );
     }
 }
 
-/*
-<EditorContext.Consumer>
-{value => {
-    this.viewMode = getViewMode(value)
-    return (<div className={this.props.name} ref={this.graphRef}>
-    </div>)
-}}
-</EditorContext.Consumer>
-*/
-
-const mapStateToProps = state => {
-    return {
-        emfModelFlat: state.emfModelFlat
-    }
-};
-
-
-
-export default connect(mapStateToProps)(GraphicalEditor);
+export default GraphicalEditor;
