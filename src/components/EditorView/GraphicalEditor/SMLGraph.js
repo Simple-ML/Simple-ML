@@ -16,12 +16,12 @@ class SMLGraph extends mxGraph {
 
 
     parent=this.getDefaultParent();
-    config={}
-    EMFmodel = {}
-    layout = {}
+    config={};
+    EMFmodel = undefined;
+    layout = {};
 
     /**
-     * 
+     *
      * @param {mxConstant} direction :  mxConstants.DIRECTION_NORTH or mxConstants.DIRECTION_WEST
      */
     initView(direction){
@@ -36,22 +36,24 @@ class SMLGraph extends mxGraph {
     }
 
     /**
-     * 
+     *
      */
     clear(){
         this.removeCells(this.getChildCells(this.parent, true, true));
     }
 
     /**
-     * 
+     *
      */
     render(){
-        console.log("render started")
+        if(this.EMFmodel === undefined)
+            return;
+
         this.getModel().beginUpdate();
         try{
             var cells = this.addEntities(this.EMFmodel);
             cells.map(cell => this.connectToParent(cell));
-            this.connectReferences(this.EMFmodel);
+            this.connectReferences();
             this.layout.execute(this.parent);
         }
         finally {
@@ -60,7 +62,7 @@ class SMLGraph extends mxGraph {
     }
 
     /**
-     * 
+     *
      * @param {JSON} flatModel EMFModel from DSL after flattening
      */
     updateEMFModel(flatModel){
@@ -68,7 +70,7 @@ class SMLGraph extends mxGraph {
     }
 
     /**
-     * 
+     *
      * @param {JSON} cellValue: Value from EMFModel
      * @param {string} cellStyle: style from configs
      */
@@ -77,16 +79,17 @@ class SMLGraph extends mxGraph {
     }
 
     /**
-     * 
-     * @param {*} model 
+     *
+     * @param {*} model
      */
     addEntities(model){
-        var cells = [];        
+        if(model === undefined)
+            return [];
+
+        var cells = [];
         model.map(entity=>{
             var encodedEntityValue = GraphServices.encode(entity);
-            //entity['visible'] = GraphServices.isVisible(entity);
             entity['visible'] = this.config.isVisibleEntity(entity);
-            //console.log(entity['visible']===this.config.isVisibleEntity(entity))
             var entityStyle = this.config.getStyle(entity.data.className);
             if (entity['visible'] === true){
                 entity['cellObject'] = this.addEntity(encodedEntityValue, entityStyle);
@@ -98,7 +101,7 @@ class SMLGraph extends mxGraph {
     }
 
     /**
-     * 
+     *
      * @param {mxCell} sourceCell
      * @param {mxCell} targetCell
      */
@@ -107,15 +110,15 @@ class SMLGraph extends mxGraph {
     }
 
     /**
-     * 
-     * @param {JSON} model: EMFModel 
+     *
+     * @param {JSON} model: EMFModel
      */
-    connectReferences(model) {
-        model.map(entity => {
+    connectReferences() {
+        this.EMFmodel.map(entity => {
             if (entity.data['$ref']){
                 let target=GraphServices.findVisibleTargetCellInModel(entity);
                 let decodedReference = GraphServices.decodeReference(entity.data);
-                let source = GraphServices.findVisibleSourceCellInModel(decodedReference, model);
+                let source = GraphServices.findVisibleSourceCellInModel(decodedReference, this.EMFmodel);
                 this.addAssociation(source, target);
             }
         })
@@ -124,18 +127,18 @@ class SMLGraph extends mxGraph {
     /**
      * draws a connection between an mxCell and the next visible ancestor
      * @param {mxCell} cell with EMFEntity in cell.value
-     * @returns void 
+     * @returns void
      */
     connectToParent(cell){
         var parentCell = GraphServices.findVisibleParent(cell.value);
         if (parentCell !== undefined){
-            var parentEdge=this.addAssociation(cell, parentCell);
+            this.addAssociation(cell, parentCell);
         }
     }
 
 
     /**
-     * 
+     *
      * @param {JSON} entityValue: EMFEntity
      * @returns {mxCell} with label "object" and attributes from EntityValue
      */
@@ -149,16 +152,16 @@ class SMLGraph extends mxGraph {
     }
 
     /**
-     * 
+     *
      */
     labelDisplayOverride(){
         this.convertValueToString=(cell) =>{
             if (cell.isVertex()) {
-                return this.config.getLabelName(cell); 
+                return this.config.getLabelName(cell);
             }
         }
     }
-   
+
 
     addDeleteOnDoubleClickListener(){
         this.addListener(mxEvent.DOUBLE_CLICK, function(sender, evt){
@@ -198,7 +201,7 @@ class SMLGraph extends mxGraph {
         this.addCreateAssociationListener();
         this.addDeleteOnDoubleClickListener();
     };
-    
+
 
 }
 export default SMLGraph
