@@ -12,7 +12,6 @@
     "react-dom": "^16.8.6",
     "react-golden-layout": "^1.0.6",
     "react-scripts": "3.0.1",
-    "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.8"
   },
   "scripts": {
@@ -37,6 +36,7 @@
     ]
   },
   "devDependencies": {
+    "redux": "^4.0.4",
     "script-loader": "^0.7.2"
   }
 }

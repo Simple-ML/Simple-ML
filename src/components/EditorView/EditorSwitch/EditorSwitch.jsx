@@ -1,6 +1,6 @@
 //node_modules
 import React from "react";
-import Switch from '@material-ui/core/Switch';
+import SmlSwitch from "./../../core/SmlSwitch/SmlSwitch";
 import Grid from '@material-ui/core/Grid';
 //style
 import './editorSwitch.scss';
@@ -10,7 +10,7 @@ class EditorSwitch extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            isGraphical: true,
+            checked: true,
         }
     }
 
@@ -20,16 +20,16 @@ class EditorSwitch extends React.Component{
       };
 
     render() {
-        let { isGraphical } = this.state;
+        let { checked } = this.state;
         let handleChange = (name) => this.handleChange(name);
         return(
             <Grid component="label" container alignItems="center" spacing={1}>
                 <span className="view-label"> View: </span>
-                <Grid item style={{ color: isGraphical? '#7C7C7C': 'black' }}>graphical</Grid>
+                <Grid item style={{ color: checked? '#7C7C7C': 'black' }}>graphical</Grid>
                 <Grid item>
-                    <Switch checked={ isGraphical } onChange={ handleChange('isGraphical') } value={ isGraphical } color="default" className="switch-icon"/>
+                    <SmlSwitch checked={ checked } onChange={ handleChange('isGraphical') } value={ checked } color="default" className="switch-icon"/>
                 </Grid>
-                <Grid item style={{ color: isGraphical? 'black': '#7C7C7C' }}>textual</Grid>
+                <Grid item style={{ color: checked? 'black': '#7C7C7C' }}>textual</Grid>
             </Grid>
         )
     }

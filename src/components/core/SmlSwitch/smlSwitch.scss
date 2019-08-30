@@ -1,0 +1,26 @@
+.switch-icon { 
+
+    .MuiSwitch-switchBase {
+        color: #B991BD;
+        opacity: 1;
+        width: 1em;
+        height: 1em;
+
+    }
+    .MuiSwitch-track {
+        background-color: white;
+        opacity: 1;
+        border-color: #B991BD;
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 12px;
+        width: 1.5em;
+        height: 1em;
+    }
+    .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
+        opacity: 1;
+    }
+    .MuiSwitch-colorPrimary{
+        background-color:white;
+    }
+}

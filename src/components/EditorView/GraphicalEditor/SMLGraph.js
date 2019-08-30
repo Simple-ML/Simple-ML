@@ -2,7 +2,7 @@
 import { mxUtils, mxEvent, mxGraph, mxConnectionHandler, mxImage,  mxHierarchicalLayout,} from "mxgraph-js";
 //helper
 import EmfModelHelper from "../../../helper/EmfModelHelper";
-import connectImage from "../../../images/arrow.png"
+import connectImage from "./../../../images/graph/association-arrow.png"
 //services
 import XtextServices from "../../../serverConnection/XtextServices";
 import MxGraphConfig from "./mxGraphConfig";
@@ -36,44 +36,24 @@ class SMLGraph extends mxGraph {
     }
 
     /**
-<<<<<<< HEAD
-<<<<<<< HEAD
      * erases everything on graph.view
-=======
-     *
->>>>>>> a3aab878ff3a5e359954bc9eb62bdceb1c41f006
-=======
-     * erases everything on graph.view
->>>>>>> feature/SIM-414-leere-generische-komponente-fur-click
      */
     clear(){
         this.removeCells(this.getChildCells(this.parent, true, true));
     }
 
     /**
-<<<<<<< HEAD
-<<<<<<< HEAD
      * renders the model stored in this.EMFModel
-     */
-    render(){
-=======
      *
      */
     render(){
         if(this.EMFmodel === undefined)
             return;
-
->>>>>>> a3aab878ff3a5e359954bc9eb62bdceb1c41f006
-=======
-     * renders the model stored in this.EMFModel
-     */
-    render(){
->>>>>>> feature/SIM-414-leere-generische-komponente-fur-click
         this.getModel().beginUpdate();
         try{
-            var cells = this.addEntities();
+            var cells = this.addEntities(this.EMFmodel);
             cells.map(cell => this.connectToParent(cell));
-            this.connectReferences();
+            this.connectReferences(this.EMFmodel);
             this.layout.execute(this.parent);
         }
         finally {
@@ -99,29 +79,16 @@ class SMLGraph extends mxGraph {
     }
 
     /**
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> feature/SIM-414-leere-generische-komponente-fur-click
      * draws all entities stored in this.EMFModel
-     */
-    addEntities(){
-        var cells = [];        
-        this.EMFmodel.map(entity=>{
-<<<<<<< HEAD
-=======
+     *
      *
      * @param {*} model
      */
     addEntities(model){
         if(model === undefined)
             return [];
-
         var cells = [];
-        model.map(entity=>{
->>>>>>> a3aab878ff3a5e359954bc9eb62bdceb1c41f006
-=======
->>>>>>> feature/SIM-414-leere-generische-komponente-fur-click
+        model.forEach(entity=>{
             var encodedEntityValue = GraphServices.encode(entity);
             entity['visible'] = this.config.isVisibleEntity(entity);
             var entityStyle = this.config.getStyle(entity.data.className);
@@ -144,19 +111,12 @@ class SMLGraph extends mxGraph {
     }
 
     /**
-<<<<<<< HEAD
-<<<<<<< HEAD
-     *  draws all '$ref' associations from this.EMFModel
-=======
      *
      * @param {JSON} model: EMFModel
->>>>>>> a3aab878ff3a5e359954bc9eb62bdceb1c41f006
-=======
      *  draws all '$ref' associations from this.EMFModel
->>>>>>> feature/SIM-414-leere-generische-komponente-fur-click
      */
-    connectReferences() {
-        this.EMFmodel.map(entity => {
+    connectReferences(model) {
+        model.forEach(entity => {
             if (entity.data['$ref']){
                 let target=GraphServices.findVisibleTargetCellInModel(entity);
                 let decodedReference = GraphServices.decodeReference(entity.data);
