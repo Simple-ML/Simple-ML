@@ -2,7 +2,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import {mxClient, mxUtils} from "mxgraph-js";
+import PropTypes from 'prop-types';
+import { mxClient, mxUtils } from "mxgraph-js";
 //classes
 import SMLGraph from "./SMLGraph"
 
@@ -49,6 +50,11 @@ class GraphicalEditor extends React.Component {
         );
     }
 }
+
+GraphicalEditor.propTypes = {
+    emfModelFlat: PropTypes.object.isRequired,
+    viewMode: PropTypes.string.isRequired
+};
 
 const mapStateToProps = state => {
     return {
