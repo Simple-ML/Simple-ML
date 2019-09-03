@@ -10,13 +10,8 @@ import GraphServices from './mxGraphModelServices';
 
 class SMLGraph extends mxGraph {
 
-    constructor(props){
-        super(props);
-    }
-
-
-    parent=this.getDefaultParent();
-    config={};
+    parent = this.getDefaultParent();
+    config = {};
     EMFmodel = undefined;
     layout = {};
 
@@ -87,16 +82,16 @@ class SMLGraph extends mxGraph {
             return [];
 
         var cells = [];
-        model.map(entity=>{
+        model.map(entity => {
             var encodedEntityValue = GraphServices.encode(entity);
             entity['visible'] = this.config.isVisibleEntity(entity);
             var entityStyle = this.config.getStyle(entity.data.className);
-            if (entity['visible'] === true){
+            if (entity['visible'] === true) {
                 entity['cellObject'] = this.addEntity(encodedEntityValue, entityStyle);
                 entity['cellObject'].setValue(entity);
                 cells.push(entity['cellObject']);
             }
-        })
+        });
         return cells;
     }
 
@@ -116,7 +111,7 @@ class SMLGraph extends mxGraph {
     connectReferences() {
         this.EMFmodel.map(entity => {
             if (entity.data['$ref']){
-                let target=GraphServices.findVisibleTargetCellInModel(entity);
+                let target = GraphServices.findVisibleTargetCellInModel(entity);
                 let decodedReference = GraphServices.decodeReference(entity.data);
                 let source = GraphServices.findVisibleSourceCellInModel(decodedReference, this.EMFmodel);
                 this.addAssociation(source, target);

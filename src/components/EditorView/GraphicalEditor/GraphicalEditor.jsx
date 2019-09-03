@@ -1,22 +1,18 @@
 //node_modules
 import React from 'react';
 import ReactDOM from 'react-dom';
-import store from '../../../reduxStore';
-import ReactReduxComponent from '../../../helper/ReactReduxComponent';
-import { mxClient, mxUtils } from "mxgraph-js";
+import { connect } from 'react-redux';
+import {mxClient, mxUtils} from "mxgraph-js";
 //classes
 import SMLGraph from "./SMLGraph"
 
-class GraphicalEditor extends ReactReduxComponent {
+class GraphicalEditor extends React.Component {
 
     constructor(props) {
-        super(props, () => {
-            let state = store.getState();
-            this.setState({
-                emfModelFlat: state.emfModel.emfModelFlat,
-                viewMode: state.graphicalEditor.viewMode
-            })
-        });
+        super(props);
+        this.state = {
+            graph: undefined
+        }
         this.graphRef = React.createRef();
     }
 
@@ -35,8 +31,9 @@ class GraphicalEditor extends ReactReduxComponent {
     /**
      * @param {Object} result: result in response from xtextServices
      */
-    updateView = (emfModelFlat) => {
-        let { graph, viewMode } = this.state;
+    updateView = () => {
+        let { graph } = this.state;
+        let { emfModelFlat, viewMode } = this.props
         graph.clear();
         graph.initView(viewMode);
         graph.updateEMFModel(emfModelFlat);
@@ -45,7 +42,7 @@ class GraphicalEditor extends ReactReduxComponent {
 
     render() {
         if(this.state.graph !== undefined)
-            this.updateView(this.state.emfModelFlat);
+            this.updateView();
 
         return (
             <div className={this.props.name} ref={this.graphRef}></div>
@@ -53,4 +50,11 @@ class GraphicalEditor extends ReactReduxComponent {
     }
 }
 
-export default GraphicalEditor;
+const mapStateToProps = state => {
+    return {
+        emfModelFlat: state.emfModel.emfModelFlat,
+        viewMode: state.graphicalEditor.viewMode
+    };
+};
+
+export default connect(mapStateToProps, null)(GraphicalEditor);
