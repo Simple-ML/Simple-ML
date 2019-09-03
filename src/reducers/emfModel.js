@@ -2,8 +2,8 @@ import EmfModelHelper from "../helper/EmfModelHelper";
 
 // State initialisation
 const initialState = {
-    emfModel: {},
-    emfModelFlat: {}
+    emfModel: [],
+    emfModelFlat: []
 };
 
 
@@ -18,6 +18,7 @@ export const setNewEmfModel = (newEmfModel) => {
         payload: newEmfModel
     }
 };
+
 
 // Reducer
 export default (state = initialState, action) =>{

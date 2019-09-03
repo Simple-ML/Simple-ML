@@ -108,19 +108,19 @@ export default class MxGraphConfig {
         var name;
         switch (true) {
             case cell.value.data.ref !== undefined:
-                name = "PROCESS: " + "\n" + cell.value.data.ref;
+                name = "PROCESS:\n" + cell.value.data.ref;
                 return name;
             case cell.value.data.value !== undefined:
-                name = "CONFIG: " + "\n" + cell.value.data.value;
+                name = "CONFIG:\n" + cell.value.data.value;
                 return name;
             case cell.value.data.name !== undefined:
-                name = "DATASET: " + "\n" + cell.value.data.name;
+                name = "DATASET:\n" + cell.value.data.name;
                 return name;
             case cell.value.data.className === (this.dslPrefix + "DateLiteral"):
-                name = "CONFIG: " + "\n year: " + cell.value.data.year + ", month: " + cell.value.data.month + ", day: " + cell.value.data.day
+                name = "CONFIG:\n year: " + cell.value.data.year + ", month: " + cell.value.data.month + ", day: " + cell.value.data.day
                 return name;
             case cell.value.self === "seconds":
-                name = "CONFIG: " + "\n hours: " + cell.value.parent.data.hours + ", minutes: " + cell.value.parent.data.minutes + ", seconds: " + cell.value.data.seconds;
+                name = "CONFIG:\n hours: " + cell.value.parent.data.hours + ", minutes: " + cell.value.parent.data.minutes + ", seconds: " + cell.value.data.seconds;
                 return name;
             case "":
             default:
