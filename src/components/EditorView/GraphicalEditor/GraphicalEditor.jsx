@@ -52,7 +52,7 @@ class GraphicalEditor extends React.Component {
 }
 
 GraphicalEditor.propTypes = {
-    emfModelFlat: PropTypes.object.isRequired,
+    emfModelFlat: PropTypes.array.isRequired,
     viewMode: PropTypes.string.isRequired
 };
 
