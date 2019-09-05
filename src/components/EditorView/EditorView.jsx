@@ -1,6 +1,7 @@
 //node_modules
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 //React.Components
 import EditorHeader from './EditorHeader/EditorHeader'
 import GraphicalEditor from './GraphicalEditor/GraphicalEditor'
@@ -79,6 +80,10 @@ class EditorView extends React.Component {
             </div>
         )
     }
+}
+
+EditorView.propTypes = {
+    changeDirection: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => {

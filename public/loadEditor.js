@@ -1,6 +1,6 @@
 function loadEditor(reactInitCallback) {
     require.config({
-        baseUrl: window.location.pathname,
+        baseUrl: '',
         paths: {
             "jquery": "xtext/webjars/jquery.min",
             "ace/ext/language_tools": "xtext/webjars/ext-language_tools"
