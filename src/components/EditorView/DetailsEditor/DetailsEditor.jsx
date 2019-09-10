@@ -2,14 +2,13 @@
 import React from 'react';
 
 //React.Components
-import ReactReduxComponent from '../../../helper/ReactReduxComponent';
 
 //style
 import background from './../../../styles/background.module.scss'
 
 
 
-class DetailsEditor extends ReactReduxComponent {
+class DetailsEditor extends React.Component {
     constructor() {
         super();
         this.state = {

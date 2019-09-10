@@ -4,7 +4,6 @@ import React from 'react';
 
 //React.Components
 import EditorHeader from './../EditorHeader/EditorHeader'
-import ReactReduxComponent from '../../../helper/ReactReduxComponent';
 
 //style
 import './chooseProjectView.scss'
@@ -12,7 +11,7 @@ import background from './../../../styles/background.module.scss'
 
 
 
-class ChooseProjectView extends ReactReduxComponent {
+class ChooseProjectView extends React.Component {
     constructor() {
         super();
         this.state = {

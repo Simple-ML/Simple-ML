@@ -1,6 +1,5 @@
 //node_modules
 import React from 'react';
-import ReactReduxComponent from '../../helper/ReactReduxComponent';
 
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
@@ -16,7 +15,7 @@ import './loginView.scss'
 import background from './../../styles/background.module.scss'
 
 
-class LoginView extends ReactReduxComponent {
+class LoginView extends React.Component {
     constructor() {
         super();
         this.state = {
