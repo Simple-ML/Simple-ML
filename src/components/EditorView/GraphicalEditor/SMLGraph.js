@@ -47,6 +47,7 @@ class SMLGraph extends mxGraph {
      *
      */
     render(){
+        
         if(this.EMFmodel === undefined)
             return;
         this.getModel().beginUpdate();
@@ -66,6 +67,7 @@ class SMLGraph extends mxGraph {
      * @param {JSON} flatModel EMFModel from DSL after flattening
      */
     updateEMFModel(flatModel){
+
         this.EMFmodel=flatModel;
     }
 
@@ -85,7 +87,7 @@ class SMLGraph extends mxGraph {
      * @param {*} model
      */
     addEntities(model){
-        if(model === undefined)
+        if( model === undefined )
             return [];
         var cells = [];
         model.forEach(entity=>{

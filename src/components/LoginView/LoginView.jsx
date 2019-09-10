@@ -13,7 +13,7 @@ import userIcon from "./../../images/login/user-default-grey.svg"
 
 //style
 import './loginView.scss'
-import background from './../../background.module.scss'
+import background from './../../styles/background.module.scss'
 
 
 class LoginView extends ReactReduxComponent {

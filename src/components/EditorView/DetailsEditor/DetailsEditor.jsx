@@ -1,18 +1,15 @@
 //node_modules
 import React from 'react';
 
-
 //React.Components
-import EditorHeader from './../EditorHeader/EditorHeader'
 import ReactReduxComponent from '../../../helper/ReactReduxComponent';
 
 //style
-import './chooseProjectView.scss'
 import background from './../../../styles/background.module.scss'
 
 
 
-class ChooseProjectView extends ReactReduxComponent {
+class DetailsEditor extends ReactReduxComponent {
     constructor() {
         super();
         this.state = {
@@ -20,7 +17,7 @@ class ChooseProjectView extends ReactReduxComponent {
     }
 
     render() {
-        var projects = [
+        var details = [
             {title:"Lorem ipsum "},
             {title:"dolor sit ame"},
             {title:"adipiscing elit"},
@@ -30,18 +27,11 @@ class ChooseProjectView extends ReactReduxComponent {
         ]
 
         return(
-            <div className='ChooseProjectView'>
-                <EditorHeader />
-                <div class="row">
-                <div className={`tutorial-container ${background.geometry}`}>
+            <div className={`details-editor ${background.dark}`}>
 
-                </div>
-                <div className={`project-container ${background.dark}`}>
-                </div>
-                </div>
             </div>
         )
     }
 }
 
-export default ChooseProjectView;
+export default DetailsEditor;

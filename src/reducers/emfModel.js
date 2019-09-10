@@ -2,8 +2,8 @@ import EmfModelHelper from "../helper/EmfModelHelper";
 
 // State initialisation
 const initialState = {
-    emfModel: {},
-    emfModelFlat: {}
+    emfModel: [],
+    emfModelFlat: []
 };
 
 

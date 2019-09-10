@@ -6,6 +6,8 @@ import ReactReduxComponent from '../../../helper/ReactReduxComponent';
 import { mxClient, mxUtils } from "mxgraph-js";
 //classes
 import SMLGraph from "./SMLGraph"
+//styles
+import background from './../../../styles/background.module.scss'
 
 class GraphicalEditor extends ReactReduxComponent {
 
@@ -48,7 +50,7 @@ class GraphicalEditor extends ReactReduxComponent {
             this.updateView(this.state.emfModelFlat);
 
         return (
-            <div className={this.props.name} ref={this.graphRef}></div>
+            <div className={`graphicalEditor ${background.darkCircles} ${this.props.name}`} ref={this.graphRef}></div>
         );
     }
 }

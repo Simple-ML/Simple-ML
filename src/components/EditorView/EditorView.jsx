@@ -5,6 +5,7 @@ import ReactReduxComponent from '../../helper/ReactReduxComponent';
 import EditorHeader from './EditorHeader/EditorHeader'
 import GraphicalEditor from './GraphicalEditor/GraphicalEditor'
 import TextEditor from './TextEditor/TextEditor'
+import DetailsEditor from './DetailsEditor/DetailsEditor'
 import { GoldenLayoutComponent } from './../../helper/goldenLayoutServices/goldenLayoutComponent';
 
 import XtextServices from '../../serverConnection/XtextServices';
@@ -53,25 +54,42 @@ class EditorView extends ReactReduxComponent {
                 </div>
                 <div className='ide-container'>
                     <GoldenLayoutComponent
-                        htmlAttrs={{ style: { height: "500px", width: "100%" } }}
+                        htmlAttrs={{ style: { minHeight: "780px", width: "100%" } }}
                         config={{
+                            dimensions:{
+                                headerHeight: "100%",
+                                headerWidth: "24px"
+                            },
                             content:[{
                                 type: "row",
-                                content: [{
-                                    title: "DSL Editor",
-                                    type: "react-component",
-                                    component: "textEditor",
-                                },
-                                {
-                                    title: "Graphical Editor",
-                                    type: "react-component",
-                                    component: "graphicalEditor",
+                                content: [
+                                    {
+                                        title: "Graphical Editor",
+                                        type: "react-component",
+                                        component: "graphicalEditor"
+                                    },
+                                    {
+                                        type: 'column',
+                                        content:[
+                                            {                                           
+                                                title: "DSL Editor",
+                                                type: "react-component",
+                                                component: "textEditor",
+                                                height: 68.803
+                                            },
+                                            {
+                                                title: "Details",
+                                                type: "react-component",
+                                                component: "detailsEditor",
+                                            }
+                                    ]
                                 }]
                             }]
                         }}
                         registerComponents={myLayout => {
                             myLayout.registerComponent("textEditor", TextEditor);
-                            myLayout.registerComponent("graphicalEditor", GraphicalEditor)
+                            myLayout.registerComponent("graphicalEditor", GraphicalEditor);
+                            myLayout.registerComponent("detailsEditor", DetailsEditor);
                             this.setState({myLayout})
                         }}
                     />

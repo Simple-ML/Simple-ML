@@ -19,10 +19,8 @@
   padding-left: 32px;
   padding-right: 32px;
   min-height: 800px;
-  background-image: url( "./../../images/background/background-circle.svg" );
-  background-color: #ffffff;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  background-color: #2f1433;
+
 
   .textEditor {
     position: relative;
@@ -34,8 +32,30 @@
   .graphicalEditor {
     position: relative;
     min-width: 450px;
-    min-height: 400px;
+    height: 100%;
     margin-top: 20px;
+  }
+  .lm_goldenlayout{
+    display:inline;
+    border:0px;
+    .lm_header{
+      background-color:#461f4c;
+      max-width: 1.5em;
+      .lm_tabs{
+        display:none;
+      }
+    
+  }
+  .lm_splitter{
+    background-color:#290b2e;
+  }
+  .lm_vertical{
+    background-color:#290b2e;
+  }
+  .lm_content{
+    background-color: #290B2E;
+    border:0px;
+  }
   }
 }
 
