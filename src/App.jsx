@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import './App.scss';
 import EditorView from './components/EditorView/EditorView';
 import LoginView from './components/LoginView/LoginView';
@@ -18,4 +19,4 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default connect()(App);

@@ -17,6 +17,8 @@ export const changeDirection = () => {
     }
 };
 
+
+// Reducer
 export default (state = initialState, action) =>{
     switch(action.type){
         case GRAPH_CHANGE_DIRECTION:

@@ -2,7 +2,6 @@ import XtextServices from '../serverConnection/XtextServices';
 import TextEditorWrapper from '../components/EditorView/TextEditor/TextEditorWrapper';
 import { debugInterface } from './exposeToBrowserConsole';
 import store from '../reduxStore';
-import { setNewEmfModel } from '../reducers/emfModel';
 
 let afterReactInit = () => {
 

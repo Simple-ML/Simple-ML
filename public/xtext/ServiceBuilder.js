@@ -47,11 +47,7 @@ define([
 		editorContext.xtextServices = services;
 		var self = this;
 		if (!options.serviceUrl) {
-			if (!options.baseUrl)
-				options.baseUrl = '/';
-			else if (options.baseUrl.charAt(0) != '/')
-				options.baseUrl = '/' + options.baseUrl;
-			options.serviceUrl = endpoint.protocol + '//' + endpoint.host + options.baseUrl + 'xtext-service';
+			options.serviceUrl = endpoint.protocol + '//' + endpoint.host + '/' + 'xtext-service';
 		}
 		if (options.resourceId) {
 			if (!options.xtextLang)
