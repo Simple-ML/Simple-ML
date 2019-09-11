@@ -8,6 +8,9 @@ import XtextServices from "../../../serverConnection/XtextServices";
 import MxGraphConfig from "./mxGraphConfig";
 import GraphServices from './mxGraphModelServices';
 
+import reduxStore from './../../../reduxStore';
+import { openToolbar } from './../../../reducers/toolbar';
+
 class SMLGraph extends mxGraph {
 
     parent = this.getDefaultParent();
@@ -160,7 +163,9 @@ class SMLGraph extends mxGraph {
 
     addDeleteOnDoubleClickListener(){
         this.addListener(mxEvent.DOUBLE_CLICK, function(sender, evt){
-            var cell = evt.getProperty('cell');
+            let cell = evt.getProperty('cell');
+            reduxStore.dispatch(openToolbar(cell, 100, 100))
+            /*
             if(cell!==undefined){
                 if(cell.vertex === true){
                     var entity = cell.value;
@@ -175,6 +180,7 @@ class SMLGraph extends mxGraph {
                     XtextServices.deleteAssociation(from,to);
                 }
             }
+            */
         });
     }
 
