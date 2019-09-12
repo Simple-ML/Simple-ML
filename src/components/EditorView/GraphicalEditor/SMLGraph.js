@@ -164,23 +164,8 @@ class SMLGraph extends mxGraph {
     addDeleteOnDoubleClickListener(){
         this.addListener(mxEvent.DOUBLE_CLICK, function(sender, evt){
             let cell = evt.getProperty('cell');
-            reduxStore.dispatch(openToolbar(cell, 100, 100))
-            /*
-            if(cell!==undefined){
-                if(cell.vertex === true){
-                    var entity = cell.value;
-                    var enityPath=EmfModelHelper.getFullHierarchy2(entity);
-                    XtextServices.deleteEntity(enityPath);
-                }
-                else{
-                    var sourceEntity=cell.source.value;
-                    var targetEntity=cell.target.value;
-                    var from=EmfModelHelper.getFullHierarchy2(sourceEntity);
-                    var to=EmfModelHelper.getFullHierarchy2(targetEntity);
-                    XtextServices.deleteAssociation(from,to);
-                }
-            }
-            */
+            console.log(evt)
+            reduxStore.dispatch(openToolbar(cell, evt.properties.event.pageX, evt.properties.event.pageY))
         });
     }
 

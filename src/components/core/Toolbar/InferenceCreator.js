@@ -46,7 +46,7 @@ class InferenceCreator {
 
         if(this.inferenceContainer[''+verifyFunction] === undefined)
             this.inferenceContainer[''+verifyFunction] = {
-                verifyFunction: verifyFunction,
+                verifyFunction: this.wrapVerifyFunction(verifyFunction),
                 executeFunctions: []
             };
         this.inferenceContainer[''+verifyFunction].executeFunctions.push({
@@ -74,7 +74,7 @@ class InferenceCreator {
                 inference.executeFunctions.forEach((executeFunction) => {
                     result.push({
                         metaData: executeFunction.metaData,
-                        func: this.bindContextToFunction(inference.verifyFunction, executeFunction.func, context)
+                        func: this.wrapExecuteFunctionAndBindContext(inference.verifyFunction, executeFunction.func, context)
                     })
                 })
             }
@@ -82,10 +82,27 @@ class InferenceCreator {
         return result;
     }
 
-    bindContextToFunction = (verifyFunction, executeFunction, context) => {
+    wrapVerifyFunction = (verifyFunction) => {
+        return (context) => {
+            try {
+                return verifyFunction(context);
+            } catch(e) {
+                // TODO: perhaps real logging
+                console.log({
+                    exception: e,
+                    verifyFunc: verifyFunction,
+                    context: context
+                });
+                // if exception is thrown the probability that the verificationFunction is not implemented
+                // to verify this particular context is very high -> return false
+                return false;
+            }
+        }
+    }
+
+    wrapExecuteFunctionAndBindContext = (verifyFunction, executeFunction, context) => {
         return () => {
             try {
-                console.log(context)
                 executeFunction(context)
             } catch(e) {
                 //TODO: perhaps real logging
