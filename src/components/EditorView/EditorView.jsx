@@ -1,11 +1,13 @@
 //node_modules
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 //React.Components
-import EditorHeader from './EditorHeader/EditorHeader'
-import GraphicalEditor from './GraphicalEditor/GraphicalEditor'
-import TextEditor from './TextEditor/TextEditor'
+import EditorHeader from './EditorHeader/EditorHeader';
+import SideToolbar from './SideToolbar/SideToolbar';
+import GraphicalEditor from './GraphicalEditor/GraphicalEditor';
+import TextEditor from './TextEditor/TextEditor';
 import { GoldenLayoutComponent } from './../../helper/goldenLayoutServices/goldenLayoutComponent';
 
 import XtextServices from '../../serverConnection/XtextServices';
@@ -19,10 +21,24 @@ class EditorView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            myLayout: null
+            myLayout: undefined,
+            draggable: undefined
         };
 
         this.flipGraph = this.flipGraph.bind(this)
+    }
+
+    getElementConfigs = () => {
+        return [{
+            title: "Graphical Editor",
+            type: "react-component",
+            component: "graphicalEditor"
+        },
+        {
+            title: "Text-Editor",
+            type: "react-component",
+            component: "textEditor"
+        }]
     }
 
     flipGraph = () => {
@@ -40,10 +56,21 @@ class EditorView extends React.Component {
         return Wrapped;
     };
 
+    componentDidMount() {
+        let element = this.state.draggable;
+
+        this.state.myLayout.createDragSource(element,  {
+            title: "Graphical Editor",
+            type: "react-component",
+            component: "graphicalEditor"
+        });
+    }
+
     render() {
         return(
             <div className='EditorView'>
                 <EditorHeader />
+                <SideToolbar elementConfigs={this.getElementConfigs()} layout={this.state.myLayout} />
                 <div className={'buttons'}>
                     <button style={{ color: 'black' }} onClick={() => { XtextServices.getEmfModel(); }}>
                         {'Get EMF-Model'}
@@ -51,6 +78,11 @@ class EditorView extends React.Component {
                     <button style={{ color: 'black' }} onClick={() => this.flipGraph()}>
                         { 'Flip The Graph' }
                     </button>
+                    <a ref={(input) => {
+                        this.state.draggable = input
+                    }}>
+                        just some text
+                    </a>
                 </div>
                 <div className='ide-container'>
                     <GoldenLayoutComponent
@@ -73,7 +105,7 @@ class EditorView extends React.Component {
                         registerComponents = { myLayout => {
                             myLayout.registerComponent("textEditor", this.wrapComponent(TextEditor));
                             myLayout.registerComponent("graphicalEditor", this.wrapComponent(GraphicalEditor))
-                            this.setState({myLayout})
+                            this.state.myLayout = myLayout
                         }}
                     />
                 </div>
