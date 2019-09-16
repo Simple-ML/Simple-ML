@@ -9,6 +9,8 @@ import SMLGraph from "./SMLGraph"
 //styles
 import background from './../../../styles/background.module.scss'
 
+import './toolbar.inference';
+
 class GraphicalEditor extends React.Component {
 
     constructor(props) {
