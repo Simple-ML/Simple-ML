@@ -5,7 +5,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { mxClient, mxUtils } from "mxgraph-js";
 //classes
-import SMLGraph from "./SMLGraph"
+import SMLGraph from './SMLGraph';
+
+import './toolbar.inference';
 
 class GraphicalEditor extends React.Component {
 

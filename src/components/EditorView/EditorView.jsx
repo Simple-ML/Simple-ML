@@ -42,7 +42,7 @@ class EditorView extends React.Component {
 
     render() {
         return(
-            <div className='EditorView'>
+            <div className={'EditorView'}>
                 <EditorHeader />
                 <div className={'buttons'}>
                     <button style={{ color: 'black' }} onClick={() => { XtextServices.getEmfModel(); }}>
@@ -52,22 +52,26 @@ class EditorView extends React.Component {
                         { 'Flip The Graph' }
                     </button>
                 </div>
-                <div className='ide-container'>
+                <div className={'ide-container'}>
                     <GoldenLayoutComponent
                         htmlAttrs={{ style: { height: "500px", width: "100%" } }}
                         config={{
                             content:[{
                                 type: "row",
-                                content: [{
-                                    title: "DSL Editor",
-                                    type: "react-component",
-                                    component: "textEditor",
-                                },
-                                {
-                                    title: "Graphical Editor",
-                                    type: "react-component",
-                                    component: "graphicalEditor",
-                                }]
+                                content: [
+                                    {
+                                        title: "Graphical Editor",
+                                        type: "react-component",
+                                        component: "graphicalEditor"
+                                    },
+                                    {
+                                        title: "DSL Editor",
+                                        type: "react-component",
+                                        component: "textEditor",
+                                        height: 68.803
+                                    }
+                                ]
+
                             }]
                         }}
                         registerComponents = { myLayout => {
@@ -84,7 +88,7 @@ class EditorView extends React.Component {
 
 EditorView.propTypes = {
     changeDirection: PropTypes.func.isRequired
-}
+};
 
 const mapStateToProps = state => {
     return {
