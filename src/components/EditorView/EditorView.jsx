@@ -21,14 +21,16 @@ class EditorView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            myLayout: undefined,
+            myLayoutWrapper: {
+                layout: undefined
+            },
             draggable: undefined
         };
 
         this.flipGraph = this.flipGraph.bind(this)
     }
 
-    getElementConfigs = () => {
+    getComponentConfigs = () => {
         return [{
             title: "Graphical Editor",
             type: "react-component",
@@ -56,21 +58,12 @@ class EditorView extends React.Component {
         return Wrapped;
     };
 
-    componentDidMount() {
-        let element = this.state.draggable;
-
-        this.state.myLayout.createDragSource(element,  {
-            title: "Graphical Editor",
-            type: "react-component",
-            component: "graphicalEditor"
-        });
-    }
-
     render() {
         return(
             <div className='EditorView'>
                 <EditorHeader />
-                <SideToolbar elementConfigs={this.getElementConfigs()} layout={this.state.myLayout} />
+                <SideToolbar componentConfigs={this.getComponentConfigs()} layout={this.state.layout} />
+                
                 <div className={'buttons'}>
                     <button style={{ color: 'black' }} onClick={() => { XtextServices.getEmfModel(); }}>
                         {'Get EMF-Model'}
@@ -105,7 +98,7 @@ class EditorView extends React.Component {
                         registerComponents = { myLayout => {
                             myLayout.registerComponent("textEditor", this.wrapComponent(TextEditor));
                             myLayout.registerComponent("graphicalEditor", this.wrapComponent(GraphicalEditor))
-                            this.state.myLayout = myLayout
+                            this.setState({layout: myLayout});
                         }}
                     />
                 </div>
