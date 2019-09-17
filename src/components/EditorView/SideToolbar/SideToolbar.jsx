@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import './SideToolbar.scss';
 
 class SideToolbar extends React.Component {
     constructor(props) {
@@ -23,7 +24,7 @@ class SideToolbar extends React.Component {
 
     render() {
         return (
-            <div className={'SideToolbar'}>
+            <div className={'Side-Toolbar'}>
                 {   this.state.childInfo = []   }
                 {   this.props.componentConfigs.map((componentConfig, i) => {
                     return (

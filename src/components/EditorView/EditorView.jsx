@@ -23,8 +23,7 @@ class EditorView extends React.Component {
         this.state = {
             myLayoutWrapper: {
                 layout: undefined
-            },
-            draggable: undefined
+            }
         };
 
         this.flipGraph = this.flipGraph.bind(this)
@@ -63,7 +62,7 @@ class EditorView extends React.Component {
             <div className='EditorView'>
                 <EditorHeader />
                 <SideToolbar componentConfigs={this.getComponentConfigs()} layout={this.state.layout} />
-                
+
                 <div className={'buttons'}>
                     <button style={{ color: 'black' }} onClick={() => { XtextServices.getEmfModel(); }}>
                         {'Get EMF-Model'}
@@ -71,11 +70,6 @@ class EditorView extends React.Component {
                     <button style={{ color: 'black' }} onClick={() => this.flipGraph()}>
                         { 'Flip The Graph' }
                     </button>
-                    <a ref={(input) => {
-                        this.state.draggable = input
-                    }}>
-                        just some text
-                    </a>
                 </div>
                 <div className='ide-container'>
                     <GoldenLayoutComponent
