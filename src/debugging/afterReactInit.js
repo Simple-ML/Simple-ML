@@ -25,7 +25,7 @@ let afterReactInit = () => {
     });
 
     XtextServices.addSuccessListener((serviceType, result) => {
-        //console.log({serviceType, result})
+        console.log({serviceType, result})
     });
 }
 

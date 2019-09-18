@@ -4,16 +4,23 @@ import React, { Component } from 'react';
 import TextEditorWrapper from './TextEditorWrapper'
 //style
 import './textEditor.css';
+import ReactDOM from "react-dom";
 class TextEditor extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.editorRef = React.createRef();
+    }
+
     componentDidMount() {
-        let div = window.jQuery('.textEditor-Placeholder', document);
-        div.append(TextEditorWrapper.editorDiv);
+        let container = ReactDOM.findDOMNode(this.editorRef.current);
+        container.appendChild(TextEditorWrapper.editorDiv[0]);
     }
 
     render() {
         return (
-            <div className={'textEditor-Placeholder'}></div>
+            <div className={'textEditor-Placeholder'} ref={this.editorRef}></div>
         );
     }
 }

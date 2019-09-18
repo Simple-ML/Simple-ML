@@ -101,4 +101,12 @@ export default class XtextServices {
     static addSuccessListener(listener) {
         TextEditorWrapper.editor.xtextServices.successListeners.push(listener);
     }
+
+    /**
+     *
+     * @param listener: function(serviceType: string, result: any)
+     */
+    static addErrorListener(listener) {
+        TextEditorWrapper.editor.xtextServices.errorListeners.push(listener);
+    }
 }

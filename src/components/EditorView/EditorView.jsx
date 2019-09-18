@@ -1,11 +1,13 @@
 //node_modules
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 //React.Components
-import EditorHeader from './EditorHeader/EditorHeader'
-import GraphicalEditor from './GraphicalEditor/GraphicalEditor'
-import TextEditor from './TextEditor/TextEditor'
+import EditorHeader from './EditorHeader/EditorHeader';
+import SideToolbar from './SideToolbar/SideToolbar';
+import GraphicalEditor from './GraphicalEditor/GraphicalEditor';
+import TextEditor from './TextEditor/TextEditor';
 import { GoldenLayoutComponent } from './../../helper/goldenLayoutServices/goldenLayoutComponent';
 
 import XtextServices from '../../serverConnection/XtextServices';
@@ -13,21 +15,46 @@ import { changeDirection } from '../../reducers/graphicalEditor';
 //style
 import './editorView.scss'
 import 'golden-layout/src/css/goldenlayout-base.css';
+import { showSideToolbar, hideSideToolbar } from "../../reducers/sideToolbar";
 
 
 class EditorView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            myLayout: null
+            myLayoutWrapper: {
+                layout: undefined,
+                isSideToolbarVisible: undefined
+            }
         };
 
-        this.flipGraph = this.flipGraph.bind(this)
+        this.showHideSideToolbar = this.showHideSideToolbar.bind(this);
+        this.flipGraph = this.flipGraph.bind(this);
+    }
+
+    createComponentConfigs = () => {
+        return [{
+            title: "Graphical Editor",
+            type: "react-component",
+            component: "graphicalEditor"
+        },
+        {
+            title: "Text-Editor",
+            type: "react-component",
+            component: "textEditor"
+        }]
+    }
+
+    showHideSideToolbar = () => {
+        if(this.props.isSideToolbarVisible)
+            this.props.hideSideToolbar();
+        else
+            this.props.showSideToolbar();
     }
 
     flipGraph = () => {
         this.props.changeDirection();
-    };
+    }
 
     wrapComponent = Component => {
         class Wrapped extends React.Component {
@@ -38,15 +65,17 @@ class EditorView extends React.Component {
             }
         }
         return Wrapped;
-    };
+    }
 
     render() {
         return(
             <div className={'EditorView'}>
                 <EditorHeader />
+                <SideToolbar componentConfigs={this.createComponentConfigs()} layout={this.state.layout} />
+
                 <div className={'buttons'}>
-                    <button style={{ color: 'black' }} onClick={() => { XtextServices.getEmfModel(); }}>
-                        {'Get EMF-Model'}
+                    <button style={{ color: 'black' }} onClick={() => this.showHideSideToolbar() }>
+                        {'Toolbar'}
                     </button>
                     <button style={{ color: 'black' }} onClick={() => this.flipGraph()}>
                         { 'Flip The Graph' }
@@ -77,7 +106,7 @@ class EditorView extends React.Component {
                         registerComponents = { myLayout => {
                             myLayout.registerComponent("textEditor", this.wrapComponent(TextEditor));
                             myLayout.registerComponent("graphicalEditor", this.wrapComponent(GraphicalEditor))
-                            this.setState({myLayout})
+                            this.setState({layout: myLayout});
                         }}
                     />
                 </div>
@@ -87,17 +116,23 @@ class EditorView extends React.Component {
 }
 
 EditorView.propTypes = {
-    changeDirection: PropTypes.func.isRequired
+    isSideToolbarVisible: PropTypes.bool.isRequired,
+    changeDirection: PropTypes.func.isRequired,
+    showSideToolbar: PropTypes.func.isRequired,
+    hideSideToolbar: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
     return {
-    };
+        isSideToolbarVisible: state.sideToolbar.visible
+    }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        changeDirection: () => dispatch(changeDirection())
+        changeDirection: () => dispatch(changeDirection()),
+        showSideToolbar: () => dispatch(showSideToolbar()),
+        hideSideToolbar: () => dispatch(hideSideToolbar())
     }
 };
 
