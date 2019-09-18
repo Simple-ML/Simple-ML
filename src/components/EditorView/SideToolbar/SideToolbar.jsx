@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 import './SideToolbar.scss';
 import PropTypes from "prop-types";
-import {changeDirection} from "../../../reducers/graphicalEditor";
 
 /**
  * This component is used in combination with golden-layout. So this.props.layout has to be the layout-Object from
