@@ -12,7 +12,7 @@ import TextEditorWrapper from './components/EditorView/TextEditor/TextEditorWrap
 import afterReactInit from './debugging/afterReactInit';
 import { exposeToBrowserConsole } from "./debugging/exposeToBrowserConsole";
 import XtextServices from "./serverConnection/XtextServices";
-import { setNewEmfModel } from "./reducers/emfModel";
+import { setNewEmfModel, setEmfModelClean, setEmfModelDirty } from "./reducers/emfModel";
 
 window.loadEditor((xtextEditor) => {
     window.loadEditor = undefined;
@@ -25,6 +25,14 @@ window.loadEditor((xtextEditor) => {
             case 'deleteAssociation':
             case 'createAssociation':
                 store.dispatch(setNewEmfModel(result.emfModel));
+                break;
+            case 'validate':
+                if(result.issues.length > 0)
+                    store.dispatch(setEmfModelDirty());
+                else
+                    store.dispatch(setEmfModelClean());
+
+                XtextServices.getEmfModel();
                 break;
             default:
                 break;
