@@ -7,6 +7,7 @@
     right: 0;
     padding: 4px;
     border: 1px solid #aaa;
+
     
 }
 
@@ -18,7 +19,9 @@
     left: 0;
     right: 0;
     text-align: left;
-    border: 1px solid #aaa;
+    background-color:#35183a;
+    color:white;
+    font-family: 'Roboto Mono', monospace;
 }
 
 

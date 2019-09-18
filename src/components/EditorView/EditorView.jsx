@@ -2,6 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import $ from "jquery";
 //React.Components
 import EditorHeader from './EditorHeader/EditorHeader'
 import GraphicalEditor from './GraphicalEditor/GraphicalEditor'
@@ -58,8 +59,7 @@ class EditorView extends React.Component {
                         htmlAttrs={{ style: { minHeight: "780px", width: "100%" } }}
                         config={{
                             dimensions:{
-                                headerHeight: "100%",
-                                headerWidth: "24px"
+                                headerHeight: "100%"
                             },
                             content:[{
                                 type: "row",
@@ -92,7 +92,14 @@ class EditorView extends React.Component {
                             myLayout.registerComponent("textEditor",  this.wrapComponent(TextEditor));
                             myLayout.registerComponent("graphicalEditor",  this.wrapComponent(GraphicalEditor));
                             myLayout.registerComponent("detailsEditor",  this.wrapComponent(DetailsEditor));
-                            this.setState({myLayout})
+                            this.setState({myLayout});
+                            /*
+                            * Since our layout is not a direct child
+                            * of the body we need to tell it when to resize
+                            */
+                            $(window).on("resize", function(){
+                                myLayout.updateSize();
+                            })
                         }}
                     />
                 </div>

@@ -15,7 +15,7 @@ class TextEditor extends Component {
 
     render() {
         return (
-            <div className={`textEditor-placeholder ${background.darkCircles}`}></div>
+            <div className={`textEditor-placeholder ${background.text-background}`}></div>
         );
     }
 }

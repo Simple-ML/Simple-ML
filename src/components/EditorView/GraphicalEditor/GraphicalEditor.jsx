@@ -8,6 +8,7 @@ import { mxClient, mxUtils } from "mxgraph-js";
 import SMLGraph from "./SMLGraph"
 //styles
 import background from './../../../styles/background.module.scss'
+import './graphicalEditor.scss'
 
 import './toolbar.inference';
 
