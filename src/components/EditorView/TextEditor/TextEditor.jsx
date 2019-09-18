@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 //React.Components
 import TextEditorWrapper from './TextEditorWrapper'
 //style
-import './textEditor.css';
+import './textEditor.scss';
 import background from './../../../styles/background.module.scss'
 
 class TextEditor extends Component {
