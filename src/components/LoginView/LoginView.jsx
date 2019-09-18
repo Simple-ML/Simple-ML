@@ -7,7 +7,6 @@ import Button from '@material-ui/core/Button';
 import  InputAdornment from '@material-ui/core/InputAdornment';
 //React.Components
 import LoginHeader from './LoginHeader/LoginHeader'
-import SmlSwitch from "./../core/SmlSwitch/SmlSwitch"
 import userIcon from "./../../images/login/user-default-grey.svg"
 
 //style
@@ -52,7 +51,6 @@ class LoginView extends React.Component {
                         </InputAdornment>
                     }></TextField>
                     <div className="remember-form">
-                        <SmlSwitch onChange={this.forgotPaswort} value={ "false" } color="default" className="switch-icon"/>
                         <div className="switch-label">{placeholder.remember}</div>
                         <a href="url" className="forgot-link">{placeholder.forgot}</a>
                     </div>

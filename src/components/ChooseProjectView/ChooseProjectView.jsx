@@ -3,11 +3,11 @@ import React from 'react';
 
 
 //React.Components
-import EditorHeader from './../EditorHeader/EditorHeader'
+import EditorHeader from './../EditorView/EditorHeader/EditorHeader'
 
 //style
 import './chooseProjectView.scss'
-import background from './../../../styles/background.module.scss'
+import background from './../../styles/background.module.scss'
 
 
 
