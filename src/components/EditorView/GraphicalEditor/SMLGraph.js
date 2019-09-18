@@ -2,7 +2,7 @@
 import { mxUtils, mxEvent, mxGraph, mxConnectionHandler, mxImage,  mxHierarchicalLayout,} from "mxgraph-js";
 //helper
 import EmfModelHelper from "../../../helper/EmfModelHelper";
-import connectImage from "../../../images/arrow.png"
+import connectImage from "./../../../images/graph/association-arrow.png"
 //services
 import XtextServices from "../../../serverConnection/XtextServices";
 import MxGraphConfig from "./mxGraphConfig";
@@ -34,24 +34,25 @@ class SMLGraph extends mxGraph {
     }
 
     /**
-     *
+     * erases everything on graph.view
      */
     clear(){
         this.removeCells(this.getChildCells(this.parent, true, true));
     }
 
     /**
+     * renders the model stored in this.EMFModel
      *
      */
     render(){
+        
         if(this.EMFmodel === undefined)
             return;
-
         this.getModel().beginUpdate();
         try{
             var cells = this.addEntities(this.EMFmodel);
             cells.map(cell => this.connectToParent(cell));
-            this.connectReferences();
+            this.connectReferences(this.EMFmodel);
             this.layout.execute(this.parent);
         }
         finally {
@@ -64,6 +65,7 @@ class SMLGraph extends mxGraph {
      * @param {JSON} flatModel EMFModel from DSL after flattening
      */
     updateEMFModel(flatModel){
+
         this.EMFmodel=flatModel;
     }
 
@@ -77,15 +79,16 @@ class SMLGraph extends mxGraph {
     }
 
     /**
+     * draws all entities stored in this.EMFModel
+     *
      *
      * @param {*} model
      */
     addEntities(model){
-        if(model === undefined)
+        if( model === undefined )
             return [];
-
         var cells = [];
-        model.map(entity => {
+        model.forEach(entity=>{
             var encodedEntityValue = GraphServices.encode(entity);
             entity['visible'] = this.config.isVisibleEntity(entity);
             var entityStyle = this.config.getStyle(entity.data.className);
@@ -110,9 +113,10 @@ class SMLGraph extends mxGraph {
     /**
      *
      * @param {JSON} model: EMFModel
+     *  draws all '$ref' associations from this.EMFModel
      */
-    connectReferences() {
-        this.EMFmodel.map(entity => {
+    connectReferences(model) {
+        model.forEach(entity => {
             if (entity.data['$ref']){
                 let target = GraphServices.findVisibleTargetCellInModel(entity);
                 let decodedReference = GraphServices.decodeReference(entity.data);

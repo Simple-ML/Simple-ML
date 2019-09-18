@@ -3,8 +3,10 @@ import React, { Component } from 'react';
 //React.Components
 import TextEditorWrapper from './TextEditorWrapper'
 //style
-import './textEditor.css';
+import './textEditor.scss';
+import background from './../../../styles/background.module.scss'
 import ReactDOM from "react-dom";
+
 class TextEditor extends Component {
 
     constructor(props) {
@@ -20,7 +22,7 @@ class TextEditor extends Component {
 
     render() {
         return (
-            <div className={'textEditor-Placeholder'} ref={this.editorRef}></div>
+            <div className={`textEditor-placeholder ${background.text-background}`} ref={this.editorRef}></div>
         );
     }
 }

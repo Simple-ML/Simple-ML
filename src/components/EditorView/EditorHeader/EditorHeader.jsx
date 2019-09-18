@@ -1,5 +1,5 @@
 //React.Components
-import Header from '../../Header/Header';
+import Header from "./../../core/Header/Header";
 
 class EditorHeader extends Header{
 }

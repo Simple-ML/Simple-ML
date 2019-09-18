@@ -3,10 +3,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import $ from "jquery";
 //React.Components
+
 import EditorHeader from './EditorHeader/EditorHeader';
 import SideToolbar from './SideToolbar/SideToolbar';
 import GraphicalEditor from './GraphicalEditor/GraphicalEditor';
+import DetailsEditor from "./DetailsEditor/DetailsEditor"
 import TextEditor from './TextEditor/TextEditor';
 import { GoldenLayoutComponent } from './../../helper/goldenLayoutServices/goldenLayoutComponent';
 
@@ -71,7 +74,7 @@ class EditorView extends React.Component {
         return(
             <div className={'EditorView'}>
                 <EditorHeader />
-                <SideToolbar componentConfigs={this.createComponentConfigs()} layout={this.state.layout} />
+                <SideToolbar componentConfigs={this.createComponentConfigs()} layout={this.state.myLayout} />
 
                 <div className={'buttons'}>
                     <button style={{ color: 'black' }} onClick={() => this.showHideSideToolbar() }>
@@ -83,8 +86,11 @@ class EditorView extends React.Component {
                 </div>
                 <div className={'ide-container'}>
                     <GoldenLayoutComponent
-                        htmlAttrs={{ style: { height: "500px", width: "100%" } }}
+                        htmlAttrs={{ style: { minHeight: "780px", width: "100%" } }}
                         config={{
+                            dimensions:{
+                                headerHeight: "100%"
+                            },
                             content:[{
                                 type: "row",
                                 content: [
@@ -94,19 +100,36 @@ class EditorView extends React.Component {
                                         component: "graphicalEditor"
                                     },
                                     {
-                                        title: "DSL Editor",
-                                        type: "react-component",
-                                        component: "textEditor",
-                                        height: 68.803
-                                    }
-                                ]
+                                        type: 'column',
+                                        content:[
+                                            {                                           
+                                                title: "DSL Editor",
+                                                type: "react-component",
+                                                component: "textEditor",
+                                                height: 68.803
+                                            },
+                                            {
+                                                title: "Details",
+                                                type: "react-component",
+                                                component: "detailsEditor",
+                                            }
+                                    ]
+                                }]
 
                             }]
                         }}
-                        registerComponents = { myLayout => {
-                            myLayout.registerComponent("textEditor", this.wrapComponent(TextEditor));
-                            myLayout.registerComponent("graphicalEditor", this.wrapComponent(GraphicalEditor))
-                            this.setState({layout: myLayout});
+                        registerComponents={myLayout => {
+                            myLayout.registerComponent("textEditor",  this.wrapComponent(TextEditor));
+                            myLayout.registerComponent("graphicalEditor",  this.wrapComponent(GraphicalEditor));
+                            myLayout.registerComponent("detailsEditor",  this.wrapComponent(DetailsEditor));
+                            this.setState({myLayout});
+                            /*
+                            * Since our layout is not a direct child
+                            * of the body we need to tell it when to resize
+                            */
+                            $(window).on("resize", function(){
+                                myLayout.updateSize();
+                            })
                         }}
                     />
                 </div>

@@ -1,24 +1,38 @@
-.xtext-editor {
-    display: block;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 4px;
-    border: 1px solid #aaa;
-}
 
 #xtext-editor {
     display: block;
     position: absolute;
     top: 0;
-    bottom: 0;
     left: 0;
+    bottom: 0;
     right: 0;
     text-align: left;
-    border: 1px solid #aaa;
+    background-color:#35183a;
+    color:white;
+    font-family: 'Roboto Mono', monospace;
 }
+
+.ace_layer{
+    .ace_print-margin{
+        display:none;
+    }
+    .ace_line{
+        .ace_string{
+            color:#2e9fa5;
+        }
+        .ace_keyword{
+            color:#e3327d;
+        }
+        .ace_constant.ace_numeric{
+            color:#77efa8;
+        }
+        .ace_comment{
+            font-family:'Roboto', sans-serif;
+            color: #a29aa3;
+        }
+    }
+}
+
 
 
 .xtext-marker_error {
@@ -52,3 +66,4 @@
     position: absolute;
     background-color: yellow;
 }
+

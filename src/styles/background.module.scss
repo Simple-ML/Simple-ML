@@ -1,0 +1,27 @@
+.geometry{
+    background-image: url( "./../images/background/lila-layer-geometisch.svg" );
+    background-color: #ffffff;
+    //background-size: 100% auto;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: fixed;
+}
+
+.dark{
+    background-color:  #290b2e;
+}
+
+.lightCircles{
+    background-image: url( "./../images/background/background-circle.svg" );
+    background-color: #ffffff;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.darkCircles{
+    background-image: url( "./../images/background/background-circle-dark.svg" );
+    background-color:#461f4c;
+}
+.text_background{
+    background-color:#35183a;
+}
