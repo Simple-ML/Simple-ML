@@ -11,9 +11,7 @@ import GraphicalEditor from './GraphicalEditor/GraphicalEditor';
 import DetailsEditor from "./DetailsEditor/DetailsEditor"
 import TextEditor from './TextEditor/TextEditor';
 import GoldenLayoutComponent from './../../helper/goldenLayoutServices/goldenLayoutComponent';
-import DefaultModal from '../core/Modal/DefaultModal';
 //redux
-import { showModal } from "../../reducers/modal";
 import { changeDirection } from '../../reducers/graphicalEditor';
 //style
 import './editorView.scss'
