@@ -143,7 +143,7 @@ EditorView.propTypes = {
 
     changeDirection: PropTypes.func.isRequired,
     showSideToolbar: PropTypes.func.isRequired,
-    hideSideToolbar: PropTypes.func.isRequired,
+    hideSideToolbar: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -156,7 +156,7 @@ const mapDispatchToProps = dispatch => {
     return {
         changeDirection: () => dispatch(changeDirection()),
         showSideToolbar: () => dispatch(showSideToolbar()),
-        hideSideToolbar: () => dispatch(hideSideToolbar()),
+        hideSideToolbar: () => dispatch(hideSideToolbar())
     }
 };
 
