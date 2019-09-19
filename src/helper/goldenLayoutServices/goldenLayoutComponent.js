@@ -6,7 +6,7 @@ import "golden-layout/src/css/goldenlayout-base.css";
 import "golden-layout/src/css/goldenlayout-light-theme.css";
 import $ from "jquery";
 
-export class GoldenLayoutComponent extends React.Component {
+export default class GoldenLayoutComponent extends React.Component {
   state = {};
   containerRef = React.createRef();
 

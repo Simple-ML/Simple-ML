@@ -25,6 +25,7 @@ export default class XtextServices {
      *      CreateEntityDTO: {
      *          name: string,
      *          className: string,
+     *          value: string,
      *          children: CreateEntityDTO[]
      *      }
      */
