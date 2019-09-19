@@ -1,19 +1,17 @@
 //node_modules
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import $ from "jquery";
-//React.Components
 
+//React.Components
 import EditorHeader from './EditorHeader/EditorHeader';
 import SideToolbar from './SideToolbar/SideToolbar';
 import GraphicalEditor from './GraphicalEditor/GraphicalEditor';
 import DetailsEditor from "./DetailsEditor/DetailsEditor"
 import TextEditor from './TextEditor/TextEditor';
-import { GoldenLayoutComponent } from './../../helper/goldenLayoutServices/goldenLayoutComponent';
-
-import XtextServices from '../../serverConnection/XtextServices';
+import GoldenLayoutComponent from './../../helper/goldenLayoutServices/goldenLayoutComponent';
+//redux
 import { changeDirection } from '../../reducers/graphicalEditor';
 //style
 import './editorView.scss'
@@ -102,7 +100,7 @@ class EditorView extends React.Component {
                                     {
                                         type: 'column',
                                         content:[
-                                            {                                           
+                                            {
                                                 title: "DSL Editor",
                                                 type: "react-component",
                                                 component: "textEditor",
@@ -140,6 +138,7 @@ class EditorView extends React.Component {
 
 EditorView.propTypes = {
     isSideToolbarVisible: PropTypes.bool.isRequired,
+
     changeDirection: PropTypes.func.isRequired,
     showSideToolbar: PropTypes.func.isRequired,
     hideSideToolbar: PropTypes.func.isRequired
