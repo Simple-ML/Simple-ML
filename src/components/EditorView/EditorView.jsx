@@ -20,7 +20,7 @@ import './editorView.scss'
 import 'golden-layout/src/css/goldenlayout-base.css';
 import headerStyle from '../core/Header/header.module.scss';
 //images
-import viewbarIcon from '../../images/HeaderButtons/viewbar-closed.svg';
+import viewbarIcon from '../../images/headerButtons/viewbar-closed.svg';
 import graphicalEditorIcon from '../../images/sideToolbar/flow.svg';
 import textEditorIcon from '../../images/sideToolbar/text-ide.svg';
 import detailViewIcon from '../../images/sideToolbar/chart.svg';
@@ -99,19 +99,8 @@ class EditorView extends React.Component {
                        key={1}
                        type={'image'} src={viewbarIcon}
                        onClick={() => this.showHideSideToolbar() }/>
-
                 </EditorHeader>
                 <SideToolbar componentConfigs={componentConfigs} layout={this.state.myLayout} />
-                {/*
-                <div className={'buttons'}>
-                    <button style={{ color: 'black' }} onClick={() => this.showHideSideToolbar() }>
-                        {'Toolbar'}
-                    </button>
-                    <button style={{ color: 'black' }} onClick={() => this.flipGraph()}>
-                        { 'Flip The Graph' }
-                    </button>
-                </div>
-                */}
                 <div className={'ide-container'}>
                     <GoldenLayoutComponent
                         htmlAttrs={{ style: { minHeight: "780px", width: "100%" } }}

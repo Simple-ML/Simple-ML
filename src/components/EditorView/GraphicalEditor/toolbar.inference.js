@@ -21,7 +21,7 @@ const deletionMxCellVertex = (context) => {
 };
 
 const deletionMxCellVertexMetaData = {
-    text: 'delete'
+    text: 'Delete'
 };
 
 InferenceCreator.addInference(validationMxCellVertex, deletionMxCellVertex, deletionMxCellVertexMetaData);
@@ -47,7 +47,7 @@ const deletionMxCellEdge = (context) => {
 };
 
 const deletionMxCellEdgeMetaData = {
-    text: 'delete'
+    text: 'Delete'
 };
 
 InferenceCreator.addInference(validationMxCellEdge, deletionMxCellEdge, deletionMxCellEdgeMetaData);

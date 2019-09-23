@@ -33,7 +33,12 @@
     }
 }
 
-
+.ace_editor.ace-tm {
+    .ace_gutter {
+        background-color: inherit;
+        color: #ffffff;
+    }
+}
 
 .xtext-marker_error {
     position: absolute;
@@ -66,4 +71,5 @@
     position: absolute;
     background-color: yellow;
 }
+
 
