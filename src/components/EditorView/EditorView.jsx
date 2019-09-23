@@ -13,11 +13,14 @@ import TextEditor from './TextEditor/TextEditor';
 import GoldenLayoutComponent from './../../helper/goldenLayoutServices/goldenLayoutComponent';
 //redux
 import { changeDirection } from '../../reducers/graphicalEditor';
+import { showSideToolbar, hideSideToolbar } from '../../reducers/sideToolbar';
+
 //style
 import './editorView.scss'
 import 'golden-layout/src/css/goldenlayout-base.css';
-import { showSideToolbar, hideSideToolbar } from '../../reducers/sideToolbar';
+import headerStyle from '../core/Header/header.module.scss';
 //images
+import viewbarIcon from '../../images/HeaderButtons/viewbar-closed.svg';
 import graphicalEditorIcon from '../../images/sideToolbar/flow.svg';
 import textEditorIcon from '../../images/sideToolbar/text-ide.svg';
 import detailViewIcon from '../../images/sideToolbar/chart.svg';
@@ -91,9 +94,15 @@ class EditorView extends React.Component {
 
         return(
             <div className={'EditorView'}>
-                <EditorHeader />
-                <SideToolbar componentConfigs={componentConfigs} layout={this.state.myLayout} />
+                <EditorHeader>
+                    <input className={headerStyle.button}
+                       key={1}
+                       type={'image'} src={viewbarIcon}
+                       onClick={() => this.showHideSideToolbar() }/>
 
+                </EditorHeader>
+                <SideToolbar componentConfigs={componentConfigs} layout={this.state.myLayout} />
+                {/*
                 <div className={'buttons'}>
                     <button style={{ color: 'black' }} onClick={() => this.showHideSideToolbar() }>
                         {'Toolbar'}
@@ -102,6 +111,7 @@ class EditorView extends React.Component {
                         { 'Flip The Graph' }
                     </button>
                 </div>
+                */}
                 <div className={'ide-container'}>
                     <GoldenLayoutComponent
                         htmlAttrs={{ style: { minHeight: "780px", width: "100%" } }}
