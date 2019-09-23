@@ -1,8 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { closeToolbar } from "../../../reducers/toolbar";
+
 import InferenceCreator from './InferenceCreator';
+import { closeToolbar } from '../../../reducers/toolbar';
+
+import ToolbarStyle from './toolbar.module.scss';
 
 class Toolbar extends React.Component {
     constructor(props) {
@@ -22,7 +25,7 @@ class Toolbar extends React.Component {
         visible = visible ? 'visible' : 'hidden';
 
         return(
-            <div className={'Toolbar'} style={{position: 'absolute', top: posY, left: posX, visibility: visible}}>
+            <div className={ToolbarStyle.toolbar} style={{position: 'absolute', top: posY, left: posX, visibility: visible}}>
                 {
                     buttonMetaData.map((item, i) => {
                         return(

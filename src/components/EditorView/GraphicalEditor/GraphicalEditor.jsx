@@ -8,9 +8,12 @@ import { mxClient, mxUtils } from "mxgraph-js";
 import SMLGraph from "./SMLGraph"
 //styles
 import background from './../../../styles/background.module.scss'
-import './graphicalEditor.scss'
-
+import graphicalEditorStyle from './graphicalEditor.module.scss';
+//redux
 import './toolbar.inference';
+import './createButton.inference';
+import { openToolbar } from '../../../reducers/toolbar';
+import { createButtonVerificationToken } from './createButton.inference';
 
 class GraphicalEditor extends React.Component {
 
@@ -20,6 +23,14 @@ class GraphicalEditor extends React.Component {
             graph: undefined
         }
         this.graphRef = React.createRef();
+        this.createButtonRef = React.createRef();
+
+        this.createButtonClick = this.createButtonClick.bind(this);
+    }
+
+    createButtonClick = () => {
+        let {x, y} = ReactDOM.findDOMNode(this.createButtonRef.current).getBoundingClientRect();
+        this.props.createEmfEntity(createButtonVerificationToken, x, y)
     }
 
     componentDidMount() {
@@ -51,7 +62,16 @@ class GraphicalEditor extends React.Component {
             this.updateView();
 
         return (
+            <div className={graphicalEditorStyle.graphicalEditorContainer} >
             <div className={`graphicalEditor ${background.darkCircles} ${this.props.name}`} ref={this.graphRef}></div>
+                <button
+                    className={graphicalEditorStyle["graphical-editor-create-button"]}
+                    onClick={this.createButtonClick}
+                    ref={this.createButtonRef}
+                >
+                    +
+                </button>
+            </div>
         );
     }
 }
@@ -68,4 +88,10 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, null)(GraphicalEditor);
+const mapDispatchToProps = dispatch => {
+    return {
+        createEmfEntity: (context, posX, posY) => dispatch(openToolbar(context, posX, posY))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GraphicalEditor);
