@@ -16,8 +16,12 @@ import { changeDirection } from '../../reducers/graphicalEditor';
 //style
 import './editorView.scss'
 import 'golden-layout/src/css/goldenlayout-base.css';
-import { showSideToolbar, hideSideToolbar } from "../../reducers/sideToolbar";
-
+import { showSideToolbar, hideSideToolbar } from '../../reducers/sideToolbar';
+//images
+import graphicalEditorIcon from '../../images/sideToolbar/flow.svg';
+import textEditorIcon from '../../images/sideToolbar/text-ide.svg';
+import detailViewIcon from '../../images/sideToolbar/chart.svg';
+import tutorialIcon from '../../images/sideToolbar/tutorial.svg';
 
 class EditorView extends React.Component {
     constructor(props) {
@@ -37,12 +41,26 @@ class EditorView extends React.Component {
         return [{
             title: "Graphical Editor",
             type: "react-component",
-            component: "graphicalEditor"
+            component: "graphicalEditor",
+            icon: graphicalEditorIcon
         },
         {
             title: "Text-Editor",
             type: "react-component",
-            component: "textEditor"
+            component: "textEditor",
+            icon: textEditorIcon
+        },
+        {
+            title: "Details",
+            type: "react-component",
+            component: "detailsEditor",
+            icon: detailViewIcon
+        },
+        {
+            title: "Tutorial",
+            type: "react-component",
+            component: "tutorial",
+            icon: tutorialIcon
         }]
     }
 
@@ -69,10 +87,12 @@ class EditorView extends React.Component {
     }
 
     render() {
+        let componentConfigs = this.createComponentConfigs();
+
         return(
             <div className={'EditorView'}>
                 <EditorHeader />
-                <SideToolbar componentConfigs={this.createComponentConfigs()} layout={this.state.myLayout} />
+                <SideToolbar componentConfigs={componentConfigs} layout={this.state.myLayout} />
 
                 <div className={'buttons'}>
                     <button style={{ color: 'black' }} onClick={() => this.showHideSideToolbar() }>
@@ -92,34 +112,22 @@ class EditorView extends React.Component {
                             content:[{
                                 type: "row",
                                 content: [
-                                    {
-                                        title: "Graphical Editor",
-                                        type: "react-component",
-                                        component: "graphicalEditor"
-                                    },
+                                    componentConfigs[0],
                                     {
                                         type: 'column',
                                         content:[
-                                            {
-                                                title: "DSL Editor",
-                                                type: "react-component",
-                                                component: "textEditor",
-                                                height: 68.803
-                                            },
-                                            {
-                                                title: "Details",
-                                                type: "react-component",
-                                                component: "detailsEditor",
-                                            }
-                                    ]
-                                }]
-
+                                            componentConfigs[1],
+                                            componentConfigs[2]
+                                        ]
+                                    }
+                                ]
                             }]
                         }}
                         registerComponents={myLayout => {
                             myLayout.registerComponent("textEditor",  this.wrapComponent(TextEditor));
                             myLayout.registerComponent("graphicalEditor",  this.wrapComponent(GraphicalEditor));
                             myLayout.registerComponent("detailsEditor",  this.wrapComponent(DetailsEditor));
+                            myLayout.registerComponent("tutorial",  this.wrapComponent(DetailsEditor));
                             this.setState({myLayout});
                             /*
                             * Since our layout is not a direct child
