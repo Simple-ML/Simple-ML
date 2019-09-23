@@ -12,6 +12,7 @@ class Toolbar extends React.Component {
     constructor(props) {
         super(props)
 
+        this.myself = React.createRef();
         this.closeToolbar = this.closeToolbar.bind(this);
     }
 
@@ -26,22 +27,29 @@ class Toolbar extends React.Component {
         visible = visible ? 'visible' : 'hidden';
 
         return(
-            <div className={ToolbarStyle.toolbar} style={{position: 'absolute', top: posY, left: posX, visibility: visible}}>
-                {
-                    buttonMetaData.map((item, i) => {
-                        return(
-                            <div className={ToolbarStyle["toolbar-entry"]}
-                                key={i}
-                                onClick={() => {
-                                item.func();
-                                this.closeToolbar();
-                            }}>
-                                <img className={ToolbarStyle.icon} src={item.metaData.icon} alt={item.metaData.text}/>
-                                <div>{item.metaData.text}</div>
-                            </div>
-                        )
-                    })
-                }
+            <div style={{visibility: visible}}>
+                <div className={ToolbarStyle.toolbar}
+                     style={{top: posY, left: posX}}
+                     ref={this.myself}>
+                    {
+                        buttonMetaData.map((item, i) => {
+                            return(
+                                <div className={ToolbarStyle["toolbar-entry"]}
+                                    key={i}
+                                    onClick={() => {
+                                    item.func();
+                                    this.closeToolbar();
+                                }}>
+                                    <img className={ToolbarStyle.icon} src={item.metaData.icon}/>
+                                    <div>{item.metaData.text}</div>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+                <div className={ToolbarStyle["toolbar-outside"]}
+                     onClick={this.closeToolbar}>
+                </div>
             </div>
         )
     }

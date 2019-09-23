@@ -1,6 +1,7 @@
 
 .toolbar {
   cursor: pointer;
+  position: absolute;
   background-color: #ffffff;
   color: #000000;
   border-radius: 3px;
@@ -20,4 +21,14 @@
       padding-right: 10px;
     }
   }
+}
+
+.toolbar-outside {
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 998;
 }
