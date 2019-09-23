@@ -1,10 +1,11 @@
+//node_module
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
+//redux
 import InferenceCreator from './InferenceCreator';
 import { closeToolbar } from '../../../reducers/toolbar';
-
+//style
 import ToolbarStyle from './toolbar.module.scss';
 
 class Toolbar extends React.Component {
@@ -29,12 +30,15 @@ class Toolbar extends React.Component {
                 {
                     buttonMetaData.map((item, i) => {
                         return(
-                            <button key={i} onClick={() => {
+                            <div className={ToolbarStyle["toolbar-entry"]}
+                                key={i}
+                                onClick={() => {
                                 item.func();
                                 this.closeToolbar();
                             }}>
-                                {item.metaData.text}
-                            </button>
+                                <img className={ToolbarStyle.icon} src={item.metaData.icon} alt={item.metaData.text}/>
+                                <div>{item.metaData.text}</div>
+                            </div>
                         )
                     })
                 }

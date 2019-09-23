@@ -1,6 +1,23 @@
 
 .toolbar {
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 3px;
+  min-width: 200px;
   display: flex;
   flex-direction: column;
   z-index: 999;
+
+  .toolbar-entry {
+    display: flex;
+    flex-direction: row;
+    padding: 8px 16px 8px 16px;
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      padding-right: 10px;
+    }
+  }
 }

@@ -1,12 +1,11 @@
 //node_module
 import React from "react";
+//style
+import headerStyle from "./header.module.scss";
 //images
 import logo from "./../../../images/logo/logo.png";
 import logoVector from "./../../../images/logo/logo-vector.svg";
 import simpleMl from "./../../../images/logo/simple-ml.svg";
-//style
-import headerStyle from "./header.module.scss";
-
 
 class Header extends React.Component{
     render() {
