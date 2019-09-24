@@ -2,10 +2,17 @@
 import InferenceCreator from './../../core/Toolbar/InferenceCreator';
 import EmfModelHelper from '../../../helper/EmfModelHelper';
 import XtextServices from '../../../serverConnection/XtextServices';
+
+import store from '../../../reduxStore';
 //icons
 import editIcon from '../../../images/contextToolbar/Edit.svg';
 import deleteIcon from '../../../images/contextToolbar/Delete.svg';
 
+
+const disabledBecauseEditingNotAllowed = () => {
+    let { emfModel } = store.getState();
+    return emfModel.dirty;
+}
 
 // -----------------------------------------------------------------------
 // edit Emf-Entity inferred form mxCell->Emf-Model
@@ -17,8 +24,6 @@ const validationMxCellAndEmfModelLink = (context) => {
     if(context.value.data.className !== undefined)
         return true;
 
-    console.log(context)
-
     return true;
 }
 
@@ -28,7 +33,8 @@ const openDialogForEditingEmfEntity = (context) => {
 
 const editEmfEntityMetaData = {
     text: 'Edit',
-    icon: editIcon
+    icon: editIcon,
+    disabled: disabledBecauseEditingNotAllowed
 }
 
 InferenceCreator.addInference(validationMxCellAndEmfModelLink, openDialogForEditingEmfEntity, editEmfEntityMetaData);
@@ -50,7 +56,8 @@ const deletionMxCellVertex = (context) => {
 
 const deletionMxCellVertexMetaData = {
     text: 'Delete',
-    icon: deleteIcon
+    icon: deleteIcon,
+    disabled: disabledBecauseEditingNotAllowed
 };
 
 InferenceCreator.addInference(validationMxCellVertex, deletionMxCellVertex, deletionMxCellVertexMetaData);

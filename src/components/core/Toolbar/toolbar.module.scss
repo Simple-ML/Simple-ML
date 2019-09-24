@@ -10,15 +10,19 @@
   flex-direction: column;
   z-index: 999;
 
-  .toolbar-entry {
+  .toolbar-button {
     display: flex;
     flex-direction: row;
+    align-items: center;
     padding: 8px 16px 8px 16px;
 
     .icon {
       width: 20px;
       height: 20px;
       padding-right: 10px;
+    }
+    &:disabled {
+      opacity: 0.5;
     }
   }
 }

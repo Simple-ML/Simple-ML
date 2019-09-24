@@ -72,7 +72,7 @@ class GraphicalEditor extends React.Component {
                     type={'image'} src={createButtonIcon}
                     className={graphicalEditorStyle["graphical-editor-create-button"]}
                     onClick={this.createButtonClick}
-
+                    disabled={this.props.dirty}
                 >
                 </input>
             </div>
@@ -82,13 +82,15 @@ class GraphicalEditor extends React.Component {
 
 GraphicalEditor.propTypes = {
     emfModelFlat: PropTypes.array.isRequired,
-    viewMode: PropTypes.string.isRequired
+    viewMode: PropTypes.string.isRequired,
+    dirty: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => {
     return {
         emfModelFlat: state.emfModel.emfModelFlat,
-        viewMode: state.graphicalEditor.viewMode
+        viewMode: state.graphicalEditor.viewMode,
+        dirty: state.emfModel.dirty
     };
 };
 

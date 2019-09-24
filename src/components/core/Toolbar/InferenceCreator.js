@@ -13,7 +13,7 @@ class InferenceCreator {
         verifyFunction = (context) => { return false },
         executeFunctions = [
             {
-                metaData: {'name', 'icon', ...},  // could be data for ui-element
+                metaData: {'name', 'icon', ...},  // data for ui-element (im most circumstances)
                 func: (context) => {'do something'}
             }
         ]

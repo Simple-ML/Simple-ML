@@ -17,4 +17,9 @@
     right: 24px;
     width: 36px;
     height: 36px;
+
+    &:disabled {
+        opacity: 0.75;
+    }
+
 }
