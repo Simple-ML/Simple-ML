@@ -26,7 +26,7 @@ class Toolbar extends React.Component {
      */
     prepareMetaData = (metaData) => {
         metaData.forEach((item) => {
-            item.metaData.disabled  = item.metaData.disabled != undefined ?
+            item.metaData.disabled  = item.metaData.disabled !== undefined ?
                 item.metaData.disabled : () => { return false; }
         })
     }

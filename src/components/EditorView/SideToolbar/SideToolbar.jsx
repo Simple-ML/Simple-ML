@@ -32,6 +32,9 @@ class SideToolbar extends React.Component {
     }
 
     render() {
+
+        let buttonConfigs = this.props.componentConfigs;
+
         let style = {
             visibility: this.props.visible ? 'visible' : 'hidden'
         };
@@ -39,16 +42,16 @@ class SideToolbar extends React.Component {
         return (
             <div className={sideToolbarStyles["Side-Toolbar"]} style={style}>
                 {   this.state.childInfos = []   }
-                {   this.props.componentConfigs.map((componentConfig, i) => {
+                {   buttonConfigs.map((buttonConfig, i) => {
                 return (
                     <input className={sideToolbarStyles["Side-Toolbar-button"]}
                         key={i}
-                        type={'image'} src={componentConfig.icon}
+                        type={'image'} src={buttonConfig.icon} alt={buttonConfig.title}
                         ref={(input) => {
-                            this.state.childInfos.push({ref: input, config: componentConfig});
+                            this.state.childInfos.push({ref: input, config: buttonConfig});
                         }}
                         onClick={() => {
-                            this.props.layout.root.contentItems[0].addChild(componentConfig)
+                            this.props.layout.root.contentItems[0].addChild(buttonConfig)
                         }}
                     />)
                 })}
