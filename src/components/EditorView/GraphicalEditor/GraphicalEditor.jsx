@@ -9,11 +9,14 @@ import SMLGraph from "./SMLGraph"
 //styles
 import background from './../../../styles/background.module.scss'
 import graphicalEditorStyle from './graphicalEditor.module.scss';
+import createButtonIcon from '../../../images/graph/plus.svg';
 //redux
 import './toolbar.inference';
 import './createButton.inference';
 import { openToolbar } from '../../../reducers/toolbar';
 import { createButtonVerificationToken } from './createButton.inference';
+
+
 
 class GraphicalEditor extends React.Component {
 
@@ -64,13 +67,14 @@ class GraphicalEditor extends React.Component {
         return (
             <div className={graphicalEditorStyle.graphicalEditorContainer} >
             <div className={`graphicalEditor ${background.darkCircles} ${this.props.name}`} ref={this.graphRef}></div>
-                <button
+                <input
+                    ref={this.createButtonRef}
+                    type={'image'} src={createButtonIcon}
                     className={graphicalEditorStyle["graphical-editor-create-button"]}
                     onClick={this.createButtonClick}
-                    ref={this.createButtonRef}
+                    disabled={this.props.dirty}
                 >
-                    +
-                </button>
+                </input>
             </div>
         );
     }
@@ -78,13 +82,15 @@ class GraphicalEditor extends React.Component {
 
 GraphicalEditor.propTypes = {
     emfModelFlat: PropTypes.array.isRequired,
-    viewMode: PropTypes.string.isRequired
+    viewMode: PropTypes.string.isRequired,
+    dirty: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => {
     return {
         emfModelFlat: state.emfModel.emfModelFlat,
-        viewMode: state.graphicalEditor.viewMode
+        viewMode: state.graphicalEditor.viewMode,
+        dirty: state.emfModel.dirty
     };
 };
 
