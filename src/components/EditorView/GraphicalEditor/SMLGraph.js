@@ -18,6 +18,14 @@ class SMLGraph extends mxGraph {
     EMFmodel = undefined;
     layout = {};
 
+    constructor(parentContainer) {
+        super(parentContainer);
+        if(this.cellEditor) {
+            this.cellEditor.destroy();
+            this.cellEditor = null;
+        }
+    }
+
     /**
      *
      * @param {mxConstant} direction :  mxConstants.DIRECTION_NORTH or mxConstants.DIRECTION_WEST
@@ -45,7 +53,7 @@ class SMLGraph extends mxGraph {
      *
      */
     render(){
-        
+
         if(this.EMFmodel === undefined)
             return;
         this.getModel().beginUpdate();
