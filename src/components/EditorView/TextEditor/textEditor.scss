@@ -33,10 +33,33 @@
     }
 }
 
-.ace_editor.ace-tm {
+.ace_editor.ace-tm,
+.ace_editor.ace-eclipse {
+    .ace_marker-layer {
+        .ace_active-line {
+            background-color: #5d1b64;
+        }
+        .ace_selection {
+            background-color: #e3327d;
+        }
+        .xtext-marker_write {
+            background-color: unset;
+        }
+        .xtext-marker_read {
+            background-color: unset;
+        }
+    }
     .ace_gutter {
-        background-color: inherit;
-        color: #ffffff;
+        background-color: unset;
+        color: unset;
+        border: unset;
+
+        .ace_gutter-active-line {
+            background-color: #5d1b64;
+        }
+    }
+    .ace_cursor {
+        color: #dddddd;
     }
 }
 
