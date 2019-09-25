@@ -1,7 +1,7 @@
 export default class MxGraphConfig {
 
     constructor() {
-        this.dslPrefix = "org.xtext.example.mydsl.myDsl.";
+        this.dslPrefix = "de.unibonn.simpleml.simpleML.";
         this.configs = this.defineConfig();
     }
 
