@@ -27,7 +27,17 @@ window.loadEditor((xtextEditor) => {
                 store.dispatch(setNewEmfModel(result.emfModel));
                 break;
             case 'validate':
-                if(result.issues.length > 0)
+                // TODO: not the right place for this code (containsError)
+                const containsError = (issues) => {
+                    return 0 < issues.filter((item) => {
+                        if(item.severity === 'error')
+                            return true;
+                        else
+                            return false;
+                    }).length
+                };
+
+                if(containsError(result.issues))
                     store.dispatch(setEmfModelDirty());
                 else
                     store.dispatch(setEmfModelClean());
