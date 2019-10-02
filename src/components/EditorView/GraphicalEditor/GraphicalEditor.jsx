@@ -9,7 +9,7 @@ import SMLGraph from "./SMLGraph"
 //styles
 import background from './../../../styles/background.module.scss'
 import graphicalEditorStyle from './graphicalEditor.module.scss';
-import createButtonIcon from '../../../images/graph/plus.svg';
+import createButtonIcon from '../../../images/graph/instances/plus.svg';
 //redux
 import './toolbar.inference';
 import './createButton.inference';

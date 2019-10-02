@@ -1,3 +1,6 @@
+import datasetIcon from './../../../images/graph/instances/dataset.svg'
+import defaultActionIcon from './../../../images/graph/instances/default-action.svg'
+import plusIcon from './../../../images/graph/instances/plus.svg'
 export default class MxGraphConfig {
 
     constructor() {
@@ -10,39 +13,10 @@ export default class MxGraphConfig {
         var configs = [];
         configs.push(
             {
-                name: "DataSource",
-                className: this.dslPrefix + "DataSource",
-                style: "fillColor=green",
-                image: "editors/images/rectangle.gif",
-                newNameTemplate: "newDataSource"
-            }
-        );
-
-        configs.push(
-            {
-                name: "Function",
-                className: this.dslPrefix + "Function",
-                style: "shape=ellipse;fillColor=red;",
-                image: "editors/images/ellipse.gif",
-                newNameTemplate: "newFunction"
-            }
-        );
-
-        configs.push(
-            {
-                name: "MlMethod",
-                className: this.dslPrefix + "MlMethod",
-                style: "shape=cloud;fillColor=lightblue;",
-                image: "editors/images/cloud.gif",
-                newNameTemplate: "newMethod"
-            }
-        );
-        configs.push(
-            {
                 name: "Assignment",
                 className: this.dslPrefix + "Assignment",
                 style: "shape=cylinder;fillColor=#B891BF",
-                image: "editors/images/rectangle.gif",
+                image: datasetIcon,
                 newNameTemplate: "newAssignment"
             }
         );
@@ -51,7 +25,7 @@ export default class MxGraphConfig {
                 name: "ProcessCall",
                 className: this.dslPrefix + "ProcessCall",
                 style: "shape=rectangle;fillColor=#B891BF",
-                image: "editors/images/rectangle.gif",
+                image: defaultActionIcon,
                 newNameTemplate: "newAssignment"
             }
         );
@@ -59,8 +33,8 @@ export default class MxGraphConfig {
             {
                 name: "PlusVertex",
                 className:"PlusVertex",
-                style: "fillColor=orange",
-                image: "editors/images/rectangle.gif",
+                style: "shape=image",
+                image: plusIcon,
                 newNameTemplate: "newAssignment"
             }
         );
