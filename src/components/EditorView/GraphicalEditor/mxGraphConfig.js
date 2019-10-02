@@ -55,6 +55,15 @@ export default class MxGraphConfig {
                 newNameTemplate: "newAssignment"
             }
         );
+        configs.push(
+            {
+                name: "PlusVertex",
+                className:"PlusVertex",
+                style: "fillColor=orange",
+                image: "editors/images/rectangle.gif",
+                newNameTemplate: "newAssignment"
+            }
+        );
         return configs;
     }
 

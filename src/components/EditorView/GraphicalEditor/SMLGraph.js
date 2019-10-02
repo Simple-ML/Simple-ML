@@ -38,21 +38,29 @@ class SMLGraph extends mxGraph {
      */
     clear(){
         this.removeCells(this.getChildCells(this.parent, true, true));
+        console.log(this.model)
     }
 
     /**
      * renders the model stored in this.EMFModel
      *
      */
-    render(){
-        
+    render(){ 
         if(this.EMFmodel === undefined)
             return;
         this.getModel().beginUpdate();
         try{
             var cells = this.addEntities(this.EMFmodel);
-            cells.map(cell => this.connectToParent(cell));
+            cells.map(cell => {
+                this.connectToParent(cell);
+            });
             this.connectReferences(this.EMFmodel);
+            var nodes = this.returnAllVertices();
+            nodes.forEach(cell => {
+                if (!this.isSourceNode(cell)){
+                    this.addPlusVertex(cell);
+                }
+            })
             this.layout.execute(this.parent);
         }
         finally {
@@ -65,7 +73,6 @@ class SMLGraph extends mxGraph {
      * @param {JSON} flatModel EMFModel from DSL after flattening
      */
     updateEMFModel(flatModel){
-
         this.EMFmodel=flatModel;
     }
 
@@ -126,6 +133,54 @@ class SMLGraph extends mxGraph {
         })
     };
 
+    addPlusVertex(cell){
+        if(cell.value !== "plusButton"){
+            var plus = this.addEntity("plusButton", "fillColor=orange");
+            plus.setParent(cell);
+            this.addAssociation(cell, plus);
+        }
+    }
+
+    returnAllEdges(){
+        var edges = []
+        for (var index in this.model.cells){
+            if (this.model.cells[index].edge === true){
+                edges.push(this.model.cells[index])
+            }
+        }
+        return edges
+    }
+    returnAllVertices(){
+        var vertices = []
+        for (var index in this.model.cells){
+            if (this.model.cells[index].vertex === true){
+                vertices.push(this.model.cells[index])
+            }
+        }
+        return vertices
+    }
+
+    returnAllSourceNodes(){
+        var sourceNodes = [];
+        var edges = this.returnAllEdges();
+        edges.forEach(edge=>{
+            sourceNodes.push(edge.source)
+        })
+        return sourceNodes;
+    }
+
+    isSourceNode(cell){
+        var result = false;
+        var sourceNodes = this.returnAllSourceNodes();
+        var comparedSources=this.model.filterCells(sourceNodes, function(source){
+            return source.id === cell.id
+        })
+        if (comparedSources.length !== 0){
+            result = true;
+        }
+        return result;
+    }
+
     /**
      * draws a connection between an mxCell and the next visible ancestor
      * @param {mxCell} cell with EMFEntity in cell.value
@@ -158,7 +213,7 @@ class SMLGraph extends mxGraph {
      */
     labelDisplayOverride(){
         this.convertValueToString=(cell) =>{
-            if (cell.isVertex()) {
+            if (cell.isVertex()&& cell.value!== "plusButton") {
                 return this.config.getLabelName(cell);
             }
         }
@@ -168,7 +223,6 @@ class SMLGraph extends mxGraph {
     addDeleteOnDoubleClickListener(){
         this.addListener(mxEvent.DOUBLE_CLICK, function(sender, evt){
             let cell = evt.getProperty('cell');
-            console.log(evt)
             reduxStore.dispatch(openToolbar(cell, evt.properties.event.pageX, evt.properties.event.pageY))
         });
     }
