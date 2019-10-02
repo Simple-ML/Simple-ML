@@ -1,0 +1,38 @@
+.app-header{
+    height: 64px;
+    width:100%;
+    background-color: #290B2E;
+    display: flex;
+    flex-direction: row;
+
+    .logo-container {
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+    }
+    .logo {
+        height: 40px;
+        width: 110px;
+        float: left;
+        margin-right: 3px;
+    }
+    .simple-ml{
+        float: left;
+        min-width: 70.5px;
+        height: 1em;
+        min-height:10px;
+    }
+
+    .button-container {
+        flex-grow: 1;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .button {
+        height: 24px;
+        widht: 24px;
+    }
+}

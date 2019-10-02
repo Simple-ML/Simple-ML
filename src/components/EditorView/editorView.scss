@@ -16,8 +16,6 @@
 }
 
 .ide-container {
-  padding-left: 32px;
-  padding-right: 32px;
   min-height: 800px;
   background-color: #2f1433;
 
@@ -31,7 +29,6 @@
 
   .graphicalEditor {
     position: relative;
-    min-width: 450px;
     height: 100%;
     padding: 1em;
     overflow:scroll;
@@ -92,6 +89,5 @@
 .buttons {
   display: inline-block;
   position: relative;
-  margin: 20px;
   width:100%;
 }

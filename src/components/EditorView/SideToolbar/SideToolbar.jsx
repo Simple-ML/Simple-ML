@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-
-import './SideToolbar.scss';
 import PropTypes from "prop-types";
+
+import sideToolbarStyles from './SideToolbar.module.scss';
 
 /**
  * This component is used in combination with golden-layout. So this.props.layout has to be the layout-Object from
@@ -32,25 +32,28 @@ class SideToolbar extends React.Component {
     }
 
     render() {
+
+        let buttonConfigs = this.props.componentConfigs;
+
         let style = {
             visibility: this.props.visible ? 'visible' : 'hidden'
         };
 
         return (
-            <div className={'Side-Toolbar'} style={style}>
+            <div className={sideToolbarStyles["Side-Toolbar"]} style={style}>
                 {   this.state.childInfos = []   }
-                {   this.props.componentConfigs.map((componentConfig, i) => {
+                {   buttonConfigs.map((buttonConfig, i) => {
                 return (
-                    <button key={i}
+                    <input className={sideToolbarStyles["Side-Toolbar-button"]}
+                        key={i}
+                        type={'image'} src={buttonConfig.icon} alt={buttonConfig.title}
                         ref={(input) => {
-                            this.state.childInfos.push({ref: input, config: componentConfig});
+                            this.state.childInfos.push({ref: input, config: buttonConfig});
                         }}
                         onClick={() => {
-                            this.props.layout.root.contentItems[0].addChild(componentConfig)
+                            this.props.layout.root.contentItems[0].addChild(buttonConfig)
                         }}
-                    >
-                        {componentConfig.title}
-                    </button>)
+                    />)
                 })}
             </div>
         )
