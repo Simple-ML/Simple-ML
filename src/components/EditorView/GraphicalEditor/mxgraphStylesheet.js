@@ -1,12 +1,14 @@
 import {mxConstants, mxPerimeter, mxUtils} from "mxgraph-js"
+import plus from "./../../../images/graph/plus.svg"
+
 function configureStylesheet(graph)
 {
     var style = new Object();
     style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
     style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RectanglePerimeter;
-    style[mxConstants.STYLE_IMAGE] = 'images/icons48/keys.png';
+    style[mxConstants.STYLE_IMAGE] = plus;
     style[mxConstants.STYLE_FONTCOLOR] = '#FFFFFF';
-    graph.getStylesheet().putCellStyle('image', style);
+    graph.getStylesheet().putCellStyle('dataset', style);
     
     style = mxUtils.clone(style);
     style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_LABEL;
@@ -45,3 +47,4 @@ function configureStylesheet(graph)
     style[mxConstants.STYLE_SPACING_RIGHT] = '55';
     graph.getStylesheet().putCellStyle('left', style);
 };
+export default configureStylesheet;

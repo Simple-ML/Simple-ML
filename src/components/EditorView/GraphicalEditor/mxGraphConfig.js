@@ -8,40 +8,12 @@ export default class MxGraphConfig {
     defineConfig() {
         /* defines the short name, class name, style, image and a template for new objects of the class. */
         var configs = [];
-        configs.push(
-            {
-                name: "DataSource",
-                className: this.dslPrefix + "DataSource",
-                style: "fillColor=green",
-                image: "editors/images/rectangle.gif",
-                newNameTemplate: "newDataSource"
-            }
-        );
 
-        configs.push(
-            {
-                name: "Function",
-                className: this.dslPrefix + "Function",
-                style: "shape=ellipse;fillColor=red;",
-                image: "editors/images/ellipse.gif",
-                newNameTemplate: "newFunction"
-            }
-        );
-
-        configs.push(
-            {
-                name: "MlMethod",
-                className: this.dslPrefix + "MlMethod",
-                style: "shape=cloud;fillColor=lightblue;",
-                image: "editors/images/cloud.gif",
-                newNameTemplate: "newMethod"
-            }
-        );
         configs.push(
             {
                 name: "Assignment",
                 className: this.dslPrefix + "Assignment",
-                style: "shape=cylinder;fillColor=#B891BF",
+                style: 'dataset',
                 image: "editors/images/rectangle.gif",
                 newNameTemplate: "newAssignment"
             }

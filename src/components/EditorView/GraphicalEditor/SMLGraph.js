@@ -10,7 +10,7 @@ import GraphServices from './mxGraphModelServices';
 
 import reduxStore from './../../../reduxStore';
 import { openToolbar } from './../../../reducers/toolbar';
-
+import configureStylesheet from "./mxgraphStylesheet"
 class SMLGraph extends mxGraph {
 
     parent = this.getDefaultParent();
@@ -33,6 +33,7 @@ class SMLGraph extends mxGraph {
     initView(direction){
         this.config = new MxGraphConfig();
         this.layout = new mxHierarchicalLayout(this, direction);
+        configureStylesheet(this);
         mxConnectionHandler.prototype.connectImage = new mxImage(connectImage,10,10);
         mxConnectionHandler.prototype.moveIconFront=true;
         this.layout.intraCellSpacing = 20;
