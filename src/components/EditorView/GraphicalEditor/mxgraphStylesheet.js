@@ -1,50 +1,42 @@
 import {mxConstants, mxPerimeter, mxUtils} from "mxgraph-js"
-import plus from "./../../../images/graph/plus.svg"
+import datasetIcon from "./../../../images/graph/instances/dataset.svg"
+import defaultProcessIcon from "./../../../images/graph/instances/mask.svg"
+import endArrowIcon from "./../../../images/graph/oval.svg"
+import mxGraphConfig from "./mxGraphConfig"
 
 function configureStylesheet(graph)
 {
-    var style = new Object();
-    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
-    style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RectanglePerimeter;
-    style[mxConstants.STYLE_IMAGE] = plus;
-    style[mxConstants.STYLE_FONTCOLOR] = '#FFFFFF';
-    graph.getStylesheet().putCellStyle('dataset', style);
+    var datasetStyle = new Object();
+    datasetStyle[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
+    datasetStyle[mxConstants.STYLE_PERIMETER] = mxPerimeter.RectanglePerimeter;
+    datasetStyle[mxConstants.STYLE_IMAGE] = datasetIcon;
+    datasetStyle[mxConstants.STYLE_FONTCOLOR] = '#b9c0c7';
+    graph.getStylesheet().putCellStyle(mxGraphConfig.constants.DATASET, datasetStyle);
     
-    style = mxUtils.clone(style);
-    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_LABEL;
-    style[mxConstants.STYLE_STROKECOLOR] = '#000000';
-    style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
-    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_TOP;
-    style[mxConstants.STYLE_IMAGE_ALIGN] = mxConstants.ALIGN_CENTER;
-    style[mxConstants.STYLE_IMAGE_VERTICAL_ALIGN] = mxConstants.ALIGN_TOP;
-    style[mxConstants.STYLE_IMAGE] = 'images/icons48/gear.png';
-    style[mxConstants.STYLE_IMAGE_WIDTH] = '48';
-    style[mxConstants.STYLE_IMAGE_HEIGHT] = '48';
-    style[mxConstants.STYLE_SPACING_TOP] = '56';
-    style[mxConstants.STYLE_SPACING] = '8';
-    graph.getStylesheet().putCellStyle('bottom', style);
-    
-    style = mxUtils.clone(style);
-    style[mxConstants.STYLE_IMAGE_VERTICAL_ALIGN] = mxConstants.ALIGN_BOTTOM;
-    style[mxConstants.STYLE_IMAGE] = 'images/icons48/server.png';
-    delete style[mxConstants.STYLE_SPACING_TOP];
-    graph.getStylesheet().putCellStyle('top', style);
-    
-    style = mxUtils.clone(style);
-    style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_LEFT;
-    style[mxConstants.STYLE_IMAGE_ALIGN] = mxConstants.ALIGN_LEFT;
-    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
-    style[mxConstants.STYLE_IMAGE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
-    style[mxConstants.STYLE_IMAGE] = 'images/icons48/earth.png';
-    style[mxConstants.STYLE_SPACING_LEFT] = '55';
-    style[mxConstants.STYLE_SPACING] = '4';
-    graph.getStylesheet().putCellStyle('right', style);
-    
-    style = mxUtils.clone(style);
-    style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_RIGHT;
-    style[mxConstants.STYLE_IMAGE_ALIGN] = mxConstants.ALIGN_RIGHT;
-    delete style[mxConstants.STYLE_SPACING_LEFT];
-    style[mxConstants.STYLE_SPACING_RIGHT] = '55';
-    graph.getStylesheet().putCellStyle('left', style);
+    var processCallStyle = new Object();
+    datasetStyle[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
+    processCallStyle[mxConstants.STYLE_IMAGE] = defaultProcessIcon;
+    processCallStyle[mxConstants.STYLE_FONTCOLOR] = '#b9c0c7';
+    graph.getStylesheet().putCellStyle(mxGraphConfig.constants.PROCESSCALL, processCallStyle);
+
+    var edgeStyle = new Object();
+    edgeStyle[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_CONNECTOR;
+    edgeStyle[mxConstants.STYLE_ENDARROW] = mxConstants.SHAPE_IMAGE;
+    edgeStyle[mxConstants.STYLE_IMAGE] = datasetIcon;
+    edgeStyle[mxConstants.STYLE_STROKEWIDTH] = "2px";
+    edgeStyle[mxConstants.STYLE_STROKECOLOR] = "#d8d8d8";
+    edgeStyle[mxConstants.STYLE_IMAGE_WIDTH] = '48';
+    edgeStyle[mxConstants.STYLE_IMAGE_HEIGHT] = '48';
+    graph.getStylesheet().putDefaultEdgeStyle(edgeStyle);
+    /**
+     * align: "center"
+endArrow: "classic"
+fontColor: "#446299"
+shape: "connector"
+strokeColor: "#6482B9"
+verticalAlign: "middle"
+     */
+    //graph.getStylesheet().putDefaultEdgeStyle(edgeStyle)
+//////////////////////////
 };
 export default configureStylesheet;

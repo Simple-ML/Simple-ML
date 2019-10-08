@@ -11,6 +11,8 @@ import GraphServices from './mxGraphModelServices';
 import reduxStore from './../../../reduxStore';
 import { openToolbar } from './../../../reducers/toolbar';
 import configureStylesheet from "./mxgraphStylesheet"
+import mxGraphConfig from "./mxGraphConfig";
+
 class SMLGraph extends mxGraph {
 
     parent = this.getDefaultParent();
@@ -31,9 +33,9 @@ class SMLGraph extends mxGraph {
      * @param {mxConstant} direction :  mxConstants.DIRECTION_NORTH or mxConstants.DIRECTION_WEST
      */
     initView(direction){
-        this.config = new MxGraphConfig();
         this.layout = new mxHierarchicalLayout(this, direction);
         configureStylesheet(this);
+        console.log(this.getStylesheet());
         mxConnectionHandler.prototype.connectImage = new mxImage(connectImage,10,10);
         mxConnectionHandler.prototype.moveIconFront=true;
         this.layout.intraCellSpacing = 20;
@@ -53,15 +55,22 @@ class SMLGraph extends mxGraph {
      * renders the model stored in this.EMFModel
      *
      */
-    render(){
-
+    render(){ 
         if(this.EMFmodel === undefined)
             return;
         this.getModel().beginUpdate();
         try{
             var cells = this.addEntities(this.EMFmodel);
-            cells.map(cell => this.connectToParent(cell));
+            cells.map(cell => {
+                this.connectToParent(cell);
+            });
             this.connectReferences(this.EMFmodel);
+            var nodes = this.returnAllVertices();
+            nodes.forEach(cell => {
+                if (!this.isSourceNode(cell)){
+                    //this.addPlusVertex(cell);
+                }
+            })
             this.layout.execute(this.parent);
         }
         finally {
@@ -74,7 +83,6 @@ class SMLGraph extends mxGraph {
      * @param {JSON} flatModel EMFModel from DSL after flattening
      */
     updateEMFModel(flatModel){
-
         this.EMFmodel=flatModel;
     }
 
@@ -99,8 +107,8 @@ class SMLGraph extends mxGraph {
         var cells = [];
         model.forEach(entity=>{
             var encodedEntityValue = GraphServices.encode(entity);
-            entity['visible'] = this.config.isVisibleEntity(entity);
-            var entityStyle = this.config.getStyle(entity.data.className);
+            entity['visible'] = mxGraphConfig.isVisibleEntity(entity);
+            var entityStyle = mxGraphConfig.getStyle(entity.data.className);
             if (entity['visible'] === true) {
                 entity['cellObject'] = this.addEntity(encodedEntityValue, entityStyle);
                 entity['cellObject'].setValue(entity);
@@ -135,6 +143,55 @@ class SMLGraph extends mxGraph {
         })
     };
 
+    //NOT WORKING: the plus-icons won't be deleted at re-rendering
+    addPlusVertex(cell){
+        if(cell.value !== "plusButton"){
+            var plus = this.addEntity("plusButton", "fillColor=orange");
+            plus.setParent(cell);
+            this.addAssociation(cell, plus);
+        }
+    }
+
+    returnAllEdges(){
+        var edges = []
+        for (var index in this.model.cells){
+            if (this.model.cells[index].edge === true){
+                edges.push(this.model.cells[index])
+            }
+        }
+        return edges
+    }
+    returnAllVertices(){
+        var vertices = []
+        for (var index in this.model.cells){
+            if (this.model.cells[index].vertex === true){
+                vertices.push(this.model.cells[index])
+            }
+        }
+        return vertices
+    }
+
+    returnAllSourceNodes(){
+        var sourceNodes = [];
+        var edges = this.returnAllEdges();
+        edges.forEach(edge=>{
+            sourceNodes.push(edge.source)
+        })
+        return sourceNodes;
+    }
+
+    isSourceNode(cell){
+        var result = false;
+        var sourceNodes = this.returnAllSourceNodes();
+        var comparedSources=this.model.filterCells(sourceNodes, function(source){
+            return source.id === cell.id
+        })
+        if (comparedSources.length !== 0){
+            result = true;
+        }
+        return result;
+    }
+
     /**
      * draws a connection between an mxCell and the next visible ancestor
      * @param {mxCell} cell with EMFEntity in cell.value
@@ -167,8 +224,8 @@ class SMLGraph extends mxGraph {
      */
     labelDisplayOverride(){
         this.convertValueToString=(cell) =>{
-            if (cell.isVertex()) {
-                return this.config.getLabelName(cell);
+            if (cell.isVertex()&& cell.value!== "plusButton") {
+                return mxGraphConfig.getLabelName(cell);
             }
         }
     }
@@ -177,7 +234,6 @@ class SMLGraph extends mxGraph {
     addDeleteOnDoubleClickListener(){
         this.addListener(mxEvent.DOUBLE_CLICK, function(sender, evt){
             let cell = evt.getProperty('cell');
-            console.log(evt)
             reduxStore.dispatch(openToolbar(cell, evt.properties.event.pageX, evt.properties.event.pageY))
         });
     }
@@ -185,13 +241,20 @@ class SMLGraph extends mxGraph {
 
     addCreateAssociationListener(){
         this.connectionHandler.addListener(mxEvent.CONNECT, function (sender,evt, graph){
-            /*reacts to adding of a new edge in existing view, validate via xtext and re-render the view */
-            var edge = evt.getProperty('cell');
-            var sourceEntity=edge.source.value;
-            var targetEntity=edge.target.value;
-            var from=EmfModelHelper.getFullHierarchy2(sourceEntity);
-            var to=EmfModelHelper.getFullHierarchy2(targetEntity);
-            XtextServices.createAssociation(from,to);
+            var target = evt.properties.target;
+            var source = evt.properties.cell.source;
+            if (target !== undefined){
+                /*reacts to adding of a new edge in existing view, validate via xtext and re-render the view */
+                var edge = evt.getProperty('cell');
+                var sourceEntity=edge.source.value;
+                var targetEntity=edge.target.value;
+                var from=EmfModelHelper.getFullHierarchy2(sourceEntity);
+                var to=EmfModelHelper.getFullHierarchy2(targetEntity);
+                XtextServices.createAssociation(from,to);
+            } else {
+                reduxStore.dispatch(openToolbar(source, evt.properties.event.pageX, evt.properties.event.pageY))
+            }
+
         })
     }
 

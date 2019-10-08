@@ -1,36 +1,34 @@
-export default class MxGraphConfig {
+class MxGraphConfig {
 
-    constructor() {
-        this.dslPrefix = "org.xtext.example.mydsl.myDsl.";
-        this.configs = this.defineConfig();
-    }
+    static dslPrefix = "org.xtext.example.mydsl.myDsl.";
+    static constants = {
+            DATASET: 'dataset',
+            PROCESSCALL: 'processCall'
+        }
+    static configs = this.defineConfig();
 
-    defineConfig() {
+
+    static defineConfig() {
         /* defines the short name, class name, style, image and a template for new objects of the class. */
         var configs = [];
-
         configs.push(
             {
-                name: "Assignment",
                 className: this.dslPrefix + "Assignment",
-                style: 'dataset',
-                image: "editors/images/rectangle.gif",
+                style: this.constants.DATASET,
                 newNameTemplate: "newAssignment"
             }
         );
         configs.push(
             {
-                name: "ProcessCall",
                 className: this.dslPrefix + "ProcessCall",
-                style: "shape=rectangle;fillColor=#B891BF",
-                image: "editors/images/rectangle.gif",
-                newNameTemplate: "newAssignment"
+                style: this.constants.PROCESSCALL,
+                newNameTemplate: "newProcessCall"
             }
         );
         return configs;
     }
 
-    getName(className) {
+    static getName(className) {
         if (className) {
             return className.replace(this.dslPrefix, "")
         }
@@ -38,7 +36,7 @@ export default class MxGraphConfig {
     }
 
     /* adds the new class with that name and default values to the config */
-    addNewConfig(className) {
+    static addNewConfig(className) {
         var name;
         if (className !== undefined) {
             name = this.getName(className);
@@ -47,10 +45,8 @@ export default class MxGraphConfig {
         }
         var newClassConfigs =
         {
-            name: name,
             className: className,
-            style: "shape=hexagon",
-            image: "editors/images/symbols/error.png",
+            style:"",
             newNameTemplate: "unknownObject"
         };
         this.configs.push(newClassConfigs);
@@ -60,7 +56,7 @@ export default class MxGraphConfig {
     /* Matches the class to defined attributes.
     * if the input class name is unknown, calls addNewConfig and extends the existing config array with new configs
     * if the attribute type is unknown return null. */
-    getConfig(className, key) {
+    static getConfig(className, key) {
         var requiredClass = this.configs.filter(function (key) {
             return key.className === className;
         });
@@ -76,7 +72,7 @@ export default class MxGraphConfig {
         }
     }
 
-    getLabelName(cell) {
+    static getLabelName(cell) {
         var name;
         switch (true) {
             case cell.value.data.ref !== undefined:
@@ -100,11 +96,11 @@ export default class MxGraphConfig {
         }
     }
 
-    getStyle(className) {
+    static getStyle(className) {
         return this.getConfig(className, "style");
     }
 
-    isVisibleClass(className) {
+    static isVisibleClass(className) {
         var name = this.getName(className);
         switch (name) {
             case "Workflow":
@@ -118,11 +114,21 @@ export default class MxGraphConfig {
         }
     }
 
-    isVisibleEntity(entity) {
+    static isVisibleEntity(entity) {
         if (entity.self !== "ref" && !this.isVisibleClass(entity.data.className)) {
             return true;
         } else {
             return false;
         }
     }
+}
+
+export default {
+    configs: MxGraphConfig.configs,
+    constants: MxGraphConfig.constants,
+    addNewConfig: (className) => MxGraphConfig.addNewConfig(className),
+    getStyle: (className) => MxGraphConfig.getStyle(className),
+    getLabelName:(cell)=>MxGraphConfig.getLabelName(cell),
+    isVisibleEntity: (entity) => MxGraphConfig.isVisibleEntity(entity)
+
 }
