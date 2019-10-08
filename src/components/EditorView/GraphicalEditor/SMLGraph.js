@@ -238,13 +238,20 @@ class SMLGraph extends mxGraph {
 
     addCreateAssociationListener(){
         this.connectionHandler.addListener(mxEvent.CONNECT, function (sender,evt, graph){
-            /*reacts to adding of a new edge in existing view, validate via xtext and re-render the view */
-            var edge = evt.getProperty('cell');
-            var sourceEntity=edge.source.value;
-            var targetEntity=edge.target.value;
-            var from=EmfModelHelper.getFullHierarchy2(sourceEntity);
-            var to=EmfModelHelper.getFullHierarchy2(targetEntity);
-            XtextServices.createAssociation(from,to);
+            var target = evt.properties.target;
+            var source = evt.properties.cell.source;
+            if (target !== undefined){
+                /*reacts to adding of a new edge in existing view, validate via xtext and re-render the view */
+                var edge = evt.getProperty('cell');
+                var sourceEntity=edge.source.value;
+                var targetEntity=edge.target.value;
+                var from=EmfModelHelper.getFullHierarchy2(sourceEntity);
+                var to=EmfModelHelper.getFullHierarchy2(targetEntity);
+                XtextServices.createAssociation(from,to);
+            } else {
+                reduxStore.dispatch(openToolbar(source, evt.properties.event.pageX, evt.properties.event.pageY))
+            }
+
         })
     }
 
