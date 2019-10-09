@@ -1,11 +1,13 @@
 
 import XtextServices from '../serverConnection/XtextServices';
-import EmfModelHelper from "../helper/EmfModelHelper";
-import store from '../reduxStore';
+import EmfModelHelper from '../helper/EmfModelHelper';
+import DataServices from '../serverConnection/DataServices';
 import { showModal } from '../reducers/modal';
 import DefaultModal from '../components/core/Modal/DefaultModal';
+import store from '../reduxStore';
+import dataEndpoint from "../serverConnection/dataEndpoint";
 
-var debugInterface = {
+const debugInterface = {
     x: { //xtext
         s: { //services
             getEmfModel: () => XtextServices.getEmfModel(),
@@ -25,6 +27,10 @@ var debugInterface = {
     },
     o: { //other
         showDefaultModal: () => store.dispatch(showModal(DefaultModal, {text: 'some text', message: 'some message'}))
+    },
+    l3s: {
+        createProject: () => DataServices.createProject(),
+        viewDataSets: (id) => DataServices.viewDataSets(id)
     },
     d: { //data
         lsr: {}, //lastServiceResult
