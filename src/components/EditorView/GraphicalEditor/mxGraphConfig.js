@@ -108,14 +108,16 @@ class MxGraphConfig {
             case "UnconnectedExpressionStatement":
             case "ArrayLiteral":
             case "TimeLiteral":
-                return true;
-            default:
+            case "StringLiteral":
+            case "DateLiteral":
                 return false;
+            default:
+                return true;
         }
     }
 
     static isVisibleEntity(entity) {
-        if (entity.self !== "ref" && !this.isVisibleClass(entity.data.className)) {
+        if (entity.self !== "ref" && this.isVisibleClass(entity.data.className)) {
             return true;
         } else {
             return false;
