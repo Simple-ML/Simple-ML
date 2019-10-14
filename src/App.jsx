@@ -11,13 +11,12 @@ import TableTest from './components/TableTest/TableTest'
 
 class App extends React.Component {
     render() {
-        return (
+  /*      return (
             <div className="App">
                 <TableTest />
             </div>
         );
-
-        /*
+*/
         return (
             <div className="App">
                 <EditorView/>
@@ -26,8 +25,6 @@ class App extends React.Component {
                 <ModalContainer/>
             </div>
         );
-         */
-
     }
 }
 
