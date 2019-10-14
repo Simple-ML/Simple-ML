@@ -12,8 +12,8 @@ class TextEditorWrapper {
 
         TextEditorWrapper.editor = xtextEditor.createEditor({
             baseUrl: window.location.pathname,
-            syntaxDefinition: "xtext-resources/generated/mode-mydsl",
-            xtextLang: "mydsl",
+            syntaxDefinition: xtextEndpoint.syntaxDefinition,
+            xtextLang: xtextEndpoint.xtextLang,
             enableFormattingAction: true,
             parent: TextEditorWrapper.editorDiv,
             endpoint: xtextEndpoint,

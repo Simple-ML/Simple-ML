@@ -20,9 +20,10 @@ class SMLGraph extends mxGraph {
 
     constructor(parentContainer) {
         super(parentContainer);
+
+        // disable default mxCellEditor
         if(this.cellEditor) {
-            this.cellEditor.destroy();
-            this.cellEditor = null;
+            this.cellEditor.startEditing = () => {};
         }
     }
 
