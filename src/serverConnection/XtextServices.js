@@ -19,8 +19,11 @@ export default class XtextServices {
     }
 
     /**
+     * Creates an Entity and associates it to the specified target. If targetPath is undefined the created
+     * entity will be associated to the root-node.
      *
-     * @param entityDescription:  CreateEntityDTO
+     * @param entityDescription: CreateEntityDTO
+     * @param targetPath: string
      *
      *      CreateEntityDTO: {
      *          name: string,
@@ -29,8 +32,12 @@ export default class XtextServices {
      *          children: CreateEntityDTO[]
      *      }
      */
-    static createEntity(entityDescription) {
-        TextEditorWrapper.editor.xtextServices.createEntity({createEntityDTO: JSON.stringify(entityDescription)});
+    static createEntity(entityDescription, targetPath) {
+        let creation = {
+            entity: entityDescription,
+            target: targetPath
+        };
+        TextEditorWrapper.editor.xtextServices.createEntity({createEntityDTO: JSON.stringify(creation)});
     }
 
     /**
@@ -43,26 +50,26 @@ export default class XtextServices {
 
     /**
      *
-     * @param fromEntityPath: string
-     * @param toEntityPath: string
+     * @param sourceEntityPath: string
+     * @param targetEntityPath: string
      */
-    static createAssociation(fromEntityPath, toEntityPath) {
+    static createAssociation(sourceEntityPath, targetEntityPath) {
         let association = {
-            source: fromEntityPath,
-            target: toEntityPath
+            source: sourceEntityPath,
+            target: targetEntityPath
         };
         TextEditorWrapper.editor.xtextServices.createAssociation({associationDTO: JSON.stringify(association)});
     }
 
     /**
      *
-     * @param fromEntityPath: string
-     * @param toEntityPath: string
+     * @param sourceEntityPath: string
+     * @param targetEntityPath: string
      */
-    static deleteAssociation(fromEntityPath, toEntityPath) {
+    static deleteAssociation(sourceEntityPath, targetEntityPath) {
         let association = {
-            source: fromEntityPath,
-            target: toEntityPath
+            source: sourceEntityPath,
+            target: targetEntityPath
         };
         TextEditorWrapper.editor.xtextServices.deleteAssociation({associationDTO: JSON.stringify(association)});
     }
