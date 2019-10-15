@@ -10,7 +10,7 @@ var debugInterface = {
         s: { //services
             getEmfModel: () => XtextServices.getEmfModel(),
             creatableEntityProposals: () => XtextServices.creatableEntityProposals(),
-            createEntity: (entity) => XtextServices.createEntity(entity),
+            createEntity: (entity, targetPath) => XtextServices.createEntity(entity, targetPath),
             deleteEntity: (entityPath) => XtextServices.deleteEntity(entityPath),
             createAssociation: (fromEntityPath, toEntityPath) => XtextServices.createAssociation(fromEntityPath, toEntityPath),
             deleteAssociation: (fromEntityPath, toEntityPath) => XtextServices.deleteAssociation(fromEntityPath, toEntityPath),
@@ -29,12 +29,12 @@ var debugInterface = {
     d: { //data
         lsr: {}, //lastServiceResult
         emf: {},
-        ce: { //createEntity
-            name: 'x',
+        e1: { //createEntity
+            name: 'test',
             className: 'Assignment',
             value: '',
             children: [{
-                name: 'init',
+                name: 'project',
                 className: 'ProcessCall',
                 value: '' ,
                 children: [{
@@ -45,6 +45,19 @@ var debugInterface = {
                     className: 'IntegerLiteral',
                     value: '23'
                 }]
+            }]
+        },
+        e2: {
+            name: 'project',
+            className: 'ProcessCall',
+            value: '' ,
+            children: [{
+                className: 'StringLiteral',
+                value: 'someText'
+            },
+            {
+                className: 'IntegerLiteral',
+                value: '23'
             }]
         }
     }

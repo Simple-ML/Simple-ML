@@ -19,8 +19,11 @@ export default class XtextServices {
     }
 
     /**
+     * Creates an Entity and associates it to the specified target. If targetPath is undefined the created
+     * entity will be associated to the root-node.
      *
-     * @param entityDescription:  CreateEntityDTO
+     * @param entityDescription: CreateEntityDTO
+     * @param targetPath: string
      *
      *      CreateEntityDTO: {
      *          name: string,
@@ -29,8 +32,12 @@ export default class XtextServices {
      *          children: CreateEntityDTO[]
      *      }
      */
-    static createEntity(entityDescription) {
-        TextEditorWrapper.editor.xtextServices.createEntity({createEntityDTO: JSON.stringify(entityDescription)});
+    static createEntity(entityDescription, targetPath) {
+        let creation = {
+            entity: entityDescription,
+            target: targetPath
+        };
+        TextEditorWrapper.editor.xtextServices.createEntity({createEntityDTO: JSON.stringify(creation)});
     }
 
     /**
@@ -38,33 +45,33 @@ export default class XtextServices {
      * @param entityPath: string
      */
     static deleteEntity(entityPath) {
-        TextEditorWrapper.editor.xtextServices.deleteEntity({entityPath});
+        TextEditorWrapper.editor.xtextServices.deleteEntity({deleteEntityDTO: JSON.stringify({entityPath: entityPath})});
     }
 
     /**
      *
-     * @param fromEntityPath: string
-     * @param toEntityPath: string
+     * @param sourceEntityPath: string
+     * @param targetEntityPath: string
      */
-    static createAssociation(fromEntityPath, toEntityPath) {
+    static createAssociation(sourceEntityPath, targetEntityPath) {
         let association = {
-            from: fromEntityPath,
-            to: toEntityPath
+            source: sourceEntityPath,
+            target: targetEntityPath
         };
-        TextEditorWrapper.editor.xtextServices.createAssociation(association);
+        TextEditorWrapper.editor.xtextServices.createAssociation({associationDTO: JSON.stringify(association)});
     }
 
     /**
      *
-     * @param fromEntityPath: string
-     * @param toEntityPath: string
+     * @param sourceEntityPath: string
+     * @param targetEntityPath: string
      */
-    static deleteAssociation(fromEntityPath, toEntityPath) {
+    static deleteAssociation(sourceEntityPath, targetEntityPath) {
         let association = {
-            from: fromEntityPath,
-            to: toEntityPath
+            source: sourceEntityPath,
+            target: targetEntityPath
         };
-        TextEditorWrapper.editor.xtextServices.deleteAssociation(association);
+        TextEditorWrapper.editor.xtextServices.deleteAssociation({associationDTO: JSON.stringify(association)});
     }
 
     /**
@@ -93,6 +100,12 @@ export default class XtextServices {
         TextEditorWrapper.editor.xtextServices.setEntityAttribute({classDTOs: setEntityAttributeDTOs});
     }
 
+    /**
+     * Standard validation-service from text-editor
+     */
+    static validate() {
+        TextEditorWrapper.editor.xtextServices.validate();
+    }
 
 
     /**

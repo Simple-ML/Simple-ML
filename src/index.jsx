@@ -21,10 +21,16 @@ window.loadEditor((xtextEditor) => {
     XtextServices.addSuccessListener((serviceType, result) => {
         switch (serviceType) {
             case 'getEmfModel':
+                store.dispatch(setNewEmfModel(result.emfModel));
+                break;
+            case 'createEntity':
             case 'deleteEntity':
             case 'deleteAssociation':
             case 'createAssociation':
                 store.dispatch(setNewEmfModel(result.emfModel));
+
+                // TODO: update text-editor XtextServices.validate does not work
+                // XtextServices.validate();
                 break;
             case 'validate':
                 // TODO: not the right place for this code (containsError)
