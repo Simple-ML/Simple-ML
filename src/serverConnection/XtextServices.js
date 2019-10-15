@@ -38,7 +38,7 @@ export default class XtextServices {
      * @param entityPath: string
      */
     static deleteEntity(entityPath) {
-        TextEditorWrapper.editor.xtextServices.deleteEntity({entityPath});
+        TextEditorWrapper.editor.xtextServices.deleteEntity({deleteEntityDTO: JSON.stringify({entityPath: entityPath})});
     }
 
     /**
@@ -48,10 +48,10 @@ export default class XtextServices {
      */
     static createAssociation(fromEntityPath, toEntityPath) {
         let association = {
-            from: fromEntityPath,
-            to: toEntityPath
+            source: fromEntityPath,
+            target: toEntityPath
         };
-        TextEditorWrapper.editor.xtextServices.createAssociation(association);
+        TextEditorWrapper.editor.xtextServices.createAssociation({associationDTO: JSON.stringify(association)});
     }
 
     /**
@@ -61,10 +61,10 @@ export default class XtextServices {
      */
     static deleteAssociation(fromEntityPath, toEntityPath) {
         let association = {
-            from: fromEntityPath,
-            to: toEntityPath
+            source: fromEntityPath,
+            target: toEntityPath
         };
-        TextEditorWrapper.editor.xtextServices.deleteAssociation(association);
+        TextEditorWrapper.editor.xtextServices.deleteAssociation({associationDTO: JSON.stringify(association)});
     }
 
     /**
@@ -93,6 +93,12 @@ export default class XtextServices {
         TextEditorWrapper.editor.xtextServices.setEntityAttribute({classDTOs: setEntityAttributeDTOs});
     }
 
+    /**
+     * Standard validation-service from text-editor
+     */
+    static validate() {
+        TextEditorWrapper.editor.xtextServices.validate();
+    }
 
 
     /**

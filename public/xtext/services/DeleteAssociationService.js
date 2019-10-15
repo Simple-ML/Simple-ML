@@ -48,8 +48,7 @@ define(['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery)
 
         var serverData = {
             contentType: params.contentType,
-            from: params.from,
-            to: params.to
+            associationDTO: params.associationDTO
         };
 
         knownServerState.updateInProgress = true;
