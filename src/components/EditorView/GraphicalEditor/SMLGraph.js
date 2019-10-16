@@ -23,9 +23,10 @@ class SMLGraph extends mxGraph {
 
     constructor(parentContainer) {
         super(parentContainer);
+
+        // disable default mxCellEditor
         if(this.cellEditor) {
-            this.cellEditor.destroy();
-            this.cellEditor = null;
+            this.cellEditor.startEditing = () => {};
         }
     }
 
@@ -36,7 +37,6 @@ class SMLGraph extends mxGraph {
     initView(direction){
         this.layout = new mxHierarchicalLayout(this, direction);
         configureStylesheet(this);
-        console.log(this.getStylesheet());
         mxConnectionHandler.prototype.connectImage = new mxImage(connectImage,10,10);
         mxConnectionHandler.prototype.moveIconFront=true;
         this.layout.intraCellSpacing = 20;

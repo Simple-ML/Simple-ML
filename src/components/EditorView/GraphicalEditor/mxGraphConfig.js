@@ -1,6 +1,6 @@
 class MxGraphConfig {
 
-    static dslPrefix = "org.xtext.example.mydsl.myDsl.";
+    static dslPrefix = "de.unibonn.simpleml.simpleML.";
     static constants = {
             DATASET: 'dataset',
             PROCESSCALL: 'processCall'
