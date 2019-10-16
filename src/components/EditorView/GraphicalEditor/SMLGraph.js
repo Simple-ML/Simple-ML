@@ -12,7 +12,7 @@ import reduxStore from './../../../reduxStore';
 import { openToolbar } from './../../../reducers/toolbar';
 import configureStylesheet from "./mxgraphStylesheet"
 import mxGraphConfig from "./mxGraphConfig";
-import { openPropsEditor } from "../../../reducers/propsEditor";
+import { openPropsEditor, closePropsEditor } from "../../../reducers/propsEditor";
 
 class SMLGraph extends mxGraph {
 
@@ -241,9 +241,12 @@ class SMLGraph extends mxGraph {
 
     openPropsEditorOnClickListener(){
         this.addListener(mxEvent.CLICK, function(sender, evt){
-            if (evt.getProperty('cell') !== undefined){
+            if (evt.getProperty('cell') !== undefined && evt.getProperty('cell').vertex === true){
                 let cell = evt.getProperty('cell');
                 reduxStore.dispatch(openPropsEditor(cell))
+            } else 
+            {
+                reduxStore.dispatch(closePropsEditor())
             }
         });
     }
