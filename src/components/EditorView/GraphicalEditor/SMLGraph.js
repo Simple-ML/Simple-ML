@@ -241,9 +241,10 @@ class SMLGraph extends mxGraph {
 
     openPropsEditorOnClickListener(){
         this.addListener(mxEvent.CLICK, function(sender, evt){
-            console.log(evt)
-            let cell = evt.getProperty('cell');
-            reduxStore.dispatch(openPropsEditor(cell))
+            if (evt.getProperty('cell') !== undefined){
+                let cell = evt.getProperty('cell');
+                reduxStore.dispatch(openPropsEditor(cell))
+            }
         });
     }
 
