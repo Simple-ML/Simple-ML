@@ -4,6 +4,25 @@
   font-weight: normal;
   src: local('DIN-Regular'), url("./fonts/DIN-Regular.ttf") format('truetype')
 }
+@font-face{
+  font-family: 'DINOT';
+  font-style: normal;
+  font-weight: normal;
+  src: local('DINOT'), url("./fonts/DINOT.ttf") format('truetype')
+}
+
+@font-face{
+  font-family: 'RobotoMono';
+  font-style: italic;
+  font-weight: normal;
+  src: local('RobotoMono-Italic'), url("./fonts/RobotoMono-Italic.ttf") format('truetype')
+}
+@font-face{
+  font-family: 'RobotoMono';
+  font-style: normal;
+  font-weight: normal;
+  src: local('RobotoMono-Regular'), url("./fonts/RobotoMono-Regular.ttf") format('truetype')
+}
 
 body {
   margin: 0;

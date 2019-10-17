@@ -49,6 +49,31 @@ class GraphServices {
 
     /**
      *
+     * @param {object} entity: EMFEntity from flatten EMF Model ()
+     * @returns {boolean} true if entity has visible children and false if not 
+     */
+
+    static hasVisibleChildren(entity){
+        if(entity["children"]){
+            var result = false;
+            if(entity["children"].length === 0){
+                return false;
+            } else {
+                var potentialChildren = entity ['children'];
+                for (var i = 0; i < potentialChildren.length; i++){
+                    if (potentialChildren[i].visible === true){
+                        return true;
+                    }  else {
+                        this.hasVisibleChildren(potentialChildren[i]);
+                    }
+                }
+                return result;
+            }
+        }
+    }
+
+    /**
+     *
      * @param {string} reference decoded Reference
      * @param {JSON} model flattened model
      * @returns {mxCell} source cell
@@ -86,6 +111,7 @@ export default {
     encode: (value) => GraphServices.encode(value),
     decodeReference: (data) => GraphServices.decodeReference(data),
     findVisibleParent: (entity) => GraphServices.findVisibleParent(entity),
+    hasVisibleChildren: (entity) => GraphServices.hasVisibleChildren(entity),
     findVisibleSourceCellInModel: (reference, model) => GraphServices.findVisibleSourceCellInModel(reference, model),
     findVisibleTargetCellInModel: (potentialTarget) => GraphServices.findVisibleTargetCellInModel(potentialTarget),
 }

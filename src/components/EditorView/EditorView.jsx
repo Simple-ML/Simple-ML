@@ -8,7 +8,8 @@ import $ from "jquery";
 import EditorHeader from './EditorHeader/EditorHeader';
 import SideToolbar from './SideToolbar/SideToolbar';
 import GraphicalEditor from './GraphicalEditor/GraphicalEditor';
-import DetailsEditor from "./DetailsEditor/DetailsEditor"
+import DetailsEditor from "./DetailsEditor/DetailsEditor";
+import PropsEditor from "./PropsEditor/PropsEditor";
 import TextEditor from './TextEditor/TextEditor';
 import GoldenLayoutComponent from './../../helper/goldenLayoutServices/goldenLayoutComponent';
 //redux
@@ -64,6 +65,12 @@ class EditorView extends React.Component {
             type: "react-component",
             component: "tutorial",
             icon: tutorialIcon
+        },
+        {
+            title: "Properties Editor",
+            type: "react-component",
+            component: "propsEditor",
+            icon: tutorialIcon
         }]
     }
 
@@ -118,7 +125,8 @@ class EditorView extends React.Component {
                                             componentConfigs[1],
                                             componentConfigs[2]
                                         ]
-                                    }
+                                    },
+                                    componentConfigs[4]
                                 ]
                             }]
                         }}
@@ -127,6 +135,7 @@ class EditorView extends React.Component {
                             myLayout.registerComponent("graphicalEditor",  this.wrapComponent(GraphicalEditor));
                             myLayout.registerComponent("detailsEditor",  this.wrapComponent(DetailsEditor));
                             myLayout.registerComponent("tutorial",  this.wrapComponent(DetailsEditor));
+                            myLayout.registerComponent("propsEditor",  this.wrapComponent(PropsEditor));
                             this.setState({myLayout});
                             /*
                             * Since our layout is not a direct child

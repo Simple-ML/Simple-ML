@@ -22,12 +22,14 @@
         }
         .ace_keyword{
             color:#e3327d;
+            font-weight:medium;
         }
         .ace_constant.ace_numeric{
             color:#77efa8;
         }
         .ace_comment{
-            font-family:'Roboto', sans-serif;
+            font-family:'RobotoMono';
+            font-style: italic;
             color: #a29aa3;
         }
     }
@@ -50,7 +52,7 @@
         }
     }
     .ace_gutter {
-        background-color: unset;
+        background-color: #4e1755;
         color: unset;
         border: unset;
 

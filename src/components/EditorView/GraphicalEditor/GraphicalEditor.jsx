@@ -9,7 +9,7 @@ import SMLGraph from "./SMLGraph"
 //styles
 import background from './../../../styles/background.module.scss'
 import graphicalEditorStyle from './graphicalEditor.module.scss';
-import createButtonIcon from '../../../images/graph/plus.svg';
+import createButtonIcon from '../../../images/graph/instances/plus.svg';
 //redux
 import './toolbar.inference';
 import './createButton.inference';
@@ -60,10 +60,19 @@ class GraphicalEditor extends React.Component {
         graph.render();
     };
 
-    render() {
-        if(this.state.graph !== undefined)
-            this.updateView();
 
+    componentDidUpdate(prevProps, prevState, snapshot){
+        let { graph } = this.state;
+        if(graph !== undefined && prevProps.emfModelFlat !== this.props.emfModelFlat){
+            this.updateView();
+        }
+
+        if (this.props.toolbarIsVisible !== true){
+            graph.removeDanglingEdges()
+        }
+    }
+
+    render() {
         return (
             <div className={graphicalEditorStyle.graphicalEditorContainer} >
             <div className={`graphicalEditor ${background.darkCircles} ${this.props.name}`} ref={this.graphRef}></div>
@@ -90,7 +99,8 @@ const mapStateToProps = state => {
     return {
         emfModelFlat: state.emfModel.emfModelFlat,
         viewMode: state.graphicalEditor.viewMode,
-        dirty: state.emfModel.dirty
+        dirty: state.emfModel.dirty,
+        toolbarIsVisible: state.toolbar.visible
     };
 };
 
