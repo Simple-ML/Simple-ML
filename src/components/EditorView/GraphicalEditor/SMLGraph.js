@@ -198,7 +198,7 @@ class SMLGraph extends mxGraph {
                 edges.push(cells[key])
             }
         }
-        edges.map(edge => {
+        edges.forEach(edge => {
             if (edge.source === null || edge.target === null ) {
                 this.model.remove(edge)
             }
