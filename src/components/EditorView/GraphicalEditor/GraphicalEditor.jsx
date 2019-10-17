@@ -52,20 +52,27 @@ class GraphicalEditor extends React.Component {
      * @param {Object} result: result in response from xtextServices
      */
     updateView = () => {
-        if(this.props.toolbarState === false) {
-            let { graph } = this.state;
-            let { emfModelFlat, viewMode } = this.props
-            graph.clear();
-            graph.initView(viewMode);
-            graph.updateEMFModel(emfModelFlat);
-            graph.render();
-        }
+        let { graph } = this.state;
+        let { emfModelFlat, viewMode } = this.props
+        graph.clear();
+        graph.initView(viewMode);
+        graph.updateEMFModel(emfModelFlat);
+        graph.render();
     };
 
-    render() {
-        if(this.state.graph !== undefined)
-            this.updateView();
 
+    componentDidUpdate(prevProps, prevState, snapshot){
+        let { graph } = this.state;
+        if(graph !== undefined && prevProps.emfModelFlat !== this.props.emfModelFlat){
+            this.updateView();
+        }
+
+        if (this.props.toolbarIsVisible !== true){
+            graph.removeDanglingEdges()
+        }
+    }
+
+    render() {
         return (
             <div className={graphicalEditorStyle.graphicalEditorContainer} >
             <div className={`graphicalEditor ${background.darkCircles} ${this.props.name}`} ref={this.graphRef}></div>
@@ -93,7 +100,7 @@ const mapStateToProps = state => {
         emfModelFlat: state.emfModel.emfModelFlat,
         viewMode: state.graphicalEditor.viewMode,
         dirty: state.emfModel.dirty,
-        toolbarState: state.toolbar.visible
+        toolbarIsVisible: state.toolbar.visible
     };
 };
 

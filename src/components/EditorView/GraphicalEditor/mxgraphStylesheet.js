@@ -30,14 +30,5 @@ function configureStylesheet(graph)
     edgeStyle[mxConstants.STYLE_ENDSIZE] = "3";
     edgeStyle[mxConstants.STYLE_TARGET_PERIMETER_SPACING]="5";
     graph.getStylesheet().putDefaultEdgeStyle(edgeStyle);
-    /**
-     *  align: "center"
-        endArrow: "classic"
-        fontColor: "#446299"
-        shape: "connector"
-        strokeColor: "#6482B9"
-        verticalAlign: "middle"
-     */
-//////////////////////////
 };
 export default configureStylesheet;

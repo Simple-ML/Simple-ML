@@ -50,40 +50,22 @@ class GraphServices {
     /**
      *
      * @param {object} entity: EMFEntity from flatten EMF Model ()
-     * @returns {boolean} true if entity has visible ancestors and false if not 
+     * @returns {boolean} true if entity has visible children and false if not 
      */
 
     static hasVisibleChildren(entity){
         if(entity["children"]){
-            var result=false;
+            var result = false;
             if(entity["children"].length === 0){
-                console.log("no visible children")
                 return false;
             } else {
                 var potentialChildren = entity ['children'];
-
-                /*
-                potentialChildren.forEach(childEntity => {
-                    if (childEntity['visible'] === true){
-                        console.log("visible children")
-                        result=true;
-                    }
-                    else{
-                        console.log("recursion, checking next child")
-                        this.hasVisibleChildren(childEntity);
-                    }
-                })*/
-
-                for (var i=0; i<potentialChildren.length; i++){
+                for (var i = 0; i < potentialChildren.length; i++){
                     if (potentialChildren[i].visible === true){
-                        console.log("visible children")
                         return true;
-                        break;
                     }  else {
-                        console.log("recursion, checking next child")
                         this.hasVisibleChildren(potentialChildren[i]);
                     }
-
                 }
                 return result;
             }

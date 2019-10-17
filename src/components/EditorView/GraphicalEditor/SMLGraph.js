@@ -66,12 +66,6 @@ class SMLGraph extends mxGraph {
                 this.connectToParent(cell);
             });
             this.connectReferences(this.EMFmodel);
-            var nodes = this.returnAllVertices();
-            nodes.forEach(cell => {
-                if (!this.isSourceNode(cell)){
-                    //this.addPlusVertex(cell);
-                }
-            })
             this.layout.execute(this.parent);
         }
         finally {
@@ -144,15 +138,6 @@ class SMLGraph extends mxGraph {
         })
     };
 
-    //NOT WORKING: the plus-icons won't be deleted at re-rendering
-    addPlusVertex(cell){
-        if(cell.value !== "plusButton"){
-            var plus = this.addEntity("plusButton", "fillColor=orange");
-            plus.setParent(cell);
-            this.addAssociation(cell, plus);
-        }
-    }
-
     returnAllEdges(){
         var edges = []
         for (var index in this.model.cells){
@@ -205,6 +190,20 @@ class SMLGraph extends mxGraph {
         }
     }
 
+    removeDanglingEdges(){
+        var cells = this.model.cells
+        var edges = []
+        for (var key in cells){
+            if(cells[key].edge === true){
+                edges.push(cells[key])
+            }
+        }
+        edges.map(edge => {
+            if (edge.source === null || edge.target === null ) {
+                this.model.remove(edge)
+            }
+        })
+    }
 
     /**
      *
@@ -225,7 +224,7 @@ class SMLGraph extends mxGraph {
      */
     labelDisplayOverride(){
         this.convertValueToString=(cell) =>{
-            if (cell.isVertex()&& cell.value!== "plusButton") {
+            if (cell.isVertex()) {
                 return mxGraphConfig.getLabelName(cell);
             }
         }

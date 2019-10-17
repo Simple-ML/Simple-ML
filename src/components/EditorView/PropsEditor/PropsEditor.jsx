@@ -33,13 +33,11 @@ class PropsEditor extends React.Component {
     render() {
         let { visible } = this.props;
             visible = visible ? 'visible' : 'hidden';
-            console.log(this.props.context);
             let label = (this.props.context.value !== undefined)? this.props.context.value.data.className : "no value";
         return(
             <div style={{visibility: visible}}>
                 <div className={PropsEditorStyle.propsEditor}
                      ref={this.myself}>
-                <button> PROPS EDITOR </button>
                 <label>{label}</label>
                 </div>
                 <div className={PropsEditorStyle["props-editor-outside"]}
