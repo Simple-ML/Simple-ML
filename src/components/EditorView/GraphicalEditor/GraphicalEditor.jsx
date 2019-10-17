@@ -52,12 +52,14 @@ class GraphicalEditor extends React.Component {
      * @param {Object} result: result in response from xtextServices
      */
     updateView = () => {
-        let { graph } = this.state;
-        let { emfModelFlat, viewMode } = this.props
-        graph.clear();
-        graph.initView(viewMode);
-        graph.updateEMFModel(emfModelFlat);
-        graph.render();
+        if(this.props.toolbarState === false) {
+            let { graph } = this.state;
+            let { emfModelFlat, viewMode } = this.props
+            graph.clear();
+            graph.initView(viewMode);
+            graph.updateEMFModel(emfModelFlat);
+            graph.render();
+        }
     };
 
     render() {
@@ -90,7 +92,8 @@ const mapStateToProps = state => {
     return {
         emfModelFlat: state.emfModel.emfModelFlat,
         viewMode: state.graphicalEditor.viewMode,
-        dirty: state.emfModel.dirty
+        dirty: state.emfModel.dirty,
+        toolbarState: state.toolbar.visible
     };
 };
 
