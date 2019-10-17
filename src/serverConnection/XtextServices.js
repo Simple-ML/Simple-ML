@@ -14,8 +14,8 @@ export default class XtextServices {
         TextEditorWrapper.editor.xtextServices.getEmfModel();
     }
 
-    static creatableEntityProposals() {
-        TextEditorWrapper.editor.xtextServices.creatableObjectProposals();
+    static getProcessProposals() {
+        TextEditorWrapper.editor.xtextServices.getProcessProposals();
     }
 
     /**
