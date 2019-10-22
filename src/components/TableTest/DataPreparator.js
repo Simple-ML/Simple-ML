@@ -1,5 +1,5 @@
 
-import data from './L3SapiData';
+import data from './L3SDataExample';
 
 
 export default class DataPreparator {

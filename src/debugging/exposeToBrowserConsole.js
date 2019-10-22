@@ -30,11 +30,18 @@ const debugInterface = {
     },
     l3s: {
         createProject: () => DataServices.createProject(),
-        viewDataSets: (id) => DataServices.viewDataSets(id)
+        getDataSetMetadata: (id) => DataServices.getDataSetMetadata(id),
+        getDataSets: (id) => DataServices.getDataSets(id)
+
     },
     d: { //data
         lsr: {}, //lastServiceResult
         emf: {},
+        l3s: {
+            projectId: '',
+            dataSets: {},
+            dataSet: {}
+        },
         ce: { //createEntity
             name: 'x',
             className: 'Assignment',
