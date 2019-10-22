@@ -1,11 +1,13 @@
 
 import XtextServices from '../serverConnection/XtextServices';
-import EmfModelHelper from "../helper/EmfModelHelper";
-import store from '../reduxStore';
+import EmfModelHelper from '../helper/EmfModelHelper';
+import DataServices from '../serverConnection/DataServices';
 import { showModal } from '../reducers/modal';
 import DefaultModal from '../components/core/Modal/DefaultModal';
+import store from '../reduxStore';
+import dataEndpoint from "../serverConnection/dataEndpoint";
 
-var debugInterface = {
+const debugInterface = {
     x: { //xtext
         s: { //services
             getEmfModel: () => XtextServices.getEmfModel(),
@@ -26,9 +28,20 @@ var debugInterface = {
     o: { //other
         showDefaultModal: () => store.dispatch(showModal(DefaultModal, {text: 'some text', message: 'some message'}))
     },
+    l3s: {
+        createProject: () => DataServices.createProject(),
+        getDataSetMetadata: (id) => DataServices.getDataSetMetadata(id),
+        getDataSets: (id) => DataServices.getDataSets(id)
+
+    },
     d: { //data
         lsr: {}, //lastServiceResult
         emf: {},
+        l3s: {
+            projectId: '',
+            dataSets: {},
+            dataSet: {}
+        },
         e1: { //createEntity
             name: 'test',
             className: 'Assignment',
@@ -47,7 +60,7 @@ var debugInterface = {
                 }]
             }]
         },
-        e2: {
+        e2: { //createEntity
             name: 'project',
             className: 'ProcessCall',
             value: '' ,

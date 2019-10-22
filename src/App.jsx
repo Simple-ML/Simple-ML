@@ -7,9 +7,16 @@ import ChooseProjectView from './components/ChooseProjectView/ChooseProjectView'
 import Toolbar from './components/core/Toolbar/Toolbar';
 import ModalContainer from './components/core/Modal/ModalContainer';
 
+import TableTest from './components/TableTest/TableTest'
 
 class App extends React.Component {
     render() {
+  /*      return (
+            <div className="App">
+                <TableTest />
+            </div>
+        );
+*/
         return (
             <div className="App">
                 <EditorView/>
