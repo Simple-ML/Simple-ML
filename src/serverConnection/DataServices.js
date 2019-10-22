@@ -13,13 +13,16 @@ export default class DataServices {
             headers: {
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8"
             },
-            data: {
+            data: JSON.stringify({
                 "operation": "create_project",
                 "options": {
                     "title":"test",
                     "description":"test"
                 }
 
+            }),
+            success: function (data) {
+                console.log(data);
             },
             error: function (xhr, desc, err) {
                 console.log(xhr);
