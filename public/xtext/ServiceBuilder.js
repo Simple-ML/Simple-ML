@@ -10,7 +10,6 @@ define([
 	'xtext/services/XtextService',
     'xtext/services/GetEmfModelService',
 	'xtext/services/GetProcessProposals',
-	'xtext/services/CreatableObjectProposalsService',
 	'xtext/services/CreateEntityService',
     'xtext/services/DeleteEntityService',
     'xtext/services/CreateAssociationService',
@@ -26,7 +25,7 @@ define([
 	'xtext/services/HoverService',
 	'xtext/services/OccurrencesService',
 	'xtext/services/FormattingService'
-], function(jQuery, XtextService, GetEmfModelService, GetProcessProposalsService, CreatableObjectProposalsService, CreateEntityService, DeleteEntityService,
+], function(jQuery, XtextService, GetEmfModelService, GetProcessProposalsService, CreateEntityService, DeleteEntityService,
             CreateAssociationService, DeleteAssociationService, GetEntityAttributeDefinitionService,
 			SetEntityAttributeService, LoadResourceService, SaveResourceService, HighlightingService, ValidationService, UpdateService,
 			ContentAssistService, HoverService, OccurrencesService, FormattingService) {
@@ -174,11 +173,6 @@ define([
         services.getProcessProposals = function(addParams) {
             return services.getProcessProposalsService .invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
         }
-
-		services.creatableObjectProposalsService = new CreatableObjectProposalsService(options.serviceUrl, options.resourceId);
-		services.creatableObjectProposals = function(addParams) {
-			return services.creatableObjectProposalsService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
-		}
 
 		services.createEntityService = new CreateEntityService(options.serviceUrl, options.resourceId);
 		services.createEntity = function(addParams) {
