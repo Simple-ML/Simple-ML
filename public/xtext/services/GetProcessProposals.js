@@ -11,24 +11,24 @@ define(['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery)
     /**
      * Service class for loading resources. The resulting text is passed to the editor context.
      */
-    function CreatableObjectProposalsService(serviceUrl, resourceId) {
-        this.initialize(serviceUrl, 'creatableObjectProposals', resourceId);
+    function GetProcessProposalsService(serviceUrl, resourceId) {
+        this.initialize(serviceUrl, 'getProcessProposals', resourceId);
     };
 
-    CreatableObjectProposalsService.prototype = new XtextService();
+    GetProcessProposalsService.prototype = new XtextService();
 
-    CreatableObjectProposalsService.prototype._initServerData = function(serverData, editorContext, params) {
+    GetProcessProposalsService.prototype._initServerData = function(serverData, editorContext, params) {
         return {
             suppressContent: true,
             httpMethod: 'GET'
         };
     };
 
-    CreatableObjectProposalsService.prototype._getSuccessCallback = function(editorContext, params, deferred) {
+    GetProcessProposalsService.prototype._getSuccessCallback = function(editorContext, params, deferred) {
         return function(result) {
             deferred.resolve(result);
         }
-    }
+    };
 
-    return CreatableObjectProposalsService;
+    return GetProcessProposalsService;
 });

@@ -10,9 +10,10 @@ import * as serviceWorker from './serviceWorker';
 import TextEditorWrapper from './components/EditorView/TextEditor/TextEditorWrapper';
 
 import afterReactInit from './debugging/afterReactInit';
-import { exposeToBrowserConsole } from "./debugging/exposeToBrowserConsole";
-import XtextServices from "./serverConnection/XtextServices";
-import { setNewEmfModel, setEmfModelClean, setEmfModelDirty } from "./reducers/emfModel";
+import { exposeToBrowserConsole } from './debugging/exposeToBrowserConsole';
+import XtextServices from './serverConnection/XtextServices';
+import { setNewEmfModel, setEmfModelClean, setEmfModelDirty } from './reducers/emfModel';
+import { setDslProcessDefinitions } from './reducers/dslProcessDefinitions';
 
 window.loadEditor((xtextEditor) => {
     window.loadEditor = undefined;
@@ -49,6 +50,9 @@ window.loadEditor((xtextEditor) => {
                     store.dispatch(setEmfModelClean());
 
                 XtextServices.getEmfModel();
+                break;
+            case 'getProcessProposals':
+                store.dispatch(setDslProcessDefinitions(JSON.parse(result.fullText)));
                 break;
             default:
                 break;
