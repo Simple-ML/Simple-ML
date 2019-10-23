@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 import { closePropsEditor } from '../../../reducers/propsEditor';
 //style
 import PropsEditorStyle from './propsEditor.module.scss';
-
+//React.Components
+import PropsDetails from './PropsDetails.jsx'
 class PropsEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -32,19 +33,23 @@ class PropsEditor extends React.Component {
 
     render() {
         let { visible } = this.props;
-            visible = visible ? 'visible' : 'hidden';
-            let label = (this.props.context.value !== undefined)? this.props.context.value.data.className : "no value";
-        return(
-            <div style={{visibility: visible}}>
-                <div className={PropsEditorStyle.propsEditor}
-                     ref={this.myself}>
-                <label>{label}</label>
+        visible = visible ? 'visible' : 'hidden';
+        if (this.props.context.value){
+            return(
+                <div style={{visibility: visible}}>
+                    <div className={PropsEditorStyle.propsEditor}
+                        ref={this.myself}>
+                        <PropsDetails/>
+                    </div>
+                    <div className={PropsEditorStyle["props-editor-outside"]}
+                        onClick={this.closePropsEditor}>
+                    </div>
                 </div>
-                <div className={PropsEditorStyle["props-editor-outside"]}
-                     onClick={this.closePropsEditor}>
-                </div>
-            </div>
-        )
+            )
+        }
+        else return(
+            <div style={{visibility: visible}}></div>
+        );
     }
 }
 

@@ -2,8 +2,8 @@ class MxGraphConfig {
 
     static dslPrefix = "de.unibonn.simpleml.simpleML.";
     static constants = {
-            DATASET: 'dataset',
-            PROCESSCALL: 'processCall'
+            PROCESSCALL: 'ProcessCall',
+            ASSIGNMENT: "Assignment"
         }
     static configs = this.defineConfig();
 
@@ -13,14 +13,14 @@ class MxGraphConfig {
         var configs = [];
         configs.push(
             {
-                className: this.dslPrefix + "Assignment",
-                style: this.constants.DATASET,
+                className: this.dslPrefix + this.constants.ASSIGNMENT,
+                style: this.constants.ASSIGNMENT,
                 newNameTemplate: "newAssignment"
             }
         );
         configs.push(
             {
-                className: this.dslPrefix + "ProcessCall",
+                className: this.dslPrefix + this.constants.PROCESSCALL,
                 style: this.constants.PROCESSCALL,
                 newNameTemplate: "newProcessCall"
             }
@@ -37,12 +37,6 @@ class MxGraphConfig {
 
     /* adds the new class with that name and default values to the config */
     static addNewConfig(className) {
-        var name;
-        if (className !== undefined) {
-            name = this.getName(className);
-        } else {
-            name = "unknown";
-        }
         var newClassConfigs =
         {
             className: className,
@@ -126,9 +120,11 @@ class MxGraphConfig {
 }
 
 export default {
+    dslPrefix: MxGraphConfig.dslPrefix,
     configs: MxGraphConfig.configs,
     constants: MxGraphConfig.constants,
     addNewConfig: (className) => MxGraphConfig.addNewConfig(className),
+    getName: (className) => MxGraphConfig.getName(className),
     getStyle: (className) => MxGraphConfig.getStyle(className),
     getLabelName:(cell)=>MxGraphConfig.getLabelName(cell),
     isVisibleEntity: (entity) => MxGraphConfig.isVisibleEntity(entity)
