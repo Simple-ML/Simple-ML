@@ -97,7 +97,7 @@ class MxGraphConfig {
     static isVisibleClass(className) {
         var name = this.getName(className);
         switch (name) {
-            case "Workflow":
+            /*case "Workflow":
             case "Reference":
             case "UnconnectedExpressionStatement":
             case "ArrayLiteral":
@@ -106,7 +106,12 @@ class MxGraphConfig {
             case "DateLiteral":
                 return false;
             default:
+                return true;*/
+            case "Assignment":
+            case "ProcessCall":
                 return true;
+            default:
+                return false;
         }
     }
 

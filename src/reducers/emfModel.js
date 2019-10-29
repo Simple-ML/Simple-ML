@@ -40,7 +40,7 @@ export default (state = initialState, action) =>{
         case NEW_EMF_MODEL:
             return Object.assign({}, state, {
                 emfModel: action.payload,
-                emfModelFlat: EmfModelHelper.flattenEmfModelTree(JSON.parse(action.payload))
+                emfModelFlat: EmfModelHelper.flattenEmfModelTree(action.payload)
             });
         case CLEAN_EMF_MODEL:
             return Object.assign({}, state, {
