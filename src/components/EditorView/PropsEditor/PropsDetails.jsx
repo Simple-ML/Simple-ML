@@ -17,11 +17,38 @@ class PropsDetails extends React.Component {
         } 
     }
 
-
+    createProcessCallComponentFragment(additionalInfo){
+        var parameters = [];
+        let children = this.props.context.value.children;
+        console.log(children)
+        if(additionalInfo[0]){
+            var name = additionalInfo[0].name||"none";
+            var namespace = additionalInfo[0].namespace||"";
+            var description = additionalInfo[0].description||"no description";
+            var parameters = additionalInfo[0].parameters||[];
+            var returns = additionalInfo[0].returns||"";
+        }
+        return (
+            <React.Fragment>
+                <li>Description: {description}</li>
+                <li>Name: {name}</li>
+                <li>Namespace: {namespace}</li>
+                <ol>Parameters: {parameters.map((parameter, index) => 
+                    (
+                        <div key={parameter.name}>
+                            <li key={parameter.name}> name: {parameter.name}; type: {parameter.type}</li>
+                            <label>Value: </label>
+                            <div>{children[index].getValue()} </div>
+                        </div>
+                    )
+                )}</ol>
+                <li>returns: {returns}</li>
+            </React.Fragment>
+        )
+    }
     render(){
         let {constants} = this.state;
-        let value = this.props.context.value;
-        let data = value.data;
+        let data = this.props.context.value.data;
         let className = data.className;
         let type = className.replace(mxGraphConfig.dslPrefix, "");
         let additionalInfo;
@@ -30,8 +57,7 @@ class PropsDetails extends React.Component {
         switch (type){
             case constants.PROCESSCALL:
                 additionalInfo = this.props.processConfigs.filter(process => process.name === data.ref);
-                console.log(additionalInfo)
-                description = React.createElement("div","name:")
+                description=this.createProcessCallComponentFragment(additionalInfo);
                 break;    
             case constants.ASSIGNMENT:
                 console.log("assignment");

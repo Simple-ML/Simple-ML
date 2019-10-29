@@ -1,4 +1,4 @@
-
+import dslConfigurationDetails from "./dslConfigurationDetails.js"
 
 class EmfModelHelper {
 
@@ -94,7 +94,8 @@ class EmfModelHelper {
      */
     static recursion(emfEntityList, emfEntity, parent, self) {
         let { data, arrays, objects } = this.createMetaObject(emfEntity);
-        let flatEntity = { data, parent, children: [], self };
+        let getValue = {}
+        let flatEntity = { data, parent, children: [], self, getValue};
 
         arrays.forEach((array) => {
             array.data.forEach((element, index) => {
@@ -105,6 +106,10 @@ class EmfModelHelper {
             flatEntity.children.push(this.recursion(emfEntityList, object.data, flatEntity, object.name));
         });
         emfEntityList.push(flatEntity);
+        var dslConfigs=dslConfigurationDetails.filter(entity => entity.className === flatEntity.data.className)[0];
+        if(dslConfigs !== undefined){
+            flatEntity.getValue = dslConfigs.getValue;
+        }
         return flatEntity;
     }
 }
