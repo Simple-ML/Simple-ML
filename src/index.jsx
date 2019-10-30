@@ -22,7 +22,7 @@ window.loadEditor((xtextEditor) => {
     XtextServices.addSuccessListener((serviceType, result) => {
         switch (serviceType) {
             case 'getEmfModel':
-                store.dispatch(setNewEmfModel(result.emfModel));
+                store.dispatch(setNewEmfModel(JSON.parse(result.emfModel)));
                 break;
             case 'createEntity':
             case 'deleteEntity':

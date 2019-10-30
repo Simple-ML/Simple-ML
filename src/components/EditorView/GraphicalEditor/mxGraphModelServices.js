@@ -59,7 +59,7 @@ class GraphServices {
             if(entity["children"].length === 0){
                 return false;
             } else {
-                var potentialChildren = entity ['children'];
+                var potentialChildren = entity['children'];
                 for (var i = 0; i < potentialChildren.length; i++){
                     if (potentialChildren[i].visible === true){
                         return true;
@@ -115,7 +115,3 @@ export default {
     findVisibleSourceCellInModel: (reference, model) => GraphServices.findVisibleSourceCellInModel(reference, model),
     findVisibleTargetCellInModel: (potentialTarget) => GraphServices.findVisibleTargetCellInModel(potentialTarget),
 }
-
-
-
-

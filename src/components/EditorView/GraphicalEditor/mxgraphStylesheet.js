@@ -10,7 +10,7 @@ function configureStylesheet(graph)
     datasetStyle[mxConstants.STYLE_PERIMETER] = mxPerimeter.RectanglePerimeter;
     datasetStyle[mxConstants.STYLE_IMAGE] = datasetIcon;
     datasetStyle[mxConstants.STYLE_FONTCOLOR] = '#b9c0c7';
-    graph.getStylesheet().putCellStyle(mxGraphConfig.constants.DATASET, datasetStyle);
+    graph.getStylesheet().putCellStyle(mxGraphConfig.constants.ASSIGNMENT, datasetStyle);
     
     var processCallStyle = new Object();
     processCallStyle[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
