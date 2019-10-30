@@ -94,7 +94,7 @@ class EmfModelHelper {
      */
     static recursion(emfEntityList, emfEntity, parent, self) {
         let { data, arrays, objects } = this.createMetaObject(emfEntity);
-        let getValue = {}
+        let getValue = {};
         let flatEntity = { data, parent, children: [], self, getValue};
 
         arrays.forEach((array) => {
@@ -106,7 +106,7 @@ class EmfModelHelper {
             flatEntity.children.push(this.recursion(emfEntityList, object.data, flatEntity, object.name));
         });
         emfEntityList.push(flatEntity);
-        var dslConfigs=dslConfigurationDetails.filter(entity => entity.className === flatEntity.data.className)[0];
+        var dslConfigs = dslConfigurationDetails.filter(entity => entity.className === flatEntity.data.className)[0];
         if(dslConfigs !== undefined){
             flatEntity.getValue = dslConfigs.getValue;
         }
