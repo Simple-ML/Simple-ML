@@ -51,7 +51,14 @@ export default [
     {
         className: "de.unibonn.simpleml.simpleML.ArrayLiteral",
         getValue:function(){
-            return "Array"
+            let arrayValue = "[ ";
+            for (let i in this.children){
+                let childEntity = this.children[i];
+                let childValue = childEntity.getValue();
+                arrayValue+=childValue + " ";
+            }
+            arrayValue+="]"
+            return arrayValue
         }
     },
     //elementary classes
