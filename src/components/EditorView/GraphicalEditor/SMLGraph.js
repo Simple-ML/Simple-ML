@@ -5,7 +5,6 @@ import EmfModelHelper from "../../../helper/EmfModelHelper";
 import connectImage from "./../../../images/graph/association-arrow.png"
 //services
 import XtextServices from "../../../serverConnection/XtextServices";
-import MxGraphConfig from "./mxGraphConfig";
 import GraphServices from './mxGraphModelServices';
 
 import reduxStore from './../../../reduxStore';
