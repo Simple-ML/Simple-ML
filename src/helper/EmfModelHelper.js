@@ -94,8 +94,7 @@ class EmfModelHelper {
      */
     static recursion(emfEntityList, emfEntity, parent, self) {
         let { data, arrays, objects } = this.createMetaObject(emfEntity);
-        let getValue = {};
-        let flatEntity = { data, parent, children: [], self, getValue};
+        let flatEntity = { data, parent, children: [], self, getValue: {}};
 
         arrays.forEach((array) => {
             array.data.forEach((element, index) => {
