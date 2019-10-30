@@ -20,7 +20,6 @@ class PropsDetails extends React.Component {
     createProcessCallComponentFragment(additionalInfo){
         var parameters = [];
         let children = this.props.context.value.children;
-        console.log(children)
         if(additionalInfo[0]){
             var name = additionalInfo[0].name||"none";
             var namespace = additionalInfo[0].namespace||"";
@@ -57,13 +56,11 @@ class PropsDetails extends React.Component {
         switch (type){
             case constants.PROCESSCALL:
                 additionalInfo = this.props.processConfigs.filter(process => process.name === data.ref);
-                description=this.createProcessCallComponentFragment(additionalInfo);
+                description = this.createProcessCallComponentFragment(additionalInfo);
                 break;    
             case constants.ASSIGNMENT:
-                console.log("assignment");
                 break;    
             default:
-                console.log("default");
                 break;    
         }
         return(
