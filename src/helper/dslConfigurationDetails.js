@@ -45,7 +45,7 @@ export default [
     {
         className: "de.unibonn.simpleml.simpleML.DictionaryLiteral",
         getValue:function(entity, emfModel){
-            return "bla"
+            return "Function not supported yet"
         }
     },
     {
@@ -64,13 +64,13 @@ export default [
     //elementary classes
     {
         className: "de.unibonn.simpleml.simpleML.IntegerLiteral",
-        getValue:function(entity, emfModel){
+        getValue:function(){
             return this.data.value
         }
     },
     {
         className: "de.unibonn.simpleml.simpleML.FloatLiteral",
-        getValue:function(entity, emfModel){
+        getValue:function(){
             return this.data.value
         }
     },
@@ -82,33 +82,33 @@ export default [
     },
     {
         className: "de.unibonn.simpleml.simpleML.BooleanLiteral",
-        getValue:function(entity, emfModel){
-            return "bla"
+        getValue:function(){
+            return "Function not supported yet"
         }
     },
     {
         className: "de.unibonn.simpleml.simpleML.DateLiteral",
-        getValue:function(entity, emfModel){
+        getValue:function(){
             let dateString = this.data.year + "-" +this.data.month + "-" + this.data.day;
             return dateString
         }
     },
     {
         className: "de.unibonn.simpleml.simpleML.TimeLiteral",
-        getValue:function(entity, emfModel){
-            return "bla"
+        getValue:function(){
+            return "Function not supported yet"
         }
     },
     {
         className: "de.unibonn.simpleml.simpleML.DateTimeLiteral",
-        getValue:function(entity, emfModel){
-            return "bla"
+        getValue:function(){
+            return "Function not supported yet"
         }
     },
     {
         className: "de.unibonn.simpleml.simpleML.Seconds",
-        getValue:function(entity, emfModel){
-            return "bla"
+        getValue:function(){
+            return "Function not supported yet"
         }
     },
 
