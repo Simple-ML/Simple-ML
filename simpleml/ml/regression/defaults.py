@@ -4,6 +4,8 @@
 #  The compile should insert the override_defaults calls as needed (should not be part of the function)
 #  The functions expect the config to be complete.
 
+# TODO Naming: Regression/Classification vs. Regressor/Classifier
+
 lassoRegressionDefaults = {
     "regularizationStrength": 1.0
 }
