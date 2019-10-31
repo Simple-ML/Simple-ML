@@ -1,12 +1,33 @@
-from typing import List
+from typing import List, Union
 import requests
 import pandas as pd
 from io import StringIO
 
+from simpleml.io.pandasAdapter import read_tsv
+
 base = "***REMOVED***"
+project_id: Union[str, None] = None
 
 
-def createProject(title: str, description: str, language: str, random_seed: int) -> str:
+class Query:
+    def __init__(self, query_id: str):
+        self.query_id: str = query_id
+        self.__data: Union[pd.DataFrame, None] = None
+
+    def getData(self) -> pd.DataFrame:
+        if self.__data is None:
+            self.__data = _download(self.query_id)
+        return self.__data
+
+
+def loadDataset(dataset_id: str) -> Query:
+    global project_id
+    if project_id is None:
+        project_id = _createProject("Title", "Description", "Language", 42)
+    return Query(_generateDataset(dataset_id))
+
+
+def _createProject(title: str, description: str, language: str, random_seed: int) -> str:
     url = f"{base}/runOperation"
     req_json = {
         "operation": "create_project",
@@ -22,7 +43,7 @@ def createProject(title: str, description: str, language: str, random_seed: int)
     return res_json["result"]["project"]["id"]
 
 
-def generateDataset(project_id: str, dataset_id: str) -> str:
+def _generateDataset(dataset_id: str) -> str:
     url = f"{base}/projects/{project_id}/datasets/{dataset_id}/runOperation"
     req_json = {
         "operation": "generate_dataset",
@@ -33,8 +54,8 @@ def generateDataset(project_id: str, dataset_id: str) -> str:
     return res_json["result"]["in_use_id"]
 
 
-def keepAttributes(project_id: str, dataset_id: str, attribute_ids: List[str]) -> str:
-    url = f"{base}/projects/{project_id}/datasets/{dataset_id}/runOperation"
+def keepAttributes(query: Query, attribute_ids: List[str]) -> Query:
+    url = f"{base}/projects/{project_id}/datasets/{query.query_id}/runOperation"
     req_json = {
         "operation": "keep_attributes",
         "options": {
@@ -43,11 +64,11 @@ def keepAttributes(project_id: str, dataset_id: str, attribute_ids: List[str]) -
     }
     res = requests.post(url, json=req_json)
     res_json = res.json()
-    return res_json["result"]["in_use_id"]
+    return Query(res_json["result"]["in_use_id"])
 
 
-def sample(project_id: str, dataset_id: str, count: int) -> str:
-    url = f"{base}/projects/{project_id}/datasets/{dataset_id}/runOperation"
+def sample(query: Query, count: int) -> Query:
+    url = f"{base}/projects/{project_id}/datasets/{query.query_id}/runOperation"
     req_json = {
         "operation": "sample",
         "options": {
@@ -57,11 +78,17 @@ def sample(project_id: str, dataset_id: str, count: int) -> str:
     }
     res = requests.post(url, json=req_json)
     res_json = res.json()
-    return res_json["result"]["in_use_id"]
+    return Query(res_json["result"]["in_use_id"])
 
 
-def materialise(project_id: str, dataset_id: str) -> str:
-    url = f"{base}/projects/{project_id}/datasets/{dataset_id}/runOperation"
+def _download(query_id: str) -> pd.DataFrame:
+    file_id = _materialise(query_id)
+    path = _getDatasetFile(file_id)
+    return read_tsv(path)
+
+
+def _materialise(query_id: str) -> str:
+    url = f"{base}/projects/{project_id}/datasets/{query_id}/runOperation"
     req_json = {
         "operation": "materialise",
         "options": {}
@@ -71,37 +98,47 @@ def materialise(project_id: str, dataset_id: str) -> str:
     return res_json["result"]["in_use_id"]
 
 
-def getDatasetFile(project_id: str, dataset_id: str):
+def _getDatasetFile(dataset_id: str) -> StringIO:
     url = f"{base}/projects/{project_id}/datasets/{dataset_id}/runOperation"
     req_json = {
         "operation": "get_dataset_file",
         "options": {}
     }
     res = requests.post(url, json=req_json)
-    print(res.content)
-
-
-def tsvStringToPandasDataframe(s: str) -> pd.DataFrame:
-    path = StringIO(s)
+    return StringIO(res.content.decode("utf-8"))
 
 
 def main():
-    project_id = createProject("Title", "Description", "Language", 42)
-    print("Project ID:", project_id)
-    dataset_id = generateDataset(project_id, "ADACAugust")
-    print("Dataset ID (generate_dataset):", dataset_id)
-    dataset_id = keepAttributes(project_id, dataset_id, [
+    from simpleml.ml.regression.scikitAdapter import LassoRegression, DecisionTreeRegression
+    from simpleml.ml.scikitAdapter import fit, predict
+
+    adac_august = loadDataset("ADACAugust")
+    print("Dataset ID (adac_august):", adac_august.query_id)
+
+    sampled = sample(adac_august, 1000)
+    print("Dataset ID (sampled):", sampled.query_id)
+
+    features = keepAttributes(sampled, [
         "timestamp-time-string-to-hour",
-        "timestamp-time-string-to-week-day",
-        "timestamp-time-string-to-month",
-        "car_type",
-        "road_type"
+        # "timestamp-time-string-to-week-day",
+        # "timestamp-time-string-to-month",
+        # "car_type",
+        # "road_type"
     ])
-    print("Dataset ID (keep_attributes):", dataset_id)
-    dataset_id = sample(project_id, dataset_id, 10000)
-    print("Dataset ID (sample):", dataset_id)
-    dataset_id = materialise(project_id, dataset_id)
-    getDatasetFile(project_id, dataset_id)
+    print("Dataset ID (features):", features.query_id)
+    target = keepAttributes(sampled, [
+        "velocity"
+    ])
+    print("Dataset ID (target):", target.query_id)
+
+    model = LassoRegression({"regularizationStrength": 1})
+    trained_model = fit(model, features, target)
+
+    pred_X = [
+        [23]
+    ]
+    pred_y = predict(trained_model, pred_X)
+    print(pred_y)
 
 
 if __name__ == '__main__':

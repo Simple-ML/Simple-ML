@@ -1,4 +1,5 @@
 import sklearn.linear_model
+import sklearn.tree
 
 
 # Linear Models
@@ -25,6 +26,9 @@ def ElasticNetRegression(config):
         alpha=config["regularizationStrength"],
         l1_ratio=config["lassoRatio"]
     )
+
+def DecisionTreeRegression(config=None):
+    return sklearn.tree.DecisionTreeRegressor()
 
 # def decision_tree_regressor(config=None):
 #     if config is None:
