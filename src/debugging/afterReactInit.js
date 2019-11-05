@@ -20,7 +20,7 @@ let afterReactInit = () => {
         "])\n" +
         "// Train the model\n" +
         "model = LassoRegression() with {\n" +
-        "   regularizationStrength = 1\n" +
+        "   regularizationStrength : 1\n" +
         "}\n" +
         "trained_model = fit(model, X, y)\n" +
         "// Predict something and print the result\n" +
