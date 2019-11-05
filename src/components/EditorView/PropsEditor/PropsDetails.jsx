@@ -4,6 +4,7 @@ import mxGraphConfig from "./../GraphicalEditor/mxGraphConfig";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import XtextServices from '../../../serverConnection/XtextServices';
+import ParameterInput from './ParameterInput'
 
 class PropsDetails extends React.Component {
     constructor(props){
@@ -36,9 +37,7 @@ class PropsDetails extends React.Component {
                 <li>Namespace: {namespace}</li>
                 <div>Parameters: {parameters.map((parameter, index) => 
                     (
-                        <div key={parameter.name}>
-                            <li key={parameter.name}> name: {parameter.name}; type: {parameter.type}; value: {children[index].getValue()}</li>
-                        </div>
+                       <ParameterInput key={parameter.name} name={parameter.name} type={parameter.type} value={children[index].getValue()}></ParameterInput>
                     )
                 )}</div>
                 <div>
