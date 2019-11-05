@@ -22,25 +22,29 @@ class PropsDetails extends React.Component {
         let children = this.props.context.value.children;
         if(additionalInfo[0]){
             var name = additionalInfo[0].name||"none";
-            var namespace = additionalInfo[0].namespace||"";
+            var namespace = additionalInfo[0].namespace||"none";
             var description = additionalInfo[0].description||"no description";
             var parameters = additionalInfo[0].parameters||[];
-            var returns = additionalInfo[0].returns||"";
+            var returns = additionalInfo[0].returns||"undefined";
         }
+        let configs = this.props.context.value.children.filter(child => child.self === "config")
+        console.log(configs)
         return (
             <React.Fragment>
                 <li>Description: {description}</li>
                 <li>Name: {name}</li>
                 <li>Namespace: {namespace}</li>
-                <ol>Parameters: {parameters.map((parameter, index) => 
+                <div>Parameters: {parameters.map((parameter, index) => 
                     (
                         <div key={parameter.name}>
-                            <li key={parameter.name}> name: {parameter.name}; type: {parameter.type}</li>
-                            <label>Value: </label>
-                            <div>{children[index].getValue()} </div>
+                            <li key={parameter.name}> name: {parameter.name}; type: {parameter.type}; value: {children[index].getValue()}</li>
                         </div>
                     )
-                )}</ol>
+                )}</div>
+                <div>
+                    {configs.length !== 0? "with following configurations: \n" : ""}
+                    <div>{configs[0] !== undefined? configs[0].getValue() : ""}</div>    
+                </div>
                 <li>returns: {returns}</li>
             </React.Fragment>
         )
