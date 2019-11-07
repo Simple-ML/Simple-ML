@@ -109,7 +109,7 @@ def _getDatasetFile(dataset_id: str) -> StringIO:
 
 
 def main():
-    from simpleml.ml.regression.scikitAdapter import LassoRegression, DecisionTreeRegression
+    from simpleml.ml.regression.scikitAdapter import LassoRegression
     from simpleml.ml.scikitAdapter import fit, predict
 
     adac_august = loadDataset("ADACAugust")
