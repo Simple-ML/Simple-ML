@@ -2,7 +2,7 @@ import { mxConstants } from "mxgraph-js";
 
 // State initialisation
 const initialState = {
-    viewMode: mxConstants.DIRECTION_WEST,
+    viewMode: mxConstants.DIRECTION_NORTH,
 };
 
 
