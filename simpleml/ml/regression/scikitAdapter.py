@@ -27,6 +27,7 @@ def ElasticNetRegression(config):
         l1_ratio=config["lassoRatio"]
     )
 
+
 def DecisionTreeRegression(config=None):
     return sklearn.tree.DecisionTreeRegressor()
 
