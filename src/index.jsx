@@ -28,7 +28,7 @@ window.loadEditor((xtextEditor) => {
             case 'deleteEntity':
             case 'deleteAssociation':
             case 'createAssociation':
-                store.dispatch(setNewEmfModel(result.emfModel));
+                store.dispatch(setNewEmfModel(JSON.parse(result.emfModel)));
 
                 // TODO: update text-editor XtextServices.validate does not work
                 // XtextServices.validate();
