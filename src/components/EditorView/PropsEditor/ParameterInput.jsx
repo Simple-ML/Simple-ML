@@ -1,4 +1,5 @@
 import React from 'react';
+import {Tooltip, TextField} from '@material-ui/core'
 
 class ParameterInput extends React.Component {
     constructor(props){
@@ -16,18 +17,16 @@ class ParameterInput extends React.Component {
     
     render(){
     let {key, name, type, value} = this.state;
+    let tooltipText = "type: " + type;
     let handleChange= this.handleChange.bind(this);
         return(
             <div>
-                <div>
-                name: {name}
+                <div >
+                    {name}
                 </div>
-                <div>
-                type: {type}
-                </div>
-                <input onChange={handleChange} value={value}>
-
-                </input>
+                <Tooltip title={tooltipText} placement="right">
+                        <TextField fullWidth onChange={handleChange} value={value} variant="outlined" margin="dense"/>
+                </Tooltip>
             </div>
         )
     }

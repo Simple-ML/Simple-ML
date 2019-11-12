@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import XtextServices from '../../../serverConnection/XtextServices';
 import ParameterInput from './ParameterInput'
+import PropsDetailsStyle from './propsDetails.module.scss';
+import {Tooltip, TextField} from "@material-ui/core"
 
 class PropsDetails extends React.Component {
     constructor(props){
@@ -27,24 +29,25 @@ class PropsDetails extends React.Component {
             var description = additionalInfo[0].description||"no description";
             var parameters = additionalInfo[0].parameters||[];
             var returns = additionalInfo[0].returns||"undefined";
+            var infotext = "Please define the properties for the process"
         }
         let configs = this.props.context.value.children.filter(child => child.self === "config")
         console.log(configs)
         return (
             <React.Fragment>
-                <li>Description: {description}</li>
-                <li>Name: {name}</li>
-                <li>Namespace: {namespace}</li>
-                <div>Parameters: {parameters.map((parameter, index) => 
+                <div className={PropsDetailsStyle.title}>{name}</div>
+                <div className={PropsDetailsStyle.infotext}>{parameters ? infotext: ""}</div>
+                <div>{parameters.map((parameter, index) => 
                     (
                        <ParameterInput key={parameter.name} name={parameter.name} type={parameter.type} value={children[index].getValue()}></ParameterInput>
                     )
                 )}</div>
-                <div>
-                    {configs.length !== 0? "with following configurations: \n" : ""}
-                    <div>{configs[0] !== undefined? configs[0].getValue() : ""}</div>    
+                <div style={{display:configs.length !== 0? "block" : "none"}}>
+                    <div>{ "configuration: \n"}</div>
+                    <Tooltip title={"type: Dictionary"} placement="right">
+                        <TextField multiline fullWidth variant="outlined" margin="dense" value={configs[0] !== undefined? configs[0].getValue() : ""} visibility={configs[0] !== undefined? "visible" : "hidden"}></TextField>
+                    </Tooltip>
                 </div>
-                <li>returns: {returns}</li>
             </React.Fragment>
         )
     }
@@ -54,12 +57,12 @@ class PropsDetails extends React.Component {
         let className = data.className;
         let type = className.replace(mxGraphConfig.dslPrefix, "");
         let additionalInfo;
-        let description;
+        let details;
 
         switch (type){
             case constants.PROCESSCALL:
                 additionalInfo = this.props.processConfigs.filter(process => process.name === data.ref);
-                description = this.createProcessCallComponentFragment(additionalInfo);
+                details = this.createProcessCallComponentFragment(additionalInfo);
                 break;    
             case constants.ASSIGNMENT:
                 break;    
@@ -68,8 +71,7 @@ class PropsDetails extends React.Component {
         }
         return(
             <div>
-                {type}
-                {description}
+                {details}
             </div>
         )
     }
