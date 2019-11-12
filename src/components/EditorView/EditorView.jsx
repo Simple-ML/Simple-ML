@@ -70,7 +70,8 @@ class EditorView extends React.Component {
             title: "Properties Editor",
             type: "react-component",
             component: "propsEditor",
-            icon: tutorialIcon
+            icon: tutorialIcon,
+            isClosable:false
         }]
     }
 
@@ -115,18 +116,21 @@ class EditorView extends React.Component {
                             dimensions:{
                                 headerHeight: "100%"
                             },
+                        settings:{
+                            hasHeaders: false,
+                        },
                             content:[{
                                 type: "row",
+                                width: 100,
                                 content: [
-                                    componentConfigs[0],
                                     {
                                         type: 'column',
+                                        width: 84.2,
                                         content:[
-                                            componentConfigs[1],
-                                            componentConfigs[2]
+                                            componentConfigs[0],
+                                            componentConfigs[1]
                                         ]
                                     },
-                                    componentConfigs[4]
                                 ]
                             }]
                         }}
@@ -146,6 +150,7 @@ class EditorView extends React.Component {
                             })
                         }}
                     />
+                    <PropsEditor/>
                 </div>
             </div>
         )

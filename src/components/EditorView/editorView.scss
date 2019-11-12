@@ -18,7 +18,8 @@
 .ide-container {
   min-height: 800px;
   background-color: #2f1433;
-
+  display:grid;
+  grid-template-columns: 3fr 1fr;
 
   .textEditor {
     position: relative;

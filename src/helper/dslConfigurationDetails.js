@@ -45,13 +45,13 @@ export default [
     {
         className: "de.unibonn.simpleml.simpleML.DictionaryLiteral",
         getValue:function(){
-            let dictionaryValue = "type: dictionary: {";
+            let dictionaryValue = "{ \n";
             for (let i in this.children){
                 let childEntity = this.children[i];
                 let childKey = childEntity.data.key;
                 dictionaryValue+=childKey + ": ";
                 let childValue = childEntity.children[0].getValue();
-                dictionaryValue+=childValue + "; ";
+                dictionaryValue+=childValue + ";\n";
             }
             dictionaryValue+="}";
             return dictionaryValue;
