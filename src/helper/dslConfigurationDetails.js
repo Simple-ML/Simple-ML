@@ -44,8 +44,17 @@ export default [
     //arraylike classes
     {
         className: "de.unibonn.simpleml.simpleML.DictionaryLiteral",
-        getValue:function(entity, emfModel){
-            return "Function not supported yet"
+        getValue:function(){
+            let dictionaryValue = "{ \n";
+            for (let i in this.children){
+                let childEntity = this.children[i];
+                let childKey = childEntity.data.key;
+                dictionaryValue+=childKey + ": ";
+                let childValue = childEntity.children[0].getValue();
+                dictionaryValue+=childValue + ";\n";
+            }
+            dictionaryValue+="}";
+            return dictionaryValue;
         }
     },
     {
@@ -77,13 +86,16 @@ export default [
     {
         className: "de.unibonn.simpleml.simpleML.StringLiteral",
         getValue:function(){
-            return this.data.value
+            let stringValue = '"';
+            stringValue+=this.data.value
+            stringValue+=  '"';
+            return stringValue;
         }
     },
     {
         className: "de.unibonn.simpleml.simpleML.BooleanLiteral",
         getValue:function(){
-            return "Function not supported yet"
+            return this.data.true
         }
     },
     {

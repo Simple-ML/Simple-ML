@@ -118,15 +118,13 @@ class EditorView extends React.Component {
                             content:[{
                                 type: "row",
                                 content: [
-                                    componentConfigs[0],
                                     {
                                         type: 'column',
                                         content:[
-                                            componentConfigs[1],
-                                            componentConfigs[2]
+                                            componentConfigs[0],
+                                            componentConfigs[1]
                                         ]
                                     },
-                                    componentConfigs[4]
                                 ]
                             }]
                         }}
@@ -146,6 +144,7 @@ class EditorView extends React.Component {
                             })
                         }}
                     />
+                    <PropsEditor/>
                 </div>
             </div>
         )

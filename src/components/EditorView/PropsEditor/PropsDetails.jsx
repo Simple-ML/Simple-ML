@@ -4,6 +4,9 @@ import mxGraphConfig from "./../GraphicalEditor/mxGraphConfig";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import XtextServices from '../../../serverConnection/XtextServices';
+import ParameterInput from './ParameterInput'
+import PropsEditorStyle from './propsEditor.module.scss';
+import {Tooltip, TextField} from "@material-ui/core"
 
 class PropsDetails extends React.Component {
     constructor(props){
@@ -22,26 +25,29 @@ class PropsDetails extends React.Component {
         let children = this.props.context.value.children;
         if(additionalInfo[0]){
             var name = additionalInfo[0].name||"none";
-            var namespace = additionalInfo[0].namespace||"";
+            var namespace = additionalInfo[0].namespace||"none";
             var description = additionalInfo[0].description||"no description";
             var parameters = additionalInfo[0].parameters||[];
-            var returns = additionalInfo[0].returns||"";
+            var returns = additionalInfo[0].returns||"undefined";
+            var infotext = "Please define the properties for the process"
         }
+        let configs = this.props.context.value.children.filter(child => child.self === "config")
+        console.log(configs)
         return (
             <React.Fragment>
-                <li>Description: {description}</li>
-                <li>Name: {name}</li>
-                <li>Namespace: {namespace}</li>
-                <ol>Parameters: {parameters.map((parameter, index) => 
+                <div className={PropsEditorStyle.title}>{name}</div>
+                <div className={PropsEditorStyle.infotext}>{parameters ? infotext: ""}</div>
+                <div>{parameters.map((parameter, index) => 
                     (
-                        <div key={parameter.name}>
-                            <li key={parameter.name}> name: {parameter.name}; type: {parameter.type}</li>
-                            <label>Value: </label>
-                            <div>{children[index].getValue()} </div>
-                        </div>
+                       <ParameterInput key={parameter.name} name={parameter.name} type={parameter.type} value={children[index].getValue()}></ParameterInput>
                     )
-                )}</ol>
-                <li>returns: {returns}</li>
+                )}</div>
+                <div style={{display:configs.length !== 0? "block" : "none"}}>
+                    <div className={PropsEditorStyle.propLabel}>{ "with configurations: \n"}</div>
+                    <Tooltip title={"type: Dictionary"} placement="right">
+                        <TextField multiline fullWidth variant="outlined" margin="dense" value={configs[0] !== undefined? configs[0].getValue() : ""} visibility={configs[0] !== undefined? "visible" : "hidden"}></TextField>
+                    </Tooltip>
+                </div>
             </React.Fragment>
         )
     }
@@ -51,12 +57,12 @@ class PropsDetails extends React.Component {
         let className = data.className;
         let type = className.replace(mxGraphConfig.dslPrefix, "");
         let additionalInfo;
-        let description;
+        let details;
 
         switch (type){
             case constants.PROCESSCALL:
                 additionalInfo = this.props.processConfigs.filter(process => process.name === data.ref);
-                description = this.createProcessCallComponentFragment(additionalInfo);
+                details = this.createProcessCallComponentFragment(additionalInfo);
                 break;    
             case constants.ASSIGNMENT:
                 break;    
@@ -65,8 +71,7 @@ class PropsDetails extends React.Component {
         }
         return(
             <div>
-                {type}
-                {description}
+                {details}
             </div>
         )
     }
