@@ -1,5 +1,6 @@
 import React from 'react';
 import {Tooltip, TextField} from '@material-ui/core'
+import propsEditorStyle from "./propsEditor.module.scss"
 
 class ParameterInput extends React.Component {
     constructor(props){
@@ -21,7 +22,7 @@ class ParameterInput extends React.Component {
     let handleChange= this.handleChange.bind(this);
         return(
             <div>
-                <div >
+                <div className={propsEditorStyle.propLabel}>
                     {name}
                 </div>
                 <Tooltip title={tooltipText} placement="right">

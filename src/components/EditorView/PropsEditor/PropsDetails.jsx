@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import XtextServices from '../../../serverConnection/XtextServices';
 import ParameterInput from './ParameterInput'
-import PropsDetailsStyle from './propsDetails.module.scss';
+import PropsEditorStyle from './propsEditor.module.scss';
 import {Tooltip, TextField} from "@material-ui/core"
 
 class PropsDetails extends React.Component {
@@ -35,15 +35,15 @@ class PropsDetails extends React.Component {
         console.log(configs)
         return (
             <React.Fragment>
-                <div className={PropsDetailsStyle.title}>{name}</div>
-                <div className={PropsDetailsStyle.infotext}>{parameters ? infotext: ""}</div>
+                <div className={PropsEditorStyle.title}>{name}</div>
+                <div className={PropsEditorStyle.infotext}>{parameters ? infotext: ""}</div>
                 <div>{parameters.map((parameter, index) => 
                     (
                        <ParameterInput key={parameter.name} name={parameter.name} type={parameter.type} value={children[index].getValue()}></ParameterInput>
                     )
                 )}</div>
                 <div style={{display:configs.length !== 0? "block" : "none"}}>
-                    <div>{ "configuration: \n"}</div>
+                    <div className={PropsEditorStyle.propLabel}>{ "with configurations: \n"}</div>
                     <Tooltip title={"type: Dictionary"} placement="right">
                         <TextField multiline fullWidth variant="outlined" margin="dense" value={configs[0] !== undefined? configs[0].getValue() : ""} visibility={configs[0] !== undefined? "visible" : "hidden"}></TextField>
                     </Tooltip>
