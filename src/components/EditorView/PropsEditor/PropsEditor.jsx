@@ -36,8 +36,8 @@ class PropsEditor extends React.Component {
         visible = visible ? 'visible' : 'hidden';
         if (this.props.context.value){
             return(
-                <div style={{visibility: visible}}>
-                    <div className={PropsEditorStyle.propsEditor}
+                <div style={{visibility: visible}} className={PropsEditorStyle.propsEditor}>
+                    <div 
                         ref={this.myself}>
                         <PropsDetails/>
                     </div>
