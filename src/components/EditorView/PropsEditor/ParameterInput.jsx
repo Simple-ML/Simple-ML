@@ -5,28 +5,29 @@ import propsEditorStyle from "./propsEditor.module.scss"
 class ParameterInput extends React.Component {
     constructor(props){
         super(props);
-        this.state={
+        this.state = {
             name: props.name,
             type: props.type,
             value:props.value
         }
+        this.handleChange = this.handleChange.bind(this);
     } 
 
     handleChange(){
-        console.log("text changed")
+        console.log("Editing paramenters is not implemented yet")
     }
     
     render(){
-    let {key, name, type, value} = this.state;
+    let { name, type, value} = this.state;
     let tooltipText = "type: " + type;
-    let handleChange= this.handleChange.bind(this);
+
         return(
             <div>
                 <div className={propsEditorStyle.propLabel}>
                     {name}
                 </div>
                 <Tooltip title={tooltipText} placement="right">
-                        <TextField fullWidth onChange={handleChange} value={value} variant="outlined" margin="dense"/>
+                        <TextField fullWidth onChange={this.handleChange} value={value} variant="outlined" margin="dense"/>
                 </Tooltip>
             </div>
         )
