@@ -22,10 +22,10 @@ import 'golden-layout/src/css/goldenlayout-base.css';
 import headerStyle from '../core/Header/header.module.scss';
 //images
 import viewbarIcon from '../../images/headerButtons/viewbar-closed.svg';
-import graphicalEditorIcon from '../../images/sideToolbar/flow.svg';
-import textEditorIcon from '../../images/sideToolbar/text-ide.svg';
-import detailViewIcon from '../../images/sideToolbar/chart.svg';
-import tutorialIcon from '../../images/sideToolbar/tutorial.svg';
+import graphicalEditorIcon from '../../images/sideToolbar/graph-viewbar.svg';
+import textEditorIcon from '../../images/sideToolbar/text-viewbar.svg';
+import detailViewIcon from '../../images/sideToolbar/chart-viewbar.svg';
+import tutorialIcon from '../../images/sideToolbar/tutorial-view.svg';
 
 class EditorView extends React.Component {
     constructor(props) {
@@ -66,12 +66,12 @@ class EditorView extends React.Component {
             component: "tutorial",
             icon: tutorialIcon
         },
-        {
+       /* {
             title: "Properties Editor",
             type: "react-component",
             component: "propsEditor",
             icon: tutorialIcon
-        }]
+        }*/]
     }
 
     showHideSideToolbar = () => {

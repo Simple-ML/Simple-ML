@@ -12,7 +12,7 @@ class Header extends React.Component{
         return(
             <div className={headerStyle["app-header"]}>
                 <div className={headerStyle["logo-container"]}>
-                    <img src={ logoVector } alt={ logo } className={headerStyle["logo"]}></img>
+        {/*<img src={ logoVector } alt={ logo } className={headerStyle["logo"]}></img>*/}
                     <img src={ simpleMl } alt={ "SIMPLE ML" } className={headerStyle["simple-ml"]}></img>
                 </div>
                 <div className={headerStyle["button-container"]}>

@@ -1,5 +1,5 @@
 //node_modules
-import { mxUtils, mxEvent, mxGraph, mxConnectionHandler, mxImage,  mxHierarchicalLayout,} from "mxgraph-js";
+import { mxUtils, mxEvent, mxGraph, mxConnectionHandler, mxImage,  mxHierarchicalLayout, mxGraphView } from "mxgraph-js";
 //helper
 import EmfModelHelper from "../../../helper/EmfModelHelper";
 import connectImage from "./../../../images/graph/association-arrow.png"
@@ -22,7 +22,11 @@ class SMLGraph extends mxGraph {
 
     constructor(parentContainer) {
         super(parentContainer);
-
+        this.containerWidth = parentContainer.clientWidth;
+        this.containerHeight = parentContainer.clientHeight;
+        this.centerX = this.containerWidth/2;
+        this.centerY = this.containerHeight/2;
+        this.doResizeContainer(this.containerWidth-20, this.containerHeight-75)
         // disable default mxCellEditor
         if(this.cellEditor) {
             this.cellEditor.startEditing = () => {};
@@ -35,13 +39,18 @@ class SMLGraph extends mxGraph {
      */
     initView(direction){
         this.layout = new mxHierarchicalLayout(this, direction);
+        this.layout.parentBorder = 50;
         configureStylesheet(this);
-        mxConnectionHandler.prototype.connectImage = new mxImage(connectImage,10,10);
-        mxConnectionHandler.prototype.moveIconFront=true;
-        this.layout.intraCellSpacing = 20;
+        //mxConnectionHandler.prototype.connectImage = new mxImage(connectImage,10,10);
+        //mxConnectionHandler.prototype.moveIconFront=true;
+        this.layout.intraCellSpacing = 100;
         this.htmlLabels = true;
         this.setConnectable(true);
         this.labelDisplayOverride();
+        this.addLabelperimeter();
+        this.setCellsMovable(false);
+        this.setCellsResizable(false);
+        console.log(this.centerX)
     }
 
     /**
@@ -66,6 +75,9 @@ class SMLGraph extends mxGraph {
             });
             this.connectReferences(this.EMFmodel);
             this.layout.execute(this.parent);
+            console.log(this.center)
+            //this.view.setTranslate(Math.floor(this.view.translate.x - this.getGraphBounds().x * this.view.scale + (this.containerWidth-this.getGraphBounds().width) * 0.3 / this.view.scale));
+            //this.center(true, false, .3, 0.5)
         }
         finally {
             this.getModel().endUpdate();
@@ -86,7 +98,7 @@ class SMLGraph extends mxGraph {
      * @param {string} cellStyle: style from configs
      */
     addEntity(cellValue, cellStyle){
-        return this.insertVertex(this.parent, null, cellValue, 20, 20, 50, 50, cellStyle);
+        return this.insertVertex(this.parent, null, cellValue, 10, 10, 47, 47, cellStyle);
     }
 
     /**
@@ -102,7 +114,7 @@ class SMLGraph extends mxGraph {
         model.forEach(entity=>{
             var encodedEntityValue = GraphServices.encode(entity);
             entity['visible'] = mxGraphConfig.isVisibleEntity(entity);
-            var entityStyle = mxGraphConfig.getStyle(entity.data.className);
+            var entityStyle = mxGraphConfig.getStyle(entity);
             if (entity['visible'] === true) {
                 entity['cellObject'] = this.addEntity(encodedEntityValue, entityStyle);
                 entity['cellObject'].setValue(entity);
@@ -202,6 +214,34 @@ class SMLGraph extends mxGraph {
                 this.model.remove(edge)
             }
         })
+    }
+
+
+    addLabelperimeter(){
+        // Redirects the perimeter to the label bounds if intersection
+        // between edge and label is found
+        var mxGraphViewGetPerimeterPoint = mxGraphView.prototype.getPerimeterPoint;
+        mxGraphView.prototype.getPerimeterPoint = function(terminal, next, orthogonal, border)
+        {
+            var point = mxGraphViewGetPerimeterPoint.apply(this, arguments);
+            
+            if (point != null)
+            {
+                var perimeter = this.getPerimeterFunction(terminal);
+                if (terminal.text != null && terminal.text.boundingBox != null)
+                {
+                    // Adds a small border to the label bounds
+                    var b = terminal.text.boundingBox.clone();
+                    b.grow(3)
+                    if (mxUtils.rectangleIntersectsSegment(b, point, next))
+                    {
+                        point = perimeter(b, terminal, next, orthogonal);
+                    }
+                }
+            }
+            
+            return point;
+        };
     }
 
     /**
