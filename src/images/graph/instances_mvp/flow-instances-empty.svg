@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="47" height="47" viewBox="0 0 47 47">
+    <defs>
+        <circle id="a" cx="23.5" cy="23.5" r="23.5"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <use stroke="#FFF" stroke-width="2" xlink:href="#a"/>
+        <rect width="5" height="23" x="21" y="3" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" rx="1" transform="rotate(90 23.5 14.5)"/>
+        <rect width="5" height="23" x="21" y="12" stroke="#8B4F94" stroke-linecap="round" stroke-linejoin="round" rx="1" transform="rotate(90 23.5 23.5)"/>
+        <rect width="5" height="23" x="21" y="21" stroke="#8B4F94" stroke-linecap="round" stroke-linejoin="round" rx="1" transform="rotate(90 23.5 32.5)"/>
+    </g>
+</svg>
