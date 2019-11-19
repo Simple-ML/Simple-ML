@@ -3,7 +3,12 @@ class MxGraphConfig {
     static dslPrefix = "de.unibonn.simpleml.simpleML.";
     static constants = {
             PROCESSCALL: 'ProcessCall',
-            ASSIGNMENT: "Assignment"
+            ASSIGNMENT: "Assignment",
+            LOAD_DATASET: "loadDataset",
+            SAMPLE: "sample",
+            KEEP_ATTRIBUTES: "keepAttributes",
+            TRAIN: "train",
+            ML_MODEL: "mlModel"
         }
     static configs = this.defineConfig();
 
@@ -90,8 +95,36 @@ class MxGraphConfig {
         }
     }
 
-    static getStyle(className) {
-        return this.getConfig(className, "style");
+    static getStyle(entity) {
+        var className = this.getName(entity.data.className);
+        if (className !== this.constants.PROCESSCALL){
+
+            return this.constants.ASSIGNMENT;   
+        } else {
+            switch (entity.data.ref){
+                case "loadDataset":
+                case "read_tsv":
+                    return this.constants.LOAD_DATASET;
+                case "sample":
+                    return this.constants.SAMPLE;
+                case "keepAttributes":
+                    return this.constants.KEEP_ATTRIBUTES;
+                case "LassoRegression":
+                case "ElasticNetRegression":
+                case "LinearRegression":
+                case "DesicionTree":
+                case "RidgeRegression":
+                case "RandomForest":
+                    return this.constants.ML_MODEL;
+                case "fit":
+                    return this.constants.TRAIN;
+                case "predict":
+                case "write":
+                case "project":    
+                default:
+                    return this.constants.PROCESSCALL;
+            }
+        }
     }
 
     static isVisibleClass(className) {
