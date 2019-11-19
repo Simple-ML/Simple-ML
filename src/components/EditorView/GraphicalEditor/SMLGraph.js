@@ -74,6 +74,7 @@ class SMLGraph extends mxGraph {
             });
             this.connectReferences(this.EMFmodel);
             this.layout.execute(this.parent);
+            //TO-DO: Graph in der Mitte von Golden-layout.container platzieren und nicht in der MItte von der ganzen App
             //this.view.setTranslate(Math.floor(this.view.translate.x - this.getGraphBounds().x * this.view.scale + (this.containerWidth-this.getGraphBounds().width) * 0.3 / this.view.scale));
             //this.center(true, false, .3, 0.5)
         }
