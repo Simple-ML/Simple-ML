@@ -32,7 +32,6 @@ class PropsDetails extends React.Component {
             var infotext = "Please define the properties for the process"
         }
         let configs = this.props.context.value.children.filter(child => child.self === "config")
-        console.log(configs)
         return (
             <React.Fragment>
                 <div className={PropsEditorStyle.title}>{name}</div>
