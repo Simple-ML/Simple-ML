@@ -41,8 +41,8 @@ class SMLGraph extends mxGraph {
         this.layout = new mxHierarchicalLayout(this, direction);
         this.layout.parentBorder = 50;
         configureStylesheet(this);
-        //mxConnectionHandler.prototype.connectImage = new mxImage(connectImage,10,10);
-        //mxConnectionHandler.prototype.moveIconFront=true;
+        mxConnectionHandler.prototype.connectImage = new mxImage(connectImage,10,10);
+        mxConnectionHandler.prototype.moveIconFront=true;
         this.layout.intraCellSpacing = 100;
         this.htmlLabels = true;
         this.setConnectable(true);
@@ -50,7 +50,6 @@ class SMLGraph extends mxGraph {
         this.addLabelperimeter();
         this.setCellsMovable(false);
         this.setCellsResizable(false);
-        console.log(this.centerX)
     }
 
     /**
@@ -75,7 +74,6 @@ class SMLGraph extends mxGraph {
             });
             this.connectReferences(this.EMFmodel);
             this.layout.execute(this.parent);
-            console.log(this.center)
             //this.view.setTranslate(Math.floor(this.view.translate.x - this.getGraphBounds().x * this.view.scale + (this.containerWidth-this.getGraphBounds().width) * 0.3 / this.view.scale));
             //this.center(true, false, .3, 0.5)
         }
