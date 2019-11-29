@@ -36,10 +36,23 @@ class PropsDetails extends React.Component {
             <React.Fragment>
                 <div className={PropsEditorStyle.title}>{name}</div>
                 <div className={PropsEditorStyle.infotext}>{parameters ? infotext: ""}</div>
-                <div>{parameters.map((parameter, index) => 
-                    (
-                       <ParameterInput key={parameter.name} name={parameter.name} type={parameter.type} value={children[index].getValue()}></ParameterInput>
-                    )
+                <div>{parameters.map((parameter, index) => {
+                    // TODO: Strategie für Fehlerhandling entwickeln 
+                    // Fall 1: parameters > children : wird hier behandelt 
+                    // Fall 2: parameters < children : führt nicht zu Fehler aber welche children sind die richtigen und werden die überschüigen children angezeigt?
+                    // Fall 3: parameters > children && children[0] == parameter[1] (child für parameter[0] nicht verfügbar)
+                    // Fall 3.1: durch Typen inferierbar : 
+                    // Fall 3.2: durch Typen nicht inferierbar :
+                    if(children[index]) {
+                        return(
+                            <ParameterInput key={parameter.name} name={parameter.name} type={parameter.type} value={children[index].getValue()}></ParameterInput>
+                        )
+                    } else {
+                        return(
+                            <ParameterInput key={parameter.name} name={parameter.name} type={parameter.type} value={''}></ParameterInput>
+                        )
+                    }
+                }
                 )}</div>
                 <div style={{display:configs.length !== 0? "block" : "none"}}>
                     <div className={PropsEditorStyle.propLabel}>{ "with configurations: \n"}</div>
