@@ -10,7 +10,7 @@ import GoldenLayoutComponent from './../../../helper/goldenLayoutServices/golden
 import SideToolbar from './SideToolbar/SideToolbar';
 
 // Styles
-import multiViewStyle from './multiView.module.scss';
+import './multiView.scss';
 
 // Config
 import MultiViewConfig from './MultiViewConfig';
@@ -40,7 +40,7 @@ class MultiView extends React.Component {
 
     render() {
         return (
-            <div className={multiViewStyle['multi-view-container']}>
+            <div className={'multi-view-container'}>
                 <SideToolbar componentConfigs={MultiViewConfig.getPureConfigList()} layout={this.state.myLayout} />
                 <GoldenLayoutComponent
                     htmlAttrs={{ style: { minHeight: "780px", width: "100%" } }}

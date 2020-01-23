@@ -47,7 +47,13 @@ class SideToolbar extends React.Component {
                             this.state.childInfos.push({ref: input, config: buttonConfig});
                         }}
                         onClick={() => {
-                            this.props.layout.root.contentItems[0].addChild(buttonConfig)
+                            if(this.props.layout.root.contentItems[0])
+                                this.props.layout.root.contentItems[0].addChild(buttonConfig);
+                            else
+                                this.props.layout.root.addChild({  
+                                    type: "row",
+                                    content: [buttonConfig]
+                                });
                         }}
                     />)
                 })}
