@@ -9,7 +9,7 @@ const xtextEndpoint = {
     port: "8080",
     protocol: "http:",
     syntaxDefinition: "xtext-resources/generated/mode-mydsl",
-    xtextLang: "sml",
+    xtextLang: "simpleml",
 };
 
 export default xtextEndpoint;
