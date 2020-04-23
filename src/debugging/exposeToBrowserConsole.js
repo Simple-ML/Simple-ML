@@ -37,6 +37,7 @@ const debugInterface = {
     d: { //data
         lsr: {}, //lastServiceResult
         emf: {},
+        emf_flat: {},
         l3s: {
             projectId: '',
             dataSets: {},
