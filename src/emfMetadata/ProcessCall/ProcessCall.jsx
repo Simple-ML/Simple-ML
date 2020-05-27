@@ -1,5 +1,5 @@
 import React from 'react';
-import MxGraphComponent from './mxGraphComponent';
+import MxGraphComponent from '../../components/mxGraphComponent/MxGraphComponent';
 import logo from '../../images/graph/instances/dataset.svg';
 
 export default class ProcessCall extends MxGraphComponent {

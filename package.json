@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.1.0",
-    "@projektionisten/node_cors_proxy": "0.0.2",
     "jquery": "^3.4.1",
     "mxgraph": "^3.9.12",
     "mxgraph-js": "^1.0.1",

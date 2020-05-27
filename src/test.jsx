@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import ProcessCall from './components/mxGraphComponent/ProcessCall';
+import ProcessCall from './emfMetadata/ProcessCall/ProcessCall';
 
 class GraphicalEditorTest extends React.Component {
 
@@ -33,7 +33,7 @@ class GraphicalEditorTest extends React.Component {
         
         graph.getLabel = function(cell)
         {
-            return cell.fromReactComponent;
+            return cell.contentDiv;
         }
 
         graph.isHtmlLabel = function(cell)
@@ -76,10 +76,11 @@ class GraphicalEditorTest extends React.Component {
     }
 
     render() {
-        // console.log(this.props)
         return (
-            <div className={`graphicalEditor`} style={{height:"1000px"}} ref={this.graphRef}></div>
-                
+            <div>
+                <div className={`graphicalEditor`} style={{height:"1000px"}} ref={this.graphRef}></div>
+                <div id={'mxReactPlaceholder'}></div>
+            </div>
         );
     }
 }

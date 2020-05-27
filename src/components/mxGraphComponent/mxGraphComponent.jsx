@@ -53,12 +53,13 @@ console.log(portPosition)
     renderToMxGraph(graphReference) {
         
         // const newDiv = document.createElement("div");
-        const newDiv = document.getElementById("mxReactPlaceholder");
-        ReactDOM.render(this.render(), newDiv, () => {
-            const rects = newDiv.childNodes[0].getBoundingClientRect();
+        const placeholderDiv = document.getElementById("mxReactPlaceholder");
+        ReactDOM.render(this.render(), placeholderDiv, () => {
+            const renderedDiv = placeholderDiv.childNodes[0];
+            const renderedDivRect = renderedDiv.getBoundingClientRect();
 
-            var vertex = graphReference.insertVertex(graphReference.getDefaultParent(), null, '', 0, 0, rects.width, rects.height);
-            vertex.fromReactComponent = newDiv;
+            var vertex = graphReference.insertVertex(graphReference.getDefaultParent(), null, '', 0, 0, renderedDivRect.width, renderedDivRect.height);
+            vertex.contentDiv = renderedDiv;
             this.attachePorts(graphReference, vertex);
         });
 
