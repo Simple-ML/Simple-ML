@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 
-import sideToolbarStyles from './SideToolbar.module.scss';
+import sideToolbarStyles from './sideToolbar.module.scss';
 
 /**
  * This component is used in combination with golden-layout. So this.props.layout has to be the layout-Object from
@@ -32,12 +32,8 @@ class SideToolbar extends React.Component {
     }
 
     render() {
-
         let buttonConfigs = this.props.componentConfigs;
-
-        let style = {
-            visibility: this.props.visible ? 'visible' : 'hidden'
-        };
+        let style = {visibility: this.props.visible ? 'visible' : 'hidden'};
 
         return (
             <div className={sideToolbarStyles["Side-Toolbar"]} style={style}>
@@ -51,7 +47,13 @@ class SideToolbar extends React.Component {
                             this.state.childInfos.push({ref: input, config: buttonConfig});
                         }}
                         onClick={() => {
-                            this.props.layout.root.contentItems[0].addChild(buttonConfig)
+                            if(this.props.layout.root.contentItems[0])
+                                this.props.layout.root.contentItems[0].addChild(buttonConfig);
+                            else
+                                this.props.layout.root.addChild({  
+                                    type: "row",
+                                    content: [buttonConfig]
+                                });
                         }}
                     />)
                 })}
