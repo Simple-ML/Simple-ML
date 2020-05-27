@@ -6,12 +6,9 @@ import $ from "jquery";
 
 //React.Components
 import EditorHeader from './EditorHeader/EditorHeader';
-import SideToolbar from './SideToolbar/SideToolbar';
-import GraphicalEditor from './GraphicalEditor/GraphicalEditor';
-import DetailsEditor from "./DetailsEditor/DetailsEditor";
-import PropsEditor from "./PropsEditor/PropsEditor";
-import TextEditor from './TextEditor/TextEditor';
-import GoldenLayoutComponent from './../../helper/goldenLayoutServices/goldenLayoutComponent';
+import MultiView from './MultiView/MultiView';
+import PropsEditor from './PropsEditor/PropsEditor';
+
 //redux
 import { changeDirection } from '../../reducers/graphicalEditor';
 import { showSideToolbar, hideSideToolbar } from '../../reducers/sideToolbar';
@@ -22,10 +19,7 @@ import 'golden-layout/src/css/goldenlayout-base.css';
 import headerStyle from '../core/Header/header.module.scss';
 //images
 import viewbarIcon from '../../images/headerButtons/viewbar-closed.svg';
-import graphicalEditorIcon from '../../images/sideToolbar/graph-viewbar.svg';
-import textEditorIcon from '../../images/sideToolbar/text-viewbar.svg';
-import detailViewIcon from '../../images/sideToolbar/chart-viewbar.svg';
-import tutorialIcon from '../../images/sideToolbar/tutorial-view.svg';
+
 
 class EditorView extends React.Component {
     constructor(props) {
@@ -41,39 +35,6 @@ class EditorView extends React.Component {
         this.flipGraph = this.flipGraph.bind(this);
     }
 
-    createComponentConfigs = () => {
-        return [{
-            title: "Graphical Editor",
-            type: "react-component",
-            component: "graphicalEditor",
-            icon: graphicalEditorIcon
-        },
-        {
-            title: "Text-Editor",
-            type: "react-component",
-            component: "textEditor",
-            icon: textEditorIcon
-        },
-        {
-            title: "Details",
-            type: "react-component",
-            component: "detailsEditor",
-            icon: detailViewIcon
-        },
-        {
-            title: "Tutorial",
-            type: "react-component",
-            component: "tutorial",
-            icon: tutorialIcon
-        },
-       /* {
-            title: "Properties Editor",
-            type: "react-component",
-            component: "propsEditor",
-            icon: tutorialIcon
-        }*/]
-    }
-
     showHideSideToolbar = () => {
         if(this.props.isSideToolbarVisible)
             this.props.hideSideToolbar();
@@ -85,67 +46,24 @@ class EditorView extends React.Component {
         this.props.changeDirection();
     }
 
-    wrapComponent = Component => {
-        class Wrapped extends React.Component {
-            render() {
-                return (
-                    <Component {...this.props}/>
-                );
-            }
-        }
-        return Wrapped;
-    }
+    
 
     render() {
-        let componentConfigs = this.createComponentConfigs();
-
         return(
-            <div className={'EditorView'}>
+            <div className={'editor-view'}>
                 <EditorHeader>
                     <input className={headerStyle.button}
                        key={1}
                        type={'image'} src={viewbarIcon}
                        onClick={() => this.showHideSideToolbar() }/>
                 </EditorHeader>
-                <SideToolbar componentConfigs={componentConfigs} layout={this.state.myLayout} />
-                <div className={'ide-container'}>
-                    <GoldenLayoutComponent
-                        htmlAttrs={{ style: { minHeight: "780px", width: "100%" } }}
-                        config={{
-                            dimensions:{
-                                headerHeight: "100%"
-                            },
-                            content:[{
-                                type: "row",
-                                content: [
-                                    {
-                                        type: 'column',
-                                        content:[
-                                            componentConfigs[0],
-                                            componentConfigs[1]
-                                        ]
-                                    },
-                                ]
-                            }]
-                        }}
-                        registerComponents={myLayout => {
-                            myLayout.registerComponent("textEditor",  this.wrapComponent(TextEditor));
-                            myLayout.registerComponent("graphicalEditor",  this.wrapComponent(GraphicalEditor));
-                            myLayout.registerComponent("detailsEditor",  this.wrapComponent(DetailsEditor));
-                            myLayout.registerComponent("tutorial",  this.wrapComponent(DetailsEditor));
-                            myLayout.registerComponent("propsEditor",  this.wrapComponent(PropsEditor));
-                            this.setState({myLayout});
-                            /*
-                            * Since our layout is not a direct child
-                            * of the body we need to tell it when to resize
-                            */
-                            $(window).on("resize", function(){
-                                myLayout.updateSize();
-                            })
-                        }}
-                    />
-                    <PropsEditor/>
-                </div>
+                <MultiView 
+                    showAtStartup={[
+                        'graphicalEditor',
+                        'textEditor'
+                    ]}
+                />
+                <PropsEditor/>
             </div>
         )
     }
