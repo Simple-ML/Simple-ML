@@ -2,8 +2,9 @@ import EmfModelHelper from "../helper/EmfModelHelper";
 
 // State initialisation
 const initialState = {
-    emfModel: [],
-    emfModelFlat: [],
+    raw: [],
+    flat: [],
+    renderable: [],
     dirty: true
 };
 
@@ -14,10 +15,14 @@ export const CLEAN_EMF_MODEL = 'CLEAN_EMF_MODEL';
 export const DIRTY_EMF_MODEL = 'DIRTY_EMF_MODEL';
 
 // Actions
-export const setNewEmfModel = (newEmfModel) => {
+export const setNewEmfModel = (raw, flat, renderable) => {
     return {
         type: NEW_EMF_MODEL,
-        payload: newEmfModel
+        payload: {
+            raw,
+            flat,
+            renderable
+        }
     }
 };
 
@@ -39,8 +44,9 @@ export default (state = initialState, action) =>{
     switch(action.type){
         case NEW_EMF_MODEL:
             return Object.assign({}, state, {
-                emfModel: action.payload,
-                emfModelFlat: EmfModelHelper.flattenEmfModelTree(action.payload)
+                raw: action.payload.raw,
+                flat: action.payload.flat,
+                renderable: action.payload.renderable
             });
         case CLEAN_EMF_MODEL:
             return Object.assign({}, state, {

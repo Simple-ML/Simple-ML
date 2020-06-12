@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import ProcessCall from './emfMetadata/ProcessCall/ProcessCall';
+import ProcessCall from './emfMetadata/GenericProcessCall/GenericProcessCall';
 
 class GraphicalEditorTest extends React.Component {
 

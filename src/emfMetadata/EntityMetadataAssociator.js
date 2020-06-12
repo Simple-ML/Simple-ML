@@ -1,3 +1,5 @@
+import ProcessCallMetadata from './GenericProcessCall/GenericProcessCall.metadata';
+
 
 /**
  * Associates metadata (for GUI-Elements) to an emfEntity
@@ -7,10 +9,12 @@ class EntityMetadataAssociator {
 
     /**
      * metadata: {
-     *     verify: function(emfEntity)              Returns true if metadata belongs to emfEntity.
-     *     mxGraphComponent: MxGraphComponent       Derived class from MxGraphComponent. Used to create a React-Component.
-     *     propsEditorComponent: TODO               Same as mxGraphComponent for PropsEditor
-     * }
+     *      verify: function(emfEntity)                 Returns true if metadata belongs to emfEntity.
+     *      mxGraphMetadata: {
+                component: MxGraphComponent             Derived class from MxGraphComponent.
+     *      }, 
+     *      propsEditorComponent: TODO                  Same as mxGraphComponent for PropsEditor
+     *  }
      */
     addMetadata = (metadata) => {
         this.metadataContainer.push(metadata);
@@ -38,5 +42,7 @@ const entityMetadataAssociator = new EntityMetadataAssociator();
 // entityMetadataAssociator.addMetadata(ProcessCall);
 // entityMetadataAssociator.addMetadata(ProcessCallWithNameLoadData);
 
+
+entityMetadataAssociator.addMetadata(ProcessCallMetadata);
 
 export default entityMetadataAssociator;

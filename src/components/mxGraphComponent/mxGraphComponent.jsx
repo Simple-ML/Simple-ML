@@ -51,8 +51,6 @@ console.log(portPosition)
     }
 
     renderToMxGraph(graphReference) {
-        
-        // const newDiv = document.createElement("div");
         const placeholderDiv = document.getElementById("mxReactPlaceholder");
         ReactDOM.render(this.render(), placeholderDiv, () => {
             const renderedDiv = placeholderDiv.childNodes[0];
