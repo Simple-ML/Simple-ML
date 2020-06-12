@@ -1,4 +1,4 @@
-import ProcessCall from "./ProcessCall";
+import GenericProcessCall from './GenericProcessCall';
 
 export default {
     verify: (emfEntity) => {
@@ -8,8 +8,7 @@ export default {
         return true;
     },
     mxGraphMetadata: {
-        component: ProcessCall,
-        
+        component: GenericProcessCall,
     },
     propsEditorComponent: {} // TODO
 }

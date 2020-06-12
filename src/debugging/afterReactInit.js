@@ -63,6 +63,7 @@ let afterReactInit = () => {
             let emfModel = JSON.parse(result.emfModel);
             debugInterface.d.emf = {inSync: true, data: emfModel};
             debugInterface.d.emf_flat = EmfModelHelper.flattenEmfModelTree(emfModel);
+            debugInterface.d.emf_renderable = EmfModelHelper.getRenderableEmfEntities(debugInterface.d.emf_flat);
         } else {
             debugInterface.d.emf.inSync = false;
         }

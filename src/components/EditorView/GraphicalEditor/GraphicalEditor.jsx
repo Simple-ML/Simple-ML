@@ -97,7 +97,7 @@ GraphicalEditor.propTypes = {
 
 const mapStateToProps = state => {
     return {
-        emfModelFlat: state.emfModel.emfModelFlat,
+        emfModelFlat: state.emfModel.renderable,
         viewMode: state.graphicalEditor.viewMode,
         dirty: state.emfModel.dirty,
         toolbarIsVisible: state.toolbar.visible

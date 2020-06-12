@@ -38,6 +38,7 @@ const debugInterface = {
         lsr: {}, //lastServiceResult
         emf: {},
         emf_flat: {},
+        emf_renderable: {},
         l3s: {
             projectId: '',
             dataSets: {},

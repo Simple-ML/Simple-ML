@@ -1,4 +1,5 @@
-import dslConfigurationDetails from "./dslConfigurationDetails.js"
+import dslConfigurationDetails from './dslConfigurationDetails.js';
+import EntityMetadataAssociator from '../emfMetadata/EntityMetadataAssociator';
 
 class EmfModelHelper {
 
@@ -10,7 +11,8 @@ class EmfModelHelper {
      *                  data: EmfModelData,
      *                  parent: ,
      *                  children: ,
-     *                  self: name of property in parent
+     *                  self: Property-name in parent-emf-entity. Used to localize entity in emf-tree. 
+     *                        Important for creating associations between entities in backend.
      *              },
      *              ...]
      */
@@ -19,6 +21,31 @@ class EmfModelHelper {
 
         this.recursion(flatEmfModel, emfModelTree, undefined, undefined);
         return flatEmfModel;
+    }
+
+    /**
+     * Returns a list of renderable Entities. 
+     * 
+     * @param emfModelFlat: output from EmfModelHelper.flattenEmfModelTree(...)
+     * @returns     [{
+     *                  metadata: definition found in EntityMetadataAssociator.js
+     *                  data: EmfModelData,
+     *                  parent: ,
+     *                  children: ,
+     *                  self: Property-name in parent-emf-entity. Used to localize entity in emf-tree. 
+     *                        Important for creating associations between entities in backend.
+     *              },
+     *              ...]
+     */
+    static getRenderableEmfEntities(emfModelFlat) {
+        let renderableEntityList = [];
+        for(let emfEntity of emfModelFlat) {
+            let associatedMetadata = EntityMetadataAssociator.getMetadata(emfEntity.data);
+            if(associatedMetadata !== undefined) {
+                renderableEntityList.push({entity: emfEntity, metadata: associatedMetadata});
+            }
+        }
+        return renderableEntityList;
     }
 
     /**
@@ -90,7 +117,7 @@ class EmfModelHelper {
      * @param emfEntity
      * @param parent
      * @param self
-     * @returns {{data: Object, parent: Object, children: Array, self: string}}
+     * @returns {data: Object, parent: Object, children: Array, self: string}
      */
     static recursion(emfEntityList, emfEntity, parent, self) {
         let { data, arrays, objects } = this.createMetaObject(emfEntity);
@@ -105,10 +132,15 @@ class EmfModelHelper {
             flatEntity.children.push(this.recursion(emfEntityList, object.data, flatEntity, object.name));
         });
         emfEntityList.push(flatEntity);
+        
+        // TODO: ausbauen
+        //-----------------
         var dslConfigs = dslConfigurationDetails.filter(entity => entity.className === flatEntity.data.className)[0];
         if(dslConfigs !== undefined){
             flatEntity.getValue = dslConfigs.getValue;
         }
+        //-----------------
+        
         return flatEntity;
     }
 }
@@ -116,5 +148,6 @@ class EmfModelHelper {
 export default {
     flattenEmfModelTree: (emfModelTree) => EmfModelHelper.flattenEmfModelTree(emfModelTree),
     getFullHierarchy: (emfEntity) => EmfModelHelper.getFullHierarchy(emfEntity),
-    getFullHierarchy2: (emfEntity) => EmfModelHelper.getFullHierarchy2(emfEntity)
+    getFullHierarchy2: (emfEntity) => EmfModelHelper.getFullHierarchy2(emfEntity),
+    getRenderableEmfEntities: (emfModelFlat) => EmfModelHelper.getRenderableEmfEntities(emfModelFlat)
 }
