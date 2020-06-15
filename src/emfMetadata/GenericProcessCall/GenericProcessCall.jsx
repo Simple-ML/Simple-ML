@@ -1,5 +1,5 @@
 import React from 'react';
-import MxGraphComponent from '../../components/mxGraphComponent/MxGraphComponent';
+import MxGraphComponent from '../../components/EditorView/GraphicalEditor/MxGraphVertexComponent';
 import logo from '../../images/graph/instances/dataset.svg';
 
 export default class GenericProcessCall extends MxGraphComponent {
@@ -8,7 +8,19 @@ export default class GenericProcessCall extends MxGraphComponent {
         super(props);
     }
 
-    
+    calculateInputPortData() {
+        this.props.emfEntity.children.forEach((element, index) => {
+            const portSize = 16;
+            const portSizeRelativToVertex = portSize / vertex.geometry.width;
+            const portText = '' + index;
+            const portPosition = this.calculateRelativePortPosition(
+                    index, 
+                    this.props.emfEntity.children.length, 
+                    portSizeRelativToVertex / 2, 
+                    portSizeRelativToVertex / 2
+                );
+        });
+    }
 
     render() {
         return(

@@ -15,39 +15,40 @@ export default class MxGraphComponent extends React.Component {
     }
 
     /**
+     * Must be implemented from derived class.
+     * 
+     * @returns [{
+     *      text: string,
+     *      posX: integer,
+     *      posY: integer,
+     *      sizeX: integer,
+     *      sizeY: integer
+     * },
+     * ...]
+     */
+    calculateInputPortData() {
+        return [];
+    }
+
+    /**
+     * See calculateInputPortData() definition
+     */
+    calculateOutputPortData() {
+        return [];
+    }
+
+    /**
      * @param graphReference:       mxGraph 
      * @param vertex:               mxGraph.Cell
      */
-    attachePorts = (graphReference, vertex) => {
-        this.props.emfEntity.children.forEach((element, index) => {
-            const portSize = 16;
-            const portSizeRelativToVertex = portSize / vertex.geometry.width;
-            const portText = '' + index;
-            const portPosition = this.calculateRelativePortPosition(
-                    index, 
-                    this.props.emfEntity.children.length, 
-                    portSizeRelativToVertex / 2, 
-                    portSizeRelativToVertex / 2
-                );
-console.log(portPosition)
+    attachePorts(graphReference, vertex) {
+        var portData = this.calculateInputPortData();
 
+        for(var port of portData) {
             var port = graphReference.insertVertex(vertex, null, portText, portPosition.x, portPosition.y, portSize, portSize, 
                 'port;image=editors/images/overlays/check.png;align=right;imageAlign=right;spacingRight=18', true);
-                port.geometry.offset = new mxPoint(-(portSize / 2), -(portSize /2));
-        });
-    }
-
-    calculateRelativePortPosition = (index, maxIndex, offsetX, offsetY) => {
-        if(maxIndex === 0) return { x: 0, y: 0 }
-
-        // if vertikal alignment
-        return {
-            x: (index + 1) / (maxIndex + 1),
-            y: 0
+            port.geometry.offset = new mxPoint(-(portSize / 2), -(portSize /2));
         }
-        // if label is a circle
-
-        // other implementations
     }
 
     renderToMxGraph(graphReference) {
