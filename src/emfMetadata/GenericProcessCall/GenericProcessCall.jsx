@@ -1,25 +1,35 @@
 import React from 'react';
+import EmfModelHelper from '../../helper/EmfModelHelper';
+
 import MxGraphComponent from '../../components/EditorView/GraphicalEditor/MxGraphVertexComponent';
 import logo from '../../images/graph/instances/dataset.svg';
 
+
+/**
+ * Lookup MxGraphVertexComponent.js
+ */
 export default class GenericProcessCall extends MxGraphComponent {
 
     constructor(props) {
         super(props);
     }
 
-    calculateInputPortData() {
+    calculateInputPortData(parentVertex) {
+        var portDataContainer = [];
+
         this.props.emfEntity.children.forEach((element, index) => {
-            const portSize = 16;
-            const portSizeRelativToVertex = portSize / vertex.geometry.width;
-            const portText = '' + index;
-            const portPosition = this.calculateRelativePortPosition(
-                    index, 
-                    this.props.emfEntity.children.length, 
-                    portSizeRelativToVertex / 2, 
-                    portSizeRelativToVertex / 2
-                );
+            var text = '';                       // TODO: get portname from emfEntity -> ProcessCallDefinition
+            var sizeX = 16;
+            var sizeY = 16;
+            var posX = (parentVertex.geometry.width / this.props.emfEntity.children.length + 1) * (index + 1) - (sizeX / 2);
+            var posY = -(sizeY / 2);
+            var emfPath = EmfModelHelper.getFullHierarchy2(element);
+            
+            portDataContainer.push({ 
+                text, sizeX, sizeY, posX, posY, emfPath
+            });    
         });
+        return portDataContainer;
     }
 
     render() {
