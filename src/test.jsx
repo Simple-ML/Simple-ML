@@ -92,7 +92,7 @@ GraphicalEditorTest.propTypes = {
 
 const mapStateToProps = state => {
     return {
-        emfModelFlat: state.emfModel.emfModelFlat
+        emfModelFlat: state.emfModel.flat
     }
 };
 

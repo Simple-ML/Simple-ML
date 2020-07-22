@@ -35,12 +35,12 @@ class EntityMetadataAssociator {
 const entityMetadataAssociator = new EntityMetadataAssociator();
 
 // Add metadata-objects here. Put more specific metadata before less specific e.g.:
-// correct!
-// entityMetadataAssociator.addMetadata(ProcessCallWithNameLoadData);
-// entityMetadataAssociator.addMetadata(ProcessCall);
 // wrong!
 // entityMetadataAssociator.addMetadata(ProcessCall);
 // entityMetadataAssociator.addMetadata(ProcessCallWithNameLoadData);
+// correct!
+// entityMetadataAssociator.addMetadata(ProcessCallWithNameLoadData);
+// entityMetadataAssociator.addMetadata(ProcessCall);
 
 
 entityMetadataAssociator.addMetadata(ProcessCallMetadata);

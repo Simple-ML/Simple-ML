@@ -5,13 +5,16 @@ import { mxPoint } from 'mxgraph-js';
 
 export default class MxGraphComponent extends React.Component {
 
+    /**
+     * 
+     * @param props: {
+     *      emfEntity: {},
+     *      globalConfig: {},
+     *      graphConfig: {}
+     * } 
+     */
     constructor(props) {
         super(props);
-        this.state = {
-            emfEntity: {},
-            globalConfig: {},
-            graphConfig: {}
-        };
     }
 
     /**
@@ -22,18 +25,19 @@ export default class MxGraphComponent extends React.Component {
      *      posX: integer,
      *      posY: integer,
      *      sizeX: integer,
-     *      sizeY: integer
+     *      sizeY: integer,
+     *      emfPath: string     // path of entity in emf-tree for association in backend
      * },
      * ...]
      */
-    calculateInputPortData() {
+    calculateInputPortData(parentVertex) {
         return [];
     }
 
     /**
      * See calculateInputPortData() definition
      */
-    calculateOutputPortData() {
+    calculateOutputPortData(parentVertex) {
         return [];
     }
 
@@ -42,12 +46,16 @@ export default class MxGraphComponent extends React.Component {
      * @param vertex:               mxGraph.Cell
      */
     attachePorts(graphReference, vertex) {
-        var portData = this.calculateInputPortData();
+        var portDataContainer = this.calculateInputPortData(vertex);
 
-        for(var port of portData) {
-            var port = graphReference.insertVertex(vertex, null, portText, portPosition.x, portPosition.y, portSize, portSize, 
+        for(var portData of portDataContainer) {
+            var port = graphReference.insertVertex(vertex, null, portData.text, portData.posX, portData.posY, portData.sizeX, portData.sizeY, 
                 'port;image=editors/images/overlays/check.png;align=right;imageAlign=right;spacingRight=18', true);
-            port.geometry.offset = new mxPoint(-(portSize / 2), -(portSize /2));
+            port.portData = {
+                text: portData.text,
+                emfPath: portData.emfPath
+            }
+            port.geometry.offset = new mxPoint(-(portData.sizeX / 2), -(portData.sizeY /2));
         }
     }
 
