@@ -53,7 +53,7 @@ class EditorView extends React.Component {
                 </EditorHeader>
                 <MultiView 
                     showAtStartup={[
-                        'graphicalEditor',
+                        // 'graphicalEditor',
                         'textEditor'
                     ]}
                 />

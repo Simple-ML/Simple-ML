@@ -78,7 +78,7 @@ const debugInterface = {
     }
 };
 
-var exposeToBrowserConsole = () => {
+let exposeToBrowserConsole = () => {
     window.deb = debugInterface
 };
 
