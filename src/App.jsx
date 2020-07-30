@@ -12,11 +12,11 @@ class App extends React.Component {
     render() {
         return (
             <div className="App">
-                {/* <EditorView/> */}
+                <EditorView/>
 
                 <Toolbar/>
                 <ModalContainer/>
-                <GraphicalEditorTest/>
+                {/* <GraphicalEditorTest/> */}
             </div>
         );
     }

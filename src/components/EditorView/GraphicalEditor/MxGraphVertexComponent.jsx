@@ -46,10 +46,10 @@ export default class MxGraphComponent extends React.Component {
      * @param vertex:               mxGraph.Cell
      */
     attachePorts(graphReference, vertex) {
-        var portDataContainer = this.calculateInputPortData(vertex);
+        let portsDataContainer = this.calculateInputPortData(vertex);
 
-        for(var portData of portDataContainer) {
-            var port = graphReference.insertVertex(vertex, null, portData.text, portData.posX, portData.posY, portData.sizeX, portData.sizeY, 
+        for(let portData of portsDataContainer) {
+            let port = graphReference.insertVertex(vertex, null, portData.text, portData.posX, portData.posY, portData.sizeX, portData.sizeY, 
                 'port;image=editors/images/overlays/check.png;align=right;imageAlign=right;spacingRight=18', true);
             port.portData = {
                 text: portData.text,

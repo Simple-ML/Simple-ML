@@ -35,7 +35,8 @@ window.loadEditor((xtextEditor) => {
                 let emfRaw = JSON.parse(result.emfModel);
                 let emfFlat = EmfModelHelper.flattenEmfModelTree(emfRaw);
                 let emfRenderable = EmfModelHelper.getRenderableEmfEntities(emfFlat);
-                store.dispatch(setNewEmfModel(emfRaw, emfFlat, emfRenderable));
+                let emfAssosiatins = EmfModelHelper.getEmfEntityAssociations(emfFlat);
+                store.dispatch(setNewEmfModel(emfRaw, emfFlat, emfRenderable, emfAssosiatins));
 
                 // TODO: update text-editor XtextServices.validate does not work
                 // XtextServices.validate();
