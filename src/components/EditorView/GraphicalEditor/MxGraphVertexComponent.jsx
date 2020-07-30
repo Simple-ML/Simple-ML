@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { mxPoint } from 'mxgraph-js';
 
 
-export default class MxGraphComponent extends React.Component {
+export default class MxGraphVertexComponent extends React.Component {
 
     /**
      * 
