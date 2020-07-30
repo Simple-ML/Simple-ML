@@ -1,5 +1,7 @@
-import ProcessCallMetadata from './GenericProcessCall/GenericProcessCall.metadata';
+import GenericProcessCallMetadata from './GenericProcessCall/GenericProcessCall.metadata';
+import ProcessCallLoadDataSet from './ProcessCallLoadDataSet/ProcessCallLoadDataSet.metadata';
 
+import GenericDataSetMetadata from './GenericDataSet/GenericDataSet.metadata';
 
 /**
  * Associates metadata (for GUI-Elements) to an emfEntity
@@ -42,7 +44,8 @@ const entityMetadataAssociator = new EntityMetadataAssociator();
 // entityMetadataAssociator.addMetadata(ProcessCallWithNameLoadData);
 // entityMetadataAssociator.addMetadata(ProcessCall);
 
-
-entityMetadataAssociator.addMetadata(ProcessCallMetadata);
+entityMetadataAssociator.addMetadata(ProcessCallLoadDataSet);
+entityMetadataAssociator.addMetadata(GenericProcessCallMetadata);
+entityMetadataAssociator.addMetadata(GenericDataSetMetadata);
 
 export default entityMetadataAssociator;

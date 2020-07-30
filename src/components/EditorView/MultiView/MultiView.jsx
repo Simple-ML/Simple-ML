@@ -60,7 +60,6 @@ class MultiView extends React.Component {
                     }}
                     registerComponents={myLayout => {
                         MultiViewConfig.getComponentConfigList().forEach((item) => {
-                            console.log(item)
                             myLayout.registerComponent(item.config.component, this.wrapComponent(item.component));
                         });
                         this.setState({myLayout});

@@ -1,14 +1,14 @@
 import React from 'react';
 import EmfModelHelper from '../../helper/EmfModelHelper';
 
-import MxGraphComponent from '../../components/EditorView/GraphicalEditor/MxGraphVertexComponent';
+import MxGraphVertexComponent from '../../components/EditorView/GraphicalEditor/MxGraphVertexComponent';
 import logo from '../../images/graph/instances/dataset.svg';
 
 
 /**
  * Lookup MxGraphVertexComponent.js
  */
-export default class GenericProcessCall extends MxGraphComponent {
+export default class GenericProcessCall extends MxGraphVertexComponent {
 
     constructor(props) {
         super(props);
@@ -36,9 +36,8 @@ export default class GenericProcessCall extends MxGraphComponent {
 
     render() {
         return(
-            <div style={{height: "100px", width: "100px", background: "red"}}>
-                <img style={{"paddingTop":"10px"}} src={logo} />
-                <button onClick={()=> {console.log('hello')}}>hello</button>
+            <div style={{height: "36px", width: "48px"}}>
+                <img src={logo}/>
             </div>
         )
     }
