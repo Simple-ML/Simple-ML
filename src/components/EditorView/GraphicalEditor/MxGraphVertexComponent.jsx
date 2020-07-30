@@ -55,7 +55,6 @@ export default class MxGraphComponent extends React.Component {
                 text: portData.text,
                 emfPath: portData.emfPath
             }
-            port.geometry.offset = new mxPoint(-(portData.sizeX / 2), -(portData.sizeY /2));
         }
     }
 

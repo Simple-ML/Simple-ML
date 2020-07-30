@@ -21,8 +21,10 @@ export default class GenericProcessCall extends MxGraphComponent {
             var text = '';                       // TODO: get portname from emfEntity -> ProcessCallDefinition
             var sizeX = 16;
             var sizeY = 16;
-            var posX = (parentVertex.geometry.width / this.props.emfEntity.children.length + 1) * (index + 1) - (sizeX / 2);
-            var posY = -(sizeY / 2);
+
+            // position is relative to parentVertex.geometry.width -> the positionrange is 0.0 - 1.0
+            var posX = (parentVertex.geometry.width / (this.props.emfEntity.children.length + 1) * (index + 1) - (sizeX / 2)) / parentVertex.geometry.width;
+            var posY = -(sizeY / 2) / parentVertex.geometry.height;
             var emfPath = EmfModelHelper.getFullHierarchy2(element);
             
             portDataContainer.push({ 
