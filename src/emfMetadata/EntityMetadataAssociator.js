@@ -27,8 +27,12 @@ class EntityMetadataAssociator {
      */
     getMetadata = (emfEntity) => {
         for (let metadata of this.metadataContainer) {
-            if(metadata.verify(emfEntity))
-                return metadata
+            try {
+                if(metadata.verify(emfEntity))
+                    return metadata;
+            } catch(e) {
+                console.log(e)
+            }
         }
         return undefined;
     };

@@ -26,28 +26,25 @@ class GraphicalEditorTest extends React.Component {
         graph.setHtmlLabels(true);
         graph.doResizeContainer(graph.containerWidth-20, graph.containerHeight-75)
 
-        graph.layout = new mxHierarchicalLayout(graph, mxConstants.DIRECTION_NORTH);
-        graph.layout.parentBorder = 50;
-        // configureStylesheet(this);
-        // mxConnectionHandler.prototype.connectImage = new mxImage(connectImage,10,10);
-        // mxConnectionHandler.prototype.moveIconFront=true;
-        graph.layout.intraCellSpacing = 100;
+        
+        // // configureStylesheet(this);
+        // // mxConnectionHandler.prototype.connectImage = new mxImage(connectImage,10,10);
+        // // mxConnectionHandler.prototype.moveIconFront=true;
+        
         graph.htmlLabels = true;
         graph.setConnectable(true);
-        graph.setCellsMovable(false);
+        // graph.setCellsMovable(false);
         graph.setCellsResizable(false);
 
         // disable default mxCellEditor
         if(graph.cellEditor) {
             graph.cellEditor.startEditing = () => {};
         }
-        var parent = graph.getDefaultParent();
         
         graph.getLabel = function(cell)
         {
             return cell.contentDiv;
         }
-
         graph.isHtmlLabel = function(cell)
         {
             return true;
@@ -57,7 +54,14 @@ class GraphicalEditorTest extends React.Component {
 
     componentDidUpdate() {
         const graph = this.state.graph;
-        // Adds cells to the model in a single step
+        const parent = this.state.graph.getDefaultParent();
+        let allPromises = [];
+        
+        let layout = new mxHierarchicalLayout(graph, mxConstants.DIRECTION_NORTH);
+        layout.parentBorder = 50;
+        layout.intraCellSpacing = 100;
+
+        graph.removeCells(graph.getChildCells(parent, true, true))
         graph.getModel().beginUpdate();
         try
         {
@@ -67,16 +71,21 @@ class GraphicalEditorTest extends React.Component {
                     globalConfig: {},
                     graphConfig: {}
                 });
-                reactComponent.renderToMxGraph(graph);
+                allPromises.push(reactComponent.renderToMxGraph(graph));
             }
-            graph.layout.execute(graph.getDefaultParent());
-            
+            Promise.all(allPromises).then(() => {
+                layout.execute(parent);
+            })
         }
         finally
         {
             // Updates the display
             graph.getModel().endUpdate();
         }
+    }
+
+    updateLayout(graph) {
+        
     }
 
     render() {

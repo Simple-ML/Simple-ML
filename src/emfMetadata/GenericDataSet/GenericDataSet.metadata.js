@@ -4,6 +4,8 @@ export default {
     verify: (emfEntity) => {
         if (emfEntity.className !== "de.unibonn.simpleml.simpleML.Assignment")
             return false;
+        if (emfEntity['$ref'] !== undefined)
+            return false;
 
         return true;
     },
