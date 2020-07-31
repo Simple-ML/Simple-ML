@@ -60,14 +60,28 @@ export default class MxGraphVertexComponent extends React.Component {
 
     renderToMxGraph(graphReference) {
         const placeholderDiv = document.getElementById("mxReactPlaceholder");
-        ReactDOM.render(this.render(), placeholderDiv, () => {
-            const renderedDiv = placeholderDiv.childNodes[0];
-            const renderedDivRect = renderedDiv.getBoundingClientRect();
+        let placeholderDivChild = document.createElement("div");
 
-            var vertex = graphReference.insertVertex(graphReference.getDefaultParent(), null, '', 0, 0, renderedDivRect.width, renderedDivRect.height);
-            vertex.contentDiv = renderedDiv;
+        placeholderDiv.appendChild(placeholderDivChild);
+
+        // Reason for Promise: In the callback of ReactDOM.render(...) i require a reference to the created DOM-Element and a reference 
+        // to the class-instance (cant have them both at once).
+        new Promise((resolve, reject) => {
+            ReactDOM.render(this.render(), placeholderDivChild, function() {
+                // this points to callback-instance (created DOM-Element) because of function() {}
+                const renderedDiv = this;
+                const renderedDivRect = renderedDiv.getBoundingClientRect();
+
+                renderedDiv.parentNode.parentNode.removeChild(renderedDiv.parentNode);
+                
+                var vertex = graphReference.insertVertex(graphReference.getDefaultParent(), null, '', 0, 0, renderedDivRect.width, renderedDivRect.height);
+                vertex.contentDiv = renderedDiv;
+                resolve(vertex);
+                
+            });
+        }).then((vertex) => {
+            // this points to class-instance because of () => {}
             this.attachePorts(graphReference, vertex);
         });
-
     }
 }

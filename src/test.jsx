@@ -1,4 +1,4 @@
-import { mxUtils, mxEvent, mxGraph, mxConnectionHandler, mxImage,  mxHierarchicalLayout, mxGraphView, mxTemporaryCellStates } from "mxgraph-js";
+import { mxUtils, mxEvent, mxGraph, mxConnectionHandler, mxImage,  mxHierarchicalLayout, mxGraphView, mxTemporaryCellStates, mxConstants } from "mxgraph-js";
 import { connect } from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -25,6 +25,18 @@ class GraphicalEditorTest extends React.Component {
         graph.centerY = graph.containerHeight/2;
         graph.setHtmlLabels(true);
         graph.doResizeContainer(graph.containerWidth-20, graph.containerHeight-75)
+
+        graph.layout = new mxHierarchicalLayout(graph, mxConstants.DIRECTION_NORTH);
+        graph.layout.parentBorder = 50;
+        // configureStylesheet(this);
+        // mxConnectionHandler.prototype.connectImage = new mxImage(connectImage,10,10);
+        // mxConnectionHandler.prototype.moveIconFront=true;
+        graph.layout.intraCellSpacing = 100;
+        graph.htmlLabels = true;
+        graph.setConnectable(true);
+        graph.setCellsMovable(false);
+        graph.setCellsResizable(false);
+
         // disable default mxCellEditor
         if(graph.cellEditor) {
             graph.cellEditor.startEditing = () => {};
@@ -44,29 +56,21 @@ class GraphicalEditorTest extends React.Component {
     }
 
     componentDidUpdate() {
-        if(this.props.emfModelFlat === undefined || this.props.emfModelFlat.length === 0)
-            return;
         const graph = this.state.graph;
         // Adds cells to the model in a single step
         graph.getModel().beginUpdate();
         try
         {
-            // graph.getModel().beginUpdate();
-            // const reactComponent = <ProcessCall emfEntity={this.props.emfModelFlat[6]} globalConfig={{}} graphConfig={{}} />;
-            // const reactComponent = <div style={{height:100, width:100, background:"red"}}></div>
-            const reactComponent = new ProcessCall({
-                emfEntity: this.props.emfModelFlat[6],
-                globalConfig: {},
-                graphConfig: {}
-            });
-
-            reactComponent.renderToMxGraph(graph);
-
-            var newDiv = document.createElement("div");
+            for(let entity of this.props.renderableEntities) {
+                let reactComponent = new entity.metadata.mxGraphMetadata.component({
+                    emfEntity: entity,
+                    globalConfig: {},
+                    graphConfig: {}
+                });
+                reactComponent.renderToMxGraph(graph);
+            }
+            graph.layout.execute(graph.getDefaultParent());
             
-            // var vertex = graph.insertVertex(graph.getDefaultParent(), null, '', 200, 150, 80, 30);
-            // vertex.fromReactComponent = newDiv;
-            // ReactDOM.render(reactComponent, newDiv).renderToMxGraph(graph);
         }
         finally
         {
@@ -87,12 +91,14 @@ class GraphicalEditorTest extends React.Component {
 
 
 GraphicalEditorTest.propTypes = {
-    emfModelFlat: PropTypes.array.isRequired
+    renderableEntities: PropTypes.array.isRequired,
+    entityAssociations: PropTypes.array.isRequired
 };
 
 const mapStateToProps = state => {
     return {
-        emfModelFlat: state.emfModel.flat
+        renderableEntities: state.emfModel.renderable,
+        entityAssociations: state.emfModel.associations
     }
 };
 

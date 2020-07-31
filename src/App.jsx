@@ -16,7 +16,7 @@ class App extends React.Component {
 
                 <Toolbar/>
                 <ModalContainer/>
-                {/* <GraphicalEditorTest/> */}
+                <GraphicalEditorTest/>
             </div>
         );
     }
