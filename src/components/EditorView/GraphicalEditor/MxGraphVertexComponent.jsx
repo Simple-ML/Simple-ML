@@ -26,7 +26,7 @@ export default class MxGraphVertexComponent extends React.Component {
      *      posY: integer,
      *      sizeX: integer,
      *      sizeY: integer,
-     *      emfPath: string     // path of entity in emf-tree for association in backend
+     *      emfEntity: object     // reference to emfEntity
      * },
      * ...]
      */
@@ -51,10 +51,13 @@ export default class MxGraphVertexComponent extends React.Component {
         for(let portData of portsDataContainer) {
             let port = graphReference.insertVertex(vertex, null, portData.text, portData.posX, portData.posY, portData.sizeX, portData.sizeY, 
                 'port;image=editors/images/overlays/check.png;align=right;imageAlign=right;spacingRight=18', true);
+            // let port = graphReference.insertVertex(vertex, null, portData.text, portData.posX, portData.posY, portData.sizeX, portData.sizeY, 
+            //     'port', true);
+            
             port.portData = {
-                text: portData.text,
-                emfPath: portData.emfPath
+                text: portData.text
             }
+            port.emfReference = portData.emfEntity;
         }
     }
 
@@ -74,7 +77,7 @@ export default class MxGraphVertexComponent extends React.Component {
 
                 renderedDiv.parentNode.parentNode.removeChild(renderedDiv.parentNode);
                 
-                var vertex = graphReference.insertVertex(graphReference.getDefaultParent(), null, '', 0, 0, renderedDivRect.width, renderedDivRect.height);
+                var vertex = graphReference.insertVertex(graphReference.getDefaultParent(), null, '', 0, 0, renderedDivRect.width, renderedDivRect.height, 'TODO');
                 vertex.contentDiv = renderedDiv;
                 resolve(vertex);
             });
@@ -82,6 +85,7 @@ export default class MxGraphVertexComponent extends React.Component {
         promise.then((vertex) => {
             // this points to class-instance because of () => {}
             this.attachePorts(graphReference, vertex);
+            vertex.emfReference = this.props.emfEntity;
         });
         return promise;
     }

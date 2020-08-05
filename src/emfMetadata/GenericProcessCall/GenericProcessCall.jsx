@@ -25,10 +25,10 @@ export default class GenericProcessCall extends MxGraphVertexComponent {
             // position is relative to parentVertex.geometry.width -> the positionrange is 0.0 - 1.0
             let posX = (parentVertex.geometry.width / (this.props.emfEntity.children.length + 1) * (index + 1) - (sizeX / 2)) / parentVertex.geometry.width;
             let posY = -(sizeY / 2) / parentVertex.geometry.height;
-            let emfPath = EmfModelHelper.getFullHierarchy2(element);
+            let emfEntity = element;
             
             portDataContainer.push({ 
-                text, sizeX, sizeY, posX, posY, emfPath
+                text, sizeX, sizeY, posX, posY, emfEntity
             });    
         });
         return portDataContainer;
