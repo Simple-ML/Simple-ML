@@ -31,8 +31,8 @@ class EmfModelHelper {
      * 
      * @param emfModelFlat: output from EmfModelHelper.getRenderableEmfEntities(...)
      * @returns [{
-     *              parent: ,
-     *              child: 
+     *              source: ,
+     *              target: 
      *          }, 
      *          ...]
      */
@@ -44,7 +44,7 @@ class EmfModelHelper {
         for(let entity of renderableEntities) {
             let renderableParent = EmfModelHelper.getRenderableParent(entity);
             if(renderableParent) {
-                associationContainer.push({parent: renderableParent, child: entity});
+                associationContainer.push({source: entity, target: renderableParent});
             }
         }
         // Associations throug references in emf-model
@@ -52,7 +52,7 @@ class EmfModelHelper {
         for(let entity of referenceableEmfEntities) {
             let renderableParent = EmfModelHelper.getRenderableParentFromReference(emfModelFlat, entity);
             if(renderableParent) {
-                associationContainer.push({parent: renderableParent, child: entity});
+                associationContainer.push({source: renderableParent, target: entity});
             }
         }
         return associationContainer;
