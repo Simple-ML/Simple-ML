@@ -5,57 +5,40 @@ import { debugInterface } from './exposeToBrowserConsole';
 import store from '../reduxStore';
 
 let afterReactInit = () => {
-
-    // TextEditorWrapper.setText(
-    //     '// Load and prepare data\n' +
-    //     'workflow test { \n' +
-    //     '\n' +
-    //     '    adacAugust = loadDataset("ADACAugust");\n' +
-    //     '    sampled = sample(adacAugust, 1000);\n' +
-    //     '    features = keepAttributes(sampled, [\n' +
-    //     '        "timestamp-time-string-to-hour"\n' +
-    //     '    ]);\n' +
-    //     '    target = keepAttributes(sampled, [\n' +
-    //     '        "velocity"\n' +
-    //     '    ]);\n' +
-    //     '    \n' +
-    //     '    // Train the model\n' +
-    //     '    model = LassoRegression() with options {\n' +
-    //     '        regularizationStrength = 1\n' +
-    //     '    };\n' +
-    //     '    trained_model = fit(model, features, target);\n' +
-    //     '    \n' +
-    //     '    // Predict something and print the result\n' +
-    //     '    predictionFeatures = [\n' +
-    //     '        [23]\n' +
-    //     '    ];\n' +
-    //     '    prediction = predict(trained_model, predictionFeatures);\n' +
-    //     '    write(prediction);\n' +
-    //     '\n' +
-    //     '}\n'
-    // );
     TextEditorWrapper.setText("// Load and prepare data\n" +
-        "adacAugust = loadDataset(\"ADACAugust\")\n" +
-        "sampled = sample(adacAugust, 1000)\n" +
-        "features = keepAttributes(sampled, [\n" +
-        "    \"timestamp-time-string-to-hour\"\n" +
-        "])\n" +
-        "target = keepAttributes(sampled, [\n" +
-        "    \"velocity\"\n" +
-        "])\n" +
+        "import simpleml.collections.*\n" +
+        "import simpleml.collection.*\n" +
+        "import simpleml.dataset.*\n" +
+        "import simpleml.model.regression.*" +
         "\n" +
-        "// Train the model\n" +
-        "model = LassoRegression() with {\n" +
-        "    regularizationStrength: 1\n" +
-        "}\n" +
-        "trained_model = fit(model, features, target)\n" +
+        "workflow predictSpeed {\n" +
         "\n" +
-        "// Predict something and print the result\n" +
-        "predictionFeatures = [\n" +
-        "    [23]\n" +
-        "]\n" +
-        "prediction = predict(trained_model, predictionFeatures)\n" +
-        "write(prediction)");
+        "    // Load and prepare data\n" +
+        '    val adacAugustSample = loadDataset("ADACAugust").sample(n_instances = 1000);\n' +
+        // "    val features = adacAugustSample.keepAttributes(\n" +
+        // "        2  /* Floating Car Data point: has time (hour) */,\n" +
+        // "        3  /* Floating Car Data point: has time (day of week) */, \n" +
+        // "        4  /* Floating Car Data point: has time (month of year) */,\n" +
+        // "        6  /* Floating Car Data point: vehicle type (label) */,\n" +
+        // "        12 /* Street: type (label) */\n" +
+        // "    );\n" +
+        // "    val target = adacAugustSample.keepAttributes(\n" +
+        // "        7  /* Floating Car Data point: has speed */\n" +
+        // "    );\n" +
+        // "\n" +
+        // "    // Define the model\n" +
+        // "    val model = Lasso(regularizationStrength = 0);\n" +
+        // "    \n" +
+        // "    // Train the model\n" +
+        // "    val trained_model = model.fit(features, target);\n" +
+        // "\n" +
+        // "    // Predict something and print the result\n" +
+        // "    val predictionFeatures = listOf(\n" +
+        // "        listOf(23, 3, 8, 1, 2)\n" +
+        // "    );\n" +
+        // "    val predictedTargets = trained_model.predict(features = predictionFeatures);\n" +
+        "}"
+    );
 
         XtextServices.addSuccessListener((serviceType, result) => {
             debugInterface.d.lsr = result;

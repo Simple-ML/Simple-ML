@@ -39,7 +39,7 @@ window.loadEditor((xtextEditor) => {
                 store.dispatch(setNewEmfModel(emfRaw, emfFlat, emfRenderable, emfAssosiatins));
 
                 // TODO: update text-editor XtextServices.validate does not work
-                // XtextServices.validate();
+                XtextServices.validate();
                 break;
             case 'validate':
                 // TODO: not the right place for this code (containsError)
