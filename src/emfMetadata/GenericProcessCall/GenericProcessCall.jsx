@@ -2,7 +2,7 @@ import React from 'react';
 import EmfModelHelper from '../../helper/EmfModelHelper';
 
 import MxGraphVertexComponent from '../../components/EditorView/GraphicalEditor/MxGraphVertexComponent';
-import logo from '../../images/graph/instances/dataset.svg';
+import logo from '../../images/graph/instances/split.svg';
 
 
 /**

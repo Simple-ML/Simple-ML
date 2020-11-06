@@ -15,28 +15,28 @@ let afterReactInit = () => {
         "\n" +
         "    // Load and prepare data\n" +
         '    val adacAugustSample = loadDataset("ADACAugust").sample(n_instances = 1000);\n' +
-        // "    val features = adacAugustSample.keepAttributes(\n" +
-        // "        2  /* Floating Car Data point: has time (hour) */,\n" +
-        // "        3  /* Floating Car Data point: has time (day of week) */, \n" +
-        // "        4  /* Floating Car Data point: has time (month of year) */,\n" +
-        // "        6  /* Floating Car Data point: vehicle type (label) */,\n" +
-        // "        12 /* Street: type (label) */\n" +
-        // "    );\n" +
-        // "    val target = adacAugustSample.keepAttributes(\n" +
-        // "        7  /* Floating Car Data point: has speed */\n" +
-        // "    );\n" +
-        // "\n" +
-        // "    // Define the model\n" +
-        // "    val model = Lasso(regularizationStrength = 0);\n" +
-        // "    \n" +
-        // "    // Train the model\n" +
-        // "    val trained_model = model.fit(features, target);\n" +
-        // "\n" +
-        // "    // Predict something and print the result\n" +
-        // "    val predictionFeatures = listOf(\n" +
-        // "        listOf(23, 3, 8, 1, 2)\n" +
-        // "    );\n" +
-        // "    val predictedTargets = trained_model.predict(features = predictionFeatures);\n" +
+        "    val features = adacAugustSample.keepAttributes(\n" +
+        "        2  /* Floating Car Data point: has time (hour) */,\n" +
+        "        3  /* Floating Car Data point: has time (day of week) */, \n" +
+        "        4  /* Floating Car Data point: has time (month of year) */,\n" +
+        "        6  /* Floating Car Data point: vehicle type (label) */,\n" +
+        "        12 /* Street: type (label) */\n" +
+        "    );\n" +
+        "    val target = adacAugustSample.keepAttributes(\n" +
+        "        7  /* Floating Car Data point: has speed */\n" +
+        "    );\n" +
+        "\n" +
+        "    // Define the model\n" +
+        "    val model = Lasso(regularizationStrength = 0);\n" +
+        "    \n" +
+        "    // Train the model\n" +
+        "    val trained_model = model.fit(features, target);\n" +
+        "\n" +
+        "    // Predict something and print the result\n" +
+        "    val predictionFeatures = listOf(\n" +
+        "        listOf(23, 3, 8, 1, 2)\n" +
+        "    );\n" +
+        "    val predictedTargets = trained_model.predict(features = predictionFeatures);\n" +
         "}"
     );
 

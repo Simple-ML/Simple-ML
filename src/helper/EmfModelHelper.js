@@ -52,7 +52,7 @@ class EmfModelHelper {
         for(let entity of referenceableEmfEntities) {
             let renderableParent = EmfModelHelper.getRenderableParentFromReference(emfModelFlat, entity);
             if(renderableParent) {
-                associationContainer.push({source: renderableParent, target: entity});
+                associationContainer.push({source: renderableParent, target: EmfModelHelper.getRenderableParent(entity)});
             }
         }
         return associationContainer;
@@ -68,7 +68,7 @@ class EmfModelHelper {
         let renderableEntities = [];
         
         for(let entity of emfModelFlat) {
-            if(entity.metadata != undefined) {
+            if(entity.metadata !== undefined) {
                 renderableEntities.push(entity);
             }
         }
@@ -101,6 +101,8 @@ class EmfModelHelper {
             return undefined;
         } else if(emfEntity.parent.metadata !== undefined) {
             return emfEntity.parent;
+        } else if(emfEntity.parent.data.className === 'de.unibonn.simpleml.simpleML.SmlDoStatement') {
+            return emfEntity.parent.getChild('@assigneeList').getChild('@assignees.0');
         } else {
             return EmfModelHelper.getRenderableParent(emfEntity.parent);
         }
@@ -112,15 +114,6 @@ class EmfModelHelper {
      * @param emfEntity 
      */
     static getRenderableParentFromReference(emfModelFlat, emfEntity) {
-        const comparePathPiece = (entityPathPiece, searchPathPiece) => {
-            const tempPathPieces = searchPathPiece.split('.');
-
-            if(tempPathPieces.length === 1) {
-                return entityPathPiece === `${tempPathPieces[0]}`;
-            } else {
-                return entityPathPiece === `${tempPathPieces[0]}[${tempPathPieces[1]}]`;
-            }
-        }
         const traverseChildren = (entity, searchPathPieces) => {
             if(searchPathPieces.length === 0) {
                 return entity;
@@ -129,15 +122,14 @@ class EmfModelHelper {
             const currentPathPiece = searchPathPieces.shift();
             
             return traverseChildren(entity.children.filter((childEntity) => {
-                return comparePathPiece(childEntity.self, currentPathPiece);
+                return childEntity.self === currentPathPiece;
             })[0], searchPathPieces)
         }
 
-        const pathPieces = emfEntity.data['$ref'].replace('//', '').replaceAll('@', '').split('/');
-
+        const pathPieces = emfEntity.data['$ref'].replace('//', '').split('/');
         // find root-entity
         const rootEntity = emfModelFlat.filter((entity) => {
-            return comparePathPiece(entity.self, pathPieces[0]);
+            return entity.self === pathPieces[0];
         })[0];
 
         // find entity in question in children
@@ -240,16 +232,21 @@ class EmfModelHelper {
 
         arrays.forEach((array) => {
             array.data.forEach((element, index) => {
-                flatEntity.children.push(this.recursion(flatEmfEntityContainer, element, flatEntity, array.name + "[" + index + ']', currentId));
+                flatEntity.children.push(this.recursion(flatEmfEntityContainer, element, flatEntity, `@${array.name}.${index}`, currentId));
             });
         });
         objects.forEach((object) => {
-            flatEntity.children.push(this.recursion(flatEmfEntityContainer, object.data, flatEntity, object.name, currentId));
+            flatEntity.children.push(this.recursion(flatEmfEntityContainer, object.data, flatEntity, `@${object.name}`, currentId));
         });
         flatEntity.children = flatEntity.children.filter((item) => {
             return !(item === undefined || item === null)
         })
 
+        flatEntity.getChild = function(name) {
+            return this.children.find((child) => {
+                return child.self === name;
+            });
+        };
         
         flatEmfEntityContainer.push(flatEntity);
         
