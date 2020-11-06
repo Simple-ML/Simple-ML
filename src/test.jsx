@@ -87,6 +87,9 @@ class GraphicalEditorTest extends React.Component {
             Promise.all(allPromises).then(() => {
                 let parentCells = graph.getChildCells(parent, true, false);
                 let allCells = parentCells;
+                let layout = new mxHierarchicalLayout(graph, mxConstants.DIRECTION_NORTH);
+                layout.parentBorder = 50;
+                layout.intraCellSpacing = 100;
 
                 // flatten cell-list (entity-cells and port-cells in one array)
                 for(let parentCell of parentCells) {
@@ -96,7 +99,6 @@ class GraphicalEditorTest extends React.Component {
                 }
                 // create mxGraph.edges for all associations
                 for(let association of this.props.entityAssociations) {
-                    
                     let sourceVertex = allCells.find((cell) => {
                         if(cell.emfReference.id === association.source.id)
                             return true;
@@ -110,16 +112,9 @@ class GraphicalEditorTest extends React.Component {
                             return false;
                         }
                     });
-                    console.log('source', sourceVertex)
-                    console.log('target', targetVertex)
-                    // console.log('ass source', association.source)
-                    // console.log('ass target', association.target)
                     graph.insertEdge(parent, null, null, sourceVertex, targetVertex);
 
                     // apply layout
-                    let layout = new mxHierarchicalLayout(graph, mxConstants.DIRECTION_NORTH);
-                    layout.parentBorder = 50;
-                    layout.intraCellSpacing = 100;
                     layout.execute(parent);
                 }
             })
@@ -133,13 +128,6 @@ class GraphicalEditorTest extends React.Component {
 
     initGraphStyle(graph) {
         // vertex
-        // var defaultStyle = new Object ();
-        // defaultStyle[mxConstants.STYLE_LABEL_POSITION] = mxConstants.ALIGN_CENTER;
-        // defaultStyle[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_LEFT;
-        // defaultStyle[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
-        // defaultStyle[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
-		// defaultStyle[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_TOP;
-        // graph.getStylesheet().putDefaultVertexStyle(defaultStyle);
         var style = new Object ();
         style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RECTANGLE;
         style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RectanglePerimeter;
@@ -180,25 +168,21 @@ class GraphicalEditorTest extends React.Component {
         // Redirects the perimeter to the label bounds if intersection
         // between edge and label is found
         var mxGraphViewGetPerimeterPoint = mxGraphView.prototype.getPerimeterPoint;
-        mxGraphView.prototype.getPerimeterPoint = function(terminal, next, orthogonal, border)
-        {
+        mxGraphView.prototype.getPerimeterPoint = function(terminal, next, orthogonal, border) {
             var point = mxGraphViewGetPerimeterPoint.apply(this, arguments);
             
-            if (point != null)
-            {
+            if (point != null) {
                 var perimeter = this.getPerimeterFunction(terminal);
-                if (terminal.text != null && terminal.text.boundingBox != null)
-                {
+                if (terminal.text != null && terminal.text.boundingBox != null) {
                     // Adds a small border to the label bounds
+                    // TODO: get boundigBox of vertex not from text-lable
                     var b = terminal.text.boundingBox.clone();
-                    b.grow(3)
-                    if (mxUtils.rectangleIntersectsSegment(b, point, next))
-                    {
+                    b.grow(3);
+                    if (mxUtils.rectangleIntersectsSegment(b, point, next)) {
                         point = perimeter(b, terminal, next, orthogonal);
                     }
                 }
             }
-            
             return point;
         };
     }

@@ -77,14 +77,15 @@ class EmfModelHelper {
 
     /**
      * Returns entities witch are references by them self (in emf-model)
+     * 
      * @param emfModelFlat 
      */
     static getReferenceableEmfEntities(emfModelFlat) {
         let referenceEntities = [];
 
         for(let entity of emfModelFlat) {
-            if(entity.data['$ref'] !== undefined) {
-                referenceEntities.push(entity.parent)
+            if(entity.data['$ref'] !== undefined && !entity.data['$ref'].startsWith('file')) {
+                referenceEntities.push(entity)
             }
         }
         return referenceEntities;
@@ -111,13 +112,37 @@ class EmfModelHelper {
      * @param emfEntity 
      */
     static getRenderableParentFromReference(emfModelFlat, emfEntity) {
-        // TODO: input like this "//@statements.0" is expected. Could break if DSL changes.
-        let pathPieces = emfEntity.children[0].data['$ref'].replace('//@', '').split('.');
-        
-        let foundEntity = emfModelFlat.filter((entity) => {
-            return entity.self === `${pathPieces[0]}[${pathPieces[1]}]`;
+        const comparePathPiece = (entityPathPiece, searchPathPiece) => {
+            const tempPathPieces = searchPathPiece.split('.');
+
+            if(tempPathPieces.length === 1) {
+                return entityPathPiece === `${tempPathPieces[0]}`;
+            } else {
+                return entityPathPiece === `${tempPathPieces[0]}[${tempPathPieces[1]}]`;
+            }
+        }
+        const traverseChildren = (entity, searchPathPieces) => {
+            if(searchPathPieces.length === 0) {
+                return entity;
+            }
+            
+            const currentPathPiece = searchPathPieces.shift();
+            
+            return traverseChildren(entity.children.filter((childEntity) => {
+                return comparePathPiece(childEntity.self, currentPathPiece);
+            })[0], searchPathPieces)
+        }
+
+        const pathPieces = emfEntity.data['$ref'].replace('//', '').replaceAll('@', '').split('/');
+
+        // find root-entity
+        const rootEntity = emfModelFlat.filter((entity) => {
+            return comparePathPiece(entity.self, pathPieces[0]);
         })[0];
-  
+
+        // find entity in question in children
+        pathPieces.shift();
+        const foundEntity = traverseChildren(rootEntity, pathPieces);
         // could be the case that the found entity is not renderable
         if(foundEntity.metadata !== undefined) {
             return foundEntity;
@@ -200,7 +225,7 @@ class EmfModelHelper {
      * @returns {data: Object, parent: Object, children: Array, metadata: Object, self: string}
      */
     static recursion(flatEmfEntityContainer, emfEntity, parent, self, currentId = {id: 0}) {
-        if(emfEntity === undefined || emfEntity === null || emfEntity.className === undefined)
+        if(emfEntity === undefined || emfEntity === null)
             return undefined;
 
         currentId.id++;
@@ -228,7 +253,7 @@ class EmfModelHelper {
         
         flatEmfEntityContainer.push(flatEntity);
         
-        // TODO: ausbauen
+        // TODO: ausbauen/löschen
         //-----------------
         let dslConfigs = dslConfigurationDetails.filter(entity => entity.className === flatEntity.data.className)[0];
         if(dslConfigs !== undefined){
