@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebSocket demo</title>
+        <style type="text/css">
+            body {
+                font-family: "Courier New", sans-serif;
+                text-align: center;
+            }
+            .buttons {
+                font-size: 4em;
+                display: flex;
+                justify-content: center;
+            }
+            .button, .value {
+                line-height: 1;
+                padding: 2rem;
+                margin: 2rem;
+                border: medium solid;
+                min-height: 1em;
+                min-width: 1em;
+            }
+            .button {
+                cursor: pointer;
+                user-select: none;
+            }
+            .minus {
+                color: red;
+            }
+            .plus {
+                color: green;
+            }
+            .value {
+                min-width: 2em;
+            }
+            .state {
+                font-size: 2em;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="buttons">
+            <div class="minus button" id="code">Run Code</div>
+            <br/><br>
+            <div class="plus button" id="placeholder">get placeholder</div>
+        </div>
+        <div>
+            <label>placeholder name</label>
+            <select>
+                <option id="model">trained model</option>
+            </select>
+        </div>
+        <div>
+        <textarea style="float: none" id="file1">from speedPrediction2 import predictSpeed
+
+if __name__ == '__main__':
+    x= predictSpeed()
+    f=open("runtime/regression.model","w")
+    f.write(x)
+    f.close()
+</textarea>
+        <textarea id="file2">import json
+from time import sleep
+
+from numpy import poly1d
+from scipy import linspace, polyval, polyfit, sqrt, stats, randn, optimize
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+import time
+import numpy as np
+from sklearn.linear_model import LinearRegression
+import pandas as pd
+#Sample data creation
+def predictSpeed():
+    #number of points
+    n=int(5e6)
+    t=np.linspace(-10,10,n)
+    #parameters
+    a=3.25
+    b=-6.5
+    x=polyval([a,b],t)
+    #add some noise
+    xn=x+3*randn(n)
+
+    # xvar=np.random.choice(t,size=20)
+    # yvar=polyval([a,b],xvar)+3*randn(20)
+    # plt.scatter(xvar,yvar,c='green',edgecolors='k')
+    # plt.grid(True)
+    # plt.show()
+
+
+    #Linear regressison -polyfit - polyfit can be used other orders polynomials
+    t1=time.time()
+    (ar,br)=polyfit(t,xn,1)
+    f=poly1d(polyfit(t,xn,1))
+    xr=polyval([ar,br],t)
+    #compute the mean square error
+    err=sqrt(sum((xr-xn)**2)/n)
+    t2=time.time()
+    t_polyfit = float(t2-t1)
+
+    print('Linear regression using polyfit')
+    print('parameters: a=%.2f b=%.2f, ms error= %.3f' % (ar,br,err))
+    print("Time taken: {} seconds".format(t_polyfit))
+
+    return json.dumps([{'polyfit':{'a':ar,'b':br}}])
+</textarea>
+</div>
+        <div><textarea id="log"></textarea></div>
+        <div class="state">
+            <span class="users">?</span> online
+        </div>
+        <script>
+            var code = document.querySelector('#code'),
+                placeholder = document.querySelector('#placeholder'),
+                log = document.querySelector('#log'),
+                users = document.querySelector('.users'),
+                content1=document.querySelector('#file1')
+                content2=document.querySelector('#file2')
+                websocket = new WebSocket("ws://127.0.0.1:6789/");
+            console.log(websocket);
+            code.onclick = function (event) {
+                websocket.send(JSON.stringify({action: 'run',"python":{number:2,files:[{filename:'speedmain.py',content:content1.value},
+                {filename:'speedPrediction2.py',content:content2.value}], mainfile:'speedmain.py'}}));
+            }
+            placeholder.onclick = function (event) {
+                websocket.send(JSON.stringify({action: 'placeholder'}));
+            }
+
+            websocket.onmessage = function (event) {
+                data = JSON.parse(event.data);
+                console.log(data)
+                log.value=log.value+"\n"+JSON.stringify(data.value)
+                switch (data.type) {
+                    case 'Placeholder':
+                        value.textContent = data.value;
+                        break;
+                    case 'users':
+                        users.textContent = (
+                            data.count.toString() + " user" +
+                            (data.count == 1 ? "" : "s"));
+                        break;
+                    default:
+                        console.error(
+                            "unsupported event", data);
+                }
+            };
+        </script>
+
+    </body>
+</html>

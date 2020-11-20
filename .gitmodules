@@ -1,0 +1,3 @@
+[submodule "adapters"]
+	path = adapters
+	url = git@git.l3s.uni-hannover.de:simplemlgroup/ubo/adapters.git
