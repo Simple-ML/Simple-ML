@@ -3,7 +3,7 @@ import requests
 import pandas as pd
 from io import StringIO
 
-from simpleml.io.pandasAdapter import read_tsv
+from python.simpleml.io.pandasAdapter import read_tsv
 
 base = "***REMOVED***"
 project_id: Union[str, None] = None
@@ -109,36 +109,33 @@ def _getDatasetFile(dataset_id: str) -> StringIO:
 
 
 def main():
-    from simpleml.ml.regression.scikitAdapter import LassoRegression
-    from simpleml.ml.scikitAdapter import fit, predict
-
     adac_august = loadDataset("ADACAugust")
     print("Dataset ID (adac_august):", adac_august.query_id)
 
-    sampled = sample(adac_august, 1000)
-    print("Dataset ID (sampled):", sampled.query_id)
-
-    features = keepAttributes(sampled, [
-        "timestamp-time-string-to-hour",
-        # "timestamp-time-string-to-week-day",
-        # "timestamp-time-string-to-month",
-        # "car_type",
-        # "road_type"
-    ])
-    print("Dataset ID (features):", features.query_id)
-    target = keepAttributes(sampled, [
-        "velocity"
-    ])
-    print("Dataset ID (target):", target.query_id)
-
-    model = LassoRegression({"regularizationStrength": 1})
-    trained_model = fit(model, features, target)
-
-    pred_X = [
-        [23]
-    ]
-    pred_y = predict(trained_model, pred_X)
-    print(pred_y)
+    # sampled = sample(adac_august, 1000)
+    # print("Dataset ID (sampled):", sampled.query_id)
+    #
+    # features = keepAttributes(sampled, [
+    #     "timestamp-time-string-to-hour",
+    #     # "timestamp-time-string-to-week-day",
+    #     # "timestamp-time-string-to-month",
+    #     # "car_type",
+    #     # "road_type"
+    # ])
+    # print("Dataset ID (features):", features.query_id)
+    # target = keepAttributes(sampled, [
+    #     "velocity"
+    # ])
+    # print("Dataset ID (target):", target.query_id)
+    #
+    # model = LassoRegression({"regularizationStrength": 1})
+    # trained_model = fit(model, features, target)
+    #
+    # pred_X = [
+    #     [23]
+    # ]
+    # pred_y = predict(trained_model, pred_X)
+    # print(pred_y)
 
 
 if __name__ == '__main__':

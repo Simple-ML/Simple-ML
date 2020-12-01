@@ -1,0 +1,11 @@
+package simpleml.dataset
+
+import simpleml.collections.List
+
+class Dataset {
+	fun sample(nInstances: Int) -> dataset: Dataset
+	
+	fun keepAttributes(vararg attributes: String) -> dataset: Dataset
+}
+
+fun loadDataset(name: String) -> dataset: Dataset
