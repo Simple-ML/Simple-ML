@@ -1,14 +1,6 @@
 import sklearn.linear_model
 import sklearn.tree
 
-
-# Linear Models
-
-
-def LinearRegression():
-    return sklearn.linear_model.LinearRegression()
-
-
 def LassoRegression(config):
     return sklearn.linear_model.Lasso(
         alpha=config["regularizationStrength"]
