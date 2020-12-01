@@ -1,4 +1,4 @@
-from simpleml.l3s.api import Query
+from python.simpleml.l3s.api import Query
 
 
 def fit(model, x: Query, y: Query):
