@@ -1,10 +1,9 @@
 import React from 'react';
 import  Icons from './Icons'
 export default {
-  title: 'SimpleML/Icons & Components',
+  title: 'Icons',
   component: Icons,
 };
-
 const Template = (args) => <Icons {...args} />;
 
-export const Icon = Template.bind({});
+export const Navigation = Template.bind({});

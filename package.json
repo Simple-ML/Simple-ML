@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.1.0",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.2",
+    "@projektionisten/node_cors_proxy": "0.0.2",
     "jquery": "^3.4.1",
     "mxgraph": "^3.9.12",
     "mxgraph-js": "^1.0.1",
@@ -23,6 +25,7 @@
   "scripts": {
     "start": "export PORT=4200 && react-scripts start",
     "build": "react-scripts build",
+		"deploy-storybook": "storybook-to-ghpages",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
