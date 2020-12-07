@@ -1,50 +1,26 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import './button.css';
 
-/**
- * Primary UI component for user interaction
- */
-export const Button = ({ primary, backgroundColor, size, label, ...props }) => {
-  const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
-  return (
-    <button
-      type="button"
-      className={['storybook-button', `storybook-button--${size}`, mode].join(' ')}
-      style={backgroundColor && { backgroundColor }}
-      {...props}
-    >
-      {label}
-    </button>
-  );
-};
-
-Button.propTypes = {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  primary: PropTypes.bool,
-  /**
-   * What background color to use
-   */
-  backgroundColor: PropTypes.string,
-  /**
-   * How large should the button be?
-   */
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
-  /**
-   * Button contents
-   */
-  label: PropTypes.string.isRequired,
-  /**
-   * Optional click handler
-   */
-  onClick: PropTypes.func,
-};
-
-Button.defaultProps = {
-  backgroundColor: null,
-  primary: false,
-  size: 'medium',
-  onClick: undefined,
-};
+import { makeStyles } from '@material-ui/core/styles';
+import  DeleteIcon  from '@material-ui/icons/Delete';
+import CloseIcon from '@material-ui/icons/Close';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import CancelIcon from '@material-ui/icons/Cancel';
+const useStyles = makeStyles((theme) => ({
+  root: {
+    color: theme.palette.text.primary,
+  },
+}));
+export default function TAnzuSS() {
+	const classes = useStyles();
+	return (
+		<div>
+			<CloseIcon style={{fontSize:24}}/ >
+			<ChevronRightIcon style={{fontSize:24}}/ >
+			<KeyboardArrowUpIcon style={{fontSize:24}}/ >
+			<KeyboardArrowDownIcon style={{fontSize:24}}/ >
+			<CancelIcon style={{fontSize:24}}/ >
+		</div>
+	);
+}
