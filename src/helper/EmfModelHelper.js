@@ -1,4 +1,5 @@
-import dslConfigurationDetails from "./dslConfigurationDetails.js"
+import dslConfigurationDetails from './dslConfigurationDetails.js';
+import EntityMetadataAssociator from '../emfMetadata/EntityMetadataAssociator';
 
 class EmfModelHelper {
 
@@ -10,7 +11,9 @@ class EmfModelHelper {
      *                  data: EmfModelData,
      *                  parent: ,
      *                  children: ,
-     *                  self: name of property in parent
+     *                  metadata: look up EntityMetadataAssociator
+     *                  self: Property-name in parent-emf-entity. Used to localize entity in emf-tree. 
+     *                        Important for creating associations between entities in backend.
      *              },
      *              ...]
      */
@@ -19,6 +22,125 @@ class EmfModelHelper {
 
         this.recursion(flatEmfModel, emfModelTree, undefined, undefined);
         return flatEmfModel;
+    }
+
+   
+
+    /**
+     * Returns a list of entity-pairs wich are renderable and associated to each other. 
+     * 
+     * @param emfModelFlat: output from EmfModelHelper.getRenderableEmfEntities(...)
+     * @returns [{
+     *              source: ,
+     *              target: 
+     *          }, 
+     *          ...]
+     */
+    static getEmfEntityAssociations(emfModelFlat) {
+        let associationContainer = [];
+
+        // Associations between renderable entities
+        let renderableEntities = EmfModelHelper.getRenderableEmfEntities(emfModelFlat);
+        for(let entity of renderableEntities) {
+            let renderableParent = EmfModelHelper.getRenderableParent(entity);
+            if(renderableParent) {
+                associationContainer.push({source: entity, target: renderableParent});
+            }
+        }
+        // Associations throug references in emf-model
+        let referenceableEmfEntities = EmfModelHelper.getReferenceableEmfEntities(emfModelFlat);
+        for(let entity of referenceableEmfEntities) {
+            let renderableParent = EmfModelHelper.getRenderableParentFromReference(emfModelFlat, entity);
+            if(renderableParent) {
+                associationContainer.push({source: renderableParent, target: EmfModelHelper.getRenderableParent(entity)});
+            }
+        }
+        return associationContainer;
+    }
+
+    /**
+     * Returns a list of renderable Entities. 
+     * 
+     * @param emfModelFlat: output from EmfModelHelper.flattenEmfModelTree(...)
+     * @returns subcollection fo emfModelFlat
+     */
+    static getRenderableEmfEntities(emfModelFlat) {
+        let renderableEntities = [];
+        
+        for(let entity of emfModelFlat) {
+            if(entity.metadata !== undefined) {
+                renderableEntities.push(entity);
+            }
+        }
+        return renderableEntities;
+    }
+
+    /**
+     * Returns entities witch are references by them self (in emf-model)
+     * 
+     * @param emfModelFlat 
+     */
+    static getReferenceableEmfEntities(emfModelFlat) {
+        let referenceEntities = [];
+
+        for(let entity of emfModelFlat) {
+            if(entity.data['$ref'] !== undefined && !entity.data['$ref'].startsWith('file')) {
+                referenceEntities.push(entity)
+            }
+        }
+        return referenceEntities;
+    }
+
+    /**
+     * Returns the next renderable parent/grandparent (recursive).
+     * 
+     * @param emfEntity 
+     */
+    static getRenderableParent(emfEntity) {
+        if(emfEntity.parent === undefined) {
+            return undefined;
+        } else if(emfEntity.parent.metadata !== undefined) {
+            return emfEntity.parent;
+        } else if(emfEntity.parent.data.className === 'de.unibonn.simpleml.simpleML.SmlDoStatement') {
+            return emfEntity.parent.getChild('@assigneeList').getChild('@assignees.0');
+        } else {
+            return EmfModelHelper.getRenderableParent(emfEntity.parent);
+        }
+    }
+
+    /**
+     * Searches in the flat emf-model and returns the found entity (if renderable) or next renderable parent/grandparent.
+     * 
+     * @param emfEntity 
+     */
+    static getRenderableParentFromReference(emfModelFlat, emfEntity) {
+        const traverseChildren = (entity, searchPathPieces) => {
+            if(searchPathPieces.length === 0) {
+                return entity;
+            }
+            
+            const currentPathPiece = searchPathPieces.shift();
+            
+            return traverseChildren(entity.children.filter((childEntity) => {
+                return childEntity.self === currentPathPiece;
+            })[0], searchPathPieces)
+        }
+
+        const pathPieces = emfEntity.data['$ref'].replace('//', '').split('/');
+        // find root-entity
+        const rootEntity = emfModelFlat.filter((entity) => {
+            return entity.self === pathPieces[0];
+        })[0];
+
+        // find entity in question in children
+        pathPieces.shift();
+        const foundEntity = traverseChildren(rootEntity, pathPieces);
+        // could be the case that the found entity is not renderable
+        if(foundEntity.metadata !== undefined) {
+            return foundEntity;
+        } else {
+            return EmfModelHelper.getRenderableParent(foundEntity);
+        }
     }
 
     /**
@@ -84,31 +206,58 @@ class EmfModelHelper {
     }
 
     /**
-     * Traverses the given EmfModel-Hierarchy and creates an Array of all elements
+     * Traverses the given EmfModel-Hierarchy and creates an Array of all elements. 
+     * The attribute metadata (if not undefined) is a indication that this entity can be rendered.
      *
-     * @param emfEntityList
+     * @param flatEmfEntityContainer
      * @param emfEntity
      * @param parent
      * @param self
-     * @returns {{data: Object, parent: Object, children: Array, self: string}}
+     * @param currentId         : has to be object-reference 
+     * @returns {data: Object, parent: Object, children: Array, metadata: Object, self: string}
      */
-    static recursion(emfEntityList, emfEntity, parent, self) {
+    static recursion(flatEmfEntityContainer, emfEntity, parent, self, currentId = {id: 0}) {
+        if(emfEntity === undefined || emfEntity === null)
+            return undefined;
+
+        currentId.id++;
+
         let { data, arrays, objects } = this.createMetaObject(emfEntity);
-        let flatEntity = { data, parent, children: [], self, getValue: {}};
+        let flatEntity = { id: currentId.id, data, parent, children: [], self, metadata: undefined, getValue: {}};
+        let associatedMetadata = EntityMetadataAssociator.getMetadata(emfEntity);
+
+        if(associatedMetadata !== undefined) {
+            flatEntity.metadata = associatedMetadata;
+        }
 
         arrays.forEach((array) => {
             array.data.forEach((element, index) => {
-                flatEntity.children.push(this.recursion(emfEntityList, element, flatEntity, array.name + "[" + index + ']'));
+                flatEntity.children.push(this.recursion(flatEmfEntityContainer, element, flatEntity, `@${array.name}.${index}`, currentId));
             });
         });
         objects.forEach((object) => {
-            flatEntity.children.push(this.recursion(emfEntityList, object.data, flatEntity, object.name));
+            flatEntity.children.push(this.recursion(flatEmfEntityContainer, object.data, flatEntity, `@${object.name}`, currentId));
         });
-        emfEntityList.push(flatEntity);
-        var dslConfigs = dslConfigurationDetails.filter(entity => entity.className === flatEntity.data.className)[0];
+        flatEntity.children = flatEntity.children.filter((item) => {
+            return !(item === undefined || item === null)
+        })
+
+        flatEntity.getChild = function(name) {
+            return this.children.find((child) => {
+                return child.self === name;
+            });
+        };
+        
+        flatEmfEntityContainer.push(flatEntity);
+        
+        // TODO: ausbauen/löschen
+        //-----------------
+        let dslConfigs = dslConfigurationDetails.filter(entity => entity.className === flatEntity.data.className)[0];
         if(dslConfigs !== undefined){
             flatEntity.getValue = dslConfigs.getValue;
         }
+        //-----------------
+        
         return flatEntity;
     }
 }
@@ -116,5 +265,7 @@ class EmfModelHelper {
 export default {
     flattenEmfModelTree: (emfModelTree) => EmfModelHelper.flattenEmfModelTree(emfModelTree),
     getFullHierarchy: (emfEntity) => EmfModelHelper.getFullHierarchy(emfEntity),
-    getFullHierarchy2: (emfEntity) => EmfModelHelper.getFullHierarchy2(emfEntity)
+    getFullHierarchy2: (emfEntity) => EmfModelHelper.getFullHierarchy2(emfEntity),
+    getRenderableEmfEntities: (emfModelFlat) => EmfModelHelper.getRenderableEmfEntities(emfModelFlat),
+    getEmfEntityAssociations: (emfModelFlat) => EmfModelHelper.getEmfEntityAssociations(emfModelFlat)
 }

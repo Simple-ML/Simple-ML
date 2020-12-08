@@ -6,6 +6,7 @@ import LoginView from './components/LoginView/LoginView';
 import ChooseProjectView from './components/ChooseProjectView/ChooseProjectView';
 import Toolbar from './components/core/Toolbar/Toolbar';
 import ModalContainer from './components/core/Modal/ModalContainer';
+import GraphicalEditor from './components/EditorView/GraphicalEditor/GraphicalEditor'
 
 class App extends React.Component {
     render() {

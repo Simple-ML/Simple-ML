@@ -1,6 +1,6 @@
 //node_module
 import React from 'react';
-import mxGraphConfig from "./../GraphicalEditor/mxGraphConfig";
+import mxGraphConfig from "./../GraphicalEditor/old/mxGraphConfig";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import XtextServices from '../../../serverConnection/XtextServices';

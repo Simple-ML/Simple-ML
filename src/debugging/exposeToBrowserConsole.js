@@ -37,6 +37,8 @@ const debugInterface = {
     d: { //data
         lsr: {}, //lastServiceResult
         emf: {},
+        emf_flat: {},
+        emf_renderable: {},
         l3s: {
             projectId: '',
             dataSets: {},
@@ -76,7 +78,7 @@ const debugInterface = {
     }
 };
 
-var exposeToBrowserConsole = () => {
+let exposeToBrowserConsole = () => {
     window.deb = debugInterface
 };
 
