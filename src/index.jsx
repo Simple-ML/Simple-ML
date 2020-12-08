@@ -62,6 +62,10 @@ window.loadEditor((xtextEditor) => {
             case 'getProcessProposals':
                 store.dispatch(setDslProcessDefinitions(JSON.parse(result.fullText)));
                 break;
+            case 'generate':
+                // TODO: generated Code
+                console.log(result);
+                break;
             default:
                 break;
         }
