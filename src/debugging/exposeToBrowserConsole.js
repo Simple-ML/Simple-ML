@@ -17,7 +17,8 @@ const debugInterface = {
             createAssociation: (fromEntityPath, toEntityPath) => XtextServices.createAssociation(fromEntityPath, toEntityPath),
             deleteAssociation: (fromEntityPath, toEntityPath) => XtextServices.deleteAssociation(fromEntityPath, toEntityPath),
             getEntityAttributes: (entities) => XtextServices.getEntityAttributes(entities),
-            setEntityAttributes: (entity) => XtextServices.setEntityAttributes(entity)
+            setEntityAttributes: (entity) => XtextServices.setEntityAttributes(entity),
+            generate: () => XtextServices.generate()
         }
     },
     h: { //helper
