@@ -1,15 +1,14 @@
 define(["ace/lib/oop", "ace/mode/text", "ace/mode/text_highlight_rules"], function(oop, mText, mTextHighlightRules) {
 	var HighlightRules = function() {
-		var keywords = "collection|function|input|method|source|DATE|TIME";
+		var keywords = "_|and|annotation|as|class|constructor|deprecated|enum|false|fun|import|in|interface|not|null|open|or|out|override|package|private|protected|public|pure|static|sub|super|this|true|typealias|union|val|vararg|where|workflow|yield";
 		this.$rules = {
 			"start": [
 				{token: "comment", regex: "\\/\\/.*$"},
 				{token: "comment", regex: "\\/\\*", next : "comment"},
 				{token: "string", regex: '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'},
-				{token: "string", regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"},
 				{token: "constant.numeric", regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"},
-				{token: "lparen", regex: "[\\[]"},
-				{token: "rparen", regex: "[\\]]"},
+				{token: "lparen", regex: "[({]"},
+				{token: "rparen", regex: "[)}]"},
 				{token: "keyword", regex: "\\b(?:" + keywords + ")\\b"}
 			],
 			"comment": [
@@ -24,7 +23,7 @@ define(["ace/lib/oop", "ace/mode/text", "ace/mode/text_highlight_rules"], functi
 		this.HighlightRules = HighlightRules;
 	};
 	oop.inherits(Mode, mText.Mode);
-	Mode.prototype.$id = "xtext/mydsl";
+	Mode.prototype.$id = "xtext/simpleml";
 	Mode.prototype.getCompletions = function(state, session, pos, prefix) {
 		return [];
 	}

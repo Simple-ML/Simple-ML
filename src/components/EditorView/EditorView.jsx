@@ -24,13 +24,7 @@ import viewbarIcon from '../../images/headerButtons/viewbar-closed.svg';
 class EditorView extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            myLayoutWrapper: {
-                layout: undefined,
-                isSideToolbarVisible: undefined
-            }
-        };
-
+        
         this.showHideSideToolbar = this.showHideSideToolbar.bind(this);
         this.flipGraph = this.flipGraph.bind(this);
     }

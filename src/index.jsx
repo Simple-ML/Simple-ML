@@ -12,6 +12,7 @@ import TextEditorWrapper from './components/EditorView/TextEditor/TextEditorWrap
 import afterReactInit from './debugging/afterReactInit';
 import { exposeToBrowserConsole } from './debugging/exposeToBrowserConsole';
 import XtextServices from './serverConnection/XtextServices';
+import EmfModelHelper from './helper/EmfModelHelper';
 import { setNewEmfModel, setEmfModelClean, setEmfModelDirty } from './reducers/emfModel';
 import { setDslProcessDefinitions } from './reducers/dslProcessDefinitions';
 
@@ -22,16 +23,23 @@ window.loadEditor((xtextEditor) => {
     XtextServices.addSuccessListener((serviceType, result) => {
         switch (serviceType) {
             case 'getEmfModel':
-                store.dispatch(setNewEmfModel(JSON.parse(result.emfModel)));
-                break;
+                // let emfRaw = JSON.parse(result.emfModel);
+                // let emfFlat = EmfModelHelper.flattenEmfModelTree(emfRaw);
+                // let emfRenderable = EmfModelHelper.getRenderableEmfEntities(emfFlat);
+                // store.dispatch(setNewEmfModel(emfRaw, emfFlat, emfRenderable));
+                // break;
             case 'createEntity':
             case 'deleteEntity':
             case 'deleteAssociation':
             case 'createAssociation':
-                store.dispatch(setNewEmfModel(JSON.parse(result.emfModel)));
+                let emfRaw = JSON.parse(result.emfModel);
+                let emfFlat = EmfModelHelper.flattenEmfModelTree(emfRaw);
+                let emfRenderable = EmfModelHelper.getRenderableEmfEntities(emfFlat);
+                let emfAssosiatins = EmfModelHelper.getEmfEntityAssociations(emfFlat);
+                store.dispatch(setNewEmfModel(emfRaw, emfFlat, emfRenderable, emfAssosiatins));
 
                 // TODO: update text-editor XtextServices.validate does not work
-                // XtextServices.validate();
+                XtextServices.validate();
                 break;
             case 'validate':
                 // TODO: not the right place for this code (containsError)
