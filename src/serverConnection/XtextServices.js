@@ -107,6 +107,13 @@ export default class XtextServices {
         TextEditorWrapper.editor.xtextServices.validate();
     }
 
+    /**
+     * Generator Service
+     */
+    static generate() {
+        const artifactId = TextEditorWrapper.editor.xtextServices.options.resourceId.replace('.simpleml', '.py');
+        TextEditorWrapper.editor.xtextServices.generate({artifactId});
+    }
 
     /**
      *
