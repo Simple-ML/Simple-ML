@@ -22,4 +22,4 @@ export default {
 };
 const Template = (args) => <Icons {...args} />;
 
-export const Navigation = Template.bind({});
+export const SimpleMLIcons= Template.bind({});
