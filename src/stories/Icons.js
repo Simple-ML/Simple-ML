@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -21,25 +22,91 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
   },
 }));
-export default function Icons() {
+export default function Icons(props) {
 	const classes = useStyles();
-	return (
-		<div>
-			<CloseIcon style={{fontSize:24}}/ >
-			<ChevronLeftIcon style={{fontSize:24}}/ >
-			<KeyboardArrowUpIcon style={{fontSize:24}}/ >
-			<KeyboardArrowDownIcon style={{fontSize:24}}/ >
-			<CancelIcon style={{fontSize:24}}/ >
-			<ErrorIcon style={{fontSize:24}}/ >
-			<CheckCircleIcon style={{fontSize:24}}/ >
-			<br/>
-			<ArrowDropUpIcon style={{fontSize:24}}/ >
-			<ArrowDropDownIcon style={{fontSize:24}}/ >
-			<AddIcon style={{fontSize:24}}/ >
-			<SearchIcon style={{fontSize:24}}/ >
-			<FilterListIcon style={{fontSize:24}}/ >
-			<FullscreenIcon style={{fontSize:24}}/ >
-			<FullscreenExitIcon style={{fontSize:24}}/ >
-		</div>
-	);
+	console.log(props);
+	// TODO should not include all props but only those related to style
+	let style = {
+		...props
+	}
+	switch(props.icons){
+		case 'fullscreenExit':
+			return (
+				<FullscreenExitIcon style={style}/ >
+			);
+		case 'chevronLeft':
+			return (
+				<ChevronLeftIcon style={style}/ >
+			);
+		case 'close':
+			return (
+				<CloseIcon style={style}/ >
+			);
+		case 'keyboardArrowUp':
+			return (
+				<KeyboardArrowUpIcon style={style}/ >
+			);
+		case 'keyboardArrowDown':
+			return (
+				<KeyboardArrowUpIcon style={style}/ >
+			);
+		case 'cancel':
+			return (
+				<CancelIcon style={style}/ >
+			);
+		case 'error':
+			return (
+				<ErrorIcon style={style}/ >
+			);
+		case 'checkCircle':
+			return (
+				<CheckCircleIcon style={style}/ >
+			);
+		case 'arrowDropUp':
+			return (
+				<ArrowDropUpIcon style={style}/ >
+			);
+		case 'arrowDropDown':
+			return (
+				<ArrowDropDownIcon style={style}/ >
+			);
+		case 'add':
+			return (
+				<AddIcon style={style}/ >
+			);
+		case 'search':
+			return (
+				<SearchIcon style={style}/ >
+			);
+		case 'filterList':
+			return (
+				<FilterListIcon style={style}/ >
+			);
+		case 'fullscreen':
+			return (
+				<FullscreenIcon style={style}/ >
+			);
+		default: 
+			console.debug('Icon Name does not exist renders null')
+			return null
+	}
 }
+Icons.propTypes = {
+  /**
+   * How large should the icon be?
+   */
+  fontSize: PropTypes.oneOf([24, 40, 100]),
+  /**
+   * What icon should we display? For icon names see: https://material-ui.com/components/material-icons/
+   */
+  icons: PropTypes.string.isRequired,
+  /**
+   * Optional click handler
+   */
+  onClick: PropTypes.func,
+};
+Icons.defaultProps = {
+  onClick: undefined,
+	fontSize:24 ,
+	icons:''
+};
