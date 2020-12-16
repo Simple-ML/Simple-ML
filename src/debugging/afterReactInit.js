@@ -5,16 +5,17 @@ import { debugInterface } from './exposeToBrowserConsole';
 import store from '../reduxStore';
 
 let afterReactInit = () => {
-    TextEditorWrapper.setText("// Load and prepare data\n" +
+    TextEditorWrapper.setText(
+        
+        "package test\n" +
         "import simpleml.collections.*\n" +
-        "import simpleml.collection.*\n" +
         "import simpleml.dataset.*\n" +
         "import simpleml.model.regression.*" +
         "\n" +
         "workflow predictSpeed {\n" +
         "\n" +
         "    // Load and prepare data\n" +
-        '    val adacAugustSample = loadDataset("ADACAugust").sample(n_instances = 1000);\n' +
+        '    val adacAugustSample = loadDataset("ADACAugust").sample(nInstances = 1000);\n' +
         "    val features = adacAugustSample.keepAttributes(\n" +
         "        2  /* Floating Car Data point: has time (hour) */,\n" +
         "        3  /* Floating Car Data point: has time (day of week) */, \n" +
