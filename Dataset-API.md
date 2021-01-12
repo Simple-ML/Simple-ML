@@ -10,6 +10,6 @@
 
 ### Dataset Sampling
 
-`sample(nInstances: int) -> Dataset:`
+`sample(nInstances: int) -> Dataset`
 
 Takes a random sample with `nInstances` from the dataset.
