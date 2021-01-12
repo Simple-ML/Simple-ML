@@ -3,7 +3,9 @@
 
 Run the following command in the root directory of the project where the setup.py script is located to install the Simple-ML API: 
 
-    pip install -e api
+    pip install -e API
+
+DSL stubs for the data API are defined [here](https://github.com/Simple-ML/Stdlib/blob/master/stubs/simpleml/dataset/dataset.stub.simpleml).
 
 # Testing
 
