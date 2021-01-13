@@ -46,4 +46,4 @@ This function splits data into train and test with the given training ratio as a
 `getStatistics() -> dict`
 
 Generation of metadata, i.e., statistics for numeric, string and geometry columns. 
-The Statistics are number of null values, number of valid values, median, histogram (10% bucket/interval size), value distributions, mean, number of values, numberOfValidNonNullValues, minimum, maximum, standard deviation, number of invalid values, deciles, quantiles and outliers
+The Statistics are number of null values, number of valid values, median, histogram (10% bucket/interval size), value distributions, mean, number of values, number of valid non-null values, minimum, maximum, standard deviation, number of invalid values, deciles, quantiles and outliers
