@@ -2,6 +2,8 @@
 
 [Code](https://github.com/Simple-ML/RuntimeData/tree/main/api/simpleml/data_catalog)
 
+Data Catalog API mainly deals with selecting right dataset to process. It queries all datasets exists within our sparql endpoint.
+
 # Access/Usage
 
 (url...) 
