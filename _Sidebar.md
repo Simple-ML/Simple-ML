@@ -2,7 +2,7 @@
 * [DSL][dsl]
 * [Front End](./FrontEnd.md)
 * StdLib
-* Runtime Server
+* [Runtime Server][Runtime Server]
 * [Data API][data_api]
    * [Data Set API][data_set_api]
    * [Data Catalog API][data_catalog_api]
