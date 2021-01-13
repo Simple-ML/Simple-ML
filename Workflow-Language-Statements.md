@@ -6,9 +6,9 @@ are not planned since we want to keep the language small and easy to learn. More
 
 ## Do-Statements
 
-Do-statements are used to evaluate an [expression](./Workflow-Language:-Expressions) exactly once. The results of this expression can either be ignored or assigned to a placeholder.
+Do-statements are used to evaluate an [expression](./Workflow-Language-Expressions) exactly once. The results of this expression can either be ignored or assigned to a placeholder.
 
-The most basic form of a do-statement ignores all results of the expression, which is only useful if the expression has side-effects. The following snippet demonstrates this by [calling](./Workflow-Language:-Expressions#calls) the `print` function that prints the given string to the console. Note that the statement ends with a semicolon.
+The most basic form of a do-statement ignores all results of the expression, which is only useful if the expression has side-effects. The following snippet demonstrates this by [calling](./Workflow-Language-Expressions#calls) the `print` function that prints the given string to the console. Note that the statement ends with a semicolon.
 
     print("Hello, world!");
 
@@ -28,7 +28,7 @@ In case we are only interested in some of the results, we can skip results by in
 
 ### Yielding Results
 
-Finally, do-statements are used to yield results of [workflow steps](./Workflow-Language:-Workflow-Steps) as shown in this snippet:
+Finally, do-statements are used to yield results of [workflow steps](./Workflow-Language-Workflow-Steps) as shown in this snippet:
 
     step numbers() -> (one: Int, two: Int) {
         yield one = 1;
