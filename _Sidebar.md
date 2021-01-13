@@ -1,6 +1,6 @@
 ## Simple-ML Wiki
 * [DSL][dsl]
-* Front end
+* [Front End](./FrontEnd.md)
 * StdLib
 * Runtime Server
 * [Data API][data_api]
