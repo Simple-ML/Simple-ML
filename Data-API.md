@@ -1,7 +1,7 @@
 # Description
 
-The data API enables access to and pre-processing of all data sets that are contained in the Simple-ML data catalog. There are two parts of it, the data catalog API that accesses meta data only, and the data API that proceeds the files themselves.
-In addition, the data API provides access to the Simple-ML machine learning (ML) catalog via its ML catalog API:
+The data API enables access to and pre-processing of all data sets that are contained in the Simple-ML data catalog. There are two parts of it, the [data catalog API](https://github.com/Anzumana/Simple-ML/wiki/Data-Catalog-API) that accesses meta data only, and the [data set API](https://github.com/Anzumana/Simple-ML/wiki/Dataset-API) that proceeds the files themselves.
+In addition, the data API provides access to the Simple-ML machine learning (ML) catalog via its [ML catalog API](https://github.com/Anzumana/Simple-ML/wiki/Machine-Learning-Catalog-API):
 
 # Installation
 
