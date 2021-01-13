@@ -18,7 +18,7 @@ The (currently still incomplete) DSL stubs for the data API are defined [here](h
 Run the example workflow (using the Python environment that contains the installed Simple-ML API):
 
 ```python
-python tests/speedPrediction_predictSpeed.py
+python tests/load.py
 ```
 
 # Python Example
