@@ -11,37 +11,37 @@ Using the DSL, these methods will be accessible after configuration of the [resp
 
 # Methods
 
-### Dataset Loading
+### data set loading
 
 `loadDataset(datasetID: str) -> Dataset`
 
 This function is loading the data sets meta data given the data set's unique identifier in the data catalog. The data set's data itself is only read when it is first accessed (e.g., as part of the `sample` method).
 
-### Dataset Reading
+### data set rReading
 
 `readFile() -> Dataset`
 
 This function is reading the actual data of the data set. Currently, one CSV file per data set is supported. The file name is given by the data catalog.
 
-### Dataset Sampling
+### data set sampling
 
 `sample(nInstances: int) -> Dataset`
 
 Takes a random sample with `nInstances` from the dataset.
 
-### Feature Selection 
+### feature selection 
 
 `keepAttributes(attributeIDs: Any) -> Dataset`
 
 Selects features from the data set as per the list of attribute identifiers provided as parameter.
 
-### Train Test Split 
+### train/test split 
 
 `splitIntoTrainAndTest(trainRatio: float) -> Dataset`
 
 This function splits data into train and test with the given training ratio as a parameter.
 
-### Generating Statistics
+### generating statistics
 
 `getStatistics() -> dict`
 
