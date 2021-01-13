@@ -8,7 +8,7 @@
 
 # API calls
 
-### Get Dataset
+### Get Datasets
 
 getDatasets():
 
