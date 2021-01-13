@@ -4,7 +4,7 @@
 * StdLib
 * Runtime Server
 * [Data API][data_api]
-   * [Data Set API][dataset_api]
+   * [Data Set API][data_set_api]
    * [Data Catalog API][data_catalog_api]
    * [Machine Learning Catalog API][ml_catalog_api]
 
