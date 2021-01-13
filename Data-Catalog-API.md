@@ -10,13 +10,13 @@ The data catalog API provides a set of methods as follows:
 
 # Methods
 
-### Get Datasets
+### Get Data sets
 
 `getDatasets()`
 
 This method returns all data sets contained in the data catalog, all described using basic meta data such as their identifiers.
 
-### Get Dataset
+### Get Data set
 
 `getDataset(dataset_id: str) -> Dataset`
 
