@@ -1,6 +1,6 @@
 # Description
 
-The data Catalog API serves as the entry point to the data catalog. Its methods query the data catalog via pre-defined SPARQL queries. In contrast to the data set API, the data catalog API does never load or proceed the actual data set files.
+The data catalog API serves as the entry point to the data catalog. Its methods query the data catalog via pre-defined SPARQL queries. In contrast to the data set API, the data catalog API does never load or proceed the actual data set files.
 
 # Access/Usage
 
