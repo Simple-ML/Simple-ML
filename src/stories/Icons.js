@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import { makeStyles } from '@material-ui/core/styles';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import StarOutlineIcon from '@material-ui/icons/StarOutline';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import  DeleteIcon  from '@material-ui/icons/Delete';
 import CloseIcon from '@material-ui/icons/Close';
@@ -48,7 +50,7 @@ export default function Icons(props) {
 			);
 		case 'keyboardArrowDown':
 			return (
-				<KeyboardArrowUpIcon style={style}/ >
+				<KeyboardArrowDownIcon style={style}/ >
 			);
 		case 'cancel':
 			return (
@@ -85,6 +87,14 @@ export default function Icons(props) {
 		case 'fullscreen':
 			return (
 				<FullscreenIcon style={style}/ >
+			);
+		case 'starOutline':
+			return (
+				<StarOutlineIcon style={style}/ >
+			);
+		case 'helpOutline':
+			return (
+				<HelpOutlineIcon style={style}/ >
 			);
 		default: 
 			console.debug('Icon Name does not exist renders null')
