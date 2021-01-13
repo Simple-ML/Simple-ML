@@ -6,7 +6,10 @@ This API provides all methods regarding the loading and pre-processing of data s
 
 * [Code](https://github.com/Simple-ML/RuntimeData/tree/main/api/simpleml/dataset)
 
-# API calls
+The data set methods are applied on instance of the `Dataset` class that can be initiated using the `loadDataset` method which internally calls the [data catalog API](https://github.com/Anzumana/Simple-ML/wiki/Dataset-API).
+Using the DSL, these methods will be accessible after configuration of the [respective stubs](https://github.com/Simple-ML/Stdlib/blob/master/stubs/simpleml/dataset/dataset.stub.simpleml).
+
+# Methods
 
 ### Dataset Loading
 
