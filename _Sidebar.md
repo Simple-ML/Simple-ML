@@ -1,5 +1,5 @@
 ## Simple-ML Wiki
-* DSL
+* [DSL][dsl]
 * Front end
 * StdLib
 * Runtime Server
@@ -9,6 +9,7 @@
    * [Machine Learning Catalog API][ml_catalog_api]
 
 
+[dsl]: https://github.com/Anzumana/Simple-ML/wiki/Language-Tutorial
 [data_api]: https://github.com/Anzumana/Simple-ML/wiki/Data-API
 [dataset_api]: https://github.com/Anzumana/Simple-ML/wiki/Dataset-API
 [data_catalog_api]: https://github.com/Anzumana/Simple-ML/wiki/Data-Catalog-API
