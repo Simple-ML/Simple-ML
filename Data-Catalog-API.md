@@ -1,30 +1,29 @@
 # Description
 
-[Code](https://github.com/Simple-ML/RuntimeData/tree/main/api/simpleml/data_catalog)
-
-Data Catalog API mainly deals with selecting right dataset to process. It queries all datasets exists within our sparql endpoint.
+The data Catalog API serves as the entry point to the data catalog. Its methods query the data catalog via pre-defined SPARQL queries. In contrast to the data set API, the data catalog API does never load or proceed the actual data set files.
 
 # Access/Usage
 
-(url...) 
+[Code](https://github.com/Simple-ML/RuntimeData/tree/main/api/simpleml/data_catalog)
 
-# API calls
+The data catalog API provides a set of methods as follows:
+
+# Methods
 
 ### Get Datasets
 
-getDatasets():
+`getDatasets()`
 
-Loading all datasets with sparql query from an endpoint with sparql connector.
+This method returns all data sets contained in the data catalog, all described using basic meta data such as their identifiers.
 
 ### Get Dataset
 
-getDataset(dataset_id: str) -> Dataset:
+`getDataset(dataset_id: str) -> Dataset`
 
-Getting specific dataset with dataset_id in parameter.
+Given a data set identifier, this method returns the specific data sets contained in the data catalog, together with more meta data.
 
 ### Get Statistics
 
-getStatistics(dataset: Dataset):
+`getStatistics(dataset: Dataset)`
 
-Collecting statistics of given dataset for data catalog.
-
+Given a data set, this method returns its statistics contained in the data catalog.
