@@ -43,18 +43,4 @@ This function is splitting data into train and test with given ratio as paramete
 getStatistics(self) -> dict:
 
 Generation metadata with this function. Its creating stats for numeric, string and geometry columns. 
-Stats are below:     
-    # - number of null values
-    # - number of valid values
-    # - median
-    # - histogram (10% bucket/interval size)
-    # - value distributions
-    # - mean
-    # - number of values
-    # - numberOfValidNonNullValues
-    # - minimum
-    # - maximum
-    # - standardDeviation
-    # - numberOfInvalidValues
-    # - deciles and quantiles
-    # - outliers
+Stats are number of null values, number of valid values, median, histogram (10% bucket/interval size), value distributions, mean, number of values, numberOfValidNonNullValues, minimum, maximum, standardDeviation, numberOfInvalidValues, deciles and quantiles and outliers
