@@ -2,6 +2,8 @@
 
 [Code](https://github.com/Simple-ML/RuntimeData/tree/main/api/simpleml/dataset)
 
+Main implementation of this API is regarding loading selected dataset file, sampling, feature selection, train/test split and finally generating required statistics from data. This dataset can be accessible anywhere in application for further processing of machine learning algorithms.
+
 # Access/Usage
 
 (url...)
