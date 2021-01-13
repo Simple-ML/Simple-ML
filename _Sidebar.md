@@ -2,7 +2,7 @@
 * [DSL][dsl]
 * [Front End](./FrontEnd.md)
 * StdLib
-* [Runtime Server][dsl]
+* [Runtime Server][runtime]
 * [Data API][data_api]
    * [Data Set API][data_set_api]
    * [Data Catalog API][data_catalog_api]
@@ -14,3 +14,4 @@
 [data_set_api]: https://github.com/Anzumana/Simple-ML/wiki/Data-Set-API
 [data_catalog_api]: https://github.com/Anzumana/Simple-ML/wiki/Data-Catalog-API
 [ml_catalog_api]: https://github.com/Anzumana/Simple-ML/wiki/Machine-Learning-Catalog-API
+[runtime]: https://github.com/Anzumana/Simple-ML/wiki/Runtime-Server
