@@ -1,26 +1,24 @@
 # Description
 
-[Code](https://github.com/Simple-ML/RuntimeData/tree/main/api/simpleml/dataset)
-
-Main implementation of this API is regarding loading selected dataset file, sampling, feature selection, train/test split and finally generating required statistics from data. This dataset can be accessible anywhere in application for further processing of machine learning algorithms.
+This API provides all methods regarding the loading and pre-processing of data sets. This includes loading a selected dataset file, sampling, feature selection, train/test split and finally generating required statistics for data set profiling. The pre-processed dataset can be accessed anywhere in the application for further processing of the machine learning algorithms.
 
 # Access/Usage
 
-(url...)
+* [Code](https://github.com/Simple-ML/RuntimeData/tree/main/api/simpleml/dataset)
 
 # API calls
 
-### Load Dataset
+### Dataset Loading
 
-loadDataset(datasetID: str) -> Dataset:
+`loadDataset(datasetID: str) -> Dataset`
 
-This function is loading relevant data.
+This function is loading the data sets meta data given the data set's unique identifier in the data catalog. The data set's data itself is only read when it is first accessed (e.g., as part of the `sample` method).
 
-### Reading File  
+### Dataset Reading
 
-readFile(self):
+`readFile() -> Dataset`
 
-Currently we are reading from a CSV file. So this function read csv file in to pandas dataframe.
+This function is reading the actual data of the data set. Currently, one CSV file per data set is supported. The file name is given by the data catalog.
 
 ### Dataset Sampling
 
@@ -30,19 +28,19 @@ Takes a random sample with `nInstances` from the dataset.
 
 ### Feature Selection 
 
-keepAttributes(attributeIDs: Any) -> Dataset:
+`keepAttributes(attributeIDs: Any) -> Dataset`
 
-Selects features from dataset as per list provided as parameter.
+Selects features from the data set as per the list of attribute identifiers provided as parameter.
 
 ### Train Test Split 
 
-splitIntoTrainAndTest(trainRatio: float) -> Dataset:
+`splitIntoTrainAndTest(trainRatio: float) -> Dataset`
 
-This function is splitting data into train and test with given ratio as parameter.
+This function splits data into train and test with the given training ratio as a parameter.
 
 ### Generating Statistics
 
-getStatistics(self) -> dict:
+`getStatistics() -> dict`
 
-Generation metadata with this function. Its creating stats for numeric, string and geometry columns. 
-Stats are number of null values, number of valid values, median, histogram (10% bucket/interval size), value distributions, mean, number of values, numberOfValidNonNullValues, minimum, maximum, standardDeviation, numberOfInvalidValues, deciles and quantiles and outliers
+Generation of metadata, i.e., statistics for numeric, string and geometry columns. 
+The Statistics are number of null values, number of valid values, median, histogram (10% bucket/interval size), value distributions, mean, number of values, numberOfValidNonNullValues, minimum, maximum, standard deviation, number of invalid values, deciles, quantiles and outliers
