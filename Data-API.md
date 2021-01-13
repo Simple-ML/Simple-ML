@@ -1,21 +1,25 @@
 # Description
 
 The data API enables access to and pre-processing of all data sets that are contained in the Simple-ML data catalog. There are two parts of it, the [data catalog API](https://github.com/Anzumana/Simple-ML/wiki/Data-Catalog-API) that accesses meta data only, and the [data set API](https://github.com/Anzumana/Simple-ML/wiki/Dataset-API) that proceeds the files themselves.
-In addition, the data API provides access to the Simple-ML machine learning (ML) catalog via its [ML catalog API](https://github.com/Anzumana/Simple-ML/wiki/Machine-Learning-Catalog-API):
+In addition, the data API provides access to the Simple-ML machine learning (ML) catalog via its [ML catalog API](https://github.com/Anzumana/Simple-ML/wiki/Machine-Learning-Catalog-API).
 
 # Installation
 
 Run the following command in the root directory of the project where the setup.py script is located to install the Simple-ML API: 
 
-    pip install -e API
+```
+pip install -e API
+```
 
-DSL stubs for the data API are defined [here](https://github.com/Simple-ML/Stdlib/blob/master/stubs/simpleml/dataset/dataset.stub.simpleml).
+The (currently still incomplete) DSL stubs for the data API are defined [here](https://github.com/Simple-ML/Stdlib/blob/master/stubs/simpleml/dataset/dataset.stub.simpleml).
 
 # Testing
 
 Run the example workflow (using the Python environment that contains the installed Simple-ML API):
 
-    python tests/speedPrediction_predictSpeed.py
+```python
+python tests/speedPrediction_predictSpeed.py
+```
 
 # Python Example
 
