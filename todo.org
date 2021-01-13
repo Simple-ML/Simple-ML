@@ -1,4 +1,0 @@
-* storybook components addons test
-** some other info
-*** additonal info 
-**** sdsdfsdf
