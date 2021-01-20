@@ -20,7 +20,7 @@ Alternatively if you want to take a look a the components that are available run
 ```
 npm run storybook
 ```
-A deployed version can be found [here](http://www.chromatic.com/library?appId=5fcf223aaf074f00212d726e)
+A deployed version can be found [here](https://www.chromatic.com/library?appId=5fcf223aaf074f00212d726e)
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
