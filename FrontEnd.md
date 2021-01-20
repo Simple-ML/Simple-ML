@@ -25,6 +25,11 @@ A deployed version can be found [here](https://www.chromatic.com/library?appId=5
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+For an overview of the application architecture itself we use [redux](https://redux.js.org/tutorials/essentials/part-1-overview-concepts)
+
+If you want to learn redux a good place to start would be this [course](https://egghead.io/courses/getting-started-with-redux) created by
+one of the main authors of redux.
+
 ## Available Scripts
 
 In the project directory, you can run:
