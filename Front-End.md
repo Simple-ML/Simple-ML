@@ -30,6 +30,7 @@ For an overview of the application architecture itself we use [redux](https://re
 If you want to learn redux a good place to start would be this [course](https://egghead.io/courses/getting-started-with-redux) created by
 one of the main authors of redux.
 
+A [good article](https://www.framer.com/books/framer-guide-to-react/) to learn about react ( the framework we are using for the front end ) 
 ## Available Scripts
 
 In the project directory, you can run:
