@@ -58,9 +58,11 @@ Example:
   * Required Value: A dictionary containing:
     * sessionId: session Id of the run did
     * name: name of the placeholder
-    * is_data : get the data or a filepath
+ 
 
 ```
+{action: 'get_placeholder',"placeholder":{sessionId:123123123123,name:"message"}}
+
 ```
 ## Run Model 
 
