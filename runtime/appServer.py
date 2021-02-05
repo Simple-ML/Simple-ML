@@ -88,19 +88,22 @@ async def requestHandler(websocket, path):
                 try:
                     if data["placeholder"]["sessionId"] in PlaceholderMap:
                         print(PlaceholderMap[data["placeholder"]["sessionId"]].get(data["placeholder"]["name"]))
-
+                        # STATE["value"] = s
+                        # x=dict()
+                        # x.get()
+                        # PlaceholderMap[data["placeholder"]["session_id"]][]
                         await websocket.send(PlaceholderMap[data["placeholder"]["sessionId"]].get(data["placeholder"]["name"]))
                     else:
                         STATE["value"] = json.JSONEncoder().encode(
                         {"status": "Session not found"})
-                        await notify_state()
+                        # await notify_state()
                 except Exception as exc:
                     print("error: {0}\n".format(exc))
                     log = open('runtime/error.log', 'a')
                     log.write("error: {0}".format(exc))
             elif data["action"] == "use_model":
                 if MODEL==None:
-                    print(s)
+                    print("")
                 else:
                     MODEL.fit(data["data"])
             elif data["action"] == "placeholder_available":

@@ -10,6 +10,12 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 import pandas as pd
 #Sample data creation
+
+
+def loadData(path):
+    data = pd.read_csv("dataset.tsv")
+
+
 def predictSpeed():
     #number of points
     n=int(5e6)

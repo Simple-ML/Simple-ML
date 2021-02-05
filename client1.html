@@ -46,23 +46,23 @@
         </div>
 
         <div>
-        <textarea style="float: none" id="file1">
-from runtimeBridge import save_placeHolder
-
-from helloWorld import helloworld
+        <textarea style="float: none" id="file1">from helloWorld import main
 
 if __name__ == '__main__':
-    x= helloworld()
+    main()
 </textarea>
-        <textarea id="file2">
+        <textarea id="file2"># Workflow steps ---------------------------------------------------------------
 from runtimeBridge import save_placeHolder
 
+def hello():
+    message = 'Hello, world!'
+    return message
 
+# Workflows --------------------------------------------------------------------
 
-def helloworld():
-    message="Hello World"
-    save_placeHolder("message",message)
-    return message</textarea>
+def main():
+    message = hello()
+    save_placeHolder("message", message)</textarea>
 </div>
         <div><textarea style="width: 20%;height: 200px" id="log"></textarea></div>
         <div><textarea style="width: 20%;height: 200px" id="PlaceHolders"></textarea></div>
@@ -105,8 +105,8 @@ def helloworld():
                 websocket = new WebSocket("ws://127.0.0.1:6789/");
             console.log(websocket);
             code.onclick = function (event) {
-                websocket.send(JSON.stringify({action: 'run',"python":{number:2,files:[{filename:'speedmain.py',content:content1.value},
-                {filename:'speedPrediction2.py',content:content2.value}], mainfile:'speedmain.py'}}));
+                websocket.send(JSON.stringify({action: 'run',"python":{number:2,files:[{filename:'helloWorld_main.py',content:content1.value},
+                {filename:'helloWorld.py',content:content2.value}], mainfile:'helloWorld_main.py'}}));
             }
             placeholder.onclick = function (event) {
                 websocket.send(JSON.stringify({action: 'get_placeholder',"placeholder":{sessionId:123123123123,name:"message"}}));

@@ -9,7 +9,7 @@ async def hello():
     uri = "ws://127.0.0.1:6789/"
     async with websockets.connect(uri) as websocket:
         await websocket.recv()
-        placeholder_req='{"action":"status","sessionId": "91b94fa4-c116-4ebf-ae38-3a28525feca3"}'#'#'{"action": "get_placeholder","placeholder":{"sessionId":"b91920d7-97ab-4fcd-985b-e57805b7b453","name":"message"}}'
+        placeholder_req='{"action": "get_placeholder","placeholder":{"sessionId":"29af0aa7-969c-44e3-927d-c3809f29cb83","name":"message"}}'#'{"action":"status","sessionId": "91b94fa4-c116-4ebf-ae38-3a28525feca3"}'#
         await websocket.send(placeholder_req)
         print(placeholder_req)
         placeholder = await websocket.recv()
