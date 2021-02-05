@@ -42,78 +42,63 @@
         <div class="buttons">
             <div class="minus button" id="code">Run Code</div>
             <br/><br>
-            <div class="plus button" id="placeholder">get placeholder</div>
+
         </div>
+
         <div>
-            <label>placeholder name</label>
-            <select>
-                <option id="model">trained model</option>
-            </select>
-        </div>
-        <div>
-        <textarea style="float: none" id="file1">from speedPrediction2 import predictSpeed
+        <textarea style="float: none" id="file1">
+from runtimeBridge import save_placeHolder
+
+from helloWorld import helloworld
 
 if __name__ == '__main__':
-    x= predictSpeed()
-    f=open("runtime/regression.model","w")
-    f.write(x)
-    f.close()
+    x= helloworld()
 </textarea>
-        <textarea id="file2">import json
-from time import sleep
-
-from numpy import poly1d
-from scipy import linspace, polyval, polyfit, sqrt, stats, randn, optimize
-import statsmodels.api as sm
-import matplotlib.pyplot as plt
-import time
-import numpy as np
-from sklearn.linear_model import LinearRegression
-import pandas as pd
-#Sample data creation
-def predictSpeed():
-    #number of points
-    n=int(5e6)
-    t=np.linspace(-10,10,n)
-    #parameters
-    a=3.25
-    b=-6.5
-    x=polyval([a,b],t)
-    #add some noise
-    xn=x+3*randn(n)
-
-    # xvar=np.random.choice(t,size=20)
-    # yvar=polyval([a,b],xvar)+3*randn(20)
-    # plt.scatter(xvar,yvar,c='green',edgecolors='k')
-    # plt.grid(True)
-    # plt.show()
+        <textarea id="file2">
+from runtimeBridge import save_placeHolder
 
 
-    #Linear regressison -polyfit - polyfit can be used other orders polynomials
-    t1=time.time()
-    (ar,br)=polyfit(t,xn,1)
-    f=poly1d(polyfit(t,xn,1))
-    xr=polyval([ar,br],t)
-    #compute the mean square error
-    err=sqrt(sum((xr-xn)**2)/n)
-    t2=time.time()
-    t_polyfit = float(t2-t1)
 
-    print('Linear regression using polyfit')
-    print('parameters: a=%.2f b=%.2f, ms error= %.3f' % (ar,br,err))
-    print("Time taken: {} seconds".format(t_polyfit))
-
-    return json.dumps([{'polyfit':{'a':ar,'b':br}}])
-</textarea>
+def helloworld():
+    message="Hello World"
+    save_placeHolder("message",message)
+    return message</textarea>
 </div>
-        <div><textarea id="log"></textarea></div>
+        <div><textarea style="width: 20%;height: 200px" id="log"></textarea></div>
+        <div><textarea style="width: 20%;height: 200px" id="PlaceHolders"></textarea></div>
         <div class="state">
             <span class="users">?</span> online
         </div>
+
+
+
+             <div class="plus button" id="placeholder">get placeholder</div>
+            <label>placeholder name</label>
+            <input id="place_name" placeholder="name"/>
+        </div>
+
+
+<div>
+             <div class="plus button" id="modelrun">run model </div>
+            <label>mode name</label>
+            <select>
+                <option id="model">polyfit</option>
+            </select>
+        </div>
+
+
+
+
+
+
+
+
+
         <script>
             var code = document.querySelector('#code'),
                 placeholder = document.querySelector('#placeholder'),
                 log = document.querySelector('#log'),
+                placeholder_menu = document.querySelector('#PlaceHolders'),
                 users = document.querySelector('.users'),
                 content1=document.querySelector('#file1')
                 content2=document.querySelector('#file2')
@@ -124,16 +109,17 @@ def predictSpeed():
                 {filename:'speedPrediction2.py',content:content2.value}], mainfile:'speedmain.py'}}));
             }
             placeholder.onclick = function (event) {
-                websocket.send(JSON.stringify({action: 'placeholder'}));
+                websocket.send(JSON.stringify({action: 'get_placeholder',"placeholder":{sessionId:123123123123,name:"message"}}));
             }
 
             websocket.onmessage = function (event) {
                 data = JSON.parse(event.data);
                 console.log(data)
-                log.value=log.value+"\n"+JSON.stringify(data.value)
+                log.value=log.value+"\n"+JSON.stringify(data.value);
                 switch (data.type) {
-                    case 'Placeholder':
-                        value.textContent = data.value;
+                    case 'placeholder':
+                        placeholder_menu.value=JSON.stringify(data);
+
                         break;
                     case 'users':
                         users.textContent = (
@@ -141,8 +127,10 @@ def predictSpeed():
                             (data.count == 1 ? "" : "s"));
                         break;
                     default:
+
                         console.error(
                             "unsupported event", data);
+                        console.log(data);
                 }
             };
         </script>

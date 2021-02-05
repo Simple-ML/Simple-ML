@@ -1,40 +1,21 @@
 import asyncio
-
+import json
 
 import websockets
 
 
 
 async def hello():
-    uri = "ws://localhost:8765"
+    uri = "ws://127.0.0.1:6789/"
     async with websockets.connect(uri) as websocket:
+        await websocket.recv()
+        placeholder_req='{"action":"status","sessionId": "91b94fa4-c116-4ebf-ae38-3a28525feca3"}'#'#'{"action": "get_placeholder","placeholder":{"sessionId":"b91920d7-97ab-4fcd-985b-e57805b7b453","name":"message"}}'
+        await websocket.send(placeholder_req)
+        print(placeholder_req)
+        placeholder = await websocket.recv()
+        print("placeHolder",placeholder)
 
 
-        dict={}
-        dict["speedmain.py"]=(open("speedmain.py").read())
-        dict["speedPrediction2.py"]=(open("speedPrediction2.py").read())
-        print(list(dict.keys()))
-        number=str(len(dict))
-        print(type(number))
-        await websocket.send(number)
-
-
-
-
-        for i in range(len(dict)):
-            greeting = await websocket.recv()
-            print(greeting)
-            await websocket.send(list(dict.keys())[i])
-            greeting = await websocket.recv()
-            print(greeting)
-            print("sending contents")
-            # print(dict[list(dict.keys())[i]])
-            await websocket.send(dict[list(dict.keys())[i]])
-            print("in for")
-        greeting = await websocket.recv()
-        print(greeting)
-        await websocket.send(list(dict.keys())[0])
-        print("sent main file")
 
 asyncio.get_event_loop().run_until_complete(hello())
 
