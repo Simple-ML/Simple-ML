@@ -1,2 +1,9 @@
 #venv
-
+venv/
+adapters/
+*.pyc
+Simple_ML.egg-info/
+build/
+dist/
+Placeholder.json
+.idea/
