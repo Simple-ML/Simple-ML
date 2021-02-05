@@ -17,6 +17,9 @@ STATE = {"value": 0}
 MODEL=None
 USERS = set()
 RUNS= dict()
+PlaceholderMap = dict()
+SESSION = set()
+
 
 def state_event():
     return json.dumps({"type": "state", **STATE})
@@ -27,6 +30,11 @@ def placeholder_notify():
 
 def users_event():
     return json.dumps({"type": "users", "count": len(USERS)})
+
+async def notify_placeholder(message):
+    print("notifying IDE")
+    if USERS:  # asyncio.wait doesn't accept an empty list
+        await asyncio.wait([user.send(message) for user in USERS])
 
 
 async def notify_state():
@@ -57,20 +65,35 @@ async def requestHandler(websocket, path):
     try:
         # await websocket.send(state_event())
         async for message in websocket:
+            # print(message)
             data = json.loads(message)
+            print(data)
+            print(type(data))
+            print(data["action"])
+            print("kkkkkkkkkkkkkkkkkkkkkk")
+
             if data["action"] == "run":
                 run_session=get_new_session()
+                SESSION.add(run_session)
+                PlaceholderMap[run_session] = []
                 worker= CodeWorker(name=run_session,kwargs=data["python"])
                 RUNS[run_session]=worker
+
                 worker.start()
+
                 STATE["value"] = json.JSONEncoder().encode({"session_id":run_session,"message":"Execution started"})
                 await notify_state()
-            elif data["action"] == "placeholder":
+            elif data["action"] == "get_placeholder":
+                # {action: 'get_placeholder',"placeholder":{sessionId:123123123123,name:"message"}}
                 try:
-                    s = json_load('runtime/regression.model')
-                    print(s)
-                    STATE["value"] = s
-                    await notify_state()
+                    if data["placeholder"]["sessionId"] in PlaceholderMap:
+                        print(PlaceholderMap[data["placeholder"]["sessionId"]].get(data["placeholder"]["name"]))
+
+                        await websocket.send(PlaceholderMap[data["placeholder"]["sessionId"]].get(data["placeholder"]["name"]))
+                    else:
+                        STATE["value"] = json.JSONEncoder().encode(
+                        {"status": "Session not found"})
+                        await notify_state()
                 except Exception as exc:
                     print("error: {0}\n".format(exc))
                     log = open('runtime/error.log', 'a')
@@ -80,14 +103,35 @@ async def requestHandler(websocket, path):
                     print(s)
                 else:
                     MODEL.fit(data["data"])
-            elif data["action"] == "Cancel":
-                RUNS[data["sessionId"]]
+            elif data["action"] == "placeholder_available":
+                print ("place holder available")
 
+                # placeholder=data["placeholder"]
+                current_session=SESSION.pop()
+                PlaceholderMap[current_session] = data["placeholder"]
+                SESSION.add(current_session)
+
+                await notify_placeholder(json.dumps({"type":"placeholder","description":"Placeholder_available","name":list(data["placeholder"].keys())[0]}))
+            elif data["action"] == "status":
+                if data["sessionId"] in RUNS:
+                    if RUNS[data["sessionId"]].is_alive():
+                        STATE["value"] = json.JSONEncoder().encode(
+                            { "status": "Alive"})
+                        await notify_state()
+                    else:
+                        STATE["value"] = json.JSONEncoder().encode(
+                            {"status": "Finished"})
+                        await notify_state()
+                else:
+                    STATE["value"] = json.JSONEncoder().encode(
+                        {"status": "Session not found"})
+                    await notify_state()
             else:
                 logging.error("unsupported event: {}", data)
     except Exception as exc:
+        print("exception")
         log = open('runtime/error.log', 'a')
-        print("error: {0}\n".format(exc))
+        print("error: {0}\n in line {1}".format(exc,exc.args))
         log.write("error: {0}".format(exc))
     finally:
         await unregister(websocket)
@@ -141,10 +185,7 @@ class CodeWorker(threading.Thread):
         # asyncio.run_coroutine_threadsafe(self.done(),asyncio.get_running_loop())
         logging.debug('running with %s and %s', self.args, self.kwargs)
         return
-#
-# for i in range(5):
-#     t = CodeWorker(args=(i,), kwargs={'a':'A', 'b':'B'})
-#     t.start()
+
 
 def get_new_session():
     return str(uuid.uuid4())
