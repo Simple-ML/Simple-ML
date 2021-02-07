@@ -1,3 +1,27 @@
+Getting started:
+Clone the project
+```
+git clone https://github.com/Anzumana/SimpleMLFrontend/
+```
+
+Download the latest LTS Release von [Nodejs](https://nodejs.org/en/) currently 14.15.4
+Navigate inside the project folder and run.
+```
+npm install
+```
+This will download all the required dependencies so you can simply start the project
+If everything worked so far you should now just need to run
+```
+npm run start
+```
+This will start the frontend of the gui
+
+Alternatively if you want to take a look a the components that are available run
+```
+npm run storybook
+```
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
