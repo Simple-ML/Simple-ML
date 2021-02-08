@@ -92,7 +92,14 @@ async def requestHandler(websocket, path):
                         # x=dict()
                         # x.get()
                         # PlaceholderMap[data["placeholder"]["session_id"]][]
-                        await websocket.send(PlaceholderMap[data["placeholder"]["sessionId"]].get(data["placeholder"]["name"]))
+                        current_session = SESSION.pop()
+                        # PlaceholderMap[current_session] = data["placeholder"]
+                        SESSION.add(current_session)
+                        await notify_placeholder(json.dumps({"type": "placeholder", "sessionId": current_session,
+                                                             "description": "Placeholder_Value",
+                                                             "name": data["placeholder"]["name"],
+                                                             "value": PlaceholderMap[data["placeholder"]["sessionId"]].get(data["placeholder"]["name"])
+                                                             }))
                     else:
                         STATE["value"] = json.JSONEncoder().encode(
                         {"status": "Session not found"})
@@ -114,7 +121,7 @@ async def requestHandler(websocket, path):
                 PlaceholderMap[current_session] = data["placeholder"]
                 SESSION.add(current_session)
 
-                await notify_placeholder(json.dumps({"type":"placeholder","description":"Placeholder_available","name":list(data["placeholder"].keys())[0]}))
+                await notify_placeholder(json.dumps({"type":"placeholder","sessionId":current_session,"description":"Placeholder_available","name":list(data["placeholder"].keys())[0]}))
             elif data["action"] == "status":
                 if data["sessionId"] in RUNS:
                     if RUNS[data["sessionId"]].is_alive():
