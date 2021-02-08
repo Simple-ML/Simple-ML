@@ -22,14 +22,11 @@ SESSION = set()
 
 
 def state_event():
-    return json.dumps({"type": "state", **STATE})
+    return json.dumps({"type": "[state]:OTHER", **STATE})
 
-
-def placeholder_notify():
-    return json.dumps({"type": "Placeholder", "count": len(USERS)})
 
 def users_event():
-    return json.dumps({"type": "users", "count": len(USERS)})
+    return json.dumps({"type": "[users]:REGISTER", "count": len(USERS)})
 
 async def notify_placeholder(message):
     print("notifying IDE")
@@ -81,7 +78,7 @@ async def requestHandler(websocket, path):
 
                 worker.start()
 
-                STATE["value"] = json.JSONEncoder().encode({"session_id":run_session,"message":"Execution started"})
+                STATE["value"] = json.JSONEncoder().encode({"type":"[status]:EXECUTION_STARTED","sessionId":run_session,"message":"Execution started"})
                 await notify_state()
             elif data["action"] == "get_placeholder":
                 # {action: 'get_placeholder',"placeholder":{sessionId:123123123123,name:"message"}}
@@ -95,7 +92,7 @@ async def requestHandler(websocket, path):
                         current_session = SESSION.pop()
                         # PlaceholderMap[current_session] = data["placeholder"]
                         SESSION.add(current_session)
-                        await notify_placeholder(json.dumps({"type": "placeholder", "sessionId": current_session,
+                        await notify_placeholder(json.dumps({"type": "[placeholder]:VALUE", "sessionId": current_session,
                                                              "description": "Placeholder_Value",
                                                              "name": data["placeholder"]["name"],
                                                              "value": PlaceholderMap[data["placeholder"]["sessionId"]].get(data["placeholder"]["name"])
@@ -121,7 +118,7 @@ async def requestHandler(websocket, path):
                 PlaceholderMap[current_session] = data["placeholder"]
                 SESSION.add(current_session)
 
-                await notify_placeholder(json.dumps({"type":"placeholder","sessionId":current_session,"description":"Placeholder_available","name":list(data["placeholder"].keys())[0]}))
+                await notify_placeholder(json.dumps({"type":"[placeholder]:READY","sessionId":current_session,"description":"Placeholder_available","name":list(data["placeholder"].keys())[0]}))
             elif data["action"] == "status":
                 if data["sessionId"] in RUNS:
                     if RUNS[data["sessionId"]].is_alive():
@@ -165,7 +162,7 @@ class CodeWorker(threading.Thread):
         current_session = SESSION.pop()
 
         SESSION.add(current_session)
-        await asyncio.wait([user.send(json.dumps({"type": "state","sessionID":current_session ,**{"value":"execution finished all placeholders should be ready "}})) for user in USERS])
+        await asyncio.wait([user.send(json.dumps({"type": "[state]:EXECUTION_FINISHED","sessionId":current_session ,**{"Description":"execution finished all placeholders should be ready "}})) for user in USERS])
 
 
 
