@@ -1,5 +1,5 @@
 import GenericProcessCallMetadata from './GenericProcessCall/GenericProcessCall.metadata';
-import ProcessCallLoadDataSet from './ProcessCallLoadDataSet/ProcessCallLoadDataSet.metadata';
+import ProcessCallLoadDataSetMetadata from './ProcessCallLoadDataSet/ProcessCallLoadDataSet.metadata';
 
 import GenericDataSetMetadata from './GenericDataSet/GenericDataSet.metadata';
 
@@ -24,11 +24,13 @@ class EntityMetadataAssociator {
 
     /**
      * Returns a metadata-object associated to the emfEntity
+     
+     * @param {*} rawEmfEntity                          entity-object from server
      */
-    getMetadata = (emfEntity) => {
+    getMetadata = (rawEmfEntity) => {
         for (let metadata of this.metadataContainer) {
             try {
-                if(metadata.verify(emfEntity))
+                if(metadata.verify(rawEmfEntity))
                     return metadata;
             } catch(e) {
                 console.log(e)
@@ -48,7 +50,7 @@ const entityMetadataAssociator = new EntityMetadataAssociator();
 // entityMetadataAssociator.addMetadata(ProcessCallWithNameLoadData);
 // entityMetadataAssociator.addMetadata(ProcessCall);
 
-entityMetadataAssociator.addMetadata(ProcessCallLoadDataSet);
+entityMetadataAssociator.addMetadata(ProcessCallLoadDataSetMetadata);
 entityMetadataAssociator.addMetadata(GenericProcessCallMetadata);
 entityMetadataAssociator.addMetadata(GenericDataSetMetadata);
 

@@ -1,0 +1,38 @@
+
+.toolbar {
+  cursor: pointer;
+  position: absolute;
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 3px;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  z-index: 999;
+
+  .toolbar-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 16px 8px 16px;
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      padding-right: 10px;
+    }
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+}
+
+.toolbar-outside {
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 998;
+}
