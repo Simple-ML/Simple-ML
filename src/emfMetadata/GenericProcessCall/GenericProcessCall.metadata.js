@@ -1,11 +1,11 @@
+import EmfModelVerificationHelper from '../../helper/EmfModelVerificationHelper';
 import GenericProcessCall from './GenericProcessCall';
 
 export default {
-    verify: (emfEntity) => {
-        if (emfEntity.className !== "de.unibonn.simpleml.simpleML.SmlCall")
-            return false;
-
-        return true;
+    verify: (rawEmfEntity) => {
+        return EmfModelVerificationHelper.verifyRawEmfEntity(rawEmfEntity, {
+            className: EmfModelVerificationHelper.CONSTANTS.SmlCall
+        });
     },
     mxGraphMetadata: {
         component: GenericProcessCall,

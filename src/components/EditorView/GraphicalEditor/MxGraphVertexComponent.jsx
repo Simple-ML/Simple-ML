@@ -74,7 +74,7 @@ export default class MxGraphVertexComponent extends React.Component {
                 // this points to callback-instance (created DOM-Element) because of function() {}
                 const renderedDiv = this;
                 const renderedDivRect = renderedDiv.getBoundingClientRect();
-
+console.log(renderedDivRect)
                 renderedDiv.parentNode.parentNode.removeChild(renderedDiv.parentNode);
                 
                 var vertex = graphReference.insertVertex(graphReference.getDefaultParent(), null, '', 0, 0, renderedDivRect.width, renderedDivRect.height, 'TODO');

@@ -54,10 +54,10 @@ window.loadEditor((xtextEditor) => {
 
                 if(containsError(result.issues))
                     store.dispatch(setEmfModelDirty());
-                else
+                else {
                     store.dispatch(setEmfModelClean());
-
-                XtextServices.getEmfModel();
+                    XtextServices.getEmfModel();
+                }
                 break;
             case 'getProcessProposals':
                 store.dispatch(setDslProcessDefinitions(JSON.parse(result.fullText)));

@@ -1,5 +1,5 @@
 import XtextServices from '../../../serverConnection/XtextServices';
-import InferenceCreator from '../../core/Toolbar/InferenceCreator';
+import InferenceCreator from '../../core/ContextMenu/InferenceCreator';
 
 import { showModal } from '../../../reducers/modal';
 import DefaultModal from '../../core/Modal/DefaultModal';

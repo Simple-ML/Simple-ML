@@ -8,7 +8,7 @@ import XtextServices from "../../../serverConnection/XtextServices";
 import GraphServices from './mxGraphModelServices';
 
 import reduxStore from './../../../reduxStore';
-import { openToolbar } from './../../../reducers/toolbar';
+import { openContextMenu } from './../../../../reducers/contextMenu';
 import configureStylesheet from "./mxgraphStylesheet"
 import mxGraphConfig from "./mxGraphConfig";
 import { openPropsEditor, closePropsEditor } from "../../../reducers/propsEditor";
@@ -272,7 +272,7 @@ class SMLGraph extends mxGraph {
     addDeleteOnDoubleClickListener(){
         this.addListener(mxEvent.DOUBLE_CLICK, function(sender, evt){
             let cell = evt.getProperty('cell');
-            reduxStore.dispatch(openToolbar(cell, evt.properties.event.pageX, evt.properties.event.pageY))
+            reduxStore.dispatch(openContextMenu(cell, evt.properties.event.pageX, evt.properties.event.pageY))
         });
     }
 
@@ -301,7 +301,7 @@ class SMLGraph extends mxGraph {
                 var to=EmfModelHelper.getFullHierarchy2(targetEntity);
                 XtextServices.createAssociation(from,to);
             } else {
-                reduxStore.dispatch(openToolbar(source, evt.properties.event.pageX, evt.properties.event.pageY))
+                reduxStore.dispatch(openContextMenu(source, evt.properties.event.pageX, evt.properties.event.pageY))
             }
 
         })
