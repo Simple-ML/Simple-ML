@@ -162,7 +162,10 @@ class CodeWorker(threading.Thread):
         return
 
     async def done(self):
-        await asyncio.wait([user.send(json.dumps({"type": "state", **{"value":"execution finished place holder ready "}})) for user in USERS])
+        current_session = SESSION.pop()
+
+        SESSION.add(current_session)
+        await asyncio.wait([user.send(json.dumps({"type": "state","sessionID":current_session ,**{"value":"execution finished all placeholders should be ready "}})) for user in USERS])
 
 
 
@@ -188,7 +191,7 @@ class CodeWorker(threading.Thread):
 
         log.flush()
 
-        # log.close()
+        # log.close()/
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         asyncio.get_event_loop().run_until_complete(self.done())
