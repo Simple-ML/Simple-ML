@@ -22,11 +22,11 @@ SESSION = set()
 
 
 def state_event():
-    return json.dumps({"type": "[state]:OTHER", **STATE})
+    return json.dumps({ **STATE})
 
 
 def users_event():
-    return json.dumps({"type": "[users]:REGISTER", "count": len(USERS)})
+    return json.dumps({"type": "[users]:INFO", "count": len(USERS)})
 
 async def notify_placeholder(message):
     print("notifying IDE")
