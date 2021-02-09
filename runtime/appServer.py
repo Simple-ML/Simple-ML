@@ -35,8 +35,10 @@ async def notify_placeholder(message):
 
 
 async def notify_state():
+
     if USERS:  # asyncio.wait doesn't accept an empty list
         message = state_event()
+        print(message)
         await asyncio.wait([user.send(message) for user in USERS])
 
 
@@ -67,7 +69,7 @@ async def requestHandler(websocket, path):
             print(data)
             print(type(data))
             print(data["action"])
-            print("kkkkkkkkkkkkkkkkkkkkkk")
+
 
             if data["action"] == "run":
                 run_session=get_new_session()
@@ -84,15 +86,15 @@ async def requestHandler(websocket, path):
                 # {action: 'get_placeholder',"placeholder":{sessionId:123123123123,name:"message"}}
                 try:
                     if data["placeholder"]["sessionId"] in PlaceholderMap:
-                        print(PlaceholderMap[data["placeholder"]["sessionId"]].get(data["placeholder"]["name"]))
+                        print("Placeholer:",PlaceholderMap[data["placeholder"]["sessionId"]].get(data["placeholder"]["name"]))
                         # STATE["value"] = s
                         # x=dict()
                         # x.get()
                         # PlaceholderMap[data["placeholder"]["session_id"]][]
-                        current_session = SESSION.pop()
+                        # current_session = SESSION.pop()
                         # PlaceholderMap[current_session] = data["placeholder"]
-                        SESSION.add(current_session)
-                        await notify_placeholder(json.dumps({"type": "[placeholder]:VALUE", "sessionId": current_session,
+                        # SESSION.add(current_session)
+                        await notify_placeholder(json.dumps({"type": "[placeholder]:VALUE", "sessionId": data["placeholder"]["sessionId"],
                                                              "description": "Placeholder_Value",
                                                              "name": data["placeholder"]["name"],
                                                              "value": PlaceholderMap[data["placeholder"]["sessionId"]].get(data["placeholder"]["name"])
