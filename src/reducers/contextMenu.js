@@ -9,21 +9,21 @@ const initialState = {
 
 
 // Constants
-export const OPEN_TOOLBAR = 'OPEN_TOOLBAR';
-export const CLOSE_TOOLBAR = 'CLOSE_TOOLBAR';
+export const OPEN_CONTEXT_MENU = 'OPEN_CONTEXT_MENU';
+export const CLOSE_CONTEXT_MENU = 'CLOSE_CONTEXT_MENU';
 
 
 // Actions
-export const openToolbar = (context, posX, posY) => {
+export const openContextMenu = (context, posX, posY) => {
     return {
-        type: OPEN_TOOLBAR,
+        type: OPEN_CONTEXT_MENU,
         payload: { context, posX, posY }
     }
 };
 
-export const closeToolbar = () => {
+export const closeContextMenu = () => {
     return {
-        type: CLOSE_TOOLBAR,
+        type: CLOSE_CONTEXT_MENU,
         visible: false
     }
 }
@@ -32,14 +32,14 @@ export const closeToolbar = () => {
 // Reducer
 export default (state = initialState, action) =>{
     switch(action.type){
-        case OPEN_TOOLBAR:
+        case OPEN_CONTEXT_MENU:
             return Object.assign({}, state, {
                 context: action.payload.context,
                 posX: action.payload.posX,
                 posY: action.payload.posY,
                 visible: true
             });
-        case CLOSE_TOOLBAR:
+        case CLOSE_CONTEXT_MENU:
             return Object.assign({}, state, initialState);
         default:
             return state;
