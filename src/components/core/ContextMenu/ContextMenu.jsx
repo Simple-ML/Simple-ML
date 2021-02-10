@@ -4,20 +4,20 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 //redux
 import InferenceCreator from './InferenceCreator';
-import { closeToolbar } from '../../../reducers/toolbar';
+import { closeContextMenu } from '../../../reducers/contextMenu';
 //style
-import ToolbarStyle from './toolbar.module.scss';
+import ContextMenuStyle from './contextMenu.module.scss';
 
-class Toolbar extends React.Component {
+class ContextMenu extends React.Component {
     constructor(props) {
         super(props);
 
         this.myself = React.createRef();
-        this.closeToolbar = this.closeToolbar.bind(this);
+        this.closeContextMenu = this.closeContextMenu.bind(this);
     }
 
-    closeToolbar = () => {
-        this.props.closeToolbar()
+    closeContextMenu = () => {
+        this.props.closeContextMenu()
     }
 
     /**
@@ -52,28 +52,28 @@ class Toolbar extends React.Component {
 
         return(
             <div style={{visibility: visible}}>
-                <div className={ToolbarStyle.toolbar}
+                <div className={ContextMenuStyle.toolbar}
                      style={{top: posY, left: posX}}
                      ref={this.myself}>
                     {
                         buttonMetaData.map((item, i) => {
                             return(
-                                <button className={ToolbarStyle["toolbar-button"]}
+                                <button className={ContextMenuStyle["toolbar-button"]}
                                     key={i}
                                     disabled={item.metaData.disabled()}
                                     onClick={() => {
                                         item.func();
-                                        this.closeToolbar();
+                                        this.closeContextMenu();
                                     }
                                 }>
-                                    <img className={ToolbarStyle.icon} src={item.metaData.icon}/>
+                                    <img className={ContextMenuStyle.icon} src={item.metaData.icon}/>
                                     <div>{item.metaData.text}</div>
                                 </button>
                             )
                         })
                     }
                 </div>
-                <div className={ToolbarStyle["toolbar-outside"]}
+                <div className={ContextMenuStyle["toolbar-outside"]}
                      onClick={this.closeToolbar}>
                 </div>
             </div>
@@ -81,27 +81,27 @@ class Toolbar extends React.Component {
     }
 }
 
-Toolbar.propTypes = {
+ContextMenu.propTypes = {
     context: PropTypes.object.isRequired,
     posX: PropTypes.number.isRequired,
     posY: PropTypes.number.isRequired,
     visible: PropTypes.bool.isRequired,
-    closeToolbar: PropTypes.func.isRequired
+    closeContextMenu: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
     return {
-        context: state.toolbar.context,
-        posX: state.toolbar.posX,
-        posY: state.toolbar.posY,
-        visible: state.toolbar.visible
+        context: state.contextMenu.context,
+        posX: state.contextMenu.posX,
+        posY: state.contextMenu.posY,
+        visible: state.contextMenu.visible
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        closeToolbar: () => dispatch(closeToolbar())
+        closeContextMenu: () => dispatch(closeContextMenu())
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);
+export default connect(mapStateToProps, mapDispatchToProps)(ContextMenu);

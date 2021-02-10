@@ -39,7 +39,16 @@ class EmfModelHelper {
     static getEmfEntityAssociations(emfModelFlat) {
         let associationContainer = [];
 
-        // Associations between renderable entities
+        associationContainer = [...associationContainer, ...EmfModelHelper.getMethodToMethodAssociations(emfModelFlat)];
+        associationContainer = [...associationContainer, ...EmfModelHelper.getAssignmentAssociations(emfModelFlat)];
+        associationContainer = [...associationContainer, ...EmfModelHelper.getPlaceHolderToFunktionAssociations(emfModelFlat)];
+        
+        return associationContainer;
+    }
+
+    static getMethodToMethodAssociations(emfModelFlat) {
+        let associationContainer = [];
+
         let renderableEntities = EmfModelHelper.getRenderableEmfEntities(emfModelFlat);
         for(let entity of renderableEntities) {
             let renderableParent = EmfModelHelper.getRenderableParent(entity);
@@ -47,12 +56,32 @@ class EmfModelHelper {
                 associationContainer.push({source: entity, target: renderableParent});
             }
         }
-        // Associations throug references in emf-model
+        return associationContainer;
+    }
+
+    static getAssignmentAssociations(emfModelFlat) {
+        let associationContainer = [];
+
+        let renderableEntities = EmfModelHelper.getRenderableEmfEntities(emfModelFlat);
+        for(let entity of renderableEntities) {
+            if(entity.parent && entity.parent.data.className && entity.parent.data.className.endsWith('SmlAssignment')) {
+                let assignees = entity.parent.getChild('@assigneeList').children;
+                for(let assignee of assignees) {
+                    associationContainer.push({source: entity, target: assignee});
+                }
+            }
+        }
+        return associationContainer;
+    }
+
+    static getPlaceHolderToFunktionAssociations(emfModelFlat) {
+        let associationContainer = [];
+
         let referenceableEmfEntities = EmfModelHelper.getReferenceableEmfEntities(emfModelFlat);
         for(let entity of referenceableEmfEntities) {
-            let renderableParent = EmfModelHelper.getRenderableParentFromReference(emfModelFlat, entity);
-            if(renderableParent) {
-                associationContainer.push({source: renderableParent, target: EmfModelHelper.getRenderableParent(entity)});
+            let referredEntity = EmfModelHelper.getRenderableParentFromReference(emfModelFlat, entity);
+            if(referredEntity) {
+                associationContainer.push({source: referredEntity, target: EmfModelHelper.getRenderableParent(entity)});
             }
         }
         return associationContainer;
@@ -81,14 +110,14 @@ class EmfModelHelper {
      * @param emfModelFlat 
      */
     static getReferenceableEmfEntities(emfModelFlat) {
-        let referenceEntities = [];
+        let referenceableEntities = [];
 
         for(let entity of emfModelFlat) {
             if(entity.data['$ref'] !== undefined && !entity.data['$ref'].startsWith('file')) {
-                referenceEntities.push(entity)
+                referenceableEntities.push(entity)
             }
         }
-        return referenceEntities;
+        return referenceableEntities;
     }
 
     /**
@@ -101,8 +130,6 @@ class EmfModelHelper {
             return undefined;
         } else if(emfEntity.parent.metadata !== undefined) {
             return emfEntity.parent;
-        } else if(emfEntity.parent.data.className === 'de.unibonn.simpleml.simpleML.SmlDoStatement') {
-            return emfEntity.parent.getChild('@assigneeList').getChild('@assignees.0');
         } else {
             return EmfModelHelper.getRenderableParent(emfEntity.parent);
         }
@@ -213,7 +240,7 @@ class EmfModelHelper {
      * @param emfEntity
      * @param parent
      * @param self
-     * @param currentId         : has to be object-reference 
+     * @param currentId         : has to be object-reference (increments for every object not for hierarchy-level)
      * @returns {data: Object, parent: Object, children: Array, metadata: Object, self: string}
      */
     static recursion(flatEmfEntityContainer, emfEntity, parent, self, currentId = {id: 0}) {
