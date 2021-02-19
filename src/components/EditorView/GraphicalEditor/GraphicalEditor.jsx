@@ -35,7 +35,7 @@ class GraphicalEditor extends React.Component {
         graph.centerX = graph.containerWidth/2;
         graph.centerY = graph.containerHeight/2;
         graph.setHtmlLabels(true);
-        graph.doResizeContainer(graph.containerWidth-20, graph.containerHeight-75);
+        graph.doResizeContainer(graph.containerWidth, graph.containerHeight);
         graph.setConnectable(true);
         this.initGraphStyle(graph);
         this.addLabelperimeter(graph);
@@ -186,7 +186,7 @@ class GraphicalEditor extends React.Component {
     render() {
         return (
             <div>
-                <div className={`graphicalEditor`} style={{height:"1000px"}} ref={this.graphRef}></div>
+                <div className={`graphicalEditor`} style={{height:"320px"}} ref={this.graphRef}></div>
                 <div id={'mxReactPlaceholder'}></div>
             </div>
         );

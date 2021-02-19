@@ -17,6 +17,7 @@ import { exposeToBrowserConsole } from './debugging/exposeToBrowserConsole';
 window.loadEditor((xtextEditor) => {
     window.loadEditor = undefined;
     TextEditorWrapper.create(xtextEditor);
+
     createDefaultXtextServiceListeners();
 
     ReactDOM.render(

@@ -1,5 +1,5 @@
 
-import InferenceCreator from './../../core/Toolbar/InferenceCreator';
+import InferenceCreator from './../../core/ContextMenu/InferenceCreator';
 import EmfModelHelper from '../../../helper/EmfModelHelper';
 import XtextServices from '../../../serverConnection/XtextServices';
 
