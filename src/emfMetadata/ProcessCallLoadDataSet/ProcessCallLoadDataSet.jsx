@@ -10,7 +10,7 @@ export default class ProcessCallLoadDataSet extends GenericProcessCall {
 
     render() {
         return(
-            <div style={{height: "36px", width: "48px"}}>
+            <div style={{height: "48px", width: "48px"}}>
                 <img src={logo}/>
             </div>
         )
