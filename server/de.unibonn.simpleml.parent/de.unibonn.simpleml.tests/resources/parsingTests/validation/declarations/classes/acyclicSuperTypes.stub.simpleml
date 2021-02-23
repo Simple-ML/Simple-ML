@@ -1,0 +1,16 @@
+package tests.acyclicSuperTypes
+
+// semantic_error "A class must not directly or indirectly be a subtype of itself."
+open class MyClass1 sub »MyClass3«
+// semantic_error "A class must not directly or indirectly be a subtype of itself."
+open class MyClass2 sub »MyClass1«
+// semantic_error "A class must not directly or indirectly be a subtype of itself."
+open class MyClass3 sub »MyClass2«
+
+open class MyClass4
+// no_semantic_error "A class must not directly or indirectly be a subtype of itself."
+class MyClass5 sub »MyClass4«
+
+interface MyInterface
+// no_semantic_error "A class must not directly or indirectly be a subtype of itself."
+class MyClass6 sub »MyInterface«

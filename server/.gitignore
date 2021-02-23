@@ -1,0 +1,11 @@
+# Folders
+bin/
+build/
+emf-gen/
+.settings/
+src-gen/
+
+# Files
+*.class
+*.classpath
+*.project

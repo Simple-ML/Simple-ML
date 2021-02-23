@@ -1,0 +1,42 @@
+package tests.modifiers
+
+// semantic_error "A top-level interface must not have this modifier."
+// semantic_error "A top-level interface must not have this modifier."
+// semantic_error "A top-level interface must not have this modifier."
+»override« »pure« »static« interface MyInterface1
+
+// no_semantic_error "A top-level interface must not have this modifier."
+// no_semantic_error "A top-level interface must not have this modifier."
+»deprecated« »open« interface MyInterface2
+
+// semantic_info "An interface is always open."
+»open« interface MyInterface3
+
+class MyClass {
+    // semantic_error "A nested interface must not have this modifier."
+    // semantic_error "A nested interface must not have this modifier."
+    »override« »pure« interface MyInterface1
+
+    // no_semantic_error "A nested interface must not have this modifier."
+    // no_semantic_error "A nested interface must not have this modifier."
+    // no_semantic_error "A nested interface must not have this modifier."
+    »deprecated« »open« »static« interface MyInterface2
+
+    // semantic_info "An interface is always open."
+    »open« interface MyInterface3
+
+    // semantic_info "A nested interface is always static."
+    »static« interface MyInterface4
+}
+
+
+/* An interface must not have nested interfaces and if they do we already display a different error. */
+
+interface MyInterface4 {
+    // no_semantic_error "A nested interface must not have this modifier."
+    // no_semantic_error "A nested interface must not have this modifier."
+    // no_semantic_error "A nested interface must not have this modifier."
+    // no_semantic_error "A nested interface must not have this modifier."
+    // no_semantic_error "A nested interface must not have this modifier."
+    »deprecated« »open« »override« »pure« »static« interface MyInterface
+}

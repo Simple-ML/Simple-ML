@@ -1,0 +1,17 @@
+package tests.uniqueNamesInWorkflowFile
+
+// semantic_error "A declaration with name 's' exists already in this file."
+step »s«() {}
+// semantic_error "A declaration with name 's' exists already in this file."
+step »s«() {}
+
+// semantic_error "A declaration with name 'w' exists already in this file."
+workflow »w« {}
+// semantic_error "A declaration with name 'w' exists already in this file."
+workflow »w« {}
+
+
+// semantic_error "A declaration with name 'Bla' exists already in this file."
+step »Bla«() {}
+// semantic_error "A declaration with name 'Bla' exists already in this file."
+workflow »Bla« {}

@@ -1,0 +1,8 @@
+package tests.mustInheritOnlyInterfaces
+
+class MyClass
+interface MyInterface
+
+// semantic_error "An interface must only inherit interfaces."
+// no_semantic_error "An interface must only inherit interfaces."
+interface MyInterface2 sub »MyClass«, »MyInterface«
