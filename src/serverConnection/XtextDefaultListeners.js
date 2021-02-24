@@ -5,7 +5,7 @@ import EmfModelHelper from '../helper/EmfModelHelper';
 import { setNewEmfModel, setEmfModelClean, setEmfModelDirty } from '../reducers/emfModel';
 import { setDslProcessDefinitions } from '../reducers/dslProcessDefinitions';
 
-export default () => {
+const defaultListeners = () => {
     XtextServices.addSuccessListener((serviceType, result) => {
         switch (serviceType) {
             case 'getEmfModel':
@@ -50,10 +50,10 @@ export default () => {
                 break;
             case 'generate':
                 RuntimeServices.runWorkflow(result.artifacts);
-                console.log(result);
                 break;
             default:
                 break;
         }
     });
 }
+export default defaultListeners;

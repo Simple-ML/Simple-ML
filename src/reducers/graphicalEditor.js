@@ -3,12 +3,13 @@ import { mxConstants } from "mxgraph-js";
 // State initialisation
 const initialState = {
     viewMode: mxConstants.DIRECTION_NORTH,
+    entityHoveredOver: {}
 };
 
 
 // Constants
 const GRAPH_CHANGE_DIRECTION = 'GRAPH_CHANGE_DIRECTION';
-
+const GRAPH_HOVERED_OVER_ENTITY = 'GRAPH_HOVERED_OVER_ENTITY';
 
 // Actions
 export const changeDirection = () => {
@@ -17,9 +18,18 @@ export const changeDirection = () => {
     }
 };
 
+export const entityHoverStateEnter = (entity) => {
+    return {
+        type: GRAPH_HOVERED_OVER_ENTITY,
+        payload: {
+            entity
+        }
+    }  
+};
+
 
 // Reducer
-export default (state = initialState, action) =>{
+const reducer = (state = initialState, action) =>{
     switch(action.type){
         case GRAPH_CHANGE_DIRECTION:
             let newDirection = (() => {
@@ -35,7 +45,12 @@ export default (state = initialState, action) =>{
             return Object.assign({}, state, {
                 viewMode: newDirection
             });
+        case GRAPH_HOVERED_OVER_ENTITY:
+            return Object.assign({}, state, {
+                entityHoveredOver: action.payload.entity
+            });
         default:
             return state;
     }
 }
+export default reducer;
