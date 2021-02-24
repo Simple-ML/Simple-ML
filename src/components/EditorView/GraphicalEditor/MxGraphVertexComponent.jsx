@@ -67,14 +67,13 @@ export default class MxGraphVertexComponent extends React.Component {
 
         placeholderDiv.appendChild(placeholderDivChild);
 
-        // Reason for Promise: In the callback of ReactDOM.render(...) i require a reference to the created DOM-Element and a reference 
+        // Reason for Promise: The callback of ReactDOM.render(...) requires a reference to the created DOM-Element and a reference 
         // to the class-instance (cant have them both at once).
         let promise = new Promise((resolve, reject) => {
-            ReactDOM.render(this.render(), placeholderDivChild, function() {
+            ReactDOM.render(<this />, placeholderDivChild, function() {
                 // this points to callback-instance (created DOM-Element) because of function() {}
                 const renderedDiv = this;
                 const renderedDivRect = renderedDiv.getBoundingClientRect();
-console.log(renderedDivRect)
                 renderedDiv.parentNode.parentNode.removeChild(renderedDiv.parentNode);
                 
                 var vertex = graphReference.insertVertex(graphReference.getDefaultParent(), null, '', 0, 0, renderedDivRect.width, renderedDivRect.height, 'TODO');

@@ -1,3 +1,7 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { 
     mxUtils, 
     mxEvent, 
@@ -8,13 +12,13 @@ import {
     mxHierarchicalLayout, 
     mxGraphView, 
     mxTemporaryCellStates, 
-    mxPerimeter, 
-    mxConstants 
+    mxPerimeter,
+    mxRubberband, 
+    mxConstants
 } from "mxgraph-js";
-import { connect } from 'react-redux';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
+import { entityHoverStateEnter } from '../../../reducers/graphicalEditor';
+
+import { LocalConvenienceStoreOutlined } from "@material-ui/icons";
 
 class GraphicalEditor extends React.Component {
 
@@ -36,7 +40,6 @@ class GraphicalEditor extends React.Component {
         graph.centerY = graph.containerHeight/2;
         graph.setHtmlLabels(true);
         graph.doResizeContainer(graph.containerWidth, graph.containerHeight);
-        graph.setConnectable(true);
         this.initGraphStyle(graph);
         this.addLabelperimeter(graph);
         
@@ -50,6 +53,51 @@ class GraphicalEditor extends React.Component {
             graph.cellEditor.startEditing = () => {};
         }
         
+        graph.addMouseListener(
+        {
+            currentState: null,
+            mouseDown: function(sender, me) {
+                console.log('mouseDown');
+            },
+            mouseMove: function(sender, me)
+            {
+                if (this.currentState != null && me.getState() === this.currentState) {
+                    return;
+                }
+
+                var tmp = graph.view.getState(me.getCell());
+
+                // Ignores everything but vertices
+                if (graph.isMouseDown || (tmp != null && !graph.getModel().isVertex(tmp.cell))) {
+                    tmp = null;
+                }
+
+                if (tmp !== this.currentState) {
+                    if (this.currentState != null) {
+                        this.dragLeave(me.getEvent(), this.currentState);
+                    }
+
+                    this.currentState = tmp;
+
+                    if (this.currentState != null) {
+                        this.dragEnter(me.getEvent(), this.currentState);
+                    }
+                }
+            },
+            mouseUp: function(sender, me)
+            {
+                console.log('mouseUp');
+            },
+            dragEnter: (evt, state) =>  {
+                console.log('dragEnter');
+                this.props.entityHoverStateEnter(state.cell.emfReference);
+            },
+            dragLeave: function(evt, state)
+            {
+                console.log('dragLeave');
+            }
+        });
+
         graph.getLabel = function(cell)
         {
             return cell.contentDiv;
@@ -78,9 +126,22 @@ class GraphicalEditor extends React.Component {
                     globalConfig: {},
                     graphConfig: {}
                 });
-                allPromises.push(reactComponent.renderToMxGraph(graph));
+
+
+                // create div 
+                const placeholderDiv = document.getElementById("mxReactPlaceholder");
+                let placeholderDivChild = document.createElement("div");
+
+                placeholderDiv.appendChild(placeholderDivChild);
+
+                ReactDOM.render(this.render(), placeholderDivChild);
+                var vertex = graph.insertVertex(parent, null, '', 0, 0, entity.metadata.mxGraphMetadata.width, entity.metadata.mxGraphMetadata.height, 'TODO');
+                vertex.contentDiv = placeholderDivChild;
+                vertex.emfReference = entity;
+
+                // allPromises.push(reactComponent.renderToMxGraph(graph));
             }
-            Promise.all(allPromises).then(() => {
+            // Promise.all(allPromises).then(() => {
                 let parentCells = graph.getChildCells(parent, true, false);
                 let allCells = parentCells;
                 let layout = new mxHierarchicalLayout(graph, mxConstants.DIRECTION_NORTH);
@@ -113,7 +174,7 @@ class GraphicalEditor extends React.Component {
                     // apply layout
                     layout.execute(parent);
                 }
-            })
+            // });
         }
         finally
         {
@@ -208,7 +269,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        
+        entityHoverStateEnter: (entity) =>  dispatch(entityHoverStateEnter(entity))
     }
 };
 

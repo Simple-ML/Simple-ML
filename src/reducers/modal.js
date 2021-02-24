@@ -16,9 +16,11 @@ const CLOSE_MODAL = 'CLOSE_MODAL';
 export const showModal = (bodyComponent, context, wide = false) => {
     return {
         type: SHOW_MODAL,
-        modalBody: bodyComponent,
-        modalWide: wide,
-        modalContext: context
+        payload: {
+            modalBody: bodyComponent,
+            modalWide: wide,
+            modalContext: context
+        }
     }
 }
 
@@ -30,13 +32,13 @@ export const closeModal = () => {
 
 
 // Reducer
-export default (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
     switch (action.type) {
         case SHOW_MODAL:
             return Object.assign({}, state, {
-                body: action.modalBody,
-                wide: action.modalWide,
-                context: action.modalContext,
+                body: action.payload.modalBody,
+                wide: action.payload.modalWide,
+                context: action.payload.modalContext,
                 isOpen: true
             });
         case CLOSE_MODAL:
@@ -45,3 +47,4 @@ export default (state = initialState, action) => {
             return state;
     }
 }
+export default reducer;

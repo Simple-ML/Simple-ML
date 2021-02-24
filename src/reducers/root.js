@@ -5,7 +5,8 @@ import graphicalEditorReducer from './graphicalEditor';
 import contextMenuReducer from './contextMenu';
 import sideToolbarReducer from './sideToolbar';
 import modalReducer from './modal';
-import propsEditorReducer from './propsEditor'
+import propsEditorReducer from './propsEditor';
+import runtimeReducer from './runtime';
 
 const rootReducer = combineReducers({
     emfModel: emfModelReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     contextMenu: contextMenuReducer,
     sideToolbar: sideToolbarReducer,
     modal: modalReducer,
-    propsEditor: propsEditorReducer
+    propsEditor: propsEditorReducer,
+    runtime: runtimeReducer
 });
 
 export default rootReducer;
