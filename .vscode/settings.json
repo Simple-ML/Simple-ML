@@ -17,6 +17,7 @@
         "**/META-INF": true,
         "**/node_modules": true,
         "**/plugin.properties": true,
-        "**/plugin.xml": true,
-    }
+        "**/plugin.xml": true
+    },
+    "java.configuration.updateBuildConfiguration": "disabled"
 }

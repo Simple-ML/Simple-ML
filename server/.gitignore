@@ -1,6 +1,5 @@
 # Folders
 .gradle/
-.settings/
 bin/
 build/
 emf-gen/
@@ -9,5 +8,4 @@ xtend-gen/
 
 # Files
 *.class
-*.classpath
-*.project
+*.java._trace
