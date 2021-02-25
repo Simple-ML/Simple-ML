@@ -1,5 +1,4 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive",
     "files.exclude": {
         "**/.gitattributes": true,
         "**/.gradle": true,
@@ -7,7 +6,11 @@
         "**/build": true,
         "**/build.properties": true,
         "**/de.unibonn.simpleml/**/*.xtend": true,
+        "**/de.unibonn.simpleml/**/xtend-gen": true,
         "**/de.unibonn.simpleml.ide/**/*.xtend": true,
+        "**/de.unibonn.simpleml.ide/**/xtend-gen": true,
+        "**/de.unibonn.simpleml.tests/**/*.xtend": true,
+        "**/de.unibonn.simpleml.tests/**/xtend-gen": true,
         "**/gradle/wrapper": true,
         "**/gradlew": true,
         "**/gradlew.bat": true,
