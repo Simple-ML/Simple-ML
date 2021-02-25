@@ -5,10 +5,9 @@ bin/
 build/
 emf-gen/
 src-gen/
-# xtend-gen/
+xtend-gen/
 
 # Files
 *.class
 *.classpath
 *.project
-*.java._trace
