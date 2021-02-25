@@ -5,6 +5,7 @@ bin/
 build/
 emf-gen/
 src-gen/
+# xtend-gen/
 
 # Files
 *.class
