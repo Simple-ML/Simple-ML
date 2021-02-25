@@ -1,0 +1,16 @@
+package simpleml.lang
+
+open class Any
+
+class Boolean
+
+open class Number
+class Int sub Number
+class Float sub Number
+
+class String
+
+// Interfaces will be finalized and documented later
+//interface Showable {
+//	fun toString() -> (result: String)
+//}

@@ -1,11 +1,13 @@
 # Folders
+# .gradle/
+.settings/
 bin/
 build/
 emf-gen/
-.settings/
 src-gen/
 
 # Files
 *.class
 *.classpath
 *.project
+*.java._trace

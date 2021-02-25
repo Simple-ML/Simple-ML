@@ -16,11 +16,11 @@ class MultiLineCommentAdapter(text: String) : CommentAdapter(text) {
             "/* $text */"
         } else {
             buildString {
-                appendln("/*")
+                appendLine("/*")
                 text.lineSequence().forEach {
-                    appendln(" * $it")
+                    appendLine(" * $it")
                 }
-                appendln(" */")
+                appendLine(" */")
             }
         }
     }

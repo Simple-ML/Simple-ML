@@ -45,9 +45,9 @@ class Main @Inject constructor(
     }
 
     private fun syntaxErrorMessage(issues: List<Issue>) = buildString {
-        appendln("Resource has syntax errors:")
+        appendLine("Resource has syntax errors:")
         issues.filter { it.isSyntaxError }.forEach {
-            appendln("  * $it")
+            appendLine("  * $it")
         }
     }
 }

@@ -40,32 +40,32 @@ class ASTInspector @Inject constructor(
     }
 
     private fun syntaxErrorMessage(issues: List<Issue>) = buildString {
-        appendln("Resource has syntax errors:")
+        appendLine("Resource has syntax errors:")
         issues.filter { it.isSyntaxError }.forEach {
-            appendln("  * $it")
+            appendLine("  * $it")
         }
     }
 
     private fun stringify(root: EObject): String = buildString {
-        appendln(root.toString())
+        appendLine(root.toString())
 
         if (root.eContents().isNotEmpty()) {
-            appendln("Children")
+            appendLine("Children")
             root.eContents().forEach {
-                appendln(stringify(it).trim().prependIndent("  \u2502"))
+                appendLine(stringify(it).trim().prependIndent("  \u2502"))
                 if (it == root.eContents().last()) {
                     append("  \u2514")
                 } else {
                     append("  \u251C")
                 }
-                appendln("\u2500".repeat(79))
+                appendLine("\u2500".repeat(79))
             }
         }
 
         if (root.eCrossReferences().isNotEmpty()) {
-            appendln("Cross-references")
+            appendLine("Cross-references")
             root.eCrossReferences().forEach {
-                appendln(it.toString().prependIndent("  "))
+                appendLine(it.toString().prependIndent("  "))
             }
         }
     }

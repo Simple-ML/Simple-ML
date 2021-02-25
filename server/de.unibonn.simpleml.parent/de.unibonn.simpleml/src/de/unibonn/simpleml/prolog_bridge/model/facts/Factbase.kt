@@ -40,24 +40,24 @@ class PlFactbase {
     private fun StringBuilder.appendDiscontiguousDirectives() {
         facts.map { it.functor }
                 .toSortedSet()
-                .forEach { appendln(":- discontiguous($factPrefix:$it).") }
+                .forEach { appendLine(":- discontiguous($factPrefix:$it).") }
     }
 
     private fun StringBuilder.appendNodes() {
         facts.filterIsInstance<Node>()
                 .sortedBy { it.id.value }
-                .forEach { appendln("$factPrefix:$it") }
+                .forEach { appendLine("$factPrefix:$it") }
     }
 
     private fun StringBuilder.appendOtherFacts() {
         facts.filter { it !is Node }
                 .sortedBy { it.functor }
-                .forEach { appendln("$factPrefix:$it") }
+                .forEach { appendLine("$factPrefix:$it") }
     }
 
     private fun StringBuilder.appendPefCounts() {
         facts.groupBy { it.functor }
                 .toSortedMap()
-                .forEach { appendln("$factPrefix:pefCount(${it.key}, ${it.value.size}).") }
+                .forEach { appendLine("$factPrefix:pefCount(${it.key}, ${it.value.size}).") }
     }
 }

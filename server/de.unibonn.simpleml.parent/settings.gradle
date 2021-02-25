@@ -1,3 +1,4 @@
 include 'de.unibonn.simpleml'
 include 'de.unibonn.simpleml.ide'
+include 'de.unibonn.simpleml.web'
 include 'de.unibonn.simpleml.tests'

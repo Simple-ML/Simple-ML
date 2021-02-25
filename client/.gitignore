@@ -1,0 +1,8 @@
+# Folders
+
+node_modules/
+# out/
+
+#Files
+
+*.vsix
