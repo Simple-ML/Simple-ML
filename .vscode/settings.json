@@ -5,6 +5,7 @@
         "**/bin": true,
         "**/build": true,
         "**/build.properties": true,
+        "**/de.unibonn.simpleml/model": true,
         "**/de.unibonn.simpleml/**/*.xtend": true,
         "**/de.unibonn.simpleml/**/xtend-gen": true,
         "**/de.unibonn.simpleml.ide/**/*.xtend": true,
@@ -17,7 +18,7 @@
         "**/META-INF": true,
         "**/node_modules": true,
         "**/plugin.properties": true,
-        "**/plugin.xml": true
+        "**/plugin.xml": true,
     },
     "java.configuration.updateBuildConfiguration": "disabled"
 }

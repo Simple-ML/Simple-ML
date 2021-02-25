@@ -13,7 +13,7 @@
 		"keywords": {
 			"patterns": [{
 				"name": "keyword.control.simple-ml",
-				"match": "\\b(Hello|!)\\b"
+				"match": "\\b(_|and|annotation|as|attr|callable|class|constructor|deprecated|enum|false|fun|import|in|interface|lambda|not|null|open|or|out|override|package|pure|static|step|sub|super|this|true|union|val|vararg|where|workflow|yield)\\b"
 			}]
 		},
 		"strings": {

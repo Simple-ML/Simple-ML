@@ -9,17 +9,16 @@ import { workspace, ExtensionContext } from 'vscode';
 import {
 	LanguageClient,
 	LanguageClientOptions,
-	ServerOptions,
-	TransportKind
+	ServerOptions
 } from 'vscode-languageclient/node';
 
 let client: LanguageClient;
 
 export function activate(context: ExtensionContext) {
-	const root = 'C:/Users/Lars/Documents/Eclipse Workspaces/Simple-ML LSP/de.unibonn.simpleml.parent/de.unibonn.simpleml.ide/build/scriptsShadow'
+	const root = 'serverStartScripts'
 	const executable = process.platform === 'win32' ? 'de.unibonn.simpleml.ide.bat' : 'de.unibonn.simpleml.ide';
 	const languageServerPath =  path.join(root, executable);
-	const serverLauncher = languageServerPath; // context.asAbsolutePath(languageServerPath);
+	const serverLauncher = context.asAbsolutePath(languageServerPath);
 	const serverOptions: ServerOptions = {
 		run: {
 			command: serverLauncher,
@@ -62,8 +61,8 @@ export function activate(context: ExtensionContext) {
 
 	// Create the language client and start the client.
 	client = new LanguageClient(
-		'languageServerExample',
-		'Language Server Example',
+		'simpleml',
+		'Simple-ML',
 		serverOptions,
 		clientOptions
 	);
