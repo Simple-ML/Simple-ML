@@ -16,9 +16,9 @@ import {
     mxRubberband, 
     mxConstants
 } from "mxgraph-js";
-import { entityHoverStateEnter } from '../../../reducers/graphicalEditor';
+import { entityHoverStateEnter, entityHoverStateLeav } from '../../../reducers/graphicalEditor';
 
-import { LocalConvenienceStoreOutlined } from "@material-ui/icons";
+import { ContactSupportOutlined, LocalConvenienceStoreOutlined } from "@material-ui/icons";
 
 class GraphicalEditor extends React.Component {
 
@@ -89,12 +89,10 @@ class GraphicalEditor extends React.Component {
                 console.log('mouseUp');
             },
             dragEnter: (evt, state) =>  {
-                console.log('dragEnter');
                 this.props.entityHoverStateEnter(state.cell.emfReference);
             },
-            dragLeave: function(evt, state)
-            {
-                console.log('dragLeave');
+            dragLeave: (evt, state) => {
+                this.props.entityHoverStateLeav();
             }
         });
 
@@ -121,23 +119,28 @@ class GraphicalEditor extends React.Component {
             let allPromises = [];
             // create mxCells for all renderable entities
             for(let entity of this.props.renderableEntities) {
-                let reactComponent = new entity.metadata.mxGraphMetadata.component({
-                    emfEntity: entity,
-                    globalConfig: {},
-                    graphConfig: {}
-                });
-
 
                 // create div 
                 const placeholderDiv = document.getElementById("mxReactPlaceholder");
                 let placeholderDivChild = document.createElement("div");
 
+                placeholderDivChild.style.setProperty('display', '');
                 placeholderDiv.appendChild(placeholderDivChild);
 
-                ReactDOM.render(this.render(), placeholderDivChild);
-                var vertex = graph.insertVertex(parent, null, '', 0, 0, entity.metadata.mxGraphMetadata.width, entity.metadata.mxGraphMetadata.height, 'TODO');
+                ReactDOM.render(
+                    <entity.metadata.mxGraphMetadata.component emfEntity={entity} globalConfig={{}} graphConfig={{}}>
+                    </entity.metadata.mxGraphMetadata.component>, 
+                    placeholderDivChild,
+                    () => {
+                        console.log('Callback')
+
+                    });
+
+                const renderedDivRect = placeholderDivChild.getBoundingClientRect();
+                var vertex = graph.insertVertex(parent, null, '', 0, 0, entity.metadata.mxGraphMetadata.width + 6, entity.metadata.mxGraphMetadata.height + 6, 'TODO');
                 vertex.contentDiv = placeholderDivChild;
                 vertex.emfReference = entity;
+                console.log(renderedDivRect)
 
                 // allPromises.push(reactComponent.renderToMxGraph(graph));
             }
@@ -185,11 +188,12 @@ class GraphicalEditor extends React.Component {
 
     initGraphStyle(graph) {
         // vertex
-        var style = new Object ();
+        var style = {};
         style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RECTANGLE;
         style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RectanglePerimeter;
         style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
-        style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
+        style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_TOP;
+        style[mxConstants.STYLE_HORIZONTAL_ALIGN] = mxConstants.ALIGN_LEFT;
         style[mxConstants.STYLE_GRADIENTCOLOR] = '#41B9F5';
         style[mxConstants.STYLE_FILLCOLOR] = '#8CCDF5';
         style[mxConstants.STYLE_STROKECOLOR] = '#1B78C8';
@@ -200,14 +204,14 @@ class GraphicalEditor extends React.Component {
         style[mxConstants.STYLE_FONTSTYLE] = 0;
         style[mxConstants.STYLE_IMAGE_WIDTH] = '48';
         style[mxConstants.STYLE_IMAGE_HEIGHT] = '48';
-        graph.getStylesheet().putDefaultVertexStyle(style);
+        // graph.getStylesheet().putDefaultVertexStyle(style);
         // cell
-        var style = new Object();
+        var style = {};
         style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
         style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RectanglePerimeter;
-        style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
+        style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_LEFT;
 		style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_TOP;
-        style[mxConstants.STYLE_FONTCOLOR] = '#b9c0c7';
+        // style[mxConstants.STYLE_FONTCOLOR] = '#b9c0c7';
         graph.getStylesheet().putCellStyle('TODO', style);
         // association
         var edgeStyle = graph.getStylesheet().getDefaultEdgeStyle();;
@@ -248,7 +252,7 @@ class GraphicalEditor extends React.Component {
         return (
             <div>
                 <div className={`graphicalEditor`} style={{height:"320px"}} ref={this.graphRef}></div>
-                <div id={'mxReactPlaceholder'}></div>
+                <div id={'mxReactPlaceholder'} style={{position: "absolute"}}></div>
             </div>
         );
     }
@@ -257,7 +261,9 @@ class GraphicalEditor extends React.Component {
 
 GraphicalEditor.propTypes = {
     renderableEntities: PropTypes.array.isRequired,
-    entityAssociations: PropTypes.array.isRequired
+    entityAssociations: PropTypes.array.isRequired,
+    entityHoverStateEnter: PropTypes.func.isRequired,
+    entityHoverStateLeav: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -269,7 +275,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        entityHoverStateEnter: (entity) =>  dispatch(entityHoverStateEnter(entity))
+        entityHoverStateEnter: (entity) =>  dispatch(entityHoverStateEnter(entity)),
+        entityHoverStateLeav: () => dispatch(entityHoverStateLeav())
     }
 };
 

@@ -14,8 +14,8 @@ const metadata = {
         return true;
     },
     mxGraphMetadata: {
-        height: 38, 
-        width: 48,
+        height: 32, 
+        width: 40,
         component: GenericDataSet
     },
     propsEditorComponent: {} // TODO

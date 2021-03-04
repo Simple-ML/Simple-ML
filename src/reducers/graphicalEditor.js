@@ -27,6 +27,15 @@ export const entityHoverStateEnter = (entity) => {
     }  
 };
 
+export const entityHoverStateLeav = () => {
+    return {
+        type: GRAPH_HOVERED_OVER_ENTITY,
+        payload: {
+            entity: -1
+        }
+    }  
+};
+
 
 // Reducer
 const reducer = (state = initialState, action) =>{
