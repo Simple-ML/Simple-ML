@@ -28,14 +28,9 @@ export default class GenericDataSet extends MxGraphVertexComponent {
 
     onStoreChange = (state) => {
         this.setState({
-            hoveredOver: state.graphicalEditor.entityHoveredOver.id === this.props.emfEntity.id
+            hoveredOver: state.graphicalEditor.entityHoveredOver.id === this.props.emfEntity.id,
+            empty: state.runtime.placeholder[this.props.emfEntity.data.name] === undefined
         });
-    }
-    componentDidMount() {
-        console.log('mount')
-    }
-    componentWillUnmount() {
-        console.log('unmount')
     }
 
     setIcon() {

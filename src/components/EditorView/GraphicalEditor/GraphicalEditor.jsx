@@ -116,10 +116,8 @@ class GraphicalEditor extends React.Component {
         graph.getModel().beginUpdate();
         try
         {
-            let allPromises = [];
             // create mxCells for all renderable entities
             for(let entity of this.props.renderableEntities) {
-
                 // create div 
                 const placeholderDiv = document.getElementById("mxReactPlaceholder");
                 let placeholderDivChild = document.createElement("div");
@@ -130,54 +128,45 @@ class GraphicalEditor extends React.Component {
                 ReactDOM.render(
                     <entity.metadata.mxGraphMetadata.component emfEntity={entity} globalConfig={{}} graphConfig={{}}>
                     </entity.metadata.mxGraphMetadata.component>, 
-                    placeholderDivChild,
-                    () => {
-                        console.log('Callback')
+                    placeholderDivChild);
 
-                    });
-
-                const renderedDivRect = placeholderDivChild.getBoundingClientRect();
                 var vertex = graph.insertVertex(parent, null, '', 0, 0, entity.metadata.mxGraphMetadata.width + 6, entity.metadata.mxGraphMetadata.height + 6, 'TODO');
                 vertex.contentDiv = placeholderDivChild;
                 vertex.emfReference = entity;
-                console.log(renderedDivRect)
-
-                // allPromises.push(reactComponent.renderToMxGraph(graph));
             }
-            // Promise.all(allPromises).then(() => {
-                let parentCells = graph.getChildCells(parent, true, false);
-                let allCells = parentCells;
-                let layout = new mxHierarchicalLayout(graph, mxConstants.DIRECTION_NORTH);
-                layout.parentBorder = 50;
-                layout.intraCellSpacing = 100;
+            
+            let parentCells = graph.getChildCells(parent, true, false);
+            let allCells = parentCells;
+            let layout = new mxHierarchicalLayout(graph, mxConstants.DIRECTION_NORTH);
+            layout.parentBorder = 50;
+            layout.intraCellSpacing = 100;
 
-                // flatten cell-list (entity-cells and port-cells in one array)
-                for(let parentCell of parentCells) {
-                    if(parentCell.children !== undefined && parentCell.children !== null && parentCell.children.length !== 0) {
-                        allCells = allCells.concat(parentCell.children);
+            // flatten cell-list (entity-cells and port-cells in one array)
+            for(let parentCell of parentCells) {
+                if(parentCell.children !== undefined && parentCell.children !== null && parentCell.children.length !== 0) {
+                    allCells = allCells.concat(parentCell.children);
+                }
+            }
+            // create mxGraph.edges for all associations
+            for(let association of this.props.entityAssociations) {
+                let sourceVertex = allCells.find((cell) => {
+                    if(cell.emfReference.id === association.source.id)
+                        return true;
+                    else    
+                        return false;
+                });
+                let targetVertex = allCells.find((cell) => {
+                    if(cell.emfReference.id === association.target.id)
+                        return true;
+                    else    {
+                        return false;
                     }
-                }
-                // create mxGraph.edges for all associations
-                for(let association of this.props.entityAssociations) {
-                    let sourceVertex = allCells.find((cell) => {
-                        if(cell.emfReference.id === association.source.id)
-                            return true;
-                        else    
-                            return false;
-                    });
-                    let targetVertex = allCells.find((cell) => {
-                        if(cell.emfReference.id === association.target.id)
-                            return true;
-                        else    {
-                            return false;
-                        }
-                    });
-                    graph.insertEdge(parent, null, null, sourceVertex, targetVertex);
+                });
+                graph.insertEdge(parent, null, null, sourceVertex, targetVertex);
 
-                    // apply layout
-                    layout.execute(parent);
-                }
-            // });
+                // apply layout
+                layout.execute(parent);
+            }
         }
         finally
         {
