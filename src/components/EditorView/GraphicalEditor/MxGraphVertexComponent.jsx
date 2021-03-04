@@ -70,7 +70,8 @@ export default class MxGraphVertexComponent extends React.Component {
         // Reason for Promise: The callback of ReactDOM.render(...) requires a reference to the created DOM-Element and a reference 
         // to the class-instance (cant have them both at once).
         let promise = new Promise((resolve, reject) => {
-            ReactDOM.render(<this />, placeholderDivChild, function() {
+            console.log(this.render())
+            ReactDOM.render(this.render(), placeholderDivChild, function() {
                 // this points to callback-instance (created DOM-Element) because of function() {}
                 const renderedDiv = this;
                 const renderedDivRect = renderedDiv.getBoundingClientRect();
