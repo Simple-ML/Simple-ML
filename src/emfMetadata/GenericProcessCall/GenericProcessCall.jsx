@@ -59,7 +59,7 @@ export default class GenericProcessCall extends MxGraphVertexComponent {
 
     render() {
         return(
-            <div style={{height: "48px", width: "48px"}}>
+            <div>
                 <img src={this.setIcon()}/>
             </div>
         )

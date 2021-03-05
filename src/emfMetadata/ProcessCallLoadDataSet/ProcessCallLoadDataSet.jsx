@@ -1,6 +1,6 @@
 import React from 'react';
 import GenericProcessCall from '../GenericProcessCall/GenericProcessCall';
-import icon from '../../images/graph/instances_mvp/flow-load-dataset-loaded.svg';
+import icon from '../../images/graph/Load Dataset/primary.svg';
 
 
 export default class ProcessCallLoadDataSet extends GenericProcessCall {
@@ -11,7 +11,7 @@ export default class ProcessCallLoadDataSet extends GenericProcessCall {
 
     render() {
         return(
-            <div style={{height: "48px", width: "48px"}}>
+            <div>
                 <img src={icon}/>
             </div>
         )
