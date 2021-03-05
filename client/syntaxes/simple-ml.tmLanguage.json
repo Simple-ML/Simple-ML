@@ -3,6 +3,9 @@
 	"name": "Simple-ML",
 	"patterns": [
 		{
+			"include": "#comment"
+		},
+		{
 			"include": "#keywords"
 		},
 		{
@@ -10,6 +13,20 @@
 		}
 	],
 	"repository": {
+		"comment": {
+			"patterns": [
+				{
+					"name": "comment.block.simpleml",
+					"begin": "/\\*",
+					"end": "\\*/"
+				},
+				{
+					"name": "comment.line.double-slash.simpleml",
+					"begin": "//",
+					"end": "(?=$)"
+				}
+			]
+		},
 		"keywords": {
 			"patterns": [{
 				"name": "keyword.control.simple-ml",
