@@ -4,21 +4,18 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { 
     mxUtils, 
-    mxEvent, 
     mxGraph, 
-    mxEdgeHandler, 
-    mxConnectionHandler, 
-    mxImage, 
     mxHierarchicalLayout, 
     mxGraphView, 
-    mxTemporaryCellStates, 
     mxPerimeter,
-    mxRubberband, 
     mxConstants
 } from "mxgraph-js";
-import { entityHoverStateEnter, entityHoverStateLeav } from '../../../reducers/graphicalEditor';
-
-import { ContactSupportOutlined, LocalConvenienceStoreOutlined } from "@material-ui/icons";
+import { 
+    entityHoverStateEnter, 
+    entityHoverStateLeav,
+    entitySelect,
+    entityDeselect
+} from '../../../reducers/graphicalEditor';
 
 class GraphicalEditor extends React.Component {
 
@@ -56,9 +53,6 @@ class GraphicalEditor extends React.Component {
         graph.addMouseListener(
         {
             currentState: null,
-            mouseDown: function(sender, me) {
-                console.log('mouseDown');
-            },
             mouseMove: function(sender, me)
             {
                 if (this.currentState != null && me.getState() === this.currentState) {
@@ -82,6 +76,15 @@ class GraphicalEditor extends React.Component {
                     if (this.currentState != null) {
                         this.dragEnter(me.getEvent(), this.currentState);
                     }
+                }
+            },
+            mouseDown: (sender, me) => {
+                const cell = me.getCell()
+                
+                if(cell) {
+                    this.props.entitySelect(cell.emfReference);
+                } else {
+                    this.props.entityDeselect();
                 }
             },
             mouseUp: function(sender, me)
@@ -134,7 +137,7 @@ class GraphicalEditor extends React.Component {
                 vertex.contentDiv = placeholderDivChild;
                 vertex.emfReference = entity;
             }
-            
+
             let parentCells = graph.getChildCells(parent, true, false);
             let allCells = parentCells;
             let layout = new mxHierarchicalLayout(graph, mxConstants.DIRECTION_NORTH);
@@ -265,7 +268,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         entityHoverStateEnter: (entity) =>  dispatch(entityHoverStateEnter(entity)),
-        entityHoverStateLeav: () => dispatch(entityHoverStateLeav())
+        entityHoverStateLeav: () => dispatch(entityHoverStateLeav()),
+        entitySelect: (entity) => dispatch(entitySelect(entity)),
+        entityDeselect: () => dispatch(entityDeselect())
     }
 };
 

@@ -1,7 +1,7 @@
 import EmfModelVerificationHelper from '../../helper/EmfModelVerificationHelper';
 import ProcessCallLoadDataSet from './ProcessCallLoadDataSet';
 
-export default {
+const metadata = {
     verify: (rawEmfEntity) => {
         return EmfModelVerificationHelper.verifyRawEmfEntity(rawEmfEntity, {
             className: EmfModelVerificationHelper.CONSTANTS.SmlCall,
@@ -20,3 +20,5 @@ export default {
     },
     propsEditorComponent: {} // TODO
 }
+
+export default metadata;

@@ -1,8 +1,9 @@
 import React from 'react';
-import EmfModelHelper from '../../helper/EmfModelHelper';
+import store from '../../reduxStore';
 
 import MxGraphVertexComponent from '../../components/EditorView/GraphicalEditor/MxGraphVertexComponent';
-import logo from '../../images/graph/instances/split.svg';
+import icon from '../../images/graph/Model/Primary.svg';
+import iconSelected from '../../images/graph/Model/selected.svg';
 
 
 /**
@@ -12,8 +13,21 @@ export default class GenericProcessCall extends MxGraphVertexComponent {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            selected: false
+        }
+
+        store.subscribe(() => {
+            this.onStoreChange(store.getState());
+        });
     }
 
+    onStoreChange = (state) => {
+        this.setState({
+            selected: state.graphicalEditor.entitySelected.id === this.props.emfEntity.id
+        });
+    }
     calculateInputPortData(parentVertex) {
         let portDataContainer = [];
 
@@ -34,10 +48,19 @@ export default class GenericProcessCall extends MxGraphVertexComponent {
         return portDataContainer;
     }
 
+    setIcon() {
+        if(!this.state.selected) {
+            return icon;
+        } else {
+            return iconSelected;
+        }
+    }
+
+
     render() {
         return(
             <div style={{height: "48px", width: "48px"}}>
-                <img src={logo}/>
+                <img src={this.setIcon()}/>
             </div>
         )
     }
