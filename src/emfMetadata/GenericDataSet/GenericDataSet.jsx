@@ -18,6 +18,7 @@ export default class GenericDataSet extends MxGraphVertexComponent {
         super(props);
 
         this.state = {
+            selected: false,
             empty: true,
             hoveredOver: false
         }
@@ -28,24 +29,24 @@ export default class GenericDataSet extends MxGraphVertexComponent {
 
     onStoreChange = (state) => {
         this.setState({
+            selected: state.graphicalEditor.entitySelected.id === this.props.emfEntity.id,
             hoveredOver: state.graphicalEditor.entityHoveredOver.id === this.props.emfEntity.id,
             empty: state.runtime.placeholder[this.props.emfEntity.data.name] === undefined
         });
     }
 
     setIcon() {
-        console.log('render', this.state)
         if(this.state.empty) {
             if(this.state.hoveredOver) {
-                return <img src={iconEmptyHover}/>;
+                return iconEmptyHover;
             } else {
-                return <img src={iconEmpty}/>;
+                return iconEmpty;
             }
         } else {
             if(this.state.hoveredOver) {
-                return <img src={iconFilledHover}/>;
+                return iconFilledHover;
             } else {
-                return <img src={iconFilled}/>;
+                return iconFilled;
             }
         }
     }
@@ -53,7 +54,7 @@ export default class GenericDataSet extends MxGraphVertexComponent {
     render() {
         return(
             <div>
-                { this.setIcon() }
+                <img src={this.setIcon()} alt={this.props.emfEntity.data.name}/>
             </div>
         )
     }
