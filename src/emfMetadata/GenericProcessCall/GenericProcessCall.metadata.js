@@ -1,5 +1,6 @@
 import EmfModelVerificationHelper from '../../helper/EmfModelVerificationHelper';
 import GenericProcessCall from './GenericProcessCall';
+import GenericProcessCallSideBar from './GenericProcessCallSideBar';
 
 const metadata = {
     verify: (rawEmfEntity) => {
@@ -12,7 +13,9 @@ const metadata = {
         width: 48,
         component: GenericProcessCall,
     },
-    propsEditorComponent: {} // TODO
+    propsEditorMetadata: {
+        component: GenericProcessCallSideBar
+    }
 }
 
 export default metadata;

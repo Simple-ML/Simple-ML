@@ -39,8 +39,6 @@ class EditorView extends React.Component {
         this.props.changeDirection();
     }
 
-    
-
     render() {
         return(
             <div className={'editor-view'}>
@@ -56,7 +54,6 @@ class EditorView extends React.Component {
                         'textEditor'
                     ]}
                 />
-                <PropsEditor/>
             </div>
         )
     }

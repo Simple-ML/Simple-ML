@@ -4,6 +4,7 @@ import RuntimeServices from './RuntimeService';
 import EmfModelHelper from '../helper/EmfModelHelper';
 import { setNewEmfModel, setEmfModelClean, setEmfModelDirty } from '../reducers/emfModel';
 import { setDslProcessDefinitions } from '../reducers/dslProcessDefinitions';
+import { deleteAllPlaceholder } from '../reducers/runtime';
 
 const defaultListeners = () => {
     XtextServices.addSuccessListener((serviceType, result) => {
@@ -49,6 +50,7 @@ const defaultListeners = () => {
                 store.dispatch(setDslProcessDefinitions(JSON.parse(result.fullText)));
                 break;
             case 'generate':
+                store.dispatch(deleteAllPlaceholder());
                 RuntimeServices.runWorkflow(result.artifacts);
                 break;
             default:
