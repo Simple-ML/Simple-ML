@@ -79,9 +79,9 @@ class GraphicalEditor extends React.Component {
                 }
             },
             mouseDown: (sender, me) => {
-                const cell = me.getCell()
+                const cell = me.getCell();
                 
-                if(cell) {
+                if(cell && !cell.source && !cell.target) {
                     this.props.entitySelect(cell.emfReference);
                 } else {
                     this.props.entityDeselect();
@@ -99,12 +99,10 @@ class GraphicalEditor extends React.Component {
             }
         });
 
-        graph.getLabel = function(cell)
-        {
+        graph.getLabel = function(cell) {
             return cell.contentDiv;
         }
-        graph.isHtmlLabel = function(cell)
-        {
+        graph.isHtmlLabel = function(cell) {
             return true;
         }
         this.setState({ graph: graph })
@@ -153,12 +151,16 @@ class GraphicalEditor extends React.Component {
             // create mxGraph.edges for all associations
             for(let association of this.props.entityAssociations) {
                 let sourceVertex = allCells.find((cell) => {
+                    if(!cell.emfReference || !association.target)
+                        return false;
                     if(cell.emfReference.id === association.source.id)
                         return true;
                     else    
                         return false;
                 });
                 let targetVertex = allCells.find((cell) => {
+                    if(!cell.emfReference || !association.target)
+                        return false;
                     if(cell.emfReference.id === association.target.id)
                         return true;
                     else    {
@@ -244,7 +246,7 @@ class GraphicalEditor extends React.Component {
         return (
             <div>
                 <div className={`graphicalEditor`} style={{height:"320px"}} ref={this.graphRef}></div>
-                <div id={'mxReactPlaceholder'} style={{position: "absolute"}}></div>
+                <div id={'mxReactPlaceholder'}></div>
             </div>
         );
     }

@@ -1,9 +1,8 @@
 import React from 'react';
 import store from '../../reduxStore';
-import EmfModelHelper from '../../helper/EmfModelHelper';
 
 import MxGraphVertexComponent from '../../components/EditorView/GraphicalEditor/MxGraphVertexComponent';
-import metadata from './GenericDataSet.metadata';
+
 import iconEmpty from '../../images/graph/File/empty.svg';
 import iconEmptyHover from '../../images/graph/File/emptyHover.svg';
 import iconFilled from '../../images/graph/File/filled.svg';
@@ -17,25 +16,25 @@ export default class GenericDataSet extends MxGraphVertexComponent {
     constructor(props) {
         super(props);
 
-        this.state = {
-            selected: false,
-            empty: true,
-            hoveredOver: false
-        }
-        store.subscribe(() => {
-            this.onStoreChange(store.getState());
+        this.onStoreChange = this.onStoreChange.bind(this);
+        this.setIcon = this.setIcon.bind(this);
+
+        this.unsbuscribe = store.subscribe(() => {
+            this.setState(this.onStoreChange(store.getState()));
         });
+
+        this.state = this.onStoreChange(store.getState());
     }
 
     onStoreChange = (state) => {
-        this.setState({
+        return {
             selected: state.graphicalEditor.entitySelected.id === this.props.emfEntity.id,
             hoveredOver: state.graphicalEditor.entityHoveredOver.id === this.props.emfEntity.id,
             empty: state.runtime.placeholder[this.props.emfEntity.data.name] === undefined
-        });
+        };
     }
 
-    setIcon() {
+    setIcon = () => {
         if(this.state.empty) {
             if(this.state.hoveredOver) {
                 return iconEmptyHover;
@@ -49,6 +48,10 @@ export default class GenericDataSet extends MxGraphVertexComponent {
                 return iconFilled;
             }
         }
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     render() {

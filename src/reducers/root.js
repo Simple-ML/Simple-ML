@@ -5,7 +5,6 @@ import graphicalEditorReducer from './graphicalEditor';
 import contextMenuReducer from './contextMenu';
 import sideToolbarReducer from './sideToolbar';
 import modalReducer from './modal';
-import propsEditorReducer from './propsEditor';
 import runtimeReducer from './runtime';
 
 const rootReducer = combineReducers({
@@ -15,7 +14,6 @@ const rootReducer = combineReducers({
     contextMenu: contextMenuReducer,
     sideToolbar: sideToolbarReducer,
     modal: modalReducer,
-    propsEditor: propsEditorReducer,
     runtime: runtimeReducer
 });
 

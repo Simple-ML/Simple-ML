@@ -2,8 +2,8 @@ import React from 'react';
 import store from '../../reduxStore';
 
 import MxGraphVertexComponent from '../../components/EditorView/GraphicalEditor/MxGraphVertexComponent';
-import icon from '../../images/graph/Model/Primary.svg';
-import iconSelected from '../../images/graph/Model/selected.svg';
+import icon from '../../images/graph/Model/selected.svg';
+import iconSelected from '../../images/graph/Model/Primary.svg';
 
 
 /**
@@ -14,19 +14,18 @@ export default class GenericProcessCall extends MxGraphVertexComponent {
     constructor(props) {
         super(props);
 
-        this.state = {
-            selected: false
-        }
+        this.setIcon = this.setIcon.bind(this);
 
         store.subscribe(() => {
-            this.onStoreChange(store.getState());
+            this.setState(this.onStoreChange(store.getState()));
         });
+        this.state = this.onStoreChange(store.getState());
     }
 
     onStoreChange = (state) => {
-        this.setState({
+        return {
             selected: state.graphicalEditor.entitySelected.id === this.props.emfEntity.id
-        });
+        };
     }
     calculateInputPortData(parentVertex) {
         let portDataContainer = [];
@@ -55,7 +54,6 @@ export default class GenericProcessCall extends MxGraphVertexComponent {
             return iconSelected;
         }
     }
-
 
     render() {
         return(

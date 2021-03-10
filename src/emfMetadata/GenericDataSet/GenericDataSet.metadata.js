@@ -1,5 +1,6 @@
 import EmfModelVerificationHelper from '../../helper/EmfModelVerificationHelper';
 import GenericDataSet from './GenericDataSet';
+import GenericDataSetSideBar from './GenericDataSetSideBar';
 
 const metadata = {
     verify: (rawEmfEntity) => {
@@ -18,6 +19,9 @@ const metadata = {
         width: 40,
         component: GenericDataSet
     },
-    propsEditorComponent: {} // TODO
+    propsEditorMetadata: {
+        component: GenericDataSetSideBar
+    }
 };
+
 export default metadata;

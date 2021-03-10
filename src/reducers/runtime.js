@@ -8,6 +8,7 @@ const initialState = {
 // Constants
 const SET_SESSION_ID = 'SET_SESSION_ID';
 const SAVE_PLACEHOLDER_DATA = 'SAVE_PLACEHOLDER_DATA';
+const REMOVE_ALL_PLACEHOLDER = 'REMOVE_ALL_PLACEHOLDER';
 
 
 // Actions
@@ -30,6 +31,12 @@ export const savePlaceholder = (name, value) => {
     }
 }
 
+export const deleteAllPlaceholder = () => {
+    return {
+        type: REMOVE_ALL_PLACEHOLDER
+    }
+}
+
 
 // Reducer
 const reducer = (state = initialState, action) => {
@@ -44,7 +51,10 @@ const reducer = (state = initialState, action) => {
 
             return Object.assign({}, state, {
                 placeholder
-            });  
+            });
+        case REMOVE_ALL_PLACEHOLDER:
+            state.placeholder = {};
+            return state;
         default:
             return state
     }

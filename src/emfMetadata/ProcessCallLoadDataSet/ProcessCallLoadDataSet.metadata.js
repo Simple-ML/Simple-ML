@@ -1,5 +1,6 @@
 import EmfModelVerificationHelper from '../../helper/EmfModelVerificationHelper';
 import ProcessCallLoadDataSet from './ProcessCallLoadDataSet';
+import ProcessCallLoadDataSetSideBar from './ProcessCallLoadDataSetSideBar';
 
 const metadata = {
     verify: (rawEmfEntity) => {
@@ -18,7 +19,9 @@ const metadata = {
     mxGraphMetadata: {
         component: ProcessCallLoadDataSet,
     },
-    propsEditorComponent: {} // TODO
+    propsEditorMetadata: {
+        component: ProcessCallLoadDataSetSideBar
+    }
 }
 
 export default metadata;
