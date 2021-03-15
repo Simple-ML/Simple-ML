@@ -2,3 +2,5 @@ pandas
 scikit-learn
 torch
 requests
+json
+shapely
