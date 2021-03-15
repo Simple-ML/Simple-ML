@@ -1,0 +1,28 @@
+# List all decision tree algorithms
+
+PREFIX : <http://mex.aksw.org/mex-algo#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+
+SELECT ?class ?identifier ?label ?abbreviation ?description
+WHERE {
+	#?class rdfs:subClassOf :DecisionTreesAlgorithms .
+
+	?class rdfs:subClassOf :AlgorithmClass
+
+	OPTIONAL {
+		?class dcterms:identifier ?identifier.
+	}
+	OPTIONAL {
+		?class rdfs:label ?label.
+		FILTER(LANGMATCHES(LANG(?label),"@lang@")) .
+	}
+	OPTIONAL {
+		?class dcterms:description ?description.
+		FILTER(LANGMATCHES(LANG(?label),"@lang@")) .
+	}
+	OPTIONAL {
+		?class dbo:abbreviation ?abbreviation.
+	}
+}
