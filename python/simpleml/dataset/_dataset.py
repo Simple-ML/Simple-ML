@@ -14,7 +14,7 @@ from plpygis import Geometry
 from shapely import wkt, wkb
 import geopandas
 
-data_folder_name = '../../data/'  # TODO: Configure globally
+data_folder_name = '../../../data/'  # TODO: Configure globally
 
 
 class Dataset:
