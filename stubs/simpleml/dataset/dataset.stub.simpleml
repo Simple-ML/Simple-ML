@@ -1,11 +1,23 @@
 package simpleml.dataset
 
-import simpleml.collections.List
-
 class Dataset {
 	fun sample(nInstances: Int) -> dataset: Dataset
 	
 	fun keepAttributes(vararg attributes: String) -> dataset: Dataset
+
+	fun dropAttributes(vararg attributes: String) -> dataset: Dataset
+
+	fun getStatistics()
+
+	fun splitIntoTrainAndTest(trainRatio: Float) -> Tuple<Dataset, Dataset>
+
+	fun getJson() -> json: String
+
+	fun getColumn(column_identifier: String)
+
+	fun getRow(row_number: Int)
+
+	fun getRows(row_number_start: Int, row_number_end: Int)
 }
 
 fun loadDataset(name: String) -> dataset: Dataset
