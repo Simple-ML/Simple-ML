@@ -1,9 +1,0 @@
-package simpleml.data_catalog
-
-import simpleml.collections.List
-
-fun getDatasets(domain: String, topic: String) -> datasets: List<Dataset>
-
-fun getDatasets(dataset_id: String) -> dataset: Dataset
-
-fun getDatasetsJson(datasets: List<Dataset>) -> datasets_json: String

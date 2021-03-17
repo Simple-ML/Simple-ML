@@ -1,9 +1,7 @@
 from __future__ import annotations
 from simpleml.rdf import run_query, load_query
 from simpleml.dataset import Dataset
-from simpleml.data_catalog import DomainModel, getPythonType
-import simpleml.util._jsonLabels_util as config
-from pandas import DataFrame
+from simpleml.data_catalog._domain_model import DomainModel, getPythonType
 import json
 import pandas as pd
 from io import StringIO
