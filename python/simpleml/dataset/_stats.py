@@ -87,9 +87,17 @@ def addDecile(column, name) -> dict:
         if column.dtype == 'bool':
             decileResult = pd.qcut(column.astype(int), 10, retbins=True, labels=False, duplicates='drop')
             decileResult2 = decileResult[1]
-        elif column.dtype != 'datetime64[ns]':
+        elif column.dtype == 'datetime64[ns]':
+            #print(pd.Series.dt.strftime(column))
+            #date64 = np.datetime64(column)
+            #time_stamp = (date64 - np.datetime64('1970-01-01T00:00:00Z')) / np.timedelta64(1, 's')
+            #print(time_stamp)
+            time_stamp = column
+
+        else:
             decileResult = pd.qcut(column, 10, retbins=True, labels=False, duplicates='drop')
             decileResult2 = decileResult[1]
+
 
     for val in decileResult2:
         decileList.append(dict({'value': float("{:.2f}".format(val))}))
@@ -212,11 +220,11 @@ def getStatistics(dataset: Dataset) -> dict:
         if colName == 'geometry':
             for line in data[colName]:
                 #print(type(data[colName]))
-                print(line.length)
+                #print(line.length)
                 #columnDF['line_len'] = line.length
                 geometryDF = geometryDF.append({"line":line, "length":line.length}, ignore_index=True)
                 column_data = geometryDF
-            print(geometryDF)
+            #print(geometryDF)
 
 
         stats[colName][config.numberOfNullValues] = {}
