@@ -7,17 +7,7 @@ class Dataset {
 
 	fun dropAttributes(vararg attributes: String) -> dataset: Dataset
 
-	fun getStatistics()
-
-	fun splitIntoTrainAndTest(trainRatio: Float) -> Tuple<Dataset, Dataset>
-
-	fun getJson() -> json: String
-
-	fun getColumn(column_identifier: String)
-
-	fun getRow(row_number: Int)
-
-	fun getRows(row_number_start: Int, row_number_end: Int)
+	fun splitIntoTrainAndTest(trainRatio: Float, random_state: Int? or null) -> (dataset1: Dataset, dataset2: Dataset)
 }
 
 fun loadDataset(name: String) -> dataset: Dataset

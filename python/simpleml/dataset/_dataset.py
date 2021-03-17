@@ -90,13 +90,13 @@ class Dataset:
 
         return self.stats
 
-    def splitIntoTrainAndTest(self, trainRatio: float) -> Tuple[Dataset, Dataset]:
+    def splitIntoTrainAndTest(self, trainRatio: float, random_state=None) -> Tuple[Dataset, Dataset]:
 
         if self.data is None:
             self.readFile(self.separator)
 
         from sklearn.model_selection import train_test_split
-        train_data, test_data = train_test_split(self.data, train_size=trainRatio, random_state=50)
+        train_data, test_data = train_test_split(self.data, train_size=trainRatio, random_state=random_state)
 
         train = Dataset(id=self.id + "Train", title=self.title + " (Training)", topics=self.topics)
         train.data = train_data
