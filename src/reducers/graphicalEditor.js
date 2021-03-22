@@ -3,12 +3,15 @@ import { mxConstants } from "mxgraph-js";
 // State initialisation
 const initialState = {
     viewMode: mxConstants.DIRECTION_NORTH,
+    entitySelected: {},
+    entityHoveredOver: {}
 };
 
 
 // Constants
 const GRAPH_CHANGE_DIRECTION = 'GRAPH_CHANGE_DIRECTION';
-
+const GRAPH_HOVERED_OVER_ENTITY = 'GRAPH_HOVERED_OVER_ENTITY';
+const GRAPH_SELECT_ENTITY = 'GRAPH_SELECT_ENTITY';
 
 // Actions
 export const changeDirection = () => {
@@ -17,9 +20,45 @@ export const changeDirection = () => {
     }
 };
 
+export const entitySelect = (entity) => {
+    return {
+        type: GRAPH_SELECT_ENTITY,
+        payload: {
+            entity
+        }
+    }
+};
+
+export const entityDeselect = () => {
+    return {
+        type: GRAPH_SELECT_ENTITY, 
+        payload: {
+            entity: {}
+        }
+    }
+}
+
+export const entityHoverStateEnter = (entity) => {
+    return {
+        type: GRAPH_HOVERED_OVER_ENTITY,
+        payload: {
+            entity
+        }
+    }  
+};
+
+export const entityHoverStateLeav = () => {
+    return {
+        type: GRAPH_HOVERED_OVER_ENTITY,
+        payload: {
+            entity: {}
+        }
+    }  
+};
+
 
 // Reducer
-export default (state = initialState, action) =>{
+const reducer = (state = initialState, action) =>{
     switch(action.type){
         case GRAPH_CHANGE_DIRECTION:
             let newDirection = (() => {
@@ -35,7 +74,16 @@ export default (state = initialState, action) =>{
             return Object.assign({}, state, {
                 viewMode: newDirection
             });
+        case GRAPH_SELECT_ENTITY:
+            return Object.assign({}, state, {
+                entitySelected: action.payload.entity
+            });
+        case GRAPH_HOVERED_OVER_ENTITY:
+            return Object.assign({}, state, {
+                entityHoveredOver: action.payload.entity
+            });
         default:
             return state;
     }
 }
+export default reducer;

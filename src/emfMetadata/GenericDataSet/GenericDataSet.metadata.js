@@ -1,7 +1,8 @@
 import EmfModelVerificationHelper from '../../helper/EmfModelVerificationHelper';
 import GenericDataSet from './GenericDataSet';
+import GenericDataSetSideBar from './GenericDataSetSideBar';
 
-export default {
+const metadata = {
     verify: (rawEmfEntity) => {
         if (!EmfModelVerificationHelper.verifyRawEmfEntity(rawEmfEntity, {
             className: EmfModelVerificationHelper.CONSTANTS.SmlPlaceholder
@@ -14,7 +15,13 @@ export default {
         return true;
     },
     mxGraphMetadata: {
-        component: GenericDataSet,
+        height: 32, 
+        width: 40,
+        component: GenericDataSet
     },
-    propsEditorComponent: {} // TODO
-}
+    propsEditorMetadata: {
+        component: GenericDataSetSideBar
+    }
+};
+
+export default metadata;

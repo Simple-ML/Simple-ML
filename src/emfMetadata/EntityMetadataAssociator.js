@@ -13,9 +13,11 @@ class EntityMetadataAssociator {
      * metadata: {
      *      verify: function(emfEntity)                 Returns true if metadata belongs to emfEntity.
      *      mxGraphMetadata: {
-                component: MxGraphComponent             Derived class from MxGraphComponent.
+                component: MxGraphComponent             React-Component
      *      }, 
-     *      propsEditorComponent: TODO                  Same as mxGraphComponent for PropsEditor
+     *      propsEditorMetadata: {
+     *          component:                              React-Component
+     *      }
      *  }
      */
     addMetadata = (metadata) => {

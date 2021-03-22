@@ -6,12 +6,13 @@ import LoginView from './components/LoginView/LoginView';
 import ChooseProjectView from './components/ChooseProjectView/ChooseProjectView';
 import ContextMenu from './components/core/ContextMenu/ContextMenu';
 import ModalContainer from './components/core/Modal/ModalContainer';
-import GraphicalEditor from './components/EditorView/GraphicalEditor/GraphicalEditor'
+import XtextServices from './serverConnection/XtextServices';
 
 class App extends React.Component {
     render() {
         return (
             <div className="App">
+                <button onClick={XtextServices.generate}>generate</button>
                 <EditorView/>
 
                 <ContextMenu/>

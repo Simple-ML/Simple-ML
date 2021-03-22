@@ -2,8 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import $ from "jquery";
-
+    
 //React.Components
 import EditorHeader from './EditorHeader/EditorHeader';
 import MultiView from './MultiView/MultiView';
@@ -40,8 +39,6 @@ class EditorView extends React.Component {
         this.props.changeDirection();
     }
 
-    
-
     render() {
         return(
             <div className={'editor-view'}>
@@ -57,7 +54,6 @@ class EditorView extends React.Component {
                         'textEditor'
                     ]}
                 />
-                <PropsEditor/>
             </div>
         )
     }
