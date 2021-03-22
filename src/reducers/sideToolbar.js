@@ -24,7 +24,7 @@ export const hideSideToolbar = () => {
 
 
 // Reducer
-export default (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
     switch(action.type) {
         case SHOW_SIDE_TOOLBAR:
             return Object.assign({}, state, {
@@ -38,3 +38,4 @@ export default (state = initialState, action) => {
             return state
     }
 }
+export default reducer;
