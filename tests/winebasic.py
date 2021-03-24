@@ -17,9 +17,9 @@ def exampleWorkflow():
     y_train = train.keepAttributes("quality")
 
     # compute statistics from the dataset
-    trainStatistics = X_train.getStatistics()
-
-    print(exportDictionaryAsJSON(trainStatistics))
+    print(exportDictionaryAsJSON(X_train.getStatistics()))
+    print(exportDictionaryAsJSON(y_train.getStatistics()))
+    print(exportDictionaryAsJSON(X_test.getStatistics()))
 
 if __name__ == '__main__':
     exampleWorkflow()

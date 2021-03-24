@@ -209,7 +209,7 @@ def getStatistics(dataset: Dataset) -> dict:
         stats[colName] = {}
         #print('type')
         #print(data[colName].dtype)
-        print(colName)
+        #print(colName)
         column_data = data[colName]
         columnDF = pd.DataFrame(data[colName])
         geometryDF = pd.DataFrame()
