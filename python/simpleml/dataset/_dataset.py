@@ -44,42 +44,50 @@ class Dataset:
         if self.data is None:
             self.readFile(self.separator)
 
-        self.data = self.data.head(n=nInstances)
+        copy = self.copy()
+
+        copy.data = self.data.head(n=nInstances)
 
         # invalidate statistics
-        self.stats = None
+        copy.stats = None
 
-        return self
+        return copy
 
     def keepAttributes(self, attributeIDs: Any) -> Dataset:
+
+        if not isinstance(attributeIDs, list):
+            attributeIDs = [attributeIDs]
 
         if self.data is None:
             self.readFile(self.separator)
 
-        self.data = self.data.filter(attributeIDs)
+        copy = self.copy()
+        copy.data = copy.data.filter(items=attributeIDs)
 
         # remove columns from statistics
-        if self.stats:
-            for attribute in self.stats:
+        if copy.stats:
+            for attribute in copy.stats:
                 if attribute not in attributeIDs:
-                    del self.stats[attribute]
+                    del copy.stats[attribute]
 
-        return self
+        return copy
 
     def dropAttributes(self, attributeIDs: Any) -> Dataset:
 
         if self.data is None:
             self.readFile(self.separator)
 
-        self.data = self.data.drop(columns=attributeIDs)
+        copy = self.copy()
+
+        copy.data = copy.data.drop(columns=attributeIDs)
 
         # remove columns from statistics
-        if self.stats:
-            for attribute in self.stats:
+        if copy.stats:
+            for attribute in copy.stats:
                 if attribute not in attributeIDs:
-                    del self.stats[attribute]
+                    del copy.stats[attribute]
 
-        return self
+        return copy
 
     def getStatistics(self) -> dict:
 
@@ -111,7 +119,6 @@ class Dataset:
         # TODO: Create global config file where we define the data folder path
         dirName = os.path.dirname(__file__)
         dataFilePath = os.path.join(dirName, data_folder_name, self.fileName)
-        print(dataFilePath)
 
         # TODO: Check infer_datetime_format
         parse_dates = []
@@ -142,9 +149,6 @@ class Dataset:
                                                               self.data[lon_lat_pair["latitude"]])
             lon_lat_pair_number += 1
 
-        print(self.data)
-        print(self.data.describe())
-
     def addColumnDescription(self, attribute_identifier, resource_node, domain_node, property_node, value_type,
                              attribute_label):
         self.attribute_graph[attribute_identifier] = {"resource": resource_node, "property": property_node,
@@ -173,7 +177,9 @@ class Dataset:
 
     def copy(self):
         copy = Dataset(self.id + "Test", title=self.title + " (Test)", topics=self.topics)
-        test.data = test_data
+        if self.data is not None:
+            copy.data = self.data.copy()
+        return copy
 
 
 def loadDataset(datasetID: str) -> Dataset:
