@@ -140,6 +140,16 @@ def addStatistics(dataset: Dataset):
             dataset.stats[attribute_identifier][evaluation_type] = current_list
 
         value = result["value"]["value"]
+
+        if "datatype" in result["value"]:
+            datatype = result["value"]["datatype"]
+            if datatype == "http://www.w3.org/2001/XMLSchema#double":
+                value = float(value)
+            elif datatype == "http://www.w3.org/2001/XMLSchema#nonNegativeInteger" or datatype == "http://www.w3.org/2001/XMLSchema#integer":
+                value = int(value)
+            else:
+                print("Missing data type:", datatype)
+
         if "rank" not in result:
             dataset.stats[attribute_identifier][evaluation_type] = value
         else:
