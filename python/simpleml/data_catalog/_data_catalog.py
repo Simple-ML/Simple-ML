@@ -147,6 +147,8 @@ def addStatistics(dataset: Dataset):
                 value = float(value)
             elif datatype == "http://www.w3.org/2001/XMLSchema#nonNegativeInteger" or datatype == "http://www.w3.org/2001/XMLSchema#integer":
                 value = int(value)
+            elif datatype == "http://www.w3.org/2001/XMLSchema#long":
+                value = int(value)
             else:
                 print("Missing data type:", datatype)
 
