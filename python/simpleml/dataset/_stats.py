@@ -7,8 +7,6 @@ import pyproj
 from shapely import geometry, ops, wkt, wkb
 
 
-# from physt import histogram, binnings, h1, h2, h3
-
 def addGeoStatistics(stats, dataset) -> dict:
     proj = pyproj.Transformer.from_crs(3857, 4326, always_xy=True).transform
     dirName = os.path.dirname(__file__)
@@ -63,17 +61,9 @@ def addHistograms(stats, column, name) -> dict:
         elif column.dtype != 'datetime64[ns]':
             count, division = np.histogram(column, bins='auto')
 
-    # count, division = np.histogram(column, bins='auto')
+    histograms = [{config.bucketMinimum: i, config.bucketValue: int(j)} for i, j in zip(division, count)]
 
-    # hist = histogram(column)
-    # values = hist.frequencies
-    # bins = hist.bins
-    # histogramOutput = {}
-
-    # histogramOutput[config.values] = [{'bucketMinimum': i[0], 'bucketMaximum': i[1], 'value': int(j)} for i, j in zip(bins, values)]
-
-    histograms = [{config.bucketMinimum: i, 'value': int(j)} for i, j in zip(division, count)]
-
+    # add bucket maximum from the column maximum and the bucket minimum of the next bucket
     bucket_maximum = stats[name][config.maximum]
     for i in range(len(histograms) - 1, 0, -1):
         bucket = histograms[i]
@@ -82,6 +72,10 @@ def addHistograms(stats, column, name) -> dict:
 
     return histograms
 
+def addSample(dataset,stats):
+    sample_as_list = dataset.data_sample.values.tolist()
+    stats[config.sample] = {config.sample_lines: sample_as_list,
+                                    config.sample_header_labels: list(dataset.attribute_labels.values())}
 
 def addDecile(column, name) -> dict:
     decileOutput = {}
@@ -184,20 +178,6 @@ def countAverageNumberOfCharacters(column):
     avgDigit = totalDigits / column.shape[0]
 
     return float(avgDigit)
-
-
-def transformStatistics(stats):
-    # TODO: remove null and NaN values (?)
-    # TODO: use the well-known keys (see https://smlpub.l3s.uni-hannover.de/confluence/download/attachments/18907912/input_profile.json?version=2&modificationDate=1599050322971&api=v2)
-
-    # TODO: Transform the stats data frame into dictionary???
-
-    # This does not work!
-    for attribute in stats:
-        stats[attribute]["numberOfValues"] = stats[attribute].pop("count")
-
-    # TODO: Does not work yet.
-    pass
 
 
 def addOutlierStatistics(stats, dataset):
@@ -312,6 +292,11 @@ def getStatistics(dataset: Dataset) -> dict:
         stats[colName][config.histogram] = addHistograms(stats, column_data, colName)
 
         i = i + 1
+
+    # sample
+    sample = dataset.sample(10)
+    dataset.data_sample = sample.data
+    addSample(dataset, stats)
 
     # print('fixed acidity')
     # print(data['fixed acidity'])

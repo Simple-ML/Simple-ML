@@ -27,4 +27,4 @@ FILTER(LANG(?propertyLabelWithLang) = "@lang@") .
 ?subjectClass rdfs:label ?subjectClassLabelWithLang.
 FILTER(LANG(?subjectClassLabelWithLang) = "@lang@") .
 
-}
+} ORDER BY ?columnIndex
