@@ -5,7 +5,9 @@ import pandas as pd
 import numpy as np
 import pyproj
 from shapely import geometry, ops, wkt, wkb
-#from physt import histogram, binnings, h1, h2, h3
+
+
+# from physt import histogram, binnings, h1, h2, h3
 
 def addGeoStatistics(stats, dataset) -> dict:
     proj = pyproj.Transformer.from_crs(3857, 4326, always_xy=True).transform
@@ -16,11 +18,11 @@ def addGeoStatistics(stats, dataset) -> dict:
 
     x = 0
     for indexArea, area in areas.iterrows():
-        #print('area')
-        #print(area)
-        #print('polygon')
+        # print('area')
+        # print(area)
+        # print('polygon')
         polygonArea = area['polygon']
-        #print(polygonArea)
+        # print(polygonArea)
 
         polygonWKT = wkt.loads(polygonArea)
         polygonObject = geometry.Polygon(polygonWKT)
@@ -28,14 +30,14 @@ def addGeoStatistics(stats, dataset) -> dict:
         for indexData, data in dataset.data.iterrows():
             line = data['geometry']
             transformedLine = ops.transform(proj, line)
-            #print(transformedLine)
+            # print(transformedLine)
 
             lineIntersectsPolygon = transformedLine.within(polygonObject)
             if lineIntersectsPolygon:
                 print('yes')
 
             x += 1
-            #print(x)
+            # print(x)
 
     return stats
 
@@ -46,7 +48,7 @@ def addValueDistributions(stats, dataset):
     pass
 
 
-def addHistograms(column, name) -> dict:
+def addHistograms(stats, column, name) -> dict:
     count = []
     division = []
     column = column.dropna()
@@ -61,16 +63,25 @@ def addHistograms(column, name) -> dict:
         elif column.dtype != 'datetime64[ns]':
             count, division = np.histogram(column, bins='auto')
 
-    #count, division = np.histogram(column, bins='auto')
+    # count, division = np.histogram(column, bins='auto')
 
-    #hist = histogram(column)
-    #values = hist.frequencies
-    #bins = hist.bins
-    #histogramOutput = {}
+    # hist = histogram(column)
+    # values = hist.frequencies
+    # bins = hist.bins
+    # histogramOutput = {}
 
-    #histogramOutput[config.values] = [{'bucketMinimum': i[0], 'bucketMaximum': i[1], 'value': int(j)} for i, j in zip(bins, values)]
+    # histogramOutput[config.values] = [{'bucketMinimum': i[0], 'bucketMaximum': i[1], 'value': int(j)} for i, j in zip(bins, values)]
 
-    return [{'bucketMinimum': int(i), 'value': int(j)} for i, j in zip(division, count)]
+    histograms = [{config.bucketMinimum: i, 'value': int(j)} for i, j in zip(division, count)]
+
+    bucket_maximum = stats[name][config.maximum]
+    for i in range(len(histograms) - 1, 0, -1):
+        bucket = histograms[i]
+        bucket[config.bucketMaximum] = bucket_maximum
+        bucket_maximum = bucket[config.bucketMinimum]
+
+    return histograms
+
 
 def addDecile(column, name) -> dict:
     decileOutput = {}
@@ -88,16 +99,15 @@ def addDecile(column, name) -> dict:
             decileResult = pd.qcut(column.astype(int), 10, retbins=True, labels=False, duplicates='drop')
             decileResult2 = decileResult[1]
         elif column.dtype == 'datetime64[ns]':
-            #print(pd.Series.dt.strftime(column))
-            #date64 = np.datetime64(column)
-            #time_stamp = (date64 - np.datetime64('1970-01-01T00:00:00Z')) / np.timedelta64(1, 's')
-            #print(time_stamp)
+            # print(pd.Series.dt.strftime(column))
+            # date64 = np.datetime64(column)
+            # time_stamp = (date64 - np.datetime64('1970-01-01T00:00:00Z')) / np.timedelta64(1, 's')
+            # print(time_stamp)
             time_stamp = column
 
         else:
             decileResult = pd.qcut(column, 10, retbins=True, labels=False, duplicates='drop')
             decileResult2 = decileResult[1]
-
 
     for val in decileResult2:
         decileList.append(dict({'value': float("{:.2f}".format(val))}))
@@ -105,6 +115,7 @@ def addDecile(column, name) -> dict:
     decileOutput[config.values] = decileList
 
     return decileOutput
+
 
 def addQuartile(column, name) -> dict:
     quartile_output = {}
@@ -132,6 +143,7 @@ def addQuartile(column, name) -> dict:
 
     return quartile_output
 
+
 def countAverageNumberOfDigits(column):
     totalDigits = 0
     for val in column:
@@ -139,9 +151,10 @@ def countAverageNumberOfDigits(column):
             if character.isdigit():
                 totalDigits += 1
 
-    avgDigits = totalDigits/column.shape[0]
+    avgDigits = totalDigits / column.shape[0]
 
     return float(avgDigits)
+
 
 def countAverageNumberOfSpecialCharacters(column):
     totalSpecialCharacters = 0
@@ -155,20 +168,23 @@ def countAverageNumberOfSpecialCharacters(column):
 
     return float(avgSpecialCharacters)
 
+
 def countAverageNumberOfCapitalisedValues(column):
     totalCapitalisedValues = column.str.findall(r'[A-Z]').str.len().sum()
     avgCapitalisedValues = totalCapitalisedValues / column.shape[0]
 
     return float(avgCapitalisedValues)
 
+
 def countAverageNumberOfCharacters(column):
     totalDigits = 0
     for val in column:
         totalDigits += len(str(val))
 
-    avgDigit = totalDigits/column.shape[0]
+    avgDigit = totalDigits / column.shape[0]
 
     return float(avgDigit)
+
 
 def transformStatistics(stats):
     # TODO: remove null and NaN values (?)
@@ -183,33 +199,34 @@ def transformStatistics(stats):
     # TODO: Does not work yet.
     pass
 
+
 def addOutlierStatistics(stats, dataset):
     # TODO: Add outliers. (lowest priority)
     pass
 
 
 def getStatistics(dataset: Dataset) -> dict:
-    #print(dataset.data.dtypes)
+    # print(dataset.data.dtypes)
     data = dataset.data
     stats = {
-#              "file": {
-#                "null_string": "",
-#                "hasHeader": "true",
-#                "fileLocation": "winequality-white_binary.csv",
-#                "separator": ";"
-#              }
-            }
-    #print(type(stats))
-    #addGeoStatistics(stats, dataset)
+        #              "file": {
+        #                "null_string": "",
+        #                "hasHeader": "true",
+        #                "fileLocation": "winequality-white_binary.csv",
+        #                "separator": ";"
+        #              }
+    }
+    # print(type(stats))
+    # addGeoStatistics(stats, dataset)
 
     totalRecords = data.shape[0]
     i = 0
     for colName in data:
-        #colName = data.columns[i]
+        # colName = data.columns[i]
         stats[colName] = {}
-        #print('type')
-        #print(data[colName].dtype)
-        #print(colName)
+        # print('type')
+        # print(data[colName].dtype)
+        # print(colName)
         column_data = data[colName]
         columnDF = pd.DataFrame(data[colName])
         geometryDF = pd.DataFrame()
@@ -219,13 +236,12 @@ def getStatistics(dataset: Dataset) -> dict:
 
         if colName == 'geometry':
             for line in data[colName]:
-                #print(type(data[colName]))
-                #print(line.length)
-                #columnDF['line_len'] = line.length
-                geometryDF = geometryDF.append({"line":line, "length":line.length}, ignore_index=True)
+                # print(type(data[colName]))
+                # print(line.length)
+                # columnDF['line_len'] = line.length
+                geometryDF = geometryDF.append({"line": line, "length": line.length}, ignore_index=True)
                 column_data = geometryDF
-            #print(geometryDF)
-
+            # print(geometryDF)
 
         stats[colName][config.numberOfNullValues] = {}
         stats[colName][config.numberOfNullValues][config.value] = int(data[colName].isnull().sum())
@@ -235,7 +251,8 @@ def getStatistics(dataset: Dataset) -> dict:
         stats[colName][config.quartile] = addQuartile(column_data, colName)
 
         stats[colName][config.averageNumberOfSpecialCharacters] = {}
-        stats[colName][config.averageNumberOfSpecialCharacters][config.value] = countAverageNumberOfSpecialCharacters(data[colName])
+        stats[colName][config.averageNumberOfSpecialCharacters][config.value] = countAverageNumberOfSpecialCharacters(
+            data[colName])
 
         stats[colName][config.averageNumberOfTokens] = {}
         stats[colName][config.averageNumberOfTokens][config.value] = 1
@@ -247,7 +264,8 @@ def getStatistics(dataset: Dataset) -> dict:
         stats[colName][config.numberOfOutliersBelow][config.value] = 0
 
         stats[colName][config.averageNumberOfCapitalisedValues] = {}
-        stats[colName][config.averageNumberOfCapitalisedValues][config.value] = countAverageNumberOfCapitalisedValues(data[colName]) if data[colName].dtype == 'object' and colName != 'geometry' else 0
+        stats[colName][config.averageNumberOfCapitalisedValues][config.value] = countAverageNumberOfCapitalisedValues(
+            data[colName]) if data[colName].dtype == 'object' and colName != 'geometry' else 0
 
         stats[colName][config.averageNumberOfDigits] = {}
         stats[colName][config.averageNumberOfDigits][config.value] = countAverageNumberOfDigits(data[colName])
@@ -258,14 +276,13 @@ def getStatistics(dataset: Dataset) -> dict:
         stats[colName][config.numberOfDistinctValues] = {}
         stats[colName][config.numberOfDistinctValues][config.value] = 0
 
-        stats[colName][config.histogram] = addHistograms(column_data, colName)
-
         stats[colName][config.averageNumberOfCharacters] = {}
         stats[colName][config.averageNumberOfCharacters][config.value] = countAverageNumberOfCharacters(data[colName])
 
         stats[colName][config.median] = {}
-        #stats[colName][config.median][config.value] = float("{:.2f}".format(columnDF['strLength'].median())) if data[colName].dtype == 'object' and colName != 'geometry' else 0 if data[colName].dtype == 'datetime64[ns]' else float("{:.2f}".format(data[colName].median()))
-        stats[colName][config.median][config.value] = int(data[colName].median()) if data[colName].dtype == 'int64' else 0
+        # stats[colName][config.median][config.value] = float("{:.2f}".format(columnDF['strLength'].median())) if data[colName].dtype == 'object' and colName != 'geometry' else 0 if data[colName].dtype == 'datetime64[ns]' else float("{:.2f}".format(data[colName].median()))
+        stats[colName][config.median][config.value] = int(data[colName].median()) if data[
+                                                                                         colName].dtype == 'int64' else 0
 
         stats[colName][config.numberOfValues] = {}
         stats[colName][config.numberOfValues][config.value] = int(totalRecords)
@@ -274,43 +291,49 @@ def getStatistics(dataset: Dataset) -> dict:
         stats[colName][config.mean][config.value] = int(data[colName].mean()) if data[colName].dtype == 'int64' else 0
 
         stats[colName][config.numberOfValidNonNullValues] = {}
-        stats[colName][config.numberOfValidNonNullValues][config.value] = int(len(data[colName])) - int(data[colName].isna().sum())
+        stats[colName][config.numberOfValidNonNullValues][config.value] = int(len(data[colName])) - int(
+            data[colName].isna().sum())
 
         stats[colName][config.maximum] = {}
-        stats[colName][config.maximum][config.value] = int(data[colName].max(skipna=True)) if data[colName].dtype == 'int64' else 0
+        stats[colName][config.maximum][config.value] = int(data[colName].max(skipna=True)) if data[
+                                                                                                  colName].dtype == 'int64' else 0
 
         stats[colName][config.minimum] = {}
-        stats[colName][config.minimum][config.value] = int(data[colName].min(skipna=True)) if data[colName].dtype == 'int64' else 0
+        stats[colName][config.minimum][config.value] = int(data[colName].min(skipna=True)) if data[
+                                                                                                  colName].dtype == 'int64' else 0
 
         stats[colName][config.standardDeviation] = {}
-        stats[colName][config.standardDeviation][config.value] = int(data[colName].std()) if data[colName].dtype == 'int64' else 0
+        stats[colName][config.standardDeviation][config.value] = int(data[colName].std()) if data[
+                                                                                                 colName].dtype == 'int64' else 0
 
         stats[colName][config.numberOfInvalidValues] = {}
         stats[colName][config.numberOfInvalidValues][config.value] = int(data[colName].isna().sum())
 
-        i = i+1
+        stats[colName][config.histogram] = addHistograms(stats, column_data, colName)
 
-    #print('fixed acidity')
-    #print(data['fixed acidity'])
-    #hist = histogram(data['fixed acidity'])
-    #print(type(hist.bins))
+        i = i + 1
 
-    #n, bins, patches = plt.hist(data['fixed acidity'], 10, facecolor='blue', alpha=0.5)
-    #plt.show()
+    # print('fixed acidity')
+    # print(data['fixed acidity'])
+    # hist = histogram(data['fixed acidity'])
+    # print(type(hist.bins))
 
-    #stats = dataset.data.describe(include='all', datetime_is_numeric=True)
-    #stats = stats.to_dict()
+    # n, bins, patches = plt.hist(data['fixed acidity'], 10, facecolor='blue', alpha=0.5)
+    # plt.show()
 
-    #stats['nullValues'] = data.isnull().sum()
-    #stats['validValues'] = data.notnull().sum()
-    #stats['median'] = data.median()
-    #stats['hist'] = hist.bins
+    # stats = dataset.data.describe(include='all', datetime_is_numeric=True)
+    # stats = stats.to_dict()
 
-    #addValueDistributions(stats, dataset)
-    #addHistograms(stats, dataset)
-    #addGeoStatistics(stats, dataset)
-    #addOutlierStatistics(stats, dataset)
-    #transformStatistics(stats)
+    # stats['nullValues'] = data.isnull().sum()
+    # stats['validValues'] = data.notnull().sum()
+    # stats['median'] = data.median()
+    # stats['hist'] = hist.bins
+
+    # addValueDistributions(stats, dataset)
+    # addHistograms(stats, dataset)
+    # addGeoStatistics(stats, dataset)
+    # addOutlierStatistics(stats, dataset)
+    # transformStatistics(stats)
 
     # TODO: Make sure statistics about date/time columns are working and shown as dates
 
