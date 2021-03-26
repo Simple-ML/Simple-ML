@@ -27,3 +27,9 @@ valueDistribution = 'valueDistribution'
 numberOfInstances = 'numberOfInstances'
 bucketMinimum = 'bucketMinimum'
 bucketMaximum = 'bucketMaximum'
+bucketValue = 'value'
+
+sample = 'sample_instances'
+sample_header_labels = 'header_labels'
+sample_lines = 'lines'
+

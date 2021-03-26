@@ -38,6 +38,7 @@ class Dataset:
         self.lon_lat_pairs = []
         self.wkt_columns = []
         self.wkb_columns = []
+        self.attributes = []
 
     def sample(self, nInstances: int) -> Dataset:
 
@@ -65,10 +66,12 @@ class Dataset:
         copy.data = copy.data.filter(items=attributeIDs)
 
         # remove columns from statistics
-        if copy.stats:
-            for attribute in copy.stats:
-                if attribute not in attributeIDs:
+        for attribute in copy.attributes:
+            if attribute not in attributeIDs:
+                if copy.stats:
                     del copy.stats[attribute]
+                copy.attribute_labels.pop(attribute)
+        copy.attributes = [value for value in copy.attributes if value in attributeIDs]
 
         return copy
 
@@ -82,15 +85,16 @@ class Dataset:
         copy.data = copy.data.drop(columns=attributeIDs)
 
         # remove columns from statistics
-        if copy.stats:
-            for attribute in copy.stats:
-                if attribute not in attributeIDs:
+        for attribute in copy.attributes:
+            if attribute in attributeIDs:
+                if copy.stats:
                     del copy.stats[attribute]
+                copy.attribute_labels.pop(attribute)
+        copy.attributes = [value for value in copy.attributes if value not in attributeIDs]
 
         return copy
 
     def getStatistics(self) -> dict:
-
         if self.stats is None:
             if self.data is None:
                 self.readFile(self.separator)
@@ -151,6 +155,7 @@ class Dataset:
 
     def addColumnDescription(self, attribute_identifier, resource_node, domain_node, property_node, value_type,
                              attribute_label):
+        self.attributes.append(attribute_identifier)
         self.attribute_graph[attribute_identifier] = {"resource": resource_node, "property": property_node,
                                                       "class": domain_node}
         self.data_types[attribute_identifier] = value_type
@@ -177,6 +182,9 @@ class Dataset:
 
     def copy(self):
         copy = Dataset(self.id + "Test", title=self.title + " (Test)", topics=self.topics)
+        copy.attribute_labels = self.attribute_labels.copy()
+        copy.attributes = self.attributes.copy()
+
         if self.data is not None:
             copy.data = self.data.copy()
         return copy

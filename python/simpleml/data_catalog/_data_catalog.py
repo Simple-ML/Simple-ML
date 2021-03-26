@@ -1,6 +1,8 @@
 from __future__ import annotations
 from simpleml.rdf import run_query, load_query
 from simpleml.dataset import Dataset
+import simpleml.dataset._stats as stats
+
 from simpleml.data_catalog._domain_model import DomainModel, getPythonType
 import simpleml.util._jsonLabels_util as config
 import json
@@ -90,12 +92,13 @@ def addDomainModel(dataset):
         dataset.addColumnDescription(attribute_identifier=identifier, resource_node=resource_node,
                                      domain_node=domain_node, property_node=property_node,
                                      value_type=getPythonType(value_type),
-                                     attribute_label=domain_node_label + " (" + propertyLabel+")")
+                                     attribute_label=domain_node_label + " (" + propertyLabel + ")")
 
     for lon_lat_pair in lon_lat_pairs.values():
         dataset.lon_lat_pairs.append(lon_lat_pair)
 
     # TODO: Add class relations
+
 
 def getDataset(dataset_id: str) -> Dataset:
     parameters = {"datasetId": dataset_id, "lang": lang}
@@ -151,6 +154,7 @@ def addStatistics(dataset: Dataset):
     # add value distribution
     addValueDistribution(dataset)
 
+
 def addHistograms(dataset: Dataset):
     parameters = {"datasetId": dataset.id}
     query = load_query("getDatasetHistograms", parameters)
@@ -190,3 +194,10 @@ def addSample(dataset: Dataset):
         sample_string += result["content"]["value"] + "\n"
 
     dataset.data_sample = pd.read_csv(StringIO(sample_string), sep="\t", header=0)
+
+    stats.addSample(dataset, dataset.stats)
+
+    sample_as_list = dataset.data_sample.values.tolist()
+
+    dataset.stats[config.sample] = {config.sample_lines: sample_as_list,
+                                    config.sample_header_labels: list(dataset.attribute_labels.values())}
