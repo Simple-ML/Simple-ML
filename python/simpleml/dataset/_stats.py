@@ -43,7 +43,7 @@ def addGeoStatistics(stats, dataset) -> dict:
 def addValueDistribution(stats, column, name) -> dict:
     value_distribution = []
 
-    for value, count in column.value_counts().iteritems():
+    for value, count in column.value_counts().head(10).iteritems():
         value_distribution.append({config.value_distribution_value: value,
                              config.value_distribution_number_of_instances: count})
 
