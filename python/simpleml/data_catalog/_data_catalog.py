@@ -7,6 +7,7 @@ from simpleml.data_catalog._domain_model import DomainModel, getPythonType
 import simpleml.util._jsonLabels_util as config
 import json
 import pandas as pd
+from numpy import datetime64
 from io import StringIO
 
 lang = "de"  # TODO: Configure in a global config
@@ -104,18 +105,22 @@ def getDataset(dataset_id: str) -> Dataset:
     parameters = {"datasetId": dataset_id, "lang": lang}
     query = load_query("getDataset", parameters)
     results = run_query(query)
+
     for result in results["results"]["bindings"]:
         file_name = result["fileLocation"]["value"]
         separator = result["separator"]["value"]
         null_value = result["nullValue"]["value"]
         has_header = result["hasHeader"]["value"]
+        description = result["description"]["value"]
+
+        topics = result["subjects"]["value"].split(";")
+
         title = result["title"]["value"]
         break  # we only expect one result row
 
     # TODO: Assign spatial columns
-
     dataset = Dataset(id=dataset_id, title=title, fileName=file_name, hasHeader=has_header, separator=separator,
-                      null_value=null_value)
+                      null_value=null_value, description=description, topics=topics)
 
     addDomainModel(dataset)
     addStatistics(dataset)
@@ -149,6 +154,8 @@ def addStatistics(dataset: Dataset):
                 value = int(value)
             elif datatype == "http://www.w3.org/2001/XMLSchema#long":
                 value = int(value)
+            elif datatype == "http://www.w3.org/2001/XMLSchema#dateTime":
+                value = datetime64(value)
             else:
                 print("Missing data type:", datatype)
 
@@ -194,7 +201,7 @@ def addValueDistribution(dataset: Dataset):
             dataset.stats[attribute_identifier][config.valueDistribution] = []
 
         dataset.stats[attribute_identifier][config.valueDistribution].append(
-            {config.value: result["value"]["value"], config.numberOfInstances: result["instances"]["value"]})
+            {config.value_distribution_value: result["value"]["value"], config.value_distribution_number_of_instances: result["instances"]["value"]})
 
 
 def addSample(dataset: Dataset):
@@ -207,7 +214,7 @@ def addSample(dataset: Dataset):
 
     dataset.data_sample = pd.read_csv(StringIO(sample_string), sep="\t", header=0)
 
-    stats.addSample(dataset, dataset.stats)
+    dataset.addSample()
 
     sample_as_list = dataset.data_sample.values.tolist()
 

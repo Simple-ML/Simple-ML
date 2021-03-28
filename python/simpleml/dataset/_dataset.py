@@ -13,15 +13,17 @@ import matplotlib as plt  # for graphs
 from plpygis import Geometry
 from shapely import wkt, wkb
 import geopandas
+import simpleml.util._jsonLabels_util as config
 
 data_folder_name = '../../../data/'  # TODO: Configure globally
 
 
 class Dataset:
-    def __init__(self, id: str = None, title: str = None, topics=[], fileName: str = None, hasHeader: bool = True,
-                 null_value="", separator=","):
+    def __init__(self, id: str = None, title: str = None, description: str = None, topics=[], fileName: str = None,
+                 hasHeader: bool = True, null_value="", separator=","):
         self.id = id
         self.title = title
+        self.description = description
         self.topics = topics
         self.fileName = fileName
         self.data = None
@@ -35,6 +37,7 @@ class Dataset:
         self.attribute_labels = {}
         self.stats = None
         self.data_sample = None
+        self.sample_info = None
         self.lon_lat_pairs = []
         self.wkt_columns = []
         self.wkb_columns = []
@@ -146,7 +149,15 @@ class Dataset:
         for lon_lat_pair in self.lon_lat_pairs:
 
             # new column is either called "geometry" or "geometry1", "geometry2", ..., if there are multiple ones.
-            column_name = "geometry"
+            if "geometry" in self.data:
+                geo_column_number = 2
+                while True:
+                    column_name = "geometry" + geo_column_number
+                    if column_name not in self.data:
+                        break
+            else:
+                column_name = "geometry"
+
             if len(self.lon_lat_pairs) > 1:
                 column_name += str(lon_lat_pair_number)
             self.data[column_name] = geopandas.points_from_xy(self.data[lon_lat_pair["longitude"]],
@@ -188,6 +199,35 @@ class Dataset:
         if self.data is not None:
             copy.data = self.data.copy()
         return copy
+
+    def getProfile(self):
+        profile = {}
+        profile[config.topics] = self.topics
+        profile[config.title] = self.title
+        profile[config.description] = self.description
+        profile[config.null_value] = self.null_value
+        profile[config.separator] = self.separator
+        profile[config.file_location] = self.fileName
+        profile[config.has_header] = self.hasHeader
+
+        # attributes
+        profile_attributes = {}
+        profile[config.attributes] = profile_attributes
+
+        for attribute in self.attributes:
+            profile_attributes[attribute] = {}
+            profile_attributes[config.attribute_label] = self.attribute_labels[attribute]
+            if attribute in self.stats:
+                profile_attributes[attribute][config.statistics] = self.stats[attribute]
+
+        profile[config.sample] = self.sample_info
+
+        return profile
+
+    def addSample(self):
+        sample_as_list = self.data_sample.values.tolist()
+        self.sample_info = {config.sample_lines: sample_as_list,
+                            config.sample_header_labels: list(self.attribute_labels.values())}
 
 
 def loadDataset(datasetID: str) -> Dataset:
