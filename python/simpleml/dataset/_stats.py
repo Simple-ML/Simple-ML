@@ -40,10 +40,14 @@ def addGeoStatistics(stats, dataset) -> dict:
     return stats
 
 
-def addValueDistributions(stats, dataset):
-    # TODO: for text data: write down the 10 most frequent values and their count
-    # TODO: for boolean data: how many True? how many False?
-    pass
+def addValueDistribution(stats, column, name) -> dict:
+    value_distribution = []
+
+    for value, count in column.value_counts().iteritems():
+        value_distribution.append({config.value_distribution_value: value,
+                             config.value_distribution_number_of_instances: count})
+
+    return value_distribution
 
 
 def addHistograms(stats, column, name) -> dict:
@@ -72,10 +76,6 @@ def addHistograms(stats, column, name) -> dict:
 
     return histograms
 
-def addSample(dataset,stats):
-    sample_as_list = dataset.data_sample.values.tolist()
-    stats[config.sample] = {config.sample_lines: sample_as_list,
-                                    config.sample_header_labels: list(dataset.attribute_labels.values())}
 
 def addDecile(column, name) -> dict:
     decileOutput = {}
@@ -186,19 +186,9 @@ def addOutlierStatistics(stats, dataset):
 
 
 def getStatistics(dataset: Dataset) -> dict:
-    # print(dataset.data.dtypes)
     data = dataset.data
-    stats = {
-        #              "file": {
-        #                "null_string": "",
-        #                "hasHeader": "true",
-        #                "fileLocation": "winequality-white_binary.csv",
-        #                "separator": ";"
-        #              }
-    }
-    # print(type(stats))
-    # addGeoStatistics(stats, dataset)
 
+    stats = {}
     totalRecords = data.shape[0]
     i = 0
     for colName in data:
@@ -291,12 +281,14 @@ def getStatistics(dataset: Dataset) -> dict:
 
         stats[colName][config.histogram] = addHistograms(stats, column_data, colName)
 
+        stats[colName][config.value_distribution] = addValueDistribution(stats, column_data, colName)
+
         i = i + 1
 
     # sample
     sample = dataset.sample(10)
     dataset.data_sample = sample.data
-    addSample(dataset, stats)
+    dataset.addSample()
 
     # print('fixed acidity')
     # print(data['fixed acidity'])

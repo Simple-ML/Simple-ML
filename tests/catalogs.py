@@ -26,7 +26,7 @@ def exampleWorkflow():
 
     print("\n### Data Catalog ###")
     # query the data catalog for its datasets
-    datasets = getDatasets(topic="Wine")
+    datasets = getDatasets(topic="Verkehr")
     for dataset in datasets:
         print("Dataset: " + dataset.id + " -> " + dataset.title + ", Topics: " + ", ".join(dataset.topics))
 
@@ -69,3 +69,6 @@ def exampleWorkflow():
 #    print('Geometry = ')
 #    geometry = stats.geometryStats(features, featuresName[4])
 #    print(geometry)
+
+if __name__ == '__main__':
+    exampleWorkflow()

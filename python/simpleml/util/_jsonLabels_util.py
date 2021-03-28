@@ -1,3 +1,17 @@
+lang = 'de'
+
+statistics = 'statistics'
+attributes = 'attributes'
+topics = 'subjects'
+title = 'title'
+null_value = 'nullValue'
+separator = 'separator'
+file_location = 'fileName'
+has_header = 'hasHeader'
+description = 'description'
+
+attribute_label = 'label'
+
 numberOfNullValues = 'numberOfNullValues'
 decile = 'decile'
 quartile = 'quartile'
@@ -33,3 +47,6 @@ sample = 'sample_instances'
 sample_header_labels = 'header_labels'
 sample_lines = 'lines'
 
+value_distribution = 'value_distribution'
+value_distribution_number_of_instances = 'number_of_instances'
+value_distribution_value = 'value'
