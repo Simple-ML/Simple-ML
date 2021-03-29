@@ -7,7 +7,7 @@ class Dataset {
 
 	fun dropAttributes(vararg attributes: String) -> dataset: Dataset
 
-	fun splitIntoTrainAndTest(train_ratio: Float, random_state: Int? or null) -> (dataset1: Dataset, dataset2: Dataset)
+	fun splitIntoTrainAndTest(trainRatio: Float, randomState: Int? or null) -> (dataset1: Dataset, dataset2: Dataset)
 }
 
 fun loadDataset(name: String) -> dataset: Dataset
