@@ -4,6 +4,7 @@ import os
 import pandas as pd
 import numpy as np
 import pyproj
+import re
 from shapely import geometry, ops, wkt, wkb
 
 
@@ -45,31 +46,31 @@ def addValueDistribution(stats, column, name) -> dict:
 
     for value, count in column.value_counts().head(10).iteritems():
         value_distribution.append({config.value_distribution_value: value,
-                             config.value_distribution_number_of_instances: count})
+                                   config.value_distribution_number_of_instances: int(count)})
 
     return value_distribution
 
 
-def addHistograms(stats, column, name) -> dict:
+def addHistograms(stats, column, name, number_of_unique_values) -> dict:
     count = []
     division = []
     column = column.dropna()
     if isinstance(column, pd.DataFrame):
         if name == 'geometry':
-            count, division = np.histogram(column['length'], bins='auto')
+            count, division = np.histogram(column['length'], bins=min(10, number_of_unique_values))
         else:
-            count, division = np.histogram(column['strLength'], bins='auto')
+            count, division = np.histogram(column['strLength'], bins=min(10, number_of_unique_values))
     else:
         if column.dtype == 'bool':
-            count, division = np.histogram(column.astype(int), bins='auto')
+            count, division = np.histogram(column.astype(int), bins=min(10, number_of_unique_values))
         elif column.dtype != 'datetime64[ns]':
-            count, division = np.histogram(column, bins='auto')
+            count, division = np.histogram(column, bins=min(10, number_of_unique_values))
 
     histograms = [{config.bucketMinimum: i, config.bucketValue: int(j)} for i, j in zip(division, count)]
 
     # add bucket maximum from the column maximum and the bucket minimum of the next bucket
     bucket_maximum = stats[name][config.maximum]
-    for i in range(len(histograms) - 1, 0, -1):
+    for i in range(len(histograms) - 1, -1, -1):
         bucket = histograms[i]
         bucket[config.bucketMaximum] = bucket_maximum
         bucket_maximum = bucket[config.bucketMinimum]
@@ -150,17 +151,36 @@ def countAverageNumberOfDigits(column):
     return float(avgDigits)
 
 
-def countAverageNumberOfSpecialCharacters(column):
+def addGenericStatistics(column, column_stats):
+    # TODO: for efficiency and to avoid number overflow: don't compute total sum
     totalSpecialCharacters = 0
+    totalNumberOfTokens = 0
+    totalNumberOfCapitalisedValues = 0
+    totalNumberOfCharacters = 0
+    totalNumberOfDigits = 0
+
+    totalCountOfValidValues = 0
+
     for val in column:
-        for character in str(val):
+        if not val:
+            continue
+        totalCountOfValidValues += 1
+        val_str = str(val)
+        for character in val_str:
             if not character.isalnum():
                 if character != " ":
                     totalSpecialCharacters += 1
+        totalNumberOfTokens += len(re.findall(r'\w+', val_str))
+        if val_str and val_str[0].isupper():
+            totalNumberOfCapitalisedValues += 1
+        totalNumberOfCharacters += len(val_str)
+        totalNumberOfDigits += len(re.sub("[^0-9]", "", val_str))
 
-    avgSpecialCharacters = totalSpecialCharacters / column.shape[0]
-
-    return float(avgSpecialCharacters)
+    column_stats[config.averageNumberOfSpecialCharacters] = totalSpecialCharacters / totalCountOfValidValues
+    column_stats[config.averageNumberOfTokens] = totalNumberOfTokens / totalCountOfValidValues
+    column_stats[config.averageNumberOfCapitalisedValues] = totalNumberOfCapitalisedValues / totalCountOfValidValues
+    column_stats[config.averageNumberOfCharacters] = totalNumberOfCharacters / totalCountOfValidValues
+    column_stats[config.averageNumberOfDigits] = totalNumberOfDigits / totalCountOfValidValues
 
 
 def countAverageNumberOfCapitalisedValues(column):
@@ -203,6 +223,7 @@ def getStatistics(dataset: Dataset) -> dict:
         if data[colName].dtype == 'object':
             columnDF['strLength'] = data[colName].str.len()
             column_data = columnDF['strLength']
+            column_data = columnDF['strLength']
 
         if colName == 'geometry':
             for line in data[colName]:
@@ -213,73 +234,36 @@ def getStatistics(dataset: Dataset) -> dict:
                 column_data = geometryDF
             # print(geometryDF)
 
-        stats[colName][config.numberOfNullValues] = {}
-        stats[colName][config.numberOfNullValues][config.value] = int(data[colName].isnull().sum())
+        stats[colName][config.numberOfNullValues] = int(data[colName].isnull().sum())
 
         stats[colName][config.decile] = addDecile(column_data, colName)
 
         stats[colName][config.quartile] = addQuartile(column_data, colName)
 
-        stats[colName][config.averageNumberOfSpecialCharacters] = {}
-        stats[colName][config.averageNumberOfSpecialCharacters][config.value] = countAverageNumberOfSpecialCharacters(
-            data[colName])
+        stats[colName][config.numberOfValidValues] = int(totalRecords)
 
-        stats[colName][config.averageNumberOfTokens] = {}
-        stats[colName][config.averageNumberOfTokens][config.value] = 1
+        addGenericStatistics(column_data, stats[colName])
 
-        stats[colName][config.numberOfValidValues] = {}
-        stats[colName][config.numberOfValidValues][config.value] = int(totalRecords)
+        stats[colName][config.numberOfDistinctValues] = data[colName].nunique(dropna=True)
 
-        stats[colName][config.numberOfOutliersBelow] = {}
-        stats[colName][config.numberOfOutliersBelow][config.value] = 0
+        stats[colName][config.median] = data[colName].median()
 
-        stats[colName][config.averageNumberOfCapitalisedValues] = {}
-        stats[colName][config.averageNumberOfCapitalisedValues][config.value] = countAverageNumberOfCapitalisedValues(
-            data[colName]) if data[colName].dtype == 'object' and colName != 'geometry' else 0
+        stats[colName][config.numberOfValues] = int(totalRecords)
 
-        stats[colName][config.averageNumberOfDigits] = {}
-        stats[colName][config.averageNumberOfDigits][config.value] = countAverageNumberOfDigits(data[colName])
+        stats[colName][config.mean] = data[colName].mean()
 
-        stats[colName][config.numberOfOutliersAbove] = {}
-        stats[colName][config.numberOfOutliersAbove][config.value] = 0
+        stats[colName][config.numberOfValidNonNullValues] = int(data[colName].count())
 
-        stats[colName][config.numberOfDistinctValues] = {}
-        stats[colName][config.numberOfDistinctValues][config.value] = 0
+        stats[colName][config.maximum] = data[colName].max(skipna=True)
 
-        stats[colName][config.averageNumberOfCharacters] = {}
-        stats[colName][config.averageNumberOfCharacters][config.value] = countAverageNumberOfCharacters(data[colName])
+        stats[colName][config.minimum] = data[colName].min(skipna=True)
 
-        stats[colName][config.median] = {}
-        # stats[colName][config.median][config.value] = float("{:.2f}".format(columnDF['strLength'].median())) if data[colName].dtype == 'object' and colName != 'geometry' else 0 if data[colName].dtype == 'datetime64[ns]' else float("{:.2f}".format(data[colName].median()))
-        stats[colName][config.median][config.value] = int(data[colName].median()) if data[
-                                                                                         colName].dtype == 'int64' else 0
+        stats[colName][config.standardDeviation] = data[colName].std()
 
-        stats[colName][config.numberOfValues] = {}
-        stats[colName][config.numberOfValues][config.value] = int(totalRecords)
+        stats[colName][config.numberOfInvalidValues] = int(data[colName].isna().sum())
 
-        stats[colName][config.mean] = {}
-        stats[colName][config.mean][config.value] = int(data[colName].mean()) if data[colName].dtype == 'int64' else 0
-
-        stats[colName][config.numberOfValidNonNullValues] = {}
-        stats[colName][config.numberOfValidNonNullValues][config.value] = int(len(data[colName])) - int(
-            data[colName].isna().sum())
-
-        stats[colName][config.maximum] = {}
-        stats[colName][config.maximum][config.value] = int(data[colName].max(skipna=True)) if data[
-                                                                                                  colName].dtype == 'int64' else 0
-
-        stats[colName][config.minimum] = {}
-        stats[colName][config.minimum][config.value] = int(data[colName].min(skipna=True)) if data[
-                                                                                                  colName].dtype == 'int64' else 0
-
-        stats[colName][config.standardDeviation] = {}
-        stats[colName][config.standardDeviation][config.value] = int(data[colName].std()) if data[
-                                                                                                 colName].dtype == 'int64' else 0
-
-        stats[colName][config.numberOfInvalidValues] = {}
-        stats[colName][config.numberOfInvalidValues][config.value] = int(data[colName].isna().sum())
-
-        stats[colName][config.histogram] = addHistograms(stats, column_data, colName)
+        stats[colName][config.histogram] = addHistograms(stats, column_data, colName,
+                                                         stats[colName][config.numberOfDistinctValues])
 
         stats[colName][config.value_distribution] = addValueDistribution(stats, column_data, colName)
 
