@@ -107,18 +107,22 @@ class Dataset:
 
         return self.stats
 
-    def splitIntoTrainAndTest(self, train_ratio: float, random_state=None) -> Tuple[Dataset, Dataset]:
+    def splitIntoTrainAndTest(self, trainRatio: float, randomState=None) -> Tuple[Dataset, Dataset]:
 
         if self.data is None:
             self.readFile(self.separator)
 
         from sklearn.model_selection import train_test_split
-        train_data, test_data = train_test_split(self.data, train_size=train_ratio, random_state=random_state)
+        train_data, test_data = train_test_split(self.data, train_size=trainRatio, random_state=randomState)
 
-        train = Dataset(id=self.id + "Train", title=self.title + " (Training)", topics=self.topics)
+        train = self.copy(basic_data_only=True)
+        train.title += " (Train)"
+        train.description += " (Train)"
         train.data = train_data
 
-        test = Dataset(self.id + "Test", title=self.title + " (Test)", topics=self.topics)
+        test = self.copy(basic_data_only=True)
+        test.title += " (Test)"
+        test.description += " (Test)"
         test.data = test_data
 
         return train, test
@@ -193,8 +197,8 @@ class Dataset:
             self.readFile(self.separator)
         return self.data.loc[row_number_start: row_number_end]
 
-    def copy(self):
-        copy = Dataset(self.id, title=self.title, topics=self.topics, description=self.description,
+    def copy(self, basic_data_only: bool = False):
+        copy = Dataset(id=None, title=self.title, topics=self.topics, description=self.description,
                        separator=self.separator,
                        null_value=self.null_value,
                        fileName=self.fileName,
@@ -202,8 +206,9 @@ class Dataset:
         copy.attribute_labels = self.attribute_labels.copy()
         copy.attributes = self.attributes.copy()
 
-        if self.data is not None:
-            copy.data = self.data.copy()
+        if not basic_data_only:
+            if self.data is not None:
+                copy.data = self.data.copy()
         return copy
 
     def getProfile(self):
@@ -215,13 +220,16 @@ class Dataset:
 
         profile[config.topics] = self.topics
         profile[config.title] = self.title
-        profile[config.description] = self.description
+        if self.description:
+            profile[config.description] = self.description
         profile[config.null_value] = self.null_value
         profile[config.separator] = self.separator
-        profile[config.file_location] = self.fileName
+        if self.fileName:
+            profile[config.file_location] = self.fileName
         profile[config.has_header] = self.hasHeader
         profile[config.sample] = self.sample_for_profile
-        profile[config.id] = self.id
+        if self.id:
+            profile[config.id] = self.id
         profile[config.number_of_instances] = self.number_of_instances
 
         # attributes

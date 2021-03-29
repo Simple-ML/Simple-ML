@@ -11,7 +11,7 @@ def exportAsJSON(df: DataFrame):
 
 
 def exportDictionaryAsJSON(dictionary: dict, precision=2):
-    return json.dumps(round_floats_and_transform_temporal(dictionary, precision))
+    return json.dumps(round_floats_and_transform_temporal(dictionary, precision), ensure_ascii=False)
 
 
 def round_floats_and_transform_temporal(o, precision):

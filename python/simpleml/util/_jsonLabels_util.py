@@ -10,7 +10,7 @@ file_location = 'fileName'
 has_header = 'hasHeader'
 description = 'description'
 id = 'id'
-number_of_instances = 'number_of_inssstances'
+number_of_instances = 'number_of_instances'
 
 attribute_label = 'label'
 
