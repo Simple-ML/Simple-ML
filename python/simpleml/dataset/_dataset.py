@@ -20,7 +20,7 @@ data_folder_name = '../../../data/'  # TODO: Configure globally
 
 class Dataset:
     def __init__(self, id: str = None, title: str = None, description: str = None, topics=[], fileName: str = None,
-                 hasHeader: bool = True, null_value="", separator=","):
+                 hasHeader: bool = True, null_value="", separator=",", number_of_instances: int = None):
         self.id = id
         self.title = title
         self.description = description
@@ -42,6 +42,8 @@ class Dataset:
         self.wkt_columns = []
         self.wkb_columns = []
         self.attributes = []
+        self.sample_for_profile = None
+        self.number_of_instances = number_of_instances
 
     def sample(self, nInstances: int) -> Dataset:
 
@@ -192,7 +194,11 @@ class Dataset:
         return self.data.loc[row_number_start: row_number_end]
 
     def copy(self):
-        copy = Dataset(self.id + "Test", title=self.title + " (Test)", topics=self.topics)
+        copy = Dataset(self.id, title=self.title, topics=self.topics, description=self.description,
+                       separator=self.separator,
+                       null_value=self.null_value,
+                       fileName=self.fileName,
+                       hasHeader=self.hasHeader)
         copy.attribute_labels = self.attribute_labels.copy()
         copy.attributes = self.attributes.copy()
 
@@ -201,7 +207,12 @@ class Dataset:
         return copy
 
     def getProfile(self):
+
         profile = {}
+
+        if not self.stats:
+            self.getStatistics()
+
         profile[config.topics] = self.topics
         profile[config.title] = self.title
         profile[config.description] = self.description
@@ -209,6 +220,9 @@ class Dataset:
         profile[config.separator] = self.separator
         profile[config.file_location] = self.fileName
         profile[config.has_header] = self.hasHeader
+        profile[config.sample] = self.sample_for_profile
+        profile[config.id] = self.id
+        profile[config.number_of_instances] = self.number_of_instances
 
         # attributes
         profile_attributes = {}

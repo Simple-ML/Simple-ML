@@ -3,9 +3,10 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX sml: <https://simple-ml.de/resource/>
 PREFIX csvw: <http://www.w3.org/ns/csvw#>
 
-SELECT (GROUP_CONCAT(DISTINCT ?subject; SEPARATOR = ";") AS ?subjects) (STR(?titleWithLang) AS ?title) (STR(?descriptionWithLang) AS ?description) ?fileLocation ?nullValue ?hasHeader ?separator WHERE {
+SELECT (GROUP_CONCAT(DISTINCT ?subject; SEPARATOR = ";") AS ?subjects) (STR(?titleWithLang) AS ?title) (STR(?descriptionWithLang) AS ?description) ?fileLocation ?nullValue ?hasHeader ?separator ?numberOfInstances WHERE {
 ?dataset a dcat:Dataset .
 ?dataset dcterms:identifier "@datasetId@" .
+?dataset sml:numberOfInstances ?numberOfInstances .
 
 OPTIONAL {
     ?dataset dcterms:subject ?subject .
@@ -30,4 +31,4 @@ OPTIONAL {
 ?file csvw:separator ?separator .
 # ?file dcterms:format ?format .
 
-} GROUP BY ?dataset ?titleWithLang ?descriptionWithLang ?fileLocation ?nullValue ?hasHeader ?separator
+} GROUP BY ?dataset ?titleWithLang ?descriptionWithLang ?fileLocation ?nullValue ?hasHeader ?separator ?numberOfInstances

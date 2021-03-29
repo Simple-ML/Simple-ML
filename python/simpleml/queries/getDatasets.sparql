@@ -2,7 +2,7 @@ PREFIX dcat: <http://www.w3.org/ns/dcat#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX sml: <https://simple-ml.de/resource/>
 
-SELECT ?dataset ?identifier (GROUP_CONCAT(DISTINCT ?subject; SEPARATOR = ";") AS ?subjects) (STR(?titleWithLang) AS ?title) WHERE {
+SELECT ?dataset ?identifier (GROUP_CONCAT(DISTINCT ?subject; SEPARATOR = ";") AS ?subjects) (STR(?titleWithLang) AS ?title) ?numberOfInstances WHERE {
 
 #domainFilter ?catalog a dcat:Catalog .
 #domainFilter ?catalog dcterms:subject "@domain@"@@lang@ .
@@ -12,9 +12,10 @@ SELECT ?dataset ?identifier (GROUP_CONCAT(DISTINCT ?subject; SEPARATOR = ";") AS
 ?dataset dcterms:identifier ?identifier .
 ?dataset dcterms:subject ?subject .
 ?dataset dcterms:title ?titleWithLang .
+?dataset sml:numberOfInstances ?numberOfInstances .
 
 #topicFilter FILTER EXISTS { ?dataset dcterms:subject "@topic@"@@lang@ } .
 
 FILTER LANGMATCHES(LANG(?subject),"@lang@") .
 FILTER LANGMATCHES(LANG(?titleWithLang),"@lang@") .
-} GROUP BY ?dataset ?titleWithLang ?identifier
+} GROUP BY ?dataset ?titleWithLang ?identifier ?numberOfInstances

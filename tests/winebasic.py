@@ -10,6 +10,8 @@ from simpleml.util import exportDictionaryAsJSON
 def exampleWorkflow():
 
     dataset = loadDataset("WhiteWineQualityBinary")
+    print(exportDictionaryAsJSON(dataset.getStatistics()))
+
 
     train, test = dataset.splitIntoTrainAndTest(train_ratio=0.75)
     X_train = train.dropAttributes("quality")

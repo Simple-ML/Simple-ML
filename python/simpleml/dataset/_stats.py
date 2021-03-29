@@ -211,6 +211,9 @@ def getStatistics(dataset: Dataset) -> dict:
     stats = {}
     totalRecords = data.shape[0]
     i = 0
+
+    dataset.number_of_instances = data.shape[0]
+
     for colName in data:
         # colName = data.columns[i]
         stats[colName] = {}
