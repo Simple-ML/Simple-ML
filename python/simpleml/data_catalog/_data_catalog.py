@@ -31,7 +31,8 @@ def getDatasets(domain=None, topic=None):
         title = result["title"]["value"]
         identifier = result["identifier"]["value"]
         topics = result["subjects"]["value"].split(";")
-        dataset = Dataset(id=identifier, title=title, topics=topics)
+        number_of_instances = int(result["numberOfInstances"]["value"])
+        dataset = Dataset(id=identifier, title=title, topics=topics, number_of_instances=number_of_instances)
         datasets.append(dataset)
     return datasets
 
@@ -112,6 +113,7 @@ def getDataset(dataset_id: str) -> Dataset:
         null_value = result["nullValue"]["value"]
         has_header = result["hasHeader"]["value"]
         description = result["description"]["value"]
+        number_of_instances = int(result["numberOfInstances"]["value"])
 
         topics = result["subjects"]["value"].split(";")
 
@@ -120,7 +122,8 @@ def getDataset(dataset_id: str) -> Dataset:
 
     # TODO: Assign spatial columns
     dataset = Dataset(id=dataset_id, title=title, fileName=file_name, hasHeader=has_header, separator=separator,
-                      null_value=null_value, description=description, topics=topics)
+                      null_value=null_value, description=description, topics=topics,
+                      number_of_instances=number_of_instances)
 
     addDomainModel(dataset)
     addStatistics(dataset)
@@ -201,7 +204,8 @@ def addValueDistribution(dataset: Dataset):
             dataset.stats[attribute_identifier][config.valueDistribution] = []
 
         dataset.stats[attribute_identifier][config.valueDistribution].append(
-            {config.value_distribution_value: result["value"]["value"], config.value_distribution_number_of_instances: result["instances"]["value"]})
+            {config.value_distribution_value: result["value"]["value"],
+             config.value_distribution_number_of_instances: result["instances"]["value"]})
 
 
 def addSample(dataset: Dataset):
@@ -218,5 +222,5 @@ def addSample(dataset: Dataset):
 
     sample_as_list = dataset.data_sample.values.tolist()
 
-    dataset.stats[config.sample] = {config.sample_lines: sample_as_list,
-                                    config.sample_header_labels: list(dataset.attribute_labels.values())}
+    dataset.sample_for_profile = {config.sample_lines: sample_as_list,
+                                  config.sample_header_labels: list(dataset.attribute_labels.values())}
