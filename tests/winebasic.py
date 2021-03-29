@@ -12,7 +12,7 @@ def exampleWorkflow():
     dataset = loadDataset("WhiteWineQualityBinary")
     print(exportDictionaryAsJSON(dataset.getProfile()))
 
-    train, test = dataset.splitIntoTrainAndTest(trainRatio=0.75)
+    train, test = dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
     X_train = train.dropAttributes("quality")
     X_test = test.dropAttributes("quality")
     y_train = train.keepAttributes("quality")
