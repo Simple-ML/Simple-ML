@@ -7,7 +7,7 @@ import XtextServices from '../../../serverConnection/XtextServices';
 import store from '../../../reduxStore';
 import { showModal } from '../../../reducers/modal';
 
-import defaultModal from '../../core/Modal/DefaultModal';
+import DataSetModal from '../../core/Modal/DataSetModal';
 
 //icons
 import editIcon from '../../../images/contextToolbar/Edit.svg';
@@ -36,7 +36,7 @@ const validationMxCellAsEmfDataSetAndPlaceholderFilled = (context) => {
 }
 
 const openModalWithDataSetValue = (context) => {
-    store.dispatch(showModal(defaultModal, context, true));
+    store.dispatch(showModal(DataSetModal, context, true));
 }
 
 const editEmfEntityMetaData = {

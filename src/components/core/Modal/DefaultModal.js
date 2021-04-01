@@ -1,7 +1,10 @@
 
 import React from 'react'
 
-const DefaultModal = ({ closeModal, title, message }) => {
+const DefaultModal = ({ closeModal, context }) => {
+    const title = 'test';
+    const message = '';
+
     return (
         <div>
             <h2>Hello</h2>
