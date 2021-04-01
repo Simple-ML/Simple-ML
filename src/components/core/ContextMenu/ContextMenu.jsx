@@ -13,11 +13,6 @@ class ContextMenu extends React.Component {
         super(props);
 
         this.myself = React.createRef();
-        this.closeContextMenu = this.closeContextMenu.bind(this);
-    }
-
-    closeContextMenu = () => {
-        this.props.closeContextMenu()
     }
 
     /**
@@ -48,7 +43,9 @@ class ContextMenu extends React.Component {
         this.prepareMetaData(buttonMetaData);
 
         let { posX, posY, visible } = this.props;
-            visible = visible ? 'visible' : 'hidden';
+
+        visible = visible && buttonMetaData.length > 0;
+        visible = visible ? 'visible' : 'hidden';
 
         return(
             <div style={{visibility: visible}}>
@@ -63,7 +60,7 @@ class ContextMenu extends React.Component {
                                     disabled={item.metaData.disabled()}
                                     onClick={() => {
                                         item.func();
-                                        this.closeContextMenu();
+                                        this.props.closeContextMenu();
                                     }
                                 }>
                                     <img className={ContextMenuStyle.icon} src={item.metaData.icon}/>
@@ -74,7 +71,7 @@ class ContextMenu extends React.Component {
                     }
                 </div>
                 <div className={ContextMenuStyle["toolbar-outside"]}
-                     onClick={this.closeToolbar}>
+                     onClick={this.props.closeContextMenu}>
                 </div>
             </div>
         )

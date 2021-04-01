@@ -1,9 +1,14 @@
 
 import InferenceCreator from './../../core/ContextMenu/InferenceCreator';
 import EmfModelHelper from '../../../helper/EmfModelHelper';
+import genericDataSetMetadata from '../../../emfMetadata/GenericDataSet/GenericDataSet.metadata';
 import XtextServices from '../../../serverConnection/XtextServices';
 
 import store from '../../../reduxStore';
+import { showModal } from '../../../reducers/modal';
+
+import defaultModal from '../../core/Modal/DefaultModal';
+
 //icons
 import editIcon from '../../../images/contextToolbar/Edit.svg';
 import deleteIcon from '../../../images/contextToolbar/Delete.svg';
@@ -15,33 +20,36 @@ const disabledBecauseEditingNotAllowed = () => {
 }
 
 // -----------------------------------------------------------------------
-// edit Emf-Entity inferred form mxCell->Emf-Model
+// show dataset inferred form mxCell->Emf-Model
 
-const validationMxCellAndEmfModelLink = (context) => {
+const validationMxCellAsEmfDataSetAndPlaceholderFilled = (context) => {
     if(context.vertex !== true)
         return false;
+    
+    if(!genericDataSetMetadata.verify(context.emfReference.raw))
+        return false;
 
-    if(context.value.data.className !== undefined)
-        return true;
+    if(store.getState().runtime.placeholder[context.emfReference.data.name] === undefined)
+        return false;
 
     return true;
 }
 
-const openDialogForEditingEmfEntity = (context) => {
-
+const openModalWithDataSetValue = (context) => {
+    store.dispatch(showModal(defaultModal, context, true));
 }
 
 const editEmfEntityMetaData = {
-    text: 'Edit',
+    text: 'View',
     icon: editIcon,
     disabled: disabledBecauseEditingNotAllowed
 }
 
-InferenceCreator.addInference(validationMxCellAndEmfModelLink, openDialogForEditingEmfEntity, editEmfEntityMetaData);
+InferenceCreator.addInference(validationMxCellAsEmfDataSetAndPlaceholderFilled, openModalWithDataSetValue, editEmfEntityMetaData);
 
-// edit Emf-Entity inferred form mxCell->Emf-Model
+// show dataset inferred form mxCell->Emf-Model
 // -----------------------------------------------------------------------
-// deletion of Emf-Entity inferred from mxCell
+// execute code inferred from mxCell
 
 const validationMxCellVertex = (context) => {
     if(context.vertex !== true)
@@ -50,42 +58,16 @@ const validationMxCellVertex = (context) => {
 };
 
 const deletionMxCellVertex = (context) => {
-    let entityPath = EmfModelHelper.getFullHierarchy2(context.value);
-    XtextServices.deleteEntity(entityPath);
+    XtextServices.generate();
 };
 
 const deletionMxCellVertexMetaData = {
-    text: 'Delete',
+    text: 'Generate',
     icon: deleteIcon,
     disabled: disabledBecauseEditingNotAllowed
 };
 
 InferenceCreator.addInference(validationMxCellVertex, deletionMxCellVertex, deletionMxCellVertexMetaData);
 
-// deletion of Emf-Entity inferred from mxCell.vertex
-// -----------------------------------------------------------------------
-// deletion of association inferred from mxCell.edge
-
-const validationMxCellEdge = (context) => {
-    if(context.edge !== true)
-        return false;
-    return true;
-};
-
-const deletionMxCellEdge = (context) => {
-    let sourceEntity = context.source.value;
-    let targetEntity = context.target.value;
-    let sourceEntityPath = EmfModelHelper.getFullHierarchy2(sourceEntity);
-    let targetEntityPath = EmfModelHelper.getFullHierarchy2(targetEntity);
-    XtextServices.deleteAssociation(sourceEntityPath, targetEntityPath);
-};
-
-const deletionMxCellEdgeMetaData = {
-    text: 'Delete',
-    icon: deleteIcon
-};
-
-InferenceCreator.addInference(validationMxCellEdge, deletionMxCellEdge, deletionMxCellEdgeMetaData);
-
-// deletion of association inferred from mxCell.edge
+// execute code inferred from mxCell.vertex
 // -----------------------------------------------------------------------
