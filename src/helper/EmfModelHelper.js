@@ -274,6 +274,8 @@ class EmfModelHelper {
                 return child.self === name;
             });
         };
+
+        flatEntity.raw = emfEntity;
         
         flatEmfEntityContainer.push(flatEntity);
         
