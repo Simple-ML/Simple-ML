@@ -36,7 +36,7 @@ class ModalContainer extends React.Component {
                 >
                     <ModalBody
                         closeModal={this.closeModal}
-                        {...this.props.modalContext}
+                        context={this.props.modalContext}
                     />
                 </Modal>
             </div>
