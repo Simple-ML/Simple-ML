@@ -24,14 +24,32 @@ def save_placeHolder(name, content):
     # if type(content)=="ndarray":
     #     content=content.tolist()
     placeholder[name]=content
-    f = open("Placeholder.json", "a")
-    print(name)
-
-    f.write(json.JSONEncoder().encode(placeholder))
-    f.close()
+    # f = open("Placeholder.json", "a")
+    # print(name)
+    #
+    # f.write(json.JSONEncoder().encode(placeholder))
+    # f.close()
     loop = asyncio.new_event_loop()
+
     asyncio.set_event_loop(loop)
-    asyncio.get_event_loop().run_until_complete(notify_server(json.dumps({"action": 'placeholder_available',"placeholder":placeholder})))
+    ser=False
+    try:
+        placeholder_value=json.JSONEncoder().encode({"action": 'placeholder_available',"placeholder":placeholder})
+        ser=True
+    except exc:
+        print("json not serialized")
+    if ser==False:
+        try:
+            placeholder_value=json.dumps({"action": 'placeholder_available',"placeholder":placeholder})
+            ser=True
+        except:
+            try:
+                x=placeholder._dataframe.to_json(orient="split")
+                placeholder_value=json.JSONEncoder().encode({"action": 'placeholder_available',"placeholder":x})
+            except:
+                placeholder_value=json.dumps({"action": 'placeholder_available',"placeholder":"Not serializable"})
+
+    asyncio.get_event_loop().run_until_complete(notify_server(placeholder_value))
 
 
 # Test the functionaluty
