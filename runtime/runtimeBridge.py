@@ -36,7 +36,7 @@ def save_placeHolder(name, content):
     try:
         placeholder_value=json.JSONEncoder().encode({"action": 'placeholder_available',"placeholder":placeholder})
         ser=True
-    except exc:
+    except Exception as exc:
         print("json not serialized")
     if ser==False:
         try:
