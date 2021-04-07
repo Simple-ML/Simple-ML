@@ -31,7 +31,7 @@ def save_placeHolder(name, content):
     f.close()
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    asyncio.get_event_loop().run_until_complete(notify_server(json.JSONEncoder().encode({"action": 'placeholder_available',"placeholder":placeholder})))
+    asyncio.get_event_loop().run_until_complete(notify_server(json.dumps({"action": 'placeholder_available',"placeholder":placeholder})))
 
 
 # Test the functionaluty
