@@ -14,6 +14,7 @@ class DataSetModal extends React.Component{
         console.log(placeholderValue)
         return (
             <div>
+					{placeholderValue + ''} <br/>
                 <button onClick={this.props.closeModal}>close</button>
             </div>
         )
