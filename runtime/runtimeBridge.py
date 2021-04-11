@@ -1,7 +1,16 @@
 import asyncio
 
 import json
+from simpleml.dataset._dataset import Dataset
+import simpleml
 import websockets
+import numpy
+import copy
+import jsonpickle
+import jsonpickle.ext.numpy as jsonpickle_numpy
+import jsonpickle.ext.pandas as jsonpickle_pandas
+from sklearn.tree._tree import Tree
+
 
 """
     Notify the Runtime Server that a certain placeholder is ready
@@ -12,6 +21,7 @@ async def notify_server(placeHolder):
     uri = "ws://localhost:6789"
     async with websockets.connect(uri) as websocket:
         await websocket.send(placeHolder)
+        # await websocket.recv()
 
 
 """
@@ -19,11 +29,46 @@ async def notify_server(placeHolder):
     name: name of the placeholder
     content: content of the placeholder to be saved
 """
-def save_placeHolder(name, content):
+def save_placeHolder(name, contents):
     placeholder = dict()
-    # if type(content)=="ndarray":
+    content = copy.deepcopy(contents)
+    jsonpickle_pandas.register_handlers()
+    jsonpickle_numpy.register_handlers()
+    p = jsonpickle.pickler.Pickler()
+    content = p.flatten(content)
+    # if type(content).__name__=="ndarray":
     #     content=content.tolist()
+    # elif type(content).__name__ == "Dataset":
+    #     content = p.flatten(content)
+    # elif type(content).__bases__[0].__name__ == "Estimator":
+    #     content = content._underlying.__dict__
+    # elif type(content).__bases__[0].__name__ == "Model":
+    #     content = content._underlying.__dict__
+    #     for k, v in content.items():
+    #         if type(v).__name__=="int64":
+    #             content[k] = int(v)
+    #         elif isinstance(v, list) and v[-1:] == '_':
+    #             content[k] = v.tolist()
+    #         elif isinstance(v, numpy.ndarray):
+    #             content[k] = v.tolist()
+    #         elif type(v).__name__=="ndarray":
+    #             content[k] = v.tolist()
+    #         elif isinstance(v, Tree):
+    #             # print(v.__doc__)
+    #             # print(jsonpickle.encode(content))
+    #
+    #             # print(p.flatten(v))
+    #             # import inspect
+    #             # print(inspect.getmembers(v.__class__, lambda a:not(inspect.isroutine(a))))
+    #             content[k] = "None"#p.flatten(v)
+    #
+    #         # print(type(v).__name__)
+
+
+    # print(name,type(content).__name__)
     placeholder[name]=content
+
+    # print(placeholder)
     # f = open("Placeholder.json", "a")
     # print(name)
     #
@@ -35,19 +80,20 @@ def save_placeHolder(name, content):
     ser=False
     try:
         placeholder_value=json.JSONEncoder().encode({"action": 'placeholder_available',"placeholder":placeholder})
-        ser=True
+    #     ser=True
     except Exception as exc:
-        print("json not serialized")
-    if ser==False:
-        try:
-            placeholder_value=json.dumps({"action": 'placeholder_available',"placeholder":placeholder})
-            ser=True
-        except:
-            try:
-                x=placeholder._dataframe.to_json(orient="split")
-                placeholder_value=json.JSONEncoder().encode({"action": 'placeholder_available',"placeholder":x})
-            except:
-                placeholder_value=json.dumps({"action": 'placeholder_available',"placeholder":"Not serializable"})
+        print("exception",str(exc))
+        placeholder_value=json.JSONEncoder().encode({"action": 'placeholder_available',"placeholder":placeholder})
+    # if ser==False:
+    #     try:
+    #         placeholder_value=json.dumps({"action": 'placeholder_available',"placeholder":placeholder})
+    #         ser=True
+    #     except:
+    #         x=placeholder._dataframe.to_json(orient="split")
+    #         placeholder_value=json.JSONEncoder().encode({"action": 'placeholder_available',"placeholder":x})
+    if name=="df_train":
+        # print(content.__dict__)
+        print(placeholder_value)
 
     asyncio.get_event_loop().run_until_complete(notify_server(placeholder_value))
 

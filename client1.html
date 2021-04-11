@@ -75,6 +75,9 @@ def main():
              <div class="plus button" id="placeholder">get placeholder</div>
             <label>placeholder name</label>
             <input id="place_name" placeholder="name"/>
+        <br/>
+        <label>sessionId</label>
+        <input id="sessionId" placeholder="sessionId"/>
         </div>
 
 
@@ -102,6 +105,8 @@ def main():
                 users = document.querySelector('.users'),
                 content1=document.querySelector('#file1')
                 content2=document.querySelector('#file2')
+                placeholder_name=document.querySelector('#place_name')
+                sessionIds=document.querySelector('#sessionId')
                 websocket = new WebSocket("ws://127.0.0.1:6789/");
             console.log(websocket);
             code.onclick = function (event) {
@@ -109,7 +114,7 @@ def main():
                 {filename:'helloWorld.py',content:content2.value}], mainfile:'helloWorld_main.py'}}));
             }
             placeholder.onclick = function (event) {
-                websocket.send(JSON.stringify({action: 'get_placeholder',"placeholder":{sessionId:123123123123,name:"message"}}));
+                websocket.send(JSON.stringify({action: 'get_placeholder',"placeholder":{sessionId:sessionIds.value,name:placeholder_name.value}}));
             }
 
             websocket.onmessage = function (event) {

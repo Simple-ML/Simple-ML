@@ -3,7 +3,7 @@ from runtimeBridge import save_placeHolder
 from simpleml.dataset import loadDataset
 from simpleml.model.supervised.classification import DecisionTreeClassifier
 
-# Workflows -----------------------------------------------------------------
+# Workflows --------------------------------------------------------------------\n\n
 def winebasic():
 
     df = loadDataset('WhiteWineQualityBinary')
@@ -23,3 +23,6 @@ def winebasic():
     save_placeHolder('model', model)
     y_pred = model.predict(X_test)
     save_placeHolder('y_pred', y_pred)
+
+if __name__ == '__main__':
+    winebasic()

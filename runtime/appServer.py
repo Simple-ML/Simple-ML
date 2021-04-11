@@ -9,9 +9,17 @@ import websockets
 import sys
 import uuid
 import threading
+from simpleml.dataset._stats import getStatistics
 from matplotlib.font_manager import json_load
+import jsonpickle
+import jsonpickle.ext.numpy as jsonpickle_numpy
+import jsonpickle.ext.pandas as jsonpickle_pandas
 
 logging.basicConfig()
+jsonpickle_numpy.register_handlers()
+jsonpickle_pandas.register_handlers()
+jsonpickler = jsonpickle.pickler.Pickler()
+unpickler = jsonpickle.unpickler.Unpickler()
 
 STATE = {"value": 0}
 MODEL=None
@@ -30,8 +38,11 @@ def users_event():
 
 async def notify_placeholder(message):
     print("notifying IDE")
-    if USERS:  # asyncio.wait doesn't accept an empty list
-        await asyncio.wait([user.send(message) for user in USERS])
+    try:
+        if USERS:  # asyncio.wait doesn't accept an empty list
+            await asyncio.wait([user.send(message) for user in USERS])
+    except:
+        pass
 
 
 async def notify_state():
@@ -66,15 +77,15 @@ async def requestHandler(websocket, path):
         async for message in websocket:
             # print(message)
             data = json.loads(message)
-            print(data)
-            print(type(data))
-            print(data["action"])
+            # print(data)
+            # print(type(data))
+            # print(data["action"])
 
 
             if data["action"] == "run":
                 run_session=get_new_session()
                 SESSION.add(run_session)
-                PlaceholderMap[run_session] = []
+                PlaceholderMap[run_session] = dict()
                 worker= CodeWorker(name=run_session,kwargs=data["python"])
                 RUNS[run_session]=worker
 
@@ -85,24 +96,23 @@ async def requestHandler(websocket, path):
             elif data["action"] == "get_placeholder":
                 # {action: 'get_placeholder',"placeholder":{sessionId:123123123123,name:"message"}}
                 try:
+
                     if data["placeholder"]["sessionId"] in PlaceholderMap:
-                        print("Placeholer:",PlaceholderMap[data["placeholder"]["sessionId"]].get(data["placeholder"]["name"]))
-                        # STATE["value"] = s
-                        # x=dict()
-                        # x.get()
-                        # PlaceholderMap[data["placeholder"]["session_id"]][]
-                        # current_session = SESSION.pop()
-                        # PlaceholderMap[current_session] = data["placeholder"]
-                        # SESSION.add(current_session)
+
+                        if type(PlaceholderMap[data["placeholder"]["sessionId"]][data["placeholder"]["name"]]).__name__=="Dataset":
+                            placeholder_value=PlaceholderMap[data["placeholder"]["sessionId"]][data["placeholder"]["name"]].toArray().tolist()
+                            placeholder_value = jsonpickler.flatten(placeholder_value)
+                        else:
+                            placeholder_value=jsonpickler.flatten(PlaceholderMap[data["placeholder"]["sessionId"]][data["placeholder"]["name"]])
                         await notify_placeholder(json.dumps({"type": "[placeholder]:VALUE", "sessionId": data["placeholder"]["sessionId"],
                                                              "description": "Placeholder_Value",
                                                              "name": data["placeholder"]["name"],
-                                                             "value": PlaceholderMap[data["placeholder"]["sessionId"]].get(data["placeholder"]["name"])
+                                                             "value":placeholder_value
                                                              }))
                     else:
                         STATE["value"] = json.JSONEncoder().encode(
                         {"status": "Session not found"})
-                        # await notify_state()
+                        await notify_state()
                 except Exception as exc:
                     print("error: {0}\n".format(exc))
                     log = open('runtime/error.log', 'a')
@@ -112,12 +122,30 @@ async def requestHandler(websocket, path):
                     print("")
                 else:
                     MODEL.fit(data["data"])
+            elif data["action"] == "get_stats":
+                dataset=PlaceholderMap[data["placeholder"]["sessionId"]][data["placeholder"]["name"]]
+                stats=getStatistics(dataset)
+
+                await notify_placeholder(json.dumps({"type": "[placeholder]:STATS", "sessionId": data["placeholder"]["sessionId"],
+                                                     "description": "Stats of a placeholder dataset",
+                                                     "dataset_name": data["placeholder"]["name"],
+                                                     "value":stats
+                                                     }))
+                pass
             elif data["action"] == "placeholder_available":
                 print ("place holder available")
-
+                placeholder = dict()
+                placeholder_conetnt = unpickler.restore(data["placeholder"][list(data["placeholder"].keys())[0]])
+                placeholder[list(data["placeholder"].keys())[0]]=placeholder_conetnt
+                print(type(placeholder_conetnt))
+                # print(data["placeholder"])
                 # placeholder=data["placeholder"]
-                current_session=SESSION.pop()
-                PlaceholderMap[current_session] = data["placeholder"]
+                if len(SESSION)>0:
+                    current_session=SESSION.pop()
+                else:
+                    current_session = "1234"
+                    PlaceholderMap[current_session]=dict()
+                PlaceholderMap[current_session].update(placeholder)
                 SESSION.add(current_session)
 
                 await notify_placeholder(json.dumps({"type":"[placeholder]:READY","sessionId":current_session,"description":"Placeholder_available","name":list(data["placeholder"].keys())[0]}))
@@ -137,11 +165,12 @@ async def requestHandler(websocket, path):
                     await notify_state()
             else:
                 logging.error("unsupported event: {}", data)
-    except Exception as exc:
+    except ValueError as exc:
         print("exception")
-        log = open('runtime/error.log', 'a')
+        log = open('runtime/error.log', 'w')
         print("error: {0}\n in line {1}".format(exc,exc.args))
         log.write("error: {0}".format(exc))
+        pass
     finally:
         await unregister(websocket)
 
@@ -184,9 +213,9 @@ class CodeWorker(threading.Thread):
         # sys.stdout = log
         import subprocess
 
-        result = subprocess.check_output('python3 runtime/' + main_file, shell=True)
+        result = subprocess.check_output('python3.8 runtime/' + main_file, shell=True)
         print("Excuting file: " + main_file)
-        print(result)
+        # print(result)
 
         log.flush()
 
@@ -217,6 +246,7 @@ if __name__ == "__main__":
         #TODO: close ws server and loop correctely
         print("Exiting program...")
     except Exception as exc:
-        log = open('runtime/error.log', 'a')
-        print("error: {0}\n".format(exc))
-        log.write("error: {0}\n".format(exc))
+        # log = open('runtime/error.log', 'a')
+        # print("error: {0}\n".format(exc))
+        # log.write("error: {0}\n".format(exc))
+        pass

@@ -1,4 +1,4 @@
-from helloWorld import main
+from helloWorld import winebasic
 
 if __name__ == '__main__':
-    main()
+    winebasic()
