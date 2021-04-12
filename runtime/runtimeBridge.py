@@ -32,12 +32,14 @@ async def notify_server(placeHolder):
 def save_placeHolder(name, contents):
     placeholder = dict()
     content = copy.deepcopy(contents)
+    if type(content).__name__=="ndarray":
+        content=content.tolist()
+
     jsonpickle_pandas.register_handlers()
     jsonpickle_numpy.register_handlers()
     p = jsonpickle.pickler.Pickler()
     content = p.flatten(content)
-    # if type(content).__name__=="ndarray":
-    #     content=content.tolist()
+
     # elif type(content).__name__ == "Dataset":
     #     content = p.flatten(content)
     # elif type(content).__bases__[0].__name__ == "Estimator":
