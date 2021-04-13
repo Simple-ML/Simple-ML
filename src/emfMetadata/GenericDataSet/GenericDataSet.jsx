@@ -8,6 +8,8 @@ import iconEmptyHover from '../../images/graph/File/emptyHover.svg';
 import iconFilled from '../../images/graph/File/filled.svg';
 import iconFilledHover from '../../images/graph/File/filledHover.svg';
 
+import genericDataSetStyle from './genericDataSet.module.scss';
+
 /**
  * Lookup MxGraphVertexComponent.js
  */
@@ -56,8 +58,11 @@ export default class GenericDataSet extends MxGraphVertexComponent {
 
     render() {
         return(
-            <div>
+            <div className={genericDataSetStyle.IconContainer}>
                 <img src={this.setIcon()} alt={this.props.emfEntity.data.name}/>
+                <div className={genericDataSetStyle.IconLabel}>
+                    {this.props.emfEntity.data.name}
+                </div>
             </div>
         )
     }
