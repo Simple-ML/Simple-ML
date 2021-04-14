@@ -251,7 +251,7 @@ class GraphicalEditor extends React.Component {
     render() {
         return (
             <div>
-                <div className={`graphicalEditor`} style={{height:"320px"}} ref={this.graphRef}></div>
+                <div className={`graphicalEditor`} style={{height:"365px"}} ref={this.graphRef}></div>
                 <div id={'mxReactPlaceholder'}></div>
             </div>
         );
