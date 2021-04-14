@@ -5,7 +5,7 @@ Component Compatibility Table
 | ------------- |:-------------:| -----:|-----:|
 | DSL								|:cookie:| :cookie:|	:cookie:|
 | RuntimeData				|:cookie:| :cookie: |:cookie:|
-| SimpleMLFrontEnd	|:cookie:| :cookie: ||
+| SimpleMLFrontEnd	|:cookie:| :cookie: |:cookie:|
 | Stdlib						|			:cookie: |  :cookie:|:cookie:|
 | runtimeServer			|:cookie: |  :cookie: |:cookie:|
 
