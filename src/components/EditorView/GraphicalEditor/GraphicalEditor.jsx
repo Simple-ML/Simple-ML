@@ -16,6 +16,11 @@ import {
     entitySelect,
     entityDeselect
 } from '../../../reducers/graphicalEditor';
+import {
+    openContextMenu
+} from '../../../reducers/contextMenu';
+
+import './contextMenu.inference';
 
 class GraphicalEditor extends React.Component {
 
@@ -82,6 +87,7 @@ class GraphicalEditor extends React.Component {
                 const cell = me.getCell();
                 
                 if(cell && !cell.source && !cell.target) {
+                    this.props.openContextMenu(cell, me.getX() + 10, me.getY() - 10);
                     this.props.entitySelect(cell.emfReference);
                 } else {
                     this.props.entityDeselect();
@@ -272,7 +278,8 @@ const mapDispatchToProps = dispatch => {
         entityHoverStateEnter: (entity) =>  dispatch(entityHoverStateEnter(entity)),
         entityHoverStateLeav: () => dispatch(entityHoverStateLeav()),
         entitySelect: (entity) => dispatch(entitySelect(entity)),
-        entityDeselect: () => dispatch(entityDeselect())
+        entityDeselect: () => dispatch(entityDeselect()),
+        openContextMenu: (context, x, y) => dispatch(openContextMenu(context, x, y))
     }
 };
 

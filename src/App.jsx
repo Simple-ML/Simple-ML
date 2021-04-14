@@ -8,11 +8,11 @@ import ContextMenu from './components/core/ContextMenu/ContextMenu';
 import ModalContainer from './components/core/Modal/ModalContainer';
 import XtextServices from './serverConnection/XtextServices';
 
+                //<button onClick={XtextServices.generate}>generate</button>
 class App extends React.Component {
     render() {
         return (
             <div className="App">
-                <button onClick={XtextServices.generate}>generate</button>
                 <EditorView/>
 
                 <ContextMenu/>

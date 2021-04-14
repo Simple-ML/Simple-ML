@@ -36,6 +36,7 @@ export default class GenericDataSet extends MxGraphVertexComponent {
         };
     }
 
+
     setIcon = () => {
         if(this.state.empty) {
             if(this.state.hoveredOver) {
