@@ -3,9 +3,9 @@ Component Compatibility Table
 
 | Name| Mac           | Windows  |Linux|
 | ------------- |:-------------:| -----:|-----:|
-| DSL								|:cookie:| |	|
-| RuntimeData				|:cookie:|  |:cookie:|
-| SimpleMLFrontEnd	|:cookie:|  ||
-| Stdlib						|			 |  ||
-| runtimeServer			|:cookie: |   ||
+| DSL								|:cookie:| :cookie:|	:cookie:|
+| RuntimeData				|:cookie:| :cookie: |:cookie:|
+| SimpleMLFrontEnd	|:cookie:| :cookie: ||
+| Stdlib						|			:cookie: |  :cookie:|:cookie:|
+| runtimeServer			|:cookie: |  :cookie: |:cookie:|
 
