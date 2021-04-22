@@ -39,7 +39,7 @@ private val validSeverities = listOf(
 
 @ExtendWith(InjectionExtension::class)
 @InjectWith(SimpleMLInjectorProvider::class)
-class SimpleMLParsingTest {
+class SimpleMLLanguageTest {
 
     @Inject
     private lateinit var parseWithStdlib: ParseWithStdlib
@@ -51,7 +51,7 @@ class SimpleMLParsingTest {
     @TestFactory
     fun `should parse and validate`(): Stream<out DynamicNode> {
         return javaClass.classLoader
-                .getResourcePath("parsingTests")
+                .getResourcePath("languageTests")
                 ?.createDynamicTestsFromResourceFolder(::validateTestFile, ::createTest)
                 ?: Stream.empty()
     }

@@ -143,7 +143,13 @@ class SimpleMLStdlib @Inject constructor(
             }
 
         val builtin = resourceSet.createResource(URI.createURI("dummy:/simpleml/builtin.stub.simpleml"))
-        builtin.contents += factory.createSmlCompilationUnit().apply {
+        builtin.contents += builtinCompilationUnit()
+
+        fileSystem?.close()
+    }
+
+    fun builtinCompilationUnit(): SmlCompilationUnit {
+        return factory.createSmlCompilationUnit().apply {
             name = "simpleml.builtin"
             members += listOf(
                 BuiltinClasses.Any,
@@ -155,7 +161,5 @@ class SimpleMLStdlib @Inject constructor(
                 BuiltinClasses.Nothing
             )
         }
-
-        fileSystem?.close()
     }
 }

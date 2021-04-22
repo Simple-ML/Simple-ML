@@ -81,6 +81,13 @@ class CompilationUnitChecker @Inject constructor(
 
     @Check(CheckType.NORMAL)
     fun uniqueNamesAcrossFiles(smlCompilationUnit: SmlCompilationUnit) {
+
+        // Since the stdlib is automatically loaded into a workspace every declaration would be marked as a duplicate
+        // when editing the stdlib
+        if (smlCompilationUnit.name.startsWith("simpleml")) {
+            return
+        }
+
         val externalGlobalDeclarations = indexExtensions.visibleExternalGlobalDeclarationDescriptions(smlCompilationUnit)
         smlCompilationUnit.members.forEach {
             val qualifiedName = qualifiedNameProvider.getFullyQualifiedName(it)
