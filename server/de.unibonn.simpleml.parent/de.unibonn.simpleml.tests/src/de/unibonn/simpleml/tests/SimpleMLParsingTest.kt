@@ -2,7 +2,7 @@ package de.unibonn.simpleml.tests
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.tests.assertions.*
-import de.unibonn.simpleml.tests.util.*
+import de.unibonn.simpleml.util.*
 import de.unibonn.simpleml.utils.OriginalFilePath
 import de.unibonn.simpleml.utils.outerZipBy
 import org.eclipse.xtext.testing.InjectWith

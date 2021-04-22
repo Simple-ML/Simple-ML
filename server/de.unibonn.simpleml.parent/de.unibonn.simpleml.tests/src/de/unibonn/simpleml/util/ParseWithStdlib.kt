@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.tests.util
+package de.unibonn.simpleml.util
 
 import com.google.inject.Inject
 import com.google.inject.Provider

@@ -2,7 +2,6 @@ package de.unibonn.simpleml.utils
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.simpleML.*
-import org.eclipse.emf.ecore.EObject
 import java.util.*
 
 class ClassHierarchy @Inject constructor(
@@ -27,9 +26,8 @@ class ClassHierarchy @Inject constructor(
             current = current.parentClassOrNull()
         }
 
-        val anyClass = stdlib.getClass(smlClassOrInterface, LIB_ANY)
-        if (anyClass != null && smlClassOrInterface != anyClass && visited.lastOrNull() != anyClass) {
-            yield(anyClass)
+        if (smlClassOrInterface != BuiltinClasses.Any && visited.lastOrNull() != BuiltinClasses.Any) {
+            yield(BuiltinClasses.Any)
         }
     }
 

@@ -5,7 +5,7 @@ import de.unibonn.simpleml.prolog_bridge.Main
 import de.unibonn.simpleml.prolog_bridge.model.facts.*
 import de.unibonn.simpleml.tests.assertions.findUniqueFactOrFail
 import de.unibonn.simpleml.tests.assertions.shouldBeCloseTo
-import de.unibonn.simpleml.tests.util.getResourcePath
+import de.unibonn.simpleml.util.getResourcePath
 import io.kotest.assertions.asClue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test

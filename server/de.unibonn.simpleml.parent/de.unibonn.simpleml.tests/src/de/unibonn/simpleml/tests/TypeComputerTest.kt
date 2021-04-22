@@ -3,8 +3,9 @@ package de.unibonn.simpleml.tests
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
-import de.unibonn.simpleml.tests.util.ParseWithStdlib
-import de.unibonn.simpleml.tests.util.getResourcePath
+import de.unibonn.simpleml.util.ParseWithStdlib
+import de.unibonn.simpleml.util.getResourcePath
+import de.unibonn.simpleml.typing.ClassType
 import de.unibonn.simpleml.typing.Type
 import de.unibonn.simpleml.typing.TypeComputer
 import de.unibonn.simpleml.utils.*
@@ -195,9 +196,9 @@ class TypeComputerTest {
         compilationUnit.apply(lambda)
     }
 
-    private val SmlCompilationUnit.ANY get() = typeComputer.stdlibType(this, LIB_ANY)
-    private val SmlCompilationUnit.BOOLEAN get() = typeComputer.stdlibType(this, LIB_BOOLEAN)
-    private val SmlCompilationUnit.FLOAT get() = typeComputer.stdlibType(this, LIB_FLOAT)
-    private val SmlCompilationUnit.INT get() = typeComputer.stdlibType(this, LIB_INT)
-    private val SmlCompilationUnit.STRING get() = typeComputer.stdlibType(this, LIB_STRING)
+    private val ANY get() = ClassType(BuiltinClasses.Any, isNullable = false, isStatic = false)
+    private val BOOLEAN get() = ClassType(BuiltinClasses.Boolean, isNullable = false, isStatic = false)
+    private val FLOAT get() = ClassType(BuiltinClasses.Float, isNullable = false, isStatic = false)
+    private val INT get() = ClassType(BuiltinClasses.Int, isNullable = false, isStatic = false)
+    private val STRING get() = ClassType(BuiltinClasses.String, isNullable = false, isStatic = false)
 }

@@ -64,7 +64,6 @@ sealed class CallableResult {
     class Callable(val callable: EObject) : CallableResult()
 }
 
-
 fun SmlCall.maybeCallable(): CallableResult {
     val visited = mutableSetOf<EObject>()
     var current: EObject? = this.receiver

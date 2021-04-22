@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/de.unibonn.simpleml.parent" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/de.unibonn.simpleml.parent" />
+            <option value="$PROJECT_DIR$/de.unibonn.simpleml.parent/de.unibonn.simpleml" />
+            <option value="$PROJECT_DIR$/de.unibonn.simpleml.parent/de.unibonn.simpleml.ide" />
+            <option value="$PROJECT_DIR$/de.unibonn.simpleml.parent/de.unibonn.simpleml.tests" />
+            <option value="$PROJECT_DIR$/de.unibonn.simpleml.parent/de.unibonn.simpleml.web" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/de.unibonn.simpleml.parent/de.unibonn.simpleml" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/de.unibonn.simpleml.parent/de.unibonn.simpleml" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

@@ -98,7 +98,7 @@ class TypeComputer @Inject constructor(
                 val member = this.member ?: return ANY
                 member.inferType(isStatic = false)
             }
-            is SmlNull -> stdlibType(context, LIB_ANY, isNullable = true)
+            is SmlNull -> ClassType(BuiltinClasses.Any, isNullable = true, isStatic = false)
             is SmlPrefixOperation -> when (operator) {
                 "not" -> BOOLEAN
                 "-" -> when (this.operand.inferType(false)) {
@@ -134,17 +134,9 @@ class TypeComputer @Inject constructor(
         }
     }
 
-    private val ANY get() = stdlibType(context, LIB_ANY)
-    private val BOOLEAN get() = stdlibType(context, LIB_BOOLEAN)
-    private val FLOAT get() = stdlibType(context, LIB_FLOAT)
-    private val INT get() = stdlibType(context, LIB_INT)
-    private val STRING get() = stdlibType(context, LIB_STRING)
-
-    fun stdlibType(context: EObject, qualifiedName: String, isNullable: Boolean = false): Type {
-        val smlClass = stdlib.getClass(context, qualifiedName)
-        return when (smlClass) {
-            null -> NothingType
-            else -> ClassType(smlClass, isNullable, isStatic = false)
-        }
-    }
+    private val ANY get() = ClassType(BuiltinClasses.Any, isNullable = false, isStatic = false)
+    private val BOOLEAN get() = ClassType(BuiltinClasses.Boolean, isNullable = false, isStatic = false)
+    private val FLOAT get() = ClassType(BuiltinClasses.Float, isNullable = false, isStatic = false)
+    private val INT get() = ClassType(BuiltinClasses.Int, isNullable = false, isStatic = false)
+    private val STRING get() = ClassType(BuiltinClasses.String, isNullable = false, isStatic = false)
 }

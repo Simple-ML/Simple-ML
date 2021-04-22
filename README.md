@@ -16,5 +16,5 @@
     npm i
     npm run compile
     ```
-1. Open `client/out/extension.js`.
+1. Open `client/out/extension.js` in VS Code.
 1. Press F5 and select "VS Code Extension Development".

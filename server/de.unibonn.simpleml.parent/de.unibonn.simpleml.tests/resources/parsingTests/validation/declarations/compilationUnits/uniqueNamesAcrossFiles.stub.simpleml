@@ -1,16 +1,16 @@
-package simpleml.lang
+package simpleml.builtin
 
-// semantic_error "A declaration with qualified name 'simpleml.lang.Any' exists already."
+// semantic_error "A declaration with qualified name 'simpleml.builtin.Any' exists already."
 annotation »Any«
 
-// semantic_error "A declaration with qualified name 'simpleml.lang.Any' exists already."
+// semantic_error "A declaration with qualified name 'simpleml.builtin.Any' exists already."
 class »Any«
 
-// semantic_error "A declaration with qualified name 'simpleml.lang.Any' exists already."
+// semantic_error "A declaration with qualified name 'simpleml.builtin.Any' exists already."
 enum »Any«
 
-// semantic_error "A declaration with qualified name 'simpleml.lang.Any' exists already."
+// semantic_error "A declaration with qualified name 'simpleml.builtin.Any' exists already."
 fun »Any«()
 
-// semantic_error "A declaration with qualified name 'simpleml.lang.Any' exists already."
+// semantic_error "A declaration with qualified name 'simpleml.builtin.Any' exists already."
 interface »Any«
