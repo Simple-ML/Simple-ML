@@ -1,0 +1,42 @@
+package simpleml.data
+
+import simpleml.collections.List
+
+open class Fetcher {
+	open fun fetch() -> filename: String
+}
+
+class LocalFetcher sub Fetcher
+
+open class Parser {
+	open fun parse(filename: String) -> dataset: Dataset
+}
+
+class CSVParser constructor(separator: String or ",") sub Parser {
+	override fun parse(filename: String) -> dataset: TabularDataset
+}
+
+open class Dataset
+
+fun loadDataset(fetcher: Fetcher, parser: Parser) -> dataset: Dataset
+
+class TabularDataset sub Dataset {
+	fun addColumn(attributeName: String, generatorFunction: callable(row: TabularDatasetRow) -> columnValue: Any) -> newDataset: TabularDataset
+	
+	fun dropColumns(vararg columnNames: String) -> newDataset: TabularDataset
+	
+	fun keepColumns(vararg columnNames: String) -> newDataset: TabularDataset
+	
+	fun filterRows(filterFunction: callable(row: TabularDatasetRow) -> shouldKeep: Boolean) -> newDataset: TabularDataset
+	
+	fun getValue(columnName: String, rowNumber: Int) -> value: Any
+	
+	fun getColumnNames() -> columnNames: List<String>
+	
+	fun getNumberOfRows() -> numberOfRows: Int
+}
+
+class TabularDatasetRow {
+	fun getValue(columnName: String) -> value: Any
+}
+

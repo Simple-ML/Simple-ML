@@ -8,7 +8,7 @@
 1. Build the server:
     ```
     cd server/de.unibonn.simpleml.parent
-    ./gradlew clean generateXtext build
+    ./gradlew clean generateXtextLanguage build
     ```
 1. Build the client:
     ```

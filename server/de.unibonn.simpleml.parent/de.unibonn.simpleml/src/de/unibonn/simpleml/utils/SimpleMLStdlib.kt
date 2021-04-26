@@ -40,7 +40,7 @@ class SimpleMLStdlib @Inject constructor(
     }
 
     fun load(resourceSet: ResourceSet) {
-        val resourcesUrl = javaClass.classLoader.getResource("simpleml") ?: return
+        val resourcesUrl = javaClass.classLoader.getResource("stubs") ?: return
         val resourcesUri = FileLocator.resolve(resourcesUrl).toURI()
 
         var fileSystem: FileSystem? = null
@@ -49,7 +49,7 @@ class SimpleMLStdlib @Inject constructor(
             // Without this code Maven tests fail with a FileSystemNotFoundException since stdlib resources are in a jar
             "jar" -> {
                 fileSystem = FileSystems.newFileSystem(resourcesUri, emptyMap<String, String>(), null)
-                fileSystem.getPath("simpleml")
+                fileSystem.getPath("stubs")
             }
             else -> Paths.get(resourcesUri)
         }

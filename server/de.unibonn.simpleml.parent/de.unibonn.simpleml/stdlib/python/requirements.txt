@@ -1,0 +1,12 @@
+pandas
+scikit-learn
+pyspark
+torch
+requests
+shapely
+numpy
+sparqlwrapper
+pyproj
+matplotlib
+plpygis
+geopandas
