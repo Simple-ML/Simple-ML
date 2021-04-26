@@ -9,3 +9,4 @@ xtend-gen/
 # Files
 *.class
 *.java._trace
+*-debug.log

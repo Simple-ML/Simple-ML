@@ -6,10 +6,7 @@ import org.eclipse.core.runtime.FileLocator
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
-import java.nio.file.FileSystem
-import java.nio.file.FileSystems
-import java.nio.file.Files
-import java.nio.file.Paths
+import java.nio.file.*
 
 private const val LIB_PACKAGE = "simpleml.lang"
 const val LIB_ANY = "${LIB_PACKAGE}.Any"
@@ -19,7 +16,7 @@ const val LIB_INT = "${LIB_PACKAGE}.Int"
 const val LIB_STRING = "${LIB_PACKAGE}.String"
 
 class SimpleMLStdlib @Inject constructor(
-        private val indexExtensions: SimpleMLIndexExtensions
+    private val indexExtensions: SimpleMLIndexExtensions
 ) {
 
     private val cache = mutableMapOf<String, SmlClass?>()
@@ -27,8 +24,8 @@ class SimpleMLStdlib @Inject constructor(
     fun getClass(context: EObject, qualifiedName: String): SmlClass? {
         return cache.computeIfAbsent(qualifiedName) {
             val description = indexExtensions.visibleGlobalDeclarationDescriptions(context)
-                    .find { it.qualifiedName.toString() == qualifiedName }
-                    ?: return@computeIfAbsent null
+                .find { it.qualifiedName.toString() == qualifiedName }
+                ?: return@computeIfAbsent null
 
             var eObject = description.eObjectOrProxy
             if (eObject != null && eObject.eIsProxy()) {
@@ -40,27 +37,38 @@ class SimpleMLStdlib @Inject constructor(
     }
 
     fun load(resourceSet: ResourceSet) {
-        val resourcesUrl = javaClass.classLoader.getResource("stubs") ?: return
+        listStdlibFiles().forEach { (path, uri) ->
+            resourceSet.createResource(uri)
+                .load(Files.newInputStream(path), resourceSet.loadOptions)
+        }
+    }
+
+    fun listStdlibFiles(): Sequence<Pair<Path, URI>> {
+        val resourcesUrl = javaClass.classLoader.getResource("stubs") ?: return emptySequence()
         val resourcesUri = FileLocator.resolve(resourcesUrl).toURI()
 
-        var fileSystem: FileSystem? = null
-        val stdlibBase = when (resourcesUri.scheme) {
+        return sequence {
+            var fileSystem: FileSystem? = null
+            val stdlibBase = when (resourcesUri.scheme) {
 
-            // Without this code Maven tests fail with a FileSystemNotFoundException since stdlib resources are in a jar
-            "jar" -> {
-                fileSystem = FileSystems.newFileSystem(resourcesUri, emptyMap<String, String>(), null)
-                fileSystem.getPath("stubs")
-            }
-            else -> Paths.get(resourcesUri)
-        }
-
-        Files.walk(stdlibBase)
-                .filter { it.toString().endsWith(".stub.simpleml") }
-                .forEach {
-                    resourceSet.createResource(URI.createFileURI(it.toString()))
-                            .load(Files.newInputStream(it), resourceSet.loadOptions)
+                // Without this code Maven tests fail with a FileSystemNotFoundException since stdlib resources are in a jar
+                "jar" -> {
+                    fileSystem = FileSystems.newFileSystem(resourcesUri, emptyMap<String, String>(), null)
+                    fileSystem.getPath("stubs")
                 }
+                else -> Paths.get(resourcesUri)
+            }
 
-        fileSystem?.close()
+            val stdlibFiles = Files.walk(stdlibBase)
+                .filter { it.toString().endsWith(".stub.simpleml") }
+
+            for (path in stdlibFiles) {
+                val relativePath = path.toString().replace("stubs/", "")
+                val uri = URI.createURI("$resourcesUri/$relativePath".replace("%3A", ":"))
+                yield(path to uri)
+            }
+
+            fileSystem?.close()
+        }
     }
 }
