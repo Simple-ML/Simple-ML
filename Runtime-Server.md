@@ -79,6 +79,23 @@ Example:
 
 ```
 ```
+
+## Get statistics 
+
+
+* action:  get_stats 
+
+* Required Attribute: placeholder
+  
+  * Required Value: A dictionary containing:
+    * sessionId: session Id of the run done
+    * name: name of the data placeholder we want statistics on  
+
+
+```
+{action: 'get_stats',"placeholder":{sessionId:123123123123,name:"TrainX"}}
+```
+
 ## Check status 
 
 
