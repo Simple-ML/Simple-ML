@@ -113,7 +113,9 @@ class EmfModelHelper {
         let referenceableEntities = [];
 
         for(let entity of emfModelFlat) {
-            if(entity.data['$ref'] !== undefined && !entity.data['$ref'].startsWith('file')) {
+            if(entity.data['$ref'] !== undefined && 
+                !entity.data['$ref'].startsWith('file:') &&
+                !entity.data['$ref'].startsWith('jar:file:')) {
                 referenceableEntities.push(entity)
             }
         }
