@@ -31,12 +31,12 @@ class ModalContainer extends React.Component {
                     isOpen={this.props.modalIsOpen}
                     onRequestClose={this.closeModal}
                     overlayClassName={containerStyle["Modal-overlay"]}
-                    className={containerStyle["Modal-content"]}
+                    className={this.props.wide ? containerStyle['Modal-content-wide'] : containerStyle["Modal-content"]}
                     contentLabel="Example Modal"
                 >
                     <ModalBody
                         closeModal={this.closeModal}
-                        {...this.props.modalContext}
+                        context={this.props.modalContext}
                     />
                 </Modal>
             </div>
@@ -55,7 +55,8 @@ const mapStateToProps = state => {
     return {
         modalBody: state.modal.body,
         modalContext: state.modal.context,
-        modalIsOpen: state.modal.isOpen
+        modalIsOpen: state.modal.isOpen,
+        wide: state.modal.wide
     }
 };
 
