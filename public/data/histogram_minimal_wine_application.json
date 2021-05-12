@@ -1,0 +1,62 @@
+{
+  "attributes": [
+    {
+      "statistics": {
+        "histograms": {
+          "10": {
+            "0": {
+              "maximum": 34.3,
+              "minimum": 6.0,
+              "number_of_instances": 730
+            },
+            "1": {
+              "maximum": 62.6,
+              "minimum": 34.3,
+              "number_of_instances": 471
+            },
+            "2": {
+              "maximum": 90.9,
+              "minimum": 62.6,
+              "number_of_instances": 221
+            },
+            "3": {
+              "maximum": 119.2,
+              "minimum": 90.9,
+              "number_of_instances": 113
+            },
+            "4": {
+              "maximum": 147.5,
+              "minimum": 119.2,
+              "number_of_instances": 52
+            },
+            "5": {
+              "maximum": 175.8,
+              "minimum": 147.5,
+              "number_of_instances": 10
+            },
+            "6": {
+              "maximum": 204.1,
+              "minimum": 175.8,
+              "number_of_instances": 0
+            },
+            "7": {
+              "maximum": 232.4,
+              "minimum": 204.1,
+              "number_of_instances": 0
+            },
+            "8": {
+              "maximum": 260.70000000000005,
+              "minimum": 232.4,
+              "number_of_instances": 0
+            },
+            "9": {
+              "maximum": 289.0,
+              "minimum": 260.70000000000005,
+              "number_of_instances": 2
+            }
+          }
+        }
+      }
+    }
+  ]
+}
