@@ -1,5 +1,6 @@
 from __future__ import annotations
 import simpleml.util._jsonLabels_util as config
+import simpleml.util._global_configurations as global_config
 import os
 import pandas as pd
 import numpy as np
@@ -7,12 +8,45 @@ import pyproj
 import re
 from shapely import geometry, ops, wkt, wkb
 
-
-def addGeoStatistics(stats, dataset) -> dict:
+def addGeoStatistics(line, polygon_count) -> dict:
     proj = pyproj.Transformer.from_crs(3857, 4326, always_xy=True).transform
     dirName = os.path.dirname(__file__)
-    filePath = '../../data/ni_areas.tsv'
-    dataFilePath = os.path.join(dirName, filePath)
+    dataFilePath = os.path.join(dirName, global_config.areas_file_path)
+    areas = pd.read_csv(dataFilePath, sep='\t')
+
+    line_occurrence = 0
+    #print(line)
+    for indexArea, area in areas.iterrows():
+        # print('area')
+        # print(area)
+        # print('polygon')
+        polygonArea = area['polygon']
+        # print(polygonArea)
+
+        polygonWKT = wkt.loads(polygonArea)
+        polygonObject = geometry.Polygon(polygonWKT)
+
+        transformedLine = ops.transform(proj, line)
+        # print(transformedLine)
+
+        lineIntersectsPolygon = transformedLine.within(polygonObject)
+        if lineIntersectsPolygon:
+            #print('yes')
+            line_occurrence += 1
+            polygon_id = area['id']
+            if (polygon_id not in polygon_count):
+                polygon_count[polygon_id] = 1
+            else:
+                polygon_count[polygon_id] = polygon_count[polygon_id] + 1
+
+    #print(line_occurrence)
+
+    return line_occurrence
+
+def addGeoStatistics2(stats, dataset) -> dict:
+    proj = pyproj.Transformer.from_crs(3857, 4326, always_xy=True).transform
+    dirName = os.path.dirname(__file__)
+    dataFilePath = os.path.join(dirName, global_config.areas_file_path)
     areas = pd.read_csv(dataFilePath, sep='\t')
 
     x = 0
@@ -34,9 +68,9 @@ def addGeoStatistics(stats, dataset) -> dict:
             lineIntersectsPolygon = transformedLine.within(polygonObject)
             if lineIntersectsPolygon:
                 print('yes')
+                x += 1
 
-            x += 1
-            # print(x)
+    print(x)
 
     return stats
 
@@ -55,16 +89,19 @@ def addHistograms(stats, column, name, number_of_unique_values) -> dict:
     count = []
     division = []
     column = column.dropna()
+    #print(number_of_unique_values)
     if isinstance(column, pd.DataFrame):
         if name == 'geometry':
-            count, division = np.histogram(column['length'], bins=min(10, number_of_unique_values))
+            #print(number_of_unique_values)
+            count, division = np.histogram(column['length'], bins=min(10, 1))
         else:
             count, division = np.histogram(column['strLength'], bins=min(10, number_of_unique_values))
     else:
         if column.dtype == 'bool':
-            count, division = np.histogram(column.astype(int), bins=min(10, number_of_unique_values))
+            count, division = np.histogram(column.astype(int), bins=min(10, 1))
         elif column.dtype != 'datetime64[ns]':
-            count, division = np.histogram(column, bins=min(10, number_of_unique_values))
+            #count, division = np.histogram(column, bins=min(10, number_of_unique_values))
+            a = 2
 
     histograms = [{config.bucketMinimum: i, config.bucketValue: int(j)} for i, j in zip(division, count)]
 
@@ -175,6 +212,10 @@ def addGenericStatistics(column, column_stats):
             totalNumberOfCapitalisedValues += 1
         totalNumberOfCharacters += len(val_str)
         totalNumberOfDigits += len(re.sub("[^0-9]", "", val_str))
+        #print(totalCountOfValidValues)
+
+    if(totalCountOfValidValues == 0):
+        totalCountOfValidValues = 1
 
     column_stats[config.averageNumberOfSpecialCharacters] = totalSpecialCharacters / totalCountOfValidValues
     column_stats[config.averageNumberOfTokens] = totalNumberOfTokens / totalCountOfValidValues
@@ -207,6 +248,7 @@ def addOutlierStatistics(stats, dataset):
 
 def getStatistics(dataset: Dataset) -> dict:
     data = dataset.data
+    #print(data)
 
     stats = {}
     totalRecords = data.shape[0]
@@ -217,9 +259,9 @@ def getStatistics(dataset: Dataset) -> dict:
     for colName in data:
         # colName = data.columns[i]
         stats[colName] = {}
-        # print('type')
-        # print(data[colName].dtype)
-        # print(colName)
+        #print('type')
+        #print(data[colName].dtype)
+        #print(colName)
         column_data = data[colName]
         columnDF = pd.DataFrame(data[colName])
         geometryDF = pd.DataFrame()
@@ -229,13 +271,29 @@ def getStatistics(dataset: Dataset) -> dict:
             column_data = columnDF['strLength']
 
         if colName == 'geometry':
+            line_list = []
+            i = 0
+            polygon_count = {}
             for line in data[colName]:
+                #print(line)
+                #print(i)
+                #print(data['id'])
                 # print(type(data[colName]))
                 # print(line.length)
                 # columnDF['line_len'] = line.length
                 geometryDF = geometryDF.append({"line": line, "length": line.length}, ignore_index=True)
                 column_data = geometryDF
+                addGeoStatistics(line, polygon_count)
+
+                #print(index)
+                #line_list.append(dict({i: int(no_of_occurrences)}))
+                i += 1
+                #print(i)
+            #print(polygon_count)
+            #print(line_list)
+            stats[colName][config.line_accurrence_in_areas] = polygon_count
             # print(geometryDF)
+
 
         stats[colName][config.numberOfNullValues] = int(data[colName].isnull().sum())
 
@@ -247,33 +305,36 @@ def getStatistics(dataset: Dataset) -> dict:
 
         addGenericStatistics(column_data, stats[colName])
 
-        stats[colName][config.numberOfDistinctValues] = data[colName].nunique(dropna=True)
+        stats[colName][config.numberOfDistinctValues] = data[colName].nunique(dropna=True) if data[colName].dtype == 'object' and colName != 'geometry' else 0
 
-        stats[colName][config.median] = data[colName].median()
+        stats[colName][config.median] = data[colName].median() if data[colName].dtype == 'int64' else 0
 
         stats[colName][config.numberOfValues] = int(totalRecords)
 
-        stats[colName][config.mean] = data[colName].mean()
+        stats[colName][config.mean] = data[colName].mean() if data[colName].dtype == 'int64' else 0
 
         stats[colName][config.numberOfValidNonNullValues] = int(data[colName].count())
 
-        stats[colName][config.maximum] = data[colName].max(skipna=True)
+        stats[colName][config.maximum] = data[colName].max(skipna=True) if data[colName].dtype == 'int64' else 0
 
-        stats[colName][config.minimum] = data[colName].min(skipna=True)
+        stats[colName][config.minimum] = data[colName].min(skipna=True) if data[colName].dtype == 'int64' else 0
 
-        stats[colName][config.standardDeviation] = data[colName].std()
+        stats[colName][config.standardDeviation] = data[colName].std() if data[colName].dtype == 'int64' else 0
 
         stats[colName][config.numberOfInvalidValues] = int(data[colName].isna().sum())
 
-        stats[colName][config.histogram] = addHistograms(stats, column_data, colName,
-                                                         stats[colName][config.numberOfDistinctValues])
+        stats[colName][config.histogram] = addHistograms(stats, column_data, colName, stats[colName][config.numberOfDistinctValues])
 
-        stats[colName][config.value_distribution] = addValueDistribution(stats, column_data, colName)
+        stats[colName][config.value_distribution] = addValueDistribution(stats, column_data, colName) if data[colName].dtype == 'object' and colName != 'geometry' else 0
 
         i = i + 1
 
     # sample
     sample = dataset.sample(10)
+    #print(sample.data.head)
+    if 'geometry' in sample.data:
+        sample.data = sample.data.drop(labels='geometry', axis=1)
+    #print('new sample: ', sample.data)
     dataset.data_sample = sample.data
     dataset.addSample()
 
@@ -295,7 +356,7 @@ def getStatistics(dataset: Dataset) -> dict:
 
     # addValueDistributions(stats, dataset)
     # addHistograms(stats, dataset)
-    # addGeoStatistics(stats, dataset)
+    #addGeoStatistics(stats, dataset)
     # addOutlierStatistics(stats, dataset)
     # transformStatistics(stats)
 

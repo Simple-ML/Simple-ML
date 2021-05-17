@@ -5,6 +5,7 @@ import os
 # import Statistics
 
 from simpleml.dataset import getStatistics
+import simpleml.util._jsonLabels_util as config
 
 import pandas as pd  # For data processing
 import numpy as np  # For huge arrays and matrices
@@ -14,8 +15,9 @@ from plpygis import Geometry
 from shapely import wkt, wkb
 import geopandas
 import simpleml.util._jsonLabels_util as config
+import simpleml.util._global_configurations as global_config
 
-data_folder_name = '../../../data/'  # TODO: Configure globally
+#data_folder_name = '../../../data/'  # TODO: Configure globally
 
 
 class Dataset:
@@ -131,7 +133,7 @@ class Dataset:
 
         # TODO: Create global config file where we define the data folder path
         dirName = os.path.dirname(__file__)
-        dataFilePath = os.path.join(dirName, data_folder_name, self.fileName)
+        dataFilePath = os.path.join(dirName, global_config.data_folder_name, self.fileName)
 
         # TODO: Check infer_datetime_format
         parse_dates = []
@@ -140,7 +142,7 @@ class Dataset:
                 parse_dates.append(attribute)
                 self.data_types[attribute] = np.str
 
-        self.data = pd.read_csv(dataFilePath, sep=sep, dtype=self.data_types, parse_dates=parse_dates)
+        self.data = pd.read_csv(dataFilePath, sep=sep, dtype=self.data_types, parse_dates=parse_dates, na_values=self.null_value)
 
         # parse geo data
         # WKT columns
@@ -186,6 +188,11 @@ class Dataset:
         if self.data is None:
             self.readFile(self.separator)
         return self.data[column_identifier]
+
+    def getColumnNames(self):
+        if self.data is None:
+            self.readFile(self.separator)
+        return self.data.columns.values.tolist()
 
     def getRow(self, row_number):
         if self.data is None:
@@ -260,3 +267,45 @@ def loadDataset(datasetID: str) -> Dataset:
     # dataset.spatial_columns = ["geometry"]
 
     return dataset
+
+def readDataSetFromCSV(file_name: str, dataset_name: str) -> Dataset:
+    from simpleml.data_catalog import addDomainModel, addStatistics
+    #dataset = getDataset(datasetID)
+
+    # TODO: From the data catalog, get the list of temporal and spatial columns. Currently, we have them here fixed in the code.
+    # dataset.spatial_columns = ["geometry"]
+
+    dir_name = os.path.dirname(__file__)
+    data_file_path = os.path.join(dir_name, global_config.data_folder_name, file_name)
+
+    has_header = checkHeader(data_file_path)
+    separator = detectSeparator(data_file_path)
+
+    #data = pd.read_csv(data_file_path)
+
+    dataset = Dataset(id='', title=dataset_name, fileName=file_name, hasHeader=has_header, separator=separator,
+                      null_value='', description='', topics=[],
+                      number_of_instances=1)
+
+    #print(dataset)
+
+    #addDomainModel(dataset)
+    #addStatistics(dataset)
+    #getStatistics(dataset)
+
+    return dataset
+
+def checkHeader(file):
+    with open(file) as f:
+        first = f.read(1)
+    return first not in '.-0123456789'
+
+def detectSeparator(file):
+    with open(file, 'r') as csv_file:
+        header = csv_file.readline()
+        if header.find(";") != -1:
+            return ";"
+        if header.find(",") != -1:
+            return ","
+    #default delimiter (MS Office export)
+    return ";"

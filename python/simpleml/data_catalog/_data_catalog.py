@@ -216,7 +216,7 @@ def addSample(dataset: Dataset):
     for result in results["results"]["bindings"]:
         sample_string += result["content"]["value"] + "\n"
 
-    dataset.data_sample = pd.read_csv(StringIO(sample_string), sep="\t", header=0)
+    dataset.data_sample = pd.read_csv(StringIO(sample_string), sep="\t", header=0, na_values='')
 
     dataset.addSample()
 

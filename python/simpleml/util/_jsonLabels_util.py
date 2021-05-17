@@ -14,6 +14,7 @@ number_of_instances = 'number_of_instances'
 
 attribute_label = 'label'
 
+line_accurrence_in_areas = 'lineAccurrenceInAreas'
 numberOfNullValues = 'numberOfNullValues'
 decile = 'decile'
 quartile = 'quartile'
