@@ -1,14 +1,19 @@
 ## Simple-ML Wiki
-* [DSL][dsl]
-* [Front End][frontend]
-* StdLib
-* [Runtime Server][runtime]
-* [Data API][data_api]
-   * [Data Set API][data_set_api]
-   * [Data Catalog API][data_catalog_api]
-   * [Machine Learning Catalog API][ml_catalog_api]
+* Tutorial
 
+* [Installation][installation]
 
+* Components
+   * [DSL][dsl]
+   * [Front End][frontend]
+   * StdLib
+   * [Runtime Server][runtime]
+   * [Data API][data_api]
+      * [Data Set API][data_set_api]
+      * [Data Catalog API][data_catalog_api]
+      * [Machine Learning Catalog API][ml_catalog_api]
+
+[installation]: https://github.com/Anzumana/Simple-ML/wiki/installation
 [dsl]: https://github.com/Anzumana/Simple-ML/wiki/Language-Tutorial
 [data_api]: https://github.com/Anzumana/Simple-ML/wiki/Data-API
 [data_set_api]: https://github.com/Anzumana/Simple-ML/wiki/Data-Set-API
