@@ -1,7 +1,9 @@
 # ![Simple-ML](https://simple-ml.de/wp-content/uploads/2019/05/Simple-ML-Logo-03-e1557838304632.png)
 
-**Simple-ML is a project funded by the German Federal Ministry of Education and Research (BMBF).
-Our goal is to increase the usability of creating make machine learning workflows.**
+**Simple-ML is a project funded by the German Federal Ministry of Education and Research (BMBF). Our goal is to increase the usability of creating make machine learning workflows.**
+
+* [Website](https://simple-ml.de/)
+* [Twitter](https://twitter.com/MlSimple)
 
 The efficient application of current Machine Learning (ML) procedures requires a very high level of expert knowledge, which stands in the way of a widespread use of ML approaches, especially by small and medium-sized enterprises. The goal of the Simple-ML project is to significantly improve the usability of ML processes in order to make them more accessible to a broad user group.
 
