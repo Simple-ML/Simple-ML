@@ -1,4 +1,4 @@
-![Simple-ML Logo](https://simple-ml.de/wp-content/uploads/2019/05/Simple-ML-Logo-03-e1557838304632.png)
+# ![Simple-ML](https://simple-ml.de/wp-content/uploads/2019/05/Simple-ML-Logo-03-e1557838304632.png)
 
 **Simple-ML is a project funded by the German Federal Ministry of Education and Research (BMBF). Our goal is to increase the usability of creating make machine learning workflows.**
 
