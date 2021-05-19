@@ -3,3 +3,9 @@ scikit-learn
 torch
 requests
 shapely
+jsonpickle
+websockets
+geopandas
+plpygis
+matplotlib
+pyproj
