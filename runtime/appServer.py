@@ -117,15 +117,20 @@ async def requestHandler(websocket, path):
                     print("error: {0}\n".format(exc))
                     log = open('runtime/error.log', 'a')
                     log.write("error: {0}".format(exc))
-            elif data["action"] == "use_model":
+            elif data["action"] == "predict":
+                model = PlaceholderMap[data["prediciton"]["model_name"]]
+                data= PlaceholderMap[data["prediciton"]["data"]]
+                model.predict(data)
                 if MODEL==None:
                     print("")
                 else:
-                    MODEL.fit(data["data"])
+                    PlaceholderMap[data["prediciton"]["model_name"]].fit(data["prediction"]["data_sample"])
+                    # MODEL.fit(data["data"])
             elif data["action"] == "get_stats":
                 dataset=PlaceholderMap[data["placeholder"]["sessionId"]][data["placeholder"]["name"]]
-                stats=getStatistics(dataset)
 
+                stats=getStatistics(dataset)
+                stats=jsonpickler.flatten(stats)
                 await notify_placeholder(json.dumps({"type": "[placeholder]:STATS", "sessionId": data["placeholder"]["sessionId"],
                                                      "description": "Stats of a placeholder dataset",
                                                      "dataset_name": data["placeholder"]["name"],
