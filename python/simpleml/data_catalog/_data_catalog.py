@@ -32,7 +32,7 @@ def getDatasets(domain=None, topic=None):
         identifier = result["identifier"]["value"]
         topics = result["subjects"]["value"].split(";")
         number_of_instances = int(result["numberOfInstances"]["value"])
-        dataset = Dataset(id=identifier, title=title, topics=topics, number_of_instances=number_of_instances)
+        dataset = Dataset(id=identifier, title=title, subjects={lang:topics}, number_of_instances=number_of_instances)
         datasets.append(dataset)
     return datasets
 
@@ -122,8 +122,8 @@ def getDataset(dataset_id: str) -> Dataset:
 
     # TODO: Assign spatial columns
     dataset = Dataset(id=dataset_id, title=title, fileName=file_name, hasHeader=has_header, separator=separator,
-                      null_value=null_value, description=description, topics=topics,
-                      number_of_instances=number_of_instances)
+                      null_value=null_value, description=description, subjects={lang:topics},
+                      number_of_instances=number_of_instances, titles={lang: title}, descriptions={lang: description})
 
     addDomainModel(dataset)
     addStatistics(dataset)
