@@ -245,7 +245,7 @@ class Dataset:
 
         for attribute in self.attributes:
             profile_attributes[attribute] = {}
-            profile_attributes[config.attribute_label] = self.attribute_labels[attribute]
+            profile_attributes[attribute][config.attribute_label] = self.attribute_labels[attribute]
             if attribute in self.stats:
                 profile_attributes[attribute][config.statistics] = self.stats[attribute]
 
