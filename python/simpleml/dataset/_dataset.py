@@ -17,16 +17,17 @@ import geopandas
 import simpleml.util._jsonLabels_util as config
 import simpleml.util._global_configurations as global_config
 
-#data_folder_name = '../../../data/'  # TODO: Configure globally
+
+# data_folder_name = '../../../data/'  # TODO: Configure globally
 
 
 class Dataset:
-    def __init__(self, id: str = None, title: str = None, description: str = None, topics=[], fileName: str = None,
-                 hasHeader: bool = True, null_value="", separator=",", number_of_instances: int = None):
+    def __init__(self, id: str = None, title: str = None, description: str = None, fileName: str = None,
+                 hasHeader: bool = True, null_value="", separator=",", number_of_instances: int = None,
+                 titles: dict = None, descriptions: dict = None, subjects: dict = None):
         self.id = id
         self.title = title
         self.description = description
-        self.topics = topics
         self.fileName = fileName
         self.data = None
         self.hasHeader = hasHeader
@@ -46,6 +47,9 @@ class Dataset:
         self.attributes = []
         self.sample_for_profile = None
         self.number_of_instances = number_of_instances
+        self.titles = titles
+        self.descriptions = descriptions
+        self.subjects = subjects
 
     def sample(self, nInstances: int) -> Dataset:
 
@@ -142,7 +146,8 @@ class Dataset:
                 parse_dates.append(attribute)
                 self.data_types[attribute] = np.str
 
-        self.data = pd.read_csv(dataFilePath, sep=sep, dtype=self.data_types, parse_dates=parse_dates, na_values=self.null_value)
+        self.data = pd.read_csv(dataFilePath, sep=sep, dtype=self.data_types, parse_dates=parse_dates,
+                                na_values=self.null_value)
 
         # parse geo data
         # WKT columns
@@ -205,7 +210,7 @@ class Dataset:
         return self.data.loc[row_number_start: row_number_end]
 
     def copy(self, basic_data_only: bool = False):
-        copy = Dataset(id=None, title=self.title, topics=self.topics, description=self.description,
+        copy = Dataset(id=None, title=self.title, subjects=self.subjects, description=self.description,
                        separator=self.separator,
                        null_value=self.null_value,
                        fileName=self.fileName,
@@ -225,7 +230,7 @@ class Dataset:
         if not self.stats:
             self.getStatistics()
 
-        profile[config.topics] = self.topics
+        profile[config.topics] = self.subjects
         profile[config.title] = self.title
         if self.description:
             profile[config.description] = self.description
@@ -268,9 +273,10 @@ def loadDataset(datasetID: str) -> Dataset:
 
     return dataset
 
+
 def readDataSetFromCSV(file_name: str, dataset_name: str) -> Dataset:
     from simpleml.data_catalog import addDomainModel, addStatistics
-    #dataset = getDataset(datasetID)
+    # dataset = getDataset(datasetID)
 
     # TODO: From the data catalog, get the list of temporal and spatial columns. Currently, we have them here fixed in the code.
     # dataset.spatial_columns = ["geometry"]
@@ -281,24 +287,26 @@ def readDataSetFromCSV(file_name: str, dataset_name: str) -> Dataset:
     has_header = checkHeader(data_file_path)
     separator = detectSeparator(data_file_path)
 
-    #data = pd.read_csv(data_file_path)
+    # data = pd.read_csv(data_file_path)
 
     dataset = Dataset(id='', title=dataset_name, fileName=file_name, hasHeader=has_header, separator=separator,
                       null_value='', description='', topics=[],
                       number_of_instances=1)
 
-    #print(dataset)
+    # print(dataset)
 
-    #addDomainModel(dataset)
-    #addStatistics(dataset)
-    #getStatistics(dataset)
+    # addDomainModel(dataset)
+    # addStatistics(dataset)
+    # getStatistics(dataset)
 
     return dataset
+
 
 def checkHeader(file):
     with open(file) as f:
         first = f.read(1)
     return first not in '.-0123456789'
+
 
 def detectSeparator(file):
     with open(file, 'r') as csv_file:
@@ -307,5 +315,5 @@ def detectSeparator(file):
             return ";"
         if header.find(",") != -1:
             return ","
-    #default delimiter (MS Office export)
+    # default delimiter (MS Office export)
     return ";"
