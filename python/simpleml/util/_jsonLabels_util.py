@@ -1,4 +1,14 @@
+import numpy as np
+
 lang = 'de'
+type = 'type'
+
+type_table = 'table'
+type_table_values = 'lines'
+type_table_data_types = 'data_types'
+type_table_header_labels = 'header_labels'
+
+data_type_labels = {np.float64: 'float', np.integer: 'integer'}
 
 statistics = 'statistics'
 attributes = 'attributes'
