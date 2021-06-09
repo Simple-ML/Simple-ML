@@ -217,6 +217,7 @@ class Dataset:
                        hasHeader=self.hasHeader)
         copy.attribute_labels = self.attribute_labels.copy()
         copy.attributes = self.attributes.copy()
+        copy.data_types = self.data_types.copy()
 
         if not basic_data_only:
             if self.data is not None:
@@ -260,9 +261,13 @@ class Dataset:
 
     def addSample(self):
         sample_as_list = self.data_sample.values.tolist()
-        self.sample_info = {config.sample_lines: sample_as_list,
-                            config.sample_header_labels: list(self.attribute_labels.values())}
-
+        data_types = []
+        for attribute in self.attributes:
+            data_types.append(config.data_type_labels[self.data_types[attribute]])
+        self.sample_info = {config.type: config.type_table,
+                            config.type_table_values: sample_as_list,
+                            config.type_table_header_labels: list(self.attribute_labels.values()),
+                            config.type_table_data_types: data_types}
 
 def loadDataset(datasetID: str) -> Dataset:
     from simpleml.data_catalog import getDataset
