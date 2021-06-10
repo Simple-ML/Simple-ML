@@ -65,7 +65,6 @@ def addQuantiles(column, name, bins, transform_timestamp=False) -> dict:
     quantiles = pd.qcut(column, bins, retbins=True, labels=False, duplicates='drop')[1].tolist()
     if transform_timestamp:
         quantiles = [get_pd_timestamp(item) for item in quantiles]
-    print("Q:",quantiles)
     return quantiles
 
 
