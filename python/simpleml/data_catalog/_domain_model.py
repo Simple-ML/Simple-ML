@@ -7,6 +7,7 @@ from rdflib.namespace import DC, DCTERMS, OWL, RDF, RDFS, XSD
 from rdflib import Literal
 from rdflib.plugins.sparql.datatypes import type_promotion
 import numpy as np
+import pandas as pd
 
 SML = rdflib.Namespace('https://simple-ml.de/resource/')
 
@@ -53,7 +54,7 @@ def getPythonType(data_type):
     try:
         # integer?
         if type_promotion(data_type, XSD.integer) == XSD.integer:
-            return np.integer
+            return pd.Int32Dtype()
     except TypeError:
         pass
     try:

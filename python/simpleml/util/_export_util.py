@@ -1,7 +1,7 @@
 import json
 from pandas import DataFrame
 from json import encoder
-from numpy import datetime64, int64
+from numpy import datetime64, int64, bool_, int32
 import pandas as pd
 import simpleml.util._jsonLabels_util as config
 
@@ -19,16 +19,21 @@ def round_floats_and_transform_temporal(o, precision):
 
     if isinstance(o, (datetime64)):
         ts = pd.to_datetime(str(o))
-        if config.lang == 'de':
-            d = ts.strftime('%d.%m.%Y, %H:%M:%S')
-        else:
-            d = ts.strftime('%Y-%m-%d %H:%M:%S')
-        return d
+        return ts.strftime(config.datetime_format[config.lang])
 
-    if isinstance(o, (int64)):
+    elif isinstance(o, (int64)) or isinstance(o, (int32)):
         return int(o)
 
-    if isinstance(o, float): return round(o, precision)
-    if isinstance(o, dict): return {k: round_floats_and_transform_temporal(v, precision) for k, v in o.items()}
-    if isinstance(o, (list, tuple)): return [round_floats_and_transform_temporal(x, precision) for x in o]
+    elif isinstance(o, (bool_)):
+        return str(o)
+
+    elif isinstance(o, (pd.Timestamp)):
+        return o.strftime(config.datetime_format[config.lang])
+
+    elif isinstance(o, float):
+        return round(o, precision)
+    elif isinstance(o, dict):
+        return {k: round_floats_and_transform_temporal(v, precision) for k, v in o.items()}
+    elif isinstance(o, (list, tuple)):
+        return [round_floats_and_transform_temporal(x, precision) for x in o]
     return o

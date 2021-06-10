@@ -13,6 +13,7 @@ SELECT ?dataset ?identifier (GROUP_CONCAT(DISTINCT ?subject; SEPARATOR = ";") AS
 ?dataset dcterms:subject ?subject .
 ?dataset dcterms:title ?titleWithLang .
 ?dataset sml:numberOfInstances ?numberOfInstances .
+FILTER (datatype(?numberOfInstances) = xsd:nonNegativeInteger) .
 
 #topicFilter FILTER EXISTS { ?dataset dcterms:subject "@topic@"@@lang@ } .
 

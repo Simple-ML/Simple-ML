@@ -50,6 +50,7 @@ class Dataset:
         self.titles = titles
         self.descriptions = descriptions
         self.subjects = subjects
+        self.simple_data_types = {}
 
     def sample(self, nInstances: int) -> Dataset:
 
@@ -145,18 +146,29 @@ class Dataset:
             if data_type == np.datetime64:
                 parse_dates.append(attribute)
                 self.data_types[attribute] = np.str
+                self.simple_data_types[attribute] = config.type_datetime
+            elif data_type == np.integer or data_type == pd.Int32Dtype():
+                self.simple_data_types[attribute] = config.type_numeric
+            elif data_type == np.float64:
+                self.simple_data_types[attribute] = config.type_numeric
+            elif data_type == np.bool:
+                self.simple_data_types[attribute] = config.type_bool
+            else:
+                self.simple_data_types[attribute] = config.type_string
 
         self.data = pd.read_csv(dataFilePath, sep=sep, dtype=self.data_types, parse_dates=parse_dates,
-                                na_values=self.null_value)
+                                na_values=self.null_value, usecols=self.attributes)
 
         # parse geo data
         # WKT columns
         for wkt_column in self.wkt_columns:
             self.data[wkt_column] = self.data[wkt_column].apply(wkt.loads)
+            self.simple_data_types[wkt_column] = config.type_geometry
         # WKB columns
         for wkb_column in self.wkb_columns:
             self.data[wkb_column] = self.data[wkb_column].apply(wkb.loads, hex=True)
         # latitude/longitude pairs
+            self.simple_data_types[wkb_column] = config.type_geometry
 
         lon_lat_pair_number = 1
         for lon_lat_pair in self.lon_lat_pairs:
@@ -175,7 +187,10 @@ class Dataset:
                 column_name += str(lon_lat_pair_number)
             self.data[column_name] = geopandas.points_from_xy(self.data[lon_lat_pair["longitude"]],
                                                               self.data[lon_lat_pair["latitude"]])
+            self.simple_data_types[column_name] = config.type_geometry
             lon_lat_pair_number += 1
+
+        print(self.simple_data_types)
 
     def addColumnDescription(self, attribute_identifier, resource_node, domain_node, property_node, value_type,
                              attribute_label):
@@ -183,6 +198,7 @@ class Dataset:
         self.attribute_graph[attribute_identifier] = {"resource": resource_node, "property": property_node,
                                                       "class": domain_node}
         self.data_types[attribute_identifier] = value_type
+
         self.attribute_labels[attribute_identifier] = attribute_label
 
     def getJson(self):
@@ -218,6 +234,7 @@ class Dataset:
         copy.attribute_labels = self.attribute_labels.copy()
         copy.attributes = self.attributes.copy()
         copy.data_types = self.data_types.copy()
+        copy.simple_data_types = self.simple_data_types.copy()
 
         if not basic_data_only:
             if self.data is not None:
@@ -226,7 +243,7 @@ class Dataset:
 
     def getProfile(self):
 
-        profile = {}
+        profile = { "type": config.type_dataset }
 
         if not self.stats:
             self.getStatistics()

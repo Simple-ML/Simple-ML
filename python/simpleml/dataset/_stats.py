@@ -7,72 +7,21 @@ import numpy as np
 import pyproj
 import re
 from shapely import geometry, ops, wkt, wkb
+from shapely.geometry import Point, LineString, Polygon
+import time
+from datetime import datetime as datet
 
-def addGeoStatistics(line, polygon_count) -> dict:
-    proj = pyproj.Transformer.from_crs(3857, 4326, always_xy=True).transform
-    dirName = os.path.dirname(__file__)
-    dataFilePath = os.path.join(dirName, global_config.areas_file_path)
-    areas = pd.read_csv(dataFilePath, sep='\t')
 
-    line_occurrence = 0
-    #print(line)
-    for indexArea, area in areas.iterrows():
-        # print('area')
-        # print(area)
-        # print('polygon')
-        polygonArea = area['polygon']
-        # print(polygonArea)
-
-        polygonWKT = wkt.loads(polygonArea)
-        polygonObject = geometry.Polygon(polygonWKT)
-
-        transformedLine = ops.transform(proj, line)
-        # print(transformedLine)
+def addSpatialValueDistribution(geometry_object, polygon_count, areas, proj) -> dict:
+    for polygon_id, polygonObject in areas.items():
+        transformedLine = ops.transform(proj, geometry_object)
 
         lineIntersectsPolygon = transformedLine.within(polygonObject)
         if lineIntersectsPolygon:
-            #print('yes')
-            line_occurrence += 1
-            polygon_id = area['id']
             if (polygon_id not in polygon_count):
                 polygon_count[polygon_id] = 1
             else:
                 polygon_count[polygon_id] = polygon_count[polygon_id] + 1
-
-    #print(line_occurrence)
-
-    return line_occurrence
-
-def addGeoStatistics2(stats, dataset) -> dict:
-    proj = pyproj.Transformer.from_crs(3857, 4326, always_xy=True).transform
-    dirName = os.path.dirname(__file__)
-    dataFilePath = os.path.join(dirName, global_config.areas_file_path)
-    areas = pd.read_csv(dataFilePath, sep='\t')
-
-    x = 0
-    for indexArea, area in areas.iterrows():
-        # print('area')
-        # print(area)
-        # print('polygon')
-        polygonArea = area['polygon']
-        # print(polygonArea)
-
-        polygonWKT = wkt.loads(polygonArea)
-        polygonObject = geometry.Polygon(polygonWKT)
-
-        for indexData, data in dataset.data.iterrows():
-            line = data['geometry']
-            transformedLine = ops.transform(proj, line)
-            # print(transformedLine)
-
-            lineIntersectsPolygon = transformedLine.within(polygonObject)
-            if lineIntersectsPolygon:
-                print('yes')
-                x += 1
-
-    print(x)
-
-    return stats
 
 
 def addValueDistribution(stats, column, name) -> dict:
@@ -85,110 +34,62 @@ def addValueDistribution(stats, column, name) -> dict:
     return value_distribution
 
 
-def addHistograms(stats, column, name, number_of_unique_values) -> dict:
+def addHistograms(stats, column, name, number_of_unique_values, transform_timestamp=False) -> dict:
     count = []
     division = []
     column = column.dropna()
-    #print(number_of_unique_values)
-    if isinstance(column, pd.DataFrame):
-        if name == 'geometry':
-            #print(number_of_unique_values)
-            count, division = np.histogram(column['length'], bins=min(10, 1))
-        else:
-            count, division = np.histogram(column['strLength'], bins=min(10, number_of_unique_values))
-    else:
-        if column.dtype == 'bool':
-            count, division = np.histogram(column.astype(int), bins=min(10, 1))
-        elif column.dtype != 'datetime64[ns]':
-            #count, division = np.histogram(column, bins=min(10, number_of_unique_values))
-            a = 2
+
+    count, division = np.histogram(column, bins=min(10, number_of_unique_values))
 
     histograms = [{config.bucketMinimum: i, config.bucketValue: int(j)} for i, j in zip(division, count)]
 
     # add bucket maximum from the column maximum and the bucket minimum of the next bucket
-    bucket_maximum = stats[name][config.maximum]
+    bucket_maximum = stats[name][config.maximum][config.type_numeric_value]
     for i in range(len(histograms) - 1, -1, -1):
         bucket = histograms[i]
         bucket[config.bucketMaximum] = bucket_maximum
         bucket_maximum = bucket[config.bucketMinimum]
 
+    if transform_timestamp:
+        i = 0
+        for bucket in histograms:
+            i += 1
+            bucket[config.bucketMinimum] = get_pd_timestamp(bucket[config.bucketMinimum])
+            if i < len(histograms): # the last bucket maximum is date already
+                bucket[config.bucketMaximum] = get_pd_timestamp(bucket[config.bucketMaximum])
+
     return histograms
 
 
-def addDecile(column, name) -> dict:
-    decileOutput = {}
-    decileList = []
-    decileResult2 = []
-    if isinstance(column, pd.DataFrame):
-        if name == 'geometry':
-            decileResult = pd.qcut(column['length'], 10, retbins=True, labels=False, duplicates='drop')
-            decileResult2 = decileResult[1]
-        else:
-            decileResult = pd.qcut(column['strLength'], 10, retbins=True, labels=False, duplicates='drop')
-            decileResult2 = decileResult[1]
-    else:
-        if column.dtype == 'bool':
-            decileResult = pd.qcut(column.astype(int), 10, retbins=True, labels=False, duplicates='drop')
-            decileResult2 = decileResult[1]
-        elif column.dtype == 'datetime64[ns]':
-            # print(pd.Series.dt.strftime(column))
-            # date64 = np.datetime64(column)
-            # time_stamp = (date64 - np.datetime64('1970-01-01T00:00:00Z')) / np.timedelta64(1, 's')
-            # print(time_stamp)
-            time_stamp = column
-
-        else:
-            decileResult = pd.qcut(column, 10, retbins=True, labels=False, duplicates='drop')
-            decileResult2 = decileResult[1]
-
-    for val in decileResult2:
-        decileList.append(dict({'value': float("{:.2f}".format(val))}))
-
-    decileOutput[config.values] = decileList
-
-    return decileOutput
+def addQuantiles(column, name, bins, transform_timestamp=False) -> dict:
+    quantiles = pd.qcut(column, bins, retbins=True, labels=False, duplicates='drop')[1].tolist()
+    if transform_timestamp:
+        quantiles = [get_pd_timestamp(item) for item in quantiles]
+    print("Q:",quantiles)
+    return quantiles
 
 
-def addQuartile(column, name) -> dict:
-    quartile_output = {}
-    quartile_list = []
-    quartile_result2 = []
-    if isinstance(column, pd.DataFrame):
-        if name == 'geometry':
-            quartile_result = pd.qcut(column['length'], 4, retbins=True, labels=False, duplicates='drop')
-            quartile_result2 = quartile_result[1]
-        else:
-            quartile_result = pd.qcut(column['strLength'], 4, retbins=True, labels=False, duplicates='drop')
-            quartile_result2 = quartile_result[1]
-    else:
-        if column.dtype == 'bool':
-            quartile_result = pd.qcut(column.astype(int), 4, retbins=True, labels=False, duplicates='drop')
-            quartile_result2 = quartile_result[1]
-        elif column.dtype != 'datetime64[ns]':
-            quartile_result = pd.qcut(column, 4, retbins=True, labels=False, duplicates='drop')
-            quartile_result2 = quartile_result[1]
+def addNumericValue(column_stats, name, value, data_type=None, transform_timestamp=False):
+    simple_type = config.type_numeric
 
-    for val in quartile_result2:
-        quartile_list.append(dict({'value': float("{:.2f}".format(val))}))
+    if transform_timestamp:
+        value = get_pd_timestamp(value)
+        data_type = config.type_datetime
+        simple_type = config.type_datetime
 
-    quartile_output[config.values] = quartile_list
-
-    return quartile_output
+    column_stats[name] = createNumericValue(name, value, simple_type, data_type)
 
 
-def countAverageNumberOfDigits(column):
-    totalDigits = 0
-    for val in column:
-        for character in str(val):
-            if character.isdigit():
-                totalDigits += 1
-
-    avgDigits = totalDigits / column.shape[0]
-
-    return float(avgDigits)
+def createNumericValue(name, value, simple_type, data_type=None):
+    if not data_type:
+        data_type = config.data_type_labels[type(value)]
+    return {config.type: simple_type,
+            config.type_numeric_data_type: data_type,
+            config.type_numeric_value: value,
+            config.i18n_id: name}
 
 
-def addGenericStatistics(column, column_stats):
+def addGenericStatistics(column, column_stats, column_type):
     # TODO: for efficiency and to avoid number overflow: don't compute total sum
     totalSpecialCharacters = 0
     totalNumberOfTokens = 0
@@ -212,16 +113,23 @@ def addGenericStatistics(column, column_stats):
             totalNumberOfCapitalisedValues += 1
         totalNumberOfCharacters += len(val_str)
         totalNumberOfDigits += len(re.sub("[^0-9]", "", val_str))
-        #print(totalCountOfValidValues)
+        # print(totalCountOfValidValues)
 
-    if(totalCountOfValidValues == 0):
+    if (totalCountOfValidValues == 0):
         totalCountOfValidValues = 1
 
-    column_stats[config.averageNumberOfSpecialCharacters] = totalSpecialCharacters / totalCountOfValidValues
-    column_stats[config.averageNumberOfTokens] = totalNumberOfTokens / totalCountOfValidValues
-    column_stats[config.averageNumberOfCapitalisedValues] = totalNumberOfCapitalisedValues / totalCountOfValidValues
-    column_stats[config.averageNumberOfCharacters] = totalNumberOfCharacters / totalCountOfValidValues
-    column_stats[config.averageNumberOfDigits] = totalNumberOfDigits / totalCountOfValidValues
+    if column_type == config.type_string:
+        addNumericValue(column_stats, config.averageNumberOfSpecialCharacters,
+                        totalSpecialCharacters / totalCountOfValidValues)
+    if column_type == config.type_string:
+        addNumericValue(column_stats, config.averageNumberOfTokens, totalNumberOfTokens / totalCountOfValidValues)
+    if column_type == config.type_string:
+        addNumericValue(column_stats, config.averageNumberOfCapitalisedValues,
+                        totalNumberOfCapitalisedValues / totalCountOfValidValues)
+    if column_type == config.type_string:
+        addNumericValue(column_stats, config.averageNumberOfCharacters,
+                        totalNumberOfCharacters / totalCountOfValidValues)
+    addNumericValue(column_stats, config.averageNumberOfDigits, totalNumberOfDigits / totalCountOfValidValues)
 
 
 def countAverageNumberOfCapitalisedValues(column):
@@ -246,136 +154,156 @@ def addOutlierStatistics(stats, dataset):
     pass
 
 
+def get_polygon_area(area):
+    # TODO: return area in qm
+    return area.area
+
+
+def get_line_length(line):
+    # TODO: return length in meters
+    return line.length
+
+
+def get_timestamp(value):
+    return time.mktime(value.timetuple())
+
+def get_pd_timestamp(datetime):
+    return pd.Timestamp(datetime, unit='s')
+
+def get_datetime_string(datetime):
+    return datet.fromtimestamp(datetime).strftime(config.datetime_format[config.lang])
+
 def getStatistics(dataset: Dataset) -> dict:
     data = dataset.data
-    #print(data)
+    # print(data)
 
     stats = {}
     totalRecords = data.shape[0]
     i = 0
+    areas = None
 
     dataset.number_of_instances = data.shape[0]
 
     for colName in data:
-        # colName = data.columns[i]
+
+        simple_type = dataset.simple_data_types[colName]
         stats[colName] = {}
-        #print('type')
-        #print(data[colName].dtype)
-        #print(colName)
-        column_data = data[colName]
-        columnDF = pd.DataFrame(data[colName])
-        geometryDF = pd.DataFrame()
-        if data[colName].dtype == 'object':
-            columnDF['strLength'] = data[colName].str.len()
-            column_data = columnDF['strLength']
-            column_data = columnDF['strLength']
+        transform_timestamp = False
 
-        if colName == 'geometry':
-            line_list = []
-            i = 0
+        if simple_type == config.type_string:
+            # string statistics are based on string length
+            column_data = data[colName].str.len()
+        elif simple_type == config.type_geometry:
             polygon_count = {}
-            for line in data[colName]:
-                #print(line)
-                #print(i)
-                #print(data['id'])
-                # print(type(data[colName]))
-                # print(line.length)
-                # columnDF['line_len'] = line.length
-                geometryDF = geometryDF.append({"line": line, "length": line.length}, ignore_index=True)
-                column_data = geometryDF
-                addGeoStatistics(line, polygon_count)
 
-                #print(index)
-                #line_list.append(dict({i: int(no_of_occurrences)}))
-                i += 1
-                #print(i)
-            #print(polygon_count)
-            #print(line_list)
-            stats[colName][config.line_accurrence_in_areas] = polygon_count
-            # print(geometryDF)
+            # TODO: Add fine-grained geo type earlier
+            geo_type = Point
 
+            if not areas:
+                proj = pyproj.Transformer.from_crs(3857, 4326, always_xy=True).transform
+                dirName = os.path.dirname(__file__)
+                dataFilePath = os.path.join(dirName, global_config.areas_file_path)
+                areas_df = pd.read_csv(dataFilePath, sep='\t')
 
-        stats[colName][config.numberOfNullValues] = int(data[colName].isnull().sum())
+                areas = {}
+                for indexArea, area in areas_df.iterrows():
+                    polygonArea = area['polygon']
+                    polygonWKT = wkt.loads(polygonArea)
+                    polygonObject = geometry.Polygon(polygonWKT)
+                    areas[area['id']] = polygonObject
 
-        stats[colName][config.decile] = addDecile(column_data, colName)
+            for geometry_object in data[colName]:
+                if type(geometry_object) == Polygon:
+                    geo_type = Polygon
+                elif type(geometry_object) == LineString and geo_type == Point:
+                    geo_type = LineString
+                addSpatialValueDistribution(geometry_object, polygon_count, areas, proj)
 
-        stats[colName][config.quartile] = addQuartile(column_data, colName)
+            stats[colName][config.spatialValueDistribution] = polygon_count
+            if geo_type == Polygon:
+                column_data = data[colName].apply(area)
+            elif geo_type == LineString:
+                column_data = data[colName].apply(get_line_length)
+            else:
+                # TODO: No statistics for points
+                pass
+        elif simple_type == config.type_datetime:
+            column_data = data[colName].apply(get_timestamp)
+            transform_timestamp = True
+        else:
+            column_data = data[colName]
 
-        stats[colName][config.numberOfValidValues] = int(totalRecords)
+        column = data[colName]
 
-        addGenericStatistics(column_data, stats[colName])
+        addNumericValue(stats[colName], config.numberOfNullValues, int(column.isnull().sum()))
+        addNumericValue(stats[colName], config.numberOfValidValues, int(totalRecords))
+        addNumericValue(stats[colName], config.numberOfInvalidValues, int(data[colName].isna().sum()))
+        addNumericValue(stats[colName], config.numberOfValues, int(totalRecords), data_type=config.type_integer)
+        addNumericValue(stats[colName], config.numberOfValidNonNullValues, int(data[colName].count()),
+                        data_type=config.type_integer)
 
-        stats[colName][config.numberOfDistinctValues] = data[colName].nunique(dropna=True) if data[colName].dtype == 'object' and colName != 'geometry' else 0
+        if simple_type in [config.type_numeric, config.type_string]:
+            addGenericStatistics(column, stats[colName], simple_type)
 
-        stats[colName][config.median] = data[colName].median() if data[colName].dtype == 'int64' else 0
+        # deciles
+        if simple_type in [config.type_numeric, config.type_datetime]:
+            stats[colName][config.deciles] = {config.type: config.type_list,
+                                              config.type_list_values: addQuantiles(column_data, colName, 10,
+                                                                                    transform_timestamp=transform_timestamp)}
 
-        stats[colName][config.numberOfValues] = int(totalRecords)
+        # quartiles
+        if simple_type in [config.type_numeric, config.type_datetime]:
+            stats[colName][config.quartiles] = {config.type: config.type_box_plot,
+                                                config.type_box_plot_values: addQuantiles(column_data, colName, 4,
+                                                                                          transform_timestamp=transform_timestamp)}
 
-        stats[colName][config.mean] = data[colName].mean() if data[colName].dtype == 'int64' else 0
+        # number of distinct values
+        if simple_type == config.type_geometry:
+            number_of_distinct_values = column_data.nunique(dropna=True)
+        elif simple_type != config.type_bool:
+            number_of_distinct_values = data[colName].nunique(dropna=True)
+            addNumericValue(stats[colName], config.numberOfDistinctValues, number_of_distinct_values)
 
-        stats[colName][config.numberOfValidNonNullValues] = int(data[colName].count())
+        # median
+        if simple_type in [config.type_numeric, config.type_datetime]:
+            addNumericValue(stats[colName], config.median, column_data.median(),
+                            transform_timestamp=transform_timestamp)
 
-        stats[colName][config.maximum] = data[colName].max(skipna=True) if data[colName].dtype == 'int64' else 0
+        if simple_type in [config.type_numeric, config.type_datetime]:
+            addNumericValue(stats[colName], config.mean, column_data.mean(), transform_timestamp=transform_timestamp)
 
-        stats[colName][config.minimum] = data[colName].min(skipna=True) if data[colName].dtype == 'int64' else 0
+        if simple_type in [config.type_numeric, config.type_datetime]:
+            addNumericValue(stats[colName], config.maximum, column_data.max(skipna=True),
+                            transform_timestamp=transform_timestamp)
 
-        stats[colName][config.standardDeviation] = data[colName].std() if data[colName].dtype == 'int64' else 0
+        if simple_type in [config.type_numeric, config.type_datetime]:
+            addNumericValue(stats[colName], config.minimum, column_data.min(skipna=True),
+                            transform_timestamp=transform_timestamp)
 
-        stats[colName][config.numberOfInvalidValues] = int(data[colName].isna().sum())
+        if simple_type in [config.type_numeric]:
+            addNumericValue(stats[colName], config.standardDeviation, column_data.std())
 
-        stats[colName][config.histogram] = addHistograms(stats, column_data, colName, stats[colName][config.numberOfDistinctValues])
+        if simple_type in [config.type_numeric, config.type_datetime]:
+            stats[colName][config.histogram] = {config.type: config.type_histogram,
+                                                config.type_histogram_buckets: addHistograms(stats, column_data,
+                                                                                             colName,
+                                                                                             number_of_distinct_values,
+                                                                                             transform_timestamp=transform_timestamp)}
 
-        stats[colName][config.value_distribution] = addValueDistribution(stats, column_data, colName) if data[colName].dtype == 'object' and colName != 'geometry' else 0
+        if simple_type in [config.type_string, config.type_bool]:
+            stats[colName][config.value_distribution] = {config.type: config.type_bar_chart,
+                                                         config.type_bar_chart_bars: addValueDistribution(stats, column,
+                                                                                                          colName)}  # if data[colName].dtype == 'object' and colName != 'geometry' else 0
 
         i = i + 1
 
     # sample
     sample = dataset.sample(10)
-    #print(sample.data.head)
+
     if 'geometry' in sample.data:
         sample.data = sample.data.drop(labels='geometry', axis=1)
-    #print('new sample: ', sample.data)
+
     dataset.data_sample = sample.data
     dataset.addSample()
-
-    # print('fixed acidity')
-    # print(data['fixed acidity'])
-    # hist = histogram(data['fixed acidity'])
-    # print(type(hist.bins))
-
-    # n, bins, patches = plt.hist(data['fixed acidity'], 10, facecolor='blue', alpha=0.5)
-    # plt.show()
-
-    # stats = dataset.data.describe(include='all', datetime_is_numeric=True)
-    # stats = stats.to_dict()
-
-    # stats['nullValues'] = data.isnull().sum()
-    # stats['validValues'] = data.notnull().sum()
-    # stats['median'] = data.median()
-    # stats['hist'] = hist.bins
-
-    # addValueDistributions(stats, dataset)
-    # addHistograms(stats, dataset)
-    #addGeoStatistics(stats, dataset)
-    # addOutlierStatistics(stats, dataset)
-    # transformStatistics(stats)
-
-    # TODO: Make sure statistics about date/time columns are working and shown as dates
-
-    # TODO: Check if we have the following statistics per attribute:
-    # - number of null values
-    # - number of valid values
-    # - median
-    # - histogram (10% bucket/interval size)
-    # - value distributions
-    # - mean
-    # - number of values
-    # - numberOfValidNonNullValues
-    # - minimum
-    # - maximum
-    # - standardDeviation
-    # - numberOfInvalidValues
-    # - deciles and quantiles
-    # - outliers
 
     return stats
