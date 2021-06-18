@@ -127,10 +127,11 @@ async def requestHandler(websocket, path):
                     PlaceholderMap[data["prediciton"]["model_name"]].fit(data["prediction"]["data_sample"])
                     # MODEL.fit(data["data"])
             elif data["action"] == "get_stats":
-                dataset=PlaceholderMap[data["placeholder"]["sessionId"]][data["placeholder"]["name"]]
-
-                stats=getStatistics(dataset)
-                stats=jsonpickler.flatten(stats)
+                stats = ""
+                dataset = PlaceholderMap[data["placeholder"]["sessionId"]][data["placeholder"]["name"]]
+                if type(data).__name__ == "Dataset":
+                    stats=getStatistics(dataset)
+                    stats=jsonpickler.flatten(stats)
                 await notify_placeholder(json.dumps({"type": "[placeholder]:STATS", "sessionId": data["placeholder"]["sessionId"],
                                                      "description": "Stats of a placeholder dataset",
                                                      "dataset_name": data["placeholder"]["name"],
