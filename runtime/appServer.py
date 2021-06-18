@@ -129,7 +129,7 @@ async def requestHandler(websocket, path):
             elif data["action"] == "get_stats":
                 stats = ""
                 dataset = PlaceholderMap[data["placeholder"]["sessionId"]][data["placeholder"]["name"]]
-                if type(data).__name__ == "Dataset":
+                if dataset is not None and type(dataset).__name__ == "Dataset":
                     stats=getStatistics(dataset)
                     stats=jsonpickler.flatten(stats)
                 await notify_placeholder(json.dumps({"type": "[placeholder]:STATS", "sessionId": data["placeholder"]["sessionId"],
