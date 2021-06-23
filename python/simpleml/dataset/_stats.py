@@ -95,10 +95,9 @@ def addGenericStatistics(column, column_stats, column_type):
     totalNumberOfCapitalisedValues = 0
     totalNumberOfCharacters = 0
     totalNumberOfDigits = 0
-
     totalCountOfValidValues = 0
 
-    for val in column:
+    for val in column.notnull():
         if not val:
             continue
         totalCountOfValidValues += 1
