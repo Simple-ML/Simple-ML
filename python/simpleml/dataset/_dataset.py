@@ -120,6 +120,7 @@ class Dataset:
             self.readFile(self.separator)
 
         from sklearn.model_selection import train_test_split
+        #self.data.head()
         train_data, test_data = train_test_split(self.data, train_size=trainRatio, random_state=randomState)
 
         train = self.copy(basic_data_only=True)
@@ -139,6 +140,10 @@ class Dataset:
         # TODO: Create global config file where we define the data folder path
         dirName = os.path.dirname(__file__)
         dataFilePath = os.path.join(dirName, global_config.data_folder_name, self.fileName)
+        #print(dataFilePath)
+        #print('data_types')
+        #print(self.data_types)
+
 
         # TODO: Check infer_datetime_format
         parse_dates = []
@@ -156,8 +161,16 @@ class Dataset:
             else:
                 self.simple_data_types[attribute] = config.type_string
 
+        #print(self.simple_data_types)
+        #data2 = pd.read_csv(dataFilePath, sep=sep, dtype=self.data_types, parse_dates=parse_dates, na_values=self.null_value)
+        #print(data2.head())
+        #print('attributes')
+        #print(self.attributes)
+
         self.data = pd.read_csv(dataFilePath, sep=sep, dtype=self.data_types, parse_dates=parse_dates,
                                 na_values=self.null_value, usecols=self.attributes)
+
+        #print(self.data.head())
 
         # parse geo data
         # WKT columns
@@ -198,8 +211,14 @@ class Dataset:
         self.attribute_graph[attribute_identifier] = {"resource": resource_node, "property": property_node,
                                                       "class": domain_node}
         self.data_types[attribute_identifier] = value_type
+        print('label', attribute_label)
 
         self.attribute_labels[attribute_identifier] = attribute_label
+
+    def addColumnDescriptionForLocalDataset(self, attribute_identifier, attribute_types, attribute_labels):
+        self.attributes = attribute_identifier
+        self.data_types = attribute_types
+        self.attribute_labels = attribute_labels
 
     def getJson(self):
         json_input = {"id": self.id, "title": self.title, "topics": self.topics}
@@ -296,7 +315,7 @@ def loadDataset(datasetID: str) -> Dataset:
     return dataset
 
 
-def readDataSetFromCSV(file_name: str, dataset_name: str) -> Dataset:
+def readDataSetFromCSV(file_name: str, dataset_name: str, separator: str, has_header: str) -> Dataset:
     from simpleml.data_catalog import addDomainModel, addStatistics
     # dataset = getDataset(datasetID)
 
@@ -305,25 +324,40 @@ def readDataSetFromCSV(file_name: str, dataset_name: str) -> Dataset:
 
     dir_name = os.path.dirname(__file__)
     data_file_path = os.path.join(dir_name, global_config.data_folder_name, file_name)
-
-    has_header = checkHeader(data_file_path)
-    separator = detectSeparator(data_file_path)
-
-    # data = pd.read_csv(data_file_path)
+    #print(data_file_path)
+    test_data = pd.read_csv(data_file_path, sep=separator)
+    #print(test_data.columns.values.tolist())
+    attribute_names = test_data.columns.values.tolist()
+    attribute_types = {}
+    attribute_labels = {}
+    np_type = ''
+    for attribute in attribute_names:
+        #type_change = test_data[attribute].to_numpy()
+        #print(type_change.dtype)
+        attribute_types[attribute] = dataTypes(test_data[attribute].dtype)
+        attribute_labels[attribute] = dataset_name
+    #print(attribute_types)
 
     dataset = Dataset(id='', title=dataset_name, fileName=file_name, hasHeader=has_header, separator=separator,
-                      null_value='', description='', topics=[],
-                      number_of_instances=1)
+                      null_value='', description='', subjects={}, number_of_instances=1, titles={}, descriptions={})
 
+
+    dataset.addColumnDescriptionForLocalDataset(attribute_names, attribute_types, attribute_labels)
     # print(dataset)
 
-    # addDomainModel(dataset)
-    # addStatistics(dataset)
+    #addDomainModel(dataset)
+    #addStatistics(dataset)
     # getStatistics(dataset)
 
     return dataset
 
+def dataTypes(type):
+    if type == 'float64':
+        return np.double
+    elif type == 'int64':
+        return pd.Int32Dtype()
 
+'''
 def checkHeader(file):
     with open(file) as f:
         first = f.read(1)
@@ -339,3 +373,4 @@ def detectSeparator(file):
             return ","
     # default delimiter (MS Office export)
     return ";"
+'''
