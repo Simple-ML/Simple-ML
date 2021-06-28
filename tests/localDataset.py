@@ -9,13 +9,15 @@ from simpleml.util import exportDictionaryAsJSON
 
 def exampleWorkflow():
 
-    dataset = readDataSetFromCSV('WhiteWineQualityBinary2.csv', 'New dataset')
+    dataset = readDataSetFromCSV('WhiteWineQualityBinary2.csv', 'Local dataset', ';', 'True')
     print(exportDictionaryAsJSON(dataset.getProfile()))
 
-    train, test = dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
-    X_train = train.dropAttributes("quality")
-    X_test = test.dropAttributes("quality")
-    y_train = train.keepAttributes("quality")
+    sample_dataset = dataset.sample(50)
+    train, test = sample_dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
+
+    X_train = train.dropAttributes("chlorides")
+    X_test = test.dropAttributes("chlorides")
+    y_train = train.keepAttributes("chlorides")
 
     # compute statistics from the dataset
     print(exportDictionaryAsJSON(X_train.getProfile()))
