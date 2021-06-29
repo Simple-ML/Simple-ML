@@ -2,6 +2,7 @@ PREFIX dcat: <http://www.w3.org/ns/dcat#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX sml: <https://simple-ml.de/resource/>
 PREFIX csvw: <http://www.w3.org/ns/csvw#>
+PREFIX seas: <https://w3id.org/seas/>
 
 SELECT ?identifier ?value ?rank ?evalType
 
