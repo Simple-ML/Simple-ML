@@ -1,0 +1,96 @@
+@prefix : <http://mex.aksw.org/mex-perf#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix prov: <http://www.w3.org/ns/prov-o#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix mex-algo: <http://mex.aksw.org/mex-algo#> .
+@prefix mex-core: <http://mex.aksw.org/mex-core#> .
+@prefix mex-perf: <http://mex.aksw.org/mex-perf#> .
+@prefix dbo: <http://dbpedia.org/ontology/>.
+@base <http://mex.aksw.org/mex-perf> .
+
+<http://mex.aksw.org/mex-perf> rdf:type owl:Ontology ;
+                               rdfs:label "The MEX Vocabulary (mex-perf)"@en ,
+                                          "Vocabulario MEX (mex-perf)"@pt ;
+                               dct:created "2014-02-02"^^xsd:date ;
+                               dct:modified "2016-05-01"^^xsd:date ;
+                               dct:creator <http://aksw.org/DiegoEsteves.html> ;
+                               rdf:about "http://mex.aksw.org/mex-doc-perf#" ;
+                               owl:versionInfo "1.0.2" ;
+                               dc:publisher "AKSW Research Group - Leipzig University"@en ;
+                               dct:title "MEX Performance (mex-perf) is an ontology with the goal of describing performance values for machine learning problems (MEX Platform)"@en ;
+                               rdfs:comment "MEX is an RDF vocabulary designed to facilitate interoperability between published machine learning experiments results on the Web. The mex-perf layer is the 3rd level of the MEX for representing the machine learning algorithm's performances."@en ;
+                               dc:publisher "AKSW Grupo de Pesquisa - Universidade de Leipzig"@pt ;
+                               rdfs:comment "MEX e um vocabulario modelado para facilitar a interoperabilidade entre resultados de experimentos de aprendizado de maquinas publicados na Web. A camada mex-perf e o 3o. nivel na abordagem MEX para representar performances de algoritmos de aprendizado de maquinas"@pt ;
+                               dct:contributor <http://aksw.org/DiegoMoussallem.html> ,
+                                               <http://aksw.org/JensLehmann.html> ;
+                               owl:imports doap: ,
+                                           rdfs: ,
+                                           prov: .
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+###  http://mex.aksw.org/mex-perf#PerformanceMeasure
+
+:PerformanceMeasure rdf:type owl:Class ;
+                    
+                    rdfs:subClassOf prov:Entity .
+
+
+
+###  http://mex.aksw.org/mex-perf#RegressionMeasure
+
+:RegressionMeasure rdf:type owl:Class ;
+                   
+                   rdfs:subClassOf :PerformanceMeasure .
+
+
+
+###  http://mex.aksw.org/mex-perf#meanSquaredError
+
+:meanSquaredError rdf:type owl:DatatypeProperty ;
+                  
+                  rdfs:domain :RegressionMeasure ;
+                  
+                  rdfs:range xsd:double ;
+                  
+                  rdfs:label "mean squared error"@en, "mittlere quadratische Abweichung"@de ;
+                       
+                  dbo:abbreviation "MSE"@en, "MSE"@de.
+
+###  http://mex.aksw.org/mex-perf#rootMeanSquaredError
+
+:rootMeanSquaredError rdf:type owl:DatatypeProperty ;
+                      
+                      rdfs:domain :RegressionMeasure ;
+                      
+                      rdfs:range xsd:double ;
+                      
+                      rdfs:label "root-mean-square error"@en, "root-mean-square error"@de ;
+                       
+                      dbo:abbreviation "RMSE"@en, "RMSE"@de.
+
+###  http://mex.aksw.org/mex-perf#meanAbsoluteDeviation
+
+:meanAbsoluteDeviation rdf:type owl:DatatypeProperty ;
+                       
+                       rdfs:domain :RegressionMeasure ;
+                       
+                       rdfs:range xsd:double ;
+                       
+                       rdfs:label "average absolute deviation"@en, "mittlere absolute Abweichung"@de ;
+                       
+                       dbo:abbreviation "MAD"@en, "MAD"@de.
+                       
