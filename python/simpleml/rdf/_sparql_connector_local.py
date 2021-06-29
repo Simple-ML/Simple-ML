@@ -8,6 +8,8 @@ from rdflib.util import guess_format
 from rdflib.plugins.sparql.results.jsonresults import JSONResultSerializer
 from io import StringIO
 import json
+import simpleml.util._global_configurations as global_config
+from rdflib_hdt import HDTStore, optimize_sparql
 
 import os
 import sys
@@ -15,22 +17,31 @@ import sys
 print("Init data catalog.")
 graph = Graph()
 
-folders = ["datasets", "external_vocabularies", "ml_catalog", "schema"]
 dirName = os.path.dirname(__file__)
 
-for folder in folders:
-    folderPath = os.path.join(dirName, "../../../data_catalog/" + folder)
+if global_config.use_hdt:
+    folderPath = os.path.join(dirName, "../../../data_catalog/" + "data_catalog.hdt")
+    graph = Graph(store=HDTStore(folderPath))
+else:
+    folders = ["datasets", "external_vocabularies", "ml_catalog", "schema"]
 
-    for filename in os.listdir(folderPath):
-        filename = os.path.join(folderPath, filename)
+    for folder in folders:
+            folderPath = os.path.join(dirName, "../../../data_catalog/" + folder)
 
-        format = "ttl"
-        if (folder != 'datasets'):
-            format = guess_format(filename)
+            for filename in os.listdir(folderPath):
+                filename = os.path.join(folderPath, filename)
 
-        graph.parse(filename, format=format)
-print(" -> Done.")
+                format = "ttl"
+                if (folder != 'datasets'):
+                    format = guess_format(filename)
 
+                graph.parse(filename, format=format)
+
+qres2 = graph.query("SELECT (COUNT(?a) AS ?cnt) WHERE { ?a ?b ?c }")
+for row in qres2:
+  print(row)
+
+print("Init data catalog -> Done.")
 
 def run_query(query_string):
     res = graph.query(query_string)
