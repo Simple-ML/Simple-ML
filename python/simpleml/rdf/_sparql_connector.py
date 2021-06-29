@@ -3,8 +3,7 @@ import os
 
 from SPARQLWrapper import SPARQLWrapper, JSON
 
-#sparqlURI = "***REMOVED***/sparqlJSON"
-sparqlURI = "http://oekg.l3s.uni-hannover.de/SimpleMLDataAPI/sparqlJSON"
+sparqlURI = "***REMOVED***/sparqlJSON"
 
 def run_query(query_string):
     sparql = SPARQLWrapper(sparqlURI)
