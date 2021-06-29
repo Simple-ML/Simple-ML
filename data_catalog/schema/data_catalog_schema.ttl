@@ -1,0 +1,285 @@
+@base <https://simple-ml.de/resource/> .
+
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix spatial: <http://geovocab.org/spatial#> .
+@prefix sioc: <http://rdfs.org/sioc/ns#> .
+@prefix so: <http://schema.org/> .
+@prefix geom: <http://geovocab.org/geometry#> .
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix seas: <https://w3id.org/seas/> .
+
+#  --------------------------- Class Dataset And Properties -------------------------
+
+<numberOfAttributes> rdf:type rdf:Property ;
+rdfs:label "number of attributes"@en;
+    rdfs:domain void:Dataset;
+    rdfs:range xsd:integer .
+
+<numberOfInstances> rdf:type rdf:Property ;
+    rdfs:label "number of instances"@en;
+    rdfs:domain void:Dataset;
+    rdfs:range xsd:integer .
+
+#  --------------------------- Class Attribute And Properties -------------------------
+
+<Attribute> rdf:type rdfs:Class;
+    rdfs:label "attribute"@en ;
+    rdfs:subClassOf seas:Property .
+
+<meanValue> rdf:type rdf:Property ;
+    rdfs:label "mean value"@en ;
+    rdfs:domain <Attribute> ;
+    rdfs:range xsd:double .
+
+# maxValue, minValue and meanValue: DEPRECATED 
+<maxValue> rdf:type rdf:Property ;
+    rdfs:label "maximum value"@en;
+    rdfs:domain <Attribute>;
+    rdfs:range xsd:double .
+
+<minValue> rdf:type rdf:Property ;
+    rdfs:label "minimum value"@en;
+    rdfs:domain <Attribute>;
+    rdfs:range xsd:double .
+    
+<meanValue> rdf:type rdf:Property ;
+    rdfs:label "mean value"@en ;
+    rdfs:domain <Attribute> ;
+    rdfs:range xsd:double .
+
+<numberOfNullValues> rdf:type rdf:Property ;
+    rdfs:label "number of null values"@en ;
+    rdfs:domain <Attribute> ;
+    rdfs:range xsd:NonNegativeInteger .
+
+<numberOfDistinctValues> rdf:type rdf:Property ;
+    rdfs:label "number of distinct values"@en ;
+    rdfs:domain <Attribute> ;
+    rdfs:range xsd:NonNegativeInteger .
+
+<valueType> rdf:type rdf:Property ;
+    rdfs:label "value type"@en;
+    rdfs:domain <Attribute> .
+
+<columnIndex>  rdf:type rdf:Property ;
+    rdfs:label "column index"@en;
+    rdfs:domain <Attribute> ;
+    rdfs:range xsd:integer .
+
+<timeFormat>  rdf:type rdf:Property ;
+    rdfs:label "time format"@en;
+    rdfs:domain <Attribute> ;
+    rdfs:range xsd:string .
+
+<timeGroup>  rdf:type rdf:Property ;
+    rdfs:label "time group"@en;
+    rdfs:domain <Attribute> ;
+    rdfs:range xsd:integer .
+
+#  --------------------------- Class File And Properties -------------------------
+
+<TextFile> rdf:type rdfs:Class;
+    rdfs:label "File"@en ;
+    rdfs:subClassOf dcat:Distribution .
+
+<hasFile> rdf:type rdf:Property ;
+    rdfs:label "has file"@en;
+    rdfs:domain <Attribute>;
+    rdfs:range <File> .
+
+<fileSizeInBytes> rdf:type rdf:Property ;
+    rdfs:label "file size in bytes"@en;
+    rdfs:domain <File>;
+    rdfs:range xsd:integer .
+
+<fileLocation> rdf:type rdf:Property ;
+    rdfs:label "file location"@en;
+    rdfs:domain <File>;
+    rdfs:range xsd:string .
+
+#  --------------------------- Database File And Properties -------------------------
+
+<Database> rdf:type rdfs:Class;
+    rdfs:label "File"@en ;
+    rdfs:subClassOf dcat:Distribution .
+
+<hasDatabase> rdf:type rdf:Property ;
+    rdfs:label "has file"@en;
+    rdfs:domain <Attribute>;
+    rdfs:range <Database> .
+
+<hasTable> rdf:type rdf:Property ;
+    rdfs:label "has file"@en;
+    rdfs:domain <Database>;
+    rdfs:range rr:BaseTableOrView .
+
+<hStoreIdentifier> rdf:type rdf:Property ;
+    rdfs:label "hStore identifier"@en;
+    rdfs:domain <Attribute>;
+    rdfs:range xsd:string .
+
+<inTable> rdf:type rdf:Property ;
+    rdfs:label "is in table"@en;
+    rdfs:domain <Attribute>;
+    rdfs:range rr:BaseTableOrView .
+
+<host> rdf:type rdf:Property ;
+    rdfs:label "host name"@en;
+    rdfs:domain <Database>;
+    rdfs:range xsd:string .
+
+<port> rdf:type rdf:Property ;
+    rdfs:label "host name"@en;
+    rdfs:domain <Database>;
+    rdfs:range xsd:integer .
+
+<user> rdf:type rdf:Property ;
+    rdfs:label "host name"@en;
+    rdfs:domain <Database>;
+    rdfs:range xsd:string .
+
+<password> rdf:type rdf:Property ;
+    rdfs:label "host name"@en;
+    rdfs:domain <Database>;
+    rdfs:range xsd:string .
+
+#  --------------------------- Class Mapping And Properties -------------------------
+
+<Mapping> rdf:type rdfs:Class;
+    rdfs:label "mapping"@en .
+
+#<Join> rdf:type rdfs:Class;
+#    rdfs:label "join"@en .
+#
+#<hasMapping> rdf:type rdf:Property ;
+#    rdfs:domain <Attribute>;
+#    rdfs:range <Mapping> .
+#    
+#<hasJoin> rdf:type rdf:Property ;
+#    rdfs:domain <Attribute>;
+#    rdfs:range <Join> .
+
+<mapsToProperty> rdf:type rdf:Property ;
+    rdfs:domain <Mapping>;
+    rdfs:range rdf:Property .
+
+<mapsToProperty2> rdf:type rdf:Property ;
+    rdfs:domain <Mapping>;
+    rdfs:range rdf:Property .
+
+<mapsToProperty3> rdf:type rdf:Property ;
+    rdfs:domain <Mapping>;
+    rdfs:range rdf:Property .
+
+<mapsToDomain> rdf:type <DomainClass> ;
+    rdfs:domain <Mapping>;
+    rdfs:range rdfs:Class .
+
+<mapsToRange> rdf:type <DomainClass> ;
+    rdfs:domain <Mapping>;
+    rdfs:range rdfs:Class .
+
+<mapsToRange2> rdf:type <DomainClass> ;
+    rdfs:domain <Mapping>;
+    rdfs:range rdfs:Class .
+
+<mapsToRange3> rdf:type <DomainClass> ;
+    rdfs:domain <Mapping>;
+    rdfs:range rdfs:Class .
+
+<DomainModel> rdf:type rdf:Class ;
+    dcterms:description "a data model about rdf:type specific topical domain" .
+
+<DomainClass> rdf:type rdf:Class ;
+    dcterms:description "a class contained in the data model about rdf:type specific topical domain" .
+
+<hasClass> rdf:type rdf:Property ;
+    rdfs:domain <DomainModel> ;
+    rdfs:range <DomainClass> .
+
+<SpatialDistribution> rdf:type rdf:Class .
+<SpatialDistributionValue> rdf:type rdf:Class .
+<ValueDistribution> rdf:type rdf:Class .
+<ValueDistributionValue> rdf:type rdf:Class .
+
+<hasSpatialDistribution> rdf:type rdf:Property ;
+    rdfs:domain dcat:Dataset ;
+    rdfs:range <SpatialDistribution> .
+
+<spatialDistributionValue> rdf:type rdf:Property ;
+    rdfs:domain <SpatialDistribution> ;
+    rdfs:range <SpatialDistributionValue> .
+
+<numberOfInstancesInRegion> rdf:type rdf:Property ;
+    rdfs:domain <SpatialDistributionValue> ;
+    rdfs:range xsd:NonNegativeInteger .
+
+<instancesOfRegion> rdf:type rdf:Property ;
+    rdfs:domain <SpatialDistributionValue> ;
+    rdfs:range dcterms:Location .
+    
+<hasValueDistribution> rdf:type rdf:Property ;
+    rdfs:domain <Attribute> ;
+    rdfs:range <ValueDistribution> .
+
+<valueDistributionValue> rdf:type rdf:Property ;
+    rdfs:domain <ValueDistribution> ;
+    rdfs:range <ValueDistributionValue> .
+
+<numberOfInstancesOfValue> rdf:type rdf:Property ;
+    rdfs:domain <ValueDistributionValue> ;
+    rdfs:range xsd:NonNegativeInteger .
+
+<instancesOfValue> rdf:type rdf:Property ;
+    rdfs:domain <ValueDistributionValue> .
+
+
+# TODO: Histogram, HistogramBucket, Sample!
+
+# ---
+
+<simpleMLId> a owl:DatatypeProperty ;
+    rdfs:domain foaf:Agent ;
+	rdfs:subPropertyOf foaf:nick ;
+    rdfs:range xsd:NonNegativeInteger ;
+    rdfs:label "SimpleML ID" .
+
+<creatorID>  a owl:DatatypeProperty ;
+    rdfs:domain dcat:Dataset ;
+    rdfs:range xsd:NonNegativeInteger ;
+    rdfs:label "data set creator ID" .
+
+# Evaluation identifiers
+
+seas:DistributionMedianEvaluation dcterms:identifier "median" .
+seas:DistributionMinimumEvaluation dcterms:identifier "minimum" .
+seas:DistributionMeanEvaluation dcterms:identifier "mean" .
+seas:DistributionStandardDeviationEvaluation dcterms:identifier "standardDeviation" .
+seas:DistributionMaximumEvaluation dcterms:identifier "maximum" .
+
+<DistributionNumberOfValuesEvaluation> dcterms:identifier "numberOfValues" .
+<DistributionNumberOfNullValuesEvaluation> dcterms:identifier "numberOfNullValues" .
+<DistributionNumberOfValidValuesEvaluation> dcterms:identifier "numberOfValidValues" .
+<DistributionNumberOfValidNonNullValuesEvaluation> dcterms:identifier "numberOfValidNonNullValues" .
+<DistributionNumberOfInvalidValuesEvaluation> dcterms:identifier "numberOfInvalidValues" .
+<DistributionNumberOfDistinctValuesEvaluation> dcterms:identifier "numberOfDistinctValues" .
+<DistributionNumberOfOutliersBelowEvaluation> dcterms:identifier "numberOfOutliersBelow" .
+<DistributionNumberOfOutliersAboveEvaluation> dcterms:identifier "numberOfOutliersAbove" .
+
+<DistributionAverageNumberOfDigitsEvaluation> dcterms:identifier "averageNumberOfDigits" .
+<DistributionAverageNumberOfCharactersEvaluation> dcterms:identifier "averageNumberOfCharacters" .
+<DistributionAverageNumberOfTokensEvaluation> dcterms:identifier "averageNumberOfTokens" .
+<DistributionAverageNumberOfCapitalisedValuesEvaluation> dcterms:identifier "averageNumberOfCapitalisedValues" .
+<DistributionAverageNumberOfSpecialCharactersEvaluation> dcterms:identifier "averageNumberOfSpecialCharacters" .
+
+<DistributionHistogramEvaluation> dcterms:identifier "histogram" .
+seas:DistributionQuartileEvaluation dcterms:identifier "quartile" .
+seas:DistributionDecileEvaluation dcterms:identifier "decile" .

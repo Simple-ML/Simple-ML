@@ -1,0 +1,96 @@
+@base <https://simple-ml.de/resource/> .
+
+@prefix sml: <https://simple-ml.de/resource/> .
+@prefix geo: <https://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix geom: <http://geovocab.org/geometry#> .
+@prefix sioc: <http://rdfs.org/sioc/ns#> .
+@prefix so: <http://schema.org/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix seas: <https://w3id.org/seas/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+
+<Domain> a owl:Class .
+
+<catalogDomain> a owl:Property ;
+    rdfs:domain dcat:Catalog ;
+    rdfs:range <Domain> .
+    
+<domain> a owl:Property ;
+    rdfs:domain <DomainClass> ;
+    rdfs:range <Domain> .
+
+<DomainClass> a owl:Class ;
+    dcterms:description "a class contained in the data model about rdf:type specific topical domain" .
+    
+<classInstance> a owl:FunctionalProperty ;
+    rdfs:domain <Attribute> ;
+    rdfs:range xsd:nonNegativeInteger .
+
+<ClassInstance> a owl:Class .
+
+# Cross-domain classes and properties
+
+<asWKB> a owl:DatatypeProperty ;
+        rdfs:label "as well-known binary (WKB)"@en ;
+        rdfs:label "im Well-known-Binary-(WKB)-Format"@de ;
+        rdfs:domain dcterms:Location ;
+        rdfs:range <wellKnownBinary> .
+
+<asWKT> a owl:DatatypeProperty ;
+        rdfs:label "as well-known text (WKT)"@en ;
+        rdfs:label "im Well-known-Text-(WKT)-Format"@de ;
+        rdfs:domain dcterms:Location ;
+        rdfs:range <wellKnownText> .
+        
+<numericIdentifier> rdf:type owl:inverseFunctionalObjectProperty, owl:DatatypeProperty ;
+        rdfs:label "identifier"@en ;
+        rdfs:label "ID"@de ;
+        rdfs:domain owl:Thing ;
+        rdfs:range xsd:nonNegativeInteger .
+
+<textualIdentifier> rdf:type owl:inverseFunctionalObjectProperty, owl:DatatypeProperty ;
+        rdfs:label "identifier"@en ;
+        rdfs:label "ID"@de ;
+        rdfs:domain owl:Thing ;
+        rdfs:range xsd:string .
+
+# updates to dcterms
+
+dcterms:description a owl:DatatypeProperty ;
+	rdfs:range rdfs:Literal .
+dcterms:title a owl:DatatypeProperty .
+dcterms:identifier a owl:DatatypeProperty .
+
+# updates to schema.org
+
+so:longitude a owl:DatatypeProperty ;
+	rdfs:range xsd:double ;
+	rdfs:label "longitude"@en ;
+	rdfs:label "Längengrad"@de.
+
+so:latitude a owl:DatatypeProperty ;
+	rdfs:range xsd:double ;
+	rdfs:label "latitude"@en ;
+	rdfs:label "Breitengrad"@de.
+
+#  --------------------------- Misc. -------------------------
+
+rdf:type rdfs:label "type"@en ;
+rdfs:label "Typ"@de .
+rdfs:label a owl:DatatypeProperty .
+rdfs:label rdfs:label "label"@en .
+rdfs:label rdfs:label "Bezeichnung"@de .
+
+dcterms:spatial a owl:ObjectProperty .
+
+time:DateTimeDescription rdfs:subClassOf <MobilityClass> .
+time:DateTimeDescription rdfs:label "Zeit"@de .
+
+time:inXSDDateTime rdfs:label "Zeit"@de .
+
+
