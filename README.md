@@ -21,3 +21,12 @@
    ```shell
    conda develop .
    ```
+   
+# Adding new Dependencies
+
+1. Add new dependencies to the [environment.yml](./python/environment.yml) file.
+2. Update your environment (starting from the root of the repository):
+   ```shell
+   cd python
+   conda env update -n stdlib --file environment.yml --prune
+   ```
