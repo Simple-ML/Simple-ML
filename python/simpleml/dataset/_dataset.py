@@ -11,7 +11,7 @@ from shapely import wkt, wkb
 
 import simpleml.util.global_configurations as global_config
 import simpleml.util.jsonLabels_util as config
-from simpleml.dataset import getStatistics
+from simpleml.dataset._stats import getStatistics
 
 
 # import Statistics
