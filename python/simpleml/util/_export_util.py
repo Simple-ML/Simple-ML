@@ -1,9 +1,10 @@
 import json
-from pandas import DataFrame
-from json import encoder
-from numpy import datetime64, int64, bool_, int32
+
 import pandas as pd
-import simpleml.util._jsonLabels_util as config
+from numpy import datetime64, int64, bool_, int32
+from pandas import DataFrame
+
+import simpleml.util.jsonLabels_util as config
 
 
 def exportAsJSON(df: DataFrame):

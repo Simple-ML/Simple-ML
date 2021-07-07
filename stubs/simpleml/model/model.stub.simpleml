@@ -1,13 +1,14 @@
-package simpleml.model
+package simpleml.model.supervised
 
-import simpleml.dataset.Dataset
+import simpleml.data.Dataset
 
-open class Model {
+open class Estimator {
 	open fun fit(features: Dataset, target: Dataset) -> trainedModel: Model
+}
+
+interface Model {
+	fun predict(features: Dataset) -> results: Any
 }
 
 // Interfaces come later
 
-//interface TrainedModel sub Model {
-//	fun predict(features: Dataset) -> results: Any
-//}

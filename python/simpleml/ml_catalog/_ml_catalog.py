@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from simpleml.rdf import run_query, load_query
 
 lang = "en"
@@ -21,6 +22,7 @@ def getMLAlgorithmClasses():
 
     return mlAlgorithmClasses
 
+
 def getMLAlgorithms(algorithmClass):
     parameters = {"lang": lang, "identifier": algorithmClass}
     query = load_query("ml_catalog/allAlgorithmsOfClass", parameters)
@@ -38,6 +40,7 @@ def getMLAlgorithms(algorithmClass):
 
     return mlAlgorithms
 
+
 def getMetrics(measure):
     parameters = {"lang": lang, "measure": measure}
     query = load_query("ml_catalog/metrics", parameters)
@@ -53,6 +56,7 @@ def getMetrics(measure):
         metric["range"] = result["range"]["value"]
 
     return metrics
+
 
 def getBenchmarks(dataset):
     parameters = {"lang": lang, "dataset": dataset}

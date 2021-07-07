@@ -1,18 +1,15 @@
 from __future__ import annotations
-import os
 
-from SPARQLWrapper import SPARQLWrapper, JSON
-from rdflib import Graph
-from rdflib import Graph
-from rdflib.util import guess_format
-from rdflib.plugins.sparql.results.jsonresults import JSONResultSerializer
-from io import StringIO
 import json
-import simpleml.util._global_configurations as global_config
-from rdflib_hdt import HDTStore, optimize_sparql
-
 import os
-import sys
+from io import StringIO
+
+from rdflib import Graph
+from rdflib.plugins.sparql.results.jsonresults import JSONResultSerializer
+from rdflib.util import guess_format
+from rdflib_hdt import HDTStore
+
+import simpleml.util.global_configurations as global_config
 
 print("Init data catalog.")
 graph = Graph()
@@ -26,22 +23,23 @@ else:
     folders = ["datasets", "external_vocabularies", "ml_catalog", "schema"]
 
     for folder in folders:
-            folderPath = os.path.join(dirName, "../../../data_catalog/" + folder)
+        folderPath = os.path.join(dirName, "../../../data_catalog/" + folder)
 
-            for filename in os.listdir(folderPath):
-                filename = os.path.join(folderPath, filename)
+        for filename in os.listdir(folderPath):
+            filename = os.path.join(folderPath, filename)
 
-                format = "ttl"
-                if (folder != 'datasets'):
-                    format = guess_format(filename)
+            format = "ttl"
+            if (folder != 'datasets'):
+                format = guess_format(filename)
 
-                graph.parse(filename, format=format)
+            graph.parse(filename, format=format)
 
 qres2 = graph.query("SELECT (COUNT(?a) AS ?cnt) WHERE { ?a ?b ?c }")
 for row in qres2:
-  print(row)
+    print(row)
 
 print("Init data catalog -> Done.")
+
 
 def run_query(query_string):
     res = graph.query(query_string)
@@ -50,7 +48,12 @@ def run_query(query_string):
     return json.loads(json_stream.getvalue())
 
 
-def load_query(file_name, parameters={}, filter_parameters=[]):
+def load_query(file_name, parameters=None, filter_parameters=None):
+    if parameters is None:
+        parameters = {}
+    if filter_parameters is None:
+        filter_parameters = []
+
     file_name_absolute = os.path.join(os.path.dirname(__file__), "../queries/" + file_name + ".sparql")
     with open(file_name_absolute) as file:
         query = file.read()
