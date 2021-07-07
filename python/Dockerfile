@@ -4,8 +4,8 @@ RUN pip install -U pip
 
 WORKDIR /usr/src/app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY ../old_requirements.txt .
+RUN pip install --no-cache-dir -r old_requirements.txt
 
 COPY .. .
 

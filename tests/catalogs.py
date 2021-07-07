@@ -1,7 +1,7 @@
 # Imports ----------------------------------------------------------------------
 from simpleml.data_catalog import getDatasets
-from simpleml.ml_catalog import getMLAlgorithmClasses, getMLAlgorithms, getMetrics, getBenchmarks
 from simpleml.dataset import loadDataset
+from simpleml.ml_catalog import getMLAlgorithmClasses, getMLAlgorithms, getMetrics, getBenchmarks
 from simpleml.util import exportDictionaryAsJSON
 
 
@@ -33,7 +33,7 @@ def exampleWorkflow():
     print("\n### Data Set Workflow ###")
 
     dataset = loadDataset("SpeedAverages")
-    #dataset = loadDataset("WhiteWineQualityBinary")
+    # dataset = loadDataset("WhiteWineQualityBinary")
 
     print(exportDictionaryAsJSON(dataset.getStatistics()))
 
@@ -42,16 +42,19 @@ def exampleWorkflow():
 
     dataset = dataset.sample(5)
 
-    #dataset = dataset.keepAttributes(["alcohol", "fixed acidity", "quality"])
-    dataset = dataset.keepAttributes(["street_type", "max_speed", "start_time", "end_time", "number_of_records", "number_of_drivers", "average_speed", "season", "daylight", "is_weekend", "day_type", "geometry"])
-    #dataset = dataset.keepAttributes(["geometry"])
-    #dataset = dataset.keepAttributes(["name_en", "name_de", "polygon_simple", "polygon"])
+    # dataset = dataset.keepAttributes(["alcohol", "fixed acidity", "quality"])
+    dataset = dataset.keepAttributes(
+        ["street_type", "max_speed", "start_time", "end_time", "number_of_records", "number_of_drivers",
+         "average_speed", "season", "daylight", "is_weekend", "day_type", "geometry"])
+    # dataset = dataset.keepAttributes(["geometry"])
+    # dataset = dataset.keepAttributes(["name_en", "name_de", "polygon_simple", "polygon"])
     train, test = dataset.splitIntoTrainAndTest(0.8)
 
     # compute statistics from the dataset
     trainStatistics = train.getStatistics()
 
     print(exportDictionaryAsJSON(trainStatistics))
+
 
 # Workflows --------------------------------------------------------------------
 

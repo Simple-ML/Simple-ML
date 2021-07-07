@@ -1,6 +1,6 @@
 import numpy as np
-from shapely import geometry
 from pandas import Timestamp, Int32Dtype
+from shapely import geometry
 
 lang = 'de'
 type = 'type'
@@ -23,7 +23,12 @@ type_table_header_labels = 'header_labels'
 
 type_histogram = 'histogram'
 type_histogram_buckets = 'buckets'
-data_type_labels = {np.int32: type_integer, Int32Dtype(): type_integer, np.bool_: type_bool, np.datetime64: type_datetime, str: type_string, int: type_integer, float: type_float, np.int64: type_integer, np.float64: type_float, np.floating: type_float, np.integer: type_integer, np.dtype('float64'): type_float, np.dtype('int64'): type_integer,np.dtype('bool'): type_bool, 'str': type_string, bool: type_bool, object: 'ERROR', geometry: type_geometry, Timestamp: type_datetime}
+data_type_labels = {np.int32: type_integer, Int32Dtype(): type_integer, np.bool_: type_bool,
+                    np.datetime64: type_datetime, str: type_string, int: type_integer, float: type_float,
+                    np.int64: type_integer, np.float64: type_float, np.floating: type_float, np.integer: type_integer,
+                    np.dtype('float64'): type_float, np.dtype('int64'): type_integer, np.dtype('bool'): type_bool,
+                    'str': type_string, bool: type_bool, object: 'ERROR', geometry: type_geometry,
+                    Timestamp: type_datetime}
 
 type_bar_chart = 'bar_chart'
 type_bar_chart_bars = 'bars'
@@ -90,7 +95,6 @@ value_distribution = 'value_distribution'
 value_distribution_number_of_instances = 'number_of_instances'
 value_distribution_value = 'value'
 
-
 type_numeric_names = {'de': {
     'averageNumberOfSpecialCharacters': 'durchschnittliche Anzahl an Sonderzeichen',
     'averageNumberOfTokens': 'durchschnittliche Anzahl an Wörtern',
@@ -98,7 +102,7 @@ type_numeric_names = {'de': {
     'averageNumberOfCharacters': 'durchschnittliche Anzahl an Zeichen',
     'averageNumberOfDigits': 'durchschnittliche Anzahl an Ziffern',
     numberOfDistinctValues: 'Anzahl verschiedener Werte',
-    }, 'en': {
+}, 'en': {
     'averageNumberOfSpecialCharacters': 'average number of special characters',
     'averageNumberOfTokens': 'average number of words',
     'averageNumberOfCapitalisedValues': 'average number of capitalised characters',
@@ -111,4 +115,4 @@ type_numeric_data_type = 'data_type'
 type_numeric_value = 'value'
 type_numeric_name = 'name'
 
-datetime_format = { 'en' : '%Y-%m-%d %H:%M:%S', 'de': '%d.%m.%Y, %H:%M:%S'}
+datetime_format = {'en': '%Y-%m-%d %H:%M:%S', 'de': '%d.%m.%Y, %H:%M:%S'}
