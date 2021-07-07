@@ -1,14 +1,15 @@
 from __future__ import annotations
-import os
 
-from simpleml.dataset import Dataset
-from rdflib import Graph, Literal, RDF, URIRef, Namespace
-from rdflib.namespace import FOAF , XSD, RDFS, DCTERMS, CSVW, DCAT
-import simpleml.util._jsonLabels_util as config
 from re import sub
 
-def exportStatisticsAsRDF(dataset: Dataset):
+from rdflib import Graph, Literal, RDF, Namespace
+from rdflib.namespace import XSD, RDFS, DCTERMS, CSVW, DCAT
 
+import simpleml.util.jsonLabels_util as config
+from simpleml.dataset import Dataset
+
+
+def exportStatisticsAsRDF(dataset: Dataset):
     profile = dataset.getProfile()
 
     g = Graph()
@@ -28,7 +29,7 @@ def exportStatisticsAsRDF(dataset: Dataset):
     g.add((rdf_dataset, RDF.type, DCAT.Dataset))
     g.add((rdf_dataset, DCTERMS.identifier, Literal(dataset.id)))
     g.add((rdf_dataset, SML.numberOfInstances, Literal(dataset.number_of_instances, datatype=XSD.nonNegativeInteger)))
-    g.add((rdf_dataset, SML.creatorId, Literal(0, datatype=XSD.nonNegativeInteger))) # TODO: is this required?
+    g.add((rdf_dataset, SML.creatorId, Literal(0, datatype=XSD.nonNegativeInteger)))  # TODO: is this required?
 
     for lang, title in dataset.titles.items():
         g.add((rdf_dataset, DCTERMS.title, Literal(title, lang)))
@@ -41,7 +42,7 @@ def exportStatisticsAsRDF(dataset: Dataset):
             g.add((rdf_dataset, DCTERMS.subject, Literal(subject, lang)))
 
     # file
-    rdf_file = SML[dataset.id+"File"]
+    rdf_file = SML[dataset.id + "File"]
     g.add((rdf_dataset, SML.hasFile, rdf_file))
     g.add((rdf_file, RDF.type, SML.TextFile))
     g.add((rdf_file, SML.fileLocation, Literal(dataset.fileName)))
@@ -51,7 +52,7 @@ def exportStatisticsAsRDF(dataset: Dataset):
     g.add((rdf_file, CSVW.null, Literal(dataset.null_value)))
 
     # sample
-    rdf_sample = SML[dataset.id+"Sample"]
+    rdf_sample = SML[dataset.id + "Sample"]
     g.add((rdf_dataset, SML.hasSample, rdf_sample))
     g.add((rdf_sample, RDF.type, SML.DatasetSample))
     g.add((rdf_sample, CSVW.separator, Literal("	")))
@@ -61,11 +62,10 @@ def exportStatisticsAsRDF(dataset: Dataset):
 
         attribute_val = profile[config.attributes][attribute]
 
-        rdf_attribute = SML[dataset.id+urify(attribute)[0].upper() + urify(attribute)[1:]]
+        rdf_attribute = SML[dataset.id + urify(attribute)[0].upper() + urify(attribute)[1:]]
         g.add((rdf_dataset, SML.hasAttribute, rdf_attribute))
         g.add((rdf_attribute, RDF.type, SML.Attribute))
         g.add((rdf_attribute, DCTERMS.identifier, Literal(attribute)))
-
 
         for key, value in attribute_val["statistics"].items():
             if isinstance(value, list):
