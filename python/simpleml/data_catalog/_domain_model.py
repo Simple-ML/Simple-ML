@@ -1,13 +1,11 @@
 from __future__ import annotations
-from simpleml.rdf import run_query, load_query
-from simpleml.dataset import Dataset
-from pandas import DataFrame
-import rdflib
-from rdflib.namespace import DC, DCTERMS, OWL, RDF, RDFS, XSD
-from rdflib import Literal
-from rdflib.plugins.sparql.datatypes import type_promotion
+
 import numpy as np
 import pandas as pd
+import rdflib
+from rdflib import Literal
+from rdflib.namespace import OWL, RDF, RDFS, XSD
+from rdflib.plugins.sparql.datatypes import type_promotion
 
 SML = rdflib.Namespace('https://simple-ml.de/resource/')
 

@@ -1,14 +1,15 @@
 from __future__ import annotations
-from simpleml.rdf import run_query, load_query
-from simpleml.dataset import Dataset
-import simpleml.dataset._stats as stats
 
-from simpleml.data_catalog._domain_model import DomainModel, getPythonType
-import simpleml.util._jsonLabels_util as config
 import json
+from io import StringIO
+
 import pandas as pd
 from numpy import datetime64
-from io import StringIO
+
+import simpleml.util.jsonLabels_util as config
+from simpleml.data_catalog._domain_model import DomainModel, getPythonType
+from simpleml.dataset import Dataset
+from simpleml.rdf import run_query, load_query
 
 lang = "de"  # TODO: Configure in a global config
 
@@ -32,7 +33,7 @@ def getDatasets(domain=None, topic=None):
         identifier = result["identifier"]["value"]
         topics = result["subjects"]["value"].split(";")
         number_of_instances = int(result["numberOfInstances"]["value"])
-        dataset = Dataset(id=identifier, title=title, subjects={lang:topics}, number_of_instances=number_of_instances)
+        dataset = Dataset(id=identifier, title=title, subjects={lang: topics}, number_of_instances=number_of_instances)
         datasets.append(dataset)
     return datasets
 
@@ -122,7 +123,7 @@ def getDataset(dataset_id: str) -> Dataset:
 
     # TODO: Assign spatial columns
     dataset = Dataset(id=dataset_id, title=title, fileName=file_name, hasHeader=has_header, separator=separator,
-                      null_value=null_value, description=description, subjects={lang:topics},
+                      null_value=null_value, description=description, subjects={lang: topics},
                       number_of_instances=number_of_instances, titles={lang: title}, descriptions={lang: description})
 
     addDomainModel(dataset)

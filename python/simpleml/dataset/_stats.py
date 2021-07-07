@@ -1,15 +1,18 @@
 from __future__ import annotations
-import simpleml.util._jsonLabels_util as config
-import simpleml.util._global_configurations as global_config
+
 import os
-import pandas as pd
-import numpy as np
-import pyproj
 import re
-from shapely import geometry, ops, wkt, wkb
-from shapely.geometry import Point, LineString, Polygon
 import time
 from datetime import datetime as datet
+
+import numpy as np
+import pandas as pd
+import pyproj
+from shapely import geometry, ops, wkt
+from shapely.geometry import Point, LineString, Polygon
+
+import simpleml.util.global_configurations as global_config
+import simpleml.util.jsonLabels_util as config
 
 
 def addSpatialValueDistribution(geometry_object, polygon_count, areas, proj) -> dict:
@@ -55,7 +58,7 @@ def addHistograms(stats, column, name, number_of_unique_values, transform_timest
         for bucket in histograms:
             i += 1
             bucket[config.bucketMinimum] = get_pd_timestamp(bucket[config.bucketMinimum])
-            if i < len(histograms): # the last bucket maximum is date already
+            if i < len(histograms):  # the last bucket maximum is date already
                 bucket[config.bucketMaximum] = get_pd_timestamp(bucket[config.bucketMaximum])
 
     return histograms
@@ -165,11 +168,14 @@ def get_line_length(line):
 def get_timestamp(value):
     return time.mktime(value.timetuple())
 
+
 def get_pd_timestamp(datetime):
     return pd.Timestamp(datetime, unit='s')
 
+
 def get_datetime_string(datetime):
     return datet.fromtimestamp(datetime).strftime(config.datetime_format[config.lang])
+
 
 def getStatistics(dataset: Dataset) -> dict:
     data = dataset.data

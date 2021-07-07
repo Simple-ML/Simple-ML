@@ -1,6 +1,4 @@
 # Imports ----------------------------------------------------------------------
-from simpleml.data_catalog import getDatasets
-from simpleml.ml_catalog import getMLAlgorithmClasses, getMLAlgorithms, getMetrics, getBenchmarks
 from simpleml.dataset import readDataSetFromCSV
 from simpleml.util import exportDictionaryAsJSON
 
@@ -8,7 +6,6 @@ from simpleml.util import exportDictionaryAsJSON
 # Workflow steps ---------------------------------------------------------------
 
 def exampleWorkflow():
-
     dataset = readDataSetFromCSV('WhiteWineQualityBinary2.csv', 'Local dataset', ';', 'True')
     print(exportDictionaryAsJSON(dataset.getProfile()))
 

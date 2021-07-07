@@ -1,6 +1,4 @@
 # Imports ----------------------------------------------------------------------
-from simpleml.data_catalog import getDatasets
-from simpleml.ml_catalog import getMLAlgorithmClasses, getMLAlgorithms, getMetrics, getBenchmarks
 from simpleml.dataset import loadDataset
 from simpleml.util import exportDictionaryAsJSON
 
@@ -8,7 +6,6 @@ from simpleml.util import exportDictionaryAsJSON
 # Workflow steps ---------------------------------------------------------------
 
 def exampleWorkflow():
-
     dataset = loadDataset("WhiteWineQualityBinary")
     print(exportDictionaryAsJSON(dataset.getProfile()))
 
@@ -21,6 +18,7 @@ def exampleWorkflow():
     print(exportDictionaryAsJSON(X_train.getProfile()))
     print(exportDictionaryAsJSON(y_train.getProfile()))
     print(exportDictionaryAsJSON(X_test.getProfile()))
+
 
 if __name__ == '__main__':
     exampleWorkflow()

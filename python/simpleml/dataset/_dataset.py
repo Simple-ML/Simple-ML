@@ -1,21 +1,20 @@
 from __future__ import annotations
-from typing import Any, Tuple
+
+import json
 import os
+from typing import Any, Tuple
+
+import geopandas
+import numpy as np  # For huge arrays and matrices
+import pandas as pd  # For data processing
+from shapely import wkt, wkb
+
+import simpleml.util.global_configurations as global_config
+import simpleml.util.jsonLabels_util as config
+from simpleml.dataset import getStatistics
+
 
 # import Statistics
-
-from simpleml.dataset import getStatistics
-import simpleml.util._jsonLabels_util as config
-
-import pandas as pd  # For data processing
-import numpy as np  # For huge arrays and matrices
-import json
-import matplotlib as plt  # for graphs
-from plpygis import Geometry
-from shapely import wkt, wkb
-import geopandas
-import simpleml.util._jsonLabels_util as config
-import simpleml.util._global_configurations as global_config
 
 
 # data_folder_name = '../../../data/'  # TODO: Configure globally
@@ -120,7 +119,7 @@ class Dataset:
             self.readFile(self.separator)
 
         from sklearn.model_selection import train_test_split
-        #self.data.head()
+        # self.data.head()
         train_data, test_data = train_test_split(self.data, train_size=trainRatio, random_state=randomState)
 
         train = self.copy(basic_data_only=True)
@@ -140,10 +139,9 @@ class Dataset:
         # TODO: Create global config file where we define the data folder path
         dirName = os.path.dirname(__file__)
         dataFilePath = os.path.join(dirName, global_config.data_folder_name, self.fileName)
-        #print(dataFilePath)
-        #print('data_types')
-        #print(self.data_types)
-
+        # print(dataFilePath)
+        # print('data_types')
+        # print(self.data_types)
 
         # TODO: Check infer_datetime_format
         parse_dates = []
@@ -161,16 +159,16 @@ class Dataset:
             else:
                 self.simple_data_types[attribute] = config.type_string
 
-        #print(self.simple_data_types)
-        #data2 = pd.read_csv(dataFilePath, sep=sep, dtype=self.data_types, parse_dates=parse_dates, na_values=self.null_value)
-        #print(data2.head())
-        #print('attributes')
-        #print(self.attributes)
+        # print(self.simple_data_types)
+        # data2 = pd.read_csv(dataFilePath, sep=sep, dtype=self.data_types, parse_dates=parse_dates, na_values=self.null_value)
+        # print(data2.head())
+        # print('attributes')
+        # print(self.attributes)
 
         self.data = pd.read_csv(dataFilePath, sep=sep, dtype=self.data_types, parse_dates=parse_dates,
                                 na_values=self.null_value, usecols=self.attributes)
 
-        #print(self.data.head())
+        # print(self.data.head())
 
         # parse geo data
         # WKT columns
@@ -180,7 +178,7 @@ class Dataset:
         # WKB columns
         for wkb_column in self.wkb_columns:
             self.data[wkb_column] = self.data[wkb_column].apply(wkb.loads, hex=True)
-        # latitude/longitude pairs
+            # latitude/longitude pairs
             self.simple_data_types[wkb_column] = config.type_geometry
 
         lon_lat_pair_number = 1
@@ -262,7 +260,7 @@ class Dataset:
 
     def getProfile(self):
 
-        profile = { "type": config.type_dataset }
+        profile = {"type": config.type_dataset}
 
         if not self.stats:
             self.getStatistics()
@@ -305,6 +303,7 @@ class Dataset:
                             config.type_table_header_labels: list(self.attribute_labels.values()),
                             config.type_table_data_types: data_types}
 
+
 def loadDataset(datasetID: str) -> Dataset:
     from simpleml.data_catalog import getDataset
     dataset = getDataset(datasetID)
@@ -316,7 +315,6 @@ def loadDataset(datasetID: str) -> Dataset:
 
 
 def readDataSetFromCSV(file_name: str, dataset_name: str, separator: str, has_header: str) -> Dataset:
-    from simpleml.data_catalog import addDomainModel, addStatistics
     # dataset = getDataset(datasetID)
 
     # TODO: From the data catalog, get the list of temporal and spatial columns. Currently, we have them here fixed in the code.
@@ -324,38 +322,39 @@ def readDataSetFromCSV(file_name: str, dataset_name: str, separator: str, has_he
 
     dir_name = os.path.dirname(__file__)
     data_file_path = os.path.join(dir_name, global_config.data_folder_name, file_name)
-    #print(data_file_path)
+    # print(data_file_path)
     test_data = pd.read_csv(data_file_path, sep=separator)
-    #print(test_data.columns.values.tolist())
+    # print(test_data.columns.values.tolist())
     attribute_names = test_data.columns.values.tolist()
     attribute_types = {}
     attribute_labels = {}
     np_type = ''
     for attribute in attribute_names:
-        #type_change = test_data[attribute].to_numpy()
-        #print(type_change.dtype)
+        # type_change = test_data[attribute].to_numpy()
+        # print(type_change.dtype)
         attribute_types[attribute] = dataTypes(test_data[attribute].dtype)
         attribute_labels[attribute] = dataset_name
-    #print(attribute_types)
+    # print(attribute_types)
 
     dataset = Dataset(id='', title=dataset_name, fileName=file_name, hasHeader=has_header, separator=separator,
                       null_value='', description='', subjects={}, number_of_instances=1, titles={}, descriptions={})
 
-
     dataset.addColumnDescriptionForLocalDataset(attribute_names, attribute_types, attribute_labels)
     # print(dataset)
 
-    #addDomainModel(dataset)
-    #addStatistics(dataset)
+    # addDomainModel(dataset)
+    # addStatistics(dataset)
     # getStatistics(dataset)
 
     return dataset
+
 
 def dataTypes(type):
     if type == 'float64':
         return np.double
     elif type == 'int64':
         return pd.Int32Dtype()
+
 
 '''
 def checkHeader(file):
