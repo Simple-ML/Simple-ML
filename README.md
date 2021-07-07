@@ -11,7 +11,7 @@
     ```
 4. Create a new conda environment with the provided recipe:
     ```shell
-    conda env create -f .\environment.yml
+    conda env create -f environment.yml
     ```
 5. Activate this environment (**you need to do this whenever you open a new shell**):
     ```shell
