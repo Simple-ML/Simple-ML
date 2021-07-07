@@ -1,39 +1,37 @@
 import asyncio
-
-import json
-from simpleml.dataset._dataset import Dataset
-import simpleml
-import websockets
-import numpy
 import copy
+import json
+
 import jsonpickle
 import jsonpickle.ext.numpy as jsonpickle_numpy
 import jsonpickle.ext.pandas as jsonpickle_pandas
-from sklearn.tree._tree import Tree
+import websockets
 
 
-"""
-    Notify the Runtime Server that a certain placeholder is ready
-    
-    placeholder: the placeholder wrapped in a json object
-"""
 async def notify_server(placeHolder):
+    """
+        Notify the Runtime Server that a certain placeholder is ready
+
+        placeholder: the placeholder wrapped in a json object
+    """
+
     uri = "ws://localhost:6789"
     async with websockets.connect(uri) as websocket:
         await websocket.send(placeHolder)
         # await websocket.recv()
 
 
-"""
-    Save the placeholder when it is ready to be called from the code and 
-    name: name of the placeholder
-    content: content of the placeholder to be saved
-"""
 def save_placeHolder(name, contents):
+    """
+        Save the placeholder when it is ready to be called from the code and
+        name: name of the placeholder
+        content: content of the placeholder to be saved
+    """
+
     placeholder = dict()
     content = copy.deepcopy(contents)
-    if type(content).__name__=="ndarray":
-        content=content.tolist()
+    if type(content).__name__ == "ndarray":
+        content = content.tolist()
 
     jsonpickle_pandas.register_handlers()
     jsonpickle_numpy.register_handlers()
@@ -66,9 +64,8 @@ def save_placeHolder(name, contents):
     #
     #         # print(type(v).__name__)
 
-
     # print(name,type(content).__name__)
-    placeholder[name]=content
+    placeholder[name] = content
 
     # print(placeholder)
     # f = open("Placeholder.json", "a")
@@ -79,13 +76,13 @@ def save_placeHolder(name, contents):
     loop = asyncio.new_event_loop()
 
     asyncio.set_event_loop(loop)
-    ser=False
+    ser = False
     try:
-        placeholder_value=json.JSONEncoder().encode({"action": 'placeholder_available',"placeholder":placeholder})
+        placeholder_value = json.JSONEncoder().encode({"action": 'placeholder_available', "placeholder": placeholder})
     #     ser=True
     except Exception as exc:
-        print("exception",str(exc))
-        placeholder_value=json.JSONEncoder().encode({"action": 'placeholder_available',"placeholder":placeholder})
+        print("exception", str(exc))
+        placeholder_value = json.JSONEncoder().encode({"action": 'placeholder_available', "placeholder": placeholder})
     # if ser==False:
     #     try:
     #         placeholder_value=json.dumps({"action": 'placeholder_available',"placeholder":placeholder})
@@ -93,12 +90,11 @@ def save_placeHolder(name, contents):
     #     except:
     #         x=placeholder._dataframe.to_json(orient="split")
     #         placeholder_value=json.JSONEncoder().encode({"action": 'placeholder_available',"placeholder":x})
-    if name=="df_train":
+    if name == "df_train":
         # print(content.__dict__)
         print(placeholder_value)
 
     asyncio.get_event_loop().run_until_complete(notify_server(placeholder_value))
-
 
 # Test the functionaluty
 # save_placeHolder("input data","""vehicletype,velocity,weekday,hour,highway,maxspeed

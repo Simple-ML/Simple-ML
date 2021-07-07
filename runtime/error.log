@@ -1,1 +1,0 @@
-error: '1234'error: 'list' object has no attribute 'get'error: list indices must be integers or slices, not strerror: Object of type DecisionTreeClassifierModel is not JSON serializableerror: Object of type ndarray is not JSON serializableerror: Object of type ndarray is not JSON serializable

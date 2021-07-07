@@ -1,10 +1,10 @@
-#venv
-venv/
-adapters/
-*.pyc
-Simple_ML.egg-info/
+# Folders
+.idea/
+__pycache__/
 build/
 dist/
-Placeholder.json
-.idea/
-dataset.tsv
+Simple_ML.egg-info/
+venv/
+
+# Files
+*.log
