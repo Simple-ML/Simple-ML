@@ -29,3 +29,14 @@
    ```shell
    conda env update -n runtime --file environment.yml --prune
    ```
+
+# Execution with Docker
+
+1. Build the Docker image:
+   ```shell
+   docker build -t simpleml-runtime .
+   ```
+2. Launch a Docker container from this image:
+   ```shell
+   docker run -d -p 6789:6789 simpleml-runtime 
+   ```
