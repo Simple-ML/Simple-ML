@@ -7,7 +7,6 @@ from io import StringIO
 from rdflib import Graph
 from rdflib.plugins.sparql.results.jsonresults import JSONResultSerializer
 from rdflib.util import guess_format
-from rdflib_hdt import HDTStore
 
 import simpleml.util.global_configurations as global_config
 
@@ -17,8 +16,10 @@ graph = Graph()
 dirName = os.path.dirname(__file__)
 
 if global_config.use_hdt:
-    folderPath = os.path.join(dirName, "../../../data_catalog/" + "data_catalog.hdt")
-    graph = Graph(store=HDTStore(folderPath))
+    # TODO(lr): removed for now since rdflib_hdt is not available on Windows systems
+    # folderPath = os.path.join(dirName, "../../../data_catalog/" + "data_catalog.hdt")
+    # graph = Graph(store=HDTStore(folderPath))
+    pass
 else:
     folders = ["datasets", "external_vocabularies", "ml_catalog", "schema"]
 
