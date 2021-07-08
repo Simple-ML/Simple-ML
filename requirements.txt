@@ -1,3 +1,0 @@
-websockets~=9.1
-jsonpickle~=2.0.0
-setuptools~=52.0.0

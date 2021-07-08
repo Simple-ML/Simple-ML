@@ -5,7 +5,7 @@ import websockets
 from runtime.appServer import requestHandler
 
 if __name__ == "__main__":
-    print('Runtime server started')
+    print('Runtime server started on localhost:6789')
     # codeWorker = CodeWorker(name=get_new_session())
     try:
         ws_server = websockets.serve(requestHandler, '0.0.0.0', 6789)
