@@ -1,0 +1,3 @@
+[submodule "server/de.unibonn.simpleml.parent/de.unibonn.simpleml/stdlib"]
+	path = server/de.unibonn.simpleml.parent/de.unibonn.simpleml/stdlib
+	url = https://github.com/Simple-ML/Stdlib
