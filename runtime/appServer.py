@@ -11,7 +11,6 @@ import uuid
 import jsonpickle
 import jsonpickle.ext.numpy as jsonpickle_numpy
 import jsonpickle.ext.pandas as jsonpickle_pandas
-import websockets
 from simpleml.dataset._stats import getStatistics
 
 logging.basicConfig()
