@@ -25,7 +25,13 @@
   },
 
   // Add the IDs of extensions you want installed when the container is created.
-  "extensions": ["ms-python.python", "ms-python.vscode-pylance"],
+  "extensions": [
+    "esbenp.prettier-vscode",
+      "ms-python.python",
+      "ms-python.vscode-pylance",
+      // Remove once the extension is on the marketplace (not ideal since this only works if the folder is called DSL)
+      "/workspaces/runtimeServer/stdlib/simple-ml-0.0.9.vsix"
+    ],
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [6789],
