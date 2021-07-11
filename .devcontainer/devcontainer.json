@@ -8,7 +8,7 @@
 	},
 
 	// Set *default* container specific settings.json values on container create.
-	"settings": { 
+	"settings": {
 		"python.pythonPath": "/usr/local/bin/python",
 		"python.languageServer": "Pylance",
 		"python.linting.enabled": true,
@@ -27,7 +27,8 @@
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"ms-python.python",
-		"ms-python.vscode-pylance"
+		"ms-python.vscode-pylance",
+		"/tmp/simple-ml-0.0.7.vsix" // Remove once the extension is on the marketplace
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
