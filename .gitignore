@@ -1,8 +1,9 @@
-# Folders
+# IntelliJ
 .idea/
-__pycache__/
-venv/
-*.egg-info/
 
 # Generated stuff
+*.egg-info/
 *.log
+__pycache__/
+src-gen/
+venv/

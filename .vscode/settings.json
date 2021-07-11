@@ -21,8 +21,10 @@
 
         // Generated stuff
         "**/*.egg-info": true,
-        "simple-ml-0.0.9.vsix": true,
-        "**/*-debug.log": true
+        "**/*-debug.log": true,
+        "**/__pycache__": true,
+        "**/src-gen": true,
+        "simple-ml-0.0.9.vsix": true
     },
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
