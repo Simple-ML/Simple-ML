@@ -5,4 +5,4 @@ RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requ
     && rm -rf /tmp/pip-tmp
 
 # Remove once the extension is on the marketplace
-COPY simple-ml-0.0.7.vsix /tmp/
+COPY simple-ml-0.0.9.vsix /tmp/
