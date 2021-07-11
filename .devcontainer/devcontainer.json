@@ -26,6 +26,7 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
+		"esbenp.prettier-vscode",
 		"ms-python.python",
 		"ms-python.vscode-pylance",
 		"/tmp/simple-ml-0.0.9.vsix" // Remove once the extension is on the marketplace
