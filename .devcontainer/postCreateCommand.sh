@@ -11,3 +11,8 @@ gradle clean generateXtextLanguage build
 cd ../../client
 npm i
 npm run webpack
+
+# Install the Simple-ML Python library
+cd ../server/de.unibonn.simpleml.parent/de.unibonn.simpleml/stdlib/python
+pip3 --disable-pip-version-check --no-cache-dir install -r requirements.txt
+pip3 install -e .
