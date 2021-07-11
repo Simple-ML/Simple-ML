@@ -22,7 +22,7 @@ done
 SAVED="`pwd`"
 cd "`dirname \"$PRG\"`/.." >/dev/null
 APP_HOME="`pwd -P`"
-APP_HOME=$APP_HOME/../server/de.unibonn.simpleml.parent/de.unibonn.simpleml.ide/build
+APP_HOME=$APP_HOME/serverStartScripts
 cd "$SAVED" >/dev/null
 
 APP_NAME="de.unibonn.simpleml.ide"
@@ -65,7 +65,7 @@ case "`uname`" in
     ;;
 esac
 
-CLASSPATH=$APP_HOME/libs/de.unibonn.simpleml.ide-1.0.0-SNAPSHOT-ls.jar
+CLASSPATH=$APP_HOME/de.unibonn.simpleml.ide-1.0.0-SNAPSHOT-ls.jar
 
 # Determine the Java command to use to start the JVM.
 if [ -n "$JAVA_HOME" ] ; then

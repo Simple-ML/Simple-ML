@@ -21,3 +21,10 @@ shadowJar {
 	classifier = 'ls'
 	append('plugin.properties')
 }
+
+task copyLanguageServerToVSCodeExtension(type: Copy) {
+    from 'build/libs/de.unibonn.simpleml.ide-1.0.0-SNAPSHOT-ls.jar'
+    into "../../../client/serverStartScripts"
+}
+
+build.finalizedBy copyLanguageServerToVSCodeExtension

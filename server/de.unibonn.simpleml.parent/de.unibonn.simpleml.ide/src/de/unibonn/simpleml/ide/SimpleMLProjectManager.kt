@@ -30,5 +30,3 @@ class SimpleMLProjectManager @Inject constructor(
         return doBuild(uris, emptyList(), emptyList(), cancelIndicator)
     }
 }
-
-

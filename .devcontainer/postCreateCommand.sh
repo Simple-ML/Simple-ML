@@ -10,4 +10,4 @@ cd server/de.unibonn.simpleml.parent
 # Build client
 cd ../../client
 npm i
-npm run compile
+npm run webpack

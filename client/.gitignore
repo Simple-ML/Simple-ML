@@ -1,8 +1,4 @@
-# Folders
-
-node_modules/
-out/
-
-#Files
-
+# Generated stuff
+/dist
+/serverStartScripts/de.unibonn.simpleml.ide-1.0.0-SNAPSHOT-ls.jar
 *.vsix
