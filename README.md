@@ -1,5 +1,28 @@
 # Installation for Developers
 
+## Option 1: VS Code Devcontainer
+
+1. Install [Docker](https://docs.docker.com/get-docker/).
+1. Install [VS Code](https://code.visualstudio.com/).
+1. Install the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) VS Code Extension.
+1. Clone this repository.
+1. Open the repository in VS Code.
+1. Press F1 and type "Remote-Containers: Reopen in Container".
+
+## Option 1a: VS Code Devcontainer (advanced)
+
+Note: This solution requires that Git itself can clone the private repository Simple-ML/stdlib from GitHub. **If you only used GUIs for Git before it's likely this solution will not work right away.** You need to either [configure SSH](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh), use a credentials manager like the [Git Credentials Manager](https://github.com/microsoft/Git-Credential-Manager-Core) or revert to *Option 1*.
+
+1. Install [Docker](https://docs.docker.com/get-docker/).
+1. Install [VS Code](https://code.visualstudio.com/).
+1. Install the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) VS Code Extension.
+1. Open VS Code.
+1. Press F1 and type "Remote-Containers: Remote-Containers: Clone Repository in Container Volume...".
+1. Select "GitHub".
+1. Type "Simple-ML/runtimeServer".
+
+## Option 2: Custom Installation
+
 1. Install [miniconda](https://docs.conda.io/en/latest/miniconda.html) with Python 3.9. Ensure that your PATH is configured properly, so the `conda` command is available in your shell.
 2. If you want to use miniconda with Powershell on Windows, run the following command:
    ```shell
@@ -17,11 +40,7 @@
    ```shell
    conda develop stdlib/python
    ```
-6. Start the server:
-   ```shell
-   python __main__.py
-   ```
-   
+
 # Adding new Dependencies
 
 1. Add new dependencies to the [environment.yml](./environment.yml) file. Ensure the environment also contains everything the stdlib needs (refer to the [environment.yml from the stdlib](./stdlib/python/environment.yml).
@@ -30,7 +49,15 @@
    conda env update -n runtime --file environment.yml --prune
    ```
 
-# Execution with Docker
+# Execution
+
+## Locally
+
+```shell
+python -m runtime
+```
+
+# With Docker
 
 1. Build the Docker image:
    ```shell
@@ -38,5 +65,5 @@
    ```
 2. Launch a Docker container from this image:
    ```shell
-   docker run -d -p 6789:6789 simpleml-runtime 
+   docker run -d -p 6789:6789 simpleml-runtime
    ```
