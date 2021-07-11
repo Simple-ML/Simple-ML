@@ -5,7 +5,7 @@ git submodule update --init --recursive
 
 # Build server
 cd server/de.unibonn.simpleml.parent
-./gradlew clean generateXtextLanguage build
+gradle clean generateXtextLanguage build
 
 # Build client
 cd ../../client
