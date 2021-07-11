@@ -28,7 +28,7 @@
 	"extensions": [
 		"ms-python.python",
 		"ms-python.vscode-pylance",
-		"/tmp/simple-ml-0.0.7.vsix" // Remove once the extension is on the marketplace
+		"/tmp/simple-ml-0.0.9.vsix" // Remove once the extension is on the marketplace
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
