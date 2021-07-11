@@ -24,6 +24,3 @@ RUN if [ "${INSTALL_NODE}" = "true" ]; then su vscode -c "umask 0002 && . /usr/l
 
 # [Optional] Uncomment this line to install global node packages.
 RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g vsce" 2>&1
-
-# Remove once the extension is on the marketplace
-COPY server/de.unibonn.simpleml.parent/de.unibonn.simpleml/stdlib/simple-ml-0.0.8.vsix /tmp/
