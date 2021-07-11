@@ -1,24 +1,94 @@
 {
-  "files.exclude": {
-    "**/.gitattributes": true,
-    "**/.gradle": true,
-    "**/bin": true,
-    "**/build": true,
-    "**/build.properties": true,
-    "**/de.unibonn.simpleml/model": true,
-    "**/de.unibonn.simpleml/**/*.xtend": true,
-    "**/de.unibonn.simpleml/**/xtend-gen": true,
-    "**/de.unibonn.simpleml.ide/**/*.xtend": true,
-    "**/de.unibonn.simpleml.ide/**/xtend-gen": true,
-    "**/de.unibonn.simpleml.tests/**/*.xtend": true,
-    "**/de.unibonn.simpleml.tests/**/xtend-gen": true,
-    "**/gradle/wrapper": true,
-    "**/gradlew": true,
-    "**/gradlew.bat": true,
-    "**/META-INF": true,
-    "**/node_modules": true,
-    "**/plugin.properties": true,
-    "**/plugin.xml": true
-  },
-  "java.configuration.updateBuildConfiguration": "disabled"
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    },
+    "editor.formatOnSave": true,
+
+    "files.eol": "\n",
+    "files.exclude": {
+        "**/bin": true,
+        "**/build": true,
+        "**/dist": true,
+        "**/emf-gen": true,
+        "**/.devcontainer": true,
+        "**/.git": true,
+        "**/.gitattributes": true,
+        "**/.gitmodules": true,
+        "**/.github": true,
+        "**/.gradle": true,
+        "**/gradle": true,
+        "**/*.gradle": true,
+        "**/.settings": true,
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/gradle/wrapper": true,
+        "**/gradlew": true,
+        "**/gradlew.bat": true,
+        "**/.husky": true,
+        "**/.DS_Store": true,
+        "**/.vscode": true,
+        "**/node_modules": true,
+
+        "**/.eslintignore": true,
+        "**/.eslintrc.json": true,
+        "**/.prettierignore": true,
+        "**/.prettierrc.json": true,
+        "**/.stylelintrc.json": true,
+        "**/*.afdesign": true,
+        "**/build.properties": true,
+        "**/META-INF": true,
+        "**/package-lock.json": true,
+        "**/plugin.properties": true,
+        "**/plugin.xml": true,
+        "**/tsconfig.json": true,
+        "**/yarn.lock": true,
+        "LICENSE": true,
+
+        "server/**/src-gen": true,
+        "**/de.unibonn.simpleml/model": true,
+        "**/de.unibonn.simpleml/**/*.xtend": true,
+        "**/de.unibonn.simpleml/**/xtend-gen": true,
+        "**/de.unibonn.simpleml.ide/**/*.xtend": true,
+        "**/de.unibonn.simpleml.ide/**/xtend-gen": true,
+        "**/de.unibonn.simpleml.tests/**/*.xtend": true,
+        "**/de.unibonn.simpleml.tests/**/xtend-gen": true
+    },
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+
+    "prettier.configPath": "client/.prettierrc.json",
+    "prettier.ignorePath": "client/.prettierignore",
+
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.quickSuggestions": false
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[yaml]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
 }

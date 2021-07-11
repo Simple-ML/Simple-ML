@@ -1,5 +1,10 @@
-# Folders
+# Gradle
 /.gradle
 
-# Files
+# NPM
+node_modules
 /package-lock.json
+
+# Generated stuff
+src-gen
+*.log

@@ -11,7 +11,7 @@ if "%OS%"=="Windows_NT" setlocal
 set DIRNAME=%~dp0
 if "%DIRNAME%" == "" set DIRNAME=.
 set APP_BASE_NAME=%~n0
-set APP_HOME=%DIRNAME%..\..\server\de.unibonn.simpleml.parent\de.unibonn.simpleml.ide\build
+set APP_HOME=%DIRNAME%
 
 @rem Add default JVM options here. You can also use JAVA_OPTS and DE_UNIBONN_SIMPLEML_IDE_OPTS to pass JVM options to this script.
 set DEFAULT_JVM_OPTS=
@@ -63,7 +63,7 @@ set CMD_LINE_ARGS=%*
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\libs\de.unibonn.simpleml.ide-1.0.0-SNAPSHOT-ls.jar
+set CLASSPATH=%APP_HOME%\de.unibonn.simpleml.ide-1.0.0-SNAPSHOT-ls.jar
 
 @rem Execute de.unibonn.simpleml.ide
 "%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %DE_UNIBONN_SIMPLEML_IDE_OPTS%  -jar "%CLASSPATH%" %CMD_LINE_ARGS%

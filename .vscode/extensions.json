@@ -1,7 +1,14 @@
 {
-  "recommendations": [
-    "donjayamanne.githistory",
-    "eamodio.gitlens",
-    "github.vscode-pull-request-github"
-  ]
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "donjayamanne.githistory",
+        "eamodio.gitlens",
+        "github.vscode-pull-request-github",
+        "esbenp.prettier-vscode",
+        "mathiasfrohlich.kotlin",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "stylelint.vscode-stylelint",
+        "vscjava.vscode-java-pack"
+    ]
 }

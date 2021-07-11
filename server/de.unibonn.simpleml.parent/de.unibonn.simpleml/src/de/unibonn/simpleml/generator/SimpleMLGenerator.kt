@@ -121,18 +121,23 @@ class SimpleMLGenerator @Inject constructor(
                 .filterIsInstance<SmlReference>()
                 .map { it.declaration }
                 .filter { it.isCompilationUnitMember() && it.containingCompilationUnitOrNull() != compilationUnit }
-                .map {
+                .mapNotNull {
                     val importPath = qualifiedNameProvider.getFullyQualifiedName(it).toString()
                             .split(".")
                             .dropLast(1)
                             .toMutableList()
 
-                    if (importPath.first() != "simpleml") {
-                        val fileName = it.eResource().baseFileName().split("/").last()
-                        importPath += fileName
-                    }
+                    if (importPath.isEmpty()) {
+                        println("Declaration not in a package $it.")
+                        null
+                    } else {
+                        if (importPath.first() != "simpleml") {
+                            val fileName = it.eResource().baseFileName().split("/").last()
+                            importPath += fileName
+                        }
 
-                    ImportData(importPath.joinToString("."), it.name)
+                        ImportData(importPath.joinToString("."), it.name)
+                    }
                 }
                 .toSet()
                 .groupBy { it.importPath }
@@ -197,7 +202,9 @@ class SimpleMLGenerator @Inject constructor(
             is SmlExpressionStatement -> {
                 append(compileExpression(stmt.expression))
             }
-            else -> throw IllegalArgumentException("Unknown statement $stmt.")
+            else -> {
+                println("Unknown statement $stmt.")
+            }
         }
     }
 
@@ -243,7 +250,10 @@ class SimpleMLGenerator @Inject constructor(
             is SmlReference -> {
                 expr.declaration.name
             }
-            else -> throw IllegalArgumentException("Unknown expression $expr.")
+            else -> {
+                println("Unknown expression $expr.")
+                ""
+            }
         }
     }
 }
