@@ -10,6 +10,7 @@
         "**/.git": true,
         "**/.gitattributes": true,
         "**/.github": true,
+        "**/.gitmodules": true,
 
         // MacOS
         "**/.DS_Store": true,
@@ -19,6 +20,7 @@
         "**/.vscode": true,
         "**/.prettierignore": true,
         "**/.prettierrc.json": true,
+        "**/Dockerfile": true,
 
         // Generated stuff
         "**/*.egg-info": true,
