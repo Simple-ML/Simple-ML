@@ -20,7 +20,8 @@ subprojects {
 	
 	apply plugin: 'org.jetbrains.kotlin.jvm'
 	tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-	    kotlinOptions {
+		dependsOn(generateXtext)
+		kotlinOptions {
 	    	jvmTarget = '11'
 			useIR = true
 	    }

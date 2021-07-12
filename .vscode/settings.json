@@ -23,6 +23,7 @@
         "**/.prettierignore": true,
         "**/.prettierrc.json": true,
         "**/.stylelintrc.json": true,
+        "Dockerfile": true,
 
         // Client
         "client/**/.husky": true,
