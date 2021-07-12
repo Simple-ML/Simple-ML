@@ -11,7 +11,7 @@
 
 ## Option 1a: VS Code Devcontainer (advanced)
 
-Note: This solution requires that Git itself can clone the private repository Simple-ML/stdlib from GitHub. **If you only used GUIs for Git before it's likely this solution will not work right away.** You need to either [configure SSH](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh), use a credentials manager like the [Git Credentials Manager](https://github.com/microsoft/Git-Credential-Manager-Core) or revert to _Option 1_.
+Note: This solution requires that Git itself can clone this private repository from GitHub. **If you only used GUIs for Git before it's likely this solution will not work right away.** You need to either [configure SSH](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh), use a credentials manager like the [Git Credentials Manager](https://github.com/microsoft/Git-Credential-Manager-Core) or revert to _Option 1_.
 
 1. Install [Docker](https://docs.docker.com/get-docker/).
 1. Install [VS Code](https://code.visualstudio.com/).
