@@ -37,6 +37,7 @@
     "extensions": [
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
+        "grammarcraft.xtext-lang",
         "mathiasfrohlich.kotlin",
         "ms-python.python",
         "ms-python.vscode-pylance",
