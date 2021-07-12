@@ -1,8 +1,8 @@
 [![Master](https://github.com/Simple-ML/Runtime/actions/workflows/master.yml/badge.svg)](https://github.com/Simple-ML/Runtime/actions/workflows/master.yml)
 
-# Installation for Developers
+## Installation for Developers
 
-## Option 1: VS Code Devcontainer
+### Option 1: VS Code Devcontainer
 
 1. Install [Docker](https://docs.docker.com/get-docker/).
 1. Install [VS Code](https://code.visualstudio.com/).
@@ -11,7 +11,7 @@
 1. Open the repository in VS Code.
 1. Press F1 and type "Remote-Containers: Reopen in Container".
 
-## Option 1a: VS Code Devcontainer (advanced)
+### Option 1a: VS Code Devcontainer (advanced)
 
 Note: This solution requires that Git itself can clone this private repository from GitHub. **If you only used GUIs for Git before it's likely this solution will not work right away.** You need to either [configure SSH](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh), use a credentials manager like the [Git Credentials Manager](https://github.com/microsoft/Git-Credential-Manager-Core) or revert to _Option 1_.
 
@@ -23,7 +23,7 @@ Note: This solution requires that Git itself can clone this private repository f
 1. Select "GitHub".
 1. Type "Simple-ML/Runtime".
 
-## Option 2: Custom Installation
+### Option 2: Custom Installation
 
 1. Install [miniconda](https://docs.conda.io/en/latest/miniconda.html) with Python 3.9. Ensure that your PATH is configured properly, so the `conda` command is available in your shell.
 1. If you want to use miniconda with Powershell on Windows, run the following command:
@@ -43,7 +43,7 @@ Note: This solution requires that Git itself can clone this private repository f
     conda develop stdlib/python
     ```
 
-# Adding new Dependencies
+## Adding new Dependencies
 
 1. Add new dependencies to the [environment.yml](./environment.yml) **and** the [requirements.txt](./requirements.txt) file. Make sure the version numbers are identical in both files and that [requirements.txt](./requirements.txt) **does not** contain `python` and `conda-build` as dependencies.
 1. Update your environment:
@@ -54,15 +54,15 @@ Note: This solution requires that Git itself can clone this private repository f
         conda env update -n runtime --file environment.yml --prune
         ```
 
-# Execution
+## Execution
 
-## Locally
+### Locally
 
 ```shell
 python -m runtime
 ```
 
-## With Docker
+### With Docker
 
 1. Build the Docker image:
     ```shell
