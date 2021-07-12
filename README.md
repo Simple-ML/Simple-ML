@@ -68,5 +68,5 @@ python -m runtime
     ```
 2. Launch a Docker container from this image:
     ```shell
-    docker run -d -p 6789:6789 simpleml-runtime
+    docker run --name simpelml-runtime -d --rm -p 6789:6789 simpleml-runtime
     ```
