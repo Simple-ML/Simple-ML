@@ -1,3 +1,5 @@
+[![Master](https://github.com/Simple-ML/DSL/actions/workflows/master.yml/badge.svg)](https://github.com/Simple-ML/DSL/actions/workflows/master.yml)
+
 ## Installation for Developers
 
 ### Option 1: VS Code Devcontainer
