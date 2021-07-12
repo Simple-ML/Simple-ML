@@ -56,7 +56,7 @@ class SimpleMLFormatterTest {
     }
 
     private fun expectedResult(program: String): String {
-        return program.split(separator)[1].trim()
+        return program.split(separator)[1].trim().replace("\n", System.lineSeparator())
     }
 
     private fun assertFormatted(toBeFormatted: String, expectedResult: String) {
