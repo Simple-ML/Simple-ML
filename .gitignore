@@ -6,5 +6,6 @@ node_modules
 /package-lock.json
 
 # Generated stuff
+DS_Store/
 src-gen
 *.log
