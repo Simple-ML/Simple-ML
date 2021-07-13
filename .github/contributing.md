@@ -2,7 +2,7 @@
 
 ### Title
 
-The title must follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) convention.
+The title must follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) convention. **Mark breaking changes with an exclamation mark**.
 
 All **types** from [Commitizen](https://github.com/commitizen/conventional-commit-types/blob/master/index.json) are allowed. Pick the one that fits best:
 | Type | Meaning |
@@ -24,6 +24,12 @@ Possible **scopes** are:
 | Scope | Meaning |
 |------|---------|
 | `devcontainer` | [VS Code development container](https://code.visualstudio.com/docs/remote/containers) |
+
+Examples:
+
+* `feat(devcontainer): add Python plugin`
+* `docs: write contribution guide`
+* `refactor!: drop support for Python 2` (the exclamation mark denotes a breaking change)
 
 ### Description
 
