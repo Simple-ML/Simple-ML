@@ -5,5 +5,6 @@
 *.egg-info/
 *.log
 __pycache__/
+DS_Store/
 src-gen/
 venv/
