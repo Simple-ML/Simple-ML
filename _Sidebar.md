@@ -1,5 +1,5 @@
 ## Simple-ML Wiki
-* Tutorial
+* [Tutorial][tutorial]
 
 * [Installation][installation]
 
@@ -13,6 +13,7 @@
       * [Data Catalog API][data_catalog_api]
       * [Machine Learning Catalog API][ml_catalog_api]
 
+[tutorial]: https://github.com/Anzumana/Simple-ML/wiki/tutorial
 [installation]: https://github.com/Anzumana/Simple-ML/wiki/installation
 [dsl]: https://github.com/Anzumana/Simple-ML/wiki/Language-Tutorial
 [data_api]: https://github.com/Anzumana/Simple-ML/wiki/Data-API
