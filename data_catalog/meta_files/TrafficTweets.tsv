@@ -1,0 +1,32 @@
+FILE	/home/simon/Documents/SimpleML/data_sets/catalog_files/TrafficTweets.tsv
+CREATOR_ID	0
+ID	TrafficTweets
+NULL	
+SEPARATOR	TAB
+HAS_HEADER	yes
+HAS_COLUMN_TITLES	yes
+TITLE_EN	Traffic-related German tweets
+TITLE_DE	Verkehrsbezoegene deutsche Tweets
+DESCRIPTION_EN	German Tweets from traffic-related accounts.
+DESCRIPTION_DE	Deutsche Tweets von Accounts mit Verkehrsbezug.
+TOPICS_EN	Traffic
+TOPICS_DE	Verkehr
+LAT_LON_ORDER	lat_lon
+PROPERTIES
+sioc:UserAccount,foaf:name
+
+
+
+sioc:UserAccount,foaf:accountName
+
+time:DateTimeDescription,time:inXSDDate
+sioc:Post,dcterms:identifier
+sioc:Post,sioc:content
+
+
+
+
+
+GRAPH
+sioc:Post,sioc:has_creator,sioc:UserAccount
+sioc:Post,time:hasTime,time:DateTimeDescription

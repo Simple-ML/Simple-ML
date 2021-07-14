@@ -1,0 +1,26 @@
+FILE	/home/simon/Documents/SimpleML/data_sets/catalog_files/TrafficWarnings.tsv
+CREATOR_ID	0
+ID	TrafficWarnings
+NULL	
+SEPARATOR	TAB
+HAS_HEADER	yes
+HAS_COLUMN_TITLES	yes
+TITLE_EN	Traffic warnings collected form the Verkehrs-Management-Zentrale Niedersachsen
+TITLE_DE	Verkehrswarnungen der Verkehrs-Management-Zentrale Niedersachsen
+DESCRIPTION_EN	Traffic warnings collected from the „Verkehrs-Management-Zentrale Niedersachsen” (https://www.vmz-niedersachsen.de/feeds/InfoRss.xml). Each row represent a captured warning with date of appearance and disappearance.
+DESCRIPTION_DE	Verkehrswarnungen der Verkehrs-Management-Zentrale Niedersachsen (https://www.vmz-niedersachsen.de/feeds/InfoRss.xml). Jede Zeile repräsentiert eine Warnung mitsamt Start- und Endzeit.
+TOPICS_EN	Traffic
+TOPICS_DE	Verkehr
+LAT_LON_ORDER	lat_lon
+PROPERTIES
+
+time:DateTimeDescription@1,time:inXSDDate
+time:DateTimeDescription@2,time:inXSDDate
+sml:mobility/TrafficWarning,dcterms:title
+sml:mobility/TrafficWarning,dcterms:description
+
+dcterms:Location,sml:asWKB
+GRAPH
+sml:mobility/TrafficWarning,dcterms:spatial,dcterms:Location
+sml:mobility/TrafficWarning,time:hasBeginning,time:DateTimeDescription@1
+sml:mobility/TrafficWarning,time:hasEnd,time:DateTimeDescription@2

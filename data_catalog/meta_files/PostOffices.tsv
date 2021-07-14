@@ -1,0 +1,26 @@
+FILE	/home/simon/Documents/SimpleML/data_sets/catalog_files/PostOffices.csv
+CREATOR_ID	0
+ID	PostOffices
+NULL	
+SEPARATOR	,
+HAS_HEADER	yes
+HAS_COLUMN_TITLES	yes
+TITLE_EN	Post related locations
+TITLE_DE	Post-relevante Orte
+DESCRIPTION_EN	Post offices, data ware houses and delivery stations extracted from OpenStreetMap.
+DESCRIPTION_DE	Postämter, Paketstationen und Warenhäuser, die aus OpenStreetMap extrahiert wurden.
+TOPICS_EN	Traffic,Logistics
+TOPICS_DE	Verkehr,Logistik
+LAT_LON_ORDER	lat_lon
+PROPERTIES
+dcterms:Location,sml:mobility/osmId
+sml:mobility/LocationType,rdfs:label
+dcterms:Location,sml:asWKB
+
+
+dcterms:Location,rdfs:label
+
+
+
+GRAPH
+dcterms:Location,sml:mobility/hasLocationType,sml:mobility/LocationType

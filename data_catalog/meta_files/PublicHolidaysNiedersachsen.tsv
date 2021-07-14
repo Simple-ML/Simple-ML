@@ -1,0 +1,20 @@
+FILE	/home/simon/Documents/SimpleML/data_sets/catalog_files/PublicHolidaysNiedersachsen.csv
+CREATOR_ID	0
+ID	PublicHolidaysNiedersachsen
+NULL	
+SEPARATOR	,
+HAS_HEADER	yes
+HAS_COLUMN_TITLES	yes
+TITLE_EN	Public holidays in Lower Saxony (Germany)
+TITLE_DE	Gesetzliche Feiertage in Niedersachsen
+DESCRIPTION_EN	Public holidays in Lower Saxony, Germany.
+DESCRIPTION_DE	Gesetzliche in Niedersachsen.
+TOPICS_EN	Events
+TOPICS_DE	Ereignisse
+PROPERTIES
+sml:mobility/Holiday,rdfs:label
+time:DateTimeDescription@1,time:inXSDDateTime
+time:DateTimeDescription@2,time:inXSDDateTime
+GRAPH
+sml:mobility/Holiday,time:hasBeginning,time:DateTimeDescription@1
+sml:mobility/Holiday,time:hasEnd,time:DateTimeDescription@2

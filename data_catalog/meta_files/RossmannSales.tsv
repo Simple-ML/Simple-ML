@@ -1,0 +1,29 @@
+FILE	/home/simon/Documents/SimpleML/data_sets/catalog_files/RossmannSales.csv
+CREATOR_ID	0
+ID	RossmannSales
+NULL	
+SEPARATOR	,
+HAS_HEADER	yes
+HAS_COLUMN_TITLES	yes
+TITLE_EN	Historical sales data for 1,115 Rossmann stores
+TITLE_DE	Historische Verkaufsdaten von 1115 Rossmann-Geschäften
+DESCRIPTION_EN	Historical sales data for 1,115 Rossmann stores. Each row represents the turnover for a given day in a store.
+DESCRIPTION_DE	Historische Verkaufsdaten von 1115 Rossmann-Geschäften. Jede Zeile repräsentiert den Umsatz eines Tages eines Geschäftes.
+TOPICS_EN	Logistics
+TOPICS_DE	Logistik
+LAT_LON_ORDER	lat_lon
+PROPERTIES
+sml:logistics/Store,sml:logistics/storeId
+time:DayOfWeek,rdfs:label
+time:DateTimeDescription,time:inXSDDate
+sml:logistics/Turnover,sml:logistics/sales
+sml:logistics/Turnover,sml:logistics/customers
+sml:logistics/Turnover,sml:logistics/isOpen
+sml:logistics/Turnover,sml:logistics/hasPromo
+sml:logistics/StateHoliday,rdfs:label
+sml:logistics/Turnover,sml:logistics/isSchoolHoliday
+GRAPH
+sml:logistics/Turnover,sml:logistics/store,sml:logistics/Store
+sml:logistics/Turnover,time:hasTime,time:DateTimeDescription
+time:DateTimeDescription,time:dayOfWeek,time:DayOfWeek
+sml:logistics/Turnover,sml:logistics/hasStateHoliday,sml:logistics/StateHoliday

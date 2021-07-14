@@ -1,0 +1,27 @@
+FILE	/home/simon/Documents/SimpleML/data_sets/catalog_files/RedWineQualityBinary.csv
+CREATOR_ID	0
+ID	RedWineQualityBinary
+NULL	
+SEPARATOR	;
+HAS_HEADER	yes
+HAS_COLUMN_TITLES	yes
+TITLE_EN	Red Wine Quality (binary)
+TITLE_DE	Rotwein-Qualität (binär)
+DESCRIPTION_EN	Quality (0/1) of red vinho verde wine samples, from the north of Portugal
+DESCRIPTION_DE	Qualität (0/1) von Rotweinen aus dem Norden Portugals
+TOPICS_EN	Wine
+TOPICS_DE	Wein
+PROPERTIES
+sml:wine/Wine,sml:wine/fixedAcidity,xsd:double
+sml:wine/Wine,sml:wine/volatileAcidity,xsd:double
+sml:wine/Wine,sml:wine/citricAcid,xsd:double
+sml:wine/Wine,sml:wine/residualSugar,xsd:double
+sml:wine/Wine,sml:wine/chlorides,xsd:double
+sml:wine/Wine,sml:wine/freeSulfurDioxide,xsd:double
+sml:wine/Wine,sml:wine/totalSulfurDioxide,xsd:double
+sml:wine/Wine,sml:wine/density,xsd:double
+sml:wine/Wine,sml:wine/pH,xsd:double
+sml:wine/Wine,sml:wine/sulphates,xsd:double
+sml:wine/Wine,sml:wine/alcohol,xsd:double
+sml:wine/Wine,sml:wine/qualityBinary,xsd:nonNegativeInteger
+GRAPH
