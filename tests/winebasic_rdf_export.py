@@ -8,9 +8,9 @@ from simpleml.util import exportDictionaryAsJSON
 
 def exampleWorkflow():
     dataset = loadDataset("WhiteWineQualityBinary")
+    # print(exportDictionaryAsJSON(dataset.getProfile()))
 
-    print("JSON:")
-    print(exportDictionaryAsJSON(dataset.getProfile()))
+    dataset = dataset.sample(10000)
 
     # train, test = dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
     # X_train = train.dropAttributes("quality")
@@ -22,6 +22,7 @@ def exampleWorkflow():
     # print(exportDictionaryAsJSON(y_train.getProfile()))
     # print(exportDictionaryAsJSON(X_test.getProfile()))
     print("RDF:")
+
     print(exportStatisticsAsRDF(dataset))
 
 

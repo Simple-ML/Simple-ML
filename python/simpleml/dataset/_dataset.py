@@ -201,15 +201,12 @@ class Dataset:
             self.simple_data_types[column_name] = config.type_geometry
             lon_lat_pair_number += 1
 
-        print(self.simple_data_types)
-
-    def addColumnDescription(self, attribute_identifier, resource_node, domain_node, property_node, value_type,
+    def addColumnDescription(self, attribute_identifier, resource_node, domain_node, property_node, rdf_value_type, value_type,
                              attribute_label):
         self.attributes.append(attribute_identifier)
-        self.attribute_graph[attribute_identifier] = {"resource": resource_node, "property": property_node,
+        self.attribute_graph[attribute_identifier] = {"value_type": rdf_value_type, "resource": resource_node, "property": property_node,
                                                       "class": domain_node}
         self.data_types[attribute_identifier] = value_type
-        print('label', attribute_label)
 
         self.attribute_labels[attribute_identifier] = attribute_label
 
@@ -243,15 +240,16 @@ class Dataset:
         return self.data.loc[row_number_start: row_number_end]
 
     def copy(self, basic_data_only: bool = False):
-        copy = Dataset(id=None, title=self.title, subjects=self.subjects, description=self.description,
+        copy = Dataset(id=self.id, title=self.title, subjects=self.subjects, description=self.description,
                        separator=self.separator,
                        null_value=self.null_value,
                        fileName=self.fileName,
-                       hasHeader=self.hasHeader)
+                       hasHeader=self.hasHeader, titles=self.titles, descriptions=self.descriptions)
         copy.attribute_labels = self.attribute_labels.copy()
         copy.attributes = self.attributes.copy()
         copy.data_types = self.data_types.copy()
         copy.simple_data_types = self.simple_data_types.copy()
+        copy.attribute_graph = self.attribute_graph.copy()
 
         if not basic_data_only:
             if self.data is not None:

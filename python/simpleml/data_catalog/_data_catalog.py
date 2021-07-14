@@ -94,7 +94,7 @@ def addDomainModel(dataset):
         value_type = result["valueType"]["value"]
         dataset.addColumnDescription(attribute_identifier=identifier, resource_node=resource_node,
                                      domain_node=domain_node, property_node=property_node,
-                                     value_type=getPythonType(value_type),
+                                     rdf_value_type=value_type, value_type=getPythonType(value_type),
                                      attribute_label=domain_node_label + " (" + propertyLabel + ")")
 
     for lon_lat_pair in lon_lat_pairs.values():

@@ -223,7 +223,9 @@ def getStatistics(dataset: Dataset) -> dict:
                     geo_type = LineString
                 addSpatialValueDistribution(geometry_object, polygon_count, areas, proj)
 
-            stats[colName][config.spatialValueDistribution] = polygon_count
+            stats[colName][config.spatialValueDistribution] = {config.type: config.type_spatial_distribution,
+                                                               config.type_spatial_distribution_areas: polygon_count}
+
             if geo_type == Polygon:
                 column_data = data[colName].apply(area)
             elif geo_type == LineString:
@@ -252,12 +254,16 @@ def getStatistics(dataset: Dataset) -> dict:
         # deciles
         if simple_type in [config.type_numeric, config.type_datetime]:
             stats[colName][config.deciles] = {config.type: config.type_list,
+                                              config.id: config.decile,
+                                              config.list_data_type: config.type_float,
                                               config.type_list_values: addQuantiles(column_data, colName, 10,
                                                                                     transform_timestamp=transform_timestamp)}
 
         # quartiles
         if simple_type in [config.type_numeric, config.type_datetime]:
             stats[colName][config.quartiles] = {config.type: config.type_box_plot,
+                                                config.id: config.quartile,
+                                                config.list_data_type: config.type_float,
                                                 config.type_box_plot_values: addQuantiles(column_data, colName, 4,
                                                                                           transform_timestamp=transform_timestamp)}
 
@@ -295,10 +301,9 @@ def getStatistics(dataset: Dataset) -> dict:
                                                                                              transform_timestamp=transform_timestamp)}
 
         if simple_type in [config.type_string, config.type_bool]:
-            stats[colName][config.value_distribution] = {config.type: config.type_bar_chart,
+            stats[colName][config.value_distribution] = {config.type: config.type_bar_chart, config.id: config.value,
                                                          config.type_bar_chart_bars: addValueDistribution(stats, column,
                                                                                                           colName)}  # if data[colName].dtype == 'object' and colName != 'geometry' else 0
-
         i = i + 1
 
     # sample
