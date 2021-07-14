@@ -1,5 +1,10 @@
-# Folders
+# IntelliJ
 .idea/
-__pycache__/
-venv/
+
+# Generated stuff
 *.egg-info/
+*.log
+__pycache__/
+DS_Store/
+src-gen/
+venv/
