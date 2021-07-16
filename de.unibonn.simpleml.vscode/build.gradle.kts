@@ -5,11 +5,22 @@ import com.github.gradle.node.npm.task.NpxTask
 plugins {
     base
     id("com.github.node-gradle.node")
+    idea
 }
 
 node {
     version.set("16.5.0")
     download.set(true)
+}
+
+idea {
+    module {
+        sourceDirs.add(file("src"))
+        sourceDirs.add(file("syntaxes"))
+
+        excludeDirs.add(file("dist"))
+        excludeDirs.add(file("node_modules"))
+    }
 }
 
 
@@ -37,11 +48,11 @@ tasks.register<NpxTask>("vsCodeExtension") {
 
     dependsOn("npmInstall")
 
+    inputs.dir("icons")
     inputs.dir("src")
     inputs.dir("syntaxes")
     inputs.files(
         ".vscodeignore",
-        "icon.png",
         "language-configuration.json",
         "package.json",
         "tsconfig.json",

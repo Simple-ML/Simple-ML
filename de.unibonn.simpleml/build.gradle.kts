@@ -8,11 +8,19 @@ val xtextVersion: String by rootProject.extra
 plugins {
     `java-library`
     kotlin("jvm")
+    idea
 }
 
 java {
     sourceCompatibility = javaSourceVersion
     targetCompatibility = javaTargetVersion
+}
+
+idea {
+    module {
+        excludeDirs.add(file("META-INF"))
+        excludeDirs.add(file("model"))
+    }
 }
 
 
@@ -68,6 +76,18 @@ tasks.register<JavaExec>("generateXtextLanguage") {
         "../de.unibonn.simpleml.web/src-gen"
     )
     outputs.files("build.properties", "plugin.properties", "plugin.xml")
+
+    doLast {
+        delete(fileTree("src") {
+            include("**/*.xtend")
+        })
+        delete(fileTree("../de.unibonn.simpleml.ide/src") {
+            include("**/*.xtend")
+        })
+        delete(fileTree("../de.unibonn.simpleml.web/src/de/unibonn/simpleml/web") {
+            include("**/*.xtend")
+        })
+    }
 }
 
 tasks {

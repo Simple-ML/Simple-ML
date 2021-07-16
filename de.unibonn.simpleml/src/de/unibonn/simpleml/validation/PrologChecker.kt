@@ -1,10 +1,10 @@
-package de.unibonn.simpleml.validation;
+package de.unibonn.simpleml.validation
 
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import org.eclipse.xtext.validation.Check
 import org.eclipse.emf.ecore.EObject
 
-public class PrologChecker : AbstractSimpleMLChecker() {
+class PrologChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun checkWithProlog(smlCompilationUnit: SmlCompilationUnit) {

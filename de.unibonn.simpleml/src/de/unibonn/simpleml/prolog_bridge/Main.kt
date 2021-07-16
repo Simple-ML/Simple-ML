@@ -52,7 +52,7 @@ class Main @Inject constructor(
     }
 }
 
-fun main(args: Array<String>) {
+fun main() {
     val time0: Long = System.currentTimeMillis()
     /*if (args.isEmpty()) {
         System.err.println("Aborting: no path to EMF resource provided!")
