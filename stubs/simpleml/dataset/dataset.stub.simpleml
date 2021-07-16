@@ -1,13 +1,13 @@
 package simpleml.dataset
 
 class Dataset {
-	fun sample(nInstances: Int) -> dataset: Dataset
-	
-	fun keepAttributes(vararg attributes: String) -> dataset: Dataset
+    fun sample(nInstances: Int) -> dataset: Dataset
 
-	fun dropAttributes(vararg attributes: String) -> dataset: Dataset
+    fun keepAttributes(vararg attributes: String) -> dataset: Dataset
 
-	fun splitIntoTrainAndTest(trainRatio: Float, randomState: Int? or null) -> (dataset1: Dataset, dataset2: Dataset)
+    fun dropAttributes(vararg attributes: String) -> dataset: Dataset
+
+    fun splitIntoTrainAndTest(trainRatio: Float, randomState: Int? or null) -> (dataset1: Dataset, dataset2: Dataset)
 }
 
 fun loadDataset(name: String) -> dataset: Dataset

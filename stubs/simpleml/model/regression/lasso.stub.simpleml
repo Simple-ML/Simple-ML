@@ -4,14 +4,15 @@ import simpleml.model.supervised.*
 import simpleml.dataset.Dataset
 
 open class Lasso constructor(regularizationStrength: Float or 0.5) sub Estimator {
-	attr regularizationStrength: Float
+    attr regularizationStrength: Float
 
-	override fun fit(features: Dataset, target: Dataset) -> trainedModel: TrainedLasso
+    override fun fit(features: Dataset, target: Dataset) -> trainedModel: TrainedLasso
 }
 
 class TrainedLasso sub Model {
-	attr slope: Int
-	attr yIntercept: Int
-	
-	override fun predict(features: Dataset) -> results: Any
+    attr slope: Int
+
+    attr yIntercept: Int
+
+    override fun predict(features: Dataset) -> results: Any
 }

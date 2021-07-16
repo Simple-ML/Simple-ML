@@ -1,14 +1,14 @@
 package simpleml.model.regression
 
-import simpleml.model.*
+import simpleml.model.supervised.*
 import simpleml.dataset.Dataset
 
-open class DecisionTree constructor(maxDepth: Int) sub Model {
-	attr maxDepth: Int?
-	
-	override fun fit(features: Dataset, target: Dataset) -> trainedModel: TrainedDecisionTree
+open class DecisionTree constructor(maxDepth: Int) sub Estimator {
+    attr maxDepth: Int?
+
+    override fun fit(features: Dataset, target: Dataset) -> trainedModel: TrainedDecisionTree
 }
 
 class TrainedDecisionTree sub DecisionTree {
-	fun predict(features: Dataset) -> results: Any
+    fun predict(features: Dataset) -> results: Any
 }
