@@ -4,7 +4,7 @@
 git submodule update --init --recursive
 
 # Build
-gradle vsCodeExtension
+gradle build
 
 # Install the Simple-ML Python library
 cd de.unibonn.simpleml/stdlib/python
