@@ -1,0 +1,4 @@
+# Generated stuff
+/dist
+/src/simpleml
+*.vsix
