@@ -1,9 +1,0 @@
-package example
-
-workflow main {
-    val message = "Hello, world!";
-}
-
-step hello() -> message: String {
-    yield message = "Hello, world!";
-}

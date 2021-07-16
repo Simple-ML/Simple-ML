@@ -45,7 +45,7 @@
         "stylelint.vscode-stylelint",
         "vscjava.vscode-java-pack",
         // Remove once the extension is on the marketplace (not ideal since this only works if the folder is called DSL)
-        "/workspaces/DSL/server/de.unibonn.simpleml.parent/de.unibonn.simpleml/stdlib/simple-ml-0.0.9.vsix"
+        "/workspaces/DSL/de.unibonn.simpleml/stdlib/simple-ml-0.0.9.vsix"
     ],
 
     // Use 'forwardPorts' to make a list of ports inside the container available locally.
