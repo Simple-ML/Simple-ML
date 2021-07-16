@@ -1,4 +1,3 @@
-# Generated stuff
 /dist
+/node_modules
 /src/simpleml
-*.vsix

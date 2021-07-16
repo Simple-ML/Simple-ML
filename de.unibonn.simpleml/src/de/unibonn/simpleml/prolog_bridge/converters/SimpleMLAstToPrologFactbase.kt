@@ -52,7 +52,6 @@ class SimpleMLAstToPrologFactbase {
     }
 
     private fun PlFactbase.handleImport(obj: SmlImport, parentId: Id) {
-
         +ImportT(obj.id, obj.eResource().id, obj.importedNamespace, obj.alias)
         +SourceLocationS(obj)
     }
@@ -91,7 +90,7 @@ class SimpleMLAstToPrologFactbase {
                         obj.typeParameterConstraintsOrEmpty().forEach { handleTypeParameterConstraint(it, parentId) }
                         obj.typeParameterList?.typeParameters?.forEach { handleDeclaration(it, parentId) }
 
-                        when (obj) {
+//                        when (obj) {
 //                            is SmlClass -> {
 //                                +ClassT(
 //                                        obj.id,
@@ -116,7 +115,7 @@ class SimpleMLAstToPrologFactbase {
 //                                        obj.membersOrEmpty().map { it.id }
 //                                )
 //                            }
-                        }
+//                        }
                     }
                     is SmlEnum -> {
                         obj.body?.instances?.forEach { handleDeclaration(it, obj.id) }

@@ -3,7 +3,8 @@ package de.unibonn.simpleml.prolog_bridge.utils
 /**
  * The ID of a Prolog fact.
  */
-inline class Id(val value: Int)
+@JvmInline
+value class Id(val value: Int)
 
 /**
  * Handles the mapping of objects, usually EObjects in the Simple-ML AST, to the IDs of Prolog facts.

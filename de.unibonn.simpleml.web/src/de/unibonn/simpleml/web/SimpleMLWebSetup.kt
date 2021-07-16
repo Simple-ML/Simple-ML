@@ -11,15 +11,14 @@ import org.eclipse.xtext.web.server.persistence.IResourceBaseProvider
 /**
  * Initialization support for running Xtext languages in web applications.
  */
-class SimpleMLWebSetup extends SimpleMLStandaloneSetup {
-	
-	IResourceBaseProvider resourceBaseProvider;
-	
-	new(IResourceBaseProvider resourceBaseProvider) {
-		this.resourceBaseProvider = resourceBaseProvider;
-	}
-	
-	override Injector createInjector() {
-		return Guice.createInjector(Modules2.mixin(new SimpleMLRuntimeModule, new SimpleMLIdeModule, new SimpleMLWebModule(resourceBaseProvider)))
-	}
+class SimpleMLWebSetup(private val resourceBaseProvider: IResourceBaseProvider) : SimpleMLStandaloneSetup() {
+    override fun createInjector(): Injector {
+        return Guice.createInjector(
+            Modules2.mixin(
+                SimpleMLRuntimeModule(),
+                SimpleMLIdeModule(),
+                SimpleMLWebModule(resourceBaseProvider)
+            )
+        )
+    }
 }

@@ -1,29 +1,12 @@
 # Eclipse
 .settings/
-META-INF/
 .classpath
 .project
-build.properties
-plugin.properties
-plugin.xml
 
 # Gradle
 .gradle/
-/package-lock.json
-
-# NPM
-node_modules/
 
 # Generated stuff
 DS_Store/
+/package-lock.json
 *.log
-
-# Server
-bin/
-build/
-emf-gen/
-src-gen/
-xtend-gen/
-*.class
-*.java._trace
-*-debug.log
