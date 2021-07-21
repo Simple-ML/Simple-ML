@@ -55,8 +55,7 @@ tasks.register<NpxTask>("vsCodeExtension") {
         ".vscodeignore",
         "language-configuration.json",
         "package.json",
-        "tsconfig.json",
-        "webpack.config.js"
+        "tsconfig.json"
     )
     outputs.dirs("dist")
 
