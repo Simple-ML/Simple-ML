@@ -6,7 +6,7 @@ val xtextVersion: String by rootProject.extra
 // Plugins -------------------------------------------------------------------------------------------------------------
 
 plugins {
-    `java-library`
+    java
     kotlin("jvm")
     id("org.xtext.xtend")
     war
