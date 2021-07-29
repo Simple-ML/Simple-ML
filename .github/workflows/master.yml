@@ -42,7 +42,7 @@ jobs:
                       ${{ runner.os }}-gradle-
 
             - name: Test with Gradle
-              run: cd server/de.unibonn.simpleml.parent && ./gradlew test
+              run: ./gradlew test
 
             - uses: actions/upload-artifact@v2
               with:
