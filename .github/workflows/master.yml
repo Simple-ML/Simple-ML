@@ -42,12 +42,12 @@ jobs:
                       ${{ runner.os }}-gradle-
 
             - name: Test with Gradle
-              run: ./gradlew test
+              run: ./gradlew check
 
             - uses: actions/upload-artifact@v2
               with:
                 name: Test Report
-                path: server/de.unibonn.simpleml.parent/de.unibonn.simpleml.tests/build/reports/tests/test
+                path: de.unibonn.simpleml.tests/build/reports/tests/test
 
             - name: Cleanup Gradle Cache
               # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
