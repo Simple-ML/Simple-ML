@@ -29,10 +29,10 @@ idea {
 val extensionPath = "dist/simple-ml-${project.version}.vsix"
 
 tasks.register<Sync>("copyApplication") {
-    val shadowJarTask = project(":de.unibonn.simpleml.ide").tasks.named("installDist")
-    dependsOn(shadowJarTask)
+    val installDistTask = project(":de.unibonn.simpleml.ide").tasks.named("installDist")
+    dependsOn(installDistTask)
 
-    from(shadowJarTask.get().outputs)
+    from(installDistTask.get().outputs)
     into("src/simpleml")
 }
 
