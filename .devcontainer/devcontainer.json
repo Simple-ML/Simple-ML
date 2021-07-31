@@ -44,8 +44,7 @@
         "ms-python.vscode-pylance",
         "stylelint.vscode-stylelint",
         "vscjava.vscode-java-pack",
-        // Remove once the extension is on the marketplace (not ideal since this only works if the folder is called DSL)
-        "/workspaces/DSL/de.unibonn.simpleml/stdlib/simple-ml-0.0.9.vsix"
+        "simple-ml.simple-ml",
     ],
 
     // Use 'forwardPorts' to make a list of ports inside the container available locally.
@@ -53,7 +52,6 @@
 
     // Use 'postCreateCommand' to run commands after the container is created.
     "postCreateCommand": "./.devcontainer/postCreateCommand.sh"
-    // TODO: build with gradle + compile with typescript (see README)
 
     // Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
     // "remoteUser": "vscode"
