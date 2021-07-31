@@ -3,9 +3,9 @@ on:
     push:
         branches: ['master']
 
-env:
-    REGISTRY: ghcr.io
-    IMAGE_NAME: ${{ github.repository }}
+#env:
+#    REGISTRY: ghcr.io
+#    IMAGE_NAME: ${{ github.repository }}
 
 jobs:
     build:
@@ -22,24 +22,25 @@ jobs:
                   submodules: recursive
                   token: ${{ secrets.ORG_ACCESS }}
 
-            - name: Set up JDK 11
-              uses: actions/setup-java@v1
+            - name: Set up JDK ${{ matrix.java-version }}
+              uses: actions/setup-java@v2.1.0
               with:
-                  java-version: 11
-
-            # See https://docs.github.com/en/actions/guides/building-and-testing-java-with-gradle
-            - name: Validate Gradle wrapper
-              uses: gradle/wrapper-validation-action@v1
+                distribution: adopt
+                java-version: ${{ matrix.java-version }}
 
             - name: Cache Gradle packages
               uses: actions/cache@v2
               with:
-                  path: |
-                      ~/.gradle/caches
-                      ~/.gradle/wrapper
-                  key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-                  restore-keys: |
-                      ${{ runner.os }}-gradle-
+                path: |
+                  ~/.gradle/caches
+                  ~/.gradle/wrapper
+                key: ${{ runner.os }}-java${{ matrix.java-version }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+                restore-keys: |
+                  ${{ runner.os }}-java${{ matrix.java-version }}-
+
+            # See https://docs.github.com/en/actions/guides/building-and-testing-java-with-gradle
+            - name: Validate Gradle wrapper
+              uses: gradle/wrapper-validation-action@v1
 
             - name: Test with Gradle
               run: ./gradlew check
@@ -51,7 +52,7 @@ jobs:
                 name: Test report
                 path: de.unibonn.simpleml.tests/build/reports/tests/test
 
-            - name: Cleanup Gradle Cache
+            - name: Cleanup Gradle cache
               # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
               # Restoring these files from a GitHub Actions cache might cause problems for future builds.
               run: |
