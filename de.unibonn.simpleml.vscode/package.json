@@ -12,7 +12,9 @@
         "vscode": "^1.53.0"
     },
     "categories": [
-        "Programming Languages"
+        "Programming Languages",
+        "Machine Learning",
+        "Data Science"
     ],
     "contributes": {
         "languages": [
