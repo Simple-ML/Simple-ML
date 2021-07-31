@@ -29,7 +29,7 @@
 		"esbenp.prettier-vscode",
 		"ms-python.python",
 		"ms-python.vscode-pylance",
-		"/tmp/simple-ml-0.0.9.vsix" // Remove once the extension is on the marketplace
+		"simple-ml.simple-ml"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
