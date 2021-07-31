@@ -17,14 +17,3 @@ jobs:
       - uses: amannn/action-semantic-pull-request@v3.4.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          scopes: |
-            devcontainer
-            grammar
-            scoping
-            validation
-            generation
-            formatting
-            vscode
-            web
-          validateSingleCommit: true
