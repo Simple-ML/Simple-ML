@@ -25,29 +25,29 @@ Note: This solution requires that Git itself can clone this private repository f
 
 ### Option 2: Custom Installation
 
-1. Install OpenJDK 11 from https://adoptopenjdk.net/.
-1. Install Node.js from https://nodejs.org/en/.
-1. Install VS Code from https://code.visualstudio.com/.
-1. Clone the repository from https://github.com/Simple-ML/LSP.
+1. Install [OpenJDK 11](https://adoptopenjdk.net/).
+1. Install [Node.js](https://nodejs.org/en/).
+1. Install [VS Code](https://code.visualstudio.com/).
+1. Clone this repository.
 1. Open the repository in VS Code.
-1. Build the server by running the following commands in the terminal within VS Code:
+1. Build everything:
     ```shell
-    cd server/de.unibonn.simpleml.parent
-    ./gradlew clean generateXtextLanguage build
-    ```
-1. Build the client by running the following commands in the terminal within VS Code:
-    ```shell
-    cd ../../client
-    npm i
-    npm run compile
+    ./gradlew build
     ```
 
 ## Execution
 
 ### Running the VS Code Extension
 
-1. Open `client/dist/extension.js` in VS Code.
-1. Press F5 and select "VS Code Extension Development".
+```shell
+./gradlew launchVSCode
+```
+
+### Running the Xtext Web Backend
+
+```shell
+./gradlew jettyRun
+```
 
 ### Running the Xtext Web Backend with Docker
 

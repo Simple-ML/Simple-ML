@@ -1,9 +1,9 @@
 # Change Log
 
-All notable changes to the "simple-ml" extension will be documented in this file.
+[comment]: <> (All notable changes to the "simple-ml" extension will be documented in this file.)
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+[comment]: <> (Check [Keep a Changelog]&#40;http://keepachangelog.com/&#41; for recommendations on how to structure this file.)
 
-## [Unreleased]
+## v0.0.9
 
 - Initial release
