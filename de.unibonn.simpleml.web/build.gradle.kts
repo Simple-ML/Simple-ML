@@ -32,7 +32,7 @@ dependencies {
     implementation("org.emfjson:emfjson-jackson:1.2.0")
 
     providedCompile("org.eclipse.jetty:jetty-annotations:9.4.22.v20191022")
-    providedCompile("org.slf4j:slf4j-simple:1.7.21")
+    providedCompile("org.slf4j:slf4j-simple:1.7.32")
 }
 
 
