@@ -53,8 +53,10 @@ tasks.register<NpxTask>("vsCodeExtension") {
     inputs.dir("syntaxes")
     inputs.files(
         ".vscodeignore",
+        "CHANGELOG.md",
         "language-configuration.json",
         "package.json",
+        "README.md",
         "tsconfig.json"
     )
     outputs.dirs("dist")
