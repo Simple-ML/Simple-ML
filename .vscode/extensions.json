@@ -6,6 +6,7 @@
         "esbenp.prettier-vscode",
         "ms-python.python",
         "ms-python.vscode-pylance",
-        "ms-toolsai.jupyter"
+        "ms-toolsai.jupyter",
+        "simple-ml.simple-ml"
     ]
 }
