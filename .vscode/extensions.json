@@ -11,6 +11,7 @@
         "ms-python.python",
         "ms-python.vscode-pylance",
         "stylelint.vscode-stylelint",
-        "vscjava.vscode-java-pack"
+        "vscjava.vscode-java-pack",
+        "simple-ml.simple-ml"
     ]
 }
