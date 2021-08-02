@@ -7,6 +7,3 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 COPY python/requirements.txt /tmp/pip-tmp/
 RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements.txt \
     && rm -rf /tmp/pip-tmp
-
-# Remove once the extension is on the marketplace
-COPY simple-ml-0.0.9.vsix /tmp/
