@@ -7,7 +7,7 @@ from typing import Any, Tuple
 import geopandas
 import numpy as np  # For huge arrays and matrices
 import pandas as pd  # For data processing
-from shapely import wkt, wkb
+from shapely import wkt, wkb, geometry, ops
 
 import simpleml.util.global_configurations as global_config
 import simpleml.util.jsonLabels_util as config
@@ -321,18 +321,45 @@ def readDataSetFromCSV(file_name: str, dataset_name: str, separator: str, has_he
     dir_name = os.path.dirname(__file__)
     data_file_path = os.path.join(dir_name, global_config.data_folder_name, file_name)
     # print(data_file_path)
-    test_data = pd.read_csv(data_file_path, sep=separator)
-    # print(test_data.columns.values.tolist())
-    attribute_names = test_data.columns.values.tolist()
+    speed_data = pd.read_csv(data_file_path, sep=separator)
+    #print(speed_data['geometry'])
+    speed_data = speed_data.convert_dtypes()
+    #print(speed_data['geometry'])
+    gdf = geopandas.GeoDataFrame(speed_data)
+    #print(gdf['geometry'])
+    #print(gdf.dtypes)
+    #print(speed_data.dtypes)
+    #print(speed_data.info())
+
+    attribute_names = speed_data.columns.values.tolist()
     attribute_types = {}
     attribute_labels = {}
     np_type = ''
     for attribute in attribute_names:
-        # type_change = test_data[attribute].to_numpy()
-        # print(type_change.dtype)
-        attribute_types[attribute] = dataTypes(test_data[attribute].dtype)
+        type_change = speed_data[attribute]
+        #print(attribute)
+        #print(speed_data[attribute].dtype)
+        if speed_data[attribute].dtype == 'string':
+            #print('yes')
+            try:
+                speed_data[attribute] = pd.to_datetime(speed_data[attribute])
+            except ValueError:
+                pass
+
+            '''try:
+                speed_data[attribute] = speed_data[attribute].apply(wkt.loads)
+            except:
+                pass'''
+            #print(speed_data[attribute].isna())
+            #print(type_change)
+            #print(speed_data.dtypes)
+            #print(speed_data[attribute].dtype)
+
+        attribute_types[attribute] = dataTypes(speed_data[attribute].dtype)
         attribute_labels[attribute] = dataset_name
-    # print(attribute_types)
+        #print(speed_data[attribute].dtype)
+
+    #print(attribute_types)
 
     dataset = Dataset(id='', title=dataset_name, fileName=file_name, hasHeader=has_header, separator=separator,
                       null_value='', description='', subjects={}, number_of_instances=1, titles={}, descriptions={})
@@ -348,10 +375,33 @@ def readDataSetFromCSV(file_name: str, dataset_name: str, separator: str, has_he
 
 
 def dataTypes(type):
-    if type == 'float64':
+    #print(type)
+    if type == 'Float64':
         return np.double
-    elif type == 'int64':
+    elif type == 'Int64':
         return pd.Int32Dtype()
+    elif type == 'string':
+        return np.str
+    elif type == 'datetime64[ns]':
+        return np.datetime64
+    elif type == 'boolean':
+        return np.bool
+
+def joinTwoDatasets(first_file_name: str, second_file_name: str, separator: str, first_suffix: str, second_suffix: str) -> Dataset:
+    dir_name = os.path.dirname(__file__)
+    first_data_file_path = os.path.join(dir_name, global_config.data_folder_name, first_file_name)
+    second_data_file_path = os.path.join(dir_name, global_config.data_folder_name, second_file_name)
+
+    first_data = pd.read_csv(first_data_file_path, sep=separator)
+    second_data = pd.read_csv(second_data_file_path, sep=separator)
+    #joint_data = second_data.join(first_data.set_index('id'), on='id', lsuffix=first_suffix, rsuffix=second_suffix)
+    #joint_data = first_data.join(second_data, lsuffix=first_suffix, rsuffix=second_suffix)
+    joint_data = first_data.merge(second_data, on=('id'), suffixes=('_l', '_r'))
+
+    pd.set_option("max_columns", None)
+    print(joint_data.head(10))
+
+    return True
 
 
 '''
