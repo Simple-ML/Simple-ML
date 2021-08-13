@@ -1,8 +1,8 @@
-In order to prevent name conflicts when multiple parties add functionality to Simple-ML using the [stub language](./Stub-Language) we support the concept of [packages](#packages). These are used to group [type definitions](./Stub-Language-Types) together under a common namespace. Other files can then use declarations from a package by [importing](#imports) it.
+In order to prevent name conflicts when multiple parties add functionality to Simple-ML using the [stub language](./Stub-Language.md) we support the concept of [packages](#packages). These are used to group [type definitions](./Stub-Language-Types.md) together under a common namespace. Other files can then use declarations from a package by [importing](#imports) it.
 
 ## Packages
 
-Packages are used to provide namespaces, thereby preventing name conflicts. For example, it is perfectly fine to have two [classes](./Stub-Language-Classes) named "DecisionTree" as long as they are in different packages.
+Packages are used to provide namespaces, thereby preventing name conflicts. For example, it is perfectly fine to have two [classes](./Stub-Language-Classes.md) named "DecisionTree" as long as they are in different packages.
 
 Each file must declare its package right at the top. The syntax is the keyword `package` followed by the name of the package, which can be split hierarchically using dots. Here is an example:
 

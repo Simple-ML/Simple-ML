@@ -1,7 +1,7 @@
 Getting started:
 Clone the project
 ```
-git clone https://github.com/Anzumana/SimpleMLFrontend/
+git clone https://github.com/Simple-ML/Simple-ML.git
 ```
 
 Download the latest LTS Release von [Nodejs](https://nodejs.org/en/) currently 14.15.4
