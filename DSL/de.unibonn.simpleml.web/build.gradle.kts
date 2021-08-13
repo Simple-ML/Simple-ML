@@ -26,13 +26,10 @@ dependencies {
     implementation("org.eclipse.xtext:org.eclipse.xtext.xbase.web:${xtextVersion}")
     implementation("org.eclipse.xtext:org.eclipse.xtext.web.servlet:${xtextVersion}")
     implementation("org.eclipse.xtend:org.eclipse.xtend.lib:${xtextVersion}")
-    implementation("org.webjars:requirejs:2.3.6")
-    implementation("org.webjars:jquery:3.4.1")
-    implementation("org.webjars:ace:1.3.3")
     implementation("org.emfjson:emfjson-jackson:1.2.0")
 
-    providedCompile("org.eclipse.jetty:jetty-annotations:9.4.22.v20191022")
-    providedCompile("org.slf4j:slf4j-simple:1.7.32")
+    compileOnly("org.eclipse.jetty:jetty-annotations:9.4.22.v20191022")
+    compileOnly("org.slf4j:slf4j-simple:1.7.32")
 }
 
 
@@ -41,7 +38,6 @@ dependencies {
 sourceSets {
     main {
         java.srcDirs("src", "src-gen")
-        resources.srcDirs("resources")
     }
 }
 
@@ -56,6 +52,11 @@ tasks.register<JavaExec>("jettyRun") {
     classpath = sourceSets.main.get().runtimeClasspath.filter { it.exists() }
     mainClass.set("de.unibonn.simpleml.web.ServerLauncher")
     standardInput = System.`in`
+}
+
+tasks.war {
+    webAppDirectory.set(file("src"))
+    webXml = file("src/web.xml")
 }
 
 tasks {

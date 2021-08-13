@@ -1,7 +1,0 @@
-package test
-
-import simpleml.dataset.*
-
-workflow test {
-    loadDataset("ADACAugust");
-}

@@ -1,16 +1,24 @@
-FROM node:12.2.0-alpine
+FROM node:16-alpine as builder
 
-# set working directory
-WORKDIR /app
+WORKDIR /tmp/
 
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
-
-# install and cache app dependencies
-COPY package.json /app/package.json
+COPY package.json /tmp/
 RUN npm install
+
+COPY . /tmp/
+RUN npm run build
+
+
+FROM node:16-alpine as runner
+
+WORKDIR /app/
+
+RUN npm install -g serve@12.0.0
+
+COPY --from=builder \
+    /tmp/build/ \
+    /app/
 
 EXPOSE 4200
 
-# start app
-CMD ["npm", "start"]
+CMD ["serve", "-l", "4200"]
