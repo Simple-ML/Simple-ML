@@ -1,0 +1,65 @@
+package tests.receiverMustBeCallable
+
+annotation MyAnnotation
+
+class MyClass {
+    attr myAttribute: Int
+    class MyClass
+    enum MyEnum
+    fun myFunction()
+    interface MyInterface
+}
+
+enum MyEnum
+
+fun myFunction()
+
+interface MyInterface
+
+workflow myWorkflow {}
+
+step test(a: Int, b: callable () -> ()) {
+    val c = 1;
+    val d = lambda () {};
+
+    // semantic_error "This expression must not be called."
+    »MyAnnotation«();
+    // no_semantic_error "This expression must not be called."
+    »MyClass«();
+    // semantic_error "This expression must not be called."
+    »MyClass().myAttribute«();
+    // no_semantic_error "This expression must not be called."
+    »MyClass.MyClass«();
+    // semantic_error "This expression must not be called."
+    »MyClass.MyEnum«();
+    // no_semantic_error "This expression must not be called."
+    »MyClass().myFunction«();
+    // semantic_error "This expression must not be called."
+    »MyClass.MyInterface«();
+    // semantic_error "This expression must not be called."
+    »MyEnum«();
+    // no_semantic_error "This expression must not be called."
+    »myFunction«();
+    // semantic_error "This expression must not be called."
+    »MyInterface«();
+    // semantic_error "This expression must not be called."
+    »myWorkflow«();
+    // semantic_error "This expression must not be called."
+    »a«();
+    // no_semantic_error "This expression must not be called."
+    »b«();
+    // semantic_error "This expression must not be called."
+    »c«();
+    // no_semantic_error "This expression must not be called."
+    »d«();
+
+
+    /******************************************************************************************************************
+     * If a declaration is not in scope we already show a different error.
+     ******************************************************************************************************************/
+
+    // no_semantic_error "This expression must not be called."
+    »unknownGlobal«();
+    // no_semantic_error "This expression must not be called."
+    »MyClass().unknownMember«();
+}

@@ -1,0 +1,8 @@
+// no_syntax_error
+
+annotation MySimpleAnnotation
+
+@AnnotationUse deprecated annotation MyComplexAnnotation(
+    @AnnotationUse deprecated a: Int,
+    vararg b: Int or 3
+)

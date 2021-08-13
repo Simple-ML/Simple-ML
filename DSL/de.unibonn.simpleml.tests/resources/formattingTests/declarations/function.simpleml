@@ -1,0 +1,44 @@
+fun     myFunction1
+ (  )
+
+@Annotation1  @Annotation2   fun
+     myFunction2      (  )   ->
+  a
+   :    Int
+
+deprecated
+  open
+    fun      myFunction3  (
+    )
+
+@Annotation1   @Annotation2  deprecated
+    open   fun
+       myFunction
+   <
+     @AnnotationUse
+           deprecated
+       T1  ,   in
+       T2 ,     out  T3
+    >(   @AnnotationUse
+       deprecated
+    a  :  Int  ,   vararg
+     b  :    Int   or
+   3  )    ->
+   (
+      @AnnotationUse    deprecated    a  :
+        Int ,  b  :   Int )     where
+          T2   super    Number   ,   T3    sub    Number
+
+------------------------------------------------------------------------------------------------------------------------
+
+fun myFunction1()
+
+@Annotation1
+@Annotation2
+fun myFunction2() -> a: Int
+
+deprecated open fun myFunction3()
+
+@Annotation1
+@Annotation2
+deprecated open fun myFunction<@AnnotationUse deprecated T1, in T2, out T3>(@AnnotationUse deprecated a: Int, vararg b: Int or 3) -> (@AnnotationUse deprecated a: Int, b: Int) where T2 super Number, T3 sub Number

@@ -1,0 +1,5 @@
+package tests.trailingComma.inInterfaceTypeParameterConstraintList
+
+// no_syntax_error
+
+interface I<T> where T sub Any, T super Int,

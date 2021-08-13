@@ -1,0 +1,9 @@
+// no_syntax_error
+
+workflow myWorkflow {
+    lambda {};
+
+    lambda (a: Int, b: Int) {
+        val a = 1;
+    };
+}
