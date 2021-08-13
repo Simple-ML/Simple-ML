@@ -31,7 +31,7 @@ dependencies {
     implementation("org.webjars:ace:1.3.3")
     implementation("org.emfjson:emfjson-jackson:1.2.0")
 
-    providedCompile("org.eclipse.jetty:jetty-annotations:9.4.22.v20191022")
+    providedCompile("org.eclipse.jetty:jetty-annotations:11.0.6")
     providedCompile("org.slf4j:slf4j-simple:1.7.32")
 }
 
