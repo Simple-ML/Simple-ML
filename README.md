@@ -8,3 +8,7 @@
     docker compose up
     ```
 3. Open [localhost:4200](http://localhost:4200) in your browser.
+4. **Later:** After pulling again from the repository you need to update the Docker images:
+    ```shell
+    docker compose build
+    ```

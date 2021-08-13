@@ -43,10 +43,12 @@ class SimpleMLServlet : XtextServlet() {
         super.service(req, resp)
     }
 
-    private fun activateCORS(resp: HttpServletResponse, origin: String) {
-        resp.addHeader("Access-Control-Allow-Origin", origin)
-        resp.addHeader("Access-Control-Allow-Methods", "GET, PUT, POST, OPTIONS, DELETE")
-        resp.addHeader("Access-Control-Allow-Headers", "Content-Type, Set-Cookie, *")
-        resp.addHeader("Access-Control-Allow-Credentials", "true")
+    private fun activateCORS(resp: HttpServletResponse, origin: String?) {
+        if (origin != null) {
+            resp.addHeader("Access-Control-Allow-Origin", origin)
+            resp.addHeader("Access-Control-Allow-Methods", "GET, PUT, POST, OPTIONS, DELETE")
+            resp.addHeader("Access-Control-Allow-Headers", "Content-Type, Set-Cookie, *")
+            resp.addHeader("Access-Control-Allow-Credentials", "true")
+        }
     }
 }
