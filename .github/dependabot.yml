@@ -6,11 +6,11 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directory: "/de.unibonn.simpleml.vscode"
+    directory: "/DSL/de.unibonn.simpleml.vscode"
     schedule:
       interval: "daily"
   - package-ecosystem: "gradle"
-    directory: "/"
+    directory: "/DSL"
     schedule:
       interval: "daily"
   - package-ecosystem: "github-actions"
