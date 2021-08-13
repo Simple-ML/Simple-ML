@@ -1,0 +1,36 @@
+package tests.uniqueNames
+
+step s(
+    // semantic_error "A parameter, result or placeholder with name 'duplicateParameter' exists already in this workflow step."
+    »duplicateParameter«: Int,
+    // semantic_error "A parameter, result or placeholder with name 'duplicateParameter' exists already in this workflow step."
+    »duplicateParameter«: Int,
+    // no_semantic_error "A parameter, result or placeholder with name 'uniqueParameter' exists already in this workflow step."
+    »uniqueParameter«: Int,
+    // semantic_error "A parameter, result or placeholder with name 'parameterAndResult' exists already in this workflow step."
+    »parameterAndResult«: Int,
+    // semantic_error "A parameter, result or placeholder with name 'parameterAndPlaceholder' exists already in this workflow step."
+    »parameterAndPlaceholder«: Int
+) -> (
+    // semantic_error "A parameter, result or placeholder with name 'duplicateResult' exists already in this workflow step."
+    »duplicateResult«: Int,
+    // semantic_error "A parameter, result or placeholder with name 'duplicateResult' exists already in this workflow step."
+    »duplicateResult«: Int,
+    // no_semantic_error "A parameter, result or placeholder with name 'uniqueResult' exists already in this workflow step."
+    »uniqueResult«: Int,
+    // semantic_error "A parameter, result or placeholder with name 'parameterAndResult' exists already in this workflow step."
+    »parameterAndResult«: Int,
+    // semantic_error "A parameter, result or placeholder with name 'resultAndPlaceholder' exists already in this workflow step."
+    »resultAndPlaceholder«: Int
+) {
+    // semantic_error "A parameter, result or placeholder with name 'duplicatePlaceholder' exists already in this workflow step."
+    val »duplicatePlaceholder« = 1;
+    // semantic_error "A parameter, result or placeholder with name 'duplicatePlaceholder' exists already in this workflow step."
+    val »duplicatePlaceholder« = 1;
+    // no_semantic_error "A parameter, result or placeholder with name 'uniquePlaceholder' exists already in this workflow step."
+    val »uniquePlaceholder« = 1;
+    // semantic_error "A parameter, result or placeholder with name 'parameterAndPlaceholder' exists already in this workflow step."
+    val »parameterAndPlaceholder« = 1;
+    // semantic_error "A parameter, result or placeholder with name 'resultAndPlaceholder' exists already in this workflow step."
+    val »resultAndPlaceholder« = 1;
+}

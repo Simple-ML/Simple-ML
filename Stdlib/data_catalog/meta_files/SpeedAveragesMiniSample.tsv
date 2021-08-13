@@ -1,0 +1,24 @@
+FILE	/home/simon/Documents/SimpleML/data_sets/catalog_files/SpeedAveragesMiniSample.csv
+CREATOR_ID	0
+ID	SpeedAveragesMiniSample
+NULL	
+SEPARATOR	,
+HAS_HEADER	yes
+HAS_COLUMN_TITLES	yes
+TITLE_EN	Average speed per road in Niedersachsen (mini sample)
+TITLE_DE	Durchschnittsgeschwindigkeit auf niedersächsischen Straßen (mini sample)
+DESCRIPTION_EN	Average speeds on streets in Niedersachsen in a half-hourly interval. This is a tiny sample of few lines and columns.
+DESCRIPTION_DE	Durchschnittsgeschwindigkeit auf niedersächsischen Straßen in einem halbstündigen Intervall. Dies ist ein kleiner Beispieldatensatz mit wenigen Zeilen und Spalten.
+TOPICS_EN	Traffic
+TOPICS_DE	Verkehr
+LAT_LON_ORDER	lon_lat
+PROPERTIES
+sml:mobility/StreetSegment,sml:mobility/osmId
+sml:mobility/LocationType,rdfs:label
+sml:mobility/TrafficFlow,sml:mobility/numberOfVehicles
+time:DateTimeDescription@1,sml:mobility/isWeekend
+sml:mobility/StreetSegment,sml:asWKB
+GRAPH
+sml:mobility/StreetSegment,sml:mobility/hasLocationType,sml:mobility/LocationType
+sml:mobility/TrafficFlow,time:hasBeginning,time:DateTimeDescription@1
+sml:mobility/TrafficFlow,dcterms:spatial,sml:mobility/StreetSegment

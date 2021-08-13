@@ -1,0 +1,237 @@
+@base <https://simple-ml.de/resource/mobility/> .
+
+@prefix sml: <https://simple-ml.de/resource/> .
+@prefix smlMobility: <https://simple-ml.de/resource/mobility/> .
+@prefix geo: <https://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix geom: <http://geovocab.org/geometry#> .
+@prefix sioc: <http://rdfs.org/sioc/ns#> .
+@prefix so: <http://schema.org/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix seas: <https://w3id.org/seas/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+<MobilityClass> rdfs:subClassOf sml:DomainClass ;
+    dcterms:description "a class used in the mobility domain" ;
+    sml:domain <MobilityDomain>.
+
+<MobilityModel> a owl:Ontology ;
+    dcterms:description "a data model about the mobility domain" .
+
+#  --------------------------- Geometry -------------------------
+
+<Wine> a <MobilityClass> .
+
+<LocationType> rdfs:subClassOf <MobilityClass> ;
+        rdfs:label "Location type"@en ;
+        rdfs:label "Ortstyp"@de ;
+		<identificationProperty> rdfs:label .
+
+<Street> rdfs:subClassOf <MobilityClass>, dcterms:Location ;
+        rdfs:label "Straße"@de ;
+        rdfs:label "Street"@en .
+
+<StreetSegment> rdfs:subClassOf <Street>;
+	rdfs:label "Street segment"@en ;
+	rdfs:label "Straßensegment"@de .
+	
+<SpeedLimit> rdfs:subClassOf <MobilityClass> ;
+        rdfs:label "Speed limit"@en ;
+        rdfs:label "Geschwindigkeitsbegrenzung"@de .
+<SpeedLimit> <identificationProperty> rdfs:label .
+
+<maxSpeed> a owl:ObjectProperty ;
+	rdfs:label "Maximum speed"@en ;
+	rdfs:label "Maximalgeschwindigkeit"@de ;
+	rdfs:domain <StreetSegment> ;
+	rdfs:range <SpeedLimit> .
+
+<osmId> rdf:type owl:inverseFunctionalObjectProperty, owl:DatatypeProperty ;
+    rdfs:label "OpenStreetMap ID"@en ;
+    rdfs:label "OpenStreetMap-ID"@de ;
+    rdfs:domain dcterms:Location ;
+    rdfs:range xsd:long .
+
+<srid> a owl:DatatypeProperty ;
+    rdfs:label "Spatial Reference Identifier"@en ;
+    rdfs:label "Spatial Reference Identifier"@de ;
+    rdfs:domain dcterms:Location ;
+    rdfs:range xsd:nonNegativeInteger .
+
+<hasLocationType> a owl:ObjectProperty ;
+	rdfs:label "Location type"@en ;
+	rdfs:label "Ortstyp"@de ;
+	dcterms:description "has location type"@en ;
+	rdfs:domain dcterms:Location ;
+	rdfs:range <LocationType> .
+
+#  --------------------------- Twitter -------------------------
+
+# sioc.rdf
+
+sioc:Post rdfs:subClassOf <MobilityClass> .
+sioc:UserAccount rdfs:subClassOf <MobilityClass> .
+
+#  --------------------------- Floating Car Data -------------------------
+
+<FloatingCarDataPoint> rdfs:subClassOf <MobilityClass> ;
+        rdfs:label "Floating Car Data point"@en ;
+        rdfs:label "Floating-Car-Data-Punkt"@de .
+
+<carId> a owl:DatatypeProperty ;
+        rdfs:label "Car ID"@en ;
+        rdfs:label "Fahrzeug-ID"@de ;
+        rdfs:domain <FloatingCarDataPoint> ;
+        rdfs:range xsd:string .
+
+<speed> a owl:DatatypeProperty ;
+	rdfs:label "has speed"@en ;
+	rdfs:label "hat Geschwindigkeit"@de ;
+	dcterms:description "has speed (in km/h)"@en ;
+	rdfs:domain <FloatingCarDataPoint> ;
+	rdfs:range xsd:string .
+
+<VehicleType> rdfs:subClassOf <MobilityClass> ;
+	rdfs:label "Vehicle type"@en ;
+	rdfs:label "Fahrzeugtyp"@de ;
+	<identificationProperty> rdfs:label .
+
+<hasVehicleType> a owl:ObjectProperty ;
+	rdfs:label "vehicle type"@en ;
+	dcterms:description "has vehicle type"@en ;
+	dcterms:description "hat Fahrzeugtyp"@de ;
+	rdfs:domain <FloatingCarDataPoint> ;
+	rdfs:domain <Accident> ;
+	rdfs:range <VehicleType> .
+
+<TrafficFlow> rdfs:subClassOf <MobilityClass> ;
+        rdfs:label "Traffic flow"@en ;
+        rdfs:label "Verkehrsfluss"@de .
+
+<averageSpeed> a owl:DatatypeProperty ;
+	rdfs:label "average speed"@en ;
+	rdfs:label "Durchschnittsgeschwindigkeit"@de ;
+	rdfs:domain <TrafficFlow> ;
+	rdfs:range xsd:double .
+
+<numberOfVehicles> a owl:DatatypeProperty ;
+	rdfs:label "number of vehicles"@en ;
+	rdfs:label "Fahrzeuganzahl"@de ;
+	rdfs:domain <TrafficFlow> ;
+	rdfs:range xsd:nonNegativeInteger .
+
+<numberOfRecords> a owl:DatatypeProperty ;
+	rdfs:label "number of records"@en ;
+	rdfs:label "Anzahl von Aufzeichnungen"@de ;
+	rdfs:domain <TrafficFlow> ;
+	rdfs:range xsd:nonNegativeInteger .
+
+<hasWeatherRecord> a owl:ObjectProperty ;
+	rdfs:label "has weather record"@en ;
+	rdfs:label "hat Wetteraufzeichnung"@de ;
+	rdfs:domain <TrafficFlow> ;
+	rdfs:range <WeatherRecord> .
+
+#  --------------------------- Events -------------------------
+
+# schema.ttl
+
+so:Event a <MobilityClass> .
+
+<Holiday> rdfs:subClassOf <MobilityClass> ;
+	rdfs:subClassOf so:Event ;
+	rdfs:label "Ferien"@de ;
+	rdfs:label "public holidays"@en .
+
+<PublicVacation> rdfs:subClassOf <MobilityClass> ;
+	rdfs:subClassOf so:Event ;
+	rdfs:label "Gesetzlicher Feiertag"@de ;
+	rdfs:label "Public vacation"@en .
+
+<Accident> rdfs:subClassOf <MobilityClass>, so:Event ;
+    rdfs:label "accident"@en ;
+    rdfs:label "Unfall"@de .
+
+<TrafficWarning> rdfs:subClassOf <MobilityClass>, so:Event ;
+    rdfs:label "traffic warning"@en ;
+    rdfs:label "Verkehrswarnung"@de .
+
+<AccidentType>  rdfs:subClassOf <MobilityClass> ;
+    rdfs:label "accident type"@en ;
+    rdfs:label "Unfalltyp"@de ;
+	<identificationProperty> rdfs:label .
+
+<hasAccidentType> a owl:ObjectProperty ;
+	rdfs:label "has accident type"@en ;
+	rdfs:domain <Accident> ;
+	rdfs:range <AccidentType> .
+
+<eventCategory> a owl:DatatypeProperty ;
+	rdfs:label "event category"@en ;
+	rdfs:label "Event-Kategorie"@de ;
+	rdfs:domain so:Event ;
+	rdfs:range xsd:string .
+
+<numberOfParticipants> a owl:DatatypeProperty ;
+	rdfs:label "number of participants"@en ;
+	rdfs:label "Anzahl Teilnehmer"@de ;
+	rdfs:domain so:Event ;
+	rdfs:range xsd:nonNegativeInteger .
+
+
+#  --------------------------- Weather -------------------------
+
+<WeatherRecord> rdfs:subClassOf <MobilityClass> ;
+	rdfs:label "weather record"@en ;
+	rdfs:label "Wetteraufzeichnung"@de .
+
+<temperature> a owl:DatatypeProperty ;
+	rdfs:label "temperature"@en ;
+	rdfs:label "Temperatur"@de ;
+	rdfs:domain <WeatherRecord> ;
+	rdfs:range xsd:double .
+
+<rainfall> a owl:DatatypeProperty ;
+    rdfs:label "rainall"@en ;
+    rdfs:label "Niederschlagsmenge"@de ;
+	rdfs:domain <WeatherRecord> ;
+	rdfs:range xsd:double .
+
+<hasSeason> a owl:DatatypeProperty ;
+	rdfs:label "season"@en ;
+	rdfs:label "Saison"@de ;
+	rdfs:domain <WeatherRecord> ;
+	rdfs:range xsd:string .
+
+<hasDaylight> a owl:DatatypeProperty ;
+	rdfs:label "day light"@en ;
+	rdfs:label "Tageslicht"@de ;
+	rdfs:domain <WeatherRecord> ;
+	rdfs:range xsd:string .
+
+
+#  --------------------------- Time -------------------------
+
+<hasDateTimeString> a owl:DatatypeProperty ;
+	rdfs:label "has date/time string"@en ;
+	rdfs:label "hat Datum/Zeit-Text"@de ;
+	rdfs:domain time:DateTimeDescription ;
+	rdfs:range xsd:string .
+
+time:DayOfWeek rdfs:subClassOf <MobilityClass> .
+time:DateTimeDescription rdfs:subClassOf <MobilityClass> .
+time:MonthOfYear rdfs:subClassOf <MobilityClass> .
+
+time:DayOfWeek <identificationProperty> rdfs:label .
+time:MonthOfYear <identificationProperty> rdfs:label .
+time:DateTimeDescription <identificationProperty> time:hour .
+time:DateTimeDescription <identificationProperty> time:day .
+
+<isWeekend> a owl:DatatypeProperty ;
+	rdfs:label "is weekend"@en ;
+	rdfs:label "am Wochenende"@de ;
+	rdfs:domain time:DateTimeDescription ;
+	rdfs:range xsd:boolean .

@@ -1,0 +1,20 @@
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX sml: <https://simple-ml.de/resource/>
+PREFIX csvw: <http://www.w3.org/ns/csvw#>
+
+SELECT ?identifier ?value ?instances
+WHERE {
+    ?dataset a dcat:Dataset .
+    ?dataset dcterms:identifier "@datasetId@" .
+    ?dataset sml:hasAttribute ?attribute .
+
+    ?attribute dcterms:identifier ?identifier .
+
+    ?attribute sml:hasValueDistribution [
+        sml:valueDistributionValue [
+            sml:instancesOfValue ?value ;
+            sml:numberOfInstancesOfValue ?instances ;
+        ]
+    ] .
+} ORDER BY ?attribute

@@ -1,0 +1,100 @@
+
+#xtext-editor {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    text-align: left;
+    background-color:#35183a;
+    color:white;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.ace_layer{
+    .ace_print-margin{
+        display:none;
+    }
+    .ace_line{
+        .ace_string{
+            color:#2e9fa5;
+        }
+        .ace_keyword{
+            color:#e3327d;
+            font-weight:medium;
+        }
+        .ace_constant.ace_numeric{
+            color:#77efa8;
+        }
+        .ace_comment{
+            font-family:'RobotoMono';
+            font-style: italic;
+            color: #a29aa3;
+        }
+    }
+}
+
+.ace_editor.ace-tm,
+.ace_editor.ace-eclipse {
+    .ace_marker-layer {
+        .ace_active-line {
+            background-color: #5d1b64;
+        }
+        .ace_selection {
+            background-color: #e3327d;
+        }
+        .xtext-marker_write {
+            background-color: unset;
+        }
+        .xtext-marker_read {
+            background-color: unset;
+        }
+    }
+    .ace_gutter {
+        background-color: #4e1755;
+        color: unset;
+        border: unset;
+
+        .ace_gutter-active-line {
+            background-color: #5d1b64;
+        }
+    }
+    .ace_cursor {
+        color: #dddddd;
+    }
+}
+
+.xtext-marker_error {
+    position: absolute;
+    z-index: 30;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAABmJLR0QA/wD/AP+gvaeTAAAAHElEQVQI12NggIL/DAz/GdA5/xkY/qPKMDAwAADLZwf5rvm+LQAAAABJRU5ErkJggg==");
+    background-repeat: repeat-x;
+    background-position: left bottom;
+}
+.xtext-marker_warning {
+    position: absolute;
+    z-index: 20;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAABmJLR0QA/wD/AP+gvaeTAAAAMklEQVQI12NkgIIvJ3QXMjAwdDN+OaEbysDA4MPAwNDNwMCwiOHLCd1zX07o6kBVGQEAKBANtobskNMAAAAASUVORK5CYII=");
+    background-repeat: repeat-x;
+    background-position: left bottom;
+}
+.xtext-marker_info {
+    position: absolute;
+    z-index: 10;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAABmJLR0QA/wD/AP+gvaeTAAAANklEQVQI12NkgIIVRx8tZGBg6GZccfRRKAMDgw8DA0M3AwPDIiYGBoZKBgaG7ghruSsMDAwpABH5CoqwzCoTAAAAAElFTkSuQmCC");
+    background-repeat: repeat-x;
+    background-position: left bottom;
+}
+.xtext-marker_read {
+    position: absolute;
+    z-index: 5;
+    background-color: #ddd;
+}
+.xtext-marker_write {
+    z-index: 5;
+    position: absolute;
+    background-color: yellow;
+}
+
+

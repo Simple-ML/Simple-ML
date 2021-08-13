@@ -1,0 +1,28 @@
+FILE	/home/simon/Documents/SimpleML/data_sets/catalog_files/RossmannStores.csv
+CREATOR_ID	0
+ID	RossmannStores
+NULL	
+SEPARATOR	,
+HAS_HEADER	yes
+HAS_COLUMN_TITLES	yes
+TITLE_EN	1,115 Rossmann stores
+TITLE_DE	1115 Rossmann-Geschäfte
+DESCRIPTION_EN	1,115 Rossmann stores (Source: Kaggle)
+DESCRIPTION_DE	1115 Rossmann-Geschäfte (Quelle: Kaggle)
+TOPICS_EN	Logistics
+TOPICS_DE	Logistik
+LAT_LON_ORDER	lat_lon
+PROPERTIES
+sml:logistics/Store,sml:logistics/storeId
+sml:logistics/StoreType,rdfs:label
+sml:logistics/Assortment,rdfs:label
+sml:logistics/Store,sml:logistics/competitionDistance
+
+
+
+
+
+
+GRAPH
+sml:logistics/Store,sml:logistics/hasAssortment,sml:logistics/Assortment
+sml:logistics/Store,sml:logistics/storeType,sml:logistics/StoreType

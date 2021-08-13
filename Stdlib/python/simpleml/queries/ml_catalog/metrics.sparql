@@ -1,0 +1,20 @@
+PREFIX mex-perf: <http://mex.aksw.org/mex-perf#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+
+SELECT ?label ?abbreviation ?range
+WHERE {
+	?property rdfs:domain mex-perf:@measure@ .
+
+    OPTIONAL {
+		?property rdfs:label ?label .
+        FILTER(LANGMATCHES(LANG(?label),"@lang@")) .
+    }
+
+    OPTIONAL {
+		?property dbo:abbreviation ?abbreviation .
+        FILTER(LANGMATCHES(LANG(?abbreviation),"@lang@")) .
+    }
+
+    ?property rdfs:range ?range .
+}

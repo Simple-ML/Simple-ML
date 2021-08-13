@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+    <g fill="#FFF" fill-rule="evenodd">
+        <rect width="1" height="20" x="6" y="5" rx=".5"/>
+        <rect width="1" height="20" x="15" y="14" rx=".5" transform="matrix(0 -1 -1 0 39.5 39.5)"/>
+        <rect width="2" height="5" x="9" y="19" rx=".5" transform="rotate(180 10 21.5)"/>
+        <rect width="2" height="11" x="15" y="13" rx=".5" transform="rotate(180 16 18.5)"/>
+        <rect width="2" height="17" x="21" y="7" rx=".5" transform="rotate(180 22 15.5)"/>
+    </g>
+</svg>

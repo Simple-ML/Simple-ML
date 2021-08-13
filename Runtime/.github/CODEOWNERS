@@ -1,0 +1,6 @@
+*                                   @Simple-ML/runtime
+/.devcontainer/                     @lars-reimann
+/.github/                           @lars-reimann
+/.vscode/                           @lars-reimann
+/runtime/                           @s6fikass
+/Dockerfile                         @lars-reimann

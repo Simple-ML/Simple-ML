@@ -1,0 +1,45 @@
+@font-face {
+  font-family: 'DIN-Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('DIN-Regular'), url("./fonts/DIN-Regular.ttf") format('truetype')
+}
+@font-face{
+  font-family: 'DINOT';
+  font-style: normal;
+  font-weight: normal;
+  src: local('DINOT'), url("./fonts/DINOT.ttf") format('truetype')
+}
+
+@font-face{
+  font-family: 'RobotoMono';
+  font-style: italic;
+  font-weight: normal;
+  src: local('RobotoMono-Italic'), url("./fonts/RobotoMono-Italic.ttf") format('truetype')
+}
+@font-face{
+  font-family: 'RobotoMono';
+  font-style: normal;
+  font-weight: normal;
+  src: local('RobotoMono-Regular'), url("./fonts/RobotoMono-Regular.ttf") format('truetype')
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif, DIN-Regular;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  min-height: 100%;
+  min-width: 100%;
+}
+html {
+  height: 100%
+}
+
+code {
+  font-family: 'Roboto Mono',
+    monospace;
+}

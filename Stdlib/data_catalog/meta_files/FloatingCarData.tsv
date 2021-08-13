@@ -1,0 +1,30 @@
+FILE	/home/simon/Documents/SimpleML/data_sets/catalog_files/FloatingCarData.csv
+CREATOR_ID	0
+ID	FloatingCarData
+NULL	
+SEPARATOR	,
+HAS_HEADER	yes
+HAS_COLUMN_TITLES	yes
+TITLE_EN	Floating car data recorded in Lower Saxony, Germany
+TITLE_DE	Floating Car Data aus Niedersachsen
+DESCRIPTION_EN	Floating car data recorded in Lower Saxony, Germany.
+DESCRIPTION_DE	Floating Car Data aus Niedersachsen.
+TOPICS_EN	Traffic
+TOPICS_DE	Verkehr
+PROPERTIES
+sml:mobility/FloatingCarDataPoint,sml:mobility/carId
+time:DateTimeDescription,time:inXSDDateTime
+
+sml:mobility/VehicleType,sml:numericIdentifier
+sml:mobility/FloatingCarDataPoint,sml:mobility/speed
+sml:mobility/StreetSegment,so:longitude
+sml:mobility/StreetSegment,so:latitude
+sml:mobility/StreetSegment,sml:mobility/osmId
+sml:mobility/LocationType,sml:textualIdentifier
+sml:mobility/StreetSegment,rdfs:label
+sml:mobility/SpeedLimit,sml:mobility/speed
+GRAPH
+sml:mobility/StreetSegment,sml:mobility/hasLocationType,sml:mobility/LocationType
+sml:mobility/StreetSegment,sml:mobility/maxSpeed,sml:mobility/SpeedLimit
+sml:mobility/FloatingCarDataPoint,time:hasTime,time:DateTimeDescription
+sml:mobility/FloatingCarDataPoint,sml:mobility/hasVehicleType,sml:mobility/VehicleType

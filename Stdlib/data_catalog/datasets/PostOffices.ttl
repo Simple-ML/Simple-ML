@@ -1,0 +1,1990 @@
+@base <https://simple-ml.de/resource/> .
+
+@prefix sml: <https://simple-ml.de/resource/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix sml-mobility: <https://simple-ml.de/resource/mobility/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix seas: <https://w3id.org/seas/> .
+
+### Dataset: PostOffices
+<simple-ml> dcat:dataset <PostOffices> .
+<PostOffices> a dcat:Dataset ;
+ dcterms:identifier "PostOffices" ;
+ dcterms:title "Post related locations"@en ;
+ dcterms:title "Post-relevante Orte"@de ;
+ dcterms:description "Post offices, data ware houses and delivery stations extracted from OpenStreetMap."@en ;
+ dcterms:description "Postämter, Paketstationen und Warenhäuser, die aus OpenStreetMap extrahiert wurden."@de ;
+ dcterms:subject "Traffic"@en ;
+ dcterms:subject "Logistics"@en ;
+ dcterms:subject "Logistik"@de ;
+ dcterms:subject "Verkehr"@de ;
+ <creatorId> "0"^^xsd:nonNegativeInteger ;
+ <numberOfInstances> "1021"^^xsd:nonNegativeInteger ;
+ <latBeforeLon> "true"^^xsd:boolean .
+
+### File (PostOffices)
+
+<PostOffices> <hasFile> <PostOfficesFile> .
+<PostOfficesFile> a <TextFile> ;
+ <fileLocation> "PostOffices.csv" ;
+ dcterms:format "text/comma-separated-values" ;
+ csvw:separator "," ;
+ csvw:header "true"^^xsd:boolean ;
+ csvw:null "" .
+
+### Attributes (PostOffices)
+
+<PostOffices> <hasAttribute> <PostOfficesAttributeOsmId> .
+<PostOfficesAttributeOsmId> a <Attribute> ;
+ dcterms:identifier "osmId" ;
+ <columnIndex> "0"^^xsd:integer ;
+ <valueType> xsd:long ;
+ <mapsToDomain> <PostOffices_Location> ;
+ <mapsToProperty> sml-mobility:osmId .
+
+<PostOffices> <hasAttribute> <PostOfficesAttributeTypeOfBuilding> .
+<PostOfficesAttributeTypeOfBuilding> a <Attribute> ;
+ dcterms:identifier "typeOfBuilding" ;
+ <columnIndex> "1"^^xsd:integer ;
+ <valueType> xsd:string ;
+ <mapsToDomain> <PostOffices_LocationType> ;
+ <mapsToProperty> rdfs:label .
+
+<PostOffices> <hasAttribute> <PostOfficesAttributeGeometry> .
+<PostOfficesAttributeGeometry> a <Attribute> ;
+ dcterms:identifier "geometry" ;
+ <columnIndex> "2"^^xsd:integer ;
+ <valueType> <wellKnownBinary> ;
+ <mapsToDomain> <PostOffices_Location> ;
+ <mapsToProperty> <asWKB> .
+
+<PostOffices> <hasAttribute> <PostOfficesAttributeLat> .
+<PostOfficesAttributeLat> a <Attribute> ;
+ dcterms:identifier "lat" ;
+ <columnIndex> "3"^^xsd:integer ;
+ <valueType> xsd:double .
+
+<PostOffices> <hasAttribute> <PostOfficesAttributeLong> .
+<PostOfficesAttributeLong> a <Attribute> ;
+ dcterms:identifier "long" ;
+ <columnIndex> "4"^^xsd:integer ;
+ <valueType> xsd:double .
+
+<PostOffices> <hasAttribute> <PostOfficesAttributeName> .
+<PostOfficesAttributeName> a <Attribute> ;
+ dcterms:identifier "name" ;
+ <columnIndex> "5"^^xsd:integer ;
+ <valueType> xsd:string ;
+ <mapsToDomain> <PostOffices_Location> ;
+ <mapsToProperty> rdfs:label .
+
+<PostOffices> <hasAttribute> <PostOfficesAttributeOperator> .
+<PostOfficesAttributeOperator> a <Attribute> ;
+ dcterms:identifier "operator" ;
+ <columnIndex> "6"^^xsd:integer ;
+ <valueType> xsd:string .
+
+<PostOffices> <hasAttribute> <PostOfficesAttributeBrand> .
+<PostOfficesAttributeBrand> a <Attribute> ;
+ dcterms:identifier "brand" ;
+ <columnIndex> "7"^^xsd:integer ;
+ <valueType> xsd:string .
+
+<PostOffices> <hasAttribute> <PostOfficesAttributeOpeningHours> .
+<PostOfficesAttributeOpeningHours> a <Attribute> ;
+ dcterms:identifier "openingHours" ;
+ <columnIndex> "8"^^xsd:integer ;
+ <valueType> xsd:string .
+
+### Semantic graph (PostOffices)
+
+<PostOffices_Location> rdf:type <ClassInstance> ;
+ <mapsTo> dcterms:Location ;
+ sml-mobility:hasLocationType <PostOffices_LocationType> .
+<PostOffices_LocationType> rdf:type <ClassInstance> ;
+ <mapsTo> sml-mobility:LocationType .
+
+### Statistics (PostOffices)
+<PostOffices> <numberOfInstances> "1021"^^xsd:integer .
+### Statistics for "osmId" (PostOffices)
+<PostOfficesAttributeOsmId> seas:evaluation <PostOfficesAttributeOsmIdNumberOfValues> ;
+ seas:evaluation <PostOfficesAttributeOsmIdNumberOfNullValues> ;
+ seas:evaluation <PostOfficesAttributeOsmIdNumberOfValidValues> ;
+ seas:evaluation <PostOfficesAttributeOsmIdNumberOfValidNonNullValues> ;
+ seas:evaluation <PostOfficesAttributeOsmIdNumberOfInvalidValues> ;
+ seas:evaluation <PostOfficesAttributeOsmIdMinimum> ;
+ seas:evaluation <PostOfficesAttributeOsmIdMaximum> ;
+ seas:evaluation <PostOfficesAttributeOsmIdMean> ;
+ seas:evaluation <PostOfficesAttributeOsmIdStandardDeviation> ;
+ seas:evaluation <PostOfficesAttributeOsmIdNumberOfDistinctValues> ;
+ seas:evaluation <PostOfficesAttributeOsmIdQuartile0> ;
+ seas:evaluation <PostOfficesAttributeOsmIdQuartile1> ;
+ seas:evaluation <PostOfficesAttributeOsmIdQuartile2> ;
+ seas:evaluation <PostOfficesAttributeOsmIdQuartile3> ;
+ seas:evaluation <PostOfficesAttributeOsmIdQuartile4> ;
+ seas:evaluation <PostOfficesAttributeOsmIdDecile0> ;
+ seas:evaluation <PostOfficesAttributeOsmIdDecile1> ;
+ seas:evaluation <PostOfficesAttributeOsmIdDecile2> ;
+ seas:evaluation <PostOfficesAttributeOsmIdDecile3> ;
+ seas:evaluation <PostOfficesAttributeOsmIdDecile4> ;
+ seas:evaluation <PostOfficesAttributeOsmIdDecile5> ;
+ seas:evaluation <PostOfficesAttributeOsmIdDecile6> ;
+ seas:evaluation <PostOfficesAttributeOsmIdDecile7> ;
+ seas:evaluation <PostOfficesAttributeOsmIdDecile8> ;
+ seas:evaluation <PostOfficesAttributeOsmIdDecile9> ;
+ seas:evaluation <PostOfficesAttributeOsmIdDecile10> ;
+ seas:evaluation <PostOfficesAttributeOsmIdNumberOfOutliersBelow> ;
+ seas:evaluation <PostOfficesAttributeOsmIdNumberOfOutliersAbove> ;
+ seas:evaluation <PostOfficesAttributeOsmIdHistogram0> ;
+ seas:evaluation <PostOfficesAttributeOsmIdHistogram1> ;
+ seas:evaluation <PostOfficesAttributeOsmIdHistogram2> ;
+ seas:evaluation <PostOfficesAttributeOsmIdHistogram3> ;
+ seas:evaluation <PostOfficesAttributeOsmIdHistogram4> ;
+ seas:evaluation <PostOfficesAttributeOsmIdHistogram5> ;
+ seas:evaluation <PostOfficesAttributeOsmIdHistogram6> ;
+ seas:evaluation <PostOfficesAttributeOsmIdHistogram7> ;
+ seas:evaluation <PostOfficesAttributeOsmIdHistogram8> ;
+ seas:evaluation <PostOfficesAttributeOsmIdHistogram9> ;
+ seas:evaluation <PostOfficesAttributeOsmIdMedian> .
+<PostOfficesAttributeOsmIdNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOsmIdNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOsmIdNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOsmIdNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOsmIdNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOsmIdMinimum> rdf:type seas:DistributionMinimumEvaluation ;
+ seas:evaluatedValue "21876758"^^xsd:long .
+<PostOfficesAttributeOsmIdMaximum> rdf:type seas:DistributionMaximumEvaluation ;
+ seas:evaluatedValue "6269519775"^^xsd:long .
+<PostOfficesAttributeOsmIdMean> rdf:type seas:DistributionMeanEvaluation ;
+ seas:evaluatedValue "2.484323322368263E9"^^xsd:double .
+<PostOfficesAttributeOsmIdStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
+ seas:evaluatedValue "1.8442792863689103E9"^^xsd:double .
+<PostOfficesAttributeOsmIdNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOsmIdQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "21876758"^^xsd:long ;
+ seas:rank "0"^^xsd:integer .
+<PostOfficesAttributeOsmIdQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "7.00720728E8"^^xsd:double ;
+ seas:rank "1"^^xsd:integer .
+<PostOfficesAttributeOsmIdQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "2.187467168E9"^^xsd:double ;
+ seas:rank "2"^^xsd:integer .
+<PostOfficesAttributeOsmIdQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "3.852617437E9"^^xsd:double ;
+ seas:rank "3"^^xsd:integer .
+<PostOfficesAttributeOsmIdQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "6269519775"^^xsd:long ;
+ seas:rank "4"^^xsd:integer .
+<PostOfficesAttributeOsmIdDecile0> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "21876758"^^xsd:long ;
+ seas:rank "0"^^xsd:integer .
+<PostOfficesAttributeOsmIdDecile1> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "2.92582098E8"^^xsd:double ;
+ seas:rank "1"^^xsd:integer .
+<PostOfficesAttributeOsmIdDecile2> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "5.12570966E8"^^xsd:double ;
+ seas:rank "2"^^xsd:integer .
+<PostOfficesAttributeOsmIdDecile3> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "1.018138901E9"^^xsd:double ;
+ seas:rank "3"^^xsd:integer .
+<PostOfficesAttributeOsmIdDecile4> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "1.629215862E9"^^xsd:double ;
+ seas:rank "4"^^xsd:integer .
+<PostOfficesAttributeOsmIdDecile5> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "2.187467168E9"^^xsd:double ;
+ seas:rank "5"^^xsd:integer .
+<PostOfficesAttributeOsmIdDecile6> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "2.876924437E9"^^xsd:double ;
+ seas:rank "6"^^xsd:integer .
+<PostOfficesAttributeOsmIdDecile7> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "3.566094816E9"^^xsd:double ;
+ seas:rank "7"^^xsd:integer .
+<PostOfficesAttributeOsmIdDecile8> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "4.350847385E9"^^xsd:double ;
+ seas:rank "8"^^xsd:integer .
+<PostOfficesAttributeOsmIdDecile9> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "5.302121024E9"^^xsd:double ;
+ seas:rank "9"^^xsd:integer .
+<PostOfficesAttributeOsmIdDecile10> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "6269519775"^^xsd:long ;
+ seas:rank "10"^^xsd:integer .
+<PostOfficesAttributeOsmIdNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOsmIdNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOsmIdHistogram0> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "646641024"^^xsd:long ;
+ <instancesInBucket> "242"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "21876758"^^xsd:long .
+<PostOfficesAttributeOsmIdHistogram1> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "99"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "646641024"^^xsd:long ;
+ <bucketMaximum> "1271405312"^^xsd:long .
+<PostOfficesAttributeOsmIdHistogram2> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "1896169600"^^xsd:long ;
+ <bucketMinimum> "1271405312"^^xsd:long ;
+ <instancesInBucket> "121"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOsmIdHistogram3> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "113"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "1896169600"^^xsd:long ;
+ <bucketMaximum> "2520933888"^^xsd:long .
+<PostOfficesAttributeOsmIdHistogram4> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "78"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "2520933888"^^xsd:long ;
+ <bucketMaximum> "3145698304"^^xsd:long .
+<PostOfficesAttributeOsmIdHistogram5> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "3145698304"^^xsd:long ;
+ <bucketMaximum> "3770462464"^^xsd:long ;
+ <instancesInBucket> "97"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOsmIdHistogram6> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "3770462464"^^xsd:long ;
+ <instancesInBucket> "72"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "4395226624"^^xsd:long .
+<PostOfficesAttributeOsmIdHistogram7> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "4395226624"^^xsd:long ;
+ <bucketMaximum> "5019991040"^^xsd:long ;
+ <instancesInBucket> "56"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOsmIdHistogram8> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "5644755456"^^xsd:long ;
+ <bucketMinimum> "5019991040"^^xsd:long ;
+ <instancesInBucket> "72"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOsmIdHistogram9> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "5644755456"^^xsd:long ;
+ <bucketMaximum> "6269519775"^^xsd:long ;
+ <instancesInBucket> "71"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOsmIdMedian> rdf:type seas:DistributionMedianEvaluation ;
+ seas:evaluatedValue "2.187467168E9"^^xsd:double .
+### Statistics for "typeOfBuilding" (PostOffices)
+<PostOfficesAttributeTypeOfBuilding> seas:evaluation <PostOfficesAttributeTypeOfBuildingNumberOfValues> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingNumberOfNullValues> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingNumberOfValidValues> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingNumberOfValidNonNullValues> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingNumberOfInvalidValues> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingAverageNumberOfDigits> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingAverageNumberOfCharacters> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingAverageNumberOfTokens> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingAverageNumberOfCapitalisedValues> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingAverageNumberOfSpecialCharacters> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingNumberOfDistinctValues> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingMinimum> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingMaximum> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingMedian> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingMean> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingStandardDeviation> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingNumberOfOutliersBelow> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingNumberOfOutliersAbove> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingHistogram0> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingHistogram1> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingHistogram2> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingHistogram3> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingHistogram4> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingHistogram5> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingHistogram6> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingHistogram7> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingHistogram8> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingHistogram9> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingQuartile0> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingQuartile1> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingQuartile2> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingQuartile3> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingQuartile4> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingDecile0> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingDecile1> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingDecile2> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingDecile3> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingDecile4> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingDecile5> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingDecile6> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingDecile7> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingDecile8> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingDecile9> ;
+ seas:evaluation <PostOfficesAttributeTypeOfBuildingDecile10> ;
+ <hasValueDistribution> <PostOfficesAttributeTypeOfBuildingValueDistribution> .
+<PostOfficesAttributeTypeOfBuildingNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeTypeOfBuildingNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeTypeOfBuildingNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeTypeOfBuildingNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeTypeOfBuildingNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeTypeOfBuildingAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double .
+<PostOfficesAttributeTypeOfBuildingAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
+ seas:evaluatedValue "10.982370225269344"^^xsd:double .
+<PostOfficesAttributeTypeOfBuildingAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
+ seas:evaluatedValue "1.0"^^xsd:double .
+<PostOfficesAttributeTypeOfBuildingAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double .
+<PostOfficesAttributeTypeOfBuildingAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double .
+<PostOfficesAttributeTypeOfBuildingNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
+ seas:evaluatedValue "2"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeTypeOfBuildingMinimum> rdf:type seas:DistributionMinimumEvaluation ;
+ seas:evaluatedValue "9"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingMaximum> rdf:type seas:DistributionMaximumEvaluation ;
+ seas:evaluatedValue "11"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingMedian> rdf:type seas:DistributionMedianEvaluation ;
+ seas:evaluatedValue "11.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingMean> rdf:type seas:DistributionMeanEvaluation ;
+ seas:evaluatedValue "10.982370225269335"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
+ seas:evaluatedValue "0.18703744003632145"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
+ seas:evaluatedValue "9.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingHistogram0> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "11"^^xsd:integer ;
+ <bucketMinimum> "11"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingHistogram1> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "11"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMaximum> "11"^^xsd:integer .
+<PostOfficesAttributeTypeOfBuildingHistogram2> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "11"^^xsd:integer ;
+ <bucketMaximum> "11"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeTypeOfBuildingHistogram3> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "11"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMaximum> "11"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeTypeOfBuildingHistogram4> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "11"^^xsd:integer ;
+ <bucketMaximum> "11"^^xsd:integer .
+<PostOfficesAttributeTypeOfBuildingHistogram5> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "11"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "11"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeTypeOfBuildingHistogram6> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "11"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "11"^^xsd:integer .
+<PostOfficesAttributeTypeOfBuildingHistogram7> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "11"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "11"^^xsd:integer .
+<PostOfficesAttributeTypeOfBuildingHistogram8> rdf:type <DistributionHistogramEvaluation> ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "11"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "11"^^xsd:integer .
+<PostOfficesAttributeTypeOfBuildingHistogram9> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "11"^^xsd:integer ;
+ <bucketMinimum> "11"^^xsd:integer ;
+ <instancesInBucket> "1012"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "9"^^xsd:integer ;
+ seas:rank "0"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "11.0"^^xsd:double ;
+ seas:rank "1"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "11.0"^^xsd:double ;
+ seas:rank "2"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "11.0"^^xsd:double ;
+ seas:rank "3"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "11"^^xsd:integer ;
+ seas:rank "4"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingDecile0> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "9"^^xsd:integer ;
+ seas:rank "0"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingDecile1> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "11.0"^^xsd:double ;
+ seas:rank "1"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingDecile2> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "11.0"^^xsd:double ;
+ seas:rank "2"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingDecile3> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "11.0"^^xsd:double ;
+ seas:rank "3"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingDecile4> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "11.0"^^xsd:double ;
+ seas:rank "4"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingDecile5> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "11.0"^^xsd:double ;
+ seas:rank "5"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingDecile6> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "11.0"^^xsd:double ;
+ seas:rank "6"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingDecile7> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "11.0"^^xsd:double ;
+ seas:rank "7"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingDecile8> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "11.0"^^xsd:double ;
+ seas:rank "8"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingDecile9> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "11.0"^^xsd:double ;
+ seas:rank "9"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingDecile10> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "11"^^xsd:integer ;
+ seas:rank "10"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeTypeOfBuildingValueDistribution> rdf:type <ValueDistribution> ;
+ <valueDistributionValue> <PostOfficesAttributeTypeOfBuildingValueDistributionValue0> ;
+ <valueDistributionValue> <PostOfficesAttributeTypeOfBuildingValueDistributionValue1> .
+<PostOfficesAttributeTypeOfBuildingValueDistributionValue0> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "post_office"^^xsd:string ;
+ <numberOfInstancesOfValue> "1012"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeTypeOfBuildingValueDistributionValue1> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "warehouse"^^xsd:string ;
+ <numberOfInstancesOfValue> "9"^^xsd:nonNegativeInteger .
+### Statistics for "geometry" (PostOffices)
+<PostOfficesAttributeGeometry> seas:evaluation <PostOfficesAttributeGeometryNumberOfValues> ;
+ seas:evaluation <PostOfficesAttributeGeometryNumberOfNullValues> ;
+ seas:evaluation <PostOfficesAttributeGeometryNumberOfValidValues> ;
+ seas:evaluation <PostOfficesAttributeGeometryNumberOfValidNonNullValues> ;
+ seas:evaluation <PostOfficesAttributeGeometryNumberOfInvalidValues> ;
+ seas:evaluation <PostOfficesAttributeGeometryNumberOfDistinctValues> ;
+ <hasSpatialDistribution> <PostOfficesAttributeGeometrySpatialDistribution> .
+<PostOfficesAttributeGeometryNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometryNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometryNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometryNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometryNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometryNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistribution> rdf:type <SpatialDistribution> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi16> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi6> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi54> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi9> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi67> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi52> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi63> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi38> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi37> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi55> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi45> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi23> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi62> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi12> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi31> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi43> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi48> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi34> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi8> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi41> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi35> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi21> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi61> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi42> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi15> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi59> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi1> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi28> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi25> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi40> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi26> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi32> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi20> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi3> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi14> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi27> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi17> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi60> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi53> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi66> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi68> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi50> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi44> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi19> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi22> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi7> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi56> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi24> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi30> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi57> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi58> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi29> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi46> ;
+ <spatialDistributionValue> <PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi33> .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi16> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_16> ;
+ <numberOfInstancesInRegion> "1"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi6> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_6> ;
+ <numberOfInstancesInRegion> "4"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi54> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_54> ;
+ <numberOfInstancesInRegion> "1"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi9> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_9> ;
+ <numberOfInstancesInRegion> "34"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi67> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_67> ;
+ <numberOfInstancesInRegion> "2"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi52> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_52> ;
+ <numberOfInstancesInRegion> "1"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi63> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_63> ;
+ <numberOfInstancesInRegion> "33"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi38> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_38> ;
+ <numberOfInstancesInRegion> "15"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi37> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_37> ;
+ <numberOfInstancesInRegion> "18"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi55> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_55> ;
+ <numberOfInstancesInRegion> "13"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi45> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_45> ;
+ <numberOfInstancesInRegion> "20"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi23> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_23> ;
+ <numberOfInstancesInRegion> "29"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi62> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_62> ;
+ <numberOfInstancesInRegion> "8"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi12> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_12> ;
+ <numberOfInstancesInRegion> "39"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi31> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_31> ;
+ <numberOfInstancesInRegion> "16"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi43> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_43> ;
+ <numberOfInstancesInRegion> "13"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi48> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_48> ;
+ <numberOfInstancesInRegion> "15"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi34> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_34> ;
+ <numberOfInstancesInRegion> "8"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi8> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_8> ;
+ <numberOfInstancesInRegion> "8"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi41> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_41> ;
+ <numberOfInstancesInRegion> "16"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi35> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_35> ;
+ <numberOfInstancesInRegion> "2"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi21> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_21> ;
+ <numberOfInstancesInRegion> "28"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi61> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_61> ;
+ <numberOfInstancesInRegion> "14"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi42> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_42> ;
+ <numberOfInstancesInRegion> "41"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi15> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_15> ;
+ <numberOfInstancesInRegion> "12"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi59> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_59> ;
+ <numberOfInstancesInRegion> "19"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi1> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_1> ;
+ <numberOfInstancesInRegion> "30"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi28> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_28> ;
+ <numberOfInstancesInRegion> "21"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi25> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_25> ;
+ <numberOfInstancesInRegion> "17"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi40> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_40> ;
+ <numberOfInstancesInRegion> "19"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi26> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_26> ;
+ <numberOfInstancesInRegion> "1"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi32> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_32> ;
+ <numberOfInstancesInRegion> "9"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi20> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_20> ;
+ <numberOfInstancesInRegion> "16"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi3> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_3> ;
+ <numberOfInstancesInRegion> "59"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi14> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_14> ;
+ <numberOfInstancesInRegion> "22"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi27> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_27> ;
+ <numberOfInstancesInRegion> "9"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi17> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_17> ;
+ <numberOfInstancesInRegion> "1"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi60> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_60> ;
+ <numberOfInstancesInRegion> "105"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi53> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_53> ;
+ <numberOfInstancesInRegion> "7"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi66> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_66> ;
+ <numberOfInstancesInRegion> "7"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi68> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_68> ;
+ <numberOfInstancesInRegion> "14"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi50> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_50> ;
+ <numberOfInstancesInRegion> "14"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi44> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_44> ;
+ <numberOfInstancesInRegion> "13"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi19> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_19> ;
+ <numberOfInstancesInRegion> "3"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi22> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_22> ;
+ <numberOfInstancesInRegion> "17"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi7> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_7> ;
+ <numberOfInstancesInRegion> "4"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi56> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_56> ;
+ <numberOfInstancesInRegion> "13"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi24> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_24> ;
+ <numberOfInstancesInRegion> "16"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi30> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_30> ;
+ <numberOfInstancesInRegion> "8"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi57> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_57> ;
+ <numberOfInstancesInRegion> "45"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi58> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_58> ;
+ <numberOfInstancesInRegion> "16"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi29> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_29> ;
+ <numberOfInstancesInRegion> "75"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi46> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_46> ;
+ <numberOfInstancesInRegion> "9"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi33> rdf:type <SpatialDistributionValue> ;
+ <instancesOfRegion> <area_de_ni_33> ;
+ <numberOfInstancesInRegion> "24"^^xsd:nonNegativeInteger .
+### Statistics for "lat" (PostOffices)
+<PostOfficesAttributeLat> seas:evaluation <PostOfficesAttributeLatNumberOfValues> ;
+ seas:evaluation <PostOfficesAttributeLatNumberOfNullValues> ;
+ seas:evaluation <PostOfficesAttributeLatNumberOfValidValues> ;
+ seas:evaluation <PostOfficesAttributeLatNumberOfValidNonNullValues> ;
+ seas:evaluation <PostOfficesAttributeLatNumberOfInvalidValues> ;
+ seas:evaluation <PostOfficesAttributeLatAverageNumberOfDigits> ;
+ seas:evaluation <PostOfficesAttributeLatAverageNumberOfCharacters> ;
+ seas:evaluation <PostOfficesAttributeLatAverageNumberOfTokens> ;
+ seas:evaluation <PostOfficesAttributeLatAverageNumberOfCapitalisedValues> ;
+ seas:evaluation <PostOfficesAttributeLatAverageNumberOfSpecialCharacters> ;
+ seas:evaluation <PostOfficesAttributeLatMean> ;
+ seas:evaluation <PostOfficesAttributeLatMinimum> ;
+ seas:evaluation <PostOfficesAttributeLatMaximum> ;
+ seas:evaluation <PostOfficesAttributeLatStandardDeviation> ;
+ seas:evaluation <PostOfficesAttributeLatNumberOfDistinctValues> ;
+ seas:evaluation <PostOfficesAttributeLatQuartile0> ;
+ seas:evaluation <PostOfficesAttributeLatQuartile1> ;
+ seas:evaluation <PostOfficesAttributeLatQuartile2> ;
+ seas:evaluation <PostOfficesAttributeLatQuartile3> ;
+ seas:evaluation <PostOfficesAttributeLatQuartile4> ;
+ seas:evaluation <PostOfficesAttributeLatDecile0> ;
+ seas:evaluation <PostOfficesAttributeLatDecile1> ;
+ seas:evaluation <PostOfficesAttributeLatDecile2> ;
+ seas:evaluation <PostOfficesAttributeLatDecile3> ;
+ seas:evaluation <PostOfficesAttributeLatDecile4> ;
+ seas:evaluation <PostOfficesAttributeLatDecile5> ;
+ seas:evaluation <PostOfficesAttributeLatDecile6> ;
+ seas:evaluation <PostOfficesAttributeLatDecile7> ;
+ seas:evaluation <PostOfficesAttributeLatDecile8> ;
+ seas:evaluation <PostOfficesAttributeLatDecile9> ;
+ seas:evaluation <PostOfficesAttributeLatDecile10> ;
+ seas:evaluation <PostOfficesAttributeLatNumberOfOutliersBelow> ;
+ seas:evaluation <PostOfficesAttributeLatNumberOfOutliersAbove> ;
+ seas:evaluation <PostOfficesAttributeLatHistogram0> ;
+ seas:evaluation <PostOfficesAttributeLatHistogram1> ;
+ seas:evaluation <PostOfficesAttributeLatHistogram2> ;
+ seas:evaluation <PostOfficesAttributeLatHistogram3> ;
+ seas:evaluation <PostOfficesAttributeLatHistogram4> ;
+ seas:evaluation <PostOfficesAttributeLatHistogram5> ;
+ seas:evaluation <PostOfficesAttributeLatHistogram6> ;
+ seas:evaluation <PostOfficesAttributeLatHistogram7> ;
+ seas:evaluation <PostOfficesAttributeLatHistogram8> ;
+ seas:evaluation <PostOfficesAttributeLatHistogram9> ;
+ seas:evaluation <PostOfficesAttributeLatMedian> .
+<PostOfficesAttributeLatNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLatNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLatNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLatNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLatNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLatAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
+ seas:evaluatedValue "8.882468168462292"^^xsd:double .
+<PostOfficesAttributeLatAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
+ seas:evaluatedValue "9.882468168462292"^^xsd:double .
+<PostOfficesAttributeLatAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
+ seas:evaluatedValue "1.0"^^xsd:double .
+<PostOfficesAttributeLatAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double .
+<PostOfficesAttributeLatAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double .
+<PostOfficesAttributeLatMean> rdf:type seas:DistributionMeanEvaluation ;
+ seas:evaluatedValue "52.67320448021547"^^xsd:double .
+<PostOfficesAttributeLatMinimum> rdf:type seas:DistributionMinimumEvaluation ;
+ seas:evaluatedValue "51.3566615"^^xsd:double .
+<PostOfficesAttributeLatMaximum> rdf:type seas:DistributionMaximumEvaluation ;
+ seas:evaluatedValue "53.8837272"^^xsd:double .
+<PostOfficesAttributeLatStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
+ seas:evaluatedValue "0.6054883696702354"^^xsd:double .
+<PostOfficesAttributeLatNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLatQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "51.3566615"^^xsd:double ;
+ seas:rank "0"^^xsd:integer .
+<PostOfficesAttributeLatQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "52.2660226"^^xsd:double ;
+ seas:rank "1"^^xsd:integer .
+<PostOfficesAttributeLatQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "52.6164872"^^xsd:double ;
+ seas:rank "2"^^xsd:integer .
+<PostOfficesAttributeLatQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "53.1827726"^^xsd:double ;
+ seas:rank "3"^^xsd:integer .
+<PostOfficesAttributeLatQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "53.8837272"^^xsd:double ;
+ seas:rank "4"^^xsd:integer .
+<PostOfficesAttributeLatDecile0> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "51.3566615"^^xsd:double ;
+ seas:rank "0"^^xsd:integer .
+<PostOfficesAttributeLatDecile1> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "51.80171"^^xsd:double ;
+ seas:rank "1"^^xsd:integer .
+<PostOfficesAttributeLatDecile2> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "52.2040661"^^xsd:double ;
+ seas:rank "2"^^xsd:integer .
+<PostOfficesAttributeLatDecile3> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "52.3172143"^^xsd:double ;
+ seas:rank "3"^^xsd:integer .
+<PostOfficesAttributeLatDecile4> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "52.4117273"^^xsd:double ;
+ seas:rank "4"^^xsd:integer .
+<PostOfficesAttributeLatDecile5> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "52.6164872"^^xsd:double ;
+ seas:rank "5"^^xsd:integer .
+<PostOfficesAttributeLatDecile6> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "52.9740362"^^xsd:double ;
+ seas:rank "6"^^xsd:integer .
+<PostOfficesAttributeLatDecile7> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "53.1163116"^^xsd:double ;
+ seas:rank "7"^^xsd:integer .
+<PostOfficesAttributeLatDecile8> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "53.2559956"^^xsd:double ;
+ seas:rank "8"^^xsd:integer .
+<PostOfficesAttributeLatDecile9> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "53.4478319"^^xsd:double ;
+ seas:rank "9"^^xsd:integer .
+<PostOfficesAttributeLatDecile10> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "53.8837272"^^xsd:double ;
+ seas:rank "10"^^xsd:integer .
+<PostOfficesAttributeLatNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLatNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLatHistogram0> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "51.60936807"^^xsd:double ;
+ <bucketMinimum> "51.3566615"^^xsd:double ;
+ <instancesInBucket> "67"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLatHistogram1> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "51.86207464"^^xsd:double ;
+ <instancesInBucket> "47"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "51.60936807"^^xsd:double .
+<PostOfficesAttributeLatHistogram2> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "52.114781210000004"^^xsd:double ;
+ <bucketMinimum> "51.86207464"^^xsd:double ;
+ <instancesInBucket> "47"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLatHistogram3> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "52.114781210000004"^^xsd:double ;
+ <instancesInBucket> "189"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "52.367487780000005"^^xsd:double .
+<PostOfficesAttributeLatHistogram4> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "162"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "52.367487780000005"^^xsd:double ;
+ <bucketMaximum> "52.620194350000006"^^xsd:double .
+<PostOfficesAttributeLatHistogram5> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "52.87290092"^^xsd:double ;
+ <bucketMinimum> "52.620194350000006"^^xsd:double ;
+ <instancesInBucket> "70"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLatHistogram6> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "137"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "52.87290092"^^xsd:double ;
+ <bucketMaximum> "53.12560749"^^xsd:double .
+<PostOfficesAttributeLatHistogram7> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "53.37831406"^^xsd:double ;
+ <instancesInBucket> "170"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "53.12560749"^^xsd:double .
+<PostOfficesAttributeLatHistogram8> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "53.63102063"^^xsd:double ;
+ <bucketMinimum> "53.37831406"^^xsd:double ;
+ <instancesInBucket> "103"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLatHistogram9> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "53.63102063"^^xsd:double ;
+ <bucketMaximum> "53.8837272"^^xsd:double ;
+ <instancesInBucket> "29"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLatMedian> rdf:type seas:DistributionMedianEvaluation ;
+ seas:evaluatedValue "52.6164872"^^xsd:double .
+### Statistics for "long" (PostOffices)
+<PostOfficesAttributeLong> seas:evaluation <PostOfficesAttributeLongNumberOfValues> ;
+ seas:evaluation <PostOfficesAttributeLongNumberOfNullValues> ;
+ seas:evaluation <PostOfficesAttributeLongNumberOfValidValues> ;
+ seas:evaluation <PostOfficesAttributeLongNumberOfValidNonNullValues> ;
+ seas:evaluation <PostOfficesAttributeLongNumberOfInvalidValues> ;
+ seas:evaluation <PostOfficesAttributeLongAverageNumberOfDigits> ;
+ seas:evaluation <PostOfficesAttributeLongAverageNumberOfCharacters> ;
+ seas:evaluation <PostOfficesAttributeLongAverageNumberOfTokens> ;
+ seas:evaluation <PostOfficesAttributeLongAverageNumberOfCapitalisedValues> ;
+ seas:evaluation <PostOfficesAttributeLongAverageNumberOfSpecialCharacters> ;
+ seas:evaluation <PostOfficesAttributeLongMean> ;
+ seas:evaluation <PostOfficesAttributeLongMinimum> ;
+ seas:evaluation <PostOfficesAttributeLongMaximum> ;
+ seas:evaluation <PostOfficesAttributeLongStandardDeviation> ;
+ seas:evaluation <PostOfficesAttributeLongNumberOfDistinctValues> ;
+ seas:evaluation <PostOfficesAttributeLongQuartile0> ;
+ seas:evaluation <PostOfficesAttributeLongQuartile1> ;
+ seas:evaluation <PostOfficesAttributeLongQuartile2> ;
+ seas:evaluation <PostOfficesAttributeLongQuartile3> ;
+ seas:evaluation <PostOfficesAttributeLongQuartile4> ;
+ seas:evaluation <PostOfficesAttributeLongDecile0> ;
+ seas:evaluation <PostOfficesAttributeLongDecile1> ;
+ seas:evaluation <PostOfficesAttributeLongDecile2> ;
+ seas:evaluation <PostOfficesAttributeLongDecile3> ;
+ seas:evaluation <PostOfficesAttributeLongDecile4> ;
+ seas:evaluation <PostOfficesAttributeLongDecile5> ;
+ seas:evaluation <PostOfficesAttributeLongDecile6> ;
+ seas:evaluation <PostOfficesAttributeLongDecile7> ;
+ seas:evaluation <PostOfficesAttributeLongDecile8> ;
+ seas:evaluation <PostOfficesAttributeLongDecile9> ;
+ seas:evaluation <PostOfficesAttributeLongDecile10> ;
+ seas:evaluation <PostOfficesAttributeLongNumberOfOutliersBelow> ;
+ seas:evaluation <PostOfficesAttributeLongNumberOfOutliersAbove> ;
+ seas:evaluation <PostOfficesAttributeLongHistogram0> ;
+ seas:evaluation <PostOfficesAttributeLongHistogram1> ;
+ seas:evaluation <PostOfficesAttributeLongHistogram2> ;
+ seas:evaluation <PostOfficesAttributeLongHistogram3> ;
+ seas:evaluation <PostOfficesAttributeLongHistogram4> ;
+ seas:evaluation <PostOfficesAttributeLongHistogram5> ;
+ seas:evaluation <PostOfficesAttributeLongHistogram6> ;
+ seas:evaluation <PostOfficesAttributeLongHistogram7> ;
+ seas:evaluation <PostOfficesAttributeLongHistogram8> ;
+ seas:evaluation <PostOfficesAttributeLongHistogram9> ;
+ seas:evaluation <PostOfficesAttributeLongMedian> .
+<PostOfficesAttributeLongNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLongNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLongNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLongNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLongNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLongAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
+ seas:evaluatedValue "8.154750244857983"^^xsd:double .
+<PostOfficesAttributeLongAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
+ seas:evaluatedValue "9.154750244857983"^^xsd:double .
+<PostOfficesAttributeLongAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
+ seas:evaluatedValue "1.0"^^xsd:double .
+<PostOfficesAttributeLongAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double .
+<PostOfficesAttributeLongAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double .
+<PostOfficesAttributeLongMean> rdf:type seas:DistributionMeanEvaluation ;
+ seas:evaluatedValue "9.343638009696381"^^xsd:double .
+<PostOfficesAttributeLongMinimum> rdf:type seas:DistributionMinimumEvaluation ;
+ seas:evaluatedValue "6.663271"^^xsd:double .
+<PostOfficesAttributeLongMaximum> rdf:type seas:DistributionMaximumEvaluation ;
+ seas:evaluatedValue "11.2890905"^^xsd:double .
+<PostOfficesAttributeLongStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
+ seas:evaluatedValue "1.017236538916354"^^xsd:double .
+<PostOfficesAttributeLongNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLongQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "6.663271"^^xsd:double ;
+ seas:rank "0"^^xsd:integer .
+<PostOfficesAttributeLongQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "8.5959515"^^xsd:double ;
+ seas:rank "1"^^xsd:integer .
+<PostOfficesAttributeLongQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "9.6228554"^^xsd:double ;
+ seas:rank "2"^^xsd:integer .
+<PostOfficesAttributeLongQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "10.1070024"^^xsd:double ;
+ seas:rank "3"^^xsd:integer .
+<PostOfficesAttributeLongQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "11.2890905"^^xsd:double ;
+ seas:rank "4"^^xsd:integer .
+<PostOfficesAttributeLongDecile0> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "6.663271"^^xsd:double ;
+ seas:rank "0"^^xsd:integer .
+<PostOfficesAttributeLongDecile1> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.9453006"^^xsd:double ;
+ seas:rank "1"^^xsd:integer .
+<PostOfficesAttributeLongDecile2> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "8.2895035"^^xsd:double ;
+ seas:rank "2"^^xsd:integer .
+<PostOfficesAttributeLongDecile3> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "8.7808387"^^xsd:double ;
+ seas:rank "3"^^xsd:integer .
+<PostOfficesAttributeLongDecile4> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "9.2273448"^^xsd:double ;
+ seas:rank "4"^^xsd:integer .
+<PostOfficesAttributeLongDecile5> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "9.6228554"^^xsd:double ;
+ seas:rank "5"^^xsd:integer .
+<PostOfficesAttributeLongDecile6> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "9.8223374"^^xsd:double ;
+ seas:rank "6"^^xsd:integer .
+<PostOfficesAttributeLongDecile7> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "9.965292"^^xsd:double ;
+ seas:rank "7"^^xsd:integer .
+<PostOfficesAttributeLongDecile8> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "10.3227013"^^xsd:double ;
+ seas:rank "8"^^xsd:integer .
+<PostOfficesAttributeLongDecile9> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "10.5431448"^^xsd:double ;
+ seas:rank "9"^^xsd:integer .
+<PostOfficesAttributeLongDecile10> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "11.2890905"^^xsd:double ;
+ seas:rank "10"^^xsd:integer .
+<PostOfficesAttributeLongNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLongNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLongHistogram0> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "6.663271"^^xsd:double ;
+ <instancesInBucket> "16"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "7.12585295"^^xsd:double .
+<PostOfficesAttributeLongHistogram1> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "7.5884349"^^xsd:double ;
+ <bucketMinimum> "7.12585295"^^xsd:double ;
+ <instancesInBucket> "53"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLongHistogram2> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "8.05101685"^^xsd:double ;
+ <instancesInBucket> "71"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "7.5884349"^^xsd:double .
+<PostOfficesAttributeLongHistogram3> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "8.05101685"^^xsd:double ;
+ <instancesInBucket> "99"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "8.5135988"^^xsd:double .
+<PostOfficesAttributeLongHistogram4> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "8.976180750000001"^^xsd:double ;
+ <bucketMinimum> "8.5135988"^^xsd:double ;
+ <instancesInBucket> "124"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeLongHistogram5> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "92"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "9.4387627"^^xsd:double ;
+ <bucketMinimum> "8.976180750000001"^^xsd:double .
+<PostOfficesAttributeLongHistogram6> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "9.4387627"^^xsd:double ;
+ <instancesInBucket> "195"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "9.90134465"^^xsd:double .
+<PostOfficesAttributeLongHistogram7> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "183"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "9.90134465"^^xsd:double ;
+ <bucketMaximum> "10.3639266"^^xsd:double .
+<PostOfficesAttributeLongHistogram8> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "10.82650855"^^xsd:double ;
+ <instancesInBucket> "161"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "10.3639266"^^xsd:double .
+<PostOfficesAttributeLongHistogram9> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "11.2890905"^^xsd:double ;
+ <instancesInBucket> "27"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "10.82650855"^^xsd:double .
+<PostOfficesAttributeLongMedian> rdf:type seas:DistributionMedianEvaluation ;
+ seas:evaluatedValue "9.6228554"^^xsd:double .
+### Statistics for "name" (PostOffices)
+<PostOfficesAttributeName> seas:evaluation <PostOfficesAttributeNameNumberOfValues> ;
+ seas:evaluation <PostOfficesAttributeNameNumberOfNullValues> ;
+ seas:evaluation <PostOfficesAttributeNameNumberOfValidValues> ;
+ seas:evaluation <PostOfficesAttributeNameNumberOfValidNonNullValues> ;
+ seas:evaluation <PostOfficesAttributeNameNumberOfInvalidValues> ;
+ seas:evaluation <PostOfficesAttributeNameAverageNumberOfDigits> ;
+ seas:evaluation <PostOfficesAttributeNameAverageNumberOfCharacters> ;
+ seas:evaluation <PostOfficesAttributeNameAverageNumberOfTokens> ;
+ seas:evaluation <PostOfficesAttributeNameAverageNumberOfCapitalisedValues> ;
+ seas:evaluation <PostOfficesAttributeNameAverageNumberOfSpecialCharacters> ;
+ seas:evaluation <PostOfficesAttributeNameNumberOfDistinctValues> ;
+ seas:evaluation <PostOfficesAttributeNameMinimum> ;
+ seas:evaluation <PostOfficesAttributeNameMaximum> ;
+ seas:evaluation <PostOfficesAttributeNameMedian> ;
+ seas:evaluation <PostOfficesAttributeNameMean> ;
+ seas:evaluation <PostOfficesAttributeNameStandardDeviation> ;
+ seas:evaluation <PostOfficesAttributeNameNumberOfOutliersBelow> ;
+ seas:evaluation <PostOfficesAttributeNameNumberOfOutliersAbove> ;
+ seas:evaluation <PostOfficesAttributeNameHistogram0> ;
+ seas:evaluation <PostOfficesAttributeNameHistogram1> ;
+ seas:evaluation <PostOfficesAttributeNameHistogram2> ;
+ seas:evaluation <PostOfficesAttributeNameHistogram3> ;
+ seas:evaluation <PostOfficesAttributeNameHistogram4> ;
+ seas:evaluation <PostOfficesAttributeNameHistogram5> ;
+ seas:evaluation <PostOfficesAttributeNameHistogram6> ;
+ seas:evaluation <PostOfficesAttributeNameHistogram7> ;
+ seas:evaluation <PostOfficesAttributeNameHistogram8> ;
+ seas:evaluation <PostOfficesAttributeNameHistogram9> ;
+ seas:evaluation <PostOfficesAttributeNameQuartile0> ;
+ seas:evaluation <PostOfficesAttributeNameQuartile1> ;
+ seas:evaluation <PostOfficesAttributeNameQuartile2> ;
+ seas:evaluation <PostOfficesAttributeNameQuartile3> ;
+ seas:evaluation <PostOfficesAttributeNameQuartile4> ;
+ seas:evaluation <PostOfficesAttributeNameDecile0> ;
+ seas:evaluation <PostOfficesAttributeNameDecile1> ;
+ seas:evaluation <PostOfficesAttributeNameDecile2> ;
+ seas:evaluation <PostOfficesAttributeNameDecile3> ;
+ seas:evaluation <PostOfficesAttributeNameDecile4> ;
+ seas:evaluation <PostOfficesAttributeNameDecile5> ;
+ seas:evaluation <PostOfficesAttributeNameDecile6> ;
+ seas:evaluation <PostOfficesAttributeNameDecile7> ;
+ seas:evaluation <PostOfficesAttributeNameDecile8> ;
+ seas:evaluation <PostOfficesAttributeNameDecile9> ;
+ seas:evaluation <PostOfficesAttributeNameDecile10> .
+<PostOfficesAttributeNameNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeNameNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeNameNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeNameNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeNameNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeNameAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
+ seas:evaluatedValue "0.04897159647404505"^^xsd:double .
+<PostOfficesAttributeNameAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
+ seas:evaluatedValue "12.137120470127327"^^xsd:double .
+<PostOfficesAttributeNameAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
+ seas:evaluatedValue "1.6611165523996083"^^xsd:double .
+<PostOfficesAttributeNameAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
+ seas:evaluatedValue "0.5954946131243879"^^xsd:double .
+<PostOfficesAttributeNameAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
+ seas:evaluatedValue "0.8462291870714985"^^xsd:double .
+<PostOfficesAttributeNameNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
+ seas:evaluatedValue "334"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeNameMinimum> rdf:type seas:DistributionMinimumEvaluation ;
+ seas:evaluatedValue "3"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameMaximum> rdf:type seas:DistributionMaximumEvaluation ;
+ seas:evaluatedValue "62"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameMedian> rdf:type seas:DistributionMedianEvaluation ;
+ seas:evaluatedValue "8.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameMean> rdf:type seas:DistributionMeanEvaluation ;
+ seas:evaluatedValue "12.137120470127327"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
+ seas:evaluatedValue "7.931372500355418"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
+ seas:evaluatedValue "59.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameHistogram0> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "3"^^xsd:integer ;
+ <bucketMaximum> "5"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <instancesInBucket> "69"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeNameHistogram1> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "6"^^xsd:integer ;
+ <bucketMaximum> "7"^^xsd:integer ;
+ <instancesInBucket> "433"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameHistogram2> rdf:type <DistributionHistogramEvaluation> ;
+ <comment> "string length"^^xsd:string ;
+ <instancesInBucket> "40"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "8"^^xsd:integer ;
+ <bucketMaximum> "10"^^xsd:integer .
+<PostOfficesAttributeNameHistogram3> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "82"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "11"^^xsd:integer ;
+ <bucketMaximum> "12"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameHistogram4> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "13"^^xsd:integer ;
+ <bucketMaximum> "15"^^xsd:integer ;
+ <instancesInBucket> "143"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameHistogram5> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "15"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMaximum> "17"^^xsd:integer ;
+ <instancesInBucket> "69"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeNameHistogram6> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "18"^^xsd:integer ;
+ <bucketMaximum> "19"^^xsd:integer ;
+ <instancesInBucket> "33"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameHistogram7> rdf:type <DistributionHistogramEvaluation> ;
+ <comment> "string length"^^xsd:string ;
+ <instancesInBucket> "48"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "22"^^xsd:integer ;
+ <bucketMinimum> "20"^^xsd:integer .
+<PostOfficesAttributeNameHistogram8> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "12"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "23"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMaximum> "24"^^xsd:integer .
+<PostOfficesAttributeNameHistogram9> rdf:type <DistributionHistogramEvaluation> ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMaximum> "27"^^xsd:integer ;
+ <instancesInBucket> "33"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "25"^^xsd:integer .
+<PostOfficesAttributeNameQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "3"^^xsd:integer ;
+ seas:rank "0"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "1"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "8.0"^^xsd:double ;
+ seas:rank "2"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "15.0"^^xsd:double ;
+ seas:rank "3"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "62"^^xsd:integer ;
+ seas:rank "4"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameDecile0> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "3"^^xsd:integer ;
+ seas:rank "0"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameDecile1> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "1"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameDecile2> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "2"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameDecile3> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "3"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameDecile4> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "4"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameDecile5> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "8.0"^^xsd:double ;
+ seas:rank "5"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameDecile6> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "12.0"^^xsd:double ;
+ seas:rank "6"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameDecile7> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "13.0"^^xsd:double ;
+ seas:rank "7"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameDecile8> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "17.0"^^xsd:double ;
+ seas:rank "8"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameDecile9> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "23.0"^^xsd:double ;
+ seas:rank "9"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeNameDecile10> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "62"^^xsd:integer ;
+ seas:rank "10"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+### Statistics for "operator" (PostOffices)
+<PostOfficesAttributeOperator> seas:evaluation <PostOfficesAttributeOperatorNumberOfValues> ;
+ seas:evaluation <PostOfficesAttributeOperatorNumberOfNullValues> ;
+ seas:evaluation <PostOfficesAttributeOperatorNumberOfValidValues> ;
+ seas:evaluation <PostOfficesAttributeOperatorNumberOfValidNonNullValues> ;
+ seas:evaluation <PostOfficesAttributeOperatorNumberOfInvalidValues> ;
+ seas:evaluation <PostOfficesAttributeOperatorAverageNumberOfDigits> ;
+ seas:evaluation <PostOfficesAttributeOperatorAverageNumberOfCharacters> ;
+ seas:evaluation <PostOfficesAttributeOperatorAverageNumberOfTokens> ;
+ seas:evaluation <PostOfficesAttributeOperatorAverageNumberOfCapitalisedValues> ;
+ seas:evaluation <PostOfficesAttributeOperatorAverageNumberOfSpecialCharacters> ;
+ seas:evaluation <PostOfficesAttributeOperatorNumberOfDistinctValues> ;
+ seas:evaluation <PostOfficesAttributeOperatorMinimum> ;
+ seas:evaluation <PostOfficesAttributeOperatorMaximum> ;
+ seas:evaluation <PostOfficesAttributeOperatorMedian> ;
+ seas:evaluation <PostOfficesAttributeOperatorMean> ;
+ seas:evaluation <PostOfficesAttributeOperatorStandardDeviation> ;
+ seas:evaluation <PostOfficesAttributeOperatorNumberOfOutliersBelow> ;
+ seas:evaluation <PostOfficesAttributeOperatorNumberOfOutliersAbove> ;
+ seas:evaluation <PostOfficesAttributeOperatorHistogram0> ;
+ seas:evaluation <PostOfficesAttributeOperatorHistogram1> ;
+ seas:evaluation <PostOfficesAttributeOperatorHistogram2> ;
+ seas:evaluation <PostOfficesAttributeOperatorHistogram3> ;
+ seas:evaluation <PostOfficesAttributeOperatorHistogram4> ;
+ seas:evaluation <PostOfficesAttributeOperatorHistogram5> ;
+ seas:evaluation <PostOfficesAttributeOperatorHistogram6> ;
+ seas:evaluation <PostOfficesAttributeOperatorHistogram7> ;
+ seas:evaluation <PostOfficesAttributeOperatorHistogram8> ;
+ seas:evaluation <PostOfficesAttributeOperatorHistogram9> ;
+ seas:evaluation <PostOfficesAttributeOperatorQuartile0> ;
+ seas:evaluation <PostOfficesAttributeOperatorQuartile1> ;
+ seas:evaluation <PostOfficesAttributeOperatorQuartile2> ;
+ seas:evaluation <PostOfficesAttributeOperatorQuartile3> ;
+ seas:evaluation <PostOfficesAttributeOperatorQuartile4> ;
+ seas:evaluation <PostOfficesAttributeOperatorDecile0> ;
+ seas:evaluation <PostOfficesAttributeOperatorDecile1> ;
+ seas:evaluation <PostOfficesAttributeOperatorDecile2> ;
+ seas:evaluation <PostOfficesAttributeOperatorDecile3> ;
+ seas:evaluation <PostOfficesAttributeOperatorDecile4> ;
+ seas:evaluation <PostOfficesAttributeOperatorDecile5> ;
+ seas:evaluation <PostOfficesAttributeOperatorDecile6> ;
+ seas:evaluation <PostOfficesAttributeOperatorDecile7> ;
+ seas:evaluation <PostOfficesAttributeOperatorDecile8> ;
+ seas:evaluation <PostOfficesAttributeOperatorDecile9> ;
+ seas:evaluation <PostOfficesAttributeOperatorDecile10> .
+<PostOfficesAttributeOperatorNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOperatorNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOperatorNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOperatorNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOperatorNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOperatorAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double .
+<PostOfficesAttributeOperatorAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
+ seas:evaluatedValue "10.267384916748286"^^xsd:double .
+<PostOfficesAttributeOperatorAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
+ seas:evaluatedValue "1.5093046033300686"^^xsd:double .
+<PostOfficesAttributeOperatorAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
+ seas:evaluatedValue "0.3907933398628795"^^xsd:double .
+<PostOfficesAttributeOperatorAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
+ seas:evaluatedValue "0.5798237022526934"^^xsd:double .
+<PostOfficesAttributeOperatorNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
+ seas:evaluatedValue "148"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOperatorMinimum> rdf:type seas:DistributionMinimumEvaluation ;
+ seas:evaluatedValue "2"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorMaximum> rdf:type seas:DistributionMaximumEvaluation ;
+ seas:evaluatedValue "56"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorMedian> rdf:type seas:DistributionMedianEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorMean> rdf:type seas:DistributionMeanEvaluation ;
+ seas:evaluatedValue "10.267384916748272"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
+ seas:evaluatedValue "6.975728503506627"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
+ seas:evaluatedValue "54.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorHistogram0> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "38"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "4"^^xsd:integer ;
+ <bucketMinimum> "2"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorHistogram1> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "33"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMaximum> "6"^^xsd:integer ;
+ <bucketMinimum> "4"^^xsd:integer .
+<PostOfficesAttributeOperatorHistogram2> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "8"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "6"^^xsd:integer ;
+ <instancesInBucket> "628"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOperatorHistogram3> rdf:type <DistributionHistogramEvaluation> ;
+ <comment> "string length"^^xsd:string ;
+ <instancesInBucket> "15"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "8"^^xsd:integer ;
+ <bucketMaximum> "10"^^xsd:integer .
+<PostOfficesAttributeOperatorHistogram4> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "10"^^xsd:integer ;
+ <instancesInBucket> "14"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMaximum> "12"^^xsd:integer .
+<PostOfficesAttributeOperatorHistogram5> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "121"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "14"^^xsd:integer ;
+ <bucketMinimum> "12"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorHistogram6> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "14"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMaximum> "16"^^xsd:integer ;
+ <instancesInBucket> "71"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOperatorHistogram7> rdf:type <DistributionHistogramEvaluation> ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "16"^^xsd:integer ;
+ <bucketMaximum> "18"^^xsd:integer ;
+ <instancesInBucket> "14"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOperatorHistogram8> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "24"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMaximum> "20"^^xsd:integer ;
+ <bucketMinimum> "18"^^xsd:integer .
+<PostOfficesAttributeOperatorHistogram9> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "9"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "22"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "20"^^xsd:integer .
+<PostOfficesAttributeOperatorQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "2"^^xsd:integer ;
+ seas:rank "0"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "1"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "2"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "13.0"^^xsd:double ;
+ seas:rank "3"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "56"^^xsd:integer ;
+ seas:rank "4"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorDecile0> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "2"^^xsd:integer ;
+ seas:rank "0"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorDecile1> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "1"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorDecile2> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "2"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorDecile3> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "3"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorDecile4> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "4"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorDecile5> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "5"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorDecile6> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "6"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorDecile7> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "11.0"^^xsd:double ;
+ seas:rank "7"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorDecile8> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "13.0"^^xsd:double ;
+ seas:rank "8"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorDecile9> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "16.0"^^xsd:double ;
+ seas:rank "9"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOperatorDecile10> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "56"^^xsd:integer ;
+ seas:rank "10"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+### Statistics for "brand" (PostOffices)
+<PostOfficesAttributeBrand> seas:evaluation <PostOfficesAttributeBrandNumberOfValues> ;
+ seas:evaluation <PostOfficesAttributeBrandNumberOfNullValues> ;
+ seas:evaluation <PostOfficesAttributeBrandNumberOfValidValues> ;
+ seas:evaluation <PostOfficesAttributeBrandNumberOfValidNonNullValues> ;
+ seas:evaluation <PostOfficesAttributeBrandNumberOfInvalidValues> ;
+ seas:evaluation <PostOfficesAttributeBrandAverageNumberOfDigits> ;
+ seas:evaluation <PostOfficesAttributeBrandAverageNumberOfCharacters> ;
+ seas:evaluation <PostOfficesAttributeBrandAverageNumberOfTokens> ;
+ seas:evaluation <PostOfficesAttributeBrandAverageNumberOfCapitalisedValues> ;
+ seas:evaluation <PostOfficesAttributeBrandAverageNumberOfSpecialCharacters> ;
+ seas:evaluation <PostOfficesAttributeBrandNumberOfDistinctValues> ;
+ seas:evaluation <PostOfficesAttributeBrandMinimum> ;
+ seas:evaluation <PostOfficesAttributeBrandMaximum> ;
+ seas:evaluation <PostOfficesAttributeBrandMedian> ;
+ seas:evaluation <PostOfficesAttributeBrandMean> ;
+ seas:evaluation <PostOfficesAttributeBrandStandardDeviation> ;
+ seas:evaluation <PostOfficesAttributeBrandNumberOfOutliersBelow> ;
+ seas:evaluation <PostOfficesAttributeBrandNumberOfOutliersAbove> ;
+ seas:evaluation <PostOfficesAttributeBrandHistogram0> ;
+ seas:evaluation <PostOfficesAttributeBrandHistogram1> ;
+ seas:evaluation <PostOfficesAttributeBrandHistogram2> ;
+ seas:evaluation <PostOfficesAttributeBrandHistogram3> ;
+ seas:evaluation <PostOfficesAttributeBrandHistogram4> ;
+ seas:evaluation <PostOfficesAttributeBrandHistogram5> ;
+ seas:evaluation <PostOfficesAttributeBrandHistogram6> ;
+ seas:evaluation <PostOfficesAttributeBrandHistogram7> ;
+ seas:evaluation <PostOfficesAttributeBrandHistogram8> ;
+ seas:evaluation <PostOfficesAttributeBrandHistogram9> ;
+ seas:evaluation <PostOfficesAttributeBrandQuartile0> ;
+ seas:evaluation <PostOfficesAttributeBrandQuartile1> ;
+ seas:evaluation <PostOfficesAttributeBrandQuartile2> ;
+ seas:evaluation <PostOfficesAttributeBrandQuartile3> ;
+ seas:evaluation <PostOfficesAttributeBrandQuartile4> ;
+ seas:evaluation <PostOfficesAttributeBrandDecile0> ;
+ seas:evaluation <PostOfficesAttributeBrandDecile1> ;
+ seas:evaluation <PostOfficesAttributeBrandDecile2> ;
+ seas:evaluation <PostOfficesAttributeBrandDecile3> ;
+ seas:evaluation <PostOfficesAttributeBrandDecile4> ;
+ seas:evaluation <PostOfficesAttributeBrandDecile5> ;
+ seas:evaluation <PostOfficesAttributeBrandDecile6> ;
+ seas:evaluation <PostOfficesAttributeBrandDecile7> ;
+ seas:evaluation <PostOfficesAttributeBrandDecile8> ;
+ seas:evaluation <PostOfficesAttributeBrandDecile9> ;
+ seas:evaluation <PostOfficesAttributeBrandDecile10> ;
+ <hasValueDistribution> <PostOfficesAttributeBrandValueDistribution> .
+<PostOfficesAttributeBrandNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double .
+<PostOfficesAttributeBrandAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
+ seas:evaluatedValue "7.114593535749266"^^xsd:double .
+<PostOfficesAttributeBrandAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
+ seas:evaluatedValue "1.059745347698335"^^xsd:double .
+<PostOfficesAttributeBrandAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
+ seas:evaluatedValue "0.14397649363369247"^^xsd:double .
+<PostOfficesAttributeBrandAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
+ seas:evaluatedValue "0.07247796278158668"^^xsd:double .
+<PostOfficesAttributeBrandNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
+ seas:evaluatedValue "19"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandMinimum> rdf:type seas:DistributionMinimumEvaluation ;
+ seas:evaluatedValue "3"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandMaximum> rdf:type seas:DistributionMaximumEvaluation ;
+ seas:evaluatedValue "19"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandMedian> rdf:type seas:DistributionMedianEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandMean> rdf:type seas:DistributionMeanEvaluation ;
+ seas:evaluatedValue "7.114593535749266"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
+ seas:evaluatedValue "1.917819573880224"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
+ seas:evaluatedValue "92.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
+ seas:evaluatedValue "59.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandHistogram0> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "7"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMaximum> "7"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandHistogram1> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "7"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMaximum> "7"^^xsd:integer .
+<PostOfficesAttributeBrandHistogram2> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "7"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMaximum> "7"^^xsd:integer .
+<PostOfficesAttributeBrandHistogram3> rdf:type <DistributionHistogramEvaluation> ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "7"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "7"^^xsd:integer .
+<PostOfficesAttributeBrandHistogram4> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "7"^^xsd:integer ;
+ <bucketMaximum> "7"^^xsd:integer .
+<PostOfficesAttributeBrandHistogram5> rdf:type <DistributionHistogramEvaluation> ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "7"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "7"^^xsd:integer .
+<PostOfficesAttributeBrandHistogram6> rdf:type <DistributionHistogramEvaluation> ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "7"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "7"^^xsd:integer .
+<PostOfficesAttributeBrandHistogram7> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "7"^^xsd:integer ;
+ <bucketMaximum> "7"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandHistogram8> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "7"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "7"^^xsd:integer .
+<PostOfficesAttributeBrandHistogram9> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "7"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <instancesInBucket> "870"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "7"^^xsd:integer .
+<PostOfficesAttributeBrandQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "3"^^xsd:integer ;
+ seas:rank "0"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "1"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "2"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "3"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "19"^^xsd:integer ;
+ seas:rank "4"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandDecile0> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "3"^^xsd:integer ;
+ seas:rank "0"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandDecile1> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "1"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandDecile2> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "2"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandDecile3> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "3"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandDecile4> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "4"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandDecile5> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "5"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandDecile6> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "6"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandDecile7> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "7"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandDecile8> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "8"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandDecile9> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "9"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandDecile10> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "19"^^xsd:integer ;
+ seas:rank "10"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeBrandValueDistribution> rdf:type <ValueDistribution> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue0> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue1> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue2> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue3> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue4> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue5> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue6> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue7> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue8> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue9> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue10> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue11> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue12> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue13> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue14> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue15> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue16> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue17> ;
+ <valueDistributionValue> <PostOfficesAttributeBrandValueDistributionValue18> .
+<PostOfficesAttributeBrandValueDistributionValue0> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "en:Deutsche Post"^^xsd:string ;
+ <numberOfInstancesOfValue> "2"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandValueDistributionValue1> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "Hermes"^^xsd:string ;
+ <numberOfInstancesOfValue> "31"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandValueDistributionValue2> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "Deutsche Post / DHL"^^xsd:string ;
+ <numberOfInstancesOfValue> "2"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandValueDistributionValue3> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "DHL"^^xsd:string ;
+ <numberOfInstancesOfValue> "40"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandValueDistributionValue4> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "dhl"^^xsd:string ;
+ <numberOfInstancesOfValue> "1"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandValueDistributionValue5> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "DHL PaketShop"^^xsd:string ;
+ <numberOfInstancesOfValue> "1"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandValueDistributionValue6> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "GLS"^^xsd:string ;
+ <numberOfInstancesOfValue> "10"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandValueDistributionValue7> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "unknown"^^xsd:string ;
+ <numberOfInstancesOfValue> "870"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandValueDistributionValue8> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "DHL;Deutsche Post"^^xsd:string ;
+ <numberOfInstancesOfValue> "2"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandValueDistributionValue9> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "Hermes Versand"^^xsd:string ;
+ <numberOfInstancesOfValue> "1"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandValueDistributionValue10> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "Deutsche Post AG"^^xsd:string ;
+ <numberOfInstancesOfValue> "2"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandValueDistributionValue11> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "Postbank;DHL"^^xsd:string ;
+ <numberOfInstancesOfValue> "1"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandValueDistributionValue12> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "DPD"^^xsd:string ;
+ <numberOfInstancesOfValue> "4"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandValueDistributionValue13> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "UPS"^^xsd:string ;
+ <numberOfInstancesOfValue> "6"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandValueDistributionValue14> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "DHL;Postbank"^^xsd:string ;
+ <numberOfInstancesOfValue> "3"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandValueDistributionValue15> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "en:DHL Express"^^xsd:string ;
+ <numberOfInstancesOfValue> "1"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandValueDistributionValue16> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "Deutsche Post"^^xsd:string ;
+ <numberOfInstancesOfValue> "41"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandValueDistributionValue17> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "Deutsche Post;DHL"^^xsd:string ;
+ <numberOfInstancesOfValue> "2"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeBrandValueDistributionValue18> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "DHL Paketshop"^^xsd:string ;
+ <numberOfInstancesOfValue> "1"^^xsd:nonNegativeInteger .
+### Statistics for "openingHours" (PostOffices)
+<PostOfficesAttributeOpeningHours> seas:evaluation <PostOfficesAttributeOpeningHoursNumberOfValues> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursNumberOfNullValues> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursNumberOfValidValues> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursNumberOfValidNonNullValues> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursNumberOfInvalidValues> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursAverageNumberOfDigits> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursAverageNumberOfCharacters> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursAverageNumberOfTokens> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursAverageNumberOfCapitalisedValues> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursAverageNumberOfSpecialCharacters> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursNumberOfDistinctValues> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursMinimum> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursMaximum> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursMedian> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursMean> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursStandardDeviation> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursNumberOfOutliersBelow> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursNumberOfOutliersAbove> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursHistogram0> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursHistogram1> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursHistogram2> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursHistogram3> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursHistogram4> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursHistogram5> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursHistogram6> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursHistogram7> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursHistogram8> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursHistogram9> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursQuartile0> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursQuartile1> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursQuartile2> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursQuartile3> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursQuartile4> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursDecile0> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursDecile1> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursDecile2> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursDecile3> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursDecile4> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursDecile5> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursDecile6> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursDecile7> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursDecile8> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursDecile9> ;
+ seas:evaluation <PostOfficesAttributeOpeningHoursDecile10> .
+<PostOfficesAttributeOpeningHoursNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOpeningHoursNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOpeningHoursNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOpeningHoursNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
+ seas:evaluatedValue "1021"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOpeningHoursNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOpeningHoursAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
+ seas:evaluatedValue "3.9657198824681683"^^xsd:double .
+<PostOfficesAttributeOpeningHoursAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
+ seas:evaluatedValue "13.487757100881488"^^xsd:double .
+<PostOfficesAttributeOpeningHoursAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
+ seas:evaluatedValue "1.791380999020568"^^xsd:double .
+<PostOfficesAttributeOpeningHoursAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
+ seas:evaluatedValue "0.33692458374143"^^xsd:double .
+<PostOfficesAttributeOpeningHoursAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
+ seas:evaluatedValue "2.8667972575905973"^^xsd:double .
+<PostOfficesAttributeOpeningHoursNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
+ seas:evaluatedValue "229"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOpeningHoursMinimum> rdf:type seas:DistributionMinimumEvaluation ;
+ seas:evaluatedValue "2"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursMaximum> rdf:type seas:DistributionMaximumEvaluation ;
+ seas:evaluatedValue "72"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursMedian> rdf:type seas:DistributionMedianEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursMean> rdf:type seas:DistributionMeanEvaluation ;
+ seas:evaluatedValue "13.487757100881486"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
+ seas:evaluatedValue "11.61173751010965"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
+ seas:evaluatedValue "147.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursHistogram0> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "5"^^xsd:integer ;
+ <instancesInBucket> "19"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "2"^^xsd:integer .
+<PostOfficesAttributeOpeningHoursHistogram1> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "5"^^xsd:integer ;
+ <bucketMaximum> "8"^^xsd:integer ;
+ <instancesInBucket> "667"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursHistogram2> rdf:type <DistributionHistogramEvaluation> ;
+ <comment> "string length"^^xsd:string ;
+ <instancesInBucket> "6"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "8"^^xsd:integer ;
+ <bucketMaximum> "11"^^xsd:integer .
+<PostOfficesAttributeOpeningHoursHistogram3> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "14"^^xsd:integer ;
+ <bucketMinimum> "11"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <instancesInBucket> "2"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOpeningHoursHistogram4> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "152"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "17"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "14"^^xsd:integer .
+<PostOfficesAttributeOpeningHoursHistogram5> rdf:type <DistributionHistogramEvaluation> ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "17"^^xsd:integer ;
+ <bucketMaximum> "20"^^xsd:integer ;
+ <instancesInBucket> "3"^^xsd:nonNegativeInteger .
+<PostOfficesAttributeOpeningHoursHistogram6> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "23"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <instancesInBucket> "7"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "20"^^xsd:integer .
+<PostOfficesAttributeOpeningHoursHistogram7> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "10"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMaximum> "26"^^xsd:integer ;
+ <bucketMinimum> "23"^^xsd:integer .
+<PostOfficesAttributeOpeningHoursHistogram8> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "29"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "26"^^xsd:integer .
+<PostOfficesAttributeOpeningHoursHistogram9> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "29"^^xsd:integer ;
+ <bucketMaximum> "32"^^xsd:integer ;
+ <instancesInBucket> "8"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "2"^^xsd:integer ;
+ seas:rank "0"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "1"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "2"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "17.0"^^xsd:double ;
+ seas:rank "3"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "72"^^xsd:integer ;
+ seas:rank "4"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursDecile0> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "2"^^xsd:integer ;
+ seas:rank "0"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursDecile1> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "1"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursDecile2> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "2"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursDecile3> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "3"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursDecile4> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "4"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursDecile5> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "5"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursDecile6> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "6"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursDecile7> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "17.0"^^xsd:double ;
+ seas:rank "7"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursDecile8> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "17.0"^^xsd:double ;
+ seas:rank "8"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursDecile9> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "33.0"^^xsd:double ;
+ seas:rank "9"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<PostOfficesAttributeOpeningHoursDecile10> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "72"^^xsd:integer ;
+ seas:rank "10"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+
+### Sample (PostOffices)
+<PostOffices> <hasSample> <PostOfficesSample> .
+<PostOfficesSample> rdf:type <DatasetSample> ;
+ csvw:separator "	" ;
+ <hasHeader> <PostOfficesSampleHeader> ;
+ <hasHeaderAttributes> <PostOfficesSampleHeaderAttributes> ;
+ <hasLine> <PostOfficesSample0> ;
+ <hasLine> <PostOfficesSample1> ;
+ <hasLine> <PostOfficesSample2> ;
+ <hasLine> <PostOfficesSample3> ;
+ <hasLine> <PostOfficesSample4> ;
+ <hasLine> <PostOfficesSample5> ;
+ <hasLine> <PostOfficesSample6> ;
+ <hasLine> <PostOfficesSample7> ;
+ <hasLine> <PostOfficesSample8> ;
+ <hasLine> <PostOfficesSample9> .
+<PostOfficesSampleHeader> rdf:type <DatasetSampleLine> ;
+ <hasContent> "Location: OpenStreetMap ID	Location type: label	Location: as well-known binary (WKB)	-	-	Location: label	-	-	-" .
+<PostOfficesSampleHeaderAttributes> rdf:type <DatasetSampleLine> ;
+ <hasContent> "PostOfficesAttributeOsmId	PostOfficesAttributeTypeOfBuilding	PostOfficesAttributeGeometry	PostOfficesAttributeLat	PostOfficesAttributeLong	PostOfficesAttributeName	PostOfficesAttributeOperator	PostOfficesAttributeBrand	PostOfficesAttributeOpeningHours" .
+<PostOfficesSample0> rdf:type <DatasetSampleLine> ;
+ <hasContent> "4545686165	post_office	[[9.6996496,53.4775361]]	53.4775361	9.6996496	Hermes	unknown	unknown	2016-12-08" ;
+ <rank> "0"^^xsd:integer .
+<PostOfficesSample1> rdf:type <DatasetSampleLine> ;
+ <hasContent> "4546864328	post_office	[[8.6389548,53.0292856]]	53.0292856	8.6389548	Hermes PaketShop	Hermes Logistik Gruppe Deutschland	Hermes	2016-12-09" ;
+ <rank> "1"^^xsd:integer .
+<PostOfficesSample2> rdf:type <DatasetSampleLine> ;
+ <hasContent> "4567140383	post_office	[[10.220408200000001,52.245648300000006]]	52.2456483	10.2204082	Post	unknown	unknown	unknown" ;
+ <rank> "2"^^xsd:integer .
+<PostOfficesSample3> rdf:type <DatasetSampleLine> ;
+ <hasContent> "4579198199	post_office	[[9.788676500000001,52.1551144]]	52.1551144	9.7886765	unknown	unknown	unknown	Mo-Fr 08:00-18:00; Sa 08:00-13:00" ;
+ <rank> "3"^^xsd:integer .
+<PostOfficesSample4> rdf:type <DatasetSampleLine> ;
+ <hasContent> "4580109924	post_office	[[10.3991632,52.319735200000004]]	52.3197352	10.3991632	Postfiliale bei Küchenthal	Küchenthal	unknown	unknown" ;
+ <rank> "4"^^xsd:integer .
+<PostOfficesSample5> rdf:type <DatasetSampleLine> ;
+ <hasContent> "4586433664	post_office	[[9.8501598,52.5646768]]	52.5646768	9.8501598	Deutsche Post	unknown	unknown	unknown" ;
+ <rank> "5"^^xsd:integer .
+<PostOfficesSample6> rdf:type <DatasetSampleLine> ;
+ <hasContent> "4612086265	post_office	[[9.8539595,52.2340566]]	52.2340566	9.8539595	Postfiliale	unknown	unknown	Mo-Fr 08:00-18:00; Sa 08:30-13:00" ;
+ <rank> "6"^^xsd:integer .
+<PostOfficesSample7> rdf:type <DatasetSampleLine> ;
+ <hasContent> "4624092389	warehouse	[[8.1128918,52.263255300000004]]	52.2632553	8.1128918	Koch International	unknown	unknown	unknown" ;
+ <rank> "7"^^xsd:integer .
+<PostOfficesSample8> rdf:type <DatasetSampleLine> ;
+ <hasContent> "4665768347	post_office	[[9.850382900000001,52.431812900000004]]	52.4318129	9.8503829	unknown	unknown	unknown	unknown" ;
+ <rank> "8"^^xsd:integer .
+<PostOfficesSample9> rdf:type <DatasetSampleLine> ;
+ <hasContent> "4674448539	post_office	[[10.5568316,52.965341900000006]]	52.9653419	10.5568316	Postbank Uelzen	Deutsche Post AG	unknown	unknown" ;
+ <rank> "9"^^xsd:integer .
