@@ -1,0 +1,14 @@
+package simpleml.model.supervised.classification
+
+import simpleml.model.supervised.*
+import simpleml.dataset.Dataset
+
+open class DecisionTreeClassifier constructor() sub Estimator {
+    attr maxDepth: Int?
+
+    override fun fit(features: Dataset, target: Dataset) -> trainedModel: DecisionTreeModel
+}
+
+class DecisionTreeModel sub Model {
+    override fun predict(features: Dataset) -> results: Any
+}

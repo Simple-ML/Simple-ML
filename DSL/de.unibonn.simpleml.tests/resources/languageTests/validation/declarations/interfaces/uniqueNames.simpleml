@@ -1,0 +1,41 @@
+package tests.uniqueNames
+
+interface MyInterface {
+
+	// no_semantic_error "A declaration with name 'myAttribute' exists already in this interface."
+    attr »myAttribute«: Int
+    // no_semantic_error "A declaration with name 'myAttribute' exists already in this interface."
+    attr »myAttribute«: Int
+
+    // no_semantic_error "A declaration with name 'MyClass' exists already in this interface."
+    class »MyClass«
+    // no_semantic_error "A declaration with name 'MyClass' exists already in this interface."
+    class »MyClass«
+
+    // semantic_error "A declaration with name 'myFun' exists already in this interface."
+    fun »myFun«()
+    // semantic_error "A declaration with name 'myFun' exists already in this interface."
+    fun »myFun«()
+
+    // no_semantic_error "A declaration with name 'MyEnum' exists already in this interface."
+    enum »MyEnum«
+    // no_semantic_error "A declaration with name 'MyEnum' exists already in this interface."
+    enum »MyEnum«
+
+    // no_semantic_error "A declaration with name 'MyInterface' exists already in this interface."
+    interface »MyInterface«
+    // no_semantic_error "A declaration with name 'MyInterface' exists already in this interface."
+    interface »MyInterface«
+
+
+    // no_semantic_error "A declaration with name 'Bla' exists already in this interface."
+    attr »Bla«: Int
+    // no_semantic_error "A declaration with name 'Bla' exists already in this interface."
+    class »Bla«
+    // no_semantic_error "A declaration with name 'Bla' exists already in this interface."
+    fun »Bla«()
+    // no_semantic_error "A declaration with name 'Bla' exists already in this interface."
+    enum »Bla«
+    // no_semantic_error "A declaration with name 'Bla' exists already in this interface."
+    interface »Bla«
+}

@@ -1,0 +1,5 @@
+package tests.trailingComma.inInterfaceParameterList
+
+// no_syntax_error
+
+interface I constructor(a: Int, b: Int, )
