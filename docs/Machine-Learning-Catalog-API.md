@@ -4,7 +4,7 @@ The machine learning (ML) API serves as the entry point to the ML catalog. Its m
 
 # Access/Usage
 
-[Code](https://github.com/Simple-ML/RuntimeData/tree/main/api/simpleml/ml_catalog)
+[Code](../Stdlib/python/simpleml/ml_catalog/_ml_catalog.py)
 
 The data catalog API provides a set of methods as follows:
 

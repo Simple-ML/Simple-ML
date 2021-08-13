@@ -4,5 +4,5 @@ This tutorial consists of the following parts:
 * [Simple-ML interface][tutorial_interface]: An introduction how to use Simple-ML for configuring and running your own workflows.
 
 
-[tutorial_concepts]: https://github.com/Anzumana/Simple-ML/wiki/Tutorial:-Basic-Concepts
-[tutorial_interface]: https://github.com/Anzumana/Simple-ML/wiki/Tutorial:-The-Simple-ML-Interface
+[tutorial_concepts]: ./Tutorial:-Basic-Concepts.md
+[tutorial_interface]: ./Tutorial:-The-Simple-ML-Interface.md
