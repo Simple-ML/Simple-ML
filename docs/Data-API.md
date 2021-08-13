@@ -11,7 +11,7 @@ Run the following command in the root directory of the project where the setup.p
 pip install -e API
 ```
 
-The (currently still incomplete) DSL stubs for the data API are defined [here](https://github.com/Simple-ML/Simple-ML/tree/main/Stdlib/stubs/simpleml).
+The (currently still incomplete) DSL stubs for the data API are defined [here](../Stdlib/stubs/simpleml).
 
 # Testing
 

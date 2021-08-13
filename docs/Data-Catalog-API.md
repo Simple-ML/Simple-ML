@@ -4,7 +4,7 @@ The data catalog API serves as the entry point to the data catalog. Its methods 
 
 # Access/Usage
 
-[Code](https://github.com/Simple-ML/RuntimeData/tree/main/api/simpleml/data_catalog)
+[Code](../Stdlib/python/simpleml/data_catalog)
 
 The data catalog API provides a set of methods as follows:
 
