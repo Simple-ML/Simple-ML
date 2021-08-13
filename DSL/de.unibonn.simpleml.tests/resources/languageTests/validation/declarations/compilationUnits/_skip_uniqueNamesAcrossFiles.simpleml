@@ -1,0 +1,7 @@
+package simpleml.lang
+
+// semantic_error "A declaration with qualified name 'simpleml.lang.Any' exists already."
+step »Any«() {}
+
+// semantic_error "A declaration with qualified name 'simpleml.lang.Any' exists already."
+workflow »Any« {}

@@ -1,0 +1,35 @@
+package tests.staticPropagates
+
+open class MyOpenClass {
+    static fun staticFunction1()
+    open fun nonStaticFunction1()
+}
+
+interface MyInterface {
+    fun nonStaticFunction2()
+}
+
+class MyClass sub MyOpenClass, MyInterface {
+    // no_semantic_error "One of the supertypes of this class declares a static function with this name, so this must be static as well."
+    static fun »ownStaticFunction«()
+    // no_semantic_error "One of the supertypes of this class declares a static function with this name, so this must be static as well."
+    fun »ownNonStaticFunction«()
+
+    // semantic_error "One of the supertypes of this class declares a static function with this name, so this must be static as well."
+    override fun »staticFunction1«()
+    // no_semantic_error "One of the supertypes of this class declares a static function with this name, so this must be static as well."
+    static fun »nonStaticFunction1«()
+
+    // no_semantic_error "One of the supertypes of this class declares a static function with this name, so this must be static as well."
+    override fun »nonStaticFunction2«()
+}
+
+interface MyInterface2 sub MyInterface {
+    // no_semantic_error "One of the supertypes of this class declares a static function with this name, so this must be static as well."
+    static fun »ownStaticFunction«()
+    // no_semantic_error "One of the supertypes of this class declares a static function with this name, so this must be static as well."
+    fun »ownNonStaticFunction«()
+
+    // no_semantic_error "One of the supertypes of this class declares a static function with this name, so this must be static as well."
+    override fun »nonStaticFunction2«()
+}

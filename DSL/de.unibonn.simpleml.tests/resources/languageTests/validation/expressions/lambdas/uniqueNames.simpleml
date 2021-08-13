@@ -1,0 +1,38 @@
+package tests.uniqueNames
+
+workflow w {
+    lambda (
+        // semantic_error "A parameter, result or placeholder with name 'duplicateParameter' exists already in this lambda."
+        »duplicateParameter«: Int,
+        // semantic_error "A parameter, result or placeholder with name 'duplicateParameter' exists already in this lambda."
+        »duplicateParameter«: Int,
+        // no_semantic_error "A parameter, result or placeholder with name 'uniqueParameter' exists already in this lambda."
+        »uniqueParameter«: Int,
+        // semantic_error "A parameter, result or placeholder with name 'parameterAndPlaceholder' exists already in this lambda."
+        »parameterAndPlaceholder«: Int,
+        // semantic_error "A parameter, result or placeholder with name 'parameterAndResult' exists already in this lambda."
+        »parameterAndResult«: Int
+    ) {
+        // semantic_error "A parameter, result or placeholder with name 'duplicatePlaceholder' exists already in this lambda."
+        val »duplicatePlaceholder« = 1;
+        // semantic_error "A parameter, result or placeholder with name 'duplicatePlaceholder' exists already in this lambda."
+        val »duplicatePlaceholder« = 1;
+        // no_semantic_error "A parameter, result or placeholder with name 'uniquePlaceholder' exists already in this lambda."
+        val »uniquePlaceholder« = 1;
+        // semantic_error "A parameter, result or placeholder with name 'parameterAndPlaceholder' exists already in this lambda."
+        val »parameterAndPlaceholder« = 1;
+        // semantic_error "A parameter, result or placeholder with name 'placeholderAndResult' exists already in this lambda."
+        val »placeholderAndResult« = 1;
+
+        // semantic_error "A parameter, result or placeholder with name 'duplicateResult' exists already in this lambda."
+        yield »duplicateResult« = 0;
+        // semantic_error "A parameter, result or placeholder with name 'duplicateResult' exists already in this lambda."
+        yield »duplicateResult« = 0;
+        // no_semantic_error "A parameter, result or placeholder with name 'uniqueResult' exists already in this lambda."
+        yield »uniqueResult« = 0;
+        // semantic_error "A parameter, result or placeholder with name 'parameterAndResult' exists already in this lambda."
+        yield »parameterAndResult« = 0;
+        //semantic_error "A parameter, result or placeholder with name 'placeholderAndResult' exists already in this lambda."
+        yield »placeholderAndResult« = 0;
+    };
+}

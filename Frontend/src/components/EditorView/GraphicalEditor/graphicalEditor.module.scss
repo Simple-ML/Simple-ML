@@ -1,0 +1,25 @@
+.graphical {
+    display:flex;
+    background-color: #ffffff;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.graphicalEditorContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.graphical-editor-create-button {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 36px;
+    height: 36px;
+
+    &:disabled {
+        opacity: 0.75;
+    }
+
+}

@@ -1,0 +1,41 @@
+package tests.mustNotDeprecateRequiredParameter
+
+// semantic_error "A required parameter cannot be deprecated."
+// no_semantic_error "A required parameter cannot be deprecated."
+annotation MyAnnotation(»deprecated« a: Int, »deprecated« b: Int or 3)
+
+// semantic_error "A required parameter cannot be deprecated."
+// no_semantic_error "A required parameter cannot be deprecated."
+class MyClass constructor(»deprecated« a: Int, »deprecated« b: Int or 3) {
+
+    // semantic_error "A required parameter cannot be deprecated."
+    // no_semantic_error "A required parameter cannot be deprecated."
+    class MyClass constructor(»deprecated« a: Int, »deprecated« b: Int or 3)
+
+    // semantic_error "A required parameter cannot be deprecated."
+    // no_semantic_error "A required parameter cannot be deprecated."
+    fun myFunction(»deprecated« a: Int, »deprecated« b: Int or 3)
+}
+
+// semantic_error "A required parameter cannot be deprecated."
+// no_semantic_error "A required parameter cannot be deprecated."
+fun myFunction(»deprecated« a: Int, »deprecated« b: Int or 3)
+
+// no_semantic_error "A required parameter cannot be deprecated."
+// no_semantic_error "A required parameter cannot be deprecated."
+interface MyInterface constructor(»deprecated« a: Int, »deprecated« b: Int or 3) {
+
+    // no_semantic_error "A required parameter cannot be deprecated."
+    // no_semantic_error "A required parameter cannot be deprecated."
+    class MyClass constructor(»deprecated« a: Int, »deprecated« b: Int or 3)
+
+    // semantic_error "A required parameter cannot be deprecated."
+    // no_semantic_error "A required parameter cannot be deprecated."
+    fun myFunction(»deprecated« a: Int, »deprecated« b: Int or 3)
+}
+
+// semantic_error "A required parameter cannot be deprecated."
+// no_semantic_error "A required parameter cannot be deprecated."
+step myStep(
+    f: callable (»deprecated« a: Int, »deprecated« b: Int or 3) -> ()
+) {}

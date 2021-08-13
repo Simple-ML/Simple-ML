@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
+    <title>Menu/Delete</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="10" cy="10" r="10"></circle>
+    </defs>
+    <g id="👥-Design-Vertikal-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="04_-Show-Details-Menu" transform="translate(-266.000000, -330.000000)">
+            <g id="Dropdown" transform="translate(250.000000, 220.000000)">
+                <g id="KontextMenu/Delete" transform="translate(16.000000, 110.000000)">
+                    <g id="Delete">
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <use id="Mask" fill="#D8D8D8" xlink:href="#path-1"></use>
+                        <g mask="url(#mask-2)" stroke="#3C3C3C" stroke-linecap="round" stroke-linejoin="round">
+                            <g transform="translate(5.000000, 5.000000)">
+                                <path d="M0,5 C0,2.239 2.239,0 5,0 C7.761,0 10,2.239 10,5 C10,7.761 7.761,10 5,10 C2.239,10 0,7.761 0,5 L0,5 Z" id="Stroke-270"></path>
+                                <path d="M3,5 L7,5" id="Stroke-272"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

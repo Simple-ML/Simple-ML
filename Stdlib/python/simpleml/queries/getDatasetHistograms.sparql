@@ -1,0 +1,21 @@
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX sml: <https://simple-ml.de/resource/>
+PREFIX csvw: <http://www.w3.org/ns/csvw#>
+PREFIX seas: <https://w3id.org/seas/>
+
+SELECT ?identifier ?minimum ?maximum ?instances WHERE {
+
+    ?dataset a dcat:Dataset .
+    ?dataset dcterms:identifier "@datasetId@" .
+    ?dataset sml:hasAttribute ?attribute .
+
+    ?attribute dcterms:identifier ?identifier .
+    ?attribute seas:evaluation ?eval .
+    ?eval rdf:type sml:DistributionHistogramEvaluation .
+
+    ?eval sml:bucketMaximum ?maximum .
+    ?eval sml:bucketMinimum ?minimum .
+    ?eval sml:instancesInBucket ?instances .
+
+} ORDER BY ?attribute ?eval

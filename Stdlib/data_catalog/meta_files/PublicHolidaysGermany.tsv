@@ -1,0 +1,20 @@
+FILE	/home/simon/Documents/SimpleML/data_sets/catalog_files/PublicHolidaysGermany.csv
+CREATOR_ID	0
+ID	PublicHolidaysGermany
+NULL	
+SEPARATOR	,
+HAS_HEADER	yes
+HAS_COLUMN_TITLES	yes
+TITLE_EN	Public holidays in Germany
+TITLE_DE	Gesetzliche Feiertage in Deutschland
+DESCRIPTION_EN	Public holidays in Germany.
+DESCRIPTION_DE	Gesetzliche in Deutschland.
+TOPICS_EN	Events
+TOPICS_DE	Ereignisse
+PROPERTIES
+sml:mobility/Holiday,rdfs:label
+time:DateTimeDescription@1,time:inXSDDateTime
+time:DateTimeDescription@2,time:inXSDDateTime
+GRAPH
+sml:mobility/Holiday,time:hasBeginning,time:DateTimeDescription@1
+sml:mobility/Holiday,time:hasEnd,time:DateTimeDescription@2

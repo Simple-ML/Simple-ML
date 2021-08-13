@@ -1,0 +1,694 @@
+@prefix : <http://mex.aksw.org/mex-algo#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix prov: <http://www.w3.org/ns/prov-o#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix mex-algo: <http://mex.aksw.org/mex-algo#> .
+@prefix mex-core: <http://mex.aksw.org/mex-core#> .
+@prefix mex-perf: <http://mex.aksw.org/mex-perf#> .
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix dbo: <http://dbpedia.org/ontology/>.
+@base <http://mex.aksw.org/mex-algo> .
+
+<http://mex.aksw.org/mex-algo> rdf:type owl:Ontology ;
+                               rdfs:label "The MEX Vocabulary (mex-algo)"@en ,
+                                          "Vocabulario MEX (mex-algo)"@pt ;
+                               dct:created "2014-02-02"^^xsd:date ;
+                               dct:modified "2016-05-01" ;
+                               dct:creator <http://aksw.org/DiegoEsteves.html> ;
+                               owl:versionInfo "1.0.2" ;
+                               dc:publisher "AKSW Research Group - Leipzig University"@en ;
+                               dct:title "MEX Algorithm Ontology (mex-algo)"@en ;
+                               rdfs:comment "MEX is an RDF vocabulary designed to facilitate interoperability between published machine learning experiments results on the Web. The mex-algo layer represents the algorithm information existing into a basic machine learning experiment."@en ;
+                               dc:publisher "AKSW Grupo de Pesquisa - Universidade de Leipzig"@pt ;
+                               rdfs:comment "MEX e um vocabulario modelado para facilitar a interoperabilidade entre resultados de experimentos de aprendizado de maquinas publicados na Web. A camada mex-algo representa informacaos de algoritmos existentes em um experimento de aprendizado de maquina."@pt ;
+                               rdf:about "http://mex.aksw.org/mex-doc-algo#" ;
+                               dct:contributor <http://aksw.org/DiegoMoussallem.html> ,
+                                               <http://aksw.org/JensLehmann.html> ;
+                               owl:imports doap: ,
+                                           rdfs: ,
+                                           prov: .
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  http://mex.aksw.org/mex-algo#hasAlgorithmClass
+
+:hasAlgorithmClass rdf:type owl:IrreflexiveProperty ,
+                            owl:ObjectProperty ;
+                   
+                   rdfs:domain :Algorithm ;
+                   
+                   rdfs:range :AlgorithmClass ;
+                   
+                   rdfs:subPropertyOf :hasAlgorithmConfiguration .
+
+
+
+###  http://mex.aksw.org/mex-algo#hasAlgorithmConfiguration
+
+:hasAlgorithmConfiguration rdf:type owl:ObjectProperty ,
+                                    owl:TransitiveProperty .
+
+
+
+###  http://mex.aksw.org/mex-algo#hasBaseline
+
+:hasBaseline rdf:type owl:ObjectProperty ;
+             
+             rdfs:domain :Algorithm ;
+             
+             rdfs:range :Algorithm ;
+             
+             rdfs:subPropertyOf :hasAlgorithmConfiguration ;
+             
+             owl:inverseOf :isBaselineOf .
+
+
+
+###  http://mex.aksw.org/mex-algo#hasHyperParameter
+
+:hasHyperParameter rdf:type owl:ObjectProperty ;
+                   
+                   rdfs:domain :Algorithm ;
+                   
+                   rdfs:range :HyperParameter ;
+                   
+                   rdfs:subPropertyOf :hasAlgorithmConfiguration ;
+                   
+                   owl:inverseOf :isHyperParameterOf .
+
+
+
+###  http://mex.aksw.org/mex-algo#hasHyperParameterCollection
+
+:hasHyperParameterCollection rdf:type owl:FunctionalProperty ,
+                                      owl:InverseFunctionalProperty ,
+                                      owl:IrreflexiveProperty ,
+                                      owl:ObjectProperty ;
+                             
+                             rdfs:domain :Algorithm ;
+                             
+                             rdfs:range :HyperParameterCollection ;
+                             
+                             rdfs:subPropertyOf :hasAlgorithmConfiguration .
+
+
+
+###  http://mex.aksw.org/mex-algo#hasLearningMethod
+
+:hasLearningMethod rdf:type owl:FunctionalProperty ,
+                            owl:InverseFunctionalProperty ,
+                            owl:IrreflexiveProperty ,
+                            owl:ObjectProperty ;
+                   
+                   rdfs:domain :Algorithm ;
+                   
+                   rdfs:range :LearningMethod ;
+                   
+                   rdfs:subPropertyOf :hasAlgorithmConfiguration .
+
+
+
+###  http://mex.aksw.org/mex-algo#hasLearningProblem
+
+:hasLearningProblem rdf:type owl:FunctionalProperty ,
+                             owl:InverseFunctionalProperty ,
+                             owl:IrreflexiveProperty ,
+                             owl:ObjectProperty ;
+                    
+                    rdfs:domain :Algorithm ;
+                    
+                    rdfs:range :LearningProblem ;
+                    
+                    rdfs:subPropertyOf :hasAlgorithmConfiguration .
+
+
+
+###  http://mex.aksw.org/mex-algo#hasTool
+
+:hasTool rdf:type owl:FunctionalProperty ,
+                  owl:InverseFunctionalProperty ,
+                  owl:ObjectProperty ;
+         
+         rdfs:domain :Algorithm ;
+         
+         rdfs:range :Tool ;
+         
+         rdfs:subPropertyOf :hasAlgorithmConfiguration .
+
+
+
+###  http://mex.aksw.org/mex-algo#isAlgorithmClassOf
+
+:isAlgorithmClassOf rdf:type owl:IrreflexiveProperty ,
+                             owl:ObjectProperty ;
+                    
+                    rdfs:range :Algorithm ;
+                    
+                    rdfs:domain :AlgorithmClass ;
+                    
+                    owl:inverseOf :hasAlgorithmClass ;
+                    
+                    rdfs:subPropertyOf :isAlgorithmConfigurationOf .
+
+
+
+###  http://mex.aksw.org/mex-algo#isAlgorithmConfigurationOf
+
+:isAlgorithmConfigurationOf rdf:type owl:ObjectProperty ,
+                                     owl:TransitiveProperty .
+
+
+
+###  http://mex.aksw.org/mex-algo#isBaselineOf
+
+:isBaselineOf rdf:type owl:ObjectProperty ;
+              
+              rdfs:domain :Algorithm ;
+              
+              rdfs:range :Algorithm ;
+              
+              rdfs:subPropertyOf :isAlgorithmConfigurationOf .
+
+
+
+###  http://mex.aksw.org/mex-algo#isHyperParameterCollectionOf
+
+:isHyperParameterCollectionOf rdf:type owl:FunctionalProperty ,
+                                       owl:InverseFunctionalProperty ,
+                                       owl:ObjectProperty ;
+                              
+                              rdfs:range :Algorithm ;
+                              
+                              rdfs:domain :HyperParameterCollection ;
+                              
+                              owl:inverseOf :hasHyperParameterCollection ;
+                              
+                              rdfs:subPropertyOf :isAlgorithmConfigurationOf .
+
+
+
+###  http://mex.aksw.org/mex-algo#isHyperParameterOf
+
+:isHyperParameterOf rdf:type owl:ObjectProperty ;
+                    
+                    rdfs:range :Algorithm ;
+                    
+                    rdfs:domain :HyperParameter ;
+                    
+                    rdfs:subPropertyOf :isAlgorithmConfigurationOf .
+
+
+
+###  http://mex.aksw.org/mex-algo#isLearningMethodOf
+
+:isLearningMethodOf rdf:type owl:FunctionalProperty ,
+                             owl:InverseFunctionalProperty ,
+                             owl:ObjectProperty ;
+                    
+                    rdfs:range :Algorithm ;
+                    
+                    rdfs:domain :LearningMethod ;
+                    
+                    owl:inverseOf :hasLearningMethod ;
+                    
+                    rdfs:subPropertyOf :isAlgorithmConfigurationOf .
+
+
+
+###  http://mex.aksw.org/mex-algo#isLearningProblemOf
+
+:isLearningProblemOf rdf:type owl:FunctionalProperty ,
+                              owl:InverseFunctionalProperty ,
+                              owl:ObjectProperty ;
+                     
+                     rdfs:range :Algorithm ;
+                     
+                     rdfs:domain :LearningProblem ;
+                     
+                     owl:inverseOf :hasLearningProblem ;
+                     
+                     rdfs:subPropertyOf :isAlgorithmConfigurationOf .
+
+
+
+###  http://mex.aksw.org/mex-algo#isToolOf
+
+:isToolOf rdf:type owl:FunctionalProperty ,
+                   owl:InverseFunctionalProperty ,
+                   owl:ObjectProperty ;
+          
+          rdfs:range :Algorithm ;
+          
+          rdfs:domain :Tool ;
+          
+          owl:inverseOf :hasTool ;
+          
+          rdfs:subPropertyOf :isAlgorithmConfigurationOf .
+
+
+
+
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+
+###  http://mex.aksw.org/mex-algo#acronym
+
+:acronym rdf:type owl:DatatypeProperty ;
+         
+         rdfs:range xsd:string .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+
+###  http://mex.aksw.org/mex-algo#Algorithm
+
+:Algorithm rdf:type owl:Class ;
+           
+           rdfs:subClassOf prov:Entity ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty :hasAlgorithmClass ;
+                             owl:someValuesFrom :AlgorithmClass
+                           ] ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty :hasLearningMethod ;
+                             owl:someValuesFrom :LearningMethod
+                           ] ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty :hasLearningProblem ;
+                             owl:someValuesFrom :LearningProblem
+                           ] .
+
+
+
+###  http://mex.aksw.org/mex-algo#AlgorithmClass
+
+:AlgorithmClass rdf:type owl:Class ;
+                
+                owl:disjointWith :HyperParameter ,
+                                 :LearningMethod ,
+                                 :LearningProblem .
+
+
+## Decision tree
+
+
+
+###  http://mex.aksw.org/mex-algo#DecisionTrees
+
+:DecisionTrees rdf:type owl:Class ;
+        dcterms:identifier "DecisionTrees" ;
+		rdfs:subClassOf :AlgorithmClass ;
+		rdfs:label "Decision Trees"@en, "Entscheidungsbäume"@de .
+
+
+
+###  http://mex.aksw.org/mex-algo#DecisionTreesAlgorithms
+
+:DecisionTreesAlgorithms rdf:type owl:Class ;
+                         
+		rdfs:subClassOf :DecisionTrees .
+
+
+
+###  http://mex.aksw.org/mex-algo#DecisionTable
+
+:DecisionTable rdf:type owl:Class ;
+               
+               rdfs:subClassOf :DecisionTrees .
+
+
+
+###  http://mex.aksw.org/mex-algo#C453
+
+:C45 rdf:type owl:Class ;
+     
+		 rdfs:subClassOf :DecisionTreesAlgorithms ;
+		 dcterms:identifier "DTC45" ;
+		 rdfs:label "C 4.5"@de , "C 4.5"@en ;
+		 dcterms:description "C4.5 is an algorithm used to generate a decision tree developed by Ross Quinlan. The decision trees generated by C4.5 can be used for classification, and for this reason, C4.5 is often referred to as a statistical classifier. "@en .
+		 
+
+
+###  http://mex.aksw.org/mex-algo#ID3
+
+:ID3 rdf:type owl:Class ;
+     
+		 rdfs:subClassOf :DecisionTreesAlgorithms ;
+		 dcterms:identifier "DTID3" ;
+		 rdfs:label "Iterative Dichotomiser 3"@de , "Iterative Dichotomiser 3"@en ;
+		 dcterms:description "The ID3 algorithm is used by training on a data set to produce a decision tree which is stored in memory. At runtime, this decision tree is used to classify new test cases by traversing the decision tree. "@en .
+
+
+###  http://mex.aksw.org/mex-algo#CART
+
+:CART rdf:type owl:Class ;
+      
+		 rdfs:subClassOf :DecisionTreesAlgorithms ;
+		 dcterms:identifier "DTCART" ;
+		 rdfs:label "k-Means"@de , "k-means"@en ;
+		 dcterms:description "CART tree is a binary decision tree which is based on Classification and Regression Trees."@en .
+
+
+
+
+###  http://mex.aksw.org/mex-algo#RandomForest
+
+:RandomForest rdf:type owl:Class ;
+              
+		 rdfs:subClassOf :DecisionTreesAlgorithms ;
+		 dcterms:identifier "DTRF" ;
+		 rdfs:label "Random Forest"@de , "Random Forest"@en ;
+		 dcterms:description "Random forest is an ensemble learning method for classification, regression and other tasks that operate by constructing a multitude of decision trees at training time and outputting the class that is the mode of the classes for classification or mean prediction for regression."@en ;
+		 dbo:abbreviation "RF" .
+
+
+
+
+## Clustering
+
+
+###  http://mex.aksw.org/mex-algo#Clustering
+
+:Clustering rdf:type owl:Class ;
+        dcterms:identifier "Clustering" ;
+		rdfs:subClassOf :AlgorithmClass ;
+		rdfs:label "Clustering"@en, "Clustering"@de .
+
+
+###  http://mex.aksw.org/mex-algo#ClusteringAlgorithms
+
+:ClusteringAlgorithms rdf:type owl:Class ;
+            
+		rdfs:subClassOf :Clustering .
+
+
+
+###  http://mex.aksw.org/mex-algo#ClusteringProblem
+
+:ClusteringProblem rdf:type owl:Class ;
+                   
+                   rdfs:subClassOf :Clustering .
+                   
+
+
+
+###  http://mex.aksw.org/mex-algo#Kmeans
+
+:Kmeans rdf:type owl:Class ;
+        
+		 rdfs:subClassOf :ClusteringAlgorithms ;
+		 dcterms:identifier "kmeans" ;
+		 rdfs:label "k-Means"@de , "k-means"@en ;
+		 dcterms:description "k-means clustering is a clustering method, that aims to partition n observations into k clusters in which each observation belongs to the cluster with the nearest mean."@en ;
+		 dbo:abbreviation "km" .
+
+
+
+###  http://mex.aksw.org/mex-algo#CHAMELEON
+
+:CHAMELEON rdf:type owl:Class ;
+           
+		 rdfs:subClassOf :ClusteringAlgorithms ;
+		 dcterms:identifier "CCHAMELEON" ;
+		 rdfs:label "CHAMELEON"@de , "CHAMELEON"@en ;
+		 dcterms:description ""@en .
+
+
+
+###  http://mex.aksw.org/mex-algo#CLARA
+
+:CLARA rdf:type owl:Class ;
+       
+		 rdfs:subClassOf :ClusteringAlgorithms ;
+		 dcterms:identifier "CCLARA" ;
+		 rdfs:label "CLARA"@de , "CLARA"@en .
+
+
+
+
+## Regression
+
+
+###  http://mex.aksw.org/mex-algo#Regression
+
+:Regression rdf:type owl:Class ;
+       	dcterms:identifier "Regression" ;                 
+		rdfs:subClassOf :AlgorithmClass ;
+		rdfs:label "Regression"@en, "Regression"@de .
+
+
+
+###  http://mex.aksw.org/mex-algo#RegressionAlgorithms
+
+:RegressionAlgorithms rdf:type owl:Class ;
+            
+		rdfs:subClassOf :Regression .
+		
+		
+
+###  http://mex.aksw.org/mex-algo#RegressionAnalysis
+
+:RegressionAnalysis rdf:type owl:Class ;
+                    
+                    rdfs:subClassOf :Regression ,
+                                    [ rdf:type owl:Restriction ;
+                                      owl:onProperty :hasAlgorithmClass ;
+                                      owl:onClass :RegressionFunctions ;
+                                      owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                    ] ;
+                    
+                    owl:disjointWith :SupportVectorMachines .
+
+
+
+###  http://mex.aksw.org/mex-algo#RegressionFunctions
+
+:RegressionFunctions rdf:type owl:Class ;
+                     
+                     rdfs:subClassOf :Regression .
+
+
+
+
+###  http://mex.aksw.org/mex-algo#LinearRegression
+
+:LinearRegression rdf:type owl:Class ;
+                  
+		rdfs:subClassOf :RegressionAlgorithms ;
+		dcterms:identifier "RLR" ;
+		rdfs:label "Lineare Regression"@de , "Linear Regression"@en ;
+		dcterms:description "linear regression is a linear approach to modeling the relationship between a scalar response (or dependent variable) and one or more explanatory variables (or independent variables)."@en ;
+		dbo:abbreviation "LR" .
+
+
+
+
+###  http://mex.aksw.org/mex-algo#LogisticRegression
+
+:LogisticRegression rdf:type owl:Class ;
+                    
+		rdfs:subClassOf :RegressionAlgorithms ;
+		dcterms:identifier "RLogR" ;
+		rdfs:label "Logistiche Regression"@de , "Logistic Regression"@en ;
+		dcterms:description "Logistic regression is a statistical model that in its basic form uses a logistic function to model a binary dependent variable."@en ;
+		dbo:abbreviation "LogR" .
+
+
+
+###  http://mex.aksw.org/mex-algo#NearestNeigbour
+
+:knearestNeighbor rdf:type owl:Class ;
+                 
+		rdfs:subClassOf :RegressionAlgorithms ;
+		dcterms:identifier "RKNN" ;
+		rdfs:label "k-nächste-Nachbarn"@de , "k-nearest Neighbor"@en ;
+		dcterms:description "k-nearest neighbors algorithm (k-NN) is a non-parametric method used for classification and regression."@en ;
+		dbo:abbreviation "KNN" .
+		 
+
+
+###  http://mex.aksw.org/mex-algo#SimpleCart
+
+:SimpleCart rdf:type owl:Class ;
+            
+		rdfs:subClassOf :RegressionAlgorithms ;
+		dcterms:identifier "RSC" ;
+		rdfs:label "Simple Cart"@de , "Simple Cart"@en .
+
+
+
+
+
+
+## Neural network
+
+###  http://mex.aksw.org/mex-algo#NeuralNetwork
+
+:NeuralNetwork rdf:type owl:Class ;
+  		dcterms:identifier "NNs" ;
+		rdfs:subClassOf :AlgorithmClass  ;
+		rdfs:label "Neural Networks"@en, "Neuronale Netzwerke"@de .
+
+
+
+###  http://mex.aksw.org/mex-algo#NeuralNetworkAlgorithms
+
+:NeuralNetworkAlgorithms rdf:type owl:Class ;
+            
+		rdfs:subClassOf :NeuralNetwork .
+		
+		
+
+###  http://mex.aksw.org/mex-algo#ArtificialNeuralNetwork
+
+:ConvolutionalNeuralNetworks rdf:type owl:Class ;
+                 
+		rdfs:subClassOf :NeuralNetworkAlgorithms ;
+		dcterms:identifier "NNCNN" ;
+		rdfs:label "Convolutional Neural Networks"@de , "Convolutional Neural Networks"@en ;
+		dcterms:description "Convolutional neural network (CNN, or ConvNet) is a class of deep neural networks, most commonly applied to analyzing visual imagery."@en ;
+		dbo:abbreviation "CNN" .
+
+
+## Timeseries 
+
+
+###  http://mex.aksw.org/mex-algo#TimeSeries
+
+:TimeSeries rdf:type owl:Class ;
+       	dcterms:identifier "TimeSeries" ;                 
+		rdfs:subClassOf :AlgorithmClass ;
+		rdfs:label "Time Series"@en, "Zeitserien"@de .
+
+
+
+
+###  http://mex.aksw.org/mex-algo#TimeSeriesAlgorithms
+
+:TimeSeriesAlgorithms rdf:type owl:Class ;
+            
+		rdfs:subClassOf :TimeSeries .
+		
+		
+
+
+###  http://mex.aksw.org/mex-algo#AutoregressiveIntegratedMovingAverage
+
+:AutoregressiveIntegratedMovingAverage rdf:type owl:Class ;
+                                       
+                                       rdfs:label "ARIMA"@en ;
+                                       
+                                       rdfs:subClassOf :TimeSeriesAlgorithms .
+
+
+
+###  http://mex.aksw.org/mex-algo#AutoregressiveMovingAverage
+
+:AutoregressiveMovingAverage rdf:type owl:Class ;
+	dcterms:identifier "ARMA" ;
+	rdfs:label "Autoregressive Moving Average"@en ;
+	rdfs:subClassOf :TimeSeriesAlgorithms .
+                             
+
+
+
+
+### SVM
+
+
+###  http://mex.aksw.org/mex-algo#SupportVectorMachine
+
+:SupportVectorMachine rdf:type owl:Class ;
+       	dcterms:identifier "SVMs" ;     
+		rdfs:subClassOf :AlgorithmClass ;
+		rdfs:label "Support Vector Machines"@en, "Support Vector Machines"@de .
+
+
+
+###  http://mex.aksw.org/mex-algo#SupportVectorMachineAlgorithms
+
+:SupportVectorMachineAlgorithms rdf:type owl:Class ;
+            
+		rdfs:subClassOf :SupportVectorMachine .
+
+		
+		
+
+###  http://mex.aksw.org/mex-algo#Linear-SVM
+
+:Linear-SVM rdf:type owl:Class ;
+       	dcterms:identifier "LinearSVM" ;     
+            
+            rdfs:subClassOf :SupportVectorMachineAlgorithms .
+
+
+
+
+
+###  http://mex.aksw.org/mex-algo#C-SVM
+
+:C-SVM rdf:type owl:Class ;
+       dcterms:identifier "C-SVM" ;     
+       rdfs:subClassOf :SupportVectorMachineAlgorithms .
+
+
+
+
+## NaiveBayes
+
+
+###  http://mex.aksw.org/mex-algo#NaiveBayes
+
+:NaiveBayes rdf:type owl:Class ;
+       	dcterms:identifier "NaiveBayes" ;                 
+		rdfs:subClassOf :AlgorithmClass ;
+		rdfs:label "Naive Bayes"@en, "Naive Bayes"@de .
+		
+
+
+
+###  http://mex.aksw.org/mex-algo#NaiveBayesAlgorithms
+
+:NaiveBayesAlgorithms rdf:type owl:Class ;
+            
+		rdfs:subClassOf :NaiveBayes .
+
+		
+		
+
+###  http://mex.aksw.org/mex-algo#NBTree
+
+:NBTree rdf:type owl:Class ;
+        
+        rdfs:subClassOf :NaiveBayesAlgorithms .
+
+
+

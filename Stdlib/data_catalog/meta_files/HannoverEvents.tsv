@@ -1,0 +1,26 @@
+FILE	/home/simon/Documents/SimpleML/data_sets/catalog_files/HannoverEvents.tsv
+CREATOR_ID	0
+ID	HannoverEvents
+NULL	
+SEPARATOR	TAB
+HAS_HEADER	yes
+HAS_COLUMN_TITLES	yes
+TITLE_EN	Events in Hannover (Germany)
+TITLE_DE	Events in Hannover
+DESCRIPTION_EN	Events in Hannover, Germany.
+DESCRIPTION_DE	Ereignisse in Hannover.
+TOPICS_EN	Events
+TOPICS_DE	Ereignisse
+PROPERTIES
+
+so:Event,rdfs:label
+dcterms:Location,rdfs:label
+so:Event,sml:mobility/eventCategory
+time:DateTimeDescription,time:inXSDDateTime
+so:Event,sml:mobility/numberOfParticipants
+
+
+
+GRAPH
+so:Event,dcterms:spatial,dcterms:Location
+so:Event,time:hasTime,time:DateTimeDescription

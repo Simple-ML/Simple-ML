@@ -1,0 +1,7 @@
+package tests.trailingComma.inDoStatementAssigneeList
+
+// no_syntax_error
+
+workflow w {
+    (val a, val b, ) = f();
+}
