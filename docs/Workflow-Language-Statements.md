@@ -1,14 +1,14 @@
-Statements are used in the [workflow language](./Workflow-Language) to do a specific action. Simple-ML supports only a single type of statements, the [do-statement](#do-statements), which is used to evaluate an expression exactly once. Other types of statements such as
+Statements are used in the [workflow language](./Workflow-Language.md) to do a specific action. Simple-ML supports only a single type of statements, the [do-statement](#do-statements), which is used to evaluate an expression exactly once. Other types of statements such as
  * if-statements to conditionally execute code or
  * while-statements to repeatedly execute code
 
-are not planned since we want to keep the language small and easy to learn. Moreover, we want to refrain from developing yet another general-purpose programming language. Instead, code that depends on such features can be implemented in Python, integrated into Simple-ML using the [stub language](./stub-language), and called in a workflow using the provided [do-statement](#do-statements).
+are not planned since we want to keep the language small and easy to learn. Moreover, we want to refrain from developing yet another general-purpose programming language. Instead, code that depends on such features can be implemented in Python, integrated into Simple-ML using the [stub language](./Stub-Language.md), and called in a workflow using the provided [do-statement](#do-statements).
 
 ## Do-Statements
 
-Do-statements are used to evaluate an [expression](./Workflow-Language-Expressions) exactly once. The results of this expression can either be ignored or assigned to a placeholder.
+Do-statements are used to evaluate an [expression](./Workflow-Language-Expressions.md) exactly once. The results of this expression can either be ignored or assigned to a placeholder.
 
-The most basic form of a do-statement ignores all results of the expression, which is only useful if the expression has side-effects. The following snippet demonstrates this by [calling](./Workflow-Language-Expressions#calls) the `print` function that prints the given string to the console. Note that the statement ends with a semicolon.
+The most basic form of a do-statement ignores all results of the expression, which is only useful if the expression has side-effects. The following snippet demonstrates this by [calling](./Workflow-Language-Expressions.md#calls) the `print` function that prints the given string to the console. Note that the statement ends with a semicolon.
 
     print("Hello, world!");
 
@@ -28,7 +28,7 @@ In case we are only interested in some of the results, we can skip results by in
 
 ### Yielding Results
 
-Finally, do-statements are used to yield results of [workflow steps](./Workflow-Language-Workflow-Steps) as shown in this snippet:
+Finally, do-statements are used to yield results of [workflow steps](./Workflow-Language-Workflow-Steps.md) as shown in this snippet:
 
     step numbers() -> (one: Int, two: Int) {
         yield one = 1;
