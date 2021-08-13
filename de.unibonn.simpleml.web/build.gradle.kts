@@ -28,7 +28,7 @@ dependencies {
     implementation("org.eclipse.xtend:org.eclipse.xtend.lib:${xtextVersion}")
     implementation("org.webjars:requirejs:2.3.6")
     implementation("org.webjars:jquery:3.4.1")
-    implementation("org.webjars:ace:1.3.3")
+    implementation("org.webjars:ace:07.31.2013")
     implementation("org.emfjson:emfjson-jackson:1.2.0")
 
     providedCompile("org.eclipse.jetty:jetty-annotations:9.4.22.v20191022")
