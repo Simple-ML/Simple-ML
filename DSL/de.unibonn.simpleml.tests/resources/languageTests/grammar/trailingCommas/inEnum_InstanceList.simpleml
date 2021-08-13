@@ -1,0 +1,8 @@
+package tests.trailingComma.inEnumInstanceList
+
+// no_syntax_error
+
+enum E {
+    A,
+    B,
+}

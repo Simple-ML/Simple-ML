@@ -1,0 +1,12 @@
+# Eclipse
+.settings/
+.classpath
+.project
+
+# Gradle
+.gradle/
+
+# Generated stuff
+DS_Store/
+/package-lock.json
+*.log

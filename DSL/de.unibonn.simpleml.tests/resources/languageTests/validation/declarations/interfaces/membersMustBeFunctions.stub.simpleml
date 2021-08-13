@@ -1,0 +1,18 @@
+package tests.membersMustBeFunctions
+
+interface MyInterface {
+    // semantic_error "Interface members must be functions."
+    attr »myAttribute«: Int
+
+    // semantic_error "Interface members must be functions."
+    class »MyClass«
+
+    // semantic_error "Interface members must be functions."
+    enum »MyEnum«
+
+    // no_semantic_error "Interface members must be functions."
+    fun »myFunction«()
+
+    // semantic_error "Interface members must be functions."
+    interface »MyInterface«
+}

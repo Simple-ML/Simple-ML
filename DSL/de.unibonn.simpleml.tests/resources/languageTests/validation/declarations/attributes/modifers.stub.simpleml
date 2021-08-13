@@ -1,0 +1,25 @@
+package tests.modifiers
+
+class MyClass {
+    // semantic_error "An attribute must not have this modifier."
+    // semantic_error "An attribute must not have this modifier."
+    // semantic_error "An attribute must not have this modifier."
+    »open« »override« »pure« attr myAttribute1: Int
+
+    // no_semantic_error "An attribute must not have this modifier."
+    // no_semantic_error "An attribute must not have this modifier."
+   »deprecated« »static« attr myAttribute2: Int
+}
+
+
+/* An interface must not have attributes and if they do we already display a different error. */
+
+interface MyInterface {
+
+    // no_semantic_error "An attribute must not have this modifier."
+    // no_semantic_error "An attribute must not have this modifier."
+    // no_semantic_error "An attribute must not have this modifier."
+    // no_semantic_error "An attribute must not have this modifier."
+    // no_semantic_error "An attribute must not have this modifier."
+    »deprecated« »open« »override« »pure« »static« attr myAttribute1: Int
+}

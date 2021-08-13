@@ -1,0 +1,66 @@
+package tests.modifiers
+
+// semantic_error "A type parameter must have no modifiers."
+// semantic_error "A type parameter must have no modifiers."
+// semantic_error "A type parameter must have no modifiers."
+// semantic_error "A type parameter must have no modifiers."
+// semantic_error "A type parameter must have no modifiers."
+class MyClass<»deprecated« »open« »override« »pure« »static« T> {
+
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    class MyClass<»deprecated« »open« »override« »pure« »static« T>
+
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    fun myFunction<»deprecated« »open« »override« »pure« »static« T>()
+
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    interface MyInterface<»deprecated« »open« »override« »pure« »static« T>
+}
+
+// semantic_error "A type parameter must have no modifiers."
+// semantic_error "A type parameter must have no modifiers."
+// semantic_error "A type parameter must have no modifiers."
+// semantic_error "A type parameter must have no modifiers."
+// semantic_error "A type parameter must have no modifiers."
+fun myFunction<»deprecated« »open« »override« »pure« »static« T>()
+
+// semantic_error "A type parameter must have no modifiers."
+// semantic_error "A type parameter must have no modifiers."
+// semantic_error "A type parameter must have no modifiers."
+// semantic_error "A type parameter must have no modifiers."
+// semantic_error "A type parameter must have no modifiers."
+interface MyInterface<»deprecated« »open« »override« »pure« »static« T> {
+
+    // no_semantic_error "A type parameter must have no modifiers."
+    // no_semantic_error "A type parameter must have no modifiers."
+    // no_semantic_error "A type parameter must have no modifiers."
+    // no_semantic_error "A type parameter must have no modifiers."
+    // no_semantic_error "A type parameter must have no modifiers."
+    class MyClass<»deprecated« »open« »override« »pure« »static« T>
+
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    fun myFunction<»deprecated« »open« »override« »pure« »static« T>()
+
+    // no_semantic_error "A type parameter must have no modifiers."
+    // no_semantic_error "A type parameter must have no modifiers."
+    // no_semantic_error "A type parameter must have no modifiers."
+    // no_semantic_error "A type parameter must have no modifiers."
+    // no_semantic_error "A type parameter must have no modifiers."
+    interface MyInterface<»deprecated« »open« »override« »pure« »static« T>
+}

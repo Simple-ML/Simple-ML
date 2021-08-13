@@ -1,0 +1,84 @@
+package tests.modifiers
+
+// semantic_error "A parameter must not have this modifier."
+// semantic_error "A parameter must not have this modifier."
+// semantic_error "A parameter must not have this modifier."
+// semantic_error "A parameter must not have this modifier."
+annotation MyAnnotation1(»open« »override« »pure« »static« a: Int)
+
+// no_semantic_error "A parameter must not have this modifier."
+annotation MyAnnotation2(»deprecated« a: Int)
+
+// semantic_error "A parameter must not have this modifier."
+// semantic_error "A parameter must not have this modifier."
+// semantic_error "A parameter must not have this modifier."
+// semantic_error "A parameter must not have this modifier."
+class MyClass1 constructor(»open« »override« »pure« »static« a: Int) {
+
+    // semantic_error "A parameter must not have this modifier."
+    // semantic_error "A parameter must not have this modifier."
+    // semantic_error "A parameter must not have this modifier."
+    // semantic_error "A parameter must not have this modifier."
+    class MyClass1 constructor(»open« »override« »pure« »static« a: Int)
+
+    // no_semantic_error "A parameter must not have this modifier."
+    class MyClass2 constructor(»deprecated« a: Int)
+
+    // semantic_error "A parameter must not have this modifier."
+    // semantic_error "A parameter must not have this modifier."
+    // semantic_error "A parameter must not have this modifier."
+    // semantic_error "A parameter must not have this modifier."
+    fun myFunction1(»open« »override« »pure« »static« a: Int)
+
+    // no_semantic_error "A parameter must not have this modifier."
+    fun myFunction2(»deprecated« a: Int)
+}
+
+// no_semantic_error "A parameter must not have this modifier."
+class MyClass2 constructor(»deprecated« a: Int)
+
+// semantic_error "A parameter must not have this modifier."
+// semantic_error "A parameter must not have this modifier."
+// semantic_error "A parameter must not have this modifier."
+// semantic_error "A parameter must not have this modifier."
+fun myFunction1(»open« »override« »pure« »static« a: Int)
+
+// no_semantic_error "A parameter must not have this modifier."
+fun myFunction2(»deprecated« a: Int)
+
+// no_semantic_error "A parameter must not have this modifier."
+// no_semantic_error "A parameter must not have this modifier."
+// no_semantic_error "A parameter must not have this modifier."
+// no_semantic_error "A parameter must not have this modifier."
+// no_semantic_error "A parameter must not have this modifier."
+interface MyInterface constructor(»deprecated« »open« »override« »pure« »static« a: Int) {
+
+    // no_semantic_error "A parameter must not have this modifier."
+    // no_semantic_error "A parameter must not have this modifier."
+    // no_semantic_error "A parameter must not have this modifier."
+    // no_semantic_error "A parameter must not have this modifier."
+    // no_semantic_error "A parameter must not have this modifier."
+    class MyClass constructor(»deprecated« »open« »override« »pure« »static« a: Int)
+
+    // semantic_error "A parameter must not have this modifier."
+    // semantic_error "A parameter must not have this modifier."
+    // semantic_error "A parameter must not have this modifier."
+    // semantic_error "A parameter must not have this modifier."
+    fun myFunction1(»open« »override« »pure« »static« a: Int)
+
+    // no_semantic_error "A parameter must not have this modifier."
+    fun myFunction2(»deprecated« a: Int)
+}
+
+// semantic_error "A parameter must not have this modifier."
+// semantic_error "A parameter must not have this modifier."
+// semantic_error "A parameter must not have this modifier."
+// semantic_error "A parameter must not have this modifier."
+step myStep1(
+    f: callable (»open« »override« »pure« »static« a: Int) -> ()
+) {}
+
+// no_semantic_error "A parameter must not have this modifier."
+step myStep2(
+    f: callable (»deprecated« a: Int) -> ()
+) {}

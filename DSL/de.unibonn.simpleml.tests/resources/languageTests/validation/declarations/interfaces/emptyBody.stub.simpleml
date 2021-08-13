@@ -1,0 +1,9 @@
+package tests.emptyInterfaceBody
+
+// semantic_warning "Unnecessary interface body."
+interface MyInterface1 »{}«
+
+// no_semantic_warning "Unnecessary interface body."
+interface MyInterface2 »{
+    fun f()
+}«
