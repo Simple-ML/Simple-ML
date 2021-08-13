@@ -1,0 +1,85 @@
+name: Master
+on:
+    push:
+        branches: [ 'master' ]
+
+#env:
+#    REGISTRY: ghcr.io
+#    IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                java-version: [ 11 ]
+
+        #        permissions:
+        #            contents: read
+        #            packages: write
+
+        steps:
+            -   name: Checkout repository
+                uses: actions/checkout@v2
+                with:
+                    submodules: recursive
+                    token: ${{ secrets.ORG_ACCESS }}
+
+            -   name: Set up JDK ${{ matrix.java-version }}
+                uses: actions/setup-java@v2.2.0
+                with:
+                    distribution: adopt
+                    java-version: ${{ matrix.java-version }}
+
+            -   name: Cache Gradle packages
+                uses: actions/cache@v2
+                with:
+                    path: |
+                        ~/.gradle/caches
+                        ~/.gradle/wrapper
+                    key: ${{ runner.os }}-java${{ matrix.java-version }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+                    restore-keys: |
+                        ${{ runner.os }}-java${{ matrix.java-version }}-
+
+            # See https://docs.github.com/en/actions/guides/building-and-testing-java-with-gradle
+            -   name: Validate Gradle wrapper
+                uses: gradle/wrapper-validation-action@v1
+
+            -   name: Test with Gradle
+                run: ./gradlew check
+
+            -   name: Upload test report
+                if: ${{ failure() }}
+                uses: actions/upload-artifact@v2
+                with:
+                    name: Test report
+                    path: de.unibonn.simpleml.tests/build/reports/tests/test
+
+            -   name: Cleanup Gradle cache
+                # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
+                # Restoring these files from a GitHub Actions cache might cause problems for future builds.
+                run: |
+                    rm -f ~/.gradle/caches/modules-2/modules-2.lock
+                    rm -f ~/.gradle/caches/modules-2/gc.properties
+
+#            - name: Log in to the Container registry
+#              uses: docker/login-action@v1.10.0
+#              with:
+#                  registry: ${{ env.REGISTRY }}
+#                  username: ${{ github.actor }}
+#                  password: ${{ secrets.GITHUB_TOKEN }}
+#
+#            - name: Extract metadata (tags, labels) for Docker
+#              id: meta
+#              uses: docker/metadata-action@v3.4.0
+#              with:
+#                  images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+#
+#            - name: Build and push Docker image
+#              uses: docker/build-push-action@v2.6.1
+#              with:
+#                  context: .
+#                  push: true
+#                  tags: ${{ steps.meta.outputs.tags }}
+#                  labels: ${{ steps.meta.outputs.labels }}
