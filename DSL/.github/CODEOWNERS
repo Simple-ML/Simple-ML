@@ -1,7 +1,0 @@
-*                                                                   @Simple-ML/dsl
-/.devcontainer/                                                     @lars-reimann
-/.github/                                                           @lars-reimann
-/.vscode/                                                           @lars-reimann
-/client/                                                            @lars-reimann
-/server/                                                            @lars-reimann
-/server/de.unibonn.simpleml.parent/de.unibonn.simpleml.web/         @adanewitz
