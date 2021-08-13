@@ -1,0 +1,22 @@
+workflow myWorkflow {
+          val
+     a     =      0      ;
+    (  val    a   ,    _ ,       yield   b   )  =    call()        ;
+    lambda () {
+        val         a
+        =   0 ;
+        (val      a,       _   ,    yield    b   )   =
+         call()    ;
+    };
+}
+
+------------------------------------------------------------------------------------------------------------------------
+
+workflow myWorkflow {
+    val a = 0;
+    (val a, _, yield b) = call();
+    lambda () {
+        val a = 0;
+        (val a, _, yield b) = call();
+    };
+}

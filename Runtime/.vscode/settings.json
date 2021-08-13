@@ -1,0 +1,49 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    },
+    "editor.formatOnSave": true,
+
+    "files.eol": "\n",
+    "files.exclude": {
+        // Git
+        "**/.git": true,
+        "**/.gitattributes": true,
+        "**/.github": true,
+        "**/.gitmodules": true,
+
+        // MacOS
+        "**/.DS_Store": true,
+
+        // Configuration
+        "**/.devcontainer": true,
+        "**/.vscode": true,
+        "**/.prettierignore": true,
+        "**/.prettierrc.json": true,
+        "**/Dockerfile": true,
+
+        // Generated stuff
+        "**/*.egg-info": true,
+        "**/*-debug.log": true,
+        "**/__pycache__": true,
+        "**/src-gen": true,
+        "stdlib/simple-ml-0.0.9.vsix": true
+    },
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+
+    "prettier.configPath": ".prettierrc.json",
+    "prettier.ignorePath": ".prettierignore",
+
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.quickSuggestions": false
+    }
+}

@@ -1,0 +1,30 @@
+enum myEnum {
+    MY_INSTANCE_1,
+
+    @Annotation1     @Annotation2
+         MY_INSTANCE_2
+         ,
+
+    open    deprecated
+      MY_INSTANCE_3,
+
+    @Annotation1       @Annotation2
+       open
+   deprecated     MY_INSTANCE_4
+}
+
+------------------------------------------------------------------------------------------------------------------------
+
+enum myEnum {
+    MY_INSTANCE_1,
+
+    @Annotation1
+    @Annotation2
+    MY_INSTANCE_2,
+
+    open deprecated MY_INSTANCE_3,
+
+    @Annotation1
+    @Annotation2
+    open deprecated MY_INSTANCE_4
+}

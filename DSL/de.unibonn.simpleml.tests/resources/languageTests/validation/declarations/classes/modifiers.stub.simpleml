@@ -1,0 +1,36 @@
+package tests.modifiers
+
+// semantic_error "A top-level class must not have this modifier."
+// semantic_error "A top-level class must not have this modifier."
+// semantic_error "A top-level class must not have this modifier."
+»override« »pure« »static« class MyClass1
+
+// no_semantic_error "A top-level class must not have this modifier."
+// no_semantic_error "A top-level class must not have this modifier."
+»deprecated« »open« class MyClass2
+
+class MyClass3 {
+    // semantic_error "A nested class must not have this modifier."
+    // semantic_error "A nested class must not have this modifier."
+    »override« »pure« class MyClass1
+
+    // no_semantic_error "A nested class must not have this modifier."
+    // no_semantic_error "A nested class must not have this modifier."
+    // no_semantic_error "A nested class must not have this modifier."
+    »deprecated« »open« »static« class MyClass2
+
+    // semantic_info "A nested class is always static."
+    »static« class MyClass3
+}
+
+
+/* An interface must not have nested classes and if they do we already display a different error. */
+
+interface MyInterface {
+    // no_semantic_error "A nested class must not have this modifier."
+    // no_semantic_error "A nested class must not have this modifier."
+    // no_semantic_error "A nested class must not have this modifier."
+    // no_semantic_error "A nested class must not have this modifier."
+    // no_semantic_error "A nested class must not have this modifier."
+    »open« »override« »pure« »deprecated« »static« class MyClass
+}
