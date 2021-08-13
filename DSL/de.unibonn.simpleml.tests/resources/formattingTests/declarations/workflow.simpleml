@@ -1,0 +1,29 @@
+      workflow      myWorkflow1        {}  @Annotation1        @Annotation2 workflow myWorkflow2 {}
+
+      open
+      deprecated
+            workflow    myWorkflow3    {
+
+             }
+
+      @Annotation1        @Annotation2      open
+        deprecated
+      workflow    myWorkflow4    {
+              val a = 1;
+       }
+
+------------------------------------------------------------------------------------------------------------------------
+
+workflow myWorkflow1 {}
+
+@Annotation1
+@Annotation2
+workflow myWorkflow2 {}
+
+open deprecated workflow myWorkflow3 {}
+
+@Annotation1
+@Annotation2
+open deprecated workflow myWorkflow4 {
+    val a = 1;
+}

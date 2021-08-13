@@ -1,0 +1,885 @@
+@base <https://simple-ml.de/resource/> .
+
+@prefix sml: <https://simple-ml.de/resource/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix sml-mobility: <https://simple-ml.de/resource/mobility/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix seas: <https://w3id.org/seas/> .
+
+### Dataset: SpeedAveragesMiniSampleWKT
+<simple-ml> dcat:dataset <SpeedAveragesMiniSampleWKT> .
+<SpeedAveragesMiniSampleWKT> a dcat:Dataset ;
+ dcterms:identifier "SpeedAveragesMiniSampleWKT" ;
+ dcterms:title "Average speed per road in Niedersachsen (mini sample, in Well-known text Format)"@en ;
+ dcterms:title "Durchschnittsgeschwindigkeit auf niedersächsischen Straßen (mini sample, im Well-known-Text-Format)"@de ;
+ dcterms:description "Average speeds on streets in Niedersachsen in a half-hourly interval, in Well-known text Format. This is a tiny sample of few lines and columns."@en ;
+ dcterms:description "Durchschnittsgeschwindigkeit auf niedersächsischen Straßen in einem halbstündigen Intervall, im Well-known-Text-Format. Dies ist ein kleiner Beispieldatensatz mit wenigen Zeilen und Spalten."@de ;
+ dcterms:subject "Traffic"@en ;
+ dcterms:subject "Verkehr"@de ;
+ <creatorId> "0"^^xsd:nonNegativeInteger ;
+ <numberOfInstances> "6"^^xsd:nonNegativeInteger ;
+ <latBeforeLon> "false"^^xsd:boolean .
+
+### File (SpeedAveragesMiniSampleWKT)
+
+<SpeedAveragesMiniSampleWKT> <hasFile> <SpeedAveragesMiniSampleWKTFile> .
+<SpeedAveragesMiniSampleWKTFile> a <TextFile> ;
+ <fileLocation> "SpeedAveragesMiniSampleWKT.csv" ;
+ dcterms:format "text/comma-separated-values" ;
+ csvw:separator "," ;
+ csvw:header "true"^^xsd:boolean ;
+ csvw:null "" .
+
+### Attributes (SpeedAveragesMiniSampleWKT)
+
+<SpeedAveragesMiniSampleWKT> <hasAttribute> <SpeedAveragesMiniSampleWKTAttributeId> .
+<SpeedAveragesMiniSampleWKTAttributeId> a <Attribute> ;
+ dcterms:identifier "id" ;
+ <columnIndex> "0"^^xsd:integer ;
+ <valueType> xsd:long ;
+ <mapsToDomain> <SpeedAveragesMiniSampleWKT_StreetSegment> ;
+ <mapsToProperty> sml-mobility:osmId .
+
+<SpeedAveragesMiniSampleWKT> <hasAttribute> <SpeedAveragesMiniSampleWKTAttributeStreetType> .
+<SpeedAveragesMiniSampleWKTAttributeStreetType> a <Attribute> ;
+ dcterms:identifier "street_type" ;
+ <columnIndex> "1"^^xsd:integer ;
+ <valueType> xsd:string ;
+ <mapsToDomain> <SpeedAveragesMiniSampleWKT_LocationType> ;
+ <mapsToProperty> rdfs:label .
+
+<SpeedAveragesMiniSampleWKT> <hasAttribute> <SpeedAveragesMiniSampleWKTAttributeNumberOfDrivers> .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDrivers> a <Attribute> ;
+ dcterms:identifier "number_of_drivers" ;
+ <columnIndex> "2"^^xsd:integer ;
+ <valueType> xsd:nonNegativeInteger ;
+ <mapsToDomain> <SpeedAveragesMiniSampleWKT_TrafficFlow> ;
+ <mapsToProperty> sml-mobility:numberOfVehicles .
+
+<SpeedAveragesMiniSampleWKT> <hasAttribute> <SpeedAveragesMiniSampleWKTAttributeIsWeekend> .
+<SpeedAveragesMiniSampleWKTAttributeIsWeekend> a <Attribute> ;
+ dcterms:identifier "is_weekend" ;
+ <columnIndex> "3"^^xsd:integer ;
+ <valueType> xsd:boolean ;
+ <mapsToDomain> <SpeedAveragesMiniSampleWKT_DateTimeDescription1> ;
+ <mapsToProperty> sml-mobility:isWeekend .
+
+<SpeedAveragesMiniSampleWKT> <hasAttribute> <SpeedAveragesMiniSampleWKTAttributeGeometry> .
+<SpeedAveragesMiniSampleWKTAttributeGeometry> a <Attribute> ;
+ dcterms:identifier "geometry" ;
+ <columnIndex> "4"^^xsd:integer ;
+ <valueType> <wellKnownText> ;
+ <mapsToDomain> <SpeedAveragesMiniSampleWKT_StreetSegment> ;
+ <mapsToProperty> <asWKT> .
+
+### Semantic graph (SpeedAveragesMiniSampleWKT)
+
+<SpeedAveragesMiniSampleWKT_StreetSegment> rdf:type <ClassInstance> ;
+ <mapsTo> sml-mobility:StreetSegment ;
+ sml-mobility:hasLocationType <SpeedAveragesMiniSampleWKT_LocationType> .
+<SpeedAveragesMiniSampleWKT_LocationType> rdf:type <ClassInstance> ;
+ <mapsTo> sml-mobility:LocationType .
+<SpeedAveragesMiniSampleWKT_TrafficFlow> rdf:type <ClassInstance> ;
+ <mapsTo> sml-mobility:TrafficFlow ;
+ time:hasBeginning <SpeedAveragesMiniSampleWKT_DateTimeDescription1> ;
+ dcterms:spatial <SpeedAveragesMiniSampleWKT_StreetSegment> .
+<SpeedAveragesMiniSampleWKT_DateTimeDescription1> rdf:type <ClassInstance> ;
+ <mapsTo> time:DateTimeDescription ;
+ <classInstance> "1"^^xsd:integer .
+
+### Statistics (SpeedAveragesMiniSampleWKT)
+<SpeedAveragesMiniSampleWKT> <numberOfInstances> "6"^^xsd:integer .
+### Statistics for "id" (SpeedAveragesMiniSampleWKT)
+<SpeedAveragesMiniSampleWKTAttributeId> seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdNumberOfValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdNumberOfNullValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdNumberOfValidValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdNumberOfValidNonNullValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdNumberOfInvalidValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdMinimum> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdMaximum> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdMean> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdStandardDeviation> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdNumberOfDistinctValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdQuartile0> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdQuartile1> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdQuartile2> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdQuartile3> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdQuartile4> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdDecile0> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdDecile1> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdDecile2> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdDecile3> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdDecile4> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdDecile5> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdDecile6> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdDecile7> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdDecile8> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdDecile9> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdDecile10> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdNumberOfOutliersBelow> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdNumberOfOutliersAbove> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdHistogram0> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdHistogram1> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdHistogram2> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdHistogram3> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdHistogram4> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdHistogram5> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdHistogram6> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdHistogram7> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdHistogram8> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdHistogram9> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIdMedian> .
+<SpeedAveragesMiniSampleWKTAttributeIdNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIdNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIdNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIdNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIdNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIdMinimum> rdf:type seas:DistributionMinimumEvaluation ;
+ seas:evaluatedValue "1"^^xsd:long .
+<SpeedAveragesMiniSampleWKTAttributeIdMaximum> rdf:type seas:DistributionMaximumEvaluation ;
+ seas:evaluatedValue "6"^^xsd:long .
+<SpeedAveragesMiniSampleWKTAttributeIdMean> rdf:type seas:DistributionMeanEvaluation ;
+ seas:evaluatedValue "3.5"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeIdStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
+ seas:evaluatedValue "1.8708286933869707"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeIdNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIdQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "1"^^xsd:long ;
+ seas:rank "0"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeIdQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "2.0"^^xsd:double ;
+ seas:rank "1"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeIdQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "3.5"^^xsd:double ;
+ seas:rank "2"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeIdQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "5.0"^^xsd:double ;
+ seas:rank "3"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeIdQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "6"^^xsd:long ;
+ seas:rank "4"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeIdDecile0> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "1"^^xsd:long ;
+ seas:rank "0"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeIdDecile1> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "1.0"^^xsd:double ;
+ seas:rank "1"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeIdDecile2> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "2.0"^^xsd:double ;
+ seas:rank "2"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeIdDecile3> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "2.0"^^xsd:double ;
+ seas:rank "3"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeIdDecile4> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "3.0"^^xsd:double ;
+ seas:rank "4"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeIdDecile5> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "3.5"^^xsd:double ;
+ seas:rank "5"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeIdDecile6> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "4.0"^^xsd:double ;
+ seas:rank "6"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeIdDecile7> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "5.0"^^xsd:double ;
+ seas:rank "7"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeIdDecile8> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "5.0"^^xsd:double ;
+ seas:rank "8"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeIdDecile9> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "6.0"^^xsd:double ;
+ seas:rank "9"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeIdDecile10> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "6"^^xsd:long ;
+ seas:rank "10"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeIdNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIdNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIdHistogram0> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "1"^^xsd:long ;
+ <instancesInBucket> "1"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "1"^^xsd:long .
+<SpeedAveragesMiniSampleWKTAttributeIdHistogram1> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "2"^^xsd:long ;
+ <bucketMaximum> "2"^^xsd:long ;
+ <instancesInBucket> "1"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIdHistogram2> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "2"^^xsd:long ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "2"^^xsd:long .
+<SpeedAveragesMiniSampleWKTAttributeIdHistogram3> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "1"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "3"^^xsd:long ;
+ <bucketMaximum> "3"^^xsd:long .
+<SpeedAveragesMiniSampleWKTAttributeIdHistogram4> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "3"^^xsd:long ;
+ <bucketMaximum> "3"^^xsd:long ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIdHistogram5> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "4"^^xsd:long ;
+ <bucketMinimum> "4"^^xsd:long ;
+ <instancesInBucket> "1"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIdHistogram6> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "4"^^xsd:long ;
+ <bucketMaximum> "4"^^xsd:long .
+<SpeedAveragesMiniSampleWKTAttributeIdHistogram7> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "1"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "5"^^xsd:long ;
+ <bucketMaximum> "5"^^xsd:long .
+<SpeedAveragesMiniSampleWKTAttributeIdHistogram8> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "5"^^xsd:long ;
+ <bucketMinimum> "5"^^xsd:long .
+<SpeedAveragesMiniSampleWKTAttributeIdHistogram9> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "1"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "6"^^xsd:long ;
+ <bucketMaximum> "6"^^xsd:long .
+<SpeedAveragesMiniSampleWKTAttributeIdMedian> rdf:type seas:DistributionMedianEvaluation ;
+ seas:evaluatedValue "3.5"^^xsd:double .
+### Statistics for "street_type" (SpeedAveragesMiniSampleWKT)
+<SpeedAveragesMiniSampleWKTAttributeStreetType> seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeNumberOfValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeNumberOfNullValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeNumberOfValidValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeNumberOfValidNonNullValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeNumberOfInvalidValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeAverageNumberOfDigits> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeAverageNumberOfCharacters> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeAverageNumberOfTokens> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeAverageNumberOfCapitalisedValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeAverageNumberOfSpecialCharacters> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeNumberOfDistinctValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeMinimum> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeMaximum> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeMedian> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeMean> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeStandardDeviation> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeNumberOfOutliersBelow> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeNumberOfOutliersAbove> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram0> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram1> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram2> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram3> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram4> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram5> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram6> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram7> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram8> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram9> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeQuartile0> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeQuartile1> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeQuartile2> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeQuartile3> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeQuartile4> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile0> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile1> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile2> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile3> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile4> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile5> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile6> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile7> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile8> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile9> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile10> .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
+ seas:evaluatedValue "8.0"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
+ seas:evaluatedValue "1.0"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
+ seas:evaluatedValue "4"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeMinimum> rdf:type seas:DistributionMinimumEvaluation ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeMaximum> rdf:type seas:DistributionMaximumEvaluation ;
+ seas:evaluatedValue "11"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeMedian> rdf:type seas:DistributionMedianEvaluation ;
+ seas:evaluatedValue "8.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeMean> rdf:type seas:DistributionMeanEvaluation ;
+ seas:evaluatedValue "8.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
+ seas:evaluatedValue "1.6733200530681511"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
+ seas:evaluatedValue "1.0"^^xsd:double ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram0> rdf:type <DistributionHistogramEvaluation> ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "6"^^xsd:integer ;
+ <bucketMaximum> "6"^^xsd:integer ;
+ <instancesInBucket> "1"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram1> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "7"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMaximum> "6"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram2> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "7"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMaximum> "6"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram3> rdf:type <DistributionHistogramEvaluation> ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "7"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "6"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram4> rdf:type <DistributionHistogramEvaluation> ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "7"^^xsd:integer ;
+ <bucketMaximum> "7"^^xsd:integer ;
+ <instancesInBucket> "1"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram5> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "7"^^xsd:integer ;
+ <bucketMaximum> "7"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram6> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "7"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "8"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram7> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "8"^^xsd:integer ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMaximum> "7"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram8> rdf:type <DistributionHistogramEvaluation> ;
+ <comment> "string length"^^xsd:string ;
+ <bucketMinimum> "8"^^xsd:integer ;
+ <bucketMaximum> "7"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeHistogram9> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "8"^^xsd:integer ;
+ <bucketMinimum> "8"^^xsd:integer ;
+ <instancesInBucket> "3"^^xsd:nonNegativeInteger ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "6"^^xsd:integer ;
+ seas:rank "0"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "1"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "8.0"^^xsd:double ;
+ seas:rank "2"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "8.0"^^xsd:double ;
+ seas:rank "3"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "11"^^xsd:integer ;
+ seas:rank "4"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile0> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "6"^^xsd:integer ;
+ seas:rank "0"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile1> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "6.0"^^xsd:double ;
+ seas:rank "1"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile2> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "2"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile3> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "7.0"^^xsd:double ;
+ seas:rank "3"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile4> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "8.0"^^xsd:double ;
+ seas:rank "4"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile5> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "8.0"^^xsd:double ;
+ seas:rank "5"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile6> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "8.0"^^xsd:double ;
+ seas:rank "6"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile7> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "8.0"^^xsd:double ;
+ seas:rank "7"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile8> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "8.0"^^xsd:double ;
+ seas:rank "8"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile9> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "11.0"^^xsd:double ;
+ seas:rank "9"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeStreetTypeDecile10> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "11"^^xsd:integer ;
+ seas:rank "10"^^xsd:integer ;
+ <comment> "string length"^^xsd:string .
+### Statistics for "number_of_drivers" (SpeedAveragesMiniSampleWKT)
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDrivers> seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversNumberOfValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversNumberOfNullValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversNumberOfValidValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversNumberOfValidNonNullValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversNumberOfInvalidValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversAverageNumberOfDigits> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversAverageNumberOfCharacters> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversAverageNumberOfTokens> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversAverageNumberOfCapitalisedValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversAverageNumberOfSpecialCharacters> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversMinimum> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversMaximum> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversMean> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversNumberOfDistinctValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversStandardDeviation> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversQuartile0> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversQuartile1> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversQuartile2> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversQuartile3> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversQuartile4> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile0> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile1> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile2> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile3> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile4> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile5> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile6> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile7> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile8> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile9> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile10> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversNumberOfOutliersBelow> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversNumberOfOutliersAbove> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram0> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram1> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram2> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram3> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram4> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram5> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram6> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram7> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram8> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram9> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeNumberOfDriversMedian> .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
+ seas:evaluatedValue "2.1666666666666665"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
+ seas:evaluatedValue "2.1666666666666665"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
+ seas:evaluatedValue "1.0"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversMinimum> rdf:type seas:DistributionMinimumEvaluation ;
+ seas:evaluatedValue "8"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversMaximum> rdf:type seas:DistributionMaximumEvaluation ;
+ seas:evaluatedValue "302"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversMean> rdf:type seas:DistributionMeanEvaluation ;
+ seas:evaluatedValue "81.33333333333333"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
+ seas:evaluatedValue "113.40311577142256"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "8"^^xsd:integer ;
+ seas:rank "0"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "12.0"^^xsd:double ;
+ seas:rank "1"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "32.0"^^xsd:double ;
+ seas:rank "2"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "102.0"^^xsd:double ;
+ seas:rank "3"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "302"^^xsd:integer ;
+ seas:rank "4"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile0> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "8"^^xsd:integer ;
+ seas:rank "0"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile1> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "8.0"^^xsd:double ;
+ seas:rank "1"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile2> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "12.0"^^xsd:double ;
+ seas:rank "2"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile3> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "12.0"^^xsd:double ;
+ seas:rank "3"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile4> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "24.0"^^xsd:double ;
+ seas:rank "4"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile5> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "32.0"^^xsd:double ;
+ seas:rank "5"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile6> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "40.0"^^xsd:double ;
+ seas:rank "6"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile7> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "102.0"^^xsd:double ;
+ seas:rank "7"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile8> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "102.0"^^xsd:double ;
+ seas:rank "8"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile9> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "302.0"^^xsd:double ;
+ seas:rank "9"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversDecile10> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "302"^^xsd:integer ;
+ seas:rank "10"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
+ seas:evaluatedValue "1"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram0> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "17"^^xsd:integer ;
+ <bucketMinimum> "8"^^xsd:integer ;
+ <instancesInBucket> "2"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram1> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "26"^^xsd:integer ;
+ <bucketMinimum> "18"^^xsd:integer ;
+ <instancesInBucket> "1"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram2> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "36"^^xsd:integer ;
+ <bucketMinimum> "27"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram3> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "1"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "45"^^xsd:integer ;
+ <bucketMinimum> "37"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram4> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "55"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "46"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram5> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "55"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "64"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram6> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "65"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "73"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram7> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "83"^^xsd:integer ;
+ <bucketMinimum> "74"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram8> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "84"^^xsd:integer ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "92"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversHistogram9> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "1"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "93"^^xsd:integer ;
+ <bucketMaximum> "102"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTAttributeNumberOfDriversMedian> rdf:type seas:DistributionMedianEvaluation ;
+ seas:evaluatedValue "32.0"^^xsd:double .
+### Statistics for "is_weekend" (SpeedAveragesMiniSampleWKT)
+<SpeedAveragesMiniSampleWKTAttributeIsWeekend> seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIsWeekendNumberOfValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIsWeekendNumberOfNullValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIsWeekendNumberOfValidValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIsWeekendNumberOfValidNonNullValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIsWeekendNumberOfInvalidValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIsWeekendAverageNumberOfDigits> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIsWeekendAverageNumberOfCharacters> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIsWeekendAverageNumberOfTokens> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIsWeekendAverageNumberOfCapitalisedValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIsWeekendAverageNumberOfSpecialCharacters> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIsWeekendNumberOfTrueValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIsWeekendNumberOfFalseValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeIsWeekendNumberOfDistinctValues> ;
+ <hasValueDistribution> <SpeedAveragesMiniSampleWKTAttributeIsWeekendValueDistribution> .
+<SpeedAveragesMiniSampleWKTAttributeIsWeekendNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIsWeekendNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIsWeekendNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIsWeekendNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIsWeekendNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIsWeekendAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
+ seas:evaluatedValue "1.0"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeIsWeekendAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
+ seas:evaluatedValue "1.0"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeIsWeekendAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
+ seas:evaluatedValue "1.0"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeIsWeekendAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeIsWeekendAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
+ seas:evaluatedValue "0.0"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeIsWeekendNumberOfTrueValues> rdf:type <DistributionNumberOfTrueValuesEvaluation> ;
+ seas:evaluatedValue "4"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIsWeekendNumberOfFalseValues> rdf:type <DistributionNumberOfFalseValuesEvaluation> ;
+ seas:evaluatedValue "2"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIsWeekendNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
+ seas:evaluatedValue "2"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIsWeekendValueDistribution> rdf:type <ValueDistribution> ;
+ <valueDistributionValue> <SpeedAveragesMiniSampleWKTAttributeIsWeekendValueDistributionValue0> ;
+ <valueDistributionValue> <SpeedAveragesMiniSampleWKTAttributeIsWeekendValueDistributionValue1> .
+<SpeedAveragesMiniSampleWKTAttributeIsWeekendValueDistributionValue0> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "false"^^xsd:boolean ;
+ <numberOfInstancesOfValue> "2"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeIsWeekendValueDistributionValue1> rdf:type <ValueDistributionValue> ;
+ <instancesOfValue> "true"^^xsd:boolean ;
+ <numberOfInstancesOfValue> "4"^^xsd:nonNegativeInteger .
+### Statistics for "geometry" (SpeedAveragesMiniSampleWKT)
+<SpeedAveragesMiniSampleWKTAttributeGeometry> seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryNumberOfValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryNumberOfNullValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryNumberOfValidValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryNumberOfValidNonNullValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryNumberOfInvalidValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryNumberOfDistinctValues> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryMinimum> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryMaximum> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryMedian> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryMean> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryStandardDeviation> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryHistogram0> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryHistogram1> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryHistogram2> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryHistogram3> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryHistogram4> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryHistogram5> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryHistogram6> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryHistogram7> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryHistogram8> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryHistogram9> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryQuartile0> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryQuartile1> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryQuartile2> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryQuartile3> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryQuartile4> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryDecile0> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryDecile1> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryDecile2> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryDecile3> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryDecile4> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryDecile5> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryDecile6> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryDecile7> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryDecile8> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryDecile9> ;
+ seas:evaluation <SpeedAveragesMiniSampleWKTAttributeGeometryDecile10> .
+<SpeedAveragesMiniSampleWKTAttributeGeometryNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeGeometryNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeGeometryNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeGeometryNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeGeometryNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
+ seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeGeometryNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
+ seas:evaluatedValue "6"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeGeometryMinimum> rdf:type seas:DistributionMinimumEvaluation ;
+ seas:evaluatedValue "906.8925467259783"^^xsd:double ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryMaximum> rdf:type seas:DistributionMaximumEvaluation ;
+ seas:evaluatedValue "3335.8695669901404"^^xsd:double ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryMedian> rdf:type seas:DistributionMedianEvaluation ;
+ seas:evaluatedValue "1387.9204259376188"^^xsd:double ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryMean> rdf:type seas:DistributionMeanEvaluation ;
+ seas:evaluatedValue "1655.2079745863757"^^xsd:double ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
+ seas:evaluatedValue "0.0"^^xsd:double ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryHistogram0> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "906.8925467259783"^^xsd:double ;
+ <comment> "geometry (length/area)"^^xsd:string ;
+ <instancesInBucket> "1"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "984.5384487625165"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeGeometryHistogram1> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "984.5384487625165"^^xsd:double ;
+ <comment> "geometry (length/area)"^^xsd:string ;
+ <bucketMaximum> "1062.1843507990548"^^xsd:double ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeGeometryHistogram2> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "1139.830252835593"^^xsd:double ;
+ <bucketMinimum> "1062.1843507990548"^^xsd:double ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryHistogram3> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "1139.830252835593"^^xsd:double ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <comment> "geometry (length/area)"^^xsd:string ;
+ <bucketMaximum> "1217.4761548721315"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeGeometryHistogram4> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "1295.1220569086697"^^xsd:double ;
+ <comment> "geometry (length/area)"^^xsd:string ;
+ <bucketMinimum> "1217.4761548721315"^^xsd:double ;
+ <instancesInBucket> "1"^^xsd:nonNegativeInteger .
+<SpeedAveragesMiniSampleWKTAttributeGeometryHistogram5> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "1295.1220569086697"^^xsd:double ;
+ <instancesInBucket> "1"^^xsd:nonNegativeInteger ;
+ <bucketMaximum> "1372.767958945208"^^xsd:double ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryHistogram6> rdf:type <DistributionHistogramEvaluation> ;
+ <comment> "geometry (length/area)"^^xsd:string ;
+ <instancesInBucket> "1"^^xsd:nonNegativeInteger ;
+ <bucketMinimum> "1372.767958945208"^^xsd:double ;
+ <bucketMaximum> "1450.4138609817464"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeGeometryHistogram7> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMaximum> "1528.0597630182847"^^xsd:double ;
+ <bucketMinimum> "1450.4138609817464"^^xsd:double ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryHistogram8> rdf:type <DistributionHistogramEvaluation> ;
+ <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
+ <comment> "geometry (length/area)"^^xsd:string ;
+ <bucketMaximum> "1605.705665054823"^^xsd:double ;
+ <bucketMinimum> "1528.0597630182847"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeGeometryHistogram9> rdf:type <DistributionHistogramEvaluation> ;
+ <bucketMinimum> "1605.705665054823"^^xsd:double ;
+ <instancesInBucket> "1"^^xsd:nonNegativeInteger ;
+ <comment> "geometry (length/area)"^^xsd:string ;
+ <bucketMaximum> "1683.3515670913612"^^xsd:double .
+<SpeedAveragesMiniSampleWKTAttributeGeometryQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "906.8925467259783"^^xsd:double ;
+ seas:rank "0"^^xsd:integer ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "1229.293314835535"^^xsd:double ;
+ seas:rank "1"^^xsd:integer ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "1387.9204259376188"^^xsd:double ;
+ seas:rank "2"^^xsd:integer ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "1683.3515670913612"^^xsd:double ;
+ seas:rank "3"^^xsd:integer ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
+ seas:evaluatedValue "3335.8695669901404"^^xsd:double ;
+ seas:rank "4"^^xsd:integer ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryDecile0> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "906.8925467259783"^^xsd:double ;
+ seas:rank "0"^^xsd:integer ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryDecile1> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "906.8925467259783"^^xsd:double ;
+ seas:rank "1"^^xsd:integer ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryDecile2> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "1229.293314835535"^^xsd:double ;
+ seas:rank "2"^^xsd:integer ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryDecile3> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "1229.293314835535"^^xsd:double ;
+ seas:rank "3"^^xsd:integer ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryDecile4> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "1335.2229925857068"^^xsd:double ;
+ seas:rank "4"^^xsd:integer ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryDecile5> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "1387.9204259376188"^^xsd:double ;
+ seas:rank "5"^^xsd:integer ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryDecile6> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "1440.6178592895305"^^xsd:double ;
+ seas:rank "6"^^xsd:integer ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryDecile7> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "1683.3515670913612"^^xsd:double ;
+ seas:rank "7"^^xsd:integer ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryDecile8> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "1683.3515670913612"^^xsd:double ;
+ seas:rank "8"^^xsd:integer ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryDecile9> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "3335.8695669901404"^^xsd:double ;
+ seas:rank "9"^^xsd:integer ;
+ <comment> "geometry (length/area)"^^xsd:string .
+<SpeedAveragesMiniSampleWKTAttributeGeometryDecile10> rdf:type seas:DistributionDecileEvaluation ;
+ seas:evaluatedValue "3335.8695669901404"^^xsd:double ;
+ seas:rank "10"^^xsd:integer ;
+ <comment> "geometry (length/area)"^^xsd:string .
+
+### Sample (SpeedAveragesMiniSampleWKT)
+<SpeedAveragesMiniSampleWKT> <hasSample> <SpeedAveragesMiniSampleWKTSample> .
+<SpeedAveragesMiniSampleWKTSample> rdf:type <DatasetSample> ;
+ csvw:separator "	" ;
+ <hasHeader> <SpeedAveragesMiniSampleWKTSampleHeader> ;
+ <hasHeaderAttributes> <SpeedAveragesMiniSampleWKTSampleHeaderAttributes> ;
+ <hasLine> <SpeedAveragesMiniSampleWKTSample0> ;
+ <hasLine> <SpeedAveragesMiniSampleWKTSample1> ;
+ <hasLine> <SpeedAveragesMiniSampleWKTSample2> ;
+ <hasLine> <SpeedAveragesMiniSampleWKTSample3> ;
+ <hasLine> <SpeedAveragesMiniSampleWKTSample4> ;
+ <hasLine> <SpeedAveragesMiniSampleWKTSample5> .
+<SpeedAveragesMiniSampleWKTSampleHeader> rdf:type <DatasetSampleLine> ;
+ <hasContent> "Street segment: OpenStreetMap ID	Location type: label	Traffic flow: number of vehicles	Date-Time description (1): is weekend	Street segment: as well-known text (WKT)" .
+<SpeedAveragesMiniSampleWKTSampleHeaderAttributes> rdf:type <DatasetSampleLine> ;
+ <hasContent> "SpeedAveragesMiniSampleWKTAttributeId	SpeedAveragesMiniSampleWKTAttributeStreetType	SpeedAveragesMiniSampleWKTAttributeNumberOfDrivers	SpeedAveragesMiniSampleWKTAttributeIsWeekend	SpeedAveragesMiniSampleWKTAttributeGeometry" .
+<SpeedAveragesMiniSampleWKTSample0> rdf:type <DatasetSampleLine> ;
+ <hasContent> "1	motorway	40	true	[[6996090.027180071,976449.2216780466],[6996126.915827349,976395.4543639935],[6996228.689358356,976238.6942570583],[6996384.122075087,975999.2571643111],[6996505.92830141,975812.9417325703],[6996640.688101815,975619.5241173172],[6996726.329295344,975500.4901858119],[6996777.877510132,975430.7151289826]]" ;
+ <rank> "0"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTSample1> rdf:type <DatasetSampleLine> ;
+ <hasContent> "2	service	24	false	[[6853218.179247577,1042187.4441528887],[6854484.30650755,1042874.6861612498]]" ;
+ <rank> "1"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTSample2> rdf:type <DatasetSampleLine> ;
+ <hasContent> "3	residential	102	false	[[6741134.6948411325,1104564.452526871],[6740738.900946477,1104429.0434982702],[6739872.170637129,1104129.8834987124]]" ;
+ <rank> "2"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTSample3> rdf:type <DatasetSampleLine> ;
+ <hasContent> "4	motorway	12	true	[[7006099.886370047,1018851.8175966217],[7006096.064881018,1018752.4538191396],[7006053.5091997925,1018604.0649379122],[7005973.31443352,1018324.4749048357],[7005873.419929841,1017976.3009334815]]" ;
+ <rank> "3"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTSample4> rdf:type <DatasetSampleLine> ;
+ <hasContent> "5	motorway	8	true	[[7016705.172628219,1122331.510799339],[7016592.772329361,1122298.4823064208],[7016430.573933033,1122250.1362515693],[7016182.155992662,1122167.9935993126],[7015994.723895096,1122106.1110943807],[7015835.936640235,1122044.8185827502],[7015568.239897308,1121936.6716974445],[7015225.018766182,1121791.1548590795],[7015066.785431593,1121716.3704251645],[7014979.0527161425,1121675.482776196],[7014542.037838507,1121450.083071238],[7014488.053344624,1121419.4702112698],[7014327.810504573,1121328.600110935],[7014283.706684266,1121303.5977533031],[7014076.839812146,1121177.8289926047],[7013868.752755258,1121044.7242774633],[7013696.935546452,1120925.54563062]]" ;
+ <rank> "4"^^xsd:integer .
+<SpeedAveragesMiniSampleWKTSample5> rdf:type <DatasetSampleLine> ;
+ <hasContent> "6	signal	302	true	[[6828439.344319146,1112059.2932793573],[6828205.299072011,1112132.1964138777],[6827740.422114764,1112273.5165074398],[6827559.809157345,1112331.0241563835],[6827385.495629555,1112389.6450002352],[6827247.360998914,1112436.755408739],[6827110.970336191,1112490.7230978755],[6826975.851876017,1112548.0971634306],[6826848.100974513,1112604.024075605]]" ;
+ <rank> "5"^^xsd:integer .

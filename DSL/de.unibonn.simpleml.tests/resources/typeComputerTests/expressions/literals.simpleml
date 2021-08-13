@@ -1,0 +1,6 @@
+workflow myWorkflow {
+    val booleanLiteral = true;
+    val floatLiteral = 1.0;
+    val intLiteral = 1;
+    val stringLiteral = "myString";
+}

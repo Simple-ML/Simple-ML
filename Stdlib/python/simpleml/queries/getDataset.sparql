@@ -1,0 +1,35 @@
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX sml: <https://simple-ml.de/resource/>
+PREFIX csvw: <http://www.w3.org/ns/csvw#>
+
+SELECT (GROUP_CONCAT(DISTINCT ?subject; SEPARATOR = ";") AS ?subjects) (STR(?titleWithLang) AS ?title) (STR(?descriptionWithLang) AS ?description) ?fileLocation ?nullValue ?hasHeader ?separator ?numberOfInstances WHERE {
+?dataset a dcat:Dataset .
+?dataset dcterms:identifier "@datasetId@" .
+?dataset sml:numberOfInstances ?numberOfInstances .
+FILTER (datatype(?numberOfInstances) = xsd:nonNegativeInteger) .
+
+OPTIONAL {
+    ?dataset dcterms:subject ?subject .
+    FILTER LANGMATCHES(LANG(?subject),"@lang@") .
+}
+
+OPTIONAL {
+    ?dataset dcterms:title ?titleWithLang .
+    FILTER LANGMATCHES(LANG(?titleWithLang),"@lang@") .
+}
+
+OPTIONAL {
+    ?dataset dcterms:description ?descriptionWithLang .
+    FILTER LANGMATCHES(LANG(?descriptionWithLang),"@lang@") .
+}
+
+?dataset sml:hasFile ?file .
+?file sml:fileLocation ?fileLocation .
+
+?file csvw:null ?nullValue .
+?file csvw:header ?hasHeader .
+?file csvw:separator ?separator .
+# ?file dcterms:format ?format .
+
+} GROUP BY ?dataset ?titleWithLang ?descriptionWithLang ?fileLocation ?nullValue ?hasHeader ?separator ?numberOfInstances

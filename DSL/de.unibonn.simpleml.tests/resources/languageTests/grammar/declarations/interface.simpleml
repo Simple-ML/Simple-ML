@@ -1,0 +1,17 @@
+// no_syntax_error
+
+interface MySimpleInterface
+
+@AnnotationUse
+deprecated interface MyComplexInterface
+    <@AnnotationUse deprecated T1, in T2, out T3>
+    constructor(@AnnotationUse deprecated a: Int, vararg b: Int or 3)
+    sub SuperClass, SuperInterface
+    where T2 super Number, T3 sub Number
+{
+    @AnnotationUse deprecated attr myAttribute
+    @AnnotationUse deprecated class MyClass
+    @AnnotationUse deprecated enum MyEnum
+    @AnnotationUse deprecated interface MyInterface
+    @AnnotationUse deprecated fun MyFunction()
+}

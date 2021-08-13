@@ -1,0 +1,8 @@
+package tests.missingTypeParameter
+
+class MyClass<T>
+
+step myStep(
+    // semantic_error "This type is generic and, therefore, requires a list of type arguments."
+    f: »MyClass«
+) {}

@@ -1,0 +1,5 @@
+package simpleml.collections
+
+class List<T>
+
+fun listOf<T>(vararg elements: Int) -> list: List<T>

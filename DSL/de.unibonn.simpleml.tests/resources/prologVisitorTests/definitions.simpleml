@@ -1,0 +1,13 @@
+package de.unibonn.test_package
+
+import de.unibonn.imported_package.*
+
+class Int
+
+workflow test {
+    val placeholder = 0;
+}
+
+@Pure fun internalProcess(required: Int, optional: Int or 0) -> result: Int
+
+public fun publicProcess()

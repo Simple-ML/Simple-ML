@@ -1,0 +1,42 @@
+package tests.renamingOfDeclaration
+
+annotation MyAnnotation
+
+class MyClass {
+    val myAttribute: Int
+}
+
+enum MyEnum {
+    MY_INSTANCE
+}
+
+fun myFunction()
+
+interface MyInterface
+
+workflow myWorkflow {}
+
+step test(myParameter: Int) {
+    // no_semantic_warning "This placeholder only provides another name for a declaration."
+    val »a« = 1;
+    // no_semantic_warning "This placeholder only provides another name for a declaration."
+    val »b« = MyAnnotation;
+    // semantic_warning "This placeholder only provides another name for a declaration."
+    val »c« = MyClass;
+    // no_semantic_warning "This placeholder only provides another name for a declaration."
+    val »d« = MyClass.myAttribute;
+    // semantic_warning "This placeholder only provides another name for a declaration."
+    val »e« = MyEnum;
+    // no_semantic_warning "This placeholder only provides another name for a declaration."
+    val »f« = MyEnum.MY_INSTANCE;
+    // semantic_warning "This placeholder only provides another name for a declaration."
+    val »g« = myFunction;
+    // no_semantic_warning "This placeholder only provides another name for a declaration."
+    val »h« = MyInterface;
+    // no_semantic_warning "This placeholder only provides another name for a declaration."
+    val »j« = myWorkflow;
+    // semantic_warning "This placeholder only provides another name for a declaration."
+    val »k« = myParameter;
+    // semantic_warning "This placeholder only provides another name for a declaration."
+    val »l« = a;
+}
