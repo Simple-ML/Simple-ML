@@ -1,14 +1,17 @@
 FROM openjdk:11-jdk as builder
 
-COPY . /tmp/
+COPY Stdlib/ /tmp/Stdlib/
+COPY DSL/ /tmp/DSL/
 
-RUN cd /tmp/ && ./gradlew war
+WORKDIR /tmp/DSL/
+
+RUN ./gradlew war
 
 
-FROM tomcat:10-jdk11
+FROM tomcat:10-jdk11 as runner
 
 COPY --from=builder \
-    /tmp/de.unibonn.simpleml.web/build/libs/de.unibonn.simpleml.web-1.0.0-SNAPSHOT.war \
+    /tmp/DSL/de.unibonn.simpleml.web/build/libs/de.unibonn.simpleml.web-1.0.0-SNAPSHOT.war \
     /usr/local/tomcat/webapps/simpleml.war
 
 EXPOSE 8080

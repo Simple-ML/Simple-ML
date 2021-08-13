@@ -9,7 +9,7 @@
     "icon": "icons/icon.png",
     "version": "0.0.9",
     "engines": {
-        "vscode": "^1.53.0"
+        "vscode": "^1.59.0"
     },
     "categories": [
         "Programming Languages",
