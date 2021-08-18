@@ -19,6 +19,7 @@ idea {
         sourceDirs.add(file("syntaxes"))
 
         excludeDirs.add(file("dist"))
+        excludeDirs.add(file("ls"))
         excludeDirs.add(file("node_modules"))
     }
 }
@@ -33,7 +34,7 @@ tasks.register<Sync>("copyApplication") {
     dependsOn(installDistTask)
 
     from(installDistTask.get().outputs)
-    into("src/simpleml")
+    into("ls")
 }
 
 tasks {

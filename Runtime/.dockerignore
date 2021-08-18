@@ -1,7 +1,7 @@
-# Everywhere
+# Ignore anywhere
 **/.DS_STORE/
 
-# In root
+# Ignore in root
 .devcontainer/
 .vscode/
 .gitignore
