@@ -20,10 +20,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2  
-        with:
-          submodules: recursive
-          token: ${{ secrets.ORG_ACCESS }}
+        uses: actions/checkout@v2
 
       - name: Log in to the Container registry
         uses: docker/login-action@v1.10.0
