@@ -1,7 +1,7 @@
-name: Master
+name: Main Runtime
 on:
   push:
-    branches: ['master']
+    branches: [ main ]
 
 env:
   REGISTRY: ghcr.io
