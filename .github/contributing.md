@@ -24,6 +24,8 @@ Possible **scopes** are:
 
 | Scope | Meaning |
 |------|---------|
+| `deps` | Updates to dependencies |
+| `deps-dev` | Updates to development dependencies |
 | `devcontainer` | [VS Code development container](https://code.visualstudio.com/docs/remote/containers) |
 | `dsl` | DSL component |
 | `frontend` | Frontend component |
