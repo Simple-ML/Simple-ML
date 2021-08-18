@@ -1,26 +1,19 @@
-name: Main DSL
-on:
-    push:
-        branches: [ master ]
+name: Pull Request
 
-#env:
-#    REGISTRY: ghcr.io
-#    IMAGE_NAME: ${{ github.repository }}
+on:
+    pull_request:
+        branches: [ main ]
 
 jobs:
-    build:
+    build-dsl:
         runs-on: ubuntu-latest
         defaults:
             run:
-                working-directory: ./DSL
+                working-directory: ./Runtime
 
         strategy:
             matrix:
                 java-version: [ 11 ]
-
-        #        permissions:
-        #            contents: read
-        #            packages: write
 
         steps:
             -   name: Checkout repository
@@ -62,24 +55,3 @@ jobs:
                 run: |
                     rm -f ~/.gradle/caches/modules-2/modules-2.lock
                     rm -f ~/.gradle/caches/modules-2/gc.properties
-
-#            - name: Log in to the Container registry
-#              uses: docker/login-action@v1.10.0
-#              with:
-#                  registry: ${{ env.REGISTRY }}
-#                  username: ${{ github.actor }}
-#                  password: ${{ secrets.GITHUB_TOKEN }}
-#
-#            - name: Extract metadata (tags, labels) for Docker
-#              id: meta
-#              uses: docker/metadata-action@v3.4.0
-#              with:
-#                  images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-#
-#            - name: Build and push Docker image
-#              uses: docker/build-push-action@v2.6.1
-#              with:
-#                  context: .
-#                  push: true
-#                  tags: ${{ steps.meta.outputs.tags }}
-#                  labels: ${{ steps.meta.outputs.labels }}
