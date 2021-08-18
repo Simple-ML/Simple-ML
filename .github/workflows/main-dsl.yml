@@ -1,7 +1,7 @@
-name: Master
+name: Main DSL
 on:
     push:
-        branches: [ 'master' ]
+        branches: [ master ]
 
 #env:
 #    REGISTRY: ghcr.io
