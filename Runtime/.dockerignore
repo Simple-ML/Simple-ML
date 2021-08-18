@@ -1,0 +1,8 @@
+# Everywhere
+.DS_STORE/
+
+# In root
+/.devcontainer
+/.vscode
+/.dockerignore
+/.gitignore
