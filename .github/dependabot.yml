@@ -8,12 +8,12 @@ updates:
   - package-ecosystem: "npm"
     directory: "/DSL/de.unibonn.simpleml.vscode"
     schedule:
-      interval: "daily"
+      interval: "monthly"
   - package-ecosystem: "gradle"
     directory: "/DSL"
     schedule:
-      interval: "daily"
+      interval: "monthly"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "monthly"
