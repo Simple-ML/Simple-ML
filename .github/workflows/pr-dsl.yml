@@ -18,9 +18,6 @@ jobs:
         steps:
             -   name: Checkout repository
                 uses: actions/checkout@v2
-                with:
-                    submodules: recursive
-                    token: ${{ secrets.ORG_ACCESS }}
 
             -   name: Set up JDK ${{ matrix.java-version }}
                 uses: actions/setup-java@v2.2.0
