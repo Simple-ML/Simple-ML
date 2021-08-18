@@ -8,10 +8,9 @@
 **/node_modules/
 
 # Ignore in root
-.devcontainer
-.vscode
-gradle
-.dockerignore
+.devcontainer/
+.vscode/
+gradle/
 .gitignore
 gradlew
 gradlew.bat

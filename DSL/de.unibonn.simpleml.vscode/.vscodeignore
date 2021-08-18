@@ -1,6 +1,9 @@
 # Git
 .gitignore
 
+# Gradle
+build.gradle.kts
+
 # Typescript
 **/*.ts
 **/tsconfig.json
@@ -12,3 +15,6 @@
 .vscode/**
 .vscode-test/**
 vsc-extension-quickstart.md
+
+# Sources
+src/

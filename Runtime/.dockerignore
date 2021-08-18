@@ -2,7 +2,6 @@
 **/.DS_STORE/
 
 # In root
-.devcontainer
-.vscode
-.dockerignore
+.devcontainer/
+.vscode/
 .gitignore
