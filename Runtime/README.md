@@ -1,5 +1,4 @@
-[![Master](https://github.com/Simple-ML/Runtime/actions/workflows/master.yml/badge.svg)](https://github.com/Simple-ML/Runtime/actions/workflows/master.yml)
-
+# Runtime
 ## Installation for Developers
 
 ### Option 1: VS Code Devcontainer

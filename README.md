@@ -1,5 +1,6 @@
 # Simple-ML
 
+[![Main](https://github.com/Simple-ML/Simple-ML/actions/workflows/main.yml/badge.svg)](https://github.com/Simple-ML/Simple-ML/actions/workflows/main.yml)
 ## For users
 
 1. Install [Docker](https://www.docker.com/).
