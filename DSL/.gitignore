@@ -7,6 +7,6 @@
 .gradle/
 
 # Generated stuff
-DS_Store/
+.DS_Store/
 /package-lock.json
 *.log
