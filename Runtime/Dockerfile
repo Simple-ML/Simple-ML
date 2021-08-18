@@ -1,12 +1,14 @@
 FROM continuumio/miniconda3:4.9.2-alpine
 
-COPY Runtime/environment.yml ./
+COPY environment.yml ./
 
 RUN conda env create -f environment.yml
 
-COPY Stdlib/python/simpleml simpleml
-COPY Runtime/runtime runtime
-RUN conda run -n runtime conda develop .
+COPY stdlib/ stdlib/
+RUN conda run -n runtime conda develop stdlib/python
+
+COPY runtime runtime/runtime/
+RUN conda run -n runtime conda develop runtime
 
 ENTRYPOINT conda run -n runtime python -m runtime
 EXPOSE 6789

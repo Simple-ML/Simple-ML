@@ -1,18 +1,18 @@
 version: "3.9"
 services:
   dsl:
-    build:
-      context: .
-      dockerfile: ./DSL/Dockerfile
+    build: ./DSL
     ports: 
       - 8080:8080
   frontend:
     build: ./Frontend
     ports: 
       - 4200:4200
+    depends_on:
+      - dsl
+      - runtime
   runtime:
     build:
-      context: .
-      dockerfile: ./Runtime/Dockerfile
+      context: ./Runtime
     ports: 
       - 6789:6789

@@ -1,9 +1,8 @@
 FROM gradle:7-jdk11 as builder
 
-COPY Stdlib/ /tmp/Stdlib/
-COPY DSL/ /tmp/DSL/
+COPY . /tmp/
 
-WORKDIR /tmp/DSL/
+WORKDIR /tmp/
 
 RUN gradle war
 
@@ -12,7 +11,7 @@ RUN gradle war
 FROM tomcat:9-jdk11 as runner
 
 COPY --from=builder \
-    /tmp/DSL/de.unibonn.simpleml.web/build/libs/de.unibonn.simpleml.web-1.0.0-SNAPSHOT.war \
+    /tmp/de.unibonn.simpleml.web/build/libs/de.unibonn.simpleml.web-1.0.0-SNAPSHOT.war \
     /usr/local/tomcat/webapps/ROOT.war
 
 EXPOSE 8080
