@@ -74,6 +74,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
+          cache-dependency-path: Frontend/package-lock.json
 
       - name: Test
         run: npm run test
