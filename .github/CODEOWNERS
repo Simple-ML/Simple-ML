@@ -8,6 +8,8 @@
 /DSL/server/                                                            @lars-reimann
 /DSL/server/de.unibonn.simpleml.parent/de.unibonn.simpleml.web/         @adanewitz
 
+/Frontend/                                                              @adanewitz
+
 /Runtime/                                                               @Simple-ML/runtime
 /Runtime/.devcontainer/                                                 @lars-reimann
 /Runtime/.vscode/                                                       @lars-reimann
