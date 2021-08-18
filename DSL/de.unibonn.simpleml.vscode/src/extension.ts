@@ -13,7 +13,7 @@ let client: LanguageClient
 
 export function activate(context: ExtensionContext) {
     let launcher = os.platform() === 'win32' ? 'de.unibonn.simpleml.ide.bat' : 'de.unibonn.simpleml.ide';
-    let script = context.asAbsolutePath(path.join('src', 'simpleml', 'bin', launcher));
+    let script = context.asAbsolutePath(path.join('ls', 'bin', launcher));
 
     const serverOptions: ServerOptions = {
         run: {

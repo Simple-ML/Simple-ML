@@ -4,10 +4,13 @@
     "description": "Machine Learning made simple.",
     "publisher": "Simple-ML",
     "repository": {
-        "url": "https://github.com/Simple-ML/DSL"
+        "url": "https://github.com/Simple-ML/Simple-ML"
     },
     "icon": "icons/icon.png",
-    "version": "0.0.9",
+    "galleryBanner": {
+        "color": "#ffffff"
+    },
+    "version": "0.0.10",
     "engines": {
         "vscode": "^1.59.0"
     },
