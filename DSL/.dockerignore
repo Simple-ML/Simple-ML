@@ -1,23 +1,23 @@
-# Everywhere
-.gradle/
-build/
-dist/
-emf-gen/
-src-gen/
-node_modules/
-.DS_STORE/
+# Ignore anywhere
+**/.DS_STORE/
+**/.gradle/
+**/build/
+**/dist/
+**/emf-gen/
+**/src-gen/
+**/node_modules/
 
-# In root
-/.devcontainer
-/.vscode
-/gradle
-/.dockerignore
-/.gitignore
-/gradlew
-/gradlew.bat
+# Ignore in root
+.devcontainer
+.vscode
+gradle
+.dockerignore
+.gitignore
+gradlew
+gradlew.bat
 
-# In /de.unibonn.simpleml
-/de.unibonn.simpleml/META_INF/
-/de.unibonn.simpleml/build.properties
-/de.unibonn.simpleml/plugin.properties
-/de.unibonn.simpleml/plugin.xml
+# Ignore in de.unibonn.simpleml
+de.unibonn.simpleml/META_INF/
+de.unibonn.simpleml/build.properties
+de.unibonn.simpleml/plugin.properties
+de.unibonn.simpleml/plugin.xml

@@ -1,1 +1,8 @@
-node_modules
+# Ignore anywhere
+**/.DS_STORE/
+**/build/
+**/node_modules/
+
+# Ignore in root
+.storybook/
+.dockerignore
