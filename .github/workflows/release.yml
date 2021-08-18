@@ -8,9 +8,6 @@ env:
 jobs:
   build-dsl:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./DSL
     permissions:
       contents: read
       packages: write
@@ -35,16 +32,13 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2.6.1
         with:
-          context: .
+          context: DSL
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
   build-frontend:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./Frontend
     permissions:
       contents: read
       packages: write
@@ -69,16 +63,13 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2.6.1
         with:
-          context: .
+          context: Frontend
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
   build-runtime:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./Runtime
     permissions:
       contents: read
       packages: write
@@ -103,7 +94,10 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2.6.1
         with:
-          context: .
+          context: Runtime
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  # TODO: create a docker-compose.yml that points to those images and publish this as a GitHub release
+  # TODO: versioning of images
