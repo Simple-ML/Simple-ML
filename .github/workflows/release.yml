@@ -99,5 +99,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  # TODO: create a docker-compose.yml that points to those images and publish this as a GitHub release
   # TODO: versioning of images
+  # TODO: create a docker-compose.yml that points to those images and publish this as a GitHub release
+  # TODO: stdlib -> PyPI
+  # TODO: VS Code -> VS Code marketplace
