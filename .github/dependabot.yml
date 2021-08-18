@@ -5,15 +5,24 @@
 
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/DSL/de.unibonn.simpleml.vscode"
+  # Root
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
       interval: "monthly"
+
+  # DSL
   - package-ecosystem: "gradle"
     directory: "/DSL"
     schedule:
       interval: "monthly"
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: "npm"
+    directory: "/DSL/de.unibonn.simpleml.vscode"
+    schedule:
+      interval: "monthly"
+
+  # Frontend
+  - package-ecosystem: "npm"
+    directory: "/Frontend"
     schedule:
       interval: "monthly"
