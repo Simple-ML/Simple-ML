@@ -1,10 +1,12 @@
 version: "3.9"
 services:
   dsl:
+    container_name: simple-ml_dsl
     build: ./DSL
     ports: 
       - 8080:8080
   frontend:
+    container_name: simple-ml_frontend
     build: ./Frontend
     ports: 
       - 4200:4200
@@ -12,6 +14,7 @@ services:
       - dsl
       - runtime
   runtime:
+    container_name: simple-ml_runtime
     build:
       context: ./Runtime
     ports: 
