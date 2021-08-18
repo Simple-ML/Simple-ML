@@ -5,6 +5,14 @@ on:
         branches: [ main ]
 
 jobs:
+    cancel_duplicates:
+        name: Cancel duplicate jobs
+        runs-on: ubuntu-latest
+        steps:
+            - uses: fkirc/skip-duplicate-actions@v3.4.1
+              with:
+                cancel_others: true
+
     build-dsl:
         runs-on: ubuntu-latest
         defaults:
