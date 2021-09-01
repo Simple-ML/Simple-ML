@@ -57,7 +57,7 @@
     "devDependencies": {
         "@types/node": "^16.6.1",
         "@types/vscode": "^1.59.0",
-        "esbuild": "^0.12.20",
+        "esbuild": "^0.12.24",
         "prettier": "^2.3.2",
         "typescript": "^4.3.5",
         "vscode-test": "^1.6.1"
