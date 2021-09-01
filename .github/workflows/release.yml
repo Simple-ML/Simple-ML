@@ -30,7 +30,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/DSL
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v2.6.1
+        uses: docker/build-push-action@v2.7.0
         with:
           context: DSL
           push: true
@@ -61,7 +61,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/Frontend
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v2.6.1
+        uses: docker/build-push-action@v2.7.0
         with:
           context: Frontend
           push: true
@@ -92,7 +92,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/Runtime
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v2.6.1
+        uses: docker/build-push-action@v2.7.0
         with:
           context: Runtime
           push: true
