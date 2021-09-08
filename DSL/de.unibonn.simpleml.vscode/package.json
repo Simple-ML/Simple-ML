@@ -55,7 +55,7 @@
         "vscode-languageclient": "^7.0.0"
     },
     "devDependencies": {
-        "@types/node": "^16.6.1",
+        "@types/node": "^16.7.13",
         "@types/vscode": "^1.59.0",
         "esbuild": "^0.12.24",
         "prettier": "^2.3.2",
