@@ -14,7 +14,6 @@ java {
     targetCompatibility = javaTargetVersion
 }
 
-
 // Dependencies --------------------------------------------------------------------------------------------------------
 
 dependencies {
@@ -22,12 +21,11 @@ dependencies {
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("org.eclipse.xtext:org.eclipse.xtext.testing:${xtextVersion}")
-    testImplementation("org.eclipse.xtext:org.eclipse.xtext.xbase.testing:${xtextVersion}")
-    testImplementation("io.kotest:kotest-assertions-core-jvm:4.6.1")
+    testImplementation("org.eclipse.xtext:org.eclipse.xtext.testing:$xtextVersion")
+    testImplementation("org.eclipse.xtext:org.eclipse.xtext.xbase.testing:$xtextVersion")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:4.6.2")
     testImplementation("io.mockk:mockk:1.12.0")
 }
-
 
 // Source sets ---------------------------------------------------------------------------------------------------------
 
