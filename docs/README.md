@@ -16,8 +16,8 @@
       * [Machine Learning Catalog API][ml_catalog_api]
 
 [tutorial]: ./Tutorial.md
-[tutorial_concepts]: ./Tutorial:-Basic-Concepts.md
-[tutorial_interface]: ./Tutorial:-The-Simple-ML-Interface.md
+[tutorial_concepts]: ./Tutorial-Basic-Concepts.md
+[tutorial_interface]: ./Tutorial-The-Simple-ML-Interface.md
 [installation]: ./Installation.md
 [dsl]: ./Language-Tutorial.md
 [data_api]: ./Data-API.md
