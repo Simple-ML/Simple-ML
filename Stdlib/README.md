@@ -19,7 +19,7 @@ Note: This solution requires that Git itself can clone the private repository Si
 1. Install [VS Code](https://code.visualstudio.com/).
 1. Install the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) VS Code Extension.
 1. Open VS Code.
-1. Press F1 and type "Remote-Containers: Remote-Containers: Clone Repository in Container Volume...".
+1. Press F1 and type "Remote-Containers: Clone Repository in Container Volume...".
 1. Select "GitHub".
 1. Type "Simple-ML/stdlib".
 
