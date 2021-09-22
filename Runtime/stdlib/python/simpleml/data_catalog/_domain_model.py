@@ -19,7 +19,7 @@ class DomainModel:
 
     def createClass(self, classURI, classLabel):
         class_node = rdflib.URIRef(classURI)
-        self.graph.add((class_node, OWL.subClassOf, OWL.Class))
+        self.graph.add((class_node, RDFS.subClassOf, OWL.Class))
         self.graph.add((class_node, RDFS.label, Literal(classLabel, datatype=XSD.string)))
         return class_node
 
