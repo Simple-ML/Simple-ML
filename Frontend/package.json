@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
+    "@mdx-js/react": "^1.6.22",
     "@nivo/bar": "^0.67.0",
     "@nivo/core": "^0.67.0",
     "@nivo/heatmap": "^0.67.0",
@@ -52,6 +53,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.1",
     "@storybook/addon-actions": "^6.0.26",
+    "@storybook/addon-docs": "^6.3.8",
     "@storybook/addon-essentials": "^6.0.26",
     "@storybook/addon-links": "^6.0.26",
     "@storybook/node-logger": "^6.0.26",
