@@ -1,8 +1,9 @@
 package de.unibonn.simpleml.utils
 
 import com.google.inject.Inject
-import com.google.inject.Singleton
+import de.unibonn.simpleml.simpleML.*
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
+import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.resource.IContainer
@@ -12,46 +13,62 @@ import org.eclipse.xtext.resource.IResourceDescriptions
 import org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider
 
 class SimpleMLIndexExtensions @Inject constructor(
-        private val containerManager: IContainer.Manager,
-        private val resourceDescriptionsProvider: ResourceDescriptionsProvider
+    private val containerManager: IContainer.Manager,
+    private val resourceDescriptionsProvider: ResourceDescriptionsProvider
 ) {
+
+    fun listCallables(context: EObject, result: SmlResult?): Map<URI, EObject> {
+        return listAllCallables(context)
+    }
+
+    private fun listAllCallables(context: EObject): Map<URI, EObject> {
+        return visibleGlobalDeclarationDescriptions(context)
+            .associate {
+                it.eObjectURI to it.eObjectOrProxy
+            }
+            .filterValues {
+                (it is SmlClass && it.constructor != null) ||
+                        it is SmlFunction ||
+                        it is SmlWorkflowStep
+            }
+    }
 
     fun visibleExternalGlobalDeclarationDescriptions(eObject: EObject): Map<QualifiedName, List<IEObjectDescription>> {
         val allVisibleGlobalDeclarationDescriptions = visibleGlobalDeclarationDescriptions(eObject)
         val exportedGlobalDeclarationDescriptions = eObject.exportedGlobalDeclarationDescriptions()
-        val difference = allVisibleGlobalDeclarationDescriptions - exportedGlobalDeclarationDescriptions
+        val difference = allVisibleGlobalDeclarationDescriptions - exportedGlobalDeclarationDescriptions.toSet()
 
         return difference.groupBy { it.qualifiedName }
     }
 
     private fun EObject.exportedGlobalDeclarationDescriptions(): List<IEObjectDescription> =
-            this.exportedEObjectDescriptions().filter { it.isGlobalDeclaration() }
+        this.exportedEObjectDescriptions().filter { it.isGlobalDeclaration() }
 
     private fun EObject.exportedEObjectDescriptions(): List<IEObjectDescription> =
-            this.eObjectDescription().exportedObjects.toList()
+        this.eObjectDescription().exportedObjects.toList()
 
     fun visibleGlobalDeclarationDescriptions(eObject: EObject): List<IEObjectDescription> =
-            eObject.visibleEObjectDescriptions().filter { it.isGlobalDeclaration() }
+        eObject.visibleEObjectDescriptions().filter { it.isGlobalDeclaration() }
 
     private fun EObject.visibleEObjectDescriptions(): List<IEObjectDescription> =
-            this.visibleContainers().map { it.exportedObjects }.flatten()
+        this.visibleContainers().map { it.exportedObjects }.flatten()
 
     private fun EObject.visibleContainers(): List<IContainer> =
-            containerManager.getVisibleContainers(this.eObjectDescription(), this.resourceDescriptions())
+        containerManager.getVisibleContainers(this.eObjectDescription(), this.resourceDescriptions())
 
     private fun EObject.eObjectDescription(): IResourceDescription =
-            this.resourceDescriptions().getResourceDescription(this.eResource().uri)
+        this.resourceDescriptions().getResourceDescription(this.eResource().uri)
 
     private fun EObject.resourceDescriptions(): IResourceDescriptions =
-            resourceDescriptionsProvider.getResourceDescriptions(this.eResource())
+        resourceDescriptionsProvider.getResourceDescriptions(this.eResource())
 
     private fun IEObjectDescription.isGlobalDeclaration(): Boolean =
-            this.eClass in setOf(
-                    Literals.SML_ANNOTATION,
-                    Literals.SML_CLASS,
-                    Literals.SML_ENUM,
-                    Literals.SML_FUNCTION,
-                    Literals.SML_INTERFACE,
-                    Literals.SML_WORKFLOW_STEP
-            )
+        this.eClass in setOf(
+            Literals.SML_ANNOTATION,
+            Literals.SML_CLASS,
+            Literals.SML_ENUM,
+            Literals.SML_FUNCTION,
+            Literals.SML_INTERFACE,
+            Literals.SML_WORKFLOW_STEP
+        )
 }
