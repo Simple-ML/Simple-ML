@@ -17,12 +17,12 @@ sealed class PlFact(factName: String, vararg arguments: Any?) {
     /**
      * The name of this fact as a Prolog atom.
      */
-    private val factName: PlAtom = PlAtom(factName)
+    val factName: PlAtom = PlAtom(factName)
 
     /**
      * The arguments of this fact as a list of Prolog terms.
      */
-    private val arguments: List<PlTerm> = fromJavaRepresentation(listOf(*arguments))
+    val plArguments: List<PlTerm> = fromJavaRepresentation(listOf(*arguments))
 
     /**
      * The number of arguments of this fact.
@@ -36,7 +36,7 @@ sealed class PlFact(factName: String, vararg arguments: Any?) {
      */
     val functor: String = "$factName/$arity"
 
-    override fun toString() = arguments.joinToString(prefix = "$factName(", postfix = ").") { it.toString() }
+    override fun toString() = plArguments.joinToString(prefix = "$factName(", postfix = ").") { it.toString() }
 }
 
 /**
