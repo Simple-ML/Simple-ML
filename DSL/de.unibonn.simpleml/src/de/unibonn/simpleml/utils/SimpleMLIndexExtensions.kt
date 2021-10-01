@@ -1,9 +1,7 @@
 package de.unibonn.simpleml.utils
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.simpleML.*
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
-import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.resource.IContainer
@@ -14,24 +12,8 @@ import org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider
 
 class SimpleMLIndexExtensions @Inject constructor(
     private val containerManager: IContainer.Manager,
-    private val resourceDescriptionsProvider: ResourceDescriptionsProvider
+    private val resourceDescriptionsProvider: ResourceDescriptionsProvider,
 ) {
-
-    fun listCallables(context: EObject, result: SmlResult?): Map<URI, EObject> {
-        return listAllCallables(context)
-    }
-
-    private fun listAllCallables(context: EObject): Map<URI, EObject> {
-        return visibleGlobalDeclarationDescriptions(context)
-            .associate {
-                it.eObjectURI to it.eObjectOrProxy
-            }
-            .filterValues {
-                (it is SmlClass && it.constructor != null) ||
-                        it is SmlFunction ||
-                        it is SmlWorkflowStep
-            }
-    }
 
     fun visibleExternalGlobalDeclarationDescriptions(eObject: EObject): Map<QualifiedName, List<IEObjectDescription>> {
         val allVisibleGlobalDeclarationDescriptions = visibleGlobalDeclarationDescriptions(eObject)

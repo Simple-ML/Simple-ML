@@ -17,7 +17,7 @@ idea {
 
 val javaSourceVersion by extra(JavaVersion.VERSION_11)
 val javaTargetVersion by extra(JavaVersion.VERSION_11)
-val xtextVersion by extra("2.23.0")
+val xtextVersion by extra("2.26.0.M2")
 
 // Subprojects ---------------------------------------------------------------------------------------------------------
 

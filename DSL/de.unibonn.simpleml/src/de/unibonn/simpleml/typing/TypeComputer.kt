@@ -7,13 +7,19 @@ import org.eclipse.emf.ecore.EObject
 
 @Suppress("PrivatePropertyName")
 class TypeComputer @Inject constructor(
-        private val stdlib: SimpleMLStdlib
+    private val stdlib: SimpleMLStdlib
 ) {
+
     private lateinit var context: EObject
 
     fun typeOf(obj: EObject): Type {
         context = obj
         return obj.inferType(isStatic = false)
+    }
+
+    fun hasPrimitiveType(obj: EObject): Boolean {
+        context = obj
+        return typeOf(obj) in setOf(BOOLEAN, FLOAT, INT, STRING)
     }
 
     private fun EObject.inferType(isStatic: Boolean): Type {
@@ -39,8 +45,8 @@ class TypeComputer @Inject constructor(
                 EnumType(enum, isNullable = false, isStatic = false)
             }
             is SmlFunction -> CallableType(
-                    parametersOrEmpty().map { it.inferType(false) },
-                    resultsOrEmpty().map { it.inferType(false) }
+                parametersOrEmpty().map { it.inferType(false) },
+                resultsOrEmpty().map { it.inferType(false) }
             )
             is SmlInterface -> InterfaceType(this, isNullable = false, isStatic = isStatic)
             is SmlLambdaYield -> {
@@ -88,8 +94,8 @@ class TypeComputer @Inject constructor(
                 else -> NothingType
             }
             is SmlLambda -> CallableType(
-                    parametersOrEmpty().map { it.inferType(false) },
-                    lambdaYieldsOrEmpty().map { it.inferType(false) }
+                parametersOrEmpty().map { it.inferType(false) },
+                lambdaYieldsOrEmpty().map { it.inferType(false) }
             )
             is SmlMemberAccess -> {
 //            if (this.isNullable) {
@@ -119,8 +125,8 @@ class TypeComputer @Inject constructor(
     private fun SmlType.inferType(isStatic: Boolean): Type {
         return when (this) {
             is SmlCallableType -> CallableType(
-                    parametersOrEmpty().map { it.inferType(false) },
-                    resultsOrEmpty().map { it.inferType(false) }
+                parametersOrEmpty().map { it.inferType(false) },
+                resultsOrEmpty().map { it.inferType(false) }
             )
             is SmlMemberType -> {
                 val member = this.member ?: return ANY
