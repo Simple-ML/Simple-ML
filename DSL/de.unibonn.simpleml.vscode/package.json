@@ -58,7 +58,7 @@
         "@types/node": "^16.7.13",
         "@types/vscode": "^1.59.0",
         "esbuild": "^0.12.24",
-        "prettier": "^2.3.2",
+        "prettier": "^2.4.1",
         "typescript": "^4.4.2",
         "vscode-test": "^1.6.1"
     }
