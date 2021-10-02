@@ -6,12 +6,14 @@ import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.typing.TypeComputer
+import de.unibonn.simpleml.typing.TypeConformance
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 
 class Proposals @Inject constructor(
     private val index: SimpleMLIndexExtensions,
-    private val typeComputer: TypeComputer
+    private val typeComputer: TypeComputer,
+    private val typeConformance: TypeConformance,
 ) {
 
     /**
@@ -37,15 +39,15 @@ class Proposals @Inject constructor(
     private fun listCallablesWithOnlyPrimitiveParameters(context: EObject): Map<URI, EObject> {
         return listAllReachableDeclarations(context)
             .filterValues { obj ->
-                when (obj) {
+                val res = when (obj) {
                     is SmlClass -> {
                         obj.constructor != null && obj.parametersOrEmpty().all {
                             typeComputer.hasPrimitiveType(it)
                         }
                     }
                     is SmlFunction -> {
-                        obj.parametersOrEmpty().all {
-                            !it.isClassMember() && typeComputer.hasPrimitiveType(it)
+                        obj.isCompilationUnitMember() && obj.parametersOrEmpty().all {
+                            typeComputer.hasPrimitiveType(it)
                         }
                     }
                     is SmlWorkflowStep -> {
@@ -56,6 +58,8 @@ class Proposals @Inject constructor(
                     }
                     else -> false
                 }
+
+                res
             }
     }
 
@@ -63,13 +67,38 @@ class Proposals @Inject constructor(
         context: EObject,
         result: SmlResult
     ): Map<URI, EObject> {
+        val resultType = typeComputer.typeOf(result)
+
         return listAllReachableDeclarations(context)
-            .filterValues {
-                (it is SmlClass && it.constructor != null) ||
-                        it is SmlFunction ||
-                        it is SmlWorkflowStep
+            .filterValues { obj ->
+                when (obj) {
+                    is SmlClass -> {
+                        obj.constructor != null && obj.parametersOrEmpty().any {
+                            typeConformance.isSubstitutableFor(resultType, typeComputer.typeOf(it))
+                        }
+                    }
+                    is SmlFunction -> {
+                        val hasMatchingParameter =
+                            obj.parametersOrEmpty().any {
+                                typeConformance.isSubstitutableFor(resultType, typeComputer.typeOf(it))
+                            }
+                        if (hasMatchingParameter) {
+                            return@filterValues true
+                        }
+
+                        val containingClassOrInterface =
+                            obj.containingClassOrInterfaceOrNull() ?: return@filterValues false
+
+                        return@filterValues typeConformance.isSubstitutableFor(resultType, containingClassOrInterface)
+                    }
+                    is SmlWorkflowStep -> {
+                        obj.parametersOrEmpty().any {
+                            typeConformance.isSubstitutableFor(resultType, typeComputer.typeOf(it))
+                        }
+                    }
+                    else -> false
+                }
             }
-        // TODO filter
     }
 
     private fun listAllReachableDeclarations(context: EObject): Map<URI, EObject> {

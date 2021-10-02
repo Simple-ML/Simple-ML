@@ -1,11 +1,16 @@
 package de.unibonn.simpleml.tests
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.simpleML.SimpleMLFactory
+import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.util.ParseWithStdlib
 import de.unibonn.simpleml.utils.Proposals
+import de.unibonn.simpleml.utils.membersOrEmpty
 import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.maps.shouldContainValue
 import io.kotest.matchers.maps.shouldContainValues
+import io.kotest.matchers.maps.shouldNotContainValue
 import io.kotest.matchers.nulls.shouldNotBeNull
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
@@ -22,29 +27,74 @@ class ProposalsTest {
     @Inject
     private lateinit var parseWithStdlib: ParseWithStdlib
 
-    private val primitiveWorkflowSteps = """
+    private val testProgram = """
         |package test
         |
-        |step empty() {}
-        |step boolean(b: Boolean) {}
-        |step float(f: Float) {}
-        |step int(i: Int) {}
-        |step string(s: String) {}
+        |step primitive_empty() {}
+        |step primitive_boolean(b: Boolean) {}
+        |step primitive_float(f: Float) {}
+        |step primitive_int(i: Int) {}
+        |step primitive_string(s: String) {}
+        |
+        |class A
+        |class B
+        |
+        |step matching_a(a: A) {}
+        |step matching_b(b: B) {}
     """.trimMargin()
 
     @Test
     fun `should contain workflow steps with primitive parameters when no result is passed`() {
-        val context = parseWithStdlib.parse(primitiveWorkflowSteps)
+        val context = parseWithStdlib.parse(testProgram)
         context.shouldNotBeNull()
 
-        val workflowSteps = context.eAllContents()
+        val workflowSteps = context.membersOrEmpty()
             .asSequence()
-            .filter { it is SmlWorkflowStep }
+            .filterIsInstance<SmlWorkflowStep>()
+            .filter { it.name.startsWith("primitive") }
             .toList()
-            .toTypedArray()
         workflowSteps.shouldHaveSize(5)
 
         val descriptions = proposals.listCallables(context, null)
-        descriptions.shouldContainValues(*workflowSteps)
+        descriptions.shouldContainValues(*workflowSteps.toTypedArray())
+    }
+
+    @Test
+    fun `should contain workflow steps with only matching parameters when a result is passed`() {
+        val context = parseWithStdlib.parse(testProgram)
+        context.shouldNotBeNull()
+
+        val classA = context.membersOrEmpty()
+            .asSequence()
+            .filterIsInstance<SmlClass>()
+            .filter { it.name == "A" }
+            .firstOrNull()
+        classA.shouldNotBeNull()
+
+        val result = SimpleMLFactory.eINSTANCE.createSmlResult().apply {
+            name = "r"
+            type = SimpleMLFactory.eINSTANCE.createSmlNamedType().apply {
+                isNullable = false
+                declaration = classA
+            }
+        }
+
+        val workflowStepA = context.membersOrEmpty()
+            .asSequence()
+            .filterIsInstance<SmlWorkflowStep>()
+            .filter { it.name == "matching_a" }
+            .firstOrNull()
+        workflowStepA.shouldNotBeNull()
+
+        val workflowStepB = context.membersOrEmpty()
+            .asSequence()
+            .filterIsInstance<SmlWorkflowStep>()
+            .filter { it.name == "matching_b" }
+            .firstOrNull()
+        workflowStepB.shouldNotBeNull()
+
+        val descriptions = proposals.listCallables(context, result)
+        descriptions.shouldContainValue(workflowStepA)
+        descriptions.shouldNotContainValue(workflowStepB)
     }
 }

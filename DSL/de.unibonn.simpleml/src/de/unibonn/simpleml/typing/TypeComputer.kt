@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EObject
 
 @Suppress("PrivatePropertyName")
 class TypeComputer @Inject constructor(
+    private val qualifiedNameProvider: QualifiedNameProvider,
     private val stdlib: SimpleMLStdlib
 ) {
 
@@ -19,7 +20,14 @@ class TypeComputer @Inject constructor(
 
     fun hasPrimitiveType(obj: EObject): Boolean {
         context = obj
-        return typeOf(obj) in setOf(BOOLEAN, FLOAT, INT, STRING)
+
+        val type = typeOf(obj)
+        if (type !is ClassType) {
+            return false
+        }
+
+        val qualifiedName = qualifiedNameProvider.qualifiedNameOrNull(type.smlClass)
+        return qualifiedName in setOf(LIB_BOOLEAN, LIB_FLOAT, LIB_INT, LIB_STRING)
     }
 
     private fun EObject.inferType(isStatic: Boolean): Type {
