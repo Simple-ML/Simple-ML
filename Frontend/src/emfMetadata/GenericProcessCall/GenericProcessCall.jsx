@@ -5,6 +5,7 @@ import MxGraphVertexComponent from '../../components/EditorView/GraphicalEditor/
 import icon from '../../images/graph/Model/selected.svg';
 import iconSelected from '../../images/graph/Model/Primary.svg';
 
+import genericProcessCallStyle from './genericProcessCall.module.scss';
 
 /**
  * Lookup MxGraphVertexComponent.js
@@ -19,14 +20,32 @@ export default class GenericProcessCall extends MxGraphVertexComponent {
         store.subscribe(() => {
             this.setState(this.onStoreChange(store.getState()));
         });
-        this.state = this.onStoreChange(store.getState());
+        this.state = {
+            selected: false,
+            metadata: {}
+        }
+    }
+
+    getEmfRef(emfEntity) {
+        if(emfEntity.getChild('@member')) {
+            return this.getEmfRef(emfEntity.getChild('@member'))
+        } else if(emfEntity.getChild('@receiver')) {
+            return this.getEmfRef(emfEntity.getChild('@receiver'))
+        } else if(emfEntity.getChild('@declaration')){
+            return emfEntity.getChild('@declaration').data['$ref']
+        }
     }
 
     onStoreChange = (state) => {
+        const emfPath = this.getEmfRef(this.props.emfEntity)
         return {
-            selected: state.graphicalEditor.entitySelected.id === this.props.emfEntity.id
+            selected: state.graphicalEditor.entitySelected.id === this.props.emfEntity.id,
+            metadata: state.emfModel.processMetadata.find((element) => {
+                return element.emfPath === emfPath
+            })
         };
     }
+
     calculateInputPortData(parentVertex) {
         let portDataContainer = [];
 
@@ -57,8 +76,11 @@ export default class GenericProcessCall extends MxGraphVertexComponent {
 
     render() {
         return(
-            <div>
+            <div className={genericProcessCallStyle.IconContainer}>
                 <img src={this.setIcon()}/>
+                <div className={genericProcessCallStyle.IconLabel}>
+                    {this.state.metadata.name}
+                </div>
             </div>
         )
     }

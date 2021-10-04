@@ -14,6 +14,15 @@ export default class XtextServices {
         TextEditorWrapper.editor.xtextServices.getEmfModel();
     }
 
+
+    /**
+     * 
+     * @param entityPathCollection: [String]
+     */
+    static getProcessMetadata(entityPathCollection) {
+        TextEditorWrapper.editor.xtextServices.getProcessMetadata({entityPathCollection: JSON.stringify([...entityPathCollection])});
+    }
+
     static getProcessProposals() {
         TextEditorWrapper.editor.xtextServices.getProcessProposals();
     }

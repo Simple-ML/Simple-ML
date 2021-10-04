@@ -95,7 +95,7 @@ class GraphicalEditor extends React.Component {
             },
             mouseUp: function(sender, me)
             {
-                console.log('mouseUp');
+                
             },
             dragEnter: (evt, state) =>  {
                 this.props.entityHoverStateEnter(state.cell.emfReference);

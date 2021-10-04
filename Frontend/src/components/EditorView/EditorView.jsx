@@ -6,16 +6,18 @@ import PropTypes from 'prop-types';
 //React.Components
 import EditorHeader from './EditorHeader/EditorHeader';
 import MultiView from './MultiView/MultiView';
+import SideBar from './SideBar/SideBar';
 import PropsEditor from './PropsEditor/PropsEditor';
 
 //redux
 import { changeDirection } from '../../reducers/graphicalEditor';
-import { showSideToolbar, hideSideToolbar } from '../../reducers/sideToolbar';
+import { showToolbar, hideToolbar } from '../../reducers/toolbar';
 
 //style
-import './editorView.scss'
-import 'golden-layout/src/css/goldenlayout-base.css';
+import editorStyle from './editorView.module.scss';
 import headerStyle from '../core/Header/header.module.scss';
+import 'golden-layout/src/css/goldenlayout-base.css';
+
 //images
 import viewbarIcon from '../../images/headerButtons/viewbar-closed.svg';
 
@@ -24,15 +26,15 @@ class EditorView extends React.Component {
     constructor(props) {
         super(props);
         
-        this.showHideSideToolbar = this.showHideSideToolbar.bind(this);
+        this.showHideToolbar = this.showHideToolbar.bind(this);
         this.flipGraph = this.flipGraph.bind(this);
     }
 
-    showHideSideToolbar = () => {
-        if(this.props.isSideToolbarVisible)
-            this.props.hideSideToolbar();
+    showHideToolbar = () => {
+        if(this.props.isToolbarVisible)
+            this.props.hideToolbar();
         else
-            this.props.showSideToolbar();
+            this.props.showToolbar();
     }
 
     flipGraph = () => {
@@ -41,43 +43,46 @@ class EditorView extends React.Component {
 
     render() {
         return(
-            <div className={'editor-view'}>
+            <div className={editorStyle['editor-view']}>
                 <EditorHeader>
                     <input className={headerStyle.button}
                        key={1}
                        type={'image'} src={viewbarIcon}
-                       onClick={() => this.showHideSideToolbar() }/>
+                       onClick={() => this.showHideToolbar() }/>
                 </EditorHeader>
-                <MultiView 
-                    showAtStartup={[
-                        'graphicalEditor',
-                        'textEditor'
-                    ]}
-                />
+                <div style={{display: 'flex'}}>
+                    <MultiView 
+                        showAtStartup={[
+                            'graphicalEditor',
+                            'textEditor'
+                        ]}
+                    />
+                    <SideBar></SideBar>
+                </div>
             </div>
         )
     }
 }
 
 EditorView.propTypes = {
-    isSideToolbarVisible: PropTypes.bool.isRequired,
+    isToolbarVisible: PropTypes.bool.isRequired,
 
     changeDirection: PropTypes.func.isRequired,
-    showSideToolbar: PropTypes.func.isRequired,
-    hideSideToolbar: PropTypes.func.isRequired
+    showToolbar: PropTypes.func.isRequired,
+    hideToolbar: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
     return {
-        isSideToolbarVisible: state.sideToolbar.visible
+        isToolbarVisible: state.toolbar.visible
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         changeDirection: () => dispatch(changeDirection()),
-        showSideToolbar: () => dispatch(showSideToolbar()),
-        hideSideToolbar: () => dispatch(hideSideToolbar())
+        showToolbar: () => dispatch(showToolbar()),
+        hideToolbar: () => dispatch(hideToolbar())
     }
 };
 

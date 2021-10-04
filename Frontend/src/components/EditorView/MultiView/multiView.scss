@@ -17,11 +17,10 @@
 
 .multi-view-container {
     min-height: 830px;
-    width: 80%;
-    //width: 100%;
+    height: 100%;
+    width: 100%;
     background-color: #2f1433;
     display:grid;
-    grid-template-columns: 3fr 1fr;
   
     .textEditor {
         position: relative;
