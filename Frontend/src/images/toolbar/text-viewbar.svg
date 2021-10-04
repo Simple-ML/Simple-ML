@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="33" viewBox="0 0 32 33">
+    <defs>
+        <path id="a" d="M3.482 2.581L5.794.445a.438.438 0 0 1 .585 0 .362.362 0 0 1 0 .54L3.477 3.668.619.984a.362.362 0 0 1 .005-.54.438.438 0 0 1 .585.003l2.273 2.134z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g stroke="#FFF" stroke-width="2">
+            <path d="M18.5 11h-9a.5.5 0 0 1 .5.5v-1a.5.5 0 0 1-.5.5h9zm0 0h9a.5.5 0 0 1-.5-.5v1a.5.5 0 0 1 .5-.5h-9zM18.5 16h-9a.5.5 0 0 1 .5.5v-1a.5.5 0 0 1-.5.5h9zm0 0h9a.5.5 0 0 1-.5-.5v1a.5.5 0 0 1 .5-.5h-9zM18.5 21h-9a.5.5 0 0 1 .5.5v-1a.5.5 0 0 1-.5.5h9zm0 0h9a.5.5 0 0 1-.5-.5v1a.5.5 0 0 1 .5-.5h-9z"/>
+        </g>
+        <g transform="matrix(0 1 1 0 3.5 12.5)">
+            <mask id="b" fill="#fff">
+                <use xlink:href="#a"/>
+            </mask>
+            <use fill="#E84E1A" fill-rule="nonzero" xlink:href="#a"/>
+            <g mask="url(#b)">
+                <path fill="#AEB2B7" d="M-1-2h9v8h-9z"/>
+                <path fill="#FFF" d="M-1-2h9.091v8.081H-1z"/>
+            </g>
+        </g>
+    </g>
+</svg>
