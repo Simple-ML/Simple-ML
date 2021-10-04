@@ -1,6 +1,9 @@
 # MacOS
 .DS_Store/
 
+# mega-linter
+report/
+
 # Generated stuff
 src-gen/
 *.log
