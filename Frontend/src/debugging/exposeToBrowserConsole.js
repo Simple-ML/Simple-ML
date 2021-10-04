@@ -11,6 +11,7 @@ const debugInterface = {
     x: { //xtext
         s: { //services
             getEmfModel: () => XtextServices.getEmfModel(),
+            getProcessMetadata: (entityPath) => XtextServices.getProcessMetadata(entityPath),
             getProcessProposals: () => XtextServices.getProcessProposals(),
             createEntity: (entity) => XtextServices.createEntity(entity),
             deleteEntity: (entityPath) => XtextServices.deleteEntity(entityPath),

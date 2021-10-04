@@ -3,7 +3,7 @@ import emfModelReducer from './emfModel';
 import dslProcessDefinitions from './dslProcessDefinitions';
 import graphicalEditorReducer from './graphicalEditor';
 import contextMenuReducer from './contextMenu';
-import sideToolbarReducer from './sideToolbar';
+import ToolbarReducer from './toolbar';
 import modalReducer from './modal';
 import runtimeReducer from './runtime';
 
@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
     dslProcessDefinitions: dslProcessDefinitions,
     graphicalEditor: graphicalEditorReducer,
     contextMenu: contextMenuReducer,
-    sideToolbar: sideToolbarReducer,
+    toolbar: ToolbarReducer,
     modal: modalReducer,
     runtime: runtimeReducer
 });
