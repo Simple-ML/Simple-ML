@@ -22,14 +22,15 @@ java {
 
 dependencies {
     implementation(project(":de.unibonn.simpleml"))
-    implementation(project(":de.unibonn.simpleml.ide"))
-    implementation("org.eclipse.xtext:org.eclipse.xtext.xbase.web:${xtextVersion}")
-    implementation("org.eclipse.xtext:org.eclipse.xtext.web.servlet:${xtextVersion}")
     implementation("org.eclipse.xtend:org.eclipse.xtend.lib:${xtextVersion}")
     implementation("org.emfjson:emfjson-jackson:1.2.0")
 
-    compileOnly("org.eclipse.jetty:jetty-annotations:9.4.22.v20191022")
-    compileOnly("org.slf4j:slf4j-simple:1.7.32")
+    api(project(":de.unibonn.simpleml.ide"))
+    api("org.eclipse.xtext:org.eclipse.xtext.xbase.web:${xtextVersion}")
+    api("org.eclipse.xtext:org.eclipse.xtext.web.servlet:${xtextVersion}")
+
+    providedCompile("org.eclipse.jetty:jetty-annotations:9.4.22.v20191022")
+    providedCompile("org.slf4j:slf4j-simple:1.7.32")
 }
 
 
