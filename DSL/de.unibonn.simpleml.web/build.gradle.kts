@@ -2,7 +2,6 @@ val javaSourceVersion: JavaVersion by rootProject.extra
 val javaTargetVersion: JavaVersion by rootProject.extra
 val xtextVersion: String by rootProject.extra
 
-
 // Plugins -------------------------------------------------------------------------------------------------------------
 
 plugins {
@@ -17,22 +16,20 @@ java {
     targetCompatibility = javaTargetVersion
 }
 
-
 // Dependencies --------------------------------------------------------------------------------------------------------
 
 dependencies {
     implementation(project(":de.unibonn.simpleml"))
-    implementation("org.eclipse.xtend:org.eclipse.xtend.lib:${xtextVersion}")
+    implementation("org.eclipse.xtend:org.eclipse.xtend.lib:$xtextVersion")
     implementation("org.emfjson:emfjson-jackson:1.2.0")
 
     api(project(":de.unibonn.simpleml.ide"))
-    api("org.eclipse.xtext:org.eclipse.xtext.xbase.web:${xtextVersion}")
-    api("org.eclipse.xtext:org.eclipse.xtext.web.servlet:${xtextVersion}")
+    api("org.eclipse.xtext:org.eclipse.xtext.xbase.web:$xtextVersion")
+    api("org.eclipse.xtext:org.eclipse.xtext.web.servlet:$xtextVersion")
 
     providedCompile("org.eclipse.jetty:jetty-annotations:9.4.22.v20191022")
     providedCompile("org.slf4j:slf4j-simple:1.7.32")
 }
-
 
 // Source sets ---------------------------------------------------------------------------------------------------------
 
@@ -41,7 +38,6 @@ sourceSets {
         java.srcDirs("src", "src-gen")
     }
 }
-
 
 // Tasks ---------------------------------------------------------------------------------------------------------------
 
