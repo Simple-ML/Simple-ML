@@ -8,7 +8,9 @@ import de.unibonn.simpleml.util.testDisplayName
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.eclipse.xtext.testing.formatter.FormatterTestHelper
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.DynamicNode
+import org.junit.jupiter.api.DynamicTest
+import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.extension.ExtendWith
 import java.nio.file.Path
 import java.util.stream.Stream
@@ -25,9 +27,9 @@ class SimpleMLFormatterTest {
     @TestFactory
     fun `should be formatted properly`(): Stream<out DynamicNode> {
         return javaClass.classLoader
-                .getResourcePath("formattingTests")
-                ?.createDynamicTestsFromResourceFolder(::validateTestFile, ::createTest)
-                ?: Stream.empty()
+            .getResourcePath("formattingTests")
+            ?.createDynamicTestsFromResourceFolder(::validateTestFile, ::createTest)
+            ?: Stream.empty()
     }
 
     /**
@@ -43,12 +45,14 @@ class SimpleMLFormatterTest {
     }
 
     private fun createTest(resourcePath: Path, filePath: Path, program: String) = sequence {
-        yield(CategorizedTest(
+        yield(
+            CategorizedTest(
                 "correctly_formatted",
                 DynamicTest.dynamicTest(testDisplayName(resourcePath, filePath), filePath.toUri()) {
                     assertFormatted(toBeFormatted(program), expectedResult(program))
                 }
-        ))
+            )
+        )
     }
 
     private fun toBeFormatted(program: String): String {
@@ -56,7 +60,11 @@ class SimpleMLFormatterTest {
     }
 
     private fun expectedResult(program: String): String {
-        return program.split(separator)[1].trim().replace("\n", System.lineSeparator())
+        return program
+            .split(separator)[1]
+            .trim()
+            .replace(Regex("\r\n?"), "\n")
+            .replace("\n", System.lineSeparator())
     }
 
     private fun assertFormatted(toBeFormatted: String, expectedResult: String) {

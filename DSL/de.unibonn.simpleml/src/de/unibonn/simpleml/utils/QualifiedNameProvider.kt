@@ -10,9 +10,13 @@ class QualifiedNameProvider @Inject constructor(
 ) {
 
     fun qualifiedNameOrNull(smlType: SmlType?): String? {
-        return when (val classOrInterfaceOrNull = smlType.resolveToClassOrInterfaceOrNull()) {
-            is SmlClassOrInterface -> qualifiedNameProvider.getFullyQualifiedName(classOrInterfaceOrNull).toString()
+        return when (val smlClassOrInterfaceOrNull = smlType.resolveToClassOrInterfaceOrNull()) {
+            is SmlClassOrInterface -> qualifiedNameOrNull(smlClassOrInterfaceOrNull)
             else -> null
         }
+    }
+
+    fun qualifiedNameOrNull(smlClassOrInterface: SmlClassOrInterface): String {
+        return qualifiedNameProvider.getFullyQualifiedName(smlClassOrInterface).toString()
     }
 }

@@ -55,11 +55,11 @@
         "vscode-languageclient": "^7.0.0"
     },
     "devDependencies": {
-        "@types/node": "^16.7.13",
+        "@types/node": "^16.10.2",
         "@types/vscode": "^1.59.0",
-        "esbuild": "^0.12.24",
-        "prettier": "^2.3.2",
-        "typescript": "^4.4.2",
+        "esbuild": "^0.13.3",
+        "prettier": "^2.4.1",
+        "typescript": "^4.4.3",
         "vscode-test": "^1.6.1"
     }
 }
