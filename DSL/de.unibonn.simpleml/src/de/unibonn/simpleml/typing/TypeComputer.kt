@@ -1,19 +1,72 @@
 package de.unibonn.simpleml.typing
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.simpleML.*
-import de.unibonn.simpleml.utils.*
+import de.unibonn.simpleml.simpleML.SmlAttribute
+import de.unibonn.simpleml.simpleML.SmlBoolean
+import de.unibonn.simpleml.simpleML.SmlCall
+import de.unibonn.simpleml.simpleML.SmlCallableType
+import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlDeclaration
+import de.unibonn.simpleml.simpleML.SmlEnum
+import de.unibonn.simpleml.simpleML.SmlEnumInstance
+import de.unibonn.simpleml.simpleML.SmlExpression
+import de.unibonn.simpleml.simpleML.SmlFloat
+import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.simpleML.SmlInfixOperation
+import de.unibonn.simpleml.simpleML.SmlInt
+import de.unibonn.simpleml.simpleML.SmlInterface
+import de.unibonn.simpleml.simpleML.SmlLambda
+import de.unibonn.simpleml.simpleML.SmlLambdaYield
+import de.unibonn.simpleml.simpleML.SmlMemberAccess
+import de.unibonn.simpleml.simpleML.SmlMemberType
+import de.unibonn.simpleml.simpleML.SmlNamedType
+import de.unibonn.simpleml.simpleML.SmlNull
+import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.simpleML.SmlPrefixOperation
+import de.unibonn.simpleml.simpleML.SmlReference
+import de.unibonn.simpleml.simpleML.SmlResult
+import de.unibonn.simpleml.simpleML.SmlString
+import de.unibonn.simpleml.simpleML.SmlType
+import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.utils.LIB_ANY
+import de.unibonn.simpleml.utils.LIB_BOOLEAN
+import de.unibonn.simpleml.utils.LIB_FLOAT
+import de.unibonn.simpleml.utils.LIB_INT
+import de.unibonn.simpleml.utils.LIB_STRING
+import de.unibonn.simpleml.utils.QualifiedNameProvider
+import de.unibonn.simpleml.utils.SimpleMLStdlib
+import de.unibonn.simpleml.utils.assignedOrNull
+import de.unibonn.simpleml.utils.callableOrNull
+import de.unibonn.simpleml.utils.containingEnumOrNull
+import de.unibonn.simpleml.utils.lambdaYieldsOrEmpty
+import de.unibonn.simpleml.utils.parametersOrEmpty
+import de.unibonn.simpleml.utils.resultsOrEmpty
 import org.eclipse.emf.ecore.EObject
 
 @Suppress("PrivatePropertyName")
 class TypeComputer @Inject constructor(
-        private val stdlib: SimpleMLStdlib
+    private val qualifiedNameProvider: QualifiedNameProvider,
+    private val stdlib: SimpleMLStdlib
 ) {
+
     private lateinit var context: EObject
 
     fun typeOf(obj: EObject): Type {
         context = obj
         return obj.inferType(isStatic = false)
+    }
+
+    fun hasPrimitiveType(obj: EObject): Boolean {
+        context = obj
+
+        val type = typeOf(obj)
+        if (type !is ClassType) {
+            return false
+        }
+
+        val qualifiedName = qualifiedNameProvider.qualifiedNameOrNull(type.smlClass)
+        return qualifiedName in setOf(LIB_BOOLEAN, LIB_FLOAT, LIB_INT, LIB_STRING)
     }
 
     private fun EObject.inferType(isStatic: Boolean): Type {
@@ -39,8 +92,8 @@ class TypeComputer @Inject constructor(
                 EnumType(enum, isNullable = false, isStatic = false)
             }
             is SmlFunction -> CallableType(
-                    parametersOrEmpty().map { it.inferType(false) },
-                    resultsOrEmpty().map { it.inferType(false) }
+                parametersOrEmpty().map { it.inferType(false) },
+                resultsOrEmpty().map { it.inferType(false) }
             )
             is SmlInterface -> InterfaceType(this, isNullable = false, isStatic = isStatic)
             is SmlLambdaYield -> {
@@ -88,8 +141,8 @@ class TypeComputer @Inject constructor(
                 else -> NothingType
             }
             is SmlLambda -> CallableType(
-                    parametersOrEmpty().map { it.inferType(false) },
-                    lambdaYieldsOrEmpty().map { it.inferType(false) }
+                parametersOrEmpty().map { it.inferType(false) },
+                lambdaYieldsOrEmpty().map { it.inferType(false) }
             )
             is SmlMemberAccess -> {
 //            if (this.isNullable) {
@@ -119,8 +172,8 @@ class TypeComputer @Inject constructor(
     private fun SmlType.inferType(isStatic: Boolean): Type {
         return when (this) {
             is SmlCallableType -> CallableType(
-                    parametersOrEmpty().map { it.inferType(false) },
-                    resultsOrEmpty().map { it.inferType(false) }
+                parametersOrEmpty().map { it.inferType(false) },
+                resultsOrEmpty().map { it.inferType(false) }
             )
             is SmlMemberType -> {
                 val member = this.member ?: return ANY
