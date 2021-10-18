@@ -1,5 +1,5 @@
-package de.projektionisten.simpleml.web.exception
+// package de.projektionisten.simpleml.web.exception
 
-class EmfException extends Exception {
+// class EmfException extends Exception {
 	
-}
+// }

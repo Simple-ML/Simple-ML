@@ -1,14 +1,14 @@
-package de.projektionisten.simpleml.web.emf.dto
+// package de.projektionisten.simpleml.web.emf.dto
 
-import org.eclipse.xtend.lib.annotations.Data
+// import org.eclipse.xtend.lib.annotations.Data
 
-@Data
-class CreateEntityDTO {
-	String name
+// @Data
+// class CreateEntityDTO {
+// 	String name
 	
-	String className
+// 	String className
 	
-	String value
+// 	String value
 	
-	CreateEntityDTO[] children 
-}
+// 	CreateEntityDTO[] children 
+// }
