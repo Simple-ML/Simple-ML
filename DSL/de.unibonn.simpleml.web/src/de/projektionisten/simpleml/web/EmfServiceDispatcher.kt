@@ -63,8 +63,8 @@ class EmfServiceDispatcher @Inject constructor(
 	}
 	
 
-	protected override fun createServiceDescriptor(serviceType: String, context: IServiceContext): ServiceDescriptor? {
-		when (serviceType) {
+	protected override fun createServiceDescriptor(serviceType: String, context: IServiceContext): ServiceDescriptor {
+		return when (serviceType) {
 			"getEmfModel" -> 
 				getEmfModel(context)
 //			"getProcessMetadata" ->
@@ -82,7 +82,6 @@ class EmfServiceDispatcher @Inject constructor(
 			else ->
 				super.createServiceDescriptor(serviceType, context)
 		}
-		return null
 	}
 
 	protected fun getAstRoot(context: IServiceContext): EObject {
