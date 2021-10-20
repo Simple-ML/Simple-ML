@@ -52,7 +52,7 @@ tasks.register<JavaExec>("jettyRun") {
     classpath = sourceSets.main.get().runtimeClasspath.filter { it.exists() }
     mainClass.set("de.unibonn.simpleml.web.ServerLauncher")
     standardInput = System.`in`
-    jvmArgs=listOf("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005")
+    // jvmArgs=listOf("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005")
 }
 
 
