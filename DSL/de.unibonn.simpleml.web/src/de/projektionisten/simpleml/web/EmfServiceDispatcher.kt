@@ -67,8 +67,8 @@ class EmfServiceDispatcher @Inject constructor(
 		return when (serviceType) {
 			"getEmfModel" -> 
 				getEmfModel(context)
-//			"getProcessMetadata" ->
-//				getProcessMetadata(context)	
+			"getProcessMetadata" ->
+				getProcessMetadata(context)	
 //			"getProcessProposals" ->
 //				getProcessProposals(context)
 //			"createEntity" ->
@@ -94,7 +94,7 @@ class EmfServiceDispatcher @Inject constructor(
 		return context.createDefaultGetServiceResult("")
 	}
 
-	protected fun getProcessMetadata(context: IServiceContext) {
+	protected fun getProcessMetadata(context: IServiceContext): ServiceDescriptor {
 		val resourceDocument = getResourceDocument(super.getResourceID(context), context)
 		val type = object: TypeToken<ArrayList<String>>(){}.getType()
 		val emfPathCollection = jsonConverter.fromJson(context.getParameter("entityPathCollection"), type) as ArrayList<String>
@@ -137,7 +137,7 @@ class EmfServiceDispatcher @Inject constructor(
 			}
 			result.add(ProcessMetadataDTO(entityName, it, error, parameterMetadata, resultMetadata))
 		}
-		context.createDefaultPostServiceResult(jsonConverter.toJson(result))
+		return context.createDefaultPostServiceResult(jsonConverter.toJson(result))
 	}
 
 	protected fun XtextWebDocument.createErrorResult(text: String): ServiceDescriptor {
@@ -188,7 +188,7 @@ class EmfServiceDispatcher @Inject constructor(
 					resourceDocument.stateId,
 					sideEffects)
 		})
-		serviceDescriptor.setHasSideEffects(false)
+		serviceDescriptor.setHasSideEffects(sideEffects)
 
 		return serviceDescriptor
 	}
