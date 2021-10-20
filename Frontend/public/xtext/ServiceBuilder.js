@@ -14,7 +14,7 @@ define([
     'xtext/services/DeleteEntityService',
     'xtext/services/CreateAssociationService',
     'xtext/services/DeleteAssociationService',
-	'xtext/services/GetEntityAttributeDefinitionService',
+	'xtext/services/GetProcessMetadataService',
 	'xtext/services/SetEntityAttributeService',
 	'xtext/services/LoadResourceService',
 	'xtext/services/SaveResourceService',
@@ -26,7 +26,7 @@ define([
 	'xtext/services/OccurrencesService',
 	'xtext/services/FormattingService'
 ], function(jQuery, XtextService, GetEmfModelService, GetProcessProposalsService, CreateEntityService, DeleteEntityService,
-            CreateAssociationService, DeleteAssociationService, GetEntityAttributeDefinitionService,
+            CreateAssociationService, DeleteAssociationService, GetProcessMetadataService,
 			SetEntityAttributeService, LoadResourceService, SaveResourceService, HighlightingService, ValidationService, UpdateService,
 			ContentAssistService, HoverService, OccurrencesService, FormattingService) {
 
@@ -194,9 +194,9 @@ define([
             return services.deleteAssociationService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
         }
 
-		services.getEntityAttributeDefinitionService = new GetEntityAttributeDefinitionService(options.serviceUrl, options.resourceId);
-		services.getEntityAttributeDefinition = function(addParams) {
-			return services.getEntityAttributeDefinitionService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
+		services.getProcessMetadataService = new GetProcessMetadataService(options.serviceUrl, options.resourceId);
+		services.getProcessMetadata = function(addParams) {
+			return services.getProcessMetadataService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
 		}
 
 		services.setEntityAttributeService = new SetEntityAttributeService(options.serviceUrl, options.resourceId);
