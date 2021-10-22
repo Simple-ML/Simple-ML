@@ -15,11 +15,23 @@
     position: absolute;
     top: 24px;
     right: 24px;
-    width: 36px;
-    height: 36px;
+    width: 48px;
+    height: 48px;
+    border: none;
+
+    background-color: transparent;
+    background-image: url("../../../images/graph/Plus/secondary.svg");
+
+    &:active {
+        background-image: url("../../../images/graph/Plus/on click.svg");
+    }
 
     &:disabled {
         opacity: 0.75;
+    }
+
+    &:hover {
+        background-image: url("../../../images/graph/Plus/secondary-1.svg");
     }
 
 }

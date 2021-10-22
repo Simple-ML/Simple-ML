@@ -17,14 +17,18 @@ export default class XtextServices {
 
     /**
      * 
-     * @param entityPathCollection: [String]
+     * @param entityPathCollection: string[]
      */
     static getProcessMetadata(entityPathCollection) {
         TextEditorWrapper.editor.xtextServices.getProcessMetadata({entityPathCollection: JSON.stringify([...entityPathCollection])});
     }
 
-    static getProcessProposals() {
-        TextEditorWrapper.editor.xtextServices.getProcessProposals();
+    /**
+     * 
+     * @param {*} entityPath: string 
+     */
+    static getProcessProposals(entityId, entityPath) {
+        TextEditorWrapper.editor.xtextServices.getProcessProposals({entityId: entityId, entityPath: entityPath});
     }
 
     /**

@@ -12,7 +12,7 @@ const debugInterface = {
         s: { //services
             getEmfModel: () => XtextServices.getEmfModel(),
             getProcessMetadata: (entityPath) => XtextServices.getProcessMetadata(entityPath),
-            getProcessProposals: () => XtextServices.getProcessProposals(),
+            getProcessProposals: (entityPath) => XtextServices.getProcessProposals(entityPath),
             createEntity: (entity) => XtextServices.createEntity(entity),
             deleteEntity: (entityPath) => XtextServices.deleteEntity(entityPath),
             createAssociation: (fromEntityPath, toEntityPath) => XtextServices.createAssociation(fromEntityPath, toEntityPath),

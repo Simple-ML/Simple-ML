@@ -2,8 +2,7 @@ import store from '../reduxStore';
 import XtextServices from './XtextServices';
 import RuntimeServices from './RuntimeService';
 import EmfModelHelper from '../helper/EmfModelHelper';
-import { setNewEmfModel, setEmfModelClean, setEmfModelDirty, setNewProcessMetadata } from '../reducers/emfModel';
-import { setDslProcessDefinitions } from '../reducers/dslProcessDefinitions';
+import { setNewEmfModel, setEmfModelClean, setEmfModelDirty, setNewProcessMetadata, setNewProcessProposals } from '../reducers/emfModel';
 import { deleteAllPlaceholder } from '../reducers/runtime';
 
 const defaultListeners = () => {
@@ -35,6 +34,9 @@ const defaultListeners = () => {
             case 'getProcessMetadata':
                 store.dispatch(setNewProcessMetadata(JSON.parse(result.info)));
                 break;
+            case 'getProcessProposals':
+                store.dispatch(setNewProcessProposals(JSON.parse(result.info)));
+                break;
             case 'validate':
                 // TODO: not the right place for this code (containsError)
                 const containsError = (issues) => {
@@ -52,9 +54,6 @@ const defaultListeners = () => {
                     store.dispatch(setEmfModelClean());
 
                 XtextServices.getEmfModel();
-                break;
-            case 'getProcessProposals':
-                store.dispatch(setDslProcessDefinitions(JSON.parse(result.fullText)));
                 break;
             case 'generate':
                 store.dispatch(deleteAllPlaceholder());
