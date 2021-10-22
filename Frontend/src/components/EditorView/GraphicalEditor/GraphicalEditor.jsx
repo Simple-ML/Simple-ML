@@ -16,9 +16,13 @@ import {
     entitySelect,
     entityDeselect
 } from '../../../reducers/graphicalEditor';
-import {
-    openContextMenu
-} from '../../../reducers/contextMenu';
+import { openContextMenu } from '../../../reducers/contextMenu';
+import XtextServices from '../../../serverConnection/XtextServices';
+
+import graphicalEditorStyle from './graphicalEditor.module.scss';
+
+
+import { createButtonVerificationToken } from './createButton.inference';
 
 import './contextMenu.inference';
 
@@ -30,6 +34,15 @@ class GraphicalEditor extends React.Component {
             graph: undefined
         }
         this.graphRef = React.createRef();
+        this.createButtonRef = React.createRef();
+
+        this.createButtonClick = this.createButtonClick.bind(this);
+    }
+
+    createButtonClick = () => {
+        let {x, y} = ReactDOM.findDOMNode(this.createButtonRef.current).getBoundingClientRect();
+        XtextServices.getProcessProposals('-1', '');
+        this.props.openContextMenu({id: '-1'}, x, y);
     }
 
     componentDidMount() {
@@ -250,8 +263,14 @@ class GraphicalEditor extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className={graphicalEditorStyle.graphicalEditorContainer} >
                 <div className={`graphicalEditor`} style={{height:"365px"}} ref={this.graphRef}></div>
+                <button
+                    ref={this.createButtonRef}
+                    className={graphicalEditorStyle["graphical-editor-create-button"]}
+                    onClick={this.createButtonClick}
+                    disabled={this.props.dirty}>
+                </button>
                 <div id={'mxReactPlaceholder'}></div>
             </div>
         );

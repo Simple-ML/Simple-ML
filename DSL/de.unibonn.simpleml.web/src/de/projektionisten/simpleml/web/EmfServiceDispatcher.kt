@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.inject.Inject
 import com.google.inject.Singleton
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.impl.EClassImpl
 import org.eclipse.xtext.serializer.ISerializer
@@ -22,22 +23,26 @@ import de.unibonn.simpleml.web.SimpleMLResourceSetProvider
 import de.unibonn.simpleml.utils.parametersOrEmpty
 import de.unibonn.simpleml.utils.resultsOrEmpty
 import de.unibonn.simpleml.utils.QualifiedNameProvider
+import de.unibonn.simpleml.utils.Proposals
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlResult
 // import de.projektionisten.simpleml.web.dto.CreateAndAssociateEntityDTO
 // import de.projektionisten.simpleml.web.dto.DeleteEntityDTO
 // import de.projektionisten.simpleml.web.dto.AssociationDTO
 import de.projektionisten.simpleml.web.dto.ParameterDTO
 import de.projektionisten.simpleml.web.dto.ProcessMetadataDTO
-import org.eclipse.emf.ecore.EObject
+import de.projektionisten.simpleml.web.dto.ProcessProposalsDTO
+
 
 
 @Singleton 
 class EmfServiceDispatcher @Inject constructor(
 	private val serializer: ISerializer,
 	private val stdLibResourceSetProvider: SimpleMLResourceSetProvider,
-	private val qualifiedNameProvider: QualifiedNameProvider
+	private val qualifiedNameProvider: QualifiedNameProvider,
+	private val proposals: Proposals
 ): XtextServiceDispatcher() {
 
 	private val jsonMapper: ObjectMapper
@@ -69,8 +74,8 @@ class EmfServiceDispatcher @Inject constructor(
 				getEmfModel(context)
 			"getProcessMetadata" ->
 				getProcessMetadata(context)	
-//			"getProcessProposals" ->
-//				getProcessProposals(context)
+			"getProcessProposals" ->
+				getProcessProposals(context)
 //			"createEntity" ->
 //				createEntity(context)
 //			"deleteEntity" ->
@@ -84,61 +89,89 @@ class EmfServiceDispatcher @Inject constructor(
 		}
 	}
 
-	protected fun getAstRoot(context: IServiceContext): EObject {
-		val resourceDocument = getResourceDocument(super.getResourceID(context), context)
-		val astRoot = resourceDocument.resource.contents.get(0)
-		return astRoot
-	}
+	
 	
 	protected fun getEmfModel(context: IServiceContext): ServiceDescriptor {
 		return context.createDefaultGetServiceResult("")
 	}
 
 	protected fun getProcessMetadata(context: IServiceContext): ServiceDescriptor {
-		val resourceDocument = getResourceDocument(super.getResourceID(context), context)
 		val type = object: TypeToken<ArrayList<String>>(){}.getType()
 		val emfPathCollection = jsonConverter.fromJson(context.getParameter("entityPathCollection"), type) as ArrayList<String>
 		val result = ArrayList<ProcessMetadataDTO>();
 
 		emfPathCollection.forEach {
-			var entityName = ""
-			var error = ""
-			var entity = resourceDocument.resource.getEObject(it)
-			val parameterMetadata = ArrayList<ParameterDTO>()
-			val resultMetadata = ArrayList<ParameterDTO>()
-
-			if(entity === null) {
-				val resourceSet = stdLibResourceSetProvider.get(it, context)
-				entity = resourceSet.getEObject(URI.createURI(it), true)
-			}
-			
-			if(entity !== null) {
-				when (entity) {
-					is SmlFunction -> {
-						(entity as SmlFunction?).parametersOrEmpty().forEach {
-							parameterMetadata.add(ParameterDTO(it.name, qualifiedNameProvider.qualifiedNameOrNull(it.type)))
-						}
-						(entity as SmlFunction?).resultsOrEmpty().forEach {
-							resultMetadata.add(ParameterDTO(it.name, qualifiedNameProvider.qualifiedNameOrNull(it.type)))
-						}
-						entityName = entity.name
-					}
-					is SmlParameter -> {
-						entityName = entity.name
-					}
-					is SmlClass -> {
-						entityName = entity.name
-					}
-				}
-				error = ""
-				
-			} else {
-				error = "Entity not found!"
-			}
-			result.add(ProcessMetadataDTO(entityName, it, error, parameterMetadata, resultMetadata))
+			result.add(getProcessMetadataFromURI(it, context))
 		}
 		return context.createDefaultPostServiceResult(jsonConverter.toJson(result))
 	}
+
+	protected fun getProcessProposals(context: IServiceContext): ServiceDescriptor {
+		val resourceDocument = getResourceDocument(super.getResourceID(context), context)
+		val frontendId = context.getParameter("frontendId")
+		val emfPath = context.getParameter("entityPath")
+		var emfEntity: SmlResult?
+
+		if(emfPath.isNullOrEmpty()) 
+			emfEntity = null
+		else
+			emfEntity = resourceDocument.resource.getEObject(emfPath) as SmlResult?
+
+		val astRoot = resourceDocument.resource.contents.get(0)
+		val proposals = proposals.listCallables(astRoot, emfEntity)
+		val result = ArrayList<ProcessMetadataDTO>();
+
+		proposals.forEach {
+			result.add(getProcessMetadataFromURI(it.key.toString(), context))
+		}
+
+		return context.createDefaultPostServiceResult(jsonConverter.toJson(ProcessProposalsDTO(frontendId, emfPath, result)))
+	}
+
+
+    
+	
+	fun getProcessMetadataFromURI(uri: String, serviceContext: IServiceContext): ProcessMetadataDTO {
+		val resourceDocument = getResourceDocument(super.getResourceID(serviceContext), serviceContext)
+        var entityName = ""
+        var error = ""
+        var entity = resourceDocument.resource.getEObject(uri)
+        val parameterMetadata = ArrayList<ParameterDTO>()
+        val resultMetadata = ArrayList<ParameterDTO>()
+
+        if(entity === null) {
+            val resourceSet = stdLibResourceSetProvider.get(uri, serviceContext)
+            entity = resourceSet.getEObject(URI.createURI(uri), true)
+        }
+        
+        if(entity !== null) {
+            when (entity) {
+                is SmlFunction -> {
+                    (entity as SmlFunction?).parametersOrEmpty().forEach {
+                        parameterMetadata.add(ParameterDTO(it.name, qualifiedNameProvider.qualifiedNameOrNull(it.type)))
+                    }
+                    (entity as SmlFunction?).resultsOrEmpty().forEach {
+                        resultMetadata.add(ParameterDTO(it.name, qualifiedNameProvider.qualifiedNameOrNull(it.type)))
+                    }
+                    entityName = entity.name
+                }
+                is SmlParameter -> {
+                    entityName = entity.name
+                }
+                is SmlClass -> {
+                    entityName = entity.name
+                }
+            }
+            error = ""
+        } else {
+            error = "Entity not found!"
+        }
+        return ProcessMetadataDTO(entityName, uri, error, parameterMetadata, resultMetadata)
+    }
+
+
+
+
 
 	protected fun XtextWebDocument.createErrorResult(text: String): ServiceDescriptor {
 		val serviceDescriptor = ServiceDescriptor()
