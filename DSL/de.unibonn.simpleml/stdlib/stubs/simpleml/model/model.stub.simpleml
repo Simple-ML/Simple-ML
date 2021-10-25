@@ -1,4 +1,4 @@
-package simpleml.model.supervised
+package simpleml.model
 
 import simpleml.dataset.Dataset
 

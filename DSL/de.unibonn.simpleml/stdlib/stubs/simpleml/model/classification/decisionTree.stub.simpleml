@@ -1,6 +1,6 @@
-package simpleml.model.supervised.classification
+package simpleml.model.classification
 
-import simpleml.model.supervised.*
+import simpleml.model.*
 import simpleml.dataset.Dataset
 
 open class DecisionTreeClassifier constructor() sub Estimator {
