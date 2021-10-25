@@ -1,6 +1,6 @@
 package simpleml.model.regression
 
-import simpleml.model.supervised.*
+import simpleml.model.*
 import simpleml.dataset.Dataset
 
 open class DecisionTree constructor(maxDepth: Int) sub Estimator {

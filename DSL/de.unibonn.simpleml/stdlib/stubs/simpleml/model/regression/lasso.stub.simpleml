@@ -1,6 +1,6 @@
-package simpleml.model.supervised.regression
+package simpleml.model.regression
 
-import simpleml.model.supervised.*
+import simpleml.model.*
 import simpleml.dataset.Dataset
 
 open class Lasso constructor(regularizationStrength: Float or 0.5) sub Estimator {
