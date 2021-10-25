@@ -134,19 +134,6 @@ for s, p, o in g.triples((None, None, None)):
     print(s, p, o)
 
 
-# stub files
-#stub_folder = "../../../../DSL/de.unibonn.simpleml/stdlib/stubs/"
-
-#mappings_df = pd.read_csv("../../../data_catalog/ml_processes_catalog/algorithm_mappings.csv", sep="\t")
-#for index, row in mappings_df.iterrows():
-#    is_active = row["active"] == "True"
-#    dsl_id = row["dsl_id"]
-#    print(dsl_id)
-#    with open(stub_folder+dsl_id, 'r') as stub_file:
-#        for line in stub_file.readlines():
-#            print(line)
-
-
 g.serialize(destination="../../../data_catalog/ml_processes_catalog/ml_catalog.ttl")
 
 
