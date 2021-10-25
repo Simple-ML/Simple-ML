@@ -79,7 +79,7 @@ export default class GenericProcessCall extends MxGraphVertexComponent {
             <div className={genericProcessCallStyle.IconContainer}>
                 <img src={this.setIcon()}/>
                 <div className={genericProcessCallStyle.IconLabel}>
-                    {this.state.metadata.name}
+                    {this.state.metadata ? this.state.metadata.name : ''}
                 </div>
             </div>
         )

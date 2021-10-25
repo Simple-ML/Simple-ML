@@ -24,13 +24,8 @@ import de.unibonn.simpleml.utils.parametersOrEmpty
 import de.unibonn.simpleml.utils.resultsOrEmpty
 import de.unibonn.simpleml.utils.QualifiedNameProvider
 import de.unibonn.simpleml.utils.Proposals
-import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.simpleML.SmlParameter
-import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.simpleML.SmlResult
-// import de.projektionisten.simpleml.web.dto.CreateAndAssociateEntityDTO
-// import de.projektionisten.simpleml.web.dto.DeleteEntityDTO
-// import de.projektionisten.simpleml.web.dto.AssociationDTO
+import de.unibonn.simpleml.simpleML.*
+import de.projektionisten.simpleml.web.dto.CreateEntityDTO
 import de.projektionisten.simpleml.web.dto.ParameterDTO
 import de.projektionisten.simpleml.web.dto.ProcessMetadataDTO
 import de.projektionisten.simpleml.web.dto.ProcessProposalsDTO
@@ -76,8 +71,8 @@ class EmfServiceDispatcher @Inject constructor(
 				getProcessMetadata(context)	
 			"getProcessProposals" ->
 				getProcessProposals(context)
-//			"createEntity" ->
-//				createEntity(context)
+			"createEntity" ->
+				createEntity(context)
 //			"deleteEntity" ->
 //				deleteEntity(context)
 //			"createAssociation" ->
@@ -128,10 +123,46 @@ class EmfServiceDispatcher @Inject constructor(
 		return context.createDefaultPostServiceResult(jsonConverter.toJson(ProcessProposalsDTO(frontendId, emfPath, result)))
 	}
 
+	protected fun createEntity(context: IServiceContext): ServiceDescriptor {
+		val resourceDocument = getResourceDocument(super.getResourceID(context), context)
+		val astRoot = resourceDocument.resource.contents.get(0)
+		val type = object: TypeToken<CreateEntityDTO>(){}.getType()
+		val createEntityDTO = jsonConverter.fromJson(context.getParameter("createEntityDTO"), type) as CreateEntityDTO
 
+		val resourceStdLib = stdLibResourceSetProvider.get(createEntityDTO.referenceIfFunktion, context)
+		val functionRef = resourceStdLib.getEObject(URI.createURI(createEntityDTO.referenceIfFunktion), true)
+
+		if(createEntityDTO.associationTargetPath.isNullOrEmpty()) {
+			val assignment = SimpleMLFactory.eINSTANCE.createSmlAssignment()
+			val assigneeList = SimpleMLFactory.eINSTANCE.createSmlAssigneeList()
+			val placeholder = SimpleMLFactory.eINSTANCE.createSmlPlaceholder()
+			val call = SimpleMLFactory.eINSTANCE.createSmlCall()
+			val argumentList = SimpleMLFactory.eINSTANCE.createSmlArgumentList()
+			val reference = SimpleMLFactory.eINSTANCE.createSmlReference()
+
+			placeholder.name = createEntityDTO.placeholderName
+			
+			reference.declaration = functionRef as SmlFunction
+			call.receiver = reference
+
+			call.argumentList = argumentList
+			assignment.expression = call
+			assigneeList.assignees.add(placeholder)
+			assignment.assigneeList = assigneeList
+
+			((astRoot as SmlCompilationUnit).members[0] as SmlWorkflow).body.statements.add(assignment)
+		} else {
+			
+		}
+
+		return context.createDefaultPostServiceResult("")
+	}
     
+
+
+
 	
-	fun getProcessMetadataFromURI(uri: String, serviceContext: IServiceContext): ProcessMetadataDTO {
+	private fun getProcessMetadataFromURI(uri: String, serviceContext: IServiceContext): ProcessMetadataDTO {
 		val resourceDocument = getResourceDocument(super.getResourceID(serviceContext), serviceContext)
         var entityName = ""
         var error = ""

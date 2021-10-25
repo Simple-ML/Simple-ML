@@ -33,7 +33,12 @@ class ContextMenu extends React.Component {
                         text: item.name
                     },
                     func: () => {
-                        XtextServices.createEntity(context2.emfPath, "");
+                        XtextServices.createEntity({
+                            className: '',
+                            referenceIfFunktion: item.emfPath, 
+                            placeholderName: 'temp',
+                            associationTargetPath: ''
+                        });
                     }
                 });
             });
@@ -67,7 +72,6 @@ class ContextMenu extends React.Component {
         let buttonMetaData = [];
         buttonMetaData = buttonMetaData.concat(InferenceCreator.inferFromContext(this.props.context));
         buttonMetaData = buttonMetaData.concat(this.inferFromContextDynamically(this.props.context, this.props.proposals));
-        console.log(buttonMetaData)
         this.prepareMetaData(buttonMetaData);
 
         let { posX, posY, visible } = this.props;
