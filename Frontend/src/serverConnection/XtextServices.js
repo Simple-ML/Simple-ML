@@ -35,22 +35,17 @@ export default class XtextServices {
      * Creates an Entity and associates it to the specified target. If targetPath is undefined the created
      * entity will be associated to the root-node.
      *
-     * @param entityDescription: CreateEntityDTO
-     * @param targetPath: string
+     * @param createEntityDTO: CreateEntityDTO
      *
      *      CreateEntityDTO: {
-     *          name: string,
      *          className: string,
-     *          value: string,
-     *          children: CreateEntityDTO[]
+     *          referenceIfFunktion: string,
+     *          placeholderName: string
+     *          associationTargetPath: string
      *      }
      */
-    static createEntity(entityDescription, targetPath) {
-        let creation = {
-            entity: entityDescription,
-            target: targetPath
-        };
-        TextEditorWrapper.editor.xtextServices.createEntity({createEntityDTO: JSON.stringify(creation)});
+    static createEntity(createEntityDTO) {
+        TextEditorWrapper.editor.xtextServices.createEntity({createEntityDTO: JSON.stringify(createEntityDTO)});
     }
 
     /**
