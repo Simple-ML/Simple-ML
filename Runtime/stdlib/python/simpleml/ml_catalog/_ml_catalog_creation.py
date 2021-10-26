@@ -16,6 +16,10 @@ class MEX_ALGO(DefinedNamespace):
     _NS = Namespace("http://mex.aksw.org/mex-algo#")
 
 
+def make_uri(value):
+    return (value[0].upper() + value[1:]).replace(" ", "").replace("(", "_").replace(")", "_").replace("'", "")
+
+
 # load stubs
 # load parameter descriptions
 
@@ -59,9 +63,9 @@ with open('../../../data_catalog/ml_processes_catalog/algorithms.json') as json_
 
         dbpedia_ids = algorithm_json['dbpedia_ids']
 
-        algorithm_ref = SML[dbpedia_ids["en"][0]]
+        algorithm_ref = SML[make_uri(dbpedia_ids["en"][0])]
 
-        print("algorithm_id:",algorithm_id)
+        print("algorithm_id:", algorithm_id)
         id_to_ref[int(algorithm_id)] = algorithm_ref
 
         g.add((algorithm_ref, RDF.type, OWL.Class))
@@ -81,6 +85,7 @@ with open('../../../data_catalog/ml_processes_catalog/algorithms.json') as json_
             wikidata_id = algorithm_json['wikidata_id']
             g.add((algorithm_ref, OWL.sameAs, WD[wikidata_id]))
 
+        longest_descriptions = dict()
 
         # descriptions
         if 'descriptions' in algorithm_json:
@@ -88,6 +93,9 @@ with open('../../../data_catalog/ml_processes_catalog/algorithms.json') as json_
             for description_language in descriptions:
                 for description in descriptions[description_language]:
                     g.add((algorithm_ref, DCTERMS.description, Literal(description, lang=description_language)))
+                    if description_language not in longest_descriptions or len(
+                            longest_descriptions[description_language]) < len(description):
+                        longest_descriptions[description_language] = description
 
         shortest_abbreviations = dict()
 
@@ -125,16 +133,19 @@ with open('../../../data_catalog/ml_processes_catalog/algorithms.json') as json_
             g.add((algorithm_ref, SML.prefAbbreviation,
                    Literal(shortest_abbreviations[pref_abbreviation_language], lang=pref_abbreviation_language)))
 
+        # prefDescription
+        for pref_description_language in longest_descriptions:
+            g.add((algorithm_ref, SML.prefDescription,
+                   Literal(longest_descriptions[pref_description_language], lang=pref_description_language)))
+
+
 for algorithm_id in all_parents:
     for parent_id in all_parents[algorithm_id]:
         g.add((id_to_ref[algorithm_id], RDFS.subClassOf, id_to_ref[parent_id]))
 
-
 for s, p, o in g.triples((None, None, None)):
     print(s, p, o)
 
-
 g.serialize(destination="../../../data_catalog/ml_processes_catalog/ml_catalog.ttl")
-
 
 # TODO: Error with sml:Mean_shift and sml:Mean-shift
