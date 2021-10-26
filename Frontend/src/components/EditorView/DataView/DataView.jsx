@@ -10,6 +10,8 @@ import  SimpleBarChart from '../../../stories/SimpleBarChart.js';
 import  SimpleHistogramChart from '../../../stories/SimpleHistogramChart.js';
 import  Table from '../../../stories/Table.js';
 import PropTypes from 'prop-types';
+import { MultiSelect } from "react-multi-select-component";
+import { keyframes } from '@emotion/react';
 
 class DataView extends React.Component {
     constructor(props) {
@@ -20,12 +22,18 @@ class DataView extends React.Component {
             items:[],
             barCharts:[],
             histogramCharts:[],
-            error: null
+            error: null,
+            filterOptions: [],
+            selectedFilter: []
         };
     }
 
     handleChange = (event, newValue) => {
         this.setState({ value: newValue })
+    };
+
+    handleSelection = (selectedItems) => {
+        this.setState({ selectedFilter: selectedItems })
     };
 
     componentDidMount() {
@@ -34,26 +42,27 @@ class DataView extends React.Component {
         .then(
             (result) => {
                 var attributes = result.attributes;
-                var statistics = Object.keys(attributes).map(key => {
-                    return (attributes[key]["statistics"]);
-                })
                 var loadedBarCharts = [];
                 var loadedHistogramCharts = [];
-                statistics.forEach(statistic => 
-                    Object.keys(statistic).map(key => {
-                        if(key === 'value_distribution' && statistic[key]["type"] === 'bar_chart') {
-                            loadedBarCharts.push(statistic[key]["bars"]);
-                        }
-                        if(key === 'histogram' && statistic[key]["type"] === 'histogram') {
-                            loadedHistogramCharts.push(statistic[key]["buckets"]);
-                        }
-                    })
-                );
+                var loadedFilterOptions = [];
+                Object.keys(attributes).map(attributesKey => {
+                    loadedFilterOptions.push({label: attributes[attributesKey].label, value: attributesKey});
+                        Object.keys(attributes[attributesKey]["statistics"]).map(statisticsKey => {
+                            if(statisticsKey === 'value_distribution' && attributes[attributesKey]["statistics"][statisticsKey]["type"] === 'bar_chart') {
+                                loadedBarCharts.push({label: attributes[attributesKey].label , statistic: attributes[attributesKey]["statistics"][statisticsKey]["bars"]});
+                            }
+                            if(statisticsKey === 'histogram' && attributes[attributesKey]["statistics"][statisticsKey]["type"] === 'histogram') {
+                                loadedHistogramCharts.push({label: attributes[attributesKey].label , statistic: attributes[attributesKey]["statistics"][statisticsKey]["buckets"]});
+                            }
+                        })
+                })
                 this.setState({
                 isLoaded: true,
                 items: result,
                 barCharts: loadedBarCharts,
-                histogramCharts: loadedHistogramCharts
+                histogramCharts: loadedHistogramCharts,
+                filterOptions: loadedFilterOptions,
+                selectedFilter: loadedFilterOptions
                 });
             },
             (error) => {
@@ -66,12 +75,12 @@ class DataView extends React.Component {
     }
 
     render() {
-        const { error, isLoaded, items, barCharts, histogramCharts } = this.state;
+        const { error, isLoaded, items, barCharts, histogramCharts, selectedFilter, filterOptions } = this.state;
         if (error) {
           return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
           return <div>Loading...</div>;
-        } else {
+        } else { 
             return(
                 <div className={'data-view'}>
                     <TabContext value={this.state.value}>
@@ -82,18 +91,49 @@ class DataView extends React.Component {
                         </TabList>
                         </Box>
                         <TabPanel value="1">
-                            <Table
-                                tableHeads={items.sample_instances.header_labels}
-                                tableBodies={items.sample_instances.lines}
-                            />
+                            <div className={'table-view'}>
+                                <Table
+                                    tableHeads={items.sample_instances.header_labels}
+                                    tableBodies={items.sample_instances.lines}
+                                />
+                            </div>
                         </TabPanel>
                         <TabPanel value="2">
-                            {barCharts.map((barChart) => (
-                                <SimpleBarChart barChart={barChart}/>
-                            ))}
-                            {histogramCharts.map((histogramChart) => (
-                                <SimpleHistogramChart histogramChart={histogramChart}/>
-                            ))}
+                            <div className={'chart-view'}>
+                            <div className={'chart-filter'}>
+                                <h1>Filter Data</h1>
+                                <MultiSelect
+                                    options={filterOptions}
+                                    value={selectedFilter}
+                                    onChange={this.handleSelection}
+                                    labelledBy="Select"
+                                />
+                            </div>
+                                {barCharts.map((barChart) => (
+                                    selectedFilter.map((selected) => (
+                                        barChart.label === selected.label ? (
+                                                <SimpleBarChart 
+                                                    title={barChart.label}
+                                                    //width='20vw'
+                                                    //height='20vh'
+                                                    barChart={barChart.statistic}
+                                                />
+                                        ): <div></div>
+                                    ))
+                                ))}
+                                {histogramCharts.map((histogramChart) => (
+                                    selectedFilter.map((selected) => (
+                                        histogramChart.label === selected.label ? (
+                                                <SimpleHistogramChart 
+                                                    title={histogramChart.label}
+                                                    //width='20vw'
+                                                    //height='20vh'
+                                                    histogramChart={histogramChart.statistic}
+                                                />
+                                        ): <div></div>
+                                    ))
+                                ))}
+                            </div>
                         </TabPanel>
                     </TabContext>
                 </div>
