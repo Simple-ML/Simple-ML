@@ -37,6 +37,7 @@ class DSL_O(DefinedNamespace):
     has_output_parameter: URIRef
     has_type: URIRef
     id: URIRef
+    abbreviation: URIRef
 
     # http://www.w3.org/2000/01/rdf-schema#Class
     Parameter: URIRef
@@ -45,6 +46,8 @@ class DSL_O(DefinedNamespace):
 
     _NS = Namespace("http://simple-ml.de/dsl#")
 
+WD = Namespace("http://www.wikidata.org/entity/")
+SML = Namespace("http://simple-ml.de/rdf#")
 
 class Parameter:
     def __init__(self, name, type_id, is_optional, default_value=None):
@@ -69,6 +72,9 @@ class Stub:
         self.imports = imports
         self.package = package
         self.parent = None
+        self.names = dict()
+        self.descriptions = dict()
+        self.abbreviations = dict()
 
 
 class Function:
@@ -221,10 +227,11 @@ g = Graph()
 g.bind('dsl-o', DSL_O)
 DSL = Namespace("http://simple-ml.de/dsl#")
 g.bind('dsl', DSL)
+g.bind('dcterms', DCTERMS)
 
 
 def make_uri(value):
-    return (value[0].upper() + value[1:]).replace(" ", "")
+    return (value[0].upper() + value[1:]).replace(" ", "").replace("(","_").replace(")","_").replace("'","")
 
 
 def createParameterTriples(g, parameter, parameter_ref):
@@ -238,6 +245,40 @@ def createParameterTriples(g, parameter, parameter_ref):
     if parameter.default_value:
         g.add((parameter_ref, DSL_O.default_value, Literal(parameter.default_value)))
 
+ml_graph = Graph()
+ml_graph.parse("../../../data_catalog/ml_processes_catalog/ml_catalog.ttl")
+
+# read additional information and mapping to ML catalog
+info_dict = {}
+with open("../../../data_catalog/ml_processes_catalog/processes_info.tsv") as infile:
+    reader = csv.reader(infile, delimiter="\t")
+    headers = next(reader)[1:]
+    for row in reader:
+        stub = stubs[row[0]]
+        for key, value in zip(headers, row[1:]):
+            if key.startswith("description"):
+                lang = key.split("_")[1]
+                stub.descriptions[lang] = value
+            elif key.startswith("abbreviation"):
+                lang = key.split("_")[1]
+                stub.abbreviations[lang] = value
+            elif key.startswith("name"):
+                lang = key.split("_")[1]
+                stub.names[lang] = value
+
+        # Get information from ML catalog via Wikidata ID
+        wikidata_id = dict(zip(headers, row[1:]))["wikidata_id"]
+        if wikidata_id:
+            for algorithm_ref, _, _ in ml_graph.triples((None, OWL.sameAs, WD[wikidata_id])):
+                for _, _, pref_label in ml_graph.triples((algorithm_ref, SKOS.prefLabel, None)):
+                    if pref_label.language not in stub.names:
+                        stub.names[pref_label.language] = pref_label
+                for _, _, pref_abbreviation in ml_graph.triples((algorithm_ref, SML.prefAbbreviation, None)):
+                    if pref_abbreviation.language not in stub.pref_abbreviations:
+                        stub.abbreviations[pref_abbreviation.language] = pref_abbreviation
+                for _, _, pref_description in ml_graph.triples((algorithm_ref, SML.prefDescription, None)):
+                    if pref_description.language not in stub.descriptions:
+                        stub.descriptions[pref_description.language] = pref_description
 
 for stub in stubs.values():
 
@@ -245,6 +286,13 @@ for stub in stubs.values():
     g.add((stub_ref, RDF.type, DSL_O.Stub))
     g.add((stub_ref, DSL_O.name, Literal(stub.name)))
     g.add((stub_ref, DSL_O.id, Literal(stub.stub_id)))
+
+    for lang, description in stub.descriptions.items():
+        g.add((stub_ref, DCTERMS.description, Literal(description, lang)))
+    for lang, name in stub.names.items():
+        g.add((stub_ref, RDFS.label, Literal(name, lang)))
+    for lang, abbreviation in stub.abbreviations.items():
+        g.add((stub_ref, DSL_O.abbreviation, Literal(abbreviation, lang)))
 
     if stub.parent:
         g.add((stub_ref, RDFS.subClassOf, DSL["Stub" + stub.parent.name]))
@@ -286,15 +334,7 @@ for function in functions_outside:
         g.add((function_ref, DSL_O.has_output_parameter, parameter_ref))
         createParameterTriples(g, parameter, parameter_ref)
 
-# read additional information and mapping to ML catalog
-dict1 = {}
-with open("../../../data_catalog/ml_processes_catalog/processes_info.tsv") as infile:
-    reader = csv.reader(infile, delimiter="\t")
-    headers = next(reader)[1:]
-    for row in reader:
-        dict1[row[0]] = {key: value for key, value in zip(headers, row[1:])}
 
-print(dict1)
 
 
 g.serialize(destination="../../../data_catalog/ml_processes_catalog/process_catalog.ttl")
@@ -302,3 +342,5 @@ g.serialize(destination="../../../data_catalog/ml_processes_catalog/process_cata
 for s, p, o in g.triples((None, None, DSL_O.Stub)):
     for s, p2, o2 in g.triples((s, DSL_O.has_function, None)):
         print(s, " -> ", o2)
+
+#TODO: splitIntoTrainAndTest misses outputs

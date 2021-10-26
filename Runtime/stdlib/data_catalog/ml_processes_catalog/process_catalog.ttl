@@ -1,3 +1,4 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix dsl: <http://simple-ml.de/dsl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -20,15 +21,23 @@ dsl:StubBoolean a dsl:Stub ;
     dsl:name "Boolean" .
 
 dsl:StubDecisionTreeClassifier a dsl:Stub ;
+    rdfs:label "Entscheidungsbaum"@de,
+        "Decision tree"@en ;
+    dcterms:description "Graph zur Darstellung von Entscheidungsregeln"@de,
+        "decision support tool that uses a tree-like model of decisions and their possible consequences, including chance event outcomes, resource costs, and utility"@en ;
     dsl:has_function dsl:FunctionDecisionTreeClassifierFit ;
-    dsl:id "simpleml.model.supervised.classification.DecisionTreeClassifier" ;
+    dsl:id "simpleml.model.classification.DecisionTreeClassifier" ;
     dsl:name "DecisionTreeClassifier" ;
     rdfs:subClassOf dsl:StubEstimator .
 
 dsl:StubLasso a dsl:Stub ;
+    rdfs:label "Lasso-Regression"@de,
+        "Lasso Regression"@en ;
+    dcterms:description "Regressionsanalysemethode, die sowohl die Variablenauswahl als auch die Regularisierung durchfÃ¼hrt"@de,
+        "regression analysis method that performs both variable selection and regularization"@en ;
     dsl:has_function dsl:FunctionLassoFit ;
     dsl:has_parameter dsl:ParameterLassoRegularizationStrength ;
-    dsl:id "simpleml.model.supervised.regression.Lasso" ;
+    dsl:id "simpleml.model.regression.Lasso" ;
     dsl:name "Lasso" ;
     rdfs:subClassOf dsl:StubEstimator .
 
@@ -269,6 +278,10 @@ dsl:ParameterOutputTrainedLassoFunctionPredictResults a dsl:Parameter ;
     dsl:name "results" .
 
 dsl:StubDecisionTree a dsl:Stub ;
+    rdfs:label "Entscheidungsbaum"@de,
+        "Decision tree"@en ;
+    dcterms:description "Graph zur Darstellung von Entscheidungsregeln"@de,
+        "decision support tool that uses a tree-like model of decisions and their possible consequences, including chance event outcomes, resource costs, and utility"@en ;
     dsl:has_function dsl:FunctionDecisionTreeFit ;
     dsl:has_parameter dsl:ParameterDecisionTreeMaxDepth ;
     dsl:id "simpleml.model.regression.DecisionTree" ;
@@ -277,7 +290,7 @@ dsl:StubDecisionTree a dsl:Stub ;
 
 dsl:StubDecisionTreeModel a dsl:Stub ;
     dsl:has_function dsl:FunctionDecisionTreeModelPredict ;
-    dsl:id "simpleml.model.supervised.classification.DecisionTreeModel" ;
+    dsl:id "simpleml.model.classification.DecisionTreeModel" ;
     dsl:name "DecisionTreeModel" ;
     rdfs:subClassOf dsl:StubModel .
 
@@ -294,7 +307,7 @@ dsl:StubTrainedDecisionTree a dsl:Stub ;
 
 dsl:StubTrainedLasso a dsl:Stub ;
     dsl:has_function dsl:FunctionTrainedLassoPredict ;
-    dsl:id "simpleml.model.supervised.regression.TrainedLasso" ;
+    dsl:id "simpleml.model.regression.TrainedLasso" ;
     dsl:name "TrainedLasso" ;
     rdfs:subClassOf dsl:StubModel .
 
@@ -305,7 +318,7 @@ dsl:StubFloat a dsl:Stub ;
 
 dsl:StubModel a dsl:Stub ;
     dsl:has_function dsl:FunctionModelPredict ;
-    dsl:id "simpleml.model.supervised.Model" ;
+    dsl:id "simpleml.model.Model" ;
     dsl:name "Model" .
 
 dsl:StubNumber a dsl:Stub ;
@@ -317,7 +330,7 @@ dsl:StubString a dsl:Stub ;
     dsl:name "String" .
 
 dsl:StubEstimator a dsl:Stub ;
-    dsl:id "simpleml.model.supervised.Estimator" ;
+    dsl:id "simpleml.model.Estimator" ;
     dsl:name "Estimator" .
 
 dsl:StubAny a dsl:Stub ;
