@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {ResponsiveBar} from '@nivo/bar';
 import PropTypes from 'prop-types';
+import './simpleBarChart.css'
 export default class SimpleBarChart extends React.Component {
   constructor(props) {
     super(props);
@@ -11,7 +12,8 @@ export default class SimpleBarChart extends React.Component {
   render() {
 		return ( 
 			<div>
-			<div className="App">
+			<h1> { this.props.title }</h1>
+			<div className="BarChartBackground">
 			<div style={{width:this.props.width,height:this.props.height}}>
 		<ResponsiveBar
 				data={this.props.barChart}	
@@ -92,9 +94,13 @@ SimpleBarChart.defaultProps = {
 };
 SimpleBarChart.propTypes = {
   /**
+	 * String for thWochentage title
+   */
+  title: PropTypes.string,
+  /**
    * Bar Chart Object
    */
-  barChart: PropTypes.object,
+  barChart: PropTypes.array,
   /**
    * How high the chart is supposed to be can't be 0 else wont render (Logo string for the project name
    */

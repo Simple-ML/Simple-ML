@@ -1,6 +1,7 @@
 import React from 'react';
 import {ResponsiveBar} from '@nivo/bar';
 import PropTypes from 'prop-types';
+import './simpleHistogramChart.css'
 export default class SimpleHistogramChart extends React.Component {
   constructor(props) {
     super(props);
@@ -11,8 +12,8 @@ export default class SimpleHistogramChart extends React.Component {
   render() {
 		return (
 			<div>
-			<div className="App">
 			<h1> {this.props.title}</h1>
+			<div className="BarChartBackground">
 			<div style={{width:this.props.width,height:this.props.height}}>
 		<ResponsiveBar
 				data={this.props.histogramChart}
@@ -92,6 +93,10 @@ SimpleHistogramChart.defaultProps = {
 	height: '60vh'
 };
 SimpleHistogramChart.propTypes = {
+  /**
+	 * String for thWochentage title
+   */
+  title: PropTypes.string,
   /**
    * Histogram Chart Object
    */

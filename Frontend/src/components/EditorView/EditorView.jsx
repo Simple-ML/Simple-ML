@@ -72,7 +72,7 @@ class EditorView extends React.Component {
                         'textEditor'
                     ]}
                 />
-                <Button onClick={this.handleToggle}>Show backdrop</Button>
+                <Button onClick={this.handleToggle}>Show dataset</Button>
                 <Backdrop
                   sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                   open={this.state.backdropActive}
@@ -80,7 +80,9 @@ class EditorView extends React.Component {
                     <DataView
                         url='data/example_profile_adac.json'
                     />
-                    <IconButton className={'data-view-close-button'} onClick={this.handleClose}>
+                    <IconButton 
+                        sx={{ color: '#fff'}}
+                        onClick={this.handleClose}>
                         close
                     </IconButton>
                 </Backdrop>
