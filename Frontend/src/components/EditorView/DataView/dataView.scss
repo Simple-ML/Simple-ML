@@ -1,0 +1,13 @@
+.data-view {
+  display: grid;
+  width: 80%;
+  height: 80%;
+  background-color: #808080;
+}
+.MuiTabPanel-root {
+  overflow: scroll;
+}
+.MuiTabs-flexContainer {
+  display: flex;
+  justify-content: right;
+}
