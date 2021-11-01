@@ -140,14 +140,22 @@ class EmfServiceDispatcher @Inject constructor(
 			val argumentList = SimpleMLFactory.eINSTANCE.createSmlArgumentList()
 			val reference = SimpleMLFactory.eINSTANCE.createSmlReference()
 
-			placeholder.name = createEntityDTO.placeholderName
+			when(functionRef) {
+				is SmlFunction -> {
+					reference.declaration = functionRef as SmlFunction
+				}
+				is SmlClass -> {
+					reference.declaration = functionRef as SmlClass
+				}
+			} 
 			
-			reference.declaration = functionRef as SmlFunction
 			call.receiver = reference
-
 			call.argumentList = argumentList
-			assignment.expression = call
+			
+			placeholder.name = createEntityDTO.placeholderName
 			assigneeList.assignees.add(placeholder)
+			
+			assignment.expression = call
 			assignment.assigneeList = assigneeList
 
 			((astRoot as SmlCompilationUnit).members[0] as SmlWorkflow).body.statements.add(assignment)
