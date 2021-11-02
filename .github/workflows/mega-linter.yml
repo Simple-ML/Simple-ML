@@ -1,6 +1,6 @@
 ---
 # Mega-Linter GitHub Action configuration file
-# More info at https://nvuillam.github.io/mega-linter
+# More info at https://megalinter.github.io
 name: Mega-Linter
 
 on:
@@ -37,11 +37,11 @@ jobs:
       - name: Mega-Linter
         id: ml
         # You can override Mega-Linter flavor used to have faster performances
-        # More info at https://nvuillam.github.io/mega-linter/flavors/
-        uses: nvuillam/mega-linter@v4
+        # More info at https://megalinter.github.io/flavors/
+        uses: megalinter/megalinter@v5
         env:
           # All available variables are described in documentation
-          # https://nvuillam.github.io/mega-linter/configuration/
+          # https://megalinter.github.io/configuration/
           VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -62,8 +62,8 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
-          commit-message: 'style: apply automatic fixes of linters'
-          title: 'style: apply automatic fixes of linters'
+          commit-message: "style: apply automatic fixes of linters"
+          title: "style: apply automatic fixes of linters"
           labels: bot
       - name: Create PR output
         if: steps.ml.outputs.has_updated_sources == 1 && (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && env.APPLY_FIXES_MODE == 'pull_request' && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository) && !contains(github.event.head_commit.message, 'skip fix')
@@ -80,4 +80,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           branch: ${{ github.event.pull_request.head.ref || github.head_ref || github.ref }}
-          commit_message: 'style: apply automatic fixes of linters'
+          commit_message: "style: apply automatic fixes of linters"
