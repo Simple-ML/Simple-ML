@@ -13,7 +13,7 @@ sealed class PlTerm {
                 when (it) {
                     null -> PlNull
                     is Boolean -> PlBooleanAtom(it)
-                    is Id -> PlNumber(it.value)
+                    is Id<*> -> PlNumber(it.value)
                     is Number -> PlNumber(it)
                     is String -> PlString(it)
                     is List<*> -> PlList(fromJavaRepresentation(it))

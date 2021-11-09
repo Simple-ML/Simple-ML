@@ -7,7 +7,7 @@ private const val factPrefix = "simpleml"
 class PlFactbase {
     val facts = mutableListOf<PlFact>()
 
-    inline fun <reified T: Node> Id.resolve(): T? {
+    inline fun <reified T: Node> Id<*>.resolve(): T? {
         return findUniqueFact<T> { it.id == this }
     }
 

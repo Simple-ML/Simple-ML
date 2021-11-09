@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 
 class SimpleMLAstToPrologFactbase {
-    private var idManager = IdManager()
+    private var idManager = IdManager<EObject>()
 
     fun createFactbase(obj: SmlCompilationUnit): PlFactbase {
         reset()
@@ -56,12 +56,12 @@ class SimpleMLAstToPrologFactbase {
         +SourceLocationS(obj)
     }
 
-    private fun PlFactbase.handleImport(obj: SmlImport, parentId: Id) {
+    private fun PlFactbase.handleImport(obj: SmlImport, parentId: Id<SmlCompilationUnit>) {
 //        +ImportT(obj.id, parentId, obj.importedNamespace, obj.alias)
 //        +SourceLocationS(obj)
     }
 
-    private fun PlFactbase.handleDeclaration(obj: SmlDeclaration, parentId: Id) {
+    private fun PlFactbase.handleDeclaration(obj: SmlDeclaration, parentId: Id<*>) {
 //        if (idManager.knowsObject(obj)) return
 //
 //        obj.annotations.forEach { handleAnnotationUse(it, obj.id) }
@@ -393,7 +393,7 @@ class SimpleMLAstToPrologFactbase {
 
     // TODO the solution using null to mark unresolved references is not ideal yet since we then lose the referenced name
     //  example: for call() the resulting callT fact has the callable set to null if it could not be linked to a function
-    private val EObject.referenceId: Id?
+    private val EObject.referenceId: Id<*>?
         get() {
             return if (this.eResource() == null) {
                 null
@@ -402,7 +402,7 @@ class SimpleMLAstToPrologFactbase {
             }
         }
 
-    private val Any.id: Id
+    private val <T: EObject> T.id: Id<T>
         get() = idManager.assignIdIfAbsent(this)
 
     private fun reset() {
