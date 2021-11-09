@@ -30,7 +30,7 @@ sealed class PlFact(factName: String, vararg arguments: Any?) {
     private val arity = arguments.size
 
     /**
-     * The functor of this fact, i. e. factName/arity.
+     * The functor of this fact, i.e. factName/arity.
      *
      * **Example:** If the name is "example" and the number of arguments (= arity) is 3, the functor is "example/3".
      */
@@ -177,7 +177,7 @@ sealed class DeclarationT(factName: String, id: Id, parent: Id, name: String, va
  *
  * @param parameters
  * The list of parameters or null. Each element in the list is the ID of a parameterT fact for the respective parameter.
- * Note that an empty list is used for an annotation with an empty parameter list, e. g. `annotation A()`, while null is
+ * Note that an empty list is used for an annotation with an empty parameter list, e.g. `annotation A()`, while null is
  * used for an annotation with no parameter list at all, like `annotation B`.
  */
 data class AnnotationT(override val id: Id, override val parent: Id, override val name: String, val parameters: List<Id>?)
@@ -219,12 +219,12 @@ data class AttributeT(override val id: Id, override val parent: Id, override val
  *
  * @param typeParameters
  * The list of type parameters or null. Each element in the list is the ID of a typeParameterT fact for the respective
- * type parameter. Note that an empty list is used for a class with an empty type parameter list, e. g. `class A<>`,
+ * type parameter. Note that an empty list is used for a class with an empty type parameter list, e.g. `class A<>`,
  * while null is used for a class with no type parameter list at all, like `class B`.
  *
  * @param parameters
  * The list of parameters or null. Each element in the list is the ID of a parameterT fact for the respective parameter.
- * Note that an empty list is used for a class with a constructor with an empty parameter list, e. g. `class A()`, while
+ * Note that an empty list is used for a class with a constructor with an empty parameter list, e.g. `class A()`, while
  * null is used for a class with no constructor at all, like `class B`.
  *
  * @param parentTypes
@@ -239,7 +239,7 @@ data class AttributeT(override val id: Id, override val parent: Id, override val
  *
  * @param members
  * The list of class members or null. Each element in the list is the ID of the fact for the respective member. Note
- * that an empty list is used for a class with an empty body, e. g. `class A {}`, while null is used for a class without
+ * that an empty list is used for a class with an empty body, e.g. `class A {}`, while null is used for a class without
  * a body, like `class B`.
  */
 data class ClassT(
@@ -279,7 +279,7 @@ data class ClassT(
  *
  * @param instances
  * The list of instances or null. Each element in the list is the ID of the enumInstanceT fact for the respective
- * instance. Note that an empty list is used for an enum with an empty body, e. g. `enum A {}`, while null is used for
+ * instance. Note that an empty list is used for an enum with an empty body, e.g. `enum A {}`, while null is used for
  * an enum without a body, like `enum B`.
  */
 data class EnumT(override val id: Id, override val parent: Id, override val name: String, val instances: List<Id>?)
@@ -318,7 +318,7 @@ data class EnumInstanceT(override val id: Id, override val parent: Id, override 
  *
  * @param typeParameters
  * The list of type parameters or null. Each element in the list is the ID of a typeParameterT fact for the respective
- * type parameter. Note that an empty list is used for a function with an empty type parameter list, e. g. `fun a<>()`,
+ * type parameter. Note that an empty list is used for a function with an empty type parameter list, e.g. `fun a<>()`,
  * while null is used for a function with no type parameter list at all, like `fun b()`.
  *
  * @param parameters
@@ -327,7 +327,7 @@ data class EnumInstanceT(override val id: Id, override val parent: Id, override 
  *
  * @param results
  * The list of result or null. Each element in the list is the ID of a resultT fact for the respective result. Note that
- * an empty list is used for a function with an empty result list, e. g. `fun a() -> ()`, while null is used for a
+ * an empty list is used for a function with an empty result list, e.g. `fun a() -> ()`, while null is used for a
  * function with no result list at all, like `fun b()`.
  *
  * @param typeParameterConstraints
@@ -370,12 +370,12 @@ data class FunctionT(
  *
  * @param typeParameters
  * The list of type parameters or null. Each element in the list is the ID of a typeParameterT fact for the respective
- * type parameter. Note that an empty list is used for a interface with an empty type parameter list, e. g.
+ * type parameter. Note that an empty list is used for a interface with an empty type parameter list, e.g.
  * `interface A<>`, while null is used for a interface with no type parameter list at all, like `interface B`.
  *
  * @param parameters
  * The list of parameters or null. Each element in the list is the ID of a parameterT fact for the respective parameter.
- * Note that an empty list is used for a interface with a constructor with an empty parameter list, e. g.
+ * Note that an empty list is used for a interface with a constructor with an empty parameter list, e.g.
  * `interface A()`, while null is used for a interface with no constructor at all, like `interface B`.
  *
  * @param parentTypes
@@ -390,7 +390,7 @@ data class FunctionT(
  *
  * @param members
  * The list of interface members or null. Each element in the list is the ID of the fact for the respective member. Note
- * that an empty list is used for a interface with an empty body, e. g. `interface A {}`, while null is used for a
+ * that an empty list is used for an interface with an empty body, e.g. `interface A {}`, while null is used for a
  * interface without a body, like `interface B`.
  */
 data class InterfaceT(
@@ -440,7 +440,7 @@ data class LambdaYieldT(override val id: Id, override val parent: Id, override v
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. an annotation.
+ * The ID of the fact for the logical parent, e.g. an annotation.
  *
  * @param name
  * The name of the parameter.
@@ -497,7 +497,7 @@ data class PlaceholderT(override val id: Id, override val parent: Id, override v
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a function.
+ * The ID of the fact for the logical parent, e.g. a function.
  *
  * @param name
  * The name of the result.
@@ -517,7 +517,7 @@ data class ResultT(override val id: Id, override val parent: Id, override val na
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a class.
+ * The ID of the fact for the logical parent, e.g. a class.
  *
  * @param name
  * The name of the type parameter.
@@ -569,7 +569,7 @@ data class WorkflowT(override val id: Id, override val parent: Id, override val 
  *
  * @param results
  * The list of result or null. Each element in the list is the ID of a resultT fact for the respective result. Note that
- * an empty list is used for a workflow step with an empty result list, e. g. `step a() -> () {}`, while null is used
+ * an empty list is used for a workflow step with an empty result list, e.g. `step a() -> () {}`, while null is used
  * for a workflow step with no result list at all, like `step b() {}`.
  *
  * @param statements
@@ -631,7 +631,7 @@ sealed class StatementT(factName: String, id: Id, parent: Id, vararg otherArgume
  * The assignees of this assignment (has at least one).
  *
  * @param expression
- * The ID of the fact for the expression on the right hand side of this assignment.
+ * The ID of the fact for the expression on the right-hand side of this assignment.
  */
 data class AssignmentT(override val id: Id, override val parent: Id, val assignees: List<Id>, val expression: Id)
     : StatementT("assignmentT", id, parent, assignees, expression) {
@@ -696,7 +696,7 @@ sealed class ExpressionT(factName: String, id: Id, parent: Id, enclosing: Id, va
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a call.
+ * The ID of the fact for the logical parent, e.g. a call.
  *
  * @param enclosing
  * The ID of the fact for closest ancestor that is not an expression. This is either a statement or an annotation use.
@@ -720,7 +720,7 @@ data class ArgumentT(override val id: Id, override val parent: Id, override val 
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a call.
+ * The ID of the fact for the logical parent, e.g. a call.
  *
  * @param enclosing
  * The ID of the fact for closest ancestor that is not an expression.
@@ -740,7 +740,7 @@ data class BooleanT(override val id: Id, override val parent: Id, override val e
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. another call.
+ * The ID of the fact for the logical parent, e.g. another call.
  *
  * @param enclosing
  * The ID of the fact for closest ancestor that is not an expression.
@@ -750,7 +750,7 @@ data class BooleanT(override val id: Id, override val parent: Id, override val e
  *
  * @param typeArguments
  * The list of type arguments or null. Each element in the list is the ID of a typeArgumentT fact for the respective
- * type argument. Note that an empty list is used for a call with an empty type argument list, e. g. `a<>()`, while null
+ * type argument. Note that an empty list is used for a call with an empty type argument list, e.g. `a<>()`, while null
  * is used for a call with no type argument list at all, like `b()`.
  *
  * @param arguments
@@ -783,7 +783,7 @@ data class CallT(
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a call.
+ * The ID of the fact for the logical parent, e.g. a call.
  *
  * @param enclosing
  * The ID of the fact for closest ancestor that is not an expression.
@@ -803,7 +803,7 @@ data class FloatT(override val id: Id, override val parent: Id, override val enc
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a call.
+ * The ID of the fact for the logical parent, e.g. a call.
  *
  * @param enclosing
  * The ID of the fact for closest ancestor that is not an expression.
@@ -843,7 +843,7 @@ data class InfixOperationT(
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a call.
+ * The ID of the fact for the logical parent, e.g. a call.
  *
  * @param enclosing
  * The ID of the fact for closest ancestor that is not an expression.
@@ -863,14 +863,14 @@ data class IntT(override val id: Id, override val parent: Id, override val enclo
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a call.
+ * The ID of the fact for the logical parent, e.g. a call.
  *
  * @param enclosing
  * The ID of the fact for closest ancestor that is not an expression.
  *
  * @param parameters
  * The list of parameters or null. Each element in the list is the ID of a parameterT fact for the respective parameter.
- * Note that an empty list is used for a call with an empty parameter list, e. g. `lambda a() {}`, while null is used
+ * Note that an empty list is used for a call with an empty parameter list, e.g. `lambda a() {}`, while null is used
  * for a lambda with no parameter list at all, like `lambda b {}`.
  *
  * @param statements
@@ -901,7 +901,7 @@ data class LambdaT(
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a call.
+ * The ID of the fact for the logical parent, e.g. a call.
  *
  * @param enclosing
  * The ID of the fact for closest ancestor that is not an expression.
@@ -941,7 +941,7 @@ data class MemberAccessT(
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a call.
+ * The ID of the fact for the logical parent, e.g. a call.
  *
  * @param enclosing
  * The ID of the fact for closest ancestor that is not an expression.
@@ -958,7 +958,7 @@ data class NullT(override val id: Id, override val parent: Id, override val encl
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a call.
+ * The ID of the fact for the logical parent, e.g. a call.
  *
  * @param enclosing
  * The ID of the fact for closest ancestor that is not an expression.
@@ -978,7 +978,7 @@ data class ParenthesizedExpression(override val id: Id, override val parent: Id,
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a call.
+ * The ID of the fact for the logical parent, e.g. a call.
  *
  * @param enclosing
  * The ID of the fact for closest ancestor that is not an expression.
@@ -1013,13 +1013,13 @@ data class PrefixOperationT(
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a call.
+ * The ID of the fact for the logical parent, e.g. a call.
  *
  * @param enclosing
  * The ID of the fact for closest ancestor that is not an expression.
  *
  * @param symbol
- * The ID of the fact for the referenced symbol an unresolvedT fact if the reference could not be resolved.
+ * The ID of the fact for the referenced symbol or an unresolvedT fact if the reference could not be resolved.
  */
 data class ReferenceT(override val id: Id, override val parent: Id, override val enclosing: Id, val symbol: Id)
     : ExpressionT("referenceT", id, parent, enclosing, symbol) {
@@ -1033,7 +1033,7 @@ data class ReferenceT(override val id: Id, override val parent: Id, override val
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a call.
+ * The ID of the fact for the logical parent, e.g. a call.
  *
  * @param enclosing
  * The ID of the fact for closest ancestor that is not an expression.
@@ -1076,7 +1076,7 @@ sealed class TypeT(factName: String, id: Id, parent: Id, vararg otherArguments: 
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a parameter.
+ * The ID of the fact for the logical parent, e.g. a parameter.
  *
  * @param parameters
  * The IDs of the parameterT facts for the parameters of the callable type. The grammar requires the list to be there so
@@ -1098,7 +1098,7 @@ data class CallableTypeT(override val id: Id, override val parent: Id, val param
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a parameter.
+ * The ID of the fact for the logical parent, e.g. a parameter.
  *
  * @param receiver
  * The ID of the fact for the receiver of the member type.
@@ -1118,14 +1118,14 @@ data class MemberTypeT(override val id: Id, override val parent: Id, val receive
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a parameter.
+ * The ID of the fact for the logical parent, e.g. a parameter.
  *
  * @param declaration
  * The ID of the fact for the declaration that is used as the type.
  *
  * @param typeArguments
  * The list of type arguments or null. Each element in the list is the ID of a typeArgumentT fact for the respective
- * type argument. Note that an empty list is used for a named type with an empty type argument list, e. g. `A<>`, while
+ * type argument. Note that an empty list is used for a named type with an empty type argument list, e.g. `A<>`, while
  * null is used for a named type with no type argument list at all, like `B`.
  *
  * @param isNullable
@@ -1155,7 +1155,7 @@ data class NamedTypeT(
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a parameter.
+ * The ID of the fact for the logical parent, e.g. a parameter.
  *
  * @param type
  * The ID of the fact for the type inside the parentheses.
@@ -1172,7 +1172,7 @@ data class ParenthesizedType(override val id: Id, override val parent: Id, val t
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a parameter.
+ * The ID of the fact for the logical parent, e.g. a parameter.
  */
 data class ThisTypeT(override val id: Id, override val parent: Id)
     : TypeT("thisTypeT", id, parent) {
@@ -1186,7 +1186,7 @@ data class ThisTypeT(override val id: Id, override val parent: Id)
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a parameter.
+ * The ID of the fact for the logical parent, e.g. a parameter.
  *
  * @param typeArguments
  * The IDs of the typeArgumentT facts for the type arguments of this union type. Note that the grammar requires the list
@@ -1217,7 +1217,7 @@ data class UnionTypeT(override val id: Id, override val parent: Id, val typeArgu
  *
  * @param arguments
  * The list of arguments or null. Each element in the list is the ID of an argumentT fact for the respective argument.
- * Note that an empty list is used for an annotation use with an empty argument list, e. g. `@A()`, while null is used
+ * Note that an empty list is used for an annotation use with an empty argument list, e.g. `@A()`, while null is used
  * for an annotation use without an argument list, like `@B`.
  */
 data class AnnotationUseT(override val id: Id, override val parent: Id, val annotation: Id, val arguments: List<Id>?)
@@ -1263,7 +1263,7 @@ data class StarProjectionT(override val id: Id, override val parent: Id)
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a call.
+ * The ID of the fact for the logical parent, e.g. a call.
  *
  * @param typeParameter
  * If the type argument is named, this is the ID of the typeParameterT fact for the referenced type parameter or an
@@ -1284,7 +1284,7 @@ data class TypeArgumentT(override val id: Id, override val parent: Id, val typeP
  * The ID of this fact.
  *
  * @param parent
- * The ID of the fact for the logical parent, e. g. a class.
+ * The ID of the fact for the logical parent, e.g. a class.
  *
  * @param leftOperand
  * The ID of the typeParameterT fact for the type parameter that is used as the left operand.
@@ -1340,7 +1340,7 @@ data class TypeProjectionT(override val id: Id, override val parent: Id, val var
  * The ID of this fact.
  *
  * @param name
- * The name of the references declaration.
+ * The name of the referenced declaration.
  */
 data class UnresolvedT(override val id: Id, val name: String)
     : Node("unresolvedT", id, name) {
