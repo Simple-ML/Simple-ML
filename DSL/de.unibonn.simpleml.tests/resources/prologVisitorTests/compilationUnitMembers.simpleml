@@ -22,7 +22,25 @@ deprecated class MyComplexClass
     <T1, T2>
     constructor(a: Int, b: Int)
     sub SuperClass, SuperInterface
-    where T2 super Number, T3 sub Number
+    where T1 super Number, T2 sub Number
+{
+    attr myAttribute: Int
+    class MyClass
+    enum MyEnum
+    interface MyInterface
+    fun MyFunction()
+}
+
+
+// Interfaces ----------------------------------------------------------------------------------------------------------
+interface MySimpleInterface
+
+@MySimpleAnnotation
+deprecated interface MyComplexInterface
+    <T1, T2>
+    constructor(a: Int, b: Int)
+    sub SuperClass, SuperInterface
+    where T1 super Number, T2 sub Number
 {
     attr myAttribute: Int
     class MyClass

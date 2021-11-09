@@ -1,11 +1,11 @@
 package de.unibonn.simpleml.prolog_bridge.converters
 
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
-import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
+import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
@@ -117,7 +117,22 @@ class SimpleMLAstToPrologFactbase {
 
                 }
                 is SmlInterface -> {
+                    obj.typeParametersOrEmpty().forEach { handleTypeParameter(it, obj.id) }
+                    obj.parametersOrEmpty().forEach { handleParameter(it, obj.id) }
+                    obj.parentTypesOrEmpty().forEach { handleType(it, obj.id) }
+                    obj.typeParameterConstraintsOrEmpty().forEach { handleTypeParameterConstraint(it, obj.id) }
+                    obj.membersOrEmpty().forEach { handleGlobalDeclaration(it, obj.id) }
 
+                    +InterfaceT(
+                        obj.id,
+                        parentId,
+                        obj.name,
+                        obj.typeParameterList?.typeParameters?.map { it.id },
+                        obj.constructor?.parameterList?.parameters?.map { it.id },
+                        obj.parentTypeList?.parentTypes?.map { it.id },
+                        obj.typeParameterConstraintList?.constraints?.map { it.id },
+                        obj.body?.members?.map { it.id }
+                    )
                 }
                 is SmlWorkflow -> {
 
@@ -192,34 +207,6 @@ class SimpleMLAstToPrologFactbase {
 //                +ParameterT(obj.id, parentId, obj.name, obj.isVararg, obj.type?.id, obj.defaultValue?.id)
 //            }
 //            is SmlNamedTypeDeclaration -> {
-//                when (obj) {
-//                    is SmlClassOrInterface -> {
-//                        obj.body?.members?.forEach { handleDeclaration(it, parentId) }
-//                        obj.constructor?.let { handleConstructor(obj.constructor, obj.id) }
-//                        obj.parentTypeList?.parentTypes?.forEach { handleType(it, parentId) }
-//                        obj.typeParameterConstraintsOrEmpty().forEach { handleTypeParameterConstraint(it, parentId) }
-//                        obj.typeParameterList?.typeParameters?.forEach { handleDeclaration(it, parentId) }
-//
-////                        when (obj) {
-////                            is SmlClass -> {
-////                                +ClassT(
-
-////                                )
-////                            }
-////                            is SmlInterface -> {
-////                                +InterfaceT(
-////                                        obj.id,
-////                                        parentId,
-////                                        obj.name,
-////                                        obj.typeParametersOrEmpty().map { it.id },
-////                                        obj.constructor?.id,
-////                                        obj.parentTypesOrEmpty().map { it.id },
-////                                        obj.typeParameterConstraintsOrEmpty().map { it.id },
-////                                        obj.membersOrEmpty().map { it.id }
-////                                )
-////                            }
-////                        }
-//                    }
 //                    is SmlEnum -> {
 //                        obj.body?.instances?.forEach { handleDeclaration(it, obj.id) }
 //                        +EnumT(obj.id, parentId, obj.name, obj.body?.instances?.map { it.id })

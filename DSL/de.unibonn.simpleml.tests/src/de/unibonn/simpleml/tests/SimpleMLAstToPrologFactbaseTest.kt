@@ -2,7 +2,6 @@ package de.unibonn.simpleml.tests
 
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import de.unibonn.simpleml.assertions.findUniqueFactOrFail
-import de.unibonn.simpleml.assertions.shouldBeChildOf
 import de.unibonn.simpleml.assertions.shouldBeNChildrenOf
 import de.unibonn.simpleml.assertions.shouldHaveNAnnotationUses
 import de.unibonn.simpleml.assertions.shouldHaveNModifiers
@@ -12,13 +11,12 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
+import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.util.getResourcePath
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldBeEmpty
-import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
-import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldEndWith
 import org.junit.jupiter.api.Nested
@@ -74,7 +72,7 @@ class SimpleMLAstToPrologFactbaseTest {
             @Test
             fun `should reference members`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
                 val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
-                shouldBeNChildrenOf(compilationUnitT.members, compilationUnitT, 4)
+                shouldBeNChildrenOf(compilationUnitT.members, compilationUnitT, 6)
             }
 
             @Test
@@ -206,6 +204,66 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should store modifiers`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
                 val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
                 shouldHaveNModifiers(classT, 1)
+            }
+        }
+
+        @Nested
+        inner class Interface {
+            @Test
+            fun `should handle simple interfaces`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+                val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MySimpleInterface" }
+                interfaceT.asClue {
+                    interfaceT.typeParameters.shouldBeNull()
+                    interfaceT.parameters.shouldBeNull()
+                    interfaceT.parentTypes.shouldBeNull()
+                    interfaceT.typeParameterConstraints.shouldBeNull()
+                    interfaceT.members.shouldBeNull()
+                }
+
+                shouldHaveNAnnotationUses(interfaceT, 0)
+                shouldHaveNModifiers(interfaceT, 0)
+            }
+
+            @Test
+            fun `should reference type parameters`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+                val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
+                shouldBeNChildrenOf(interfaceT.typeParameters, interfaceT, 2)
+            }
+
+            @Test
+            fun `should reference parameters`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+                val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
+                shouldBeNChildrenOf(interfaceT.parameters, interfaceT, 2)
+            }
+
+            @Test
+            fun `should reference parent types`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+                val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
+                shouldBeNChildrenOf(interfaceT.parentTypes, interfaceT, 2)
+            }
+
+            @Test
+            fun `should reference type parameter constraints`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+                val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
+                shouldBeNChildrenOf(interfaceT.typeParameterConstraints, interfaceT, 2)
+            }
+
+            @Test
+            fun `should reference members`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+                val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
+                shouldBeNChildrenOf(interfaceT.members, interfaceT, 5)
+            }
+
+            @Test
+            fun `should store annotation uses`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+                val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
+                shouldHaveNAnnotationUses(interfaceT, 1)
+            }
+
+            @Test
+            fun `should store modifiers`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+                val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
+                shouldHaveNModifiers(interfaceT, 1)
             }
         }
 
