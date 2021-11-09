@@ -379,7 +379,7 @@ data class EnumT(
  */
 data class EnumInstanceT(
     override val id: Id<SmlEnumInstance>,
-    override val parent: Id<SmlEnum>,
+    override val parent: Id<EObject>, // Actually just SmlEnum but this allows a handleDeclaration function
     override val name: String
 ) :
     DeclarationT("enumInstanceT", id, parent, name) {

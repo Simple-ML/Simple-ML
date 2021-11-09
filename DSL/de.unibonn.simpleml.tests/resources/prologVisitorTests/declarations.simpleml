@@ -32,6 +32,15 @@ deprecated class MyComplexClass
 }
 
 
+// Enums & Enum instances ----------------------------------------------------------------------------------------------
+enum MySimpleEnum
+
+@AnnotationUse deprecated enum MyComplexEnum {
+    MY_SIMPLE_INSTANCE,
+    @AnnotationUse deprecated MY_COMPLEX_INSTANCE
+}
+
+
 // Interfaces ----------------------------------------------------------------------------------------------------------
 interface MySimpleInterface
 

@@ -9,6 +9,8 @@ import de.unibonn.simpleml.prolog_bridge.Main
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
+import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
+import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
@@ -46,7 +48,6 @@ class SimpleMLAstToPrologFactbaseTest {
 
         @Nested
         inner class CompilationUnit {
-
             @Test
             fun `should handle empty files`() = withFactbaseFromFile("empty.simpleml") {
                 val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
@@ -58,21 +59,21 @@ class SimpleMLAstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should store package`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should store package`() = withFactbaseFromFile("declarations.simpleml") {
                 val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
                 compilationUnitT shouldBe compilationUnitT.copy(`package` = "myPackage")
             }
 
             @Test
-            fun `should reference imports`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should reference imports`() = withFactbaseFromFile("declarations.simpleml") {
                 val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
                 shouldBeNChildrenOf(compilationUnitT.imports, compilationUnitT, 3)
             }
 
             @Test
-            fun `should reference members`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should reference members`() = withFactbaseFromFile("declarations.simpleml") {
                 val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
-                shouldBeNChildrenOf(compilationUnitT.members, compilationUnitT, 6)
+                shouldBeNChildrenOf(compilationUnitT.members, compilationUnitT, 8)
             }
 
             @Test
@@ -89,9 +90,8 @@ class SimpleMLAstToPrologFactbaseTest {
 
         @Nested
         inner class Import {
-
             @Test
-            fun `should handle normal imports`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should handle normal imports`() = withFactbaseFromFile("declarations.simpleml") {
                 val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyClass" }
                 importT.asClue {
                     importT.alias.shouldBeNull()
@@ -99,7 +99,7 @@ class SimpleMLAstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should handle imports with alias`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should handle imports with alias`() = withFactbaseFromFile("declarations.simpleml") {
                 val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyOtherClass" }
                 importT.asClue {
                     importT.alias shouldBe "Class"
@@ -107,7 +107,7 @@ class SimpleMLAstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should handle imports with wildcard`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should handle imports with wildcard`() = withFactbaseFromFile("declarations.simpleml") {
                 val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.*" }
                 importT.asClue {
                     importT.alias.shouldBeNull()
@@ -118,7 +118,7 @@ class SimpleMLAstToPrologFactbaseTest {
         @Nested
         inner class Annotation {
             @Test
-            fun `should handle simple annotations`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should handle simple annotations`() = withFactbaseFromFile("declarations.simpleml") {
                 val annotationT = findUniqueFactOrFail<AnnotationT> { it.name == "MySimpleAnnotation" }
                 annotationT.asClue {
                     annotationT.parameters.shouldBeNull()
@@ -129,19 +129,19 @@ class SimpleMLAstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should reference parameters`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should reference parameters`() = withFactbaseFromFile("declarations.simpleml") {
                 val annotationT = findUniqueFactOrFail<AnnotationT> { it.name == "MyComplexAnnotation" }
                 shouldBeNChildrenOf(annotationT.parameters, annotationT, 2)
             }
 
             @Test
-            fun `should store annotation uses`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should store annotation uses`() = withFactbaseFromFile("declarations.simpleml") {
                 val annotationT = findUniqueFactOrFail<AnnotationT> { it.name == "MyComplexAnnotation" }
                 shouldHaveNAnnotationUses(annotationT, 1)
             }
 
             @Test
-            fun `should store modifiers`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
                 val annotationT = findUniqueFactOrFail<AnnotationT> { it.name == "MyComplexAnnotation" }
                 shouldHaveNModifiers(annotationT, 1)
             }
@@ -150,7 +150,7 @@ class SimpleMLAstToPrologFactbaseTest {
         @Nested
         inner class Class {
             @Test
-            fun `should handle simple classes`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should handle simple classes`() = withFactbaseFromFile("declarations.simpleml") {
                 val classT = findUniqueFactOrFail<ClassT> { it.name == "MySimpleClass" }
                 classT.asClue {
                     classT.typeParameters.shouldBeNull()
@@ -165,52 +165,106 @@ class SimpleMLAstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should reference type parameters`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should reference type parameters`() = withFactbaseFromFile("declarations.simpleml") {
                 val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
                 shouldBeNChildrenOf(classT.typeParameters, classT, 2)
             }
 
             @Test
-            fun `should reference parameters`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should reference parameters`() = withFactbaseFromFile("declarations.simpleml") {
                 val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
                 shouldBeNChildrenOf(classT.parameters, classT, 2)
             }
 
             @Test
-            fun `should reference parent types`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should reference parent types`() = withFactbaseFromFile("declarations.simpleml") {
                 val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
                 shouldBeNChildrenOf(classT.parentTypes, classT, 2)
             }
 
             @Test
-            fun `should reference type parameter constraints`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should reference type parameter constraints`() = withFactbaseFromFile("declarations.simpleml") {
                 val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
                 shouldBeNChildrenOf(classT.typeParameterConstraints, classT, 2)
             }
 
             @Test
-            fun `should reference members`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should reference members`() = withFactbaseFromFile("declarations.simpleml") {
                 val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
                 shouldBeNChildrenOf(classT.members, classT, 5)
             }
 
             @Test
-            fun `should store annotation uses`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should store annotation uses`() = withFactbaseFromFile("declarations.simpleml") {
                 val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
                 shouldHaveNAnnotationUses(classT, 1)
             }
 
             @Test
-            fun `should store modifiers`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
                 val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
                 shouldHaveNModifiers(classT, 1)
             }
         }
 
         @Nested
+        inner class Enum {
+            @Test
+            fun `should handle simple enums`() = withFactbaseFromFile("declarations.simpleml") {
+                val enumT = findUniqueFactOrFail<EnumT> { it.name == "MySimpleEnum" }
+                enumT.asClue {
+                    enumT.instances.shouldBeNull()
+                }
+
+                shouldHaveNAnnotationUses(enumT, 0)
+                shouldHaveNModifiers(enumT, 0)
+            }
+
+            @Test
+            fun `should reference instances`() = withFactbaseFromFile("declarations.simpleml") {
+                val enumT = findUniqueFactOrFail<EnumT> { it.name == "MyComplexEnum" }
+                shouldBeNChildrenOf(enumT.instances, enumT, 2)
+            }
+
+            @Test
+            fun `should store annotation uses`() = withFactbaseFromFile("declarations.simpleml") {
+                val enumT = findUniqueFactOrFail<EnumT> { it.name == "MyComplexEnum" }
+                shouldHaveNAnnotationUses(enumT, 1)
+            }
+
+            @Test
+            fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
+                val enumT = findUniqueFactOrFail<EnumT> { it.name == "MyComplexEnum" }
+                shouldHaveNModifiers(enumT, 1)
+            }
+        }
+
+        @Nested
+        inner class EnumInstance {
+            @Test
+            fun `should handle simple enum instances`() = withFactbaseFromFile("declarations.simpleml") {
+                val enumInstanceT = findUniqueFactOrFail<EnumInstanceT> { it.name == "MY_SIMPLE_INSTANCE" }
+                shouldHaveNAnnotationUses(enumInstanceT, 0)
+                shouldHaveNModifiers(enumInstanceT, 0)
+            }
+
+            @Test
+            fun `should store annotation uses`() = withFactbaseFromFile("declarations.simpleml") {
+                val enumInstanceT = findUniqueFactOrFail<EnumInstanceT> { it.name == "MY_COMPLEX_INSTANCE" }
+                shouldHaveNAnnotationUses(enumInstanceT, 1)
+            }
+
+            @Test
+            fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
+                val enumInstanceT = findUniqueFactOrFail<EnumInstanceT> { it.name == "MY_COMPLEX_INSTANCE" }
+                shouldHaveNModifiers(enumInstanceT, 1)
+            }
+        }
+
+        @Nested
         inner class Interface {
             @Test
-            fun `should handle simple interfaces`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should handle simple interfaces`() = withFactbaseFromFile("declarations.simpleml") {
                 val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MySimpleInterface" }
                 interfaceT.asClue {
                     interfaceT.typeParameters.shouldBeNull()
@@ -225,50 +279,50 @@ class SimpleMLAstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should reference type parameters`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should reference type parameters`() = withFactbaseFromFile("declarations.simpleml") {
                 val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
                 shouldBeNChildrenOf(interfaceT.typeParameters, interfaceT, 2)
             }
 
             @Test
-            fun `should reference parameters`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should reference parameters`() = withFactbaseFromFile("declarations.simpleml") {
                 val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
                 shouldBeNChildrenOf(interfaceT.parameters, interfaceT, 2)
             }
 
             @Test
-            fun `should reference parent types`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should reference parent types`() = withFactbaseFromFile("declarations.simpleml") {
                 val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
                 shouldBeNChildrenOf(interfaceT.parentTypes, interfaceT, 2)
             }
 
             @Test
-            fun `should reference type parameter constraints`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should reference type parameter constraints`() = withFactbaseFromFile("declarations.simpleml") {
                 val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
                 shouldBeNChildrenOf(interfaceT.typeParameterConstraints, interfaceT, 2)
             }
 
             @Test
-            fun `should reference members`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should reference members`() = withFactbaseFromFile("declarations.simpleml") {
                 val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
                 shouldBeNChildrenOf(interfaceT.members, interfaceT, 5)
             }
 
             @Test
-            fun `should store annotation uses`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should store annotation uses`() = withFactbaseFromFile("declarations.simpleml") {
                 val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
                 shouldHaveNAnnotationUses(interfaceT, 1)
             }
 
             @Test
-            fun `should store modifiers`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
                 val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
                 shouldHaveNModifiers(interfaceT, 1)
             }
         }
 
 //        @Test
-//        fun `should handle workflows`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+//        fun `should handle workflows`() = withFactbaseFromFile("declarations.simpleml") {
 //            val workflow = findUniqueFactOrFail<WorkflowT>()
 //            workflow shouldBe workflow.copy(name = "test")
 //
@@ -276,13 +330,13 @@ class SimpleMLAstToPrologFactbaseTest {
 //        }
 
 //        @Test
-//        fun `should handle native processes`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+//        fun `should handle native processes`() = withFactbaseFromFile("declarations.simpleml") {
 //            val process = findUniqueFactOrFail<FunctionT> { it.name == "nativeProcess" }
 //            process.asClue { it.statements?.shouldBeEmpty() }
 //        }
 //
 //        @Test
-//        fun `should handle internal processes`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+//        fun `should handle internal processes`() = withFactbaseFromFile("declarations.simpleml") {
 //            val process = findUniqueFactOrFail<FunctionT> { it.name == "internalProcess" }
 //            process.asClue {
 //                it.parameters shouldHaveSize 2
@@ -298,14 +352,14 @@ class SimpleMLAstToPrologFactbaseTest {
 //        }
 
 //        @Test
-//        fun `should handle modifiers`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+//        fun `should handle modifiers`() = withFactbaseFromFile("declarations.simpleml") {
 //            val modifier = findUniqueFactOrFail<ModifierT>()
 //            modifier.asClue { it.modifier shouldBe "public" }
 //            findUniqueFactOrFail<FunctionT> { it.id == modifier.parent }
 //        }
 
 //        @Test
-//        fun `should handle required parameters`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+//        fun `should handle required parameters`() = withFactbaseFromFile("declarations.simpleml") {
 //            val parameter = findUniqueFactOrFail<ParameterT> { it.name == "required" }
 //            parameter.asClue {
 ////                it.type?.resolve<ClassT>()?.name shouldBe "Int"
@@ -314,7 +368,7 @@ class SimpleMLAstToPrologFactbaseTest {
 //        }
 
 //        @Test
-//        fun `should handle optional parameters`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+//        fun `should handle optional parameters`() = withFactbaseFromFile("declarations.simpleml") {
 //            val parameter = findUniqueFactOrFail<ParameterT> { it.name == "optional" }
 //            parameter.asClue {
 ////                it.type?.resolve<ClassT>()?.name shouldBe "Int"
@@ -325,7 +379,7 @@ class SimpleMLAstToPrologFactbaseTest {
 //        }
 
 //        @Test
-//        fun `should handle results`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+//        fun `should handle results`() = withFactbaseFromFile("declarations.simpleml") {
 //            val result = findUniqueFactOrFail<ResultT>()
 //            result.asClue {
 //                it.name shouldBe "result"
@@ -334,7 +388,7 @@ class SimpleMLAstToPrologFactbaseTest {
 //        }
 
 //        @Test
-//        fun `should handle placeholders`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+//        fun `should handle placeholders`() = withFactbaseFromFile("declarations.simpleml") {
 //            findUniqueFactOrFail<PlaceholderT> { it.name == "placeholder" }
 //        }
     }

@@ -3,6 +3,8 @@ package de.unibonn.simpleml.prolog_bridge.converters
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
+import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
+import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
@@ -18,6 +20,7 @@ import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
+import de.unibonn.simpleml.simpleML.SmlEnumInstance
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlInterface
@@ -27,6 +30,7 @@ import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.utils.instancesOrEmpty
 import de.unibonn.simpleml.utils.membersOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
 import de.unibonn.simpleml.utils.parentTypesOrEmpty
@@ -68,7 +72,7 @@ class SimpleMLAstToPrologFactbase {
 
     private fun PlFactbase.handleCompilationUnit(obj: SmlCompilationUnit) = handleEObject(obj) {
         obj.imports.forEach { handleImport(it, obj.id) }
-        obj.members.forEach { handleGlobalDeclaration(it, obj.id) }
+        obj.members.forEach { handleDeclaration(it, obj.id) }
 
         +CompilationUnitT(obj.id, obj.name, obj.imports.map { it.id }, obj.members.map { it.id })
         +FileS(obj.id, obj.eResource().uri.toUNIXString())
@@ -78,7 +82,7 @@ class SimpleMLAstToPrologFactbase {
         +ImportT(obj.id, parentId, obj.importedNamespace, obj.alias)
     }
 
-    private fun PlFactbase.handleGlobalDeclaration(obj: SmlDeclaration, parentId: Id<EObject>): Unit =
+    private fun PlFactbase.handleDeclaration(obj: SmlDeclaration, parentId: Id<EObject>): Unit =
         handleEObject(obj) {
             obj.annotations.forEach { handleAnnotationUse(it, obj.id) }
             obj.modifiers.forEach { handleModifier(it, obj.id) }
@@ -97,7 +101,7 @@ class SimpleMLAstToPrologFactbase {
                     obj.parametersOrEmpty().forEach { handleParameter(it, obj.id) }
                     obj.parentTypesOrEmpty().forEach { handleType(it, obj.id) }
                     obj.typeParameterConstraintsOrEmpty().forEach { handleTypeParameterConstraint(it, obj.id) }
-                    obj.membersOrEmpty().forEach { handleGlobalDeclaration(it, obj.id) }
+                    obj.membersOrEmpty().forEach { handleDeclaration(it, obj.id) }
 
                     +ClassT(
                         obj.id,
@@ -111,7 +115,12 @@ class SimpleMLAstToPrologFactbase {
                     )
                 }
                 is SmlEnum -> {
+                    obj.instancesOrEmpty().forEach { handleDeclaration(it, obj.id) }
 
+                    +EnumT(obj.id, parentId, obj.name, obj.body?.instances?.map { it.id })
+                }
+                is SmlEnumInstance -> {
+                    +EnumInstanceT(obj.id, parentId, obj.name)
                 }
                 is SmlFunction -> {
 
@@ -121,7 +130,7 @@ class SimpleMLAstToPrologFactbase {
                     obj.parametersOrEmpty().forEach { handleParameter(it, obj.id) }
                     obj.parentTypesOrEmpty().forEach { handleType(it, obj.id) }
                     obj.typeParameterConstraintsOrEmpty().forEach { handleTypeParameterConstraint(it, obj.id) }
-                    obj.membersOrEmpty().forEach { handleGlobalDeclaration(it, obj.id) }
+                    obj.membersOrEmpty().forEach { handleDeclaration(it, obj.id) }
 
                     +InterfaceT(
                         obj.id,
