@@ -1,10 +1,12 @@
-package de.unibonn.simpleml.tests.assertions
+package de.unibonn.simpleml.assertions
 
 import de.unibonn.simpleml.prolog_bridge.utils.Id
 import de.unibonn.simpleml.prolog_bridge.model.facts.*
+import de.unibonn.simpleml.simpleML.SmlExpression
 import io.kotest.assertions.asClue
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
+import org.eclipse.emf.ecore.EObject
 
 inline fun <reified T : PlFact> PlFactbase.findUniqueFactOrFail(filter: (T) -> Boolean = { true }): T {
     shouldHaveUniqueFact(filter)
@@ -20,7 +22,7 @@ inline fun <reified T : PlFact> PlFactbase.shouldHaveUniqueFact(filter: (T) -> B
     }
 }
 
-fun PlFactbase.shouldBeChildOf(childId: Id, parent: Node) {
+fun PlFactbase.shouldBeChildOf(childId: Id<EObject>, parent: Node) {
     val child = findUniqueFactOrFail<NodeWithParent> { it.id == childId }
     child.asClue {
         it.id.value shouldBeGreaterThan parent.id.value
@@ -28,7 +30,7 @@ fun PlFactbase.shouldBeChildOf(childId: Id, parent: Node) {
     }
 }
 
-fun PlFactbase.shouldBeChildExpressionOf(childId: Id, parent: Node) {
+fun PlFactbase.shouldBeChildExpressionOf(childId: Id<SmlExpression>, parent: Node) {
     val child = findUniqueFactOrFail<ExpressionT> { it.id == childId }
     child.asClue {
         it.id.value shouldBeGreaterThan parent.id.value
@@ -37,7 +39,7 @@ fun PlFactbase.shouldBeChildExpressionOf(childId: Id, parent: Node) {
     }
 }
 
-private fun expectedEnclosing(parent: Node): Id {
+private fun expectedEnclosing(parent: Node): Id<EObject> {
     return when (parent) {
         is ExpressionT -> parent.enclosing
         else -> parent.id

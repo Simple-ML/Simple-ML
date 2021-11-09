@@ -1,22 +1,28 @@
 package de.unibonn.simpleml.tests
 
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
+import de.unibonn.simpleml.assertions.findUniqueFactOrFail
+import de.unibonn.simpleml.assertions.shouldBeChildOf
 import de.unibonn.simpleml.prolog_bridge.Main
-import de.unibonn.simpleml.prolog_bridge.model.facts.*
-import de.unibonn.simpleml.tests.assertions.findUniqueFactOrFail
-import de.unibonn.simpleml.tests.assertions.shouldBeCloseTo
+import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
+import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
+import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
+import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.util.getResourcePath
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldEndWith
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class SimpleMLAstToPrologFactbaseTest {
 
     private val main = SimpleMLStandaloneSetup()
-            .createInjectorAndDoEMFRegistration()
-            .getInstance(Main::class.java)
+        .createInjectorAndDoEMFRegistration()
+        .getInstance(Main::class.java)
 
     private val testRoot = javaClass.classLoader.getResourcePath("prologVisitorTests").toString()
 
@@ -26,31 +32,92 @@ class SimpleMLAstToPrologFactbaseTest {
     // ****************************************************************************************************************/
 
     @Nested
-    inner class Definitions {
-        @Test
-        fun `should handle empty compilation units`() = withFactbaseFromFile("empty.simpleml") {
-            val compilationUnit = findUniqueFactOrFail<CompilationUnitT>()
-            compilationUnit.asClue {
-                it.imports.shouldBeEmpty()
-                it.members.shouldBeEmpty()
+    inner class Declarations {
+
+        @Nested
+        inner class CompilationUnit {
+
+            @Test
+            fun `should accept empty files`() = withFactbaseFromFile("empty.simpleml") {
+                val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
+                compilationUnitT.asClue {
+                    it.`package`.shouldBeNull()
+                    it.imports.shouldBeEmpty()
+                    it.members.shouldBeEmpty()
+                }
+            }
+
+            @Test
+            fun `should store package`() = withFactbaseFromFile("declarations.simpleml") {
+                val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
+                compilationUnitT shouldBe compilationUnitT.copy(`package` = "myPackage")
+            }
+
+            @Test
+            fun `should reference imports`() = withFactbaseFromFile("declarations.simpleml") {
+                val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
+                compilationUnitT.asClue {
+                    compilationUnitT.imports shouldHaveSize 3
+                    compilationUnitT.imports.forEach { shouldBeChildOf(it, compilationUnitT) }
+                }
+
+            }
+
+            @Test
+            fun `should reference members`() = withFactbaseFromFile("declarations.simpleml") {
+                val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
+                compilationUnitT.asClue {
+                    compilationUnitT.members shouldHaveSize 2
+                    compilationUnitT.members.forEach { member -> shouldBeChildOf(member, compilationUnitT) }
+                }
+            }
+
+            @Test
+            fun `should store filepath in separate relation`() = withFactbaseFromFile("empty.simpleml") {
+                val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
+                val fileT = findUniqueFactOrFail<FileS>()
+
+                fileT.asClue {
+                    fileT.target shouldBe compilationUnitT.id
+                    fileT.path shouldEndWith "prologVisitorTests/empty.simpleml"
+                }
             }
         }
 
-        @Test
-        fun `should create fileS facts for compilation units`() = withFactbaseFromFile("empty.simpleml") {
-            val compilationUnit = findUniqueFactOrFail<CompilationUnitT>()
-            val file = findUniqueFactOrFail<FileS>()
+        @Nested
+        inner class Import {
 
-            file.asClue {
-                it.target.shouldBe(compilationUnit.id)
+            @Test
+            fun `should accept normal imports`() = withFactbaseFromFile("declarations.simpleml") {
+                val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyClass" }
+                importT.asClue {
+                    importT.alias.shouldBeNull()
+                }
+            }
+
+            @Test
+            fun `should accept imports with alias`() = withFactbaseFromFile("declarations.simpleml") {
+                val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyOtherClass" }
+                importT.asClue {
+                    importT.alias shouldBe "Class"
+                }
+            }
+
+            @Test
+            fun `should accept imports with wildcard`() = withFactbaseFromFile("declarations.simpleml") {
+                val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.*" }
+                importT.asClue {
+                    importT.alias.shouldBeNull()
+                }
             }
         }
+
 
 //        @Test
-//        fun `should handle compilation units with definitions`() = withFactbaseFromFile("definitions.simpleml") {
+//        fun `should handle compilation units with definitions`() = withFactbaseFromFile("declarations.simpleml") {
 //            val compilationUnit = findUniqueFactOrFail<CompilationUnitT>()
 //            compilationUnit.asClue {
-//                it.`package`.shouldNotBeNull()
+//                it.`package`.shouldBe("de.unibonn.test_package")
 //                it.workflow.shouldNotBeNull()
 //                it.processes shouldHaveSize 2
 //            }
@@ -61,22 +128,17 @@ class SimpleMLAstToPrologFactbaseTest {
 //            compilationUnit.processes.forEach { shouldBeChildOf(it, compilationUnit) }
 //        }
 
+
 //        @Test
-//        fun `should handle imports`() = withFactbaseFromFile("definitions.simpleml") {
+//        fun `should handle imports`() = withFactbaseFromFile("declarations.simpleml") {
 //            val import = findUniqueFactOrFail<ImportT>()
 //            import shouldBe import.copy(imported = "de.unibonn.imported_package.*")
 //            findUniqueFactOrFail<CompilationUnitT> { it.id == import.parent }
 //        }
 
-//        @Test
-//        fun `should handle package`() = withFactbaseFromFile("definitions.simpleml") {
-//            val `package` = findUniqueFactOrFail<PackageT>()
-//            `package` shouldBe `package`.copy(name = "de.unibonn.test_package")
-//            findUniqueFactOrFail<CompilationUnitT> { it.id == `package`.parent }
-//        }
 
 //        @Test
-//        fun `should handle workflows`() = withFactbaseFromFile("definitions.simpleml") {
+//        fun `should handle workflows`() = withFactbaseFromFile("declarations.simpleml") {
 //            val workflow = findUniqueFactOrFail<WorkflowT>()
 //            workflow shouldBe workflow.copy(name = "test")
 //
@@ -84,13 +146,13 @@ class SimpleMLAstToPrologFactbaseTest {
 //        }
 
 //        @Test
-//        fun `should handle native processes`() = withFactbaseFromFile("definitions.simpleml") {
+//        fun `should handle native processes`() = withFactbaseFromFile("declarations.simpleml") {
 //            val process = findUniqueFactOrFail<FunctionT> { it.name == "nativeProcess" }
 //            process.asClue { it.statements?.shouldBeEmpty() }
 //        }
 //
 //        @Test
-//        fun `should handle internal processes`() = withFactbaseFromFile("definitions.simpleml") {
+//        fun `should handle internal processes`() = withFactbaseFromFile("declarations.simpleml") {
 //            val process = findUniqueFactOrFail<FunctionT> { it.name == "internalProcess" }
 //            process.asClue {
 //                it.parameters shouldHaveSize 2
@@ -106,14 +168,14 @@ class SimpleMLAstToPrologFactbaseTest {
 //        }
 
 //        @Test
-//        fun `should handle modifiers`() = withFactbaseFromFile("definitions.simpleml") {
+//        fun `should handle modifiers`() = withFactbaseFromFile("declarations.simpleml") {
 //            val modifier = findUniqueFactOrFail<ModifierT>()
 //            modifier.asClue { it.modifier shouldBe "public" }
 //            findUniqueFactOrFail<FunctionT> { it.id == modifier.parent }
 //        }
 
 //        @Test
-//        fun `should handle required parameters`() = withFactbaseFromFile("definitions.simpleml") {
+//        fun `should handle required parameters`() = withFactbaseFromFile("declarations.simpleml") {
 //            val parameter = findUniqueFactOrFail<ParameterT> { it.name == "required" }
 //            parameter.asClue {
 ////                it.type?.resolve<ClassT>()?.name shouldBe "Int"
@@ -122,7 +184,7 @@ class SimpleMLAstToPrologFactbaseTest {
 //        }
 
 //        @Test
-//        fun `should handle optional parameters`() = withFactbaseFromFile("definitions.simpleml") {
+//        fun `should handle optional parameters`() = withFactbaseFromFile("declarations.simpleml") {
 //            val parameter = findUniqueFactOrFail<ParameterT> { it.name == "optional" }
 //            parameter.asClue {
 ////                it.type?.resolve<ClassT>()?.name shouldBe "Int"
@@ -133,7 +195,7 @@ class SimpleMLAstToPrologFactbaseTest {
 //        }
 
 //        @Test
-//        fun `should handle results`() = withFactbaseFromFile("definitions.simpleml") {
+//        fun `should handle results`() = withFactbaseFromFile("declarations.simpleml") {
 //            val result = findUniqueFactOrFail<ResultT>()
 //            result.asClue {
 //                it.name shouldBe "result"
@@ -142,7 +204,7 @@ class SimpleMLAstToPrologFactbaseTest {
 //        }
 
 //        @Test
-//        fun `should handle placeholders`() = withFactbaseFromFile("definitions.simpleml") {
+//        fun `should handle placeholders`() = withFactbaseFromFile("declarations.simpleml") {
 //            findUniqueFactOrFail<PlaceholderT> { it.name == "placeholder" }
 //        }
     }

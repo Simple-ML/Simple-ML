@@ -1,7 +1,15 @@
 package de.unibonn.simpleml.tests
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.tests.assertions.*
+import de.unibonn.simpleml.assertions.shouldHaveNoIssue
+import de.unibonn.simpleml.assertions.shouldHaveNoSemanticError
+import de.unibonn.simpleml.assertions.shouldHaveNoSemanticInfo
+import de.unibonn.simpleml.assertions.shouldHaveNoSemanticWarning
+import de.unibonn.simpleml.assertions.shouldHaveNoSyntaxError
+import de.unibonn.simpleml.assertions.shouldHaveSemanticError
+import de.unibonn.simpleml.assertions.shouldHaveSemanticInfo
+import de.unibonn.simpleml.assertions.shouldHaveSemanticWarning
+import de.unibonn.simpleml.assertions.shouldHaveSyntaxError
 import de.unibonn.simpleml.util.*
 import de.unibonn.simpleml.utils.OriginalFilePath
 import de.unibonn.simpleml.utils.outerZipBy

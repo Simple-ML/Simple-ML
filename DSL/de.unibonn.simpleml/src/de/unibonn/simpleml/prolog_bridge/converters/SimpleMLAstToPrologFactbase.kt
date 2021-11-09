@@ -1,14 +1,26 @@
 package de.unibonn.simpleml.prolog_bridge.converters
 
+import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
+import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.utils.Id
 import de.unibonn.simpleml.prolog_bridge.utils.IdManager
+import de.unibonn.simpleml.simpleML.SmlAnnotation
+import de.unibonn.simpleml.simpleML.SmlAnnotationUse
+import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlDeclaration
+import de.unibonn.simpleml.simpleML.SmlEnum
+import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
+import de.unibonn.simpleml.simpleML.SmlInterface
+import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlWorkflow
+import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.utils.parametersOrEmpty
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
@@ -43,37 +55,82 @@ class SimpleMLAstToPrologFactbase {
         }
     }
 
-    private fun PlFactbase.handleCompilationUnit(obj: SmlCompilationUnit) {
-
-        // Enforce order of IDs
-        obj.id
+    private fun PlFactbase.handleCompilationUnit(obj: SmlCompilationUnit) = handleEObject(obj) {
         obj.imports.forEach { handleImport(it, obj.id) }
-        obj.members.forEach { handleDeclaration(it, obj.id) }
+        obj.members.forEach { handleCompilationUnitMember(it, obj.id) }
 
-        // Create facts
         +CompilationUnitT(obj.id, obj.name, obj.imports.map { it.id }, obj.members.map { it.id })
         +FileS(obj.id, obj.eResource().uri.toUNIXString())
+    }
+
+    private fun PlFactbase.handleImport(obj: SmlImport, parentId: Id<SmlCompilationUnit>) = handleEObject(obj) {
+        +ImportT(obj.id, parentId, obj.importedNamespace, obj.alias)
+    }
+
+    private fun PlFactbase.handleCompilationUnitMember(obj: SmlDeclaration, parentId: Id<SmlCompilationUnit>) =
+        handleEObject(obj) {
+            obj.annotations.forEach { handleAnnotationUse(it, obj.id) }
+            obj.modifiers.forEach { handleModifier(it, obj.id) }
+
+            when (obj) {
+                is SmlAnnotation -> {
+                    obj.parametersOrEmpty().forEach { handleParameter(it, obj.id) }
+
+                    +AnnotationT(obj.id, parentId, obj.name, obj.parametersOrEmpty().map { it.id })
+                }
+                is SmlClass -> {
+
+                }
+                is SmlEnum -> {
+
+                }
+                is SmlFunction -> {
+
+                }
+                is SmlInterface -> {
+
+                }
+                is SmlWorkflow -> {
+
+                }
+                is SmlWorkflowStep -> {
+
+                }
+            }
+        }
+
+
+    private fun PlFactbase.handleAnnotationUse(obj: SmlAnnotationUse, parentId: Id<SmlDeclaration>) {
+//        if (idManager.knowsObject(obj)) return
+//
+//        obj.argumentList?.arguments?.forEach { handleArgument(it, obj.id, obj.id) }
+//        if (obj.annotation.name != null) {
+//            handleDeclaration(obj.annotation, obj.id)
+//        } else {
+//            val node = NodeModelUtils.getNode(obj).text.trim()
+//            +AnnotationT(obj.annotation.id, parentId, node, null)
+//        }
+    }
+
+    private fun PlFactbase.handleModifier(modifier: String, target: Id<SmlDeclaration>) {
+
+    }
+
+    private fun PlFactbase.handleParameter(obj: SmlParameter, parentId: Id<EObject>) =
+        handleEObject(obj) {
+        }
+
+    private fun PlFactbase.handleEObject(obj: EObject, handler: PlFactbase.() -> Unit) {
+        if (idManager.knowsObject(obj)) {
+            return
+        }
+
+        obj.id // Enforce creation of ID to ensure correct parent-child order
+        handler()
         +SourceLocationS(obj)
     }
 
-    private fun PlFactbase.handleImport(obj: SmlImport, parentId: Id<SmlCompilationUnit>) {
-//        +ImportT(obj.id, parentId, obj.importedNamespace, obj.alias)
-//        +SourceLocationS(obj)
-    }
 
-    private fun PlFactbase.handleDeclaration(obj: SmlDeclaration, parentId: Id<*>) {
-//        if (idManager.knowsObject(obj)) return
-//
-//        obj.annotations.forEach { handleAnnotationUse(it, obj.id) }
-//
-//        // TODO create facts for annotations and modifiers
-//
-//        when (obj) {
-//            is SmlAnnotation -> {
-//                obj.parametersOrEmpty().forEach { handleParameter(it, obj.id) }
-//
-//                +AnnotationT(obj.id, parentId, obj.name, obj.parametersOrEmpty().map { it.id })
-//            }
 //            is SmlAttribute -> {
 //                handleType(obj.type, obj.id)
 //                +AttributeT(obj.id, parentId, obj.name, obj.type?.referenceId)
@@ -166,27 +223,12 @@ class SimpleMLAstToPrologFactbase {
 //            }
 //        }
 
-        //+SourceLocationS(obj)
-    }
-
 //    private fun PlFactbase.handleConstructor(obj: SmlConstructor, parentId: Id) {
 //        if (idManager.knowsObject(obj)) return
 //
 //        obj.parameterList.parameters.forEach { handleParameter(it, obj.id) }
 ////        +ConstructorT(obj.id, parentId, obj.parameterList.parameters.map { it.id })
 //    }
-//
-//    private fun PlFactbase.handleAnnotationUse(obj: SmlAnnotationUse, parentId: Id) {
-//        if (idManager.knowsObject(obj)) return
-//
-//        obj.argumentList?.arguments?.forEach { handleArgument(it, obj.id, obj.id) }
-//        if (obj.annotation.name != null) {
-//            handleDeclaration(obj.annotation, obj.id)
-//        } else {
-//            val node = NodeModelUtils.getNode(obj).text.trim()
-//            +AnnotationT(obj.annotation.id, parentId, node, null)
-//        }
-//
 //        // TODO create an unresolved reference fact and use this in place of the annotation if it cannot be resolved
 ////        +AnnotationUseT(obj.id, parentId, obj.annotation?.id, obj.argumentList?.arguments?.map { it.id })
 //        +SourceLocationS(obj)
@@ -392,8 +434,8 @@ class SimpleMLAstToPrologFactbase {
 //    }
 
     // TODO the solution using null to mark unresolved references is not ideal yet since we then lose the referenced name
-    //  example: for call() the resulting callT fact has the callable set to null if it could not be linked to a function
-    private val EObject.referenceId: Id<*>?
+//  example: for call() the resulting callT fact has the callable set to null if it could not be linked to a function
+    private val EObject.referenceId: Id<EObject>?
         get() {
             return if (this.eResource() == null) {
                 null
@@ -402,7 +444,7 @@ class SimpleMLAstToPrologFactbase {
             }
         }
 
-    private val <T: EObject> T.id: Id<T>
+    private val <T : EObject> T.id: Id<T>
         get() = idManager.assignIdIfAbsent(this)
 
     private fun reset() {
