@@ -13,6 +13,7 @@ import de.unibonn.simpleml.simpleML.SmlExpression
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.ints.shouldBeGreaterThan
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import org.eclipse.emf.ecore.EObject
 
@@ -38,12 +39,36 @@ fun PlFactbase.shouldBeChildOf(childId: Id<EObject>, parent: Node) {
     }
 }
 
+fun PlFactbase.shouldBeNChildrenOf(
+    childIds: List<Id<EObject>>?,
+    parent: Node,
+    n: Int
+) {
+    childIds.shouldNotBeNull()
+    childIds shouldHaveSize n
+    childIds.forEach {
+        shouldBeChildOf(it, parent)
+    }
+}
+
 fun PlFactbase.shouldBeChildExpressionOf(childId: Id<SmlExpression>, parent: Node) {
     val child = findUniqueFactOrFail<ExpressionT> { it.id == childId }
     child.asClue {
         it.id.value shouldBeGreaterThan parent.id.value
         it.parent shouldBe parent.id
         it.enclosing shouldBe expectedEnclosing(parent)
+    }
+}
+
+fun PlFactbase.shouldBeNChildExpressionsOf(
+    childIds: List<Id<SmlExpression>>?,
+    parent: Node,
+    n: Int
+) {
+    childIds.shouldNotBeNull()
+    childIds shouldHaveSize n
+    childIds.forEach {
+        shouldBeChildExpressionOf(it, parent)
     }
 }
 
@@ -54,15 +79,19 @@ private fun expectedEnclosing(parent: Node): Id<EObject> {
     }
 }
 
-fun PlFactbase.shouldHaveAnnotationUsesAndModifiers(
+fun PlFactbase.shouldHaveNAnnotationUses(
     declaration: DeclarationT,
-    annotationUseCount: Int,
-    modifierCount: Int
+    n: Int,
 ) {
     val annotationUses = findFacts<AnnotationUseT> { it.parent == declaration.id }
-    annotationUses shouldHaveSize annotationUseCount
+    annotationUses shouldHaveSize n
     annotationUses.forEach { shouldBeChildOf(it.id, declaration) }
+}
 
+fun PlFactbase.shouldHaveNModifiers(
+    declaration: DeclarationT,
+    n: Int
+) {
     val modifiers = findFacts<ModifierT> { it.target == declaration.id }
-    modifiers shouldHaveSize modifierCount
+    modifiers shouldHaveSize n
 }

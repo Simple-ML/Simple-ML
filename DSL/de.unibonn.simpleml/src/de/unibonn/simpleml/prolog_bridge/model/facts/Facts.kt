@@ -246,7 +246,7 @@ sealed class DeclarationT(
  */
 data class AnnotationT(
     override val id: Id<SmlAnnotation>,
-    override val parent: Id<SmlCompilationUnit>,
+    override val parent: Id<EObject>, // Actually just SmlCompilationUnit but this allows a handleDeclaration function
     override val name: String,
     val parameters: List<Id<SmlParameter>>?
 ) : DeclarationT("annotationT", id, parent, name, parameters) {
@@ -270,7 +270,7 @@ data class AnnotationT(
  */
 data class AttributeT(
     override val id: Id<SmlAttribute>,
-    override val parent: Id<SmlClassOrInterface>,
+    override val parent: Id<EObject>, // Actually just SmlClassOrInterface but this allows a handleDeclaration function
     override val name: String,
     val type: Id<SmlType>?
 ) :
@@ -512,7 +512,7 @@ data class InterfaceT(
  */
 data class LambdaYieldT(
     override val id: Id<SmlLambdaYield>,
-    override val parent: Id<SmlLambda>,
+    override val parent: Id<SmlAssignment>,
     override val name: String
 ) :
     DeclarationT("lambdaYieldT", id, parent, name) {
@@ -647,7 +647,7 @@ data class TypeParameterT(
  */
 data class WorkflowT(
     override val id: Id<SmlWorkflow>,
-    override val parent: Id<SmlCompilationUnit>,
+    override val parent: Id<EObject>, // Actually just SmlCompilationUnit but this allows a handleDeclaration function
     override val name: String,
     val statements: List<Id<SmlStatement>>
 ) : DeclarationT("workflowT", id, parent, name, statements) {
@@ -681,7 +681,7 @@ data class WorkflowT(
  */
 data class WorkflowStepT(
     override val id: Id<SmlWorkflowStep>,
-    override val parent: Id<SmlCompilationUnit>,
+    override val parent: Id<EObject>, // Actually just SmlCompilationUnit but this allows a handleDeclaration function
     override val name: String,
     val parameters: List<Id<SmlParameter>>,
     val results: List<Id<SmlResult>>?,

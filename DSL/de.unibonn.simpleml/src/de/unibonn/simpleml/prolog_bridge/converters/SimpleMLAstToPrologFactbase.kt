@@ -2,6 +2,7 @@ package de.unibonn.simpleml.prolog_bridge.converters
 
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
@@ -12,6 +13,7 @@ import de.unibonn.simpleml.prolog_bridge.utils.Id
 import de.unibonn.simpleml.prolog_bridge.utils.IdManager
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
+import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlDeclaration
@@ -20,9 +22,16 @@ import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlInterface
 import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlType
+import de.unibonn.simpleml.simpleML.SmlTypeParameter
+import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.utils.membersOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
+import de.unibonn.simpleml.utils.parentTypesOrEmpty
+import de.unibonn.simpleml.utils.typeParameterConstraintsOrEmpty
+import de.unibonn.simpleml.utils.typeParametersOrEmpty
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
@@ -59,7 +68,7 @@ class SimpleMLAstToPrologFactbase {
 
     private fun PlFactbase.handleCompilationUnit(obj: SmlCompilationUnit) = handleEObject(obj) {
         obj.imports.forEach { handleImport(it, obj.id) }
-        obj.members.forEach { handleCompilationUnitMember(it, obj.id) }
+        obj.members.forEach { handleGlobalDeclaration(it, obj.id) }
 
         +CompilationUnitT(obj.id, obj.name, obj.imports.map { it.id }, obj.members.map { it.id })
         +FileS(obj.id, obj.eResource().uri.toUNIXString())
@@ -69,10 +78,10 @@ class SimpleMLAstToPrologFactbase {
         +ImportT(obj.id, parentId, obj.importedNamespace, obj.alias)
     }
 
-    private fun PlFactbase.handleCompilationUnitMember(obj: SmlDeclaration, parentId: Id<SmlCompilationUnit>) =
+    private fun PlFactbase.handleGlobalDeclaration(obj: SmlDeclaration, parentId: Id<EObject>): Unit =
         handleEObject(obj) {
             obj.annotations.forEach { handleAnnotationUse(it, obj.id) }
-            obj.modifiers.forEach { handleModifier(obj.id, it) }
+            obj.modifiers.forEach { handleModifier(it, obj.id) }
 
             when (obj) {
                 is SmlAnnotation -> {
@@ -80,8 +89,26 @@ class SimpleMLAstToPrologFactbase {
 
                     +AnnotationT(obj.id, parentId, obj.name, obj.parameterList?.parameters?.map { it.id })
                 }
-                is SmlClass -> {
+                is SmlAttribute -> {
 
+                }
+                is SmlClass -> {
+                    obj.typeParametersOrEmpty().forEach { handleTypeParameter(it, obj.id) }
+                    obj.parametersOrEmpty().forEach { handleParameter(it, obj.id) }
+                    obj.parentTypesOrEmpty().forEach { handleType(it, obj.id) }
+                    obj.typeParameterConstraintsOrEmpty().forEach { handleTypeParameterConstraint(it, obj.id) }
+                    obj.membersOrEmpty().forEach { handleGlobalDeclaration(it, obj.id) }
+
+                    +ClassT(
+                        obj.id,
+                        parentId,
+                        obj.name,
+                        obj.typeParameterList?.typeParameters?.map { it.id },
+                        obj.constructor?.parameterList?.parameters?.map { it.id },
+                        obj.parentTypeList?.parentTypes?.map { it.id },
+                        obj.typeParameterConstraintList?.constraints?.map { it.id },
+                        obj.body?.members?.map { it.id }
+                    )
                 }
                 is SmlEnum -> {
 
@@ -103,26 +130,38 @@ class SimpleMLAstToPrologFactbase {
 
 
     private fun PlFactbase.handleAnnotationUse(obj: SmlAnnotationUse, parentId: Id<SmlDeclaration>) {
-//       TODO obj.argumentList?.arguments?.forEach { handleArgument(it, obj.id, obj.id) }
-
-        if (obj.annotation.name != null) {
-//            handleDeclaration(obj.annotation, obj.id)
-
-            // TODO: handle referenced declaration
-        } else {
-            // TODO: handle unresolved
-            val node = NodeModelUtils.getNode(obj).text.trim()
-//            +AnnotationT(obj.annotation.id, parentId, node, null)
-        }
-
-        +AnnotationUseT(obj.id, parentId, idManager.nextId(), obj.argumentList?.arguments?.map { it.id })
+////       TODO obj.argumentList?.arguments?.forEach { handleArgument(it, obj.id, obj.id) }
+//
+//        if (obj.annotation.name != null) {
+////            handleDeclaration(obj.annotation, obj.id)
+//
+//            // TODO: handle referenced declaration
+//        } else {
+//            // TODO: handle unresolved
+//            val node = NodeModelUtils.getNode(obj).text.trim()
+////            +AnnotationT(obj.annotation.id, parentId, node, null)
+//        }
+//
+//        +AnnotationUseT(obj.id, parentId, idManager.nextId(), obj.argumentList?.arguments?.map { it.id })
     }
 
-    private fun PlFactbase.handleModifier(target: Id<SmlDeclaration>, modifier: String) {
+    private fun PlFactbase.handleModifier(modifier: String, target: Id<SmlDeclaration>) {
         +ModifierT(target, modifier)
     }
 
     private fun PlFactbase.handleParameter(obj: SmlParameter, parentId: Id<EObject>) =
+        handleEObject(obj) {
+        }
+
+    private fun PlFactbase.handleTypeParameter(obj: SmlTypeParameter, parentId: Id<EObject>) =
+        handleEObject(obj) {
+        }
+
+    private fun PlFactbase.handleType(obj: SmlType, parentId: Id<EObject>) =
+        handleEObject(obj) {
+        }
+
+    private fun PlFactbase.handleTypeParameterConstraint(obj: SmlTypeParameterConstraint, parentId: Id<EObject>) =
         handleEObject(obj) {
         }
 
@@ -164,14 +203,7 @@ class SimpleMLAstToPrologFactbase {
 ////                        when (obj) {
 ////                            is SmlClass -> {
 ////                                +ClassT(
-////                                        obj.id,
-////                                        parentId,
-////                                        obj.name,
-////                                        obj.typeParametersOrEmpty().map { it.id },
-////                                        obj.constructor?.id,
-////                                        obj.parentTypesOrEmpty().map { it.id },
-////                                        obj.typeParameterConstraintsOrEmpty().map { it.id },
-////                                        obj.membersOrEmpty().map { it.id }
+
 ////                                )
 ////                            }
 ////                            is SmlInterface -> {

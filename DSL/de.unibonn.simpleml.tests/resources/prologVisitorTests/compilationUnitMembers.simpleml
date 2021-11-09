@@ -8,7 +8,25 @@ import myPackage.*
 // Annotations ---------------------------------------------------------------------------------------------------------
 annotation MySimpleAnnotation
 
-@MySimpleAnnotations deprecated annotation MyComplexAnnotation(
+@MySimpleAnnotation deprecated annotation MyComplexAnnotation(
     a: Int,
     b: Int
 )
+
+
+// Classes -------------------------------------------------------------------------------------------------------------
+class MySimpleClass
+
+@MySimpleAnnotation
+deprecated class MyComplexClass
+    <T1, T2>
+    constructor(a: Int, b: Int)
+    sub SuperClass, SuperInterface
+    where T2 super Number, T3 sub Number
+{
+    attr myAttribute: Int
+    class MyClass
+    enum MyEnum
+    interface MyInterface
+    fun MyFunction()
+}

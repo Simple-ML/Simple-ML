@@ -3,14 +3,15 @@ package de.unibonn.simpleml.tests
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import de.unibonn.simpleml.assertions.findUniqueFactOrFail
 import de.unibonn.simpleml.assertions.shouldBeChildOf
-import de.unibonn.simpleml.assertions.shouldHaveAnnotationUsesAndModifiers
+import de.unibonn.simpleml.assertions.shouldBeNChildrenOf
+import de.unibonn.simpleml.assertions.shouldHaveNAnnotationUses
+import de.unibonn.simpleml.assertions.shouldHaveNModifiers
 import de.unibonn.simpleml.prolog_bridge.Main
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
-import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
-import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.util.getResourcePath
 import io.kotest.assertions.asClue
@@ -67,19 +68,13 @@ class SimpleMLAstToPrologFactbaseTest {
             @Test
             fun `should reference imports`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
                 val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
-                compilationUnitT.asClue {
-                    compilationUnitT.imports shouldHaveSize 3
-                    compilationUnitT.imports.forEach { shouldBeChildOf(it, compilationUnitT) }
-                }
+                shouldBeNChildrenOf(compilationUnitT.imports, compilationUnitT, 3)
             }
 
             @Test
             fun `should reference members`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
                 val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
-                compilationUnitT.asClue {
-                    compilationUnitT.members shouldHaveSize 2
-                    compilationUnitT.members.forEach { member -> shouldBeChildOf(member, compilationUnitT) }
-                }
+                shouldBeNChildrenOf(compilationUnitT.members, compilationUnitT, 4)
             }
 
             @Test
@@ -130,18 +125,87 @@ class SimpleMLAstToPrologFactbaseTest {
                 annotationT.asClue {
                     annotationT.parameters.shouldBeNull()
                 }
+
+                shouldHaveNAnnotationUses(annotationT, 0)
+                shouldHaveNModifiers(annotationT, 0)
             }
 
             @Test
-            fun `should handle complex annotations`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+            fun `should reference parameters`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
                 val annotationT = findUniqueFactOrFail<AnnotationT> { it.name == "MyComplexAnnotation" }
-                annotationT.asClue {
-                    val parameters = annotationT.parameters
-                    parameters.shouldNotBeNull()
-                    parameters shouldHaveSize 2
+                shouldBeNChildrenOf(annotationT.parameters, annotationT, 2)
+            }
+
+            @Test
+            fun `should store annotation uses`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+                val annotationT = findUniqueFactOrFail<AnnotationT> { it.name == "MyComplexAnnotation" }
+                shouldHaveNAnnotationUses(annotationT, 1)
+            }
+
+            @Test
+            fun `should store modifiers`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+                val annotationT = findUniqueFactOrFail<AnnotationT> { it.name == "MyComplexAnnotation" }
+                shouldHaveNModifiers(annotationT, 1)
+            }
+        }
+
+        @Nested
+        inner class Class {
+            @Test
+            fun `should handle simple classes`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+                val classT = findUniqueFactOrFail<ClassT> { it.name == "MySimpleClass" }
+                classT.asClue {
+                    classT.typeParameters.shouldBeNull()
+                    classT.parameters.shouldBeNull()
+                    classT.parentTypes.shouldBeNull()
+                    classT.typeParameterConstraints.shouldBeNull()
+                    classT.members.shouldBeNull()
                 }
 
-                shouldHaveAnnotationUsesAndModifiers(annotationT, 1, 1)
+                shouldHaveNAnnotationUses(classT, 0)
+                shouldHaveNModifiers(classT, 0)
+            }
+
+            @Test
+            fun `should reference type parameters`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+                val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
+                shouldBeNChildrenOf(classT.typeParameters, classT, 2)
+            }
+
+            @Test
+            fun `should reference parameters`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+                val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
+                shouldBeNChildrenOf(classT.parameters, classT, 2)
+            }
+
+            @Test
+            fun `should reference parent types`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+                val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
+                shouldBeNChildrenOf(classT.parentTypes, classT, 2)
+            }
+
+            @Test
+            fun `should reference type parameter constraints`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+                val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
+                shouldBeNChildrenOf(classT.typeParameterConstraints, classT, 2)
+            }
+
+            @Test
+            fun `should reference members`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+                val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
+                shouldBeNChildrenOf(classT.members, classT, 5)
+            }
+
+            @Test
+            fun `should store annotation uses`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+                val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
+                shouldHaveNAnnotationUses(classT, 1)
+            }
+
+            @Test
+            fun `should store modifiers`() = withFactbaseFromFile("compilationUnitMembers.simpleml") {
+                val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
+                shouldHaveNModifiers(classT, 1)
             }
         }
 
