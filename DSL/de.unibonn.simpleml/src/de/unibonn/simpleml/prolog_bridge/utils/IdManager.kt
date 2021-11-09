@@ -45,7 +45,7 @@ class IdManager<UPPER : Any> {
     /**
      * Returns the next available ID.
      */
-    private fun <T: Any> nextId() = Id<T>(nextId++)
+    fun <T: Any> nextId() = Id<T>(nextId++)
 
     /**
      * Returns the object with the given ID or null if the ID was not assigned yet.

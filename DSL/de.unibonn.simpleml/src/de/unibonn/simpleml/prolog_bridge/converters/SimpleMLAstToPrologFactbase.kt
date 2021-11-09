@@ -1,9 +1,11 @@
 package de.unibonn.simpleml.prolog_bridge.converters
 
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
+import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.utils.Id
@@ -70,13 +72,13 @@ class SimpleMLAstToPrologFactbase {
     private fun PlFactbase.handleCompilationUnitMember(obj: SmlDeclaration, parentId: Id<SmlCompilationUnit>) =
         handleEObject(obj) {
             obj.annotations.forEach { handleAnnotationUse(it, obj.id) }
-            obj.modifiers.forEach { handleModifier(it, obj.id) }
+            obj.modifiers.forEach { handleModifier(obj.id, it) }
 
             when (obj) {
                 is SmlAnnotation -> {
                     obj.parametersOrEmpty().forEach { handleParameter(it, obj.id) }
 
-                    +AnnotationT(obj.id, parentId, obj.name, obj.parametersOrEmpty().map { it.id })
+                    +AnnotationT(obj.id, parentId, obj.name, obj.parameterList?.parameters?.map { it.id })
                 }
                 is SmlClass -> {
 
@@ -101,24 +103,31 @@ class SimpleMLAstToPrologFactbase {
 
 
     private fun PlFactbase.handleAnnotationUse(obj: SmlAnnotationUse, parentId: Id<SmlDeclaration>) {
-//        if (idManager.knowsObject(obj)) return
-//
-//        obj.argumentList?.arguments?.forEach { handleArgument(it, obj.id, obj.id) }
-//        if (obj.annotation.name != null) {
+//       TODO obj.argumentList?.arguments?.forEach { handleArgument(it, obj.id, obj.id) }
+
+        if (obj.annotation.name != null) {
 //            handleDeclaration(obj.annotation, obj.id)
-//        } else {
-//            val node = NodeModelUtils.getNode(obj).text.trim()
+
+            // TODO: handle referenced declaration
+        } else {
+            // TODO: handle unresolved
+            val node = NodeModelUtils.getNode(obj).text.trim()
 //            +AnnotationT(obj.annotation.id, parentId, node, null)
-//        }
+        }
+
+        +AnnotationUseT(obj.id, parentId, idManager.nextId(), obj.argumentList?.arguments?.map { it.id })
     }
 
-    private fun PlFactbase.handleModifier(modifier: String, target: Id<SmlDeclaration>) {
-
+    private fun PlFactbase.handleModifier(target: Id<SmlDeclaration>, modifier: String) {
+        +ModifierT(target, modifier)
     }
 
     private fun PlFactbase.handleParameter(obj: SmlParameter, parentId: Id<EObject>) =
         handleEObject(obj) {
         }
+
+
+    // Helpers ---------------------------------------------------------------------------------------------------------
 
     private fun PlFactbase.handleEObject(obj: EObject, handler: PlFactbase.() -> Unit) {
         if (idManager.knowsObject(obj)) {

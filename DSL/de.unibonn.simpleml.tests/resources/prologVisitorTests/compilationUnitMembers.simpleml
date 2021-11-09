@@ -8,7 +8,7 @@ import myPackage.*
 // Annotations ---------------------------------------------------------------------------------------------------------
 annotation MySimpleAnnotation
 
-@MyUnresolvedAnnotation @MySimpleAnnotations deprecated annotation MyComplexAnnotation(
-    @AnnotationUse deprecated a: Int,
-    vararg b: Int or 3
+@MySimpleAnnotations deprecated annotation MyComplexAnnotation(
+    a: Int,
+    b: Int
 )

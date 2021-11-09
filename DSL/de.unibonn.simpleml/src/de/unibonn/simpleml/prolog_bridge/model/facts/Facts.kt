@@ -835,7 +835,7 @@ data class ArgumentT(
     override val id: Id<SmlArgument>,
     override val parent: Id<EObject>,
     override val enclosing: Id<EObject>,
-    val parameter: Id<EObject>?, // SmlParameter or new ID if unresolved
+    val parameter: Id<SmlParameter>?,
     val value: Id<SmlExpression>
 ) : ExpressionT("argumentT", id, parent, enclosing, parameter, value) {
     override fun toString() = super.toString()
@@ -1172,7 +1172,7 @@ data class ReferenceT(
     override val id: Id<SmlReference>,
     override val parent: Id<EObject>,
     override val enclosing: Id<EObject>,
-    val symbol: Id<EObject> // SmlDeclaration or new ID if unresolved
+    val symbol: Id<SmlDeclaration>
 ) :
     ExpressionT("referenceT", id, parent, enclosing, symbol) {
     override fun toString() = super.toString()
@@ -1301,7 +1301,7 @@ data class MemberTypeT(
 data class NamedTypeT(
     override val id: Id<SmlNamedType>,
     override val parent: Id<EObject>,
-    val declaration: Id<EObject>, // SmlDeclaration or new ID if unresolved
+    val declaration: Id<SmlDeclaration>,
     val typeArguments: List<Id<SmlTypeArgument>>?,
     val isNullable: Boolean
 ) : TypeT(
@@ -1393,8 +1393,8 @@ data class UnionTypeT(
  */
 data class AnnotationUseT(
     override val id: Id<SmlAnnotationUse>,
-    override val parent: Id<EObject>,
-    val annotation: Id<EObject>, // SmlAnnotation or new ID if unresolved
+    override val parent: Id<SmlDeclaration>,
+    val annotation: Id<SmlAnnotation>,
     val arguments: List<Id<SmlArgument>>?
 ) :
     NodeWithParent("annotationUseT", id, parent, annotation, arguments) {
@@ -1434,7 +1434,7 @@ data class StarProjectionT(override val id: Id<SmlStarProjection>, override val 
 data class TypeArgumentT(
     override val id: Id<SmlTypeArgument>,
     override val parent: Id<EObject>,
-    val typeParameter: Id<EObject>?, // SmlTypeParameter or new ID if unresolved
+    val typeParameter: Id<SmlTypeParameter>?,
     val value: Id<SmlType>
 ) :
     NodeWithParent("typeArgumentT", id, parent, typeParameter, value) {
@@ -1463,7 +1463,7 @@ data class TypeArgumentT(
 data class TypeParameterConstraintT(
     override val id: Id<SmlTypeParameterConstraint>,
     override val parent: Id<EObject>,
-    val leftOperand: Id<EObject>, // SmlTypeParameter or new ID if unresolved
+    val leftOperand: Id<SmlTypeParameter>,
     val operator: String,
     val rightOperand: Id<SmlType>
 ) : NodeWithParent(
@@ -1546,7 +1546,7 @@ data class WildcardT(override val id: Id<SmlWildcard>, override val parent: Id<S
 data class YieldT(
     override val id: Id<SmlYield>,
     override val parent: Id<SmlAssignment>,
-    val result: Id<EObject> // SmlResult or new ID if unresolved
+    val result: Id<SmlResult>
 ) :
     NodeWithParent("yieldT", id, parent, result) {
     override fun toString() = super.toString()

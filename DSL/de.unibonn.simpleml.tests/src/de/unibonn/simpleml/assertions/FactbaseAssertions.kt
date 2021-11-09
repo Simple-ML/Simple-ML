@@ -1,9 +1,17 @@
 package de.unibonn.simpleml.assertions
 
+import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
+import de.unibonn.simpleml.prolog_bridge.model.facts.DeclarationT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
+import de.unibonn.simpleml.prolog_bridge.model.facts.Node
+import de.unibonn.simpleml.prolog_bridge.model.facts.NodeWithParent
+import de.unibonn.simpleml.prolog_bridge.model.facts.PlFact
+import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.utils.Id
-import de.unibonn.simpleml.prolog_bridge.model.facts.*
 import de.unibonn.simpleml.simpleML.SmlExpression
 import io.kotest.assertions.asClue
+import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import org.eclipse.emf.ecore.EObject
@@ -44,4 +52,17 @@ private fun expectedEnclosing(parent: Node): Id<EObject> {
         is ExpressionT -> parent.enclosing
         else -> parent.id
     }
+}
+
+fun PlFactbase.shouldHaveAnnotationUsesAndModifiers(
+    declaration: DeclarationT,
+    annotationUseCount: Int,
+    modifierCount: Int
+) {
+    val annotationUses = findFacts<AnnotationUseT> { it.parent == declaration.id }
+    annotationUses shouldHaveSize annotationUseCount
+    annotationUses.forEach { shouldBeChildOf(it.id, declaration) }
+
+    val modifiers = findFacts<ModifierT> { it.target == declaration.id }
+    modifiers shouldHaveSize modifierCount
 }
