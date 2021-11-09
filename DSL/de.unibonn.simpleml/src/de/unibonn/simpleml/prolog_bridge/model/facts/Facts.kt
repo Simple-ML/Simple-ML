@@ -116,7 +116,7 @@ data class CompilationUnitT(override val id: Id, val `package`: String?, val imp
  * The ID of this fact.
  *
  * @param parent
- * The IDs of the compilationUnitT fact for the containing compilation unit.
+ * The ID of the compilationUnitT fact for the containing compilation unit.
  *
  * @param importedNamespace
  * The qualified name of the imported namespace.
@@ -1348,7 +1348,7 @@ data class UnresolvedT(override val id: Id, val name: String)
 }
 
 /**
- * This Prolog fact represents wildcards in a assignment, which discard the assigned value.
+ * This Prolog fact represents wildcards in an assignment, which discard the assigned value.
  *
  * @param id
  * The ID of this fact.

@@ -7,6 +7,8 @@ import de.unibonn.simpleml.tests.assertions.findUniqueFactOrFail
 import de.unibonn.simpleml.tests.assertions.shouldBeCloseTo
 import de.unibonn.simpleml.util.getResourcePath
 import io.kotest.assertions.asClue
+import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -25,16 +27,24 @@ class SimpleMLAstToPrologFactbaseTest {
 
     @Nested
     inner class Definitions {
-//        @Test
-//        fun `should handle empty compilation units`() = withFactbaseFromFile("empty.simpleml") {
-//            val compilationUnit = findUniqueFactOrFail<CompilationUnitT>()
-//            compilationUnit.asClue {
-//                it.workflow.shouldBeNull()
-//                it.processes.shouldBeEmpty()
-//            }
-//
-//            findUniqueFactOrFail<FileT> { it.id == compilationUnit.file }
-//        }
+        @Test
+        fun `should handle empty compilation units`() = withFactbaseFromFile("empty.simpleml") {
+            val compilationUnit = findUniqueFactOrFail<CompilationUnitT>()
+            compilationUnit.asClue {
+                it.imports.shouldBeEmpty()
+                it.members.shouldBeEmpty()
+            }
+        }
+
+        @Test
+        fun `should create fileS facts for compilation units`() = withFactbaseFromFile("empty.simpleml") {
+            val compilationUnit = findUniqueFactOrFail<CompilationUnitT>()
+            val file = findUniqueFactOrFail<FileS>()
+
+            file.asClue {
+                it.target.shouldBe(compilationUnit.id)
+            }
+        }
 
 //        @Test
 //        fun `should handle compilation units with definitions`() = withFactbaseFromFile("definitions.simpleml") {
@@ -260,28 +270,28 @@ class SimpleMLAstToPrologFactbaseTest {
 
     @Nested
     inner class Literals {
-
-        @Test
-        fun `should handle boolean literals`() = withFactbaseFromFile("literals.simpleml") {
-            findUniqueFactOrFail<BooleanT> { it.value }
-            findUniqueFactOrFail<BooleanT> { !it.value }
-        }
-
-        @Test
-        fun `should handle float literals`() = withFactbaseFromFile("literals.simpleml") {
-            val literal = findUniqueFactOrFail<FloatT>()
-            literal.asClue { it.value shouldBeCloseTo 1.1 }
-        }
-
-        @Test
-        fun `should handle int literals`() = withFactbaseFromFile("literals.simpleml") {
-            findUniqueFactOrFail<IntT> { it.value == 42 }
-        }
-
-        @Test
-        fun `should handle string literals`() = withFactbaseFromFile("literals.simpleml") {
-            findUniqueFactOrFail<StringT> { it.value == "hello" }
-        }
+//
+//        @Test
+//        fun `should handle boolean literals`() = withFactbaseFromFile("literals.simpleml") {
+//            findUniqueFactOrFail<BooleanT> { it.value }
+//            findUniqueFactOrFail<BooleanT> { !it.value }
+//        }
+//
+//        @Test
+//        fun `should handle float literals`() = withFactbaseFromFile("literals.simpleml") {
+//            val literal = findUniqueFactOrFail<FloatT>()
+//            literal.asClue { it.value shouldBeCloseTo 1.1 }
+//        }
+//
+//        @Test
+//        fun `should handle int literals`() = withFactbaseFromFile("literals.simpleml") {
+//            findUniqueFactOrFail<IntT> { it.value == 42 }
+//        }
+//
+//        @Test
+//        fun `should handle string literals`() = withFactbaseFromFile("literals.simpleml") {
+//            findUniqueFactOrFail<StringT> { it.value == "hello" }
+//        }
     }
 
     private fun withFactbaseFromFile(file: String, lambda: PlFactbase.() -> Unit) {
