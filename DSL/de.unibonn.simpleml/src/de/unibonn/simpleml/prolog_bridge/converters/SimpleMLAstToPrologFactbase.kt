@@ -22,6 +22,8 @@ import de.unibonn.simpleml.prolog_bridge.utils.Id
 import de.unibonn.simpleml.prolog_bridge.utils.IdManager
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
+import de.unibonn.simpleml.simpleML.SmlAssignee
+import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
@@ -29,17 +31,22 @@ import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumInstance
 import de.unibonn.simpleml.simpleML.SmlExpression
+import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlInterface
+import de.unibonn.simpleml.simpleML.SmlLambdaYield
 import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStatement
 import de.unibonn.simpleml.simpleML.SmlType
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
+import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.instancesOrEmpty
 import de.unibonn.simpleml.utils.membersOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
@@ -237,6 +244,32 @@ class SimpleMLAstToPrologFactbase {
 
     private fun PlFactbase.visitStatement(obj: SmlStatement, parentId: Id<EObject>) =
         visitEObject(obj) {
+            when (obj) {
+                is SmlAssignment -> {
+
+                }
+                is SmlExpressionStatement -> {
+
+                }
+            }
+        }
+
+    private fun PlFactbase.visitAssignee(obj: SmlAssignee, parentId: Id<EObject>) =
+        visitEObject(obj) {
+            when (obj) {
+                is SmlLambdaYield -> {
+
+                }
+                is SmlPlaceholder -> {
+
+                }
+                is SmlWildcard -> {
+
+                }
+                is SmlYield -> {
+
+                }
+            }
         }
 
     private fun PlFactbase.visitExpression(obj: SmlExpression, parentId: Id<EObject>, enclosingId: Id<EObject>) =
@@ -246,89 +279,27 @@ class SimpleMLAstToPrologFactbase {
 
     // Helpers ---------------------------------------------------------------------------------------------------------
 
-    private fun PlFactbase.visitEObject(obj: EObject, visitr: PlFactbase.() -> Unit) {
+    private fun PlFactbase.visitEObject(obj: EObject, visitor: PlFactbase.() -> Unit) {
         if (idManager.knowsObject(obj)) {
             return
         }
 
         obj.id // Enforce creation of ID to ensure correct parent-child order
-        visitr()
+        visitor()
         +SourceLocationS(obj)
     }
 
-
-//            is SmlAttribute -> {
-//                visitType(obj.type, obj.id)
-//                +AttributeT(obj.id, parentId, obj.name, obj.type?.referenceId)
-//            }
 //            is SmlPlaceholder -> {
 //                visitPlaceholder(obj, parentId)
 //            }
-//            is SmlParameter -> {
-//                obj.type?.let { visitType(it, obj.id) }
-//                obj.defaultValue?.let { visitExpression(it, obj.id, obj.id) }
-//                +ParameterT(obj.id, parentId, obj.name, obj.isVararg, obj.type?.id, obj.defaultValue?.id)
-//            }
 //            is SmlNamedTypeDeclaration -> {
-//                    is SmlEnum -> {
-//                        obj.body?.instances?.forEach { visitDeclaration(it, obj.id) }
-//                        +EnumT(obj.id, parentId, obj.name, obj.body?.instances?.map { it.id })
-//                    }
-//                    is SmlTypeParameter -> {
-//                        +TypeParameterT(obj.id, parentId, obj.name, obj.variance)
-//                    }
 //                    is SmlLambdaYield -> {
 //                        visitLambdaYield(obj, parentId)
 //                    }
 //                }
 //            }
-//            is SmlConstructor -> {
-//
-//            }
-//            is SmlEnumInstance -> {
-//                +EnumInstanceT(obj.id, parentId, obj.name)
-//            }
-//            is SmlResult -> {
-//                visitType(obj.type, obj.id)
-//                +ResultT(obj.id, parentId, obj.name, obj.type?.id)
-//            }
-//            is SmlFunction -> {
-//                obj.parametersOrEmpty().forEach { visitParameter(it, obj.id) }
-//                obj.resultsOrEmpty().forEach { visitDeclaration(it, obj.id) }
-//                obj.typeParameterConstraintsOrEmpty().forEach { visitTypeParameterConstraint(it, obj.id) }
-//                obj.typeParametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
-//
-//                +FunctionT(
-//                        obj.id,
-//                        parentId,
-//                        obj.name,
-//                        obj.typeParametersOrEmpty().map { it.id },
-//                        obj.parametersOrEmpty().map { it.id },
-//                        obj.resultList?.results?.map { it.id },
-//                        obj.typeParameterConstraintsOrEmpty().map { it.id }
-//                )
-//            }
-//            is SmlWorkflow -> {
-//                obj.statementsOrEmpty().forEach { visitStatement(it, obj.id) }
-//                +WorkflowT(obj.id, parentId, obj.name, obj.body.statements.map { it.id })
-//            }
 //        }
 
-//    private fun PlFactbase.visitConstructor(obj: SmlConstructor, parentId: Id) {
-//        if (idManager.knowsObject(obj)) return
-//
-//        obj.parameterList.parameters.forEach { visitParameter(it, obj.id) }
-////        +ConstructorT(obj.id, parentId, obj.parameterList.parameters.map { it.id })
-//    }
-//        // TODO create an unresolved reference fact and use this in place of the annotation if it cannot be resolved
-////        +AnnotationUseT(obj.id, parentId, obj.annotation?.id, obj.argumentList?.arguments?.map { it.id })
-//        +SourceLocationS(obj)
-//    }
-//
-//    private fun PlFactbase.visitParameter(obj: SmlParameter, parentId: Id) {
-//        visitDeclaration(obj, parentId)
-//    }
-//
 //    private fun PlFactbase.visitStatement(obj: SmlStatement, parentId: Id) {
 //        when (obj) {
 //            is SmlAssignment -> {
