@@ -4,6 +4,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AssignmentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AttributeT
+import de.unibonn.simpleml.prolog_bridge.model.facts.BooleanT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
@@ -336,7 +337,7 @@ class SimpleMLAstToPrologFactbase {
     private fun PlFactbase.visitExpression(obj: SmlExpression, parentId: Id<EObject>, enclosingId: Id<EObject>) {
         when (obj) {
             is SmlBoolean -> {
-
+                +BooleanT(obj.id, parentId, enclosingId, obj.isTrue)
             }
             is SmlCall -> {
 

@@ -1,21 +1,5 @@
-package de.unibonn.test_package
+package myPackage
 
-fun callWithoutReceiver(argument: Int)
-
-workflow test {
-    val reference = 0;
-
-    // Argument, ProcessCall and Receiver
-    callWithoutReceiver(argument = reference);
-    callReceiver.callWithReceiver();
-
-    // AttributeAccess
-    attributeAccessReceiver.attributeAccess;
-
-    // IndexedAccess
-    indexedAccess[0];
-
-    // Operators
-    val infix = 1 + 2;
-    val prefix = -1;
+workflow myWorkflowWithLiterals {
+    val booleanLiteral = true;
 }

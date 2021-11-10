@@ -13,6 +13,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AssignmentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AttributeT
+import de.unibonn.simpleml.prolog_bridge.model.facts.BooleanT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.DeclarationT
@@ -839,124 +840,39 @@ class SimpleMLAstToPrologFactbaseTest {
     // Expressions
     // ****************************************************************************************************************/
 
-//    @Nested
-//    inner class ComplexExpressions {
-//
-//        @Test
-//        fun `should handle arguments`() = withFactbaseFromFile("expressions.simpleml") {
-//            val argument = findUniqueFactOrFail<ArgumentT>()
-//            argument.asClue {
-//                it.parameter.shouldNotBeNull()
-//                it.value.shouldNotBeNull()
-//            }
-//
-//            val parameter = findUniqueFactOrFail<ParameterT> {it.id == argument.parameter}
-//            parameter.asClue {
-//                it.name shouldBe "argument"
-//            }
-//
-//            shouldBeChildExpressionOf(argument.value, argument)
-//        }
-//
-//        @Test
-//        fun `should handle attribute accesses`() = withFactbaseFromFile("expressions.simpleml") {
-//            val attributeAccess = findUniqueFactOrFail<AttributeAccessT>()
-//            attributeAccess.asClue {
-//                it.receiver.shouldNotBeNull()
-////                it.attribute shouldBe "attributeAccess" // TODO
-//            }
-//
-//            shouldBeChildExpressionOf(attributeAccess.receiver, attributeAccess)
-//        }
-//
-//        @Test
-//        fun `should handle indexed accesses`() = withFactbaseFromFile("expressions.simpleml") {
-//            val indexedAccess = findUniqueFactOrFail<IndexedAccessT>()
-//            indexedAccess.asClue {
-//                it.receiver.shouldNotBeNull()
-//                it.index.shouldNotBeNull()
-//            }
-//
-//            shouldBeChildExpressionOf(indexedAccess.receiver, indexedAccess)
-//            shouldBeChildExpressionOf(indexedAccess.index, indexedAccess)
-//        }
-//
-//        @Test
-//        fun `should handle infix operations`() = withFactbaseFromFile("expressions.simpleml") {
-//            val infixOperation = findUniqueFactOrFail<InfixOperationT>()
-//            infixOperation.asClue { it.operator shouldBe "+" }
-//
-//            shouldBeChildExpressionOf(infixOperation.leftOperand, infixOperation)
-//            shouldBeChildExpressionOf(infixOperation.rightOperand, infixOperation)
-//        }
-//
-//        @Test
-//        fun `should handle prefix operations`() = withFactbaseFromFile("expressions.simpleml") {
-//            val prefixOperation = findUniqueFactOrFail<PrefixOperationT>()
-//            prefixOperation.asClue { it.operator shouldBe "-" }
-//
-//            shouldBeChildExpressionOf(prefixOperation.operand, prefixOperation)
-//        }
-//
-//        @Test
-//        fun `should handle process calls without receivers`() = withFactbaseFromFile("expressions.simpleml") {
-//            val call = findUniqueFactOrFail<CallT> { it.receiver == null }
-//            call.asClue {
-//                it.callable?.resolve<FunctionT>()?.name shouldBe "callWithoutReceiver"
-//                it.arguments.shouldNotBeNull()
-//                it.arguments!! shouldHaveSize 1
-//            }
-//
-//            call.arguments!!.forEach { shouldBeChildExpressionOf(it, call) }
-//        }
-//
-//        @Test
-//        fun `should handle process calls with receivers`() = withFactbaseFromFile("expressions.simpleml") {
-//            val call = findUniqueFactOrFail<CallT> { it.referenced == "callWithReceiver" }
-//            call.asClue {
-//                it.receiver.shouldNotBeNull()
-//                it.arguments.shouldBeEmpty()
-//            }
-//
-//            shouldBeChildExpressionOf(call.receiver!!, call)
-//            call.arguments.forEach { shouldBeChildExpressionOf(it, call) }
-//        }
-//
-//        @Test
-//        fun `should handle references`() = withFactbaseFromFile("expressions.simpleml") {
-//            val referencedPlaceholder = findUniqueFactOrFail<PlaceholderT> { it.name == "reference" }
-//            findUniqueFactOrFail<LocalReferenceT> { it.symbol == referencedPlaceholder.id }
-//        }
-//    }
+    @Nested
+    inner class Expressions {
+
+        @Nested
+        inner class Boolean {
+            @Test
+            fun `should store value`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithLiterals" }
+                val booleanT = findUniqueFactOrFail<BooleanT> { isContainedIn(it, workflowT) }
+                booleanT.asClue {
+                    booleanT.value shouldBe true
+                }
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithLiterals" }
+                val booleanT = findUniqueFactOrFail<BooleanT> { isContainedIn(it, workflowT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == booleanT.id }
+            }
+        }
+    }
 
 
-    // Literals --------------------------------------------------------------------------------------------------------
+    // *****************************************************************************************************************
+    // Types
+    // ****************************************************************************************************************/
 
     @Nested
-    inner class Literals {
-//
-//        @Test
-//        fun `should handle boolean literals`() = withFactbaseFromFile("literals.simpleml") {
-//            findUniqueFactOrFail<BooleanT> { it.value }
-//            findUniqueFactOrFail<BooleanT> { !it.value }
-//        }
-//
-//        @Test
-//        fun `should handle float literals`() = withFactbaseFromFile("literals.simpleml") {
-//            val literal = findUniqueFactOrFail<FloatT>()
-//            literal.asClue { it.value shouldBeCloseTo 1.1 }
-//        }
-//
-//        @Test
-//        fun `should handle int literals`() = withFactbaseFromFile("literals.simpleml") {
-//            findUniqueFactOrFail<IntT> { it.value == 42 }
-//        }
-//
-//        @Test
-//        fun `should handle string literals`() = withFactbaseFromFile("literals.simpleml") {
-//            findUniqueFactOrFail<StringT> { it.value == "hello" }
-//        }
+    inner class Types {
+        // TODO
     }
+
 
     // *****************************************************************************************************************
     // Other
