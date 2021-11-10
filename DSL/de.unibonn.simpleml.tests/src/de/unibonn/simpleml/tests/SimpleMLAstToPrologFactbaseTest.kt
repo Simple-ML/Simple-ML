@@ -21,6 +21,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
+import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NodeWithParent
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
@@ -714,10 +715,18 @@ class SimpleMLAstToPrologFactbaseTest {
         }
 
         @Nested
+        inner class LambdaYield {
+            @Test
+            fun `should handle lambda yields`() = withFactbaseFromFile("statements.simpleml") {
+                findUniqueFactOrFail<LambdaYieldT> { it.name == "myLambdaYield" }
+            }
+        }
+
+        @Nested
         inner class Placeholder {
             @Test
             fun `should handle placeholders`() = withFactbaseFromFile("statements.simpleml") {
-                findUniqueFactOrFail<PlaceholderT> { it.name == "mySimplePlaceholder" }
+                findUniqueFactOrFail<PlaceholderT> { it.name == "myPlaceholder" }
             }
         }
 

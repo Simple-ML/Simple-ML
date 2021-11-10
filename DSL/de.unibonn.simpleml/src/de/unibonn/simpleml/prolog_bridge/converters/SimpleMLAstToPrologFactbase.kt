@@ -12,6 +12,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
+import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
@@ -271,7 +272,7 @@ class SimpleMLAstToPrologFactbase {
         visitEObject(obj) {
             when (obj) {
                 is SmlLambdaYield -> {
-
+                    +LambdaYieldT(obj.id, parentId, obj.name)
                 }
                 is SmlPlaceholder -> {
                     +PlaceholderT(obj.id, parentId, obj.name)
