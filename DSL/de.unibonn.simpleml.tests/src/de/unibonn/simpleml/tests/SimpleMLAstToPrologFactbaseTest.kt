@@ -25,6 +25,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
 import de.unibonn.simpleml.prolog_bridge.model.facts.FloatT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
+import de.unibonn.simpleml.prolog_bridge.model.facts.InfixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.IntT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
@@ -883,6 +884,39 @@ class SimpleMLAstToPrologFactbaseTest {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithLiterals" }
                 val floatT = findUniqueFactOrFail<FloatT> { isContainedIn(it, workflowT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == floatT.id }
+            }
+        }
+
+        @Nested
+        inner class InfixOperation {
+            @Test
+            fun `should reference left operand`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithOperations" }
+                val infixOperationT = findUniqueFactOrFail<InfixOperationT> { isContainedIn(it, workflowT) }
+                shouldBeChildExpressionOf(infixOperationT.leftOperand, infixOperationT)
+            }
+
+            @Test
+            fun `should store operator`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithOperations" }
+                val infixOperationT = findUniqueFactOrFail<InfixOperationT> { isContainedIn(it, workflowT) }
+                infixOperationT.asClue {
+                    infixOperationT.operator shouldBe "+"
+                }
+            }
+
+            @Test
+            fun `should reference right operand`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithOperations" }
+                val infixOperationT = findUniqueFactOrFail<InfixOperationT> { isContainedIn(it, workflowT) }
+                shouldBeChildExpressionOf(infixOperationT.rightOperand, infixOperationT)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithOperations" }
+                val infixOperationT = findUniqueFactOrFail<InfixOperationT> { isContainedIn(it, workflowT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == infixOperationT.id }
             }
         }
 

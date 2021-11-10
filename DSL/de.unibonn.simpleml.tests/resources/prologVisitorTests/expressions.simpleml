@@ -7,3 +7,8 @@ workflow myWorkflowWithLiterals {
     val nullLiteral = null;
     val stringLiteral = "bla";
 }
+
+workflow myWorkflowWithOperations {
+    val prefixOperation = -1;
+    val infixOperation = 1 + 2;
+}

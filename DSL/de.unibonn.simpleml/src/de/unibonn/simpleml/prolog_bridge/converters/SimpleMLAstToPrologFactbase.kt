@@ -14,6 +14,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
 import de.unibonn.simpleml.prolog_bridge.model.facts.FloatT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
+import de.unibonn.simpleml.prolog_bridge.model.facts.InfixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.IntT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
@@ -350,7 +351,10 @@ class SimpleMLAstToPrologFactbase {
                 +FloatT(obj.id, parentId, enclosingId, obj.value)
             }
             is SmlInfixOperation -> {
+                visitExpression(obj.leftOperand, obj.id, enclosingId)
+                visitExpression(obj.rightOperand, obj.id, enclosingId)
 
+                +InfixOperationT(obj.id, parentId, enclosingId, obj.leftOperand.id, obj.operator, obj.rightOperand.id)
             }
             is SmlInt -> {
                 +IntT(obj.id, parentId, enclosingId, obj.value)
