@@ -23,6 +23,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.NullT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlaceholderT
+import de.unibonn.simpleml.prolog_bridge.model.facts.PrefixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
@@ -369,7 +370,9 @@ class SimpleMLAstToPrologFactbase {
                 +NullT(obj.id, parentId, enclosingId)
             }
             is SmlPrefixOperation -> {
+                visitExpression(obj.operand, obj.id, enclosingId)
 
+                +PrefixOperationT(obj.id, parentId, enclosingId, obj.operator, obj.operand.id)
             }
             is SmlReference -> {
 

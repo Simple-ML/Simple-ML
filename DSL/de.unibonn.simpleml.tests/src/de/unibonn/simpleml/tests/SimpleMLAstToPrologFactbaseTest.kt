@@ -34,6 +34,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.NullT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlaceholderT
+import de.unibonn.simpleml.prolog_bridge.model.facts.PrefixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StatementT
@@ -952,6 +953,32 @@ class SimpleMLAstToPrologFactbaseTest {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithLiterals" }
                 val nullT = findUniqueFactOrFail<NullT> { isContainedIn(it, workflowT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == nullT.id }
+            }
+        }
+
+        @Nested
+        inner class PrefixOperation {
+            @Test
+            fun `should store operator`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithOperations" }
+                val prefixOperationT = findUniqueFactOrFail<PrefixOperationT> { isContainedIn(it, workflowT) }
+                prefixOperationT.asClue {
+                    prefixOperationT.operator shouldBe "-"
+                }
+            }
+
+            @Test
+            fun `should reference operand`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithOperations" }
+                val prefixOperationT = findUniqueFactOrFail<PrefixOperationT> { isContainedIn(it, workflowT) }
+                shouldBeChildExpressionOf(prefixOperationT.operand, prefixOperationT)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithOperations" }
+                val prefixOperationT = findUniqueFactOrFail<PrefixOperationT> { isContainedIn(it, workflowT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == prefixOperationT.id }
             }
         }
 

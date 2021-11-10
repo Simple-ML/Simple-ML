@@ -9,6 +9,6 @@ workflow myWorkflowWithLiterals {
 }
 
 workflow myWorkflowWithOperations {
-    val prefixOperation = -1;
     val infixOperation = 1 + 2;
+    val prefixOperation = -1;
 }
