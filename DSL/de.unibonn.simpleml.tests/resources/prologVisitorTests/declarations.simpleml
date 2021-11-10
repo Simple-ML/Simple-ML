@@ -67,3 +67,11 @@ workflow mySimpleWorkflow {}
 @AnnotationUse deprecated workflow myComplexWorkflow {
     val a = 1;
 }
+
+
+// Workflow steps ------------------------------------------------------------------------------------------------------
+step mySimpleStep() {}
+
+@AnnotationUse deprecated step myComplexStep(a: Int, b: Int) -> (a: Int, b: Int) {
+    val a = 1;
+}

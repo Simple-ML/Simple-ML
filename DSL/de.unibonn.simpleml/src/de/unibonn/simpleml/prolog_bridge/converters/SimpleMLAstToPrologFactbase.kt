@@ -12,6 +12,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
+import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowStepT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowT
 import de.unibonn.simpleml.prolog_bridge.utils.Id
 import de.unibonn.simpleml.prolog_bridge.utils.IdManager
@@ -38,6 +39,7 @@ import de.unibonn.simpleml.utils.instancesOrEmpty
 import de.unibonn.simpleml.utils.membersOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
 import de.unibonn.simpleml.utils.parentTypesOrEmpty
+import de.unibonn.simpleml.utils.resultsOrEmpty
 import de.unibonn.simpleml.utils.statementsOrEmpty
 import de.unibonn.simpleml.utils.typeParameterConstraintsOrEmpty
 import de.unibonn.simpleml.utils.typeParametersOrEmpty
@@ -165,7 +167,18 @@ class SimpleMLAstToPrologFactbase {
                     +WorkflowT(obj.id, parentId, obj.name, obj.statementsOrEmpty().map { it.id })
                 }
                 is SmlWorkflowStep -> {
+                    obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
+                    obj.resultsOrEmpty().forEach { visitDeclaration(it, obj.id) }
+                    obj.statementsOrEmpty().forEach { visitStatement(it, obj.id) }
 
+                    +WorkflowStepT(
+                        obj.id,
+                        parentId,
+                        obj.name,
+                        obj.parametersOrEmpty().map { it.id },
+                        obj.resultList?.results?.map { it.id },
+                        obj.statementsOrEmpty().map { it.id }
+                    )
                 }
             }
         }
