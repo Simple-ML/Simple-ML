@@ -11,6 +11,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowStepT
@@ -25,6 +26,7 @@ import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumInstance
+import de.unibonn.simpleml.simpleML.SmlExpression
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlInterface
@@ -167,7 +169,10 @@ class SimpleMLAstToPrologFactbase {
                     )
                 }
                 is SmlParameter -> {
+                    obj.type?.let { visitType(it, obj.id) }
+                    obj.defaultValue?.let { visitExpression(it, obj.id, obj.id) }
 
+                    +ParameterT(obj.id, parentId, obj.name, obj.isVararg, obj.type?.id, obj.defaultValue?.id)
                 }
                 is SmlResult -> {
 
@@ -227,6 +232,10 @@ class SimpleMLAstToPrologFactbase {
         }
 
     private fun PlFactbase.visitStatement(obj: SmlStatement, parentId: Id<EObject>) =
+        visitEObject(obj) {
+        }
+
+    private fun PlFactbase.visitExpression(obj: SmlExpression, parentId: Id<EObject>, enclosingId: Id<EObject>) =
         visitEObject(obj) {
         }
 

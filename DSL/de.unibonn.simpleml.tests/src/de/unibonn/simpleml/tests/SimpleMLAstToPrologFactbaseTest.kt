@@ -2,6 +2,7 @@ package de.unibonn.simpleml.tests
 
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import de.unibonn.simpleml.assertions.findUniqueFactOrFail
+import de.unibonn.simpleml.assertions.shouldBeChildExpressionOf
 import de.unibonn.simpleml.assertions.shouldBeChildOf
 import de.unibonn.simpleml.assertions.shouldBeNChildrenOf
 import de.unibonn.simpleml.assertions.shouldHaveNAnnotationUses
@@ -14,6 +15,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.DeclarationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
@@ -415,6 +417,54 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
                 val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
                 shouldHaveNModifiers(interfaceT, 1)
+            }
+        }
+
+        @Nested
+        inner class Parameter {
+            @Test
+            fun `should handle simple parameters`() = withFactbaseFromFile("declarations.simpleml") {
+                val parameterT = findUniqueFactOrFail<ParameterT> { it.name == "mySimpleParameter" }
+                parameterT.asClue {
+                    parameterT.isVariadic shouldBe false
+                    parameterT.type.shouldBeNull()
+                    parameterT.defaultValue.shouldBeNull()
+                }
+
+                shouldHaveNAnnotationUses(parameterT, 0)
+                shouldHaveNModifiers(parameterT, 0)
+            }
+
+            @Test
+            fun `should store isVariadic`() = withFactbaseFromFile("declarations.simpleml") {
+                val parameterT = findUniqueFactOrFail<ParameterT> { it.name == "myComplexParameter" }
+                parameterT.asClue {
+                    parameterT.isVariadic shouldBe true
+                }
+            }
+
+            @Test
+            fun `should reference type`() = withFactbaseFromFile("declarations.simpleml") {
+                val parameterT = findUniqueFactOrFail<ParameterT> { it.name == "myComplexParameter" }
+                shouldBeChildOf<TypeT>(parameterT.type, parameterT)
+            }
+
+            @Test
+            fun `should reference default value`() = withFactbaseFromFile("declarations.simpleml") {
+                val parameterT = findUniqueFactOrFail<ParameterT> { it.name == "myComplexParameter" }
+                shouldBeChildExpressionOf(parameterT.defaultValue, parameterT)
+            }
+
+            @Test
+            fun `should store annotation uses`() = withFactbaseFromFile("declarations.simpleml") {
+                val parameterT = findUniqueFactOrFail<ParameterT> { it.name == "myComplexParameter" }
+                shouldHaveNAnnotationUses(parameterT, 1)
+            }
+
+            @Test
+            fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
+                val parameterT = findUniqueFactOrFail<ParameterT> { it.name == "myComplexParameter" }
+                shouldHaveNModifiers(parameterT, 1)
             }
         }
 

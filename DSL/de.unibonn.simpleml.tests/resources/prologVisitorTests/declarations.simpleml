@@ -45,14 +45,14 @@ deprecated enum MyComplexEnum {
 }
 
 
-// Functions -----------------------------------------------------------------------------------------------------------
+// Functions, Parameters, Results --------------------------------------------------------------------------------------
 fun mySimpleFunction()
 
 @MySimpleAnnotation
 deprecated fun myComplexFunction
     <T1, T2>
-    (a, b)
-    -> (a, b)
+    (mySimpleParameter, @AnnotationUse deprecated vararg myComplexParameter: Int or 3)
+    -> (mySimpleResult, @AnnotationUse deprecated myComplexResult: Int)
     where T1 super Number, T2 sub Number
 
 
@@ -87,6 +87,6 @@ deprecated workflow myComplexWorkflow {
 step mySimpleStep() {}
 
 @MySimpleAnnotation
-deprecated step myComplexStep(a, b) -> (a, b) {
+deprecated step myComplexStep (a, b) -> (a, b) {
     val a = 1;
 }

@@ -541,7 +541,7 @@ data class LambdaYieldT(
  */
 data class ParameterT(
     override val id: Id<SmlParameter>,
-    override val parent: Id<SmlDeclaration>,
+    override val parent: Id<EObject>, // Actually just SmlDeclaration but this allows a handleDeclaration function
     override val name: String,
     val isVariadic: Boolean,
     val type: Id<SmlType>?,
