@@ -13,6 +13,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
+import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowStepT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowT
@@ -175,7 +176,9 @@ class SimpleMLAstToPrologFactbase {
                     +ParameterT(obj.id, parentId, obj.name, obj.isVararg, obj.type?.id, obj.defaultValue?.id)
                 }
                 is SmlResult -> {
+                    obj.type?.let { visitType(it, obj.id) }
 
+                    +ResultT(obj.id, parentId, obj.name, obj.type?.id)
                 }
                 is SmlTypeParameter -> {
 

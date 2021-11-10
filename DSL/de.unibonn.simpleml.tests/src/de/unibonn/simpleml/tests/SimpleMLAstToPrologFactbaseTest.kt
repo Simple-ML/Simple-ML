@@ -338,7 +338,7 @@ class SimpleMLAstToPrologFactbaseTest {
             @Test
             fun `should reference results`() = withFactbaseFromFile("declarations.simpleml") {
                 val functionT = findUniqueFactOrFail<FunctionT> { it.name == "myComplexFunction" }
-                shouldBeNChildrenOf<TypeT>(functionT.results, functionT, 2)
+                shouldBeNChildrenOf<ResultT>(functionT.results, functionT, 2)
             }
 
             @Test
@@ -465,6 +465,38 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
                 val parameterT = findUniqueFactOrFail<ParameterT> { it.name == "myComplexParameter" }
                 shouldHaveNModifiers(parameterT, 1)
+            }
+        }
+
+        @Nested
+        inner class Result {
+            @Test
+            fun `should handle simple parameters`() = withFactbaseFromFile("declarations.simpleml") {
+                val resultT = findUniqueFactOrFail<ResultT> { it.name == "mySimpleResult" }
+                resultT.asClue {
+                    resultT.type.shouldBeNull()
+                }
+
+                shouldHaveNAnnotationUses(resultT, 0)
+                shouldHaveNModifiers(resultT, 0)
+            }
+
+            @Test
+            fun `should reference type`() = withFactbaseFromFile("declarations.simpleml") {
+                val resultT = findUniqueFactOrFail<ResultT> { it.name == "myComplexResult" }
+                shouldBeChildOf<TypeT>(resultT.type, resultT)
+            }
+
+            @Test
+            fun `should store annotation uses`() = withFactbaseFromFile("declarations.simpleml") {
+                val resultT = findUniqueFactOrFail<ResultT> { it.name == "myComplexResult" }
+                shouldHaveNAnnotationUses(resultT, 1)
+            }
+
+            @Test
+            fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
+                val resultT = findUniqueFactOrFail<ResultT> { it.name == "myComplexResult" }
+                shouldHaveNModifiers(resultT, 1)
             }
         }
 
