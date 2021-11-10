@@ -12,6 +12,7 @@ import de.unibonn.simpleml.assertions.shouldHaveNModifiers
 import de.unibonn.simpleml.prolog_bridge.Main
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AssignmentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AttributeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.BooleanT
@@ -805,7 +806,7 @@ class SimpleMLAstToPrologFactbaseTest {
                 val resultT = findUniqueFactOrFail<ResultT> { it.id == yieldT.result }
                 resultT.asClue {
                     resultT.parent shouldBe workflowStepT.id
-                    resultT.name shouldBe "myUnresolvedResult"
+                    resultT.name shouldBe "a"
                 }
             }
 
@@ -816,7 +817,7 @@ class SimpleMLAstToPrologFactbaseTest {
                 val yieldT = findUniqueFactOrFail<YieldT> { it.parent == assignmentT.id }
                 val unresolvedT = findUniqueFactOrFail<UnresolvedT> { it.id == yieldT.result }
                 unresolvedT.asClue {
-                    unresolvedT.name shouldBe "a"
+                    unresolvedT.name shouldBe "myUnresolvedResult"
                 }
             }
 
@@ -852,6 +853,52 @@ class SimpleMLAstToPrologFactbaseTest {
 
     @Nested
     inner class Expressions {
+
+        @Nested
+        inner class Argument {
+            @Test
+            fun `should handle positional arguments`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithPositionalArgument" }
+                val argumentT = findUniqueFactOrFail<ArgumentT> { isContainedIn(it, workflowT) }
+                argumentT.asClue {
+                    argumentT.parameter.shouldBeNull()
+                }
+            }
+
+            @Test
+            fun `should reference parameter if possible`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithResolvableNamedArgument" }
+                val argumentT = findUniqueFactOrFail<ArgumentT> { isContainedIn(it, workflowT) }
+                val parameterT = findUniqueFactOrFail<ParameterT> { it.id == argumentT.parameter }
+                parameterT.asClue {
+                    parameterT.name shouldBe "a"
+                }
+            }
+
+            @Test
+            fun `should reference value`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithResolvableNamedArgument" }
+                val argumentT = findUniqueFactOrFail<ArgumentT> { isContainedIn(it, workflowT) }
+                shouldBeChildExpressionOf(argumentT.value, argumentT)
+            }
+
+            @Test
+            fun `should store name for unresolvable arguments`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithUnresolvedArgument" }
+                val argumentT = findUniqueFactOrFail<ArgumentT> { isContainedIn(it, workflowT) }
+                val unresolvedT = findUniqueFactOrFail<UnresolvedT> { it.id == argumentT.parameter }
+                unresolvedT.asClue {
+                    unresolvedT.name shouldBe "myUnresolvedParameter"
+                }
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithPositionalArgument" }
+                val referenceT = findUniqueFactOrFail<ArgumentT> { isContainedIn(it, workflowT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == referenceT.id }
+            }
+        }
 
         @Nested
         inner class Boolean {
@@ -1044,7 +1091,7 @@ class SimpleMLAstToPrologFactbaseTest {
                 val referenceT = findUniqueFactOrFail<ReferenceT> { isContainedIn(it, workflowT) }
                 val unresolvedT = findUniqueFactOrFail<UnresolvedT> { it.id == referenceT.symbol }
                 unresolvedT.asClue {
-                    unresolvedT.name shouldBe "myUnresolvedReference"
+                    unresolvedT.name shouldBe "myUnresolvedDeclaration"
                 }
             }
 

@@ -1,13 +1,22 @@
 package myPackage
 
-workflow myWorkflowWithLiterals {
-    val booleanLiteral = true;
-    val floatLiteral = 1.0;
-    val intLiteral = 42;
-    val nullLiteral = null;
-    val stringLiteral = "bla";
+// Arguments -----------------------------------------------------------------------------------------------------------
+fun f(a: Int)
+
+workflow myWorkflowWithPositionalArgument {
+    f(0);
 }
 
+workflow myWorkflowWithResolvableNamedArgument {
+    f(a = 1);
+}
+
+workflow myWorkflowWithUnresolvedArgument {
+    f(myUnresolvedParameter = 2);
+}
+
+
+// Calls ---------------------------------------------------------------------------------------------------------------
 workflow myWorkflowWithSimpleCall {
     val simpleCall = f();
 }
@@ -16,16 +25,30 @@ workflow myWorkflowWithComplexCall {
     val complexCall = f<Int, Int>(1, 2);
 }
 
+
+// Literals ------------------------------------------------------------------------------------------------------------
+workflow myWorkflowWithLiterals {
+    val booleanLiteral = true;
+    val floatLiteral = 1.0;
+    val intLiteral = 42;
+    val nullLiteral = null;
+    val stringLiteral = "bla";
+}
+
+
+// Operations ----------------------------------------------------------------------------------------------------------
 workflow myWorkflowWithOperations {
     val infixOperation = 1 + 2;
     val prefixOperation = -1;
 }
 
+
+// References ----------------------------------------------------------------------------------------------------------
 workflow myWorkflowWithResolvableReference {
     val a = 1;
-    val b = a;
+    a;
 }
 
 workflow myWorkflowWithUnresolvableReference {
-    val a = myUnresolvedReference;
+    myUnresolvedDeclaration;
 }

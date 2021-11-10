@@ -2,6 +2,7 @@ package de.unibonn.simpleml.prolog_bridge.converters
 
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AssignmentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AttributeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.BooleanT
@@ -346,7 +347,10 @@ class SimpleMLAstToPrologFactbase {
     private fun PlFactbase.visitExpression(obj: SmlExpression, parentId: Id<EObject>, enclosingId: Id<EObject>) {
         when (obj) {
             is SmlArgument -> {
+                obj.parameter?.let { visitCrossReference(obj, SimpleMLPackage.Literals.SML_ARGUMENT__PARAMETER, it) }
+                visitExpression(obj.value, obj.id, enclosingId)
 
+                +ArgumentT(obj.id, parentId, enclosingId, obj.parameter?.id, obj.value.id)
             }
             is SmlBoolean -> {
                 +BooleanT(obj.id, parentId, enclosingId, obj.isTrue)
