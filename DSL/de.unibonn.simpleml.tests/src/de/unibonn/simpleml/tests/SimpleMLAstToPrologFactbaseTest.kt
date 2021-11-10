@@ -9,6 +9,8 @@ import de.unibonn.simpleml.assertions.shouldHaveNAnnotationUses
 import de.unibonn.simpleml.assertions.shouldHaveNModifiers
 import de.unibonn.simpleml.prolog_bridge.Main
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
+import de.unibonn.simpleml.prolog_bridge.model.facts.AssigneeT
+import de.unibonn.simpleml.prolog_bridge.model.facts.AssignmentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AttributeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
@@ -16,11 +18,11 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.DeclarationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionStatementT
-import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
+import de.unibonn.simpleml.prolog_bridge.model.facts.NodeWithParent
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
@@ -695,10 +697,19 @@ class SimpleMLAstToPrologFactbaseTest {
 
         @Nested
         inner class Assignment {
-//            @Test
-//            fun `should handle assignments`() = withFactbaseFromFile("statements.simpleml") {
-//
-//            }
+            @Test
+            fun `should reference assignees`() = withFactbaseFromFile("statements.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
+                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
+                shouldBeNChildrenOf<NodeWithParent>(assignmentT.assignees, assignmentT, 3)
+            }
+
+            @Test
+            fun `should reference expression`() = withFactbaseFromFile("statements.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
+                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
+                shouldBeChildExpressionOf(assignmentT.expression, assignmentT)
+            }
         }
 
         @Nested

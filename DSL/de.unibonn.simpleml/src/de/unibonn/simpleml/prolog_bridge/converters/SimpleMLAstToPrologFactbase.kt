@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.prolog_bridge.converters
 
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
+import de.unibonn.simpleml.prolog_bridge.model.facts.AssignmentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AttributeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
@@ -48,6 +49,7 @@ import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.utils.assigneesOrEmpty
 import de.unibonn.simpleml.utils.instancesOrEmpty
 import de.unibonn.simpleml.utils.membersOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
@@ -250,7 +252,10 @@ class SimpleMLAstToPrologFactbase {
         visitEObject(obj) {
             when (obj) {
                 is SmlAssignment -> {
+                    obj.assigneesOrEmpty().forEach { visitAssignee(it, obj.id) }
+                    visitExpression(obj.expression, obj.id, obj.id)
 
+                    +AssignmentT(obj.id, parentId, obj.assigneesOrEmpty().map { it.id }, obj.expression.id)
                 }
                 is SmlExpressionStatement -> {
                     visitExpression(obj.expression, obj.id, obj.id)
