@@ -31,9 +31,11 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.StatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterConstraintT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeT
+import de.unibonn.simpleml.prolog_bridge.model.facts.UnresolvedT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WildcardT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowStepT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowT
+import de.unibonn.simpleml.prolog_bridge.model.facts.YieldT
 import de.unibonn.simpleml.util.getResourcePath
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -616,77 +618,6 @@ class SimpleMLAstToPrologFactbaseTest {
                 shouldHaveNModifiers(workflowStepT, 1)
             }
         }
-
-//        @Test
-//        fun `should handle workflows`() = withFactbaseFromFile("declarations.simpleml") {
-//            val workflow = findUniqueFactOrFail<WorkflowT>()
-//            workflow shouldBe workflow.copy(name = "test")
-//
-//            workflow.statements?.forEach { shouldBeChildOf(it, workflow) }
-//        }
-
-//        @Test
-//        fun `should handle native processes`() = withFactbaseFromFile("declarations.simpleml") {
-//            val process = findUniqueFactOrFail<FunctionT> { it.name == "nativeProcess" }
-//            process.asClue { it.statements?.shouldBeEmpty() }
-//        }
-//
-//        @Test
-//        fun `should handle internal processes`() = withFactbaseFromFile("declarations.simpleml") {
-//            val process = findUniqueFactOrFail<FunctionT> { it.name == "internalProcess" }
-//            process.asClue {
-//                it.parameters shouldHaveSize 2
-//                it.results.shouldNotBeNull()
-//                it.results!! shouldHaveSize 1
-//                it.statements.shouldNotBeNull()
-//                it.statements!! shouldHaveSize 1
-//            }
-//
-//            process.parameters.forEach { shouldBeChildOf(it, process) }
-//            process.results?.forEach { shouldBeChildOf(it, process) }
-//            process.statements?.forEach { shouldBeChildOf(it, process) }
-//        }
-
-//        @Test
-//        fun `should handle modifiers`() = withFactbaseFromFile("declarations.simpleml") {
-//            val modifier = findUniqueFactOrFail<ModifierT>()
-//            modifier.asClue { it.modifier shouldBe "public" }
-//            findUniqueFactOrFail<FunctionT> { it.id == modifier.parent }
-//        }
-
-//        @Test
-//        fun `should handle required parameters`() = withFactbaseFromFile("declarations.simpleml") {
-//            val parameter = findUniqueFactOrFail<ParameterT> { it.name == "required" }
-//            parameter.asClue {
-////                it.type?.resolve<ClassT>()?.name shouldBe "Int"
-//                it.defaultValue.shouldBeNull()
-//            }
-//        }
-
-//        @Test
-//        fun `should handle optional parameters`() = withFactbaseFromFile("declarations.simpleml") {
-//            val parameter = findUniqueFactOrFail<ParameterT> { it.name == "optional" }
-//            parameter.asClue {
-////                it.type?.resolve<ClassT>()?.name shouldBe "Int"
-//                it.defaultValue.shouldNotBeNull()
-//            }
-//
-//            shouldBeChildExpressionOf(parameter.defaultValue!!, parameter)
-//        }
-
-//        @Test
-//        fun `should handle results`() = withFactbaseFromFile("declarations.simpleml") {
-//            val result = findUniqueFactOrFail<ResultT>()
-//            result.asClue {
-//                it.name shouldBe "result"
-////                it.type?.resolve<ClassT>()?.name shouldBe "Int"
-//            }
-//        }
-
-//        @Test
-//        fun `should handle placeholders`() = withFactbaseFromFile("declarations.simpleml") {
-//            findUniqueFactOrFail<PlaceholderT> { it.name == "placeholder" }
-//        }
     }
 
 
@@ -738,6 +669,32 @@ class SimpleMLAstToPrologFactbaseTest {
                 val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
 
                 findUniqueFactOrFail<WildcardT> { it.parent == assignmentT.id }
+            }
+        }
+
+        @Nested
+        inner class Yield {
+            @Test
+            fun `should reference results if possible`() = withFactbaseFromFile("statements.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
+                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
+                val yieldT = findUniqueFactOrFail<YieldT> { it.parent == assignmentT.id }
+                val resultT = findUniqueFactOrFail<ResultT> { it.id == yieldT.result }
+                resultT.asClue {
+                    resultT.parent shouldBe workflowStepT.id
+                    resultT.name shouldBe "a"
+                }
+            }
+
+            @Test
+            fun `should store name for unresolvable results`() = withFactbaseFromFile("statements.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myStepWithUnresolvedYield" }
+                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
+                val yieldT = findUniqueFactOrFail<YieldT> { it.parent == assignmentT.id }
+                val unresolvedT = findUniqueFactOrFail<UnresolvedT> { it.id == yieldT.result }
+                unresolvedT.asClue {
+                    unresolvedT.name shouldBe "a"
+                }
             }
         }
 

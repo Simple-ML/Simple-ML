@@ -236,6 +236,7 @@ fun EObject?.containingCompilationUnitOrNull() = this?.closestAncestorOrNull<Sml
 fun EObject?.containingFunctionOrNull() = this?.closestAncestorOrNull<SmlFunction>()
 fun EObject?.containingLambdaOrNull() = this?.closestAncestorOrNull<SmlLambda>()
 fun EObject?.containingWorkflowOrNull() = this?.closestAncestorOrNull<SmlWorkflow>()
+fun EObject?.containingWorkflowStepOrNull() = this?.closestAncestorOrNull<SmlWorkflowStep>()
 
 fun EObject?.isCallable() =
         this is SmlClass ||
