@@ -18,6 +18,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.IntT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
+import de.unibonn.simpleml.prolog_bridge.model.facts.NullT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlaceholderT
@@ -360,7 +361,7 @@ class SimpleMLAstToPrologFactbase {
 
             }
             is SmlNull -> {
-
+                +NullT(obj.id, parentId, enclosingId)
             }
             is SmlPrefixOperation -> {
 

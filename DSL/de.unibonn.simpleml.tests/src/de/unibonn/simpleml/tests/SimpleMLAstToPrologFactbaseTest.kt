@@ -29,6 +29,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.IntT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NodeWithParent
+import de.unibonn.simpleml.prolog_bridge.model.facts.NullT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlaceholderT
@@ -900,6 +901,22 @@ class SimpleMLAstToPrologFactbaseTest {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithLiterals" }
                 val intT = findUniqueFactOrFail<IntT> { isContainedIn(it, workflowT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == intT.id }
+            }
+        }
+
+        @Nested
+        inner class Null {
+            @Test
+            fun `should handle nulls`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithLiterals" }
+                findUniqueFactOrFail<NullT> { isContainedIn(it, workflowT) }
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithLiterals" }
+                val nullT = findUniqueFactOrFail<NullT> { isContainedIn(it, workflowT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == nullT.id }
             }
         }
     }
