@@ -100,25 +100,25 @@ class SimpleMLAstToPrologFactbase {
 //
 //        return PlFactbase().apply {
 //            visitCompilationUnit(obj)
-////
-////            val node = NodeModelUtils.getNode(obj)
-////
-////            node.asTreeIterable.forEach {
-////                println(it)
-////                if (it is HiddenLeafNode) {
-////                    val grammarElement = it.grammarElement
-////                    if (grammarElement is TerminalRule && (grammarElement.name == "SL_COMMENT")) {
-////                        println(grammarElement)
-////                        println(it.text.replace("^//\\s*".toRegex(), ""))
-////                        println(NodeModelUtils.getLineAndColumn(it, it.offset))
-////                        println(it.offset)
-////                    }
-////                    if (grammarElement is TerminalRule && (grammarElement.name == "ML_COMMENT")) {
-////                        println(grammarElement)
-////                        println(it.text)
-////                    }
-////                }
-////            }
+//
+//            val node = NodeModelUtils.getNode(obj)
+//
+//            node.asTreeIterable.forEach {
+//                println(it)
+//                if (it is HiddenLeafNode) {
+//                    val grammarElement = it.grammarElement
+//                    if (grammarElement is TerminalRule && (grammarElement.name == "SL_COMMENT")) {
+//                        println(grammarElement)
+//                        println(it.text.replace("^//\\s*".toRegex(), ""))
+//                        println(NodeModelUtils.getLineAndColumn(it, it.offset))
+//                        println(it.offset)
+//                    }
+//                    if (grammarElement is TerminalRule && (grammarElement.name == "ML_COMMENT")) {
+//                        println(grammarElement)
+//                        println(it.text)
+//                    }
+//                }
+//            }
 //        }
 //    }
 
@@ -132,12 +132,12 @@ class SimpleMLAstToPrologFactbase {
 
         +CompilationUnitT(obj.id, obj.name, obj.imports.map { it.id }, obj.members.map { it.id })
         +FileS(obj.id, obj.eResource().uri.toUNIXString())
-        +SourceLocationS(obj)
+        visitSourceLocation(obj)
     }
 
     private fun PlFactbase.visitImport(obj: SmlImport, parentId: Id<SmlCompilationUnit>) {
         +ImportT(obj.id, parentId, obj.importedNamespace, obj.alias)
-        +SourceLocationS(obj)
+        visitSourceLocation(obj)
     }
 
     private fun PlFactbase.visitDeclaration(obj: SmlDeclaration, parentId: Id<EObject>) {
@@ -250,7 +250,7 @@ class SimpleMLAstToPrologFactbase {
             }
         }
 
-        +SourceLocationS(obj)
+        visitSourceLocation(obj)
     }
 
     private fun PlFactbase.visitAnnotationUse(obj: SmlAnnotationUse, parentId: Id<SmlDeclaration>) {
@@ -258,7 +258,7 @@ class SimpleMLAstToPrologFactbase {
         obj.argumentsOrEmpty().forEach { visitArgument(it, obj.id, obj.id) }
 
         +AnnotationUseT(obj.id, parentId, obj.annotation.id, obj.argumentList?.arguments?.map { it.id })
-        +SourceLocationS(obj)
+        visitSourceLocation(obj)
     }
 
     private fun PlFactbase.visitModifier(modifier: String, target: Id<SmlDeclaration>) {
@@ -285,7 +285,7 @@ class SimpleMLAstToPrologFactbase {
             }
         }
 
-        +SourceLocationS(obj)
+        visitSourceLocation(obj)
     }
 
     private fun PlFactbase.visitAssignee(obj: SmlAssignee, parentId: Id<SmlAssignment>) {
@@ -306,7 +306,7 @@ class SimpleMLAstToPrologFactbase {
             }
         }
 
-        +SourceLocationS(obj)
+        visitSourceLocation(obj)
     }
 
     // *****************************************************************************************************************
@@ -314,11 +314,11 @@ class SimpleMLAstToPrologFactbase {
     // ****************************************************************************************************************/
 
     private fun PlFactbase.visitExpression(obj: SmlExpression, parentId: Id<EObject>, enclosingId: Id<EObject>) {
-        +SourceLocationS(obj)
+        visitSourceLocation(obj)
     }
 
     private fun PlFactbase.visitArgument(obj: SmlArgument, parentId: Id<EObject>, enclosingId: Id<EObject>) {
-        +SourceLocationS(obj)
+        visitSourceLocation(obj)
     }
 
 
@@ -327,11 +327,36 @@ class SimpleMLAstToPrologFactbase {
     // ****************************************************************************************************************/
 
     private fun PlFactbase.visitType(obj: SmlType, parentId: Id<EObject>) {
-        +SourceLocationS(obj)
+        visitSourceLocation(obj)
     }
 
     private fun PlFactbase.visitTypeParameterConstraint(obj: SmlTypeParameterConstraint, parentId: Id<EObject>) {
-        +SourceLocationS(obj)
+        visitSourceLocation(obj)
+    }
+
+
+    // *****************************************************************************************************************
+    // Other
+    // ****************************************************************************************************************/
+
+    private fun PlFactbase.visitSourceLocation(obj: EObject) {
+        val node = NodeModelUtils.getNode(obj)
+        val location = NodeModelUtils.getLineAndColumn(node, node.offset)
+
+        +SourceLocationS(obj.id, location.line, location.column, node.offset, node.totalLength)
+    }
+
+    private fun PlFactbase.visitCrossReference(source: EObject, edge: EReference, target: EObject) {
+        if (!idManager.knowsObject(target)) {
+            val name = getReferencedName(source, edge)
+            +UnresolvedT(target.id, name)
+        }
+    }
+
+    private fun getReferencedName(eObject: EObject, eReference: EReference): String {
+        return NodeModelUtils
+            .findNodesForFeature(eObject, eReference)
+            .joinToString("") { it.text }
     }
 
 
@@ -339,36 +364,6 @@ class SimpleMLAstToPrologFactbase {
     // Helpers
     // ****************************************************************************************************************/
 
-//            is SmlPlaceholder -> {
-//                visitPlaceholder(obj, parentId)
-//            }
-//            is SmlNamedTypeDeclaration -> {
-//                    is SmlLambdaYield -> {
-//                        visitLambdaYield(obj, parentId)
-//                    }
-//                }
-//            }
-//        }
-
-//    private fun PlFactbase.visitStatement(obj: SmlStatement, parentId: Id) {
-//        when (obj) {
-//            is SmlAssignment -> {
-//                obj.assigneesOrEmpty().forEach { visitDoStatementAssignee(it, parentId) }
-//                visitExpression(obj.expression, obj.id, obj.id)
-//                +AssignmentT(obj.id, parentId, obj.assigneeList.assignees.map { it.id }, obj.expression.id)
-//            }
-//        }
-//
-//        +SourceLocationS(obj)
-//    }
-//
-//    private fun PlFactbase.visitPlaceholder(obj: SmlPlaceholder, parentId: Id) {
-//        obj.annotations.forEach { visitAnnotationUse(it, obj.id) }
-//
-//        +PlaceholderT(obj.id, parentId, obj.name)
-//        +SourceLocationS(obj)
-//    }
-//
 //    private fun PlFactbase.visitExpression(obj: SmlExpression, parentId: Id, enclosingId: Id) {
 //        if (idManager.knowsObject(obj)) return
 //
@@ -497,33 +492,6 @@ class SimpleMLAstToPrologFactbase {
 //
 //        +SourceLocationS(obj)
 //    }
-//
-//    private fun PlFactbase.visitLambdaYield(obj: SmlLambdaYield, parentId: Id) {
-//        obj.annotations.forEach { visitAnnotationUse(it, obj.id) }
-//
-//        +LambdaYieldT(obj.id, parentId, obj.name)
-//        +SourceLocationS(obj)
-//    }
-//
-//    private fun PlFactbase.visitDoStatementAssignee(obj: SmlAssignee, parentId: Id) {
-//        when (obj) {
-//            is SmlWildcard -> {
-//                +WildcardT(obj.id, parentId)
-//            }
-//            is SmlPlaceholder -> {
-//                visitPlaceholder(obj, parentId)
-//            }
-//            is SmlYield -> {
-//                visitDeclaration(obj.result, obj.referenceId!!.id)
-//                +YieldT(obj.id, parentId, obj.result.id)
-//            }
-//            is SmlLambdaYield -> {
-//                visitLambdaYield(obj, parentId)
-//            }
-//        }
-//        +SourceLocationS(obj)
-//    }
-//
 //    private fun PlFactbase.visitTypeParameterConstraint(obj: SmlTypeParameterConstraint, parentId: Id) {
 //        visitDeclaration(obj.leftOperand, obj.id)
 //        visitType(obj.rightOperand, obj.id)
@@ -531,57 +499,12 @@ class SimpleMLAstToPrologFactbase {
 //        +TypeParameterConstraintT(obj.id, obj.eResource().id, obj.leftOperand.id, obj.operator, obj.rightOperand.id)
 //        +SourceLocationS(obj)
 //    }
-//
-//    private fun PlFactbase.visitArgument(obj: SmlArgument, parentId: Id, enclosingId: Id) {
-//        if (obj.parameter != null) visitParameter(obj.parameter, parentId)
-//        visitExpression(obj.value, obj.id, enclosingId)
-//
-//        //TODO überall nach nullables suchen und Vorkehrungen treffen
-//        val para: Id?
-//        if (obj.parameter == null) para = null
-//        else para = obj.parameterOrNull()?.id
-//
-//        +ArgumentT(obj.id, parentId, enclosingId, para, obj.value.id)
-//        +SourceLocationS(obj)
-//    }
-
-    // TODO the solution using null to mark unresolved references is not ideal yet since we then lose the referenced name
-//  example: for call() the resulting callT fact has the callable set to null if it could not be linked to a function
-    private val EObject.referenceId: Id<EObject>?
-        get() {
-            return if (this.eResource() == null) {
-                null
-            } else {
-                this.id
-            }
-        }
-
-    private fun PlFactbase.visitCrossReference(source: EObject, edge: EReference, target: EObject) {
-        if (!idManager.knowsObject(target)) {
-            val name = getReferencedName(source, edge)
-            +UnresolvedT(target.id, name)
-        }
-    }
-
-    private fun getReferencedName(eObject: EObject, eReference: EReference): String {
-        return NodeModelUtils
-            .findNodesForFeature(eObject, eReference)
-            .joinToString("") { it.text }
-    }
 
     private val <T : EObject> T.id: Id<T>
         get() = idManager.assignIdIfAbsent(this)
 
     private fun reset() {
         idManager = IdManager()
-    }
-
-    @Suppress("FunctionName")
-    private fun SourceLocationS(obj: EObject): SourceLocationS {
-        val node = NodeModelUtils.getNode(obj)
-        val location = NodeModelUtils.getLineAndColumn(node, node.offset)
-
-        return SourceLocationS(obj.id, location.line, location.column, node.offset, node.totalLength)
     }
 
     private fun URI.toUNIXString(): String {
