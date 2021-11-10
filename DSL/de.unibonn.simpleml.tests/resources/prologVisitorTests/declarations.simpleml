@@ -45,7 +45,7 @@ deprecated enum MyComplexEnum {
 }
 
 
-// Functions, Parameters, Results --------------------------------------------------------------------------------------
+// Functions, Parameters & Results -------------------------------------------------------------------------------------
 fun mySimpleFunction()
 
 @MySimpleAnnotation
@@ -56,12 +56,12 @@ deprecated fun myComplexFunction
     where T1 super Number, T2 sub Number
 
 
-// Interfaces ----------------------------------------------------------------------------------------------------------
+// Interfaces & Type Parameters ----------------------------------------------------------------------------------------
 interface MySimpleInterface
 
 @MySimpleAnnotation
 deprecated interface MyComplexInterface
-    <T1, T2>
+    <MY_SIMPLE_TYPE_PARAMETER, @AnnotationUse deprecated out MY_COMPLEX_TYPE_PARAMETER>
     constructor(a, b)
     sub SuperClass, SuperInterface
     where T1 super Number, T2 sub Number

@@ -501,6 +501,40 @@ class SimpleMLAstToPrologFactbaseTest {
         }
 
         @Nested
+        inner class TypeParameter {
+            @Test
+            fun `should handle simple parameters`() = withFactbaseFromFile("declarations.simpleml") {
+                val typeParameterT = findUniqueFactOrFail<TypeParameterT> { it.name == "MY_SIMPLE_TYPE_PARAMETER" }
+                typeParameterT.asClue {
+                    typeParameterT.variance.shouldBeNull()
+                }
+
+                shouldHaveNAnnotationUses(typeParameterT, 0)
+                shouldHaveNModifiers(typeParameterT, 0)
+            }
+
+            @Test
+            fun `should store variance`() = withFactbaseFromFile("declarations.simpleml") {
+                val typeParameterT = findUniqueFactOrFail<TypeParameterT> { it.name == "MY_COMPLEX_TYPE_PARAMETER" }
+                typeParameterT.asClue {
+                    typeParameterT.variance shouldBe "out"
+                }
+            }
+
+            @Test
+            fun `should store annotation uses`() = withFactbaseFromFile("declarations.simpleml") {
+                val typeParameterT = findUniqueFactOrFail<TypeParameterT> { it.name == "MY_COMPLEX_TYPE_PARAMETER" }
+                shouldHaveNAnnotationUses(typeParameterT, 1)
+            }
+
+            @Test
+            fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
+                val typeParameterT = findUniqueFactOrFail<TypeParameterT> { it.name == "MY_COMPLEX_TYPE_PARAMETER" }
+                shouldHaveNModifiers(typeParameterT, 1)
+            }
+        }
+
+        @Nested
         inner class Workflow {
             @Test
             fun `should handle simple workflows`() = withFactbaseFromFile("declarations.simpleml") {

@@ -15,6 +15,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
+import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowStepT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowT
 import de.unibonn.simpleml.prolog_bridge.utils.Id
@@ -181,7 +182,7 @@ class SimpleMLAstToPrologFactbase {
                     +ResultT(obj.id, parentId, obj.name, obj.type?.id)
                 }
                 is SmlTypeParameter -> {
-
+                    +TypeParameterT(obj.id, parentId, obj.name, obj.variance)
                 }
                 is SmlWorkflow -> {
                     obj.statementsOrEmpty().forEach { visitStatement(it, obj.id) }
