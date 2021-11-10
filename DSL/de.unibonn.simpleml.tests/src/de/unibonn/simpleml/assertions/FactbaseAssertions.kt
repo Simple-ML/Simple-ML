@@ -31,15 +31,17 @@ inline fun <reified T : PlFact> PlFactbase.shouldHaveUniqueFact(filter: (T) -> B
     }
 }
 
-fun PlFactbase.shouldBeChildOf(childId: Id<EObject>, parent: Node) {
-    val child = findUniqueFactOrFail<NodeWithParent> { it.id == childId }
+inline fun <reified T: NodeWithParent> PlFactbase.shouldBeChildOf(childId: Id<EObject>?, parent: Node) {
+    childId.shouldNotBeNull()
+
+    val child = findUniqueFactOrFail<T> { it.id == childId }
     child.asClue {
-        it.id.value shouldBeGreaterThan parent.id.value
-        it.parent shouldBe parent.id
+        child.id.value shouldBeGreaterThan parent.id.value
+        child.parent shouldBe parent.id
     }
 }
 
-fun PlFactbase.shouldBeNChildrenOf(
+inline fun <reified T: NodeWithParent> PlFactbase.shouldBeNChildrenOf(
     childIds: List<Id<EObject>>?,
     parent: Node,
     n: Int
@@ -47,16 +49,18 @@ fun PlFactbase.shouldBeNChildrenOf(
     childIds.shouldNotBeNull()
     childIds shouldHaveSize n
     childIds.forEach {
-        shouldBeChildOf(it, parent)
+        shouldBeChildOf<T>(it, parent)
     }
 }
 
-fun PlFactbase.shouldBeChildExpressionOf(childId: Id<SmlExpression>, parent: Node) {
+fun PlFactbase.shouldBeChildExpressionOf(childId: Id<SmlExpression>?, parent: Node) {
+    childId.shouldNotBeNull()
+
     val child = findUniqueFactOrFail<ExpressionT> { it.id == childId }
     child.asClue {
-        it.id.value shouldBeGreaterThan parent.id.value
-        it.parent shouldBe parent.id
-        it.enclosing shouldBe expectedEnclosing(parent)
+        child.id.value shouldBeGreaterThan parent.id.value
+        child.parent shouldBe parent.id
+        child.enclosing shouldBe expectedEnclosing(parent)
     }
 }
 
@@ -85,7 +89,7 @@ fun PlFactbase.shouldHaveNAnnotationUses(
 ) {
     val annotationUses = findFacts<AnnotationUseT> { it.parent == declaration.id }
     annotationUses shouldHaveSize n
-    annotationUses.forEach { shouldBeChildOf(it.id, declaration) }
+    annotationUses.forEach { shouldBeChildOf<AnnotationUseT>(it.id, declaration) }
 }
 
 fun PlFactbase.shouldHaveNModifiers(

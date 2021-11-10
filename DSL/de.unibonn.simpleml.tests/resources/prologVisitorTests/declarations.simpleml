@@ -14,7 +14,7 @@ annotation MySimpleAnnotation
 )
 
 
-// Classes -------------------------------------------------------------------------------------------------------------
+// Classes & Attributes ------------------------------------------------------------------------------------------------
 class MySimpleClass
 
 @MySimpleAnnotation
@@ -24,7 +24,9 @@ deprecated class MyComplexClass
     sub SuperClass, SuperInterface
     where T1 super Number, T2 sub Number
 {
-    attr myAttribute: Int
+    attr mySimpleAttribute
+    @AnnotationUse deprecated attr myComplexAttribute: Int
+
     class MyClass
     enum MyEnum
     interface MyInterface
@@ -51,7 +53,7 @@ deprecated interface MyComplexInterface
     sub SuperClass, SuperInterface
     where T1 super Number, T2 sub Number
 {
-    attr myAttribute: Int
+    attr myAttribute
     class MyClass
     enum MyEnum
     interface MyInterface
