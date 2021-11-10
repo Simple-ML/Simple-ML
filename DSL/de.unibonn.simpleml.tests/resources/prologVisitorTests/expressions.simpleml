@@ -2,4 +2,5 @@ package myPackage
 
 workflow myWorkflowWithLiterals {
     val booleanLiteral = true;
+    val floatLiteral = 1.0;
 }

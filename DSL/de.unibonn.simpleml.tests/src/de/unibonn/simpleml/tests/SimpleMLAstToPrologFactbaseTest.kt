@@ -4,6 +4,7 @@ import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import de.unibonn.simpleml.assertions.findUniqueFactOrFail
 import de.unibonn.simpleml.assertions.shouldBeChildExpressionOf
 import de.unibonn.simpleml.assertions.shouldBeChildOf
+import de.unibonn.simpleml.assertions.shouldBeCloseTo
 import de.unibonn.simpleml.assertions.shouldBeNChildrenOf
 import de.unibonn.simpleml.assertions.shouldHaveNAnnotationUses
 import de.unibonn.simpleml.assertions.shouldHaveNModifiers
@@ -21,6 +22,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionStatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
+import de.unibonn.simpleml.prolog_bridge.model.facts.FloatT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
@@ -859,6 +861,25 @@ class SimpleMLAstToPrologFactbaseTest {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithLiterals" }
                 val booleanT = findUniqueFactOrFail<BooleanT> { isContainedIn(it, workflowT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == booleanT.id }
+            }
+        }
+
+        @Nested
+        inner class Float {
+            @Test
+            fun `should store value`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithLiterals" }
+                val floatT = findUniqueFactOrFail<FloatT> { isContainedIn(it, workflowT) }
+                floatT.asClue {
+                    floatT.value.shouldBeCloseTo(1.0)
+                }
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithLiterals" }
+                val floatT = findUniqueFactOrFail<FloatT> { isContainedIn(it, workflowT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == floatT.id }
             }
         }
     }

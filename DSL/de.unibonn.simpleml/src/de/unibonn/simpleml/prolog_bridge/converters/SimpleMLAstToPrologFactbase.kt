@@ -11,6 +11,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionStatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
+import de.unibonn.simpleml.prolog_bridge.model.facts.FloatT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
@@ -343,7 +344,7 @@ class SimpleMLAstToPrologFactbase {
 
             }
             is SmlFloat -> {
-
+                +FloatT(obj.id, parentId, enclosingId, obj.value)
             }
             is SmlInfixOperation -> {
 
