@@ -59,3 +59,11 @@ deprecated interface MyComplexInterface
     interface MyInterface
     fun MyFunction()
 }
+
+
+// Workflows -----------------------------------------------------------------------------------------------------------
+workflow mySimpleWorkflow {}
+
+@AnnotationUse deprecated workflow myComplexWorkflow {
+    val a = 1;
+}

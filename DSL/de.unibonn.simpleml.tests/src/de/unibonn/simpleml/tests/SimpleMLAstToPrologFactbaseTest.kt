@@ -19,9 +19,11 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
+import de.unibonn.simpleml.prolog_bridge.model.facts.StatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterConstraintT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeT
+import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowT
 import de.unibonn.simpleml.util.getResourcePath
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -357,6 +359,38 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
                 val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
                 shouldHaveNModifiers(interfaceT, 1)
+            }
+        }
+
+        @Nested
+        inner class Workflow {
+            @Test
+            fun `should handle simple workflows`() = withFactbaseFromFile("declarations.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "mySimpleWorkflow" }
+                workflowT.asClue {
+                    workflowT.statements.shouldBeEmpty()
+                }
+
+                shouldHaveNAnnotationUses(workflowT, 0)
+                shouldHaveNModifiers(workflowT, 0)
+            }
+
+            @Test
+            fun `should reference statements`() = withFactbaseFromFile("declarations.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myComplexWorkflow" }
+                shouldBeNChildrenOf<StatementT>(workflowT.statements, workflowT, 1)
+            }
+
+            @Test
+            fun `should store annotation uses`() = withFactbaseFromFile("declarations.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myComplexWorkflow" }
+                shouldHaveNAnnotationUses(workflowT, 1)
+            }
+
+            @Test
+            fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myComplexWorkflow" }
+                shouldHaveNModifiers(workflowT, 1)
             }
         }
 

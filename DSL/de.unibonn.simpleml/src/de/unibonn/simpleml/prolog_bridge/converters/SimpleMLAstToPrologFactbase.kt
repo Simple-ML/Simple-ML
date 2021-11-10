@@ -12,6 +12,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
+import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowT
 import de.unibonn.simpleml.prolog_bridge.utils.Id
 import de.unibonn.simpleml.prolog_bridge.utils.IdManager
 import de.unibonn.simpleml.simpleML.SmlAnnotation
@@ -27,6 +28,7 @@ import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlInterface
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlResult
+import de.unibonn.simpleml.simpleML.SmlStatement
 import de.unibonn.simpleml.simpleML.SmlType
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
@@ -36,6 +38,7 @@ import de.unibonn.simpleml.utils.instancesOrEmpty
 import de.unibonn.simpleml.utils.membersOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
 import de.unibonn.simpleml.utils.parentTypesOrEmpty
+import de.unibonn.simpleml.utils.statementsOrEmpty
 import de.unibonn.simpleml.utils.typeParameterConstraintsOrEmpty
 import de.unibonn.simpleml.utils.typeParametersOrEmpty
 import org.eclipse.emf.common.util.URI
@@ -157,7 +160,9 @@ class SimpleMLAstToPrologFactbase {
 
                 }
                 is SmlWorkflow -> {
+                    obj.statementsOrEmpty().forEach { visitStatement(it, obj.id) }
 
+                    +WorkflowT(obj.id, parentId, obj.name, obj.statementsOrEmpty().map { it.id })
                 }
                 is SmlWorkflowStep -> {
 
@@ -191,6 +196,10 @@ class SimpleMLAstToPrologFactbase {
         }
 
     private fun PlFactbase.visitTypeParameterConstraint(obj: SmlTypeParameterConstraint, parentId: Id<EObject>) =
+        visitEObject(obj) {
+        }
+
+    private fun PlFactbase.visitStatement(obj: SmlStatement, parentId: Id<EObject>) =
         visitEObject(obj) {
         }
 
