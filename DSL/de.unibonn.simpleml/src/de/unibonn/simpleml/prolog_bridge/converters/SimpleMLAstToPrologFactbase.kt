@@ -18,6 +18,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
+import de.unibonn.simpleml.prolog_bridge.model.facts.WildcardT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowStepT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowT
 import de.unibonn.simpleml.prolog_bridge.utils.Id
@@ -265,7 +266,7 @@ class SimpleMLAstToPrologFactbase {
             }
         }
 
-    private fun PlFactbase.visitAssignee(obj: SmlAssignee, parentId: Id<EObject>) =
+    private fun PlFactbase.visitAssignee(obj: SmlAssignee, parentId: Id<SmlAssignment>) =
         visitEObject(obj) {
             when (obj) {
                 is SmlLambdaYield -> {
@@ -275,7 +276,7 @@ class SimpleMLAstToPrologFactbase {
 
                 }
                 is SmlWildcard -> {
-
+                    +WildcardT(obj.id, parentId)
                 }
                 is SmlYield -> {
 

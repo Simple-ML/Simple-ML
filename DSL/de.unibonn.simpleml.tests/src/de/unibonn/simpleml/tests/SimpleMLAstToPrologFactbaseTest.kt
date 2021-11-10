@@ -9,7 +9,6 @@ import de.unibonn.simpleml.assertions.shouldHaveNAnnotationUses
 import de.unibonn.simpleml.assertions.shouldHaveNModifiers
 import de.unibonn.simpleml.prolog_bridge.Main
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
-import de.unibonn.simpleml.prolog_bridge.model.facts.AssigneeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AssignmentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AttributeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
@@ -30,6 +29,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.StatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterConstraintT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeT
+import de.unibonn.simpleml.prolog_bridge.model.facts.WildcardT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowStepT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowT
 import de.unibonn.simpleml.util.getResourcePath
@@ -709,6 +709,17 @@ class SimpleMLAstToPrologFactbaseTest {
                 val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
                 val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
                 shouldBeChildExpressionOf(assignmentT.expression, assignmentT)
+            }
+        }
+
+        @Nested
+        inner class Wildcard {
+            @Test
+            fun `should handle wildcards`() = withFactbaseFromFile("statements.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
+                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
+
+                findUniqueFactOrFail<WildcardT> { it.parent == assignmentT.id }
             }
         }
 
