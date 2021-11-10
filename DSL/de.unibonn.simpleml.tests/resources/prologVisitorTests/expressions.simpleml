@@ -26,6 +26,19 @@ workflow myWorkflowWithComplexCall {
 }
 
 
+// Lambdas -------------------------------------------------------------------------------------------------------------
+workflow myWorkflowWithSimpleLambda {
+    val simpleLambda = lambda {};
+}
+
+workflow myWorkflowWithComplexLambda {
+    val complexLambda = lambda(a, b) {
+        1;
+        2;
+    };
+}
+
+
 // Literals ------------------------------------------------------------------------------------------------------------
 workflow myWorkflowWithLiterals {
     val booleanLiteral = true;

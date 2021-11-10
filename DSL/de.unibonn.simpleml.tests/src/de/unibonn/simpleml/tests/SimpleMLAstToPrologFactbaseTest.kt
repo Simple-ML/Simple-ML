@@ -30,6 +30,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InfixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.IntT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
+import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NodeWithParent
 import de.unibonn.simpleml.prolog_bridge.model.facts.NullT
@@ -922,7 +923,7 @@ class SimpleMLAstToPrologFactbaseTest {
         @Nested
         inner class Call {
             @Test
-            fun `should handle simple call`() = withFactbaseFromFile("expressions.simpleml") {
+            fun `should handle simple calls`() = withFactbaseFromFile("expressions.simpleml") {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithSimpleCall" }
                 val callT = findUniqueFactOrFail<CallT> { isContainedIn(it, workflowT) }
                 callT.asClue {
@@ -1028,6 +1029,40 @@ class SimpleMLAstToPrologFactbaseTest {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithLiterals" }
                 val intT = findUniqueFactOrFail<IntT> { isContainedIn(it, workflowT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == intT.id }
+            }
+        }
+
+        @Nested
+        inner class Lambda {
+            @Test
+            fun `should handle simple lambdas`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithSimpleLambda" }
+                val lambdaT = findUniqueFactOrFail<LambdaT> { isContainedIn(it, workflowT) }
+                lambdaT.asClue {
+                    lambdaT.parameters.shouldBeNull()
+                    lambdaT.statements.shouldBeEmpty()
+                }
+            }
+
+            @Test
+            fun `should reference parameters`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithComplexLambda" }
+                val lambdaT = findUniqueFactOrFail<LambdaT> { isContainedIn(it, workflowT) }
+                shouldBeNChildrenOf<ParameterT>(lambdaT.parameters, lambdaT, 2)
+            }
+
+            @Test
+            fun `should reference statements`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithComplexLambda" }
+                val lambdaT = findUniqueFactOrFail<LambdaT> { isContainedIn(it, workflowT) }
+                shouldBeNChildrenOf<StatementT>(lambdaT.statements, lambdaT, 2)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithSimpleLambda" }
+                val lambdaT = findUniqueFactOrFail<LambdaT> { isContainedIn(it, workflowT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == lambdaT.id }
             }
         }
 

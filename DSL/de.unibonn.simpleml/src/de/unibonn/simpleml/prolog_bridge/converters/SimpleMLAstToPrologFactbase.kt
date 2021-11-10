@@ -19,6 +19,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InfixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.IntT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
+import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NullT
@@ -366,7 +367,8 @@ class SimpleMLAstToPrologFactbase {
                     enclosingId,
                     obj.receiver.id,
                     obj.typeArgumentList?.typeArguments?.map { it.id },
-                    obj.argumentsOrEmpty().map { it.id })
+                    obj.argumentsOrEmpty().map { it.id }
+                )
             }
             is SmlFloat -> {
                 +FloatT(obj.id, parentId, enclosingId, obj.value)
@@ -381,7 +383,16 @@ class SimpleMLAstToPrologFactbase {
                 +IntT(obj.id, parentId, enclosingId, obj.value)
             }
             is SmlLambda -> {
+                obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
+                obj.statementsOrEmpty().forEach { visitStatement(it, obj.id) }
 
+                +LambdaT(
+                    obj.id,
+                    parentId,
+                    enclosingId,
+                    obj.parameterList?.parameters?.map { it.id },
+                    obj.statementsOrEmpty().map { it.id }
+                )
             }
             is SmlMemberAccess -> {
 
@@ -489,34 +500,10 @@ class SimpleMLAstToPrologFactbase {
 //        if (idManager.knowsObject(obj)) return
 //
 //        when (obj) {
-//            is SmlInfixOperation -> {
-//                visitExpression(obj.leftOperand, obj.id, enclosingId)
-//                visitExpression(obj.rightOperand, obj.id, enclosingId)
-//                +InfixOperationT(obj.id, parentId, enclosingId, obj.leftOperand.id, obj.operator, obj.rightOperand.id)
-//            }
-//            is SmlPrefixOperation -> {
-//                visitExpression(obj.operand, obj.id, enclosingId)
-//                +PrefixOperationT(obj.id, parentId, enclosingId, obj.operator, obj.operand.id)
-//            }
 //            is SmlLambda -> {
 //                obj.body.statements.forEach { visitStatement(it, obj.id) }
 //                obj.parametersOrEmpty().forEach { visitParameter(it, parentId) }
 //                +LambdaT(obj.id, parentId, enclosingId, obj.parameterList?.parameters?.map { it.id }, obj.body.statements.map { it.id })
-//            }
-//            is SmlReference -> {
-//                if (obj.declaration !is SmlAnnotationImpl) {
-//                    visitDeclaration(obj.declaration, obj.id)
-//                    +ReferenceT(obj.id, parentId, enclosingId, obj.declaration.id)
-//                } else {
-//                    // TODO should only contain the text for the name not the full node!
-//                    /* NodeModelUtils.findNodesForFeature(reference, SimpleMLPackage.Literals.SML_REFERENCE__DECLARATION).forEach {
-//                           println(it.text)
-//                       }
-//                    */
-//
-//                    val node = NodeModelUtils.getNode(obj)
-//                    +UnresolvedT(obj.id, node.text.trim())
-//                }
 //            }
 //            is SmlChainedExpression -> {
 //                visitExpression(obj.receiver, parentId, enclosingId)
@@ -526,16 +513,6 @@ class SimpleMLAstToPrologFactbase {
 //                        visitExpression(obj.receiver, obj.id, enclosingId)
 //                        visitExpression(obj.member, obj.id, enclosingId)
 //                        +MemberAccessT(obj.id, parentId, enclosingId, obj.receiver.id, obj.isNullable, obj.member.id)
-//                    }
-//                    is SmlCall -> {
-//                        obj.argumentList.arguments.forEach { visitArgument(it, obj.id, enclosingId) }
-//                        obj.typeArgumentsOrEmpty().forEach { visitTypeArgument(it, obj.id, enclosingId) }
-//
-//                        val tal: List<Id>? = if (obj.typeArgumentList == null) {
-//                            null
-//                        } else obj.typeArgumentsOrEmpty().map { it.id }
-//
-//                        +CallT(obj.id, parentId, enclosingId, obj.receiver.id, tal, obj.argumentList.arguments.map { it.id })
 //                    }
 //                }
 //            }
