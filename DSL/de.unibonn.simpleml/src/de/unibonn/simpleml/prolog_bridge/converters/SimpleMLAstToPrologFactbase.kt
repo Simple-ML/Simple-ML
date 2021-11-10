@@ -35,6 +35,9 @@ import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlAssignee
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlAttribute
+import de.unibonn.simpleml.simpleML.SmlBoolean
+import de.unibonn.simpleml.simpleML.SmlCall
+import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlDeclaration
@@ -42,17 +45,34 @@ import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumInstance
 import de.unibonn.simpleml.simpleML.SmlExpression
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
+import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
+import de.unibonn.simpleml.simpleML.SmlInfixOperation
+import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlInterface
+import de.unibonn.simpleml.simpleML.SmlLambda
 import de.unibonn.simpleml.simpleML.SmlLambdaYield
+import de.unibonn.simpleml.simpleML.SmlMemberAccess
+import de.unibonn.simpleml.simpleML.SmlMemberType
+import de.unibonn.simpleml.simpleML.SmlNamedType
+import de.unibonn.simpleml.simpleML.SmlNull
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.simpleML.SmlPrefixOperation
+import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
+import de.unibonn.simpleml.simpleML.SmlStarProjection
 import de.unibonn.simpleml.simpleML.SmlStatement
+import de.unibonn.simpleml.simpleML.SmlString
+import de.unibonn.simpleml.simpleML.SmlThisType
 import de.unibonn.simpleml.simpleML.SmlType
+import de.unibonn.simpleml.simpleML.SmlTypeArgument
+import de.unibonn.simpleml.simpleML.SmlTypeArgumentValue
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
+import de.unibonn.simpleml.simpleML.SmlTypeProjection
+import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
@@ -314,6 +334,42 @@ class SimpleMLAstToPrologFactbase {
     // ****************************************************************************************************************/
 
     private fun PlFactbase.visitExpression(obj: SmlExpression, parentId: Id<EObject>, enclosingId: Id<EObject>) {
+        when (obj) {
+            is SmlBoolean -> {
+
+            }
+            is SmlCall -> {
+
+            }
+            is SmlFloat -> {
+
+            }
+            is SmlInfixOperation -> {
+
+            }
+            is SmlInt -> {
+
+            }
+            is SmlLambda -> {
+
+            }
+            is SmlMemberAccess -> {
+
+            }
+            is SmlNull -> {
+
+            }
+            is SmlPrefixOperation -> {
+
+            }
+            is SmlReference -> {
+
+            }
+            is SmlString -> {
+
+            }
+        }
+
         visitSourceLocation(obj)
     }
 
@@ -327,6 +383,41 @@ class SimpleMLAstToPrologFactbase {
     // ****************************************************************************************************************/
 
     private fun PlFactbase.visitType(obj: SmlType, parentId: Id<EObject>) {
+        when (obj) {
+            is SmlCallableType -> {
+
+            }
+            is SmlMemberType -> {
+
+            }
+            is SmlNamedType -> {
+
+            }
+            is SmlThisType -> {
+
+            }
+            is SmlUnionType -> {
+
+            }
+        }
+
+        visitSourceLocation(obj)
+    }
+
+    private fun PlFactbase.visitTypeArgument(obj: SmlTypeArgument, parentId: Id<EObject>) {
+        visitSourceLocation(obj)
+    }
+
+    private fun PlFactbase.visitTypeArgumentValue(obj: SmlTypeArgumentValue, parentId: Id<SmlTypeArgument>) {
+        when (obj) {
+            is SmlStarProjection -> {
+
+            }
+            is SmlTypeProjection -> {
+
+            }
+        }
+
         visitSourceLocation(obj)
     }
 

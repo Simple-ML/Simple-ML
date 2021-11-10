@@ -708,6 +708,9 @@ data class AssignmentT(
     override fun toString() = super.toString()
 }
 
+/**
+ * Facts that can be uses as assignees in an assignmentT fact.
+ */
 interface AssigneeT
 
 /**
@@ -1405,39 +1408,6 @@ data class UnionTypeT(
     override fun toString() = super.toString()
 }
 
-
-/**********************************************************************************************************************
- * Other
- **********************************************************************************************************************/
-
-/**
- * This Prolog fact represents annotation uses.
- *
- * @param id
- * The ID of this fact.
- *
- * @param parent
- * The ID of the fact for the annotated declaration.
- *
- * @param annotation
- * The ID of the annotationT fact for the referenced annotation or an unresolvedT fact if the annotation could
- * not be resolved.
- *
- * @param arguments
- * The list of arguments or null. Each element in the list is the ID of an argumentT fact for the respective argument.
- * Note that an empty list is used for an annotation use with an empty argument list, e.g. `@A()`, while null is used
- * for an annotation use without an argument list, like `@B`.
- */
-data class AnnotationUseT(
-    override val id: Id<SmlAnnotationUse>,
-    override val parent: Id<SmlDeclaration>,
-    val annotation: Id<SmlAnnotation>,
-    val arguments: List<Id<SmlArgument>>?
-) :
-    NodeWithParent("annotationUseT", id, parent, annotation, arguments) {
-    override fun toString() = super.toString()
-}
-
 /**
  * This Prolog fact represents star projections `*`.
  *
@@ -1536,6 +1506,39 @@ data class TypeProjectionT(
     val type: Id<SmlType>
 ) :
     NodeWithParent("typeProjectionT", id, parent, variance, type) {
+    override fun toString() = super.toString()
+}
+
+
+/**********************************************************************************************************************
+ * Other
+ **********************************************************************************************************************/
+
+/**
+ * This Prolog fact represents annotation uses.
+ *
+ * @param id
+ * The ID of this fact.
+ *
+ * @param parent
+ * The ID of the fact for the annotated declaration.
+ *
+ * @param annotation
+ * The ID of the annotationT fact for the referenced annotation or an unresolvedT fact if the annotation could
+ * not be resolved.
+ *
+ * @param arguments
+ * The list of arguments or null. Each element in the list is the ID of an argumentT fact for the respective argument.
+ * Note that an empty list is used for an annotation use with an empty argument list, e.g. `@A()`, while null is used
+ * for an annotation use without an argument list, like `@B`.
+ */
+data class AnnotationUseT(
+    override val id: Id<SmlAnnotationUse>,
+    override val parent: Id<SmlDeclaration>,
+    val annotation: Id<SmlAnnotation>,
+    val arguments: List<Id<SmlArgument>>?
+) :
+    NodeWithParent("annotationUseT", id, parent, annotation, arguments) {
     override fun toString() = super.toString()
 }
 
