@@ -6,6 +6,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionStatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
@@ -89,17 +90,23 @@ class SimpleMLAstToPrologFactbase {
         }
     }
 
-    private fun PlFactbase.visitCompilationUnit(obj: SmlCompilationUnit) = visitEObject(obj) {
-        obj.imports.forEach { visitImport(it, obj.id) }
-        obj.members.forEach { visitDeclaration(it, obj.id) }
+    // *****************************************************************************************************************
+    // Declarations
+    // ****************************************************************************************************************/
 
-        +CompilationUnitT(obj.id, obj.name, obj.imports.map { it.id }, obj.members.map { it.id })
-        +FileS(obj.id, obj.eResource().uri.toUNIXString())
-    }
+    private fun PlFactbase.visitCompilationUnit(obj: SmlCompilationUnit) =
+        visitEObject(obj) {
+            obj.imports.forEach { visitImport(it, obj.id) }
+            obj.members.forEach { visitDeclaration(it, obj.id) }
 
-    private fun PlFactbase.visitImport(obj: SmlImport, parentId: Id<SmlCompilationUnit>) = visitEObject(obj) {
-        +ImportT(obj.id, parentId, obj.importedNamespace, obj.alias)
-    }
+            +CompilationUnitT(obj.id, obj.name, obj.imports.map { it.id }, obj.members.map { it.id })
+            +FileS(obj.id, obj.eResource().uri.toUNIXString())
+        }
+
+    private fun PlFactbase.visitImport(obj: SmlImport, parentId: Id<SmlCompilationUnit>) =
+        visitEObject(obj) {
+            +ImportT(obj.id, parentId, obj.importedNamespace, obj.alias)
+        }
 
     private fun PlFactbase.visitDeclaration(obj: SmlDeclaration, parentId: Id<EObject>): Unit =
         visitEObject(obj) {
@@ -234,13 +241,10 @@ class SimpleMLAstToPrologFactbase {
         +ModifierT(target, modifier)
     }
 
-    private fun PlFactbase.visitType(obj: SmlType, parentId: Id<EObject>) =
-        visitEObject(obj) {
-        }
 
-    private fun PlFactbase.visitTypeParameterConstraint(obj: SmlTypeParameterConstraint, parentId: Id<EObject>) =
-        visitEObject(obj) {
-        }
+    // *****************************************************************************************************************
+    // Statements
+    // ****************************************************************************************************************/
 
     private fun PlFactbase.visitStatement(obj: SmlStatement, parentId: Id<EObject>) =
         visitEObject(obj) {
@@ -249,7 +253,9 @@ class SimpleMLAstToPrologFactbase {
 
                 }
                 is SmlExpressionStatement -> {
+                    visitExpression(obj.expression, obj.id, obj.id)
 
+                    +ExpressionStatementT(obj.id, parentId, obj.expression.id)
                 }
             }
         }
@@ -272,12 +278,31 @@ class SimpleMLAstToPrologFactbase {
             }
         }
 
+    // *****************************************************************************************************************
+    // Expressions
+    // ****************************************************************************************************************/
+
     private fun PlFactbase.visitExpression(obj: SmlExpression, parentId: Id<EObject>, enclosingId: Id<EObject>) =
         visitEObject(obj) {
         }
 
 
-    // Helpers ---------------------------------------------------------------------------------------------------------
+    // *****************************************************************************************************************
+    // Types
+    // ****************************************************************************************************************/
+
+    private fun PlFactbase.visitType(obj: SmlType, parentId: Id<EObject>) =
+        visitEObject(obj) {
+        }
+
+    private fun PlFactbase.visitTypeParameterConstraint(obj: SmlTypeParameterConstraint, parentId: Id<EObject>) =
+        visitEObject(obj) {
+        }
+
+
+    // *****************************************************************************************************************
+    // Helpers
+    // ****************************************************************************************************************/
 
     private fun PlFactbase.visitEObject(obj: EObject, visitor: PlFactbase.() -> Unit) {
         if (idManager.knowsObject(obj)) {

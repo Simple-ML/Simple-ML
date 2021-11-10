@@ -498,27 +498,6 @@ data class InterfaceT(
 }
 
 /**
- * This Prolog fact represents yields in a lambda.
- *
- * @param id
- * The ID of this fact.
- *
- * @param parent
- * The ID of the assignmentT fact for the containing assignment.
- *
- * @param name
- * The name of the yielded result.
- */
-data class LambdaYieldT(
-    override val id: Id<SmlLambdaYield>,
-    override val parent: Id<SmlAssignment>,
-    override val name: String
-) :
-    DeclarationT("lambdaYieldT", id, parent, name) {
-    override fun toString() = super.toString()
-}
-
-/**
  * This Prolog fact represents parameters.
  *
  * @param id
@@ -555,27 +534,6 @@ data class ParameterT(
     type,
     defaultValue
 ) {
-    override fun toString() = super.toString()
-}
-
-/**
- * This Prolog fact represents placeholder declarations.
- *
- * @param id
- * The ID of this fact.
- *
- * @param parent
- * The ID of the assignmentT fact for the containing assignment.
- *
- * @param name
- * The name of the placeholder.
- */
-data class PlaceholderT(
-    override val id: Id<SmlPlaceholder>,
-    override val parent: Id<SmlAssignment>,
-    override val name: String
-) :
-    DeclarationT("placeholderT", id, parent, name) {
     override fun toString() = super.toString()
 }
 
@@ -747,6 +705,86 @@ data class AssignmentT(
     val expression: Id<SmlExpression>
 ) :
     StatementT("assignmentT", id, parent, assignees, expression) {
+    override fun toString() = super.toString()
+}
+
+interface AssigneeT
+
+/**
+ * This Prolog fact represents yields in a lambda.
+ *
+ * @param id
+ * The ID of this fact.
+ *
+ * @param parent
+ * The ID of the assignmentT fact for the containing assignment.
+ *
+ * @param name
+ * The name of the yielded result.
+ */
+data class LambdaYieldT(
+    override val id: Id<SmlLambdaYield>,
+    override val parent: Id<SmlAssignment>,
+    override val name: String
+) :
+    DeclarationT("lambdaYieldT", id, parent, name), AssigneeT {
+    override fun toString() = super.toString()
+}
+
+/**
+ * This Prolog fact represents placeholder declarations.
+ *
+ * @param id
+ * The ID of this fact.
+ *
+ * @param parent
+ * The ID of the assignmentT fact for the containing assignment.
+ *
+ * @param name
+ * The name of the placeholder.
+ */
+data class PlaceholderT(
+    override val id: Id<SmlPlaceholder>,
+    override val parent: Id<SmlAssignment>,
+    override val name: String
+) :
+    DeclarationT("placeholderT", id, parent, name), AssigneeT {
+    override fun toString() = super.toString()
+}
+
+/**
+ * This Prolog fact represents wildcards in an assignment, which discard the assigned value.
+ *
+ * @param id
+ * The ID of this fact.
+ *
+ * @param parent
+ * The ID of the assignmentT fact for the containing assignment.
+ */
+data class WildcardT(override val id: Id<SmlWildcard>, override val parent: Id<SmlAssignment>) :
+    NodeWithParent("wildcardT", id, parent), AssigneeT {
+    override fun toString() = super.toString()
+}
+
+/**
+ * This Prolog fact represents yields.
+ *
+ * @param id
+ * The ID of this fact.
+ *
+ * @param parent
+ * The ID of the assignmentT fact for the containing assignment.
+ *
+ * @param result
+ * The ID of the resultT fact for the referenced result or an unresolvedT fact if the result could not be
+ * resolved.
+ */
+data class YieldT(
+    override val id: Id<SmlYield>,
+    override val parent: Id<SmlAssignment>,
+    val result: Id<SmlResult>
+) :
+    NodeWithParent("yieldT", id, parent, result), AssigneeT {
     override fun toString() = super.toString()
 }
 
@@ -1512,42 +1550,6 @@ data class TypeProjectionT(
  * The name of the referenced declaration.
  */
 data class UnresolvedT(override val id: Id<EObject>, val name: String) : Node("unresolvedT", id, name) {
-    override fun toString() = super.toString()
-}
-
-/**
- * This Prolog fact represents wildcards in an assignment, which discard the assigned value.
- *
- * @param id
- * The ID of this fact.
- *
- * @param parent
- * The ID of the assignmentT fact for the containing assignment.
- */
-data class WildcardT(override val id: Id<SmlWildcard>, override val parent: Id<SmlAssignment>) :
-    NodeWithParent("wildcardT", id, parent) {
-    override fun toString() = super.toString()
-}
-
-/**
- * This Prolog fact represents yields.
- *
- * @param id
- * The ID of this fact.
- *
- * @param parent
- * The ID of the assignmentT fact for the containing assignment.
- *
- * @param result
- * The ID of the resultT fact for the referenced result or an unresolvedT fact if the result could not be
- * resolved.
- */
-data class YieldT(
-    override val id: Id<SmlYield>,
-    override val parent: Id<SmlAssignment>,
-    val result: Id<SmlResult>
-) :
-    NodeWithParent("yieldT", id, parent, result) {
     override fun toString() = super.toString()
 }
 

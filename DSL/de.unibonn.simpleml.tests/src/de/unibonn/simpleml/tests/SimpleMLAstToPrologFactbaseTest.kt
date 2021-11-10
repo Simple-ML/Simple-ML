@@ -15,6 +15,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.DeclarationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionStatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
@@ -689,23 +690,26 @@ class SimpleMLAstToPrologFactbaseTest {
     // Statements
     // ****************************************************************************************************************/
 
-//    @Nested
-//    inner class Statements {
+    @Nested
+    inner class Statements {
+
+        @Nested
+        inner class Assignment {
+//            @Test
+//            fun `should handle assignments`() = withFactbaseFromFile("statements.simpleml") {
 //
-//        @Test
-//        fun `should handle assignments`() = withFactbaseFromFile("statements.simpleml") {
-//            val assignment = findUniqueFactOrFail<AssignmentT>()
-//
-//            assignment.declarations.forEach { shouldBeChildOf(it, assignment) }
-//            shouldBeChildExpressionOf(assignment.value, assignment)
-//        }
-//
-//        @Test
-//        fun `should handle expression statements`() = withFactbaseFromFile("statements.simpleml") {
-//            val expressionStatement = findUniqueFactOrFail<ExpressionStatementT>()
-//            shouldBeChildExpressionOf(expressionStatement.expression, expressionStatement)
-//        }
-//    }
+//            }
+        }
+
+        @Nested
+        inner class ExpressionStatement {
+            @Test
+            fun `should reference expression`() = withFactbaseFromFile("statements.simpleml") {
+                val expressionStatementT = findUniqueFactOrFail<ExpressionStatementT>()
+                shouldBeChildExpressionOf(expressionStatementT.expression, expressionStatementT)
+            }
+        }
+    }
 
 
     // *****************************************************************************************************************
