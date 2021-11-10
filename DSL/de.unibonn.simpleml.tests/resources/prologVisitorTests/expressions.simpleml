@@ -12,3 +12,12 @@ workflow myWorkflowWithOperations {
     val infixOperation = 1 + 2;
     val prefixOperation = -1;
 }
+
+workflow myWorkflowWithResolvableReference {
+    val a = 1;
+    val b = a;
+}
+
+workflow myWorkflowWithUnresolvableReference {
+    val a = myUnresolvedReference;
+}

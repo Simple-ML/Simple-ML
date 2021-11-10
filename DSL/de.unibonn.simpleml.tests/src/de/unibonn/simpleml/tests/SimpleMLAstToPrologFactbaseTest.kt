@@ -35,6 +35,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlaceholderT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PrefixOperationT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ReferenceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StatementT
@@ -795,14 +796,14 @@ class SimpleMLAstToPrologFactbaseTest {
         @Nested
         inner class Yield {
             @Test
-            fun `should reference results if possible`() = withFactbaseFromFile("statements.simpleml") {
+            fun `should reference result if possible`() = withFactbaseFromFile("statements.simpleml") {
                 val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
                 val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
                 val yieldT = findUniqueFactOrFail<YieldT> { it.parent == assignmentT.id }
                 val resultT = findUniqueFactOrFail<ResultT> { it.id == yieldT.result }
                 resultT.asClue {
                     resultT.parent shouldBe workflowStepT.id
-                    resultT.name shouldBe "a"
+                    resultT.name shouldBe "myUnresolvedResult"
                 }
             }
 
@@ -983,6 +984,36 @@ class SimpleMLAstToPrologFactbaseTest {
         }
 
         @Nested
+        inner class Reference {
+            @Test
+            fun `should reference declaration if possible`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithResolvableReference" }
+                val referenceT = findUniqueFactOrFail<ReferenceT> { isContainedIn(it, workflowT) }
+                val placeholderT = findUniqueFactOrFail<PlaceholderT> { it.id == referenceT.symbol }
+                placeholderT.asClue {
+                    placeholderT.name shouldBe "a"
+                }
+            }
+
+            @Test
+            fun `should store name for unresolvable references`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithUnresolvableReference" }
+                val referenceT = findUniqueFactOrFail<ReferenceT> { isContainedIn(it, workflowT) }
+                val unresolvedT = findUniqueFactOrFail<UnresolvedT> { it.id == referenceT.symbol }
+                unresolvedT.asClue {
+                    unresolvedT.name shouldBe "myUnresolvedReference"
+                }
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithResolvableReference" }
+                val referenceT = findUniqueFactOrFail<ReferenceT> { isContainedIn(it, workflowT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == referenceT.id }
+            }
+        }
+
+        @Nested
         inner class String {
             @Test
             fun `should store value`() = withFactbaseFromFile("expressions.simpleml") {
@@ -1028,6 +1059,16 @@ class SimpleMLAstToPrologFactbaseTest {
                 val annotationUseT = findUniqueFactOrFail<AnnotationUseT> { it.parent == classT.id }
                 annotationUseT.asClue {
                     annotationUseT.arguments.shouldBeNull()
+                }
+            }
+
+            @Test
+            fun `should reference annotation if possible`() = withFactbaseFromFile("annotationUses.simpleml") {
+                val classT = findUniqueFactOrFail<ClassT> { it.name == "MyClassWithSimpleAnnotationUse" }
+                val annotationUseT = findUniqueFactOrFail<AnnotationUseT> { it.parent == classT.id }
+                val annotationT = findUniqueFactOrFail<AnnotationT> { it.id == annotationUseT.annotation }
+                annotationT.asClue {
+                    annotationT.name shouldBe "MyAnnotation"
                 }
             }
 

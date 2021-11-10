@@ -14,5 +14,5 @@ step myFunctionalStep() -> a {
 }
 
 step myStepWithUnresolvedYield() {
-    yield a = f();
+    yield myUnresolvedResult = f();
 }

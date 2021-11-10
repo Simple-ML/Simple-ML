@@ -24,6 +24,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlaceholderT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PrefixOperationT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ReferenceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
@@ -375,7 +376,9 @@ class SimpleMLAstToPrologFactbase {
                 +PrefixOperationT(obj.id, parentId, enclosingId, obj.operator, obj.operand.id)
             }
             is SmlReference -> {
+                visitCrossReference(obj, SimpleMLPackage.Literals.SML_REFERENCE__DECLARATION, obj.declaration)
 
+                +ReferenceT(obj.id, parentId, enclosingId, obj.declaration.id)
             }
             is SmlString -> {
                 +StringT(obj.id, parentId, enclosingId, obj.value)
