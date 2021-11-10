@@ -21,6 +21,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.IntT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
+import de.unibonn.simpleml.prolog_bridge.model.facts.MemberAccessT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NullT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
@@ -395,7 +396,10 @@ class SimpleMLAstToPrologFactbase {
                 )
             }
             is SmlMemberAccess -> {
+                visitExpression(obj.receiver, obj.id, enclosingId)
+                visitExpression(obj.member, obj.id, enclosingId)
 
+                +MemberAccessT(obj.id, parentId, enclosingId, obj.receiver.id, obj.isNullable, obj.member.id)
             }
             is SmlNull -> {
                 +NullT(obj.id, parentId, enclosingId)

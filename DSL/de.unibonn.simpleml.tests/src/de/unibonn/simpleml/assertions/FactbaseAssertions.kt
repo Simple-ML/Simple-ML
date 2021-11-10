@@ -31,7 +31,7 @@ inline fun <reified T : PlFact> PlFactbase.shouldHaveUniqueFact(filter: (T) -> B
     }
 }
 
-inline fun <reified T: NodeWithParent> PlFactbase.shouldBeChildOf(childId: Id<EObject>?, parent: Node) {
+inline fun <reified T : NodeWithParent> PlFactbase.shouldBeChildOf(childId: Id<EObject>?, parent: Node) {
     childId.shouldNotBeNull()
 
     val child = findUniqueFactOrFail<T> { it.id == childId }
@@ -41,7 +41,7 @@ inline fun <reified T: NodeWithParent> PlFactbase.shouldBeChildOf(childId: Id<EO
     }
 }
 
-inline fun <reified T: NodeWithParent> PlFactbase.shouldBeNChildrenOf(
+inline fun <reified T : NodeWithParent> PlFactbase.shouldBeNChildrenOf(
     childIds: List<Id<EObject>>?,
     parent: Node,
     n: Int
@@ -53,18 +53,23 @@ inline fun <reified T: NodeWithParent> PlFactbase.shouldBeNChildrenOf(
     }
 }
 
-fun PlFactbase.shouldBeChildExpressionOf(childId: Id<SmlExpression>?, parent: Node) {
+inline fun <reified T : ExpressionT> PlFactbase.shouldBeChildExpressionOf(childId: Id<SmlExpression>?, parent: Node) {
     childId.shouldNotBeNull()
 
-    val child = findUniqueFactOrFail<ExpressionT> { it.id == childId }
+    val child = findUniqueFactOrFail<T> { it.id == childId }
+    val expectedEnclosing = when (parent) {
+        is ExpressionT -> parent.enclosing
+        else -> parent.id
+    }
+
     child.asClue {
         child.id.value shouldBeGreaterThan parent.id.value
         child.parent shouldBe parent.id
-        child.enclosing shouldBe expectedEnclosing(parent)
+        child.enclosing shouldBe expectedEnclosing
     }
 }
 
-fun PlFactbase.shouldBeNChildExpressionsOf(
+inline fun <reified T: ExpressionT> PlFactbase.shouldBeNChildExpressionsOf(
     childIds: List<Id<SmlExpression>>?,
     parent: Node,
     n: Int
@@ -72,14 +77,7 @@ fun PlFactbase.shouldBeNChildExpressionsOf(
     childIds.shouldNotBeNull()
     childIds shouldHaveSize n
     childIds.forEach {
-        shouldBeChildExpressionOf(it, parent)
-    }
-}
-
-private fun expectedEnclosing(parent: Node): Id<EObject> {
-    return when (parent) {
-        is ExpressionT -> parent.enclosing
-        else -> parent.id
+        shouldBeChildExpressionOf<T>(it, parent)
     }
 }
 

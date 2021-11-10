@@ -49,6 +49,12 @@ workflow myWorkflowWithLiterals {
 }
 
 
+// Lambdas -------------------------------------------------------------------------------------------------------------
+workflow myWorkflowWithMemberAccess {
+    val memberAccess = C?.f;
+}
+
+
 // Operations ----------------------------------------------------------------------------------------------------------
 workflow myWorkflowWithOperations {
     val infixOperation = 1 + 2;

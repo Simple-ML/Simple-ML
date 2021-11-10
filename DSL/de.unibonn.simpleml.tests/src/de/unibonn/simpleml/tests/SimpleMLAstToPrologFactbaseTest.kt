@@ -23,6 +23,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.DeclarationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionStatementT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
 import de.unibonn.simpleml.prolog_bridge.model.facts.FloatT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
@@ -32,6 +33,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.IntT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
+import de.unibonn.simpleml.prolog_bridge.model.facts.MemberAccessT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NodeWithParent
 import de.unibonn.simpleml.prolog_bridge.model.facts.NullT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
@@ -528,7 +530,7 @@ class SimpleMLAstToPrologFactbaseTest {
             @Test
             fun `should reference default value`() = withFactbaseFromFile("declarations.simpleml") {
                 val parameterT = findUniqueFactOrFail<ParameterT> { it.name == "myComplexParameter" }
-                shouldBeChildExpressionOf(parameterT.defaultValue, parameterT)
+                shouldBeChildExpressionOf<ExpressionT>(parameterT.defaultValue, parameterT)
             }
 
             @Test
@@ -740,7 +742,7 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should reference expression`() = withFactbaseFromFile("statements.simpleml") {
                 val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
                 val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
-                shouldBeChildExpressionOf(assignmentT.expression, assignmentT)
+                shouldBeChildExpressionOf<ExpressionT>(assignmentT.expression, assignmentT)
             }
 
             @Test
@@ -836,7 +838,7 @@ class SimpleMLAstToPrologFactbaseTest {
             @Test
             fun `should reference expression`() = withFactbaseFromFile("statements.simpleml") {
                 val expressionStatementT = findUniqueFactOrFail<ExpressionStatementT>()
-                shouldBeChildExpressionOf(expressionStatementT.expression, expressionStatementT)
+                shouldBeChildExpressionOf<ExpressionT>(expressionStatementT.expression, expressionStatementT)
             }
 
             @Test
@@ -880,7 +882,7 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should reference value`() = withFactbaseFromFile("expressions.simpleml") {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithResolvableNamedArgument" }
                 val argumentT = findUniqueFactOrFail<ArgumentT> { isContainedIn(it, workflowT) }
-                shouldBeChildExpressionOf(argumentT.value, argumentT)
+                shouldBeChildExpressionOf<ExpressionT>(argumentT.value, argumentT)
             }
 
             @Test
@@ -936,7 +938,7 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should reference receiver`() = withFactbaseFromFile("expressions.simpleml") {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithComplexCall" }
                 val callT = findUniqueFactOrFail<CallT> { isContainedIn(it, workflowT) }
-                shouldBeChildExpressionOf(callT.receiver, callT)
+                shouldBeChildExpressionOf<ExpressionT>(callT.receiver, callT)
             }
 
             @Test
@@ -950,7 +952,7 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should reference arguments`() = withFactbaseFromFile("expressions.simpleml") {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithComplexCall" }
                 val callT = findUniqueFactOrFail<CallT> { isContainedIn(it, workflowT) }
-                shouldBeNChildExpressionsOf(callT.arguments, callT, 2)
+                shouldBeNChildExpressionsOf<ExpressionT>(callT.arguments, callT, 2)
             }
 
             @Test
@@ -986,7 +988,7 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should reference left operand`() = withFactbaseFromFile("expressions.simpleml") {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithOperations" }
                 val infixOperationT = findUniqueFactOrFail<InfixOperationT> { isContainedIn(it, workflowT) }
-                shouldBeChildExpressionOf(infixOperationT.leftOperand, infixOperationT)
+                shouldBeChildExpressionOf<ExpressionT>(infixOperationT.leftOperand, infixOperationT)
             }
 
             @Test
@@ -1002,7 +1004,7 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should reference right operand`() = withFactbaseFromFile("expressions.simpleml") {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithOperations" }
                 val infixOperationT = findUniqueFactOrFail<InfixOperationT> { isContainedIn(it, workflowT) }
-                shouldBeChildExpressionOf(infixOperationT.rightOperand, infixOperationT)
+                shouldBeChildExpressionOf<ExpressionT>(infixOperationT.rightOperand, infixOperationT)
             }
 
             @Test
@@ -1067,6 +1069,39 @@ class SimpleMLAstToPrologFactbaseTest {
         }
 
         @Nested
+        inner class MemberAccess {
+            @Test
+            fun `should reference receiver`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithMemberAccess" }
+                val memberAccessT = findUniqueFactOrFail<MemberAccessT> { isContainedIn(it, workflowT) }
+                shouldBeChildExpressionOf<ExpressionT>(memberAccessT.receiver, memberAccessT)
+            }
+
+            @Test
+            fun `should store null safety`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithMemberAccess" }
+                val memberAccessT = findUniqueFactOrFail<MemberAccessT> { isContainedIn(it, workflowT) }
+                memberAccessT.asClue {
+                    memberAccessT.isNullSafe shouldBe true
+                }
+            }
+
+            @Test
+            fun `should reference member`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithMemberAccess" }
+                val memberAccessT = findUniqueFactOrFail<MemberAccessT> { isContainedIn(it, workflowT) }
+                shouldBeChildExpressionOf<ReferenceT>(memberAccessT.member, memberAccessT)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithMemberAccess" }
+                val memberAccessT = findUniqueFactOrFail<MemberAccessT> { isContainedIn(it, workflowT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == memberAccessT.id }
+            }
+        }
+
+        @Nested
         inner class Null {
             @Test
             fun `should handle nulls`() = withFactbaseFromFile("expressions.simpleml") {
@@ -1097,7 +1132,7 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should reference operand`() = withFactbaseFromFile("expressions.simpleml") {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithOperations" }
                 val prefixOperationT = findUniqueFactOrFail<PrefixOperationT> { isContainedIn(it, workflowT) }
-                shouldBeChildExpressionOf(prefixOperationT.operand, prefixOperationT)
+                shouldBeChildExpressionOf<ExpressionT>(prefixOperationT.operand, prefixOperationT)
             }
 
             @Test
@@ -1201,7 +1236,7 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should reference arguments`() = withFactbaseFromFile("annotationUses.simpleml") {
                 val classT = findUniqueFactOrFail<ClassT> { it.name == "MyClassWithComplexAnnotationUse" }
                 val annotationUseT = findUniqueFactOrFail<AnnotationUseT> { it.parent == classT.id }
-                shouldBeNChildExpressionsOf(annotationUseT.arguments, annotationUseT, 2)
+                shouldBeNChildExpressionsOf<ExpressionT>(annotationUseT.arguments, annotationUseT, 2)
             }
 
             @Test

@@ -23,16 +23,22 @@ class PlFactbase {
         return facts.filterIsInstance<T>().filter(filter)
     }
 
-    tailrec fun isContainedIn(descendant: Node, ancestor: Node): Boolean {
+    fun isContainedIn(descendant: Node, ancestor: Node): Boolean {
+        return isContainedIn(descendant, ancestor, mutableSetOf())
+    }
+
+    private tailrec fun isContainedIn(descendant: Node, ancestor: Node, visitedNodes: MutableSet<Node>): Boolean {
         return when (descendant) {
             ancestor -> true
             !is NodeWithParent -> false
+            in visitedNodes -> false
             else -> {
                 val parent = descendant.parent.resolve<Node>()
                 if (parent == null) {
                     false
                 } else {
-                    isContainedIn(parent, ancestor)
+                    visitedNodes += descendant
+                    isContainedIn(parent, ancestor, visitedNodes)
                 }
             }
         }
