@@ -14,6 +14,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
 import de.unibonn.simpleml.prolog_bridge.model.facts.FloatT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
+import de.unibonn.simpleml.prolog_bridge.model.facts.IntT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
@@ -350,7 +351,7 @@ class SimpleMLAstToPrologFactbase {
 
             }
             is SmlInt -> {
-
+                +IntT(obj.id, parentId, enclosingId, obj.value)
             }
             is SmlLambda -> {
 
