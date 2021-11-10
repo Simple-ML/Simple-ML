@@ -3,7 +3,7 @@ package myPackage
 step myFunctionalStep() -> a {
 
     // Assignment with placeholder, wildcard, and yield
-    (val assignment, _, yield a) = f();
+    (val mySimplePlaceholder, _, yield a) = f();
 
     // Expression statement
     lambda () {

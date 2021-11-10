@@ -15,6 +15,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
+import de.unibonn.simpleml.prolog_bridge.model.facts.PlaceholderT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
@@ -273,7 +274,7 @@ class SimpleMLAstToPrologFactbase {
 
                 }
                 is SmlPlaceholder -> {
-
+                    +PlaceholderT(obj.id, parentId, obj.name)
                 }
                 is SmlWildcard -> {
                     +WildcardT(obj.id, parentId)

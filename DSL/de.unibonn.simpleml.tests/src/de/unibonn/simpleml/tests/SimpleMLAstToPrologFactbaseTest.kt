@@ -24,6 +24,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NodeWithParent
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
+import de.unibonn.simpleml.prolog_bridge.model.facts.PlaceholderT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterConstraintT
@@ -709,6 +710,14 @@ class SimpleMLAstToPrologFactbaseTest {
                 val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
                 val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
                 shouldBeChildExpressionOf(assignmentT.expression, assignmentT)
+            }
+        }
+
+        @Nested
+        inner class Placeholder {
+            @Test
+            fun `should handle placeholders`() = withFactbaseFromFile("statements.simpleml") {
+                findUniqueFactOrFail<PlaceholderT> { it.name == "mySimplePlaceholder" }
             }
         }
 
