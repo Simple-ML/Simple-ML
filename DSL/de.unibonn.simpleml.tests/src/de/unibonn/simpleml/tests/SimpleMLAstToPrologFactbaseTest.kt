@@ -5,16 +5,17 @@ import de.unibonn.simpleml.assertions.findUniqueFactOrFail
 import de.unibonn.simpleml.assertions.shouldBeChildExpressionOf
 import de.unibonn.simpleml.assertions.shouldBeChildOf
 import de.unibonn.simpleml.assertions.shouldBeCloseTo
+import de.unibonn.simpleml.assertions.shouldBeNChildExpressionsOf
 import de.unibonn.simpleml.assertions.shouldBeNChildrenOf
 import de.unibonn.simpleml.assertions.shouldHaveNAnnotationUses
 import de.unibonn.simpleml.assertions.shouldHaveNModifiers
 import de.unibonn.simpleml.prolog_bridge.Main
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
-import de.unibonn.simpleml.prolog_bridge.model.facts.ArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AssignmentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AttributeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.BooleanT
+import de.unibonn.simpleml.prolog_bridge.model.facts.CallT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.DeclarationT
@@ -40,6 +41,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
+import de.unibonn.simpleml.prolog_bridge.model.facts.TypeArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterConstraintT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeT
@@ -871,6 +873,47 @@ class SimpleMLAstToPrologFactbaseTest {
         }
 
         @Nested
+        inner class Call {
+            @Test
+            fun `should handle simple call`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithSimpleCall" }
+                val callT = findUniqueFactOrFail<CallT> { isContainedIn(it, workflowT) }
+                callT.asClue {
+                    callT.typeArguments.shouldBeNull()
+                    callT.arguments.shouldBeEmpty()
+                }
+            }
+
+            @Test
+            fun `should reference receiver`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithComplexCall" }
+                val callT = findUniqueFactOrFail<CallT> { isContainedIn(it, workflowT) }
+                shouldBeChildExpressionOf(callT.receiver, callT)
+            }
+
+            @Test
+            fun `should reference type arguments`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithComplexCall" }
+                val callT = findUniqueFactOrFail<CallT> { isContainedIn(it, workflowT) }
+                shouldBeNChildrenOf<TypeArgumentT>(callT.typeArguments, callT, 2)
+            }
+
+            @Test
+            fun `should reference arguments`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithComplexCall" }
+                val callT = findUniqueFactOrFail<CallT> { isContainedIn(it, workflowT) }
+                shouldBeNChildExpressionsOf(callT.arguments, callT, 2)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithSimpleCall" }
+                val callT = findUniqueFactOrFail<CallT> { isContainedIn(it, workflowT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == callT.id }
+            }
+        }
+
+        @Nested
         inner class Float {
             @Test
             fun `should store value`() = withFactbaseFromFile("expressions.simpleml") {
@@ -1076,7 +1119,7 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should reference arguments`() = withFactbaseFromFile("annotationUses.simpleml") {
                 val classT = findUniqueFactOrFail<ClassT> { it.name == "MyClassWithComplexAnnotationUse" }
                 val annotationUseT = findUniqueFactOrFail<AnnotationUseT> { it.parent == classT.id }
-                shouldBeNChildrenOf<ArgumentT>(annotationUseT.arguments, annotationUseT, 2)
+                shouldBeNChildExpressionsOf(annotationUseT.arguments, annotationUseT, 2)
             }
 
             @Test

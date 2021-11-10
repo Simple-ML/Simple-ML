@@ -5,6 +5,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AssignmentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AttributeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.BooleanT
+import de.unibonn.simpleml.prolog_bridge.model.facts.CallT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
@@ -93,6 +94,7 @@ import de.unibonn.simpleml.utils.parametersOrEmpty
 import de.unibonn.simpleml.utils.parentTypesOrEmpty
 import de.unibonn.simpleml.utils.resultsOrEmpty
 import de.unibonn.simpleml.utils.statementsOrEmpty
+import de.unibonn.simpleml.utils.typeArgumentsOrEmpty
 import de.unibonn.simpleml.utils.typeParameterConstraintsOrEmpty
 import de.unibonn.simpleml.utils.typeParametersOrEmpty
 import org.eclipse.emf.common.util.URI
@@ -283,7 +285,7 @@ class SimpleMLAstToPrologFactbase {
 
     private fun PlFactbase.visitAnnotationUse(obj: SmlAnnotationUse, parentId: Id<SmlDeclaration>) {
         visitCrossReference(obj, SimpleMLPackage.Literals.SML_ANNOTATION_USE__ANNOTATION, obj.annotation)
-        obj.argumentsOrEmpty().forEach { visitArgument(it, obj.id, obj.id) }
+        obj.argumentsOrEmpty().forEach { visitExpression(it, obj.id, obj.id) }
 
         +AnnotationUseT(obj.id, parentId, obj.annotation.id, obj.argumentList?.arguments?.map { it.id })
         visitSourceLocation(obj)
@@ -343,11 +345,24 @@ class SimpleMLAstToPrologFactbase {
 
     private fun PlFactbase.visitExpression(obj: SmlExpression, parentId: Id<EObject>, enclosingId: Id<EObject>) {
         when (obj) {
+            is SmlArgument -> {
+
+            }
             is SmlBoolean -> {
                 +BooleanT(obj.id, parentId, enclosingId, obj.isTrue)
             }
             is SmlCall -> {
+                visitExpression(obj.receiver, obj.id, enclosingId)
+                obj.typeArgumentsOrEmpty().forEach { visitTypeArgument(it, obj.id) }
+                obj.argumentsOrEmpty().forEach { visitExpression(it, obj.id, enclosingId) }
 
+                +CallT(
+                    obj.id,
+                    parentId,
+                    enclosingId,
+                    obj.receiver.id,
+                    obj.typeArgumentList?.typeArguments?.map { it.id },
+                    obj.argumentsOrEmpty().map { it.id })
             }
             is SmlFloat -> {
                 +FloatT(obj.id, parentId, enclosingId, obj.value)
@@ -385,10 +400,6 @@ class SimpleMLAstToPrologFactbase {
             }
         }
 
-        visitSourceLocation(obj)
-    }
-
-    private fun PlFactbase.visitArgument(obj: SmlArgument, parentId: Id<EObject>, enclosingId: Id<EObject>) {
         visitSourceLocation(obj)
     }
 

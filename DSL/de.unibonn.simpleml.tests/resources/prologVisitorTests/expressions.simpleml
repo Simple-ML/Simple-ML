@@ -8,6 +8,14 @@ workflow myWorkflowWithLiterals {
     val stringLiteral = "bla";
 }
 
+workflow myWorkflowWithSimpleCall {
+    val simpleCall = f();
+}
+
+workflow myWorkflowWithComplexCall {
+    val complexCall = f<Int, Int>(1, 2);
+}
+
 workflow myWorkflowWithOperations {
     val infixOperation = 1 + 2;
     val prefixOperation = -1;

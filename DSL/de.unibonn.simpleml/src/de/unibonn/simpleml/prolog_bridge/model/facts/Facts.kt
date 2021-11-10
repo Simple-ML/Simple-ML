@@ -838,7 +838,7 @@ data class ExpressionStatementT(
  */
 sealed class ExpressionT(
     factName: String,
-    id: Id<EObject>, // SmlArgument | SmlExpression
+    id: Id<SmlExpression>,
     parent: Id<EObject>,
     enclosing: Id<EObject>,
     vararg otherArguments: Any?

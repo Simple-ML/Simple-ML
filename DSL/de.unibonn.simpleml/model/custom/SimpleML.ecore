@@ -185,7 +185,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="arguments" upperBound="-1"
         eType="#//SmlArgument" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SmlArgument">
+  <eClassifiers xsi:type="ecore:EClass" name="SmlArgument" eSuperTypes="#//SmlExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" eType="#//SmlParameter"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//SmlExpression"
         containment="true"/>

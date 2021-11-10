@@ -63,6 +63,7 @@ tasks.register<JavaExec>("generateXtextLanguage") {
     args = listOf("src/de/unibonn/simpleml/GenerateSimpleML.mwe2", "-p", "rootPath=/${projectDir}/..")
 
     inputs.files(
+        "model/custom/SimpleML.ecore",
         "model/custom/SimpleML.genmodel",
         "src/de/unibonn/simpleml/GenerateSimpleML.mwe2",
         "src/de/unibonn/simpleml/SimpleML.xtext"
@@ -107,5 +108,3 @@ tasks {
         dependsOn("cleanGenerateXtextLanguage")
     }
 }
-
-
