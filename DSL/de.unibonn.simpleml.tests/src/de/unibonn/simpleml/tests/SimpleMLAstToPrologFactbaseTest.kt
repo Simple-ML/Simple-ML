@@ -15,6 +15,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.DeclarationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
+import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
@@ -84,7 +85,7 @@ class SimpleMLAstToPrologFactbaseTest {
             @Test
             fun `should reference members`() = withFactbaseFromFile("declarations.simpleml") {
                 val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
-                shouldBeNChildrenOf<DeclarationT>(compilationUnitT.members, compilationUnitT, 8)
+                shouldBeNChildrenOf<DeclarationT>(compilationUnitT.members, compilationUnitT, 14)
             }
 
             @Test
@@ -301,6 +302,59 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
                 val enumInstanceT = findUniqueFactOrFail<EnumInstanceT> { it.name == "MY_COMPLEX_INSTANCE" }
                 shouldHaveNModifiers(enumInstanceT, 1)
+            }
+        }
+
+        @Nested
+        inner class Function {
+            @Test
+            fun `should handle simple functions`() = withFactbaseFromFile("declarations.simpleml") {
+                val functionT = findUniqueFactOrFail<FunctionT> { it.name == "mySimpleFunction" }
+                functionT.asClue {
+                    functionT.typeParameters.shouldBeNull()
+                    functionT.parameters.shouldBeEmpty()
+                    functionT.results.shouldBeNull()
+                    functionT.typeParameterConstraints.shouldBeNull()
+                }
+
+                shouldHaveNAnnotationUses(functionT, 0)
+                shouldHaveNModifiers(functionT, 0)
+            }
+
+            @Test
+            fun `should reference type parameters`() = withFactbaseFromFile("declarations.simpleml") {
+                val functionT = findUniqueFactOrFail<FunctionT> { it.name == "myComplexFunction" }
+                shouldBeNChildrenOf<TypeParameterT>(functionT.typeParameters, functionT, 2)
+            }
+
+            @Test
+            fun `should reference parameters`() = withFactbaseFromFile("declarations.simpleml") {
+                val functionT = findUniqueFactOrFail<FunctionT> { it.name == "myComplexFunction" }
+                shouldBeNChildrenOf<ParameterT>(functionT.parameters, functionT, 2)
+            }
+
+            @Test
+            fun `should reference results`() = withFactbaseFromFile("declarations.simpleml") {
+                val functionT = findUniqueFactOrFail<FunctionT> { it.name == "myComplexFunction" }
+                shouldBeNChildrenOf<TypeT>(functionT.results, functionT, 2)
+            }
+
+            @Test
+            fun `should reference type parameter constraints`() = withFactbaseFromFile("declarations.simpleml") {
+                val functionT = findUniqueFactOrFail<FunctionT> { it.name == "myComplexFunction" }
+                shouldBeNChildrenOf<TypeParameterConstraintT>(functionT.typeParameterConstraints, functionT, 2)
+            }
+
+            @Test
+            fun `should store annotation uses`() = withFactbaseFromFile("declarations.simpleml") {
+                val functionT = findUniqueFactOrFail<FunctionT> { it.name == "myComplexFunction" }
+                shouldHaveNAnnotationUses(functionT, 1)
+            }
+
+            @Test
+            fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
+                val functionT = findUniqueFactOrFail<FunctionT> { it.name == "myComplexFunction" }
+                shouldHaveNModifiers(functionT, 1)
             }
         }
 

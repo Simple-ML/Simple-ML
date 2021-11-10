@@ -7,6 +7,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
+import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
@@ -132,7 +133,20 @@ class SimpleMLAstToPrologFactbase {
                     +EnumInstanceT(obj.id, parentId, obj.name)
                 }
                 is SmlFunction -> {
+                    obj.typeParametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
+                    obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
+                    obj.resultsOrEmpty().forEach { visitDeclaration(it, obj.id) }
+                    obj.typeParameterConstraintsOrEmpty().forEach { visitTypeParameterConstraint(it, obj.id) }
 
+                    +FunctionT(
+                        obj.id,
+                        parentId,
+                        obj.name,
+                        obj.typeParameterList?.typeParameters?.map { it.id },
+                        obj.parametersOrEmpty().map { it.id },
+                        obj.resultList?.results?.map { it.id },
+                        obj.typeParameterConstraintList?.constraints?.map { it.id },
+                    )
                 }
                 is SmlInterface -> {
                     obj.typeParametersOrEmpty().forEach { visitDeclaration(it, obj.id) }

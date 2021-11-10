@@ -8,7 +8,8 @@ import myPackage.*
 // Annotations ---------------------------------------------------------------------------------------------------------
 annotation MySimpleAnnotation
 
-@MySimpleAnnotation deprecated annotation MyComplexAnnotation(
+@MySimpleAnnotation
+deprecated annotation MyComplexAnnotation(
     a: Int,
     b: Int
 )
@@ -20,7 +21,7 @@ class MySimpleClass
 @MySimpleAnnotation
 deprecated class MyComplexClass
     <T1, T2>
-    constructor(a: Int, b: Int)
+    constructor(a, b)
     sub SuperClass, SuperInterface
     where T1 super Number, T2 sub Number
 {
@@ -37,10 +38,22 @@ deprecated class MyComplexClass
 // Enums & Enum instances ----------------------------------------------------------------------------------------------
 enum MySimpleEnum
 
-@AnnotationUse deprecated enum MyComplexEnum {
+@MySimpleAnnotation
+deprecated enum MyComplexEnum {
     MY_SIMPLE_INSTANCE,
     @AnnotationUse deprecated MY_COMPLEX_INSTANCE
 }
+
+
+// Functions -----------------------------------------------------------------------------------------------------------
+fun mySimpleFunction()
+
+@MySimpleAnnotation
+deprecated fun myComplexFunction
+    <T1, T2>
+    (a, b)
+    -> (a, b)
+    where T1 super Number, T2 sub Number
 
 
 // Interfaces ----------------------------------------------------------------------------------------------------------
@@ -49,7 +62,7 @@ interface MySimpleInterface
 @MySimpleAnnotation
 deprecated interface MyComplexInterface
     <T1, T2>
-    constructor(a: Int, b: Int)
+    constructor(a, b)
     sub SuperClass, SuperInterface
     where T1 super Number, T2 sub Number
 {
@@ -64,7 +77,8 @@ deprecated interface MyComplexInterface
 // Workflows -----------------------------------------------------------------------------------------------------------
 workflow mySimpleWorkflow {}
 
-@AnnotationUse deprecated workflow myComplexWorkflow {
+@MySimpleAnnotation
+deprecated workflow myComplexWorkflow {
     val a = 1;
 }
 
@@ -72,6 +86,7 @@ workflow mySimpleWorkflow {}
 // Workflow steps ------------------------------------------------------------------------------------------------------
 step mySimpleStep() {}
 
-@AnnotationUse deprecated step myComplexStep(a: Int, b: Int) -> (a: Int, b: Int) {
+@MySimpleAnnotation
+deprecated step myComplexStep(a, b) -> (a, b) {
     val a = 1;
 }
