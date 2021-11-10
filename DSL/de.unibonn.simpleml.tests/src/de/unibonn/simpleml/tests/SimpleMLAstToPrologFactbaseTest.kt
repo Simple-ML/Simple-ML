@@ -27,6 +27,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlaceholderT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
+import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterConstraintT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
@@ -101,11 +102,16 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should store filepath in separate relation`() = withFactbaseFromFile("empty.simpleml") {
                 val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
                 val fileT = findUniqueFactOrFail<FileS>()
-
                 fileT.asClue {
                     fileT.target shouldBe compilationUnitT.id
                     fileT.path shouldEndWith "prologVisitorTests/empty.simpleml"
                 }
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("empty.simpleml") {
+                val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
+                findUniqueFactOrFail<SourceLocationS> {it.target == compilationUnitT.id}
             }
         }
 
@@ -133,6 +139,12 @@ class SimpleMLAstToPrologFactbaseTest {
                 importT.asClue {
                     importT.alias.shouldBeNull()
                 }
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
+                val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyClass" }
+                findUniqueFactOrFail<SourceLocationS> {it.target == importT.id}
             }
         }
 
@@ -166,6 +178,12 @@ class SimpleMLAstToPrologFactbaseTest {
                 val annotationT = findUniqueFactOrFail<AnnotationT> { it.name == "MyComplexAnnotation" }
                 shouldHaveNModifiers(annotationT, 1)
             }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
+                val annotationT = findUniqueFactOrFail<AnnotationT> { it.name == "MySimpleAnnotation" }
+                findUniqueFactOrFail<SourceLocationS> {it.target == annotationT.id}
+            }
         }
 
         @Nested
@@ -197,6 +215,12 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
                 val attributeT = findUniqueFactOrFail<AttributeT> { it.name == "myComplexAttribute" }
                 shouldHaveNModifiers(attributeT, 1)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
+                val attributeT = findUniqueFactOrFail<AttributeT> { it.name == "mySimpleAttribute" }
+                findUniqueFactOrFail<SourceLocationS> {it.target == attributeT.id}
             }
         }
 
@@ -258,6 +282,12 @@ class SimpleMLAstToPrologFactbaseTest {
                 val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
                 shouldHaveNModifiers(classT, 1)
             }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
+                val classT = findUniqueFactOrFail<ClassT> { it.name == "MySimpleClass" }
+                findUniqueFactOrFail<SourceLocationS> {it.target == classT.id}
+            }
         }
 
         @Nested
@@ -290,6 +320,12 @@ class SimpleMLAstToPrologFactbaseTest {
                 val enumT = findUniqueFactOrFail<EnumT> { it.name == "MyComplexEnum" }
                 shouldHaveNModifiers(enumT, 1)
             }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
+                val enumT = findUniqueFactOrFail<EnumT> { it.name == "MySimpleEnum" }
+                findUniqueFactOrFail<SourceLocationS> {it.target == enumT.id}
+            }
         }
 
         @Nested
@@ -311,6 +347,12 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
                 val enumInstanceT = findUniqueFactOrFail<EnumInstanceT> { it.name == "MY_COMPLEX_INSTANCE" }
                 shouldHaveNModifiers(enumInstanceT, 1)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
+                val enumInstanceT = findUniqueFactOrFail<EnumInstanceT> { it.name == "MY_SIMPLE_INSTANCE" }
+                findUniqueFactOrFail<SourceLocationS> {it.target == enumInstanceT.id}
             }
         }
 
@@ -364,6 +406,12 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
                 val functionT = findUniqueFactOrFail<FunctionT> { it.name == "myComplexFunction" }
                 shouldHaveNModifiers(functionT, 1)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
+                val functionT = findUniqueFactOrFail<FunctionT> { it.name == "mySimpleFunction" }
+                findUniqueFactOrFail<SourceLocationS> {it.target == functionT.id}
             }
         }
 
@@ -425,6 +473,12 @@ class SimpleMLAstToPrologFactbaseTest {
                 val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
                 shouldHaveNModifiers(interfaceT, 1)
             }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
+                val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MySimpleInterface" }
+                findUniqueFactOrFail<SourceLocationS> {it.target == interfaceT.id}
+            }
         }
 
         @Nested
@@ -473,6 +527,12 @@ class SimpleMLAstToPrologFactbaseTest {
                 val parameterT = findUniqueFactOrFail<ParameterT> { it.name == "myComplexParameter" }
                 shouldHaveNModifiers(parameterT, 1)
             }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
+                val parameterT = findUniqueFactOrFail<ParameterT> { it.name == "mySimpleParameter" }
+                findUniqueFactOrFail<SourceLocationS> {it.target == parameterT.id}
+            }
         }
 
         @Nested
@@ -504,6 +564,12 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
                 val resultT = findUniqueFactOrFail<ResultT> { it.name == "myComplexResult" }
                 shouldHaveNModifiers(resultT, 1)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
+                val resultT = findUniqueFactOrFail<ResultT> { it.name == "mySimpleResult" }
+                findUniqueFactOrFail<SourceLocationS> {it.target == resultT.id}
             }
         }
 
@@ -539,6 +605,12 @@ class SimpleMLAstToPrologFactbaseTest {
                 val typeParameterT = findUniqueFactOrFail<TypeParameterT> { it.name == "MY_COMPLEX_TYPE_PARAMETER" }
                 shouldHaveNModifiers(typeParameterT, 1)
             }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
+                val typeParameterT = findUniqueFactOrFail<TypeParameterT> { it.name == "MY_SIMPLE_TYPE_PARAMETER" }
+                findUniqueFactOrFail<SourceLocationS> {it.target == typeParameterT.id}
+            }
         }
 
         @Nested
@@ -570,6 +642,12 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myComplexWorkflow" }
                 shouldHaveNModifiers(workflowT, 1)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "mySimpleWorkflow" }
+                findUniqueFactOrFail<SourceLocationS> {it.target == workflowT.id}
             }
         }
 
@@ -617,6 +695,12 @@ class SimpleMLAstToPrologFactbaseTest {
                 val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myComplexStep" }
                 shouldHaveNModifiers(workflowStepT, 1)
             }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "mySimpleStep" }
+                findUniqueFactOrFail<SourceLocationS> {it.target == workflowStepT.id}
+            }
         }
     }
 
@@ -643,6 +727,13 @@ class SimpleMLAstToPrologFactbaseTest {
                 val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
                 shouldBeChildExpressionOf(assignmentT.expression, assignmentT)
             }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("statements.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
+                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
+                findUniqueFactOrFail<SourceLocationS> {it.target == assignmentT.id}
+            }
         }
 
         @Nested
@@ -650,6 +741,12 @@ class SimpleMLAstToPrologFactbaseTest {
             @Test
             fun `should handle lambda yields`() = withFactbaseFromFile("statements.simpleml") {
                 findUniqueFactOrFail<LambdaYieldT> { it.name == "myLambdaYield" }
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("statements.simpleml") {
+                val lambdaYieldT = findUniqueFactOrFail<LambdaYieldT> { it.name == "myLambdaYield" }
+                findUniqueFactOrFail<SourceLocationS> {it.target == lambdaYieldT.id}
             }
         }
 
@@ -659,6 +756,12 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should handle placeholders`() = withFactbaseFromFile("statements.simpleml") {
                 findUniqueFactOrFail<PlaceholderT> { it.name == "myPlaceholder" }
             }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("statements.simpleml") {
+                val placeholderT = findUniqueFactOrFail<PlaceholderT> { it.name == "myPlaceholder" }
+                findUniqueFactOrFail<SourceLocationS> {it.target == placeholderT.id}
+            }
         }
 
         @Nested
@@ -667,8 +770,15 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should handle wildcards`() = withFactbaseFromFile("statements.simpleml") {
                 val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
                 val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
-
                 findUniqueFactOrFail<WildcardT> { it.parent == assignmentT.id }
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("statements.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
+                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
+                val wildcardT = findUniqueFactOrFail<WildcardT> { it.parent == assignmentT.id }
+                findUniqueFactOrFail<SourceLocationS> {it.target == wildcardT.id}
             }
         }
 
@@ -696,6 +806,14 @@ class SimpleMLAstToPrologFactbaseTest {
                     unresolvedT.name shouldBe "a"
                 }
             }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("statements.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
+                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
+                val yieldT = findUniqueFactOrFail<YieldT> { it.parent == assignmentT.id }
+                findUniqueFactOrFail<SourceLocationS> {it.target == yieldT.id}
+            }
         }
 
         @Nested
@@ -704,6 +822,12 @@ class SimpleMLAstToPrologFactbaseTest {
             fun `should reference expression`() = withFactbaseFromFile("statements.simpleml") {
                 val expressionStatementT = findUniqueFactOrFail<ExpressionStatementT>()
                 shouldBeChildExpressionOf(expressionStatementT.expression, expressionStatementT)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("statements.simpleml") {
+                val expressionStatementT = findUniqueFactOrFail<ExpressionStatementT>()
+                findUniqueFactOrFail<SourceLocationS> {it.target == expressionStatementT.id}
             }
         }
     }
