@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.prolog_bridge.converters
 
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
+import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AssignmentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AttributeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
@@ -30,6 +31,7 @@ import de.unibonn.simpleml.prolog_bridge.utils.IdManager
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
+import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlAssignee
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlAttribute
@@ -55,6 +57,7 @@ import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.utils.argumentsOrEmpty
 import de.unibonn.simpleml.utils.assigneesOrEmpty
 import de.unibonn.simpleml.utils.instancesOrEmpty
 import de.unibonn.simpleml.utils.membersOrEmpty
@@ -251,19 +254,11 @@ class SimpleMLAstToPrologFactbase {
     }
 
     private fun PlFactbase.visitAnnotationUse(obj: SmlAnnotationUse, parentId: Id<SmlDeclaration>) {
-////       TODO obj.argumentList?.arguments?.forEach { visitArgument(it, obj.id, obj.id) }
-//
-//        if (obj.annotation.name != null) {
-////            visitDeclaration(obj.annotation, obj.id)
-//
-//            // TODO: visit referenced declaration
-//        } else {
-//            // TODO: visit unresolved
-//            val node = NodeModelUtils.getNode(obj).text.trim()
-////            +AnnotationT(obj.annotation.id, parentId, node, null)
-//        }
-//
-//        +AnnotationUseT(obj.id, parentId, idManager.nextId(), obj.argumentList?.arguments?.map { it.id })
+        visitCrossReference(obj, SimpleMLPackage.Literals.SML_ANNOTATION_USE__ANNOTATION, obj.annotation)
+        obj.argumentsOrEmpty().forEach { visitArgument(it, obj.id, obj.id) }
+
+        +AnnotationUseT(obj.id, parentId, obj.annotation.id, obj.argumentList?.arguments?.map { it.id })
+        +SourceLocationS(obj)
     }
 
     private fun PlFactbase.visitModifier(modifier: String, target: Id<SmlDeclaration>) {
@@ -305,11 +300,7 @@ class SimpleMLAstToPrologFactbase {
                 +WildcardT(obj.id, parentId)
             }
             is SmlYield -> {
-                if (!idManager.knowsObject(obj.result)) {
-                    val name = getReferencedName(obj, SimpleMLPackage.Literals.SML_YIELD__RESULT)
-
-                    +UnresolvedT(obj.result.id, name)
-                }
+                visitCrossReference(obj, SimpleMLPackage.Literals.SML_YIELD__RESULT, obj.result)
 
                 +YieldT(obj.id, parentId, obj.result.id)
             }
@@ -323,6 +314,10 @@ class SimpleMLAstToPrologFactbase {
     // ****************************************************************************************************************/
 
     private fun PlFactbase.visitExpression(obj: SmlExpression, parentId: Id<EObject>, enclosingId: Id<EObject>) {
+        +SourceLocationS(obj)
+    }
+
+    private fun PlFactbase.visitArgument(obj: SmlArgument, parentId: Id<EObject>, enclosingId: Id<EObject>) {
         +SourceLocationS(obj)
     }
 
@@ -560,6 +555,13 @@ class SimpleMLAstToPrologFactbase {
                 this.id
             }
         }
+
+    private fun PlFactbase.visitCrossReference(source: EObject, edge: EReference, target: EObject) {
+        if (!idManager.knowsObject(target)) {
+            val name = getReferencedName(source, edge)
+            +UnresolvedT(target.id, name)
+        }
+    }
 
     private fun getReferencedName(eObject: EObject, eReference: EReference): String {
         return NodeModelUtils

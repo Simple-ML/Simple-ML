@@ -1,0 +1,10 @@
+annotation MyAnnotation
+
+@MyAnnotation
+class MyClassWithSimpleAnnotationUse
+
+@MyAnnotation(1, 2)
+class MyClassWithComplexAnnotationUse
+
+@MyUnresolvedAnnotation
+class MyClassWithUnresolvedAnnotationUse
