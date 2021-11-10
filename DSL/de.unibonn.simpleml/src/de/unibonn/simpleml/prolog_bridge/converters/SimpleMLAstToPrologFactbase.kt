@@ -24,6 +24,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlaceholderT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
+import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.UnresolvedT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WildcardT
@@ -370,7 +371,7 @@ class SimpleMLAstToPrologFactbase {
 
             }
             is SmlString -> {
-
+                +StringT(obj.id, parentId, enclosingId, obj.value)
             }
         }
 
@@ -477,9 +478,6 @@ class SimpleMLAstToPrologFactbase {
 //                obj.parametersOrEmpty().forEach { visitParameter(it, parentId) }
 //                +LambdaT(obj.id, parentId, enclosingId, obj.parameterList?.parameters?.map { it.id }, obj.body.statements.map { it.id })
 //            }
-//            is SmlNull -> {
-//                +NullT(obj.id, parentId, enclosingId)
-//            }
 //            is SmlReference -> {
 //                if (obj.declaration !is SmlAnnotationImpl) {
 //                    visitDeclaration(obj.declaration, obj.id)
@@ -515,18 +513,6 @@ class SimpleMLAstToPrologFactbase {
 //                        +CallT(obj.id, parentId, enclosingId, obj.receiver.id, tal, obj.argumentList.arguments.map { it.id })
 //                    }
 //                }
-//            }
-//            is SmlBoolean -> {
-//                +BooleanT(obj.id, parentId, enclosingId, obj.isTrue)
-//            }
-//            is SmlFloat -> {
-//                +FloatT(obj.id, parentId, enclosingId, obj.value)
-//            }
-//            is SmlInt -> {
-//                +IntT(obj.id, parentId, enclosingId, obj.value)
-//            }
-//            is SmlString -> {
-//                +StringT(obj.id, parentId, enclosingId, obj.value)
 //            }
 //        }
 //

@@ -5,4 +5,5 @@ workflow myWorkflowWithLiterals {
     val floatLiteral = 1.0;
     val intLiteral = 42;
     val nullLiteral = null;
+    val stringLiteral = "bla";
 }
