@@ -7,6 +7,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.AssignmentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AttributeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.BooleanT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CallT
+import de.unibonn.simpleml.prolog_bridge.model.facts.CallableTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
@@ -437,7 +438,15 @@ class SimpleMLAstToPrologFactbase {
     private fun PlFactbase.visitType(obj: SmlType, parentId: Id<EObject>) {
         when (obj) {
             is SmlCallableType -> {
+                obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
+                obj.resultsOrEmpty().forEach { visitDeclaration(it, obj.id) }
 
+                +CallableTypeT(
+                    obj.id,
+                    parentId,
+                    obj.parametersOrEmpty().map { it.id },
+                    obj.resultsOrEmpty().map { it.id }
+                )
             }
             is SmlMemberType -> {
                 visitType(obj.receiver, obj.id)

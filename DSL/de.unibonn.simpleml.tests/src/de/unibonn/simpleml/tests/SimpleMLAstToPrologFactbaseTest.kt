@@ -17,6 +17,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.AssignmentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AttributeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.BooleanT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CallT
+import de.unibonn.simpleml.prolog_bridge.model.facts.CallableTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.DeclarationT
@@ -1207,6 +1208,40 @@ class SimpleMLAstToPrologFactbaseTest {
 
     @Nested
     inner class Types {
+
+        @Nested
+        inner class CallableType {
+            @Test
+            fun `should handle simple callable types`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleCallableType" }
+                val callableTypeT = findUniqueFactOrFail<CallableTypeT> { isContainedIn(it, workflowStepT) }
+                callableTypeT.asClue {
+                    callableTypeT.parameters.shouldBeEmpty()
+                    callableTypeT.results.shouldBeEmpty()
+                }
+            }
+
+            @Test
+            fun `should reference parameters`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexCallableType" }
+                val callableTypeT = findUniqueFactOrFail<CallableTypeT> { isContainedIn(it, workflowStepT) }
+                shouldBeNChildrenOf<ParameterT>(callableTypeT.parameters, callableTypeT, 2)
+            }
+
+            @Test
+            fun `should reference results`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexCallableType" }
+                val callableTypeT = findUniqueFactOrFail<CallableTypeT> { isContainedIn(it, workflowStepT) }
+                shouldBeNChildrenOf<ResultT>(callableTypeT.results, callableTypeT, 2)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleCallableType" }
+                val callableTypeT = findUniqueFactOrFail<CallableTypeT> { isContainedIn(it, workflowStepT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == callableTypeT.id }
+            }
+        }
 
         @Nested
         inner class MemberType {
