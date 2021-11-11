@@ -52,6 +52,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterConstraintT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeT
+import de.unibonn.simpleml.prolog_bridge.model.facts.UnionTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.UnresolvedT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WildcardT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowStepT
@@ -1314,6 +1315,32 @@ class SimpleMLAstToPrologFactbaseTest {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithSimpleTypeProjection" }
                 val typeProjectionT = findUniqueFactOrFail<TypeProjectionT> { isContainedIn(it, workflowT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == typeProjectionT.id }
+            }
+        }
+
+        @Nested
+        inner class UnionType {
+            @Test
+            fun `should handle simple union types`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleUnionType" }
+                val unionTypeT = findUniqueFactOrFail<UnionTypeT> { isContainedIn(it, workflowStepT) }
+                unionTypeT.asClue {
+                    unionTypeT.typeArguments.shouldBeEmpty()
+                }
+            }
+
+            @Test
+            fun `should store type arguments`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexUnionType" }
+                val unionTypeT = findUniqueFactOrFail<UnionTypeT> { isContainedIn(it, workflowStepT) }
+                shouldBeNChildrenOf<TypeArgumentT>(unionTypeT.typeArguments, unionTypeT, 2)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleUnionType" }
+                val unionTypeT = findUniqueFactOrFail<UnionTypeT> { isContainedIn(it, workflowStepT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == unionTypeT.id }
             }
         }
     }

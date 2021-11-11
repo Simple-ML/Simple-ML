@@ -1,16 +1,16 @@
 package myPackage
 
-// StarProjection ------------------------------------------------------------------------------------------------------
+// Star projection -----------------------------------------------------------------------------------------------------
 workflow myWorkflowWithStarProjection {
     val starProjection = C<*>();
 }
 
 
-// ThisType ------------------------------------------------------------------------------------------------------------
+// This type -----------------------------------------------------------------------------------------------------------
 step myWorkflowStepWithThisType(a: this) {}
 
 
-// TypeArgument --------------------------------------------------------------------------------------------------------
+// Type argument -------------------------------------------------------------------------------------------------------
 class C<T>
 
 workflow myWorkflowWithPositionalTypeArgument {
@@ -26,7 +26,7 @@ workflow myWorkflowWithUnresolvedTypeArgument {
 }
 
 
-// TypeProjection ------------------------------------------------------------------------------------------------------
+// Type projection -----------------------------------------------------------------------------------------------------
 workflow myWorkflowWithSimpleTypeProjection {
     C<Int>();
 }
@@ -34,3 +34,9 @@ workflow myWorkflowWithSimpleTypeProjection {
 workflow myWorkflowWithComplexTypeProjection {
     C<out Int>();
 }
+
+
+// Union type ----------------------------------------------------------------------------------------------------------
+step myWorkflowStepWithSimpleUnionType(a: union<>) {}
+
+step myWorkflowStepWithComplexUnionType(a: union<Int, Number>) {}

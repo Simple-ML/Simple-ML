@@ -37,6 +37,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ThisTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeProjectionT
+import de.unibonn.simpleml.prolog_bridge.model.facts.UnionTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.UnresolvedT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WildcardT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowStepT
@@ -446,7 +447,9 @@ class SimpleMLAstToPrologFactbase {
                 +ThisTypeT(obj.id, parentId)
             }
             is SmlUnionType -> {
+                obj.typeArgumentsOrEmpty().forEach { visitTypeArgument(it, obj.id)}
 
+                +UnionTypeT(obj.id, parentId, obj.typeArgumentsOrEmpty().map { it.id })
             }
         }
 
@@ -541,9 +544,6 @@ class SimpleMLAstToPrologFactbase {
 //                obj.typeArgumentList.typeArguments.forEach { visitTypeArgument(it, obj.id, obj.id) }
 //
 //                +UnionTypeT(obj.id, parentId, obj.typeArgumentList.typeArguments.map { it.id })
-//            }
-//            is SmlThisType -> {
-//                +ThisTypeT(obj.id, parentId)
 //            }
 //        }
 //
