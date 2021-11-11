@@ -49,6 +49,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterConstraintT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
+import de.unibonn.simpleml.prolog_bridge.model.facts.TypeProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.UnresolvedT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WildcardT
@@ -1261,6 +1262,41 @@ class SimpleMLAstToPrologFactbaseTest {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithPositionalTypeArgument" }
                 val typeArgumentT = findUniqueFactOrFail<TypeArgumentT> { isContainedIn(it, workflowT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == typeArgumentT.id }
+            }
+        }
+
+        @Nested
+        inner class TypeProjection {
+            @Test
+            fun `should handle simple type projections`() = withFactbaseFromFile("types.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithSimpleTypeProjection" }
+                val typeProjectionT = findUniqueFactOrFail<TypeProjectionT> { isContainedIn(it, workflowT) }
+                typeProjectionT.asClue {
+                    typeProjectionT.variance.shouldBeNull()
+                }
+            }
+
+            @Test
+            fun `should store variance`() = withFactbaseFromFile("types.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithComplexTypeProjection" }
+                val typeProjectionT = findUniqueFactOrFail<TypeProjectionT> { isContainedIn(it, workflowT) }
+                typeProjectionT.asClue {
+                    typeProjectionT.variance shouldBe "out"
+                }
+            }
+
+            @Test
+            fun `should reference type`() = withFactbaseFromFile("types.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithComplexTypeProjection" }
+                val typeProjectionT = findUniqueFactOrFail<TypeProjectionT> { isContainedIn(it, workflowT) }
+                shouldBeChildOf<TypeT>(typeProjectionT.type, typeProjectionT)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("types.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithSimpleTypeProjection" }
+                val typeProjectionT = findUniqueFactOrFail<TypeProjectionT> { isContainedIn(it, workflowT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == typeProjectionT.id }
             }
         }
     }

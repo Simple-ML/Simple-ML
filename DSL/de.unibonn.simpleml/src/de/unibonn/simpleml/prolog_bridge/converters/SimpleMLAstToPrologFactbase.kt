@@ -35,6 +35,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.StarProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
+import de.unibonn.simpleml.prolog_bridge.model.facts.TypeProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.UnresolvedT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WildcardT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowStepT
@@ -471,7 +472,9 @@ class SimpleMLAstToPrologFactbase {
                 +StarProjectionT(obj.id, parentId)
             }
             is SmlTypeProjection -> {
+                visitType(obj.type, obj.id)
 
+                +TypeProjectionT(obj.id, parentId, obj.variance, obj.type.id)
             }
         }
 
@@ -540,27 +543,6 @@ class SimpleMLAstToPrologFactbase {
 //            }
 //            is SmlThisType -> {
 //                +ThisTypeT(obj.id, parentId)
-//            }
-//        }
-//
-//        +SourceLocationS(obj)
-//    }
-//
-//    private fun PlFactbase.visitTypeArgument(obj: SmlTypeArgument, parentId: Id, enclosingId: Id) {
-//        obj.typeParameter?.let { visitDeclaration(obj.typeParameter, obj.id) }
-//        visitTypeArgumentValue(obj.value, obj.id, enclosingId)
-//        +TypeArgumentT(obj.id, parentId, obj.typeParameter?.id, obj.value.id)
-//        +SourceLocationS(obj)
-//    }
-//
-//    private fun PlFactbase.visitTypeArgumentValue(obj: SmlTypeArgumentValue, parentId: Id, enclosingId: Id) {
-//        when (obj) {
-//            is SmlStarProjection -> {
-//                +StarProjectionT(obj.id, parentId)
-//            }
-//            is SmlTypeProjection -> {
-//                visitType(obj.type, obj.id)
-//                +TypeProjectionT(obj.id, parentId, obj.variance, obj.type.id)
 //            }
 //        }
 //

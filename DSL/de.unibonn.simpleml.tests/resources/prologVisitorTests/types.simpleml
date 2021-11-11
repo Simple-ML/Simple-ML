@@ -20,3 +20,13 @@ workflow myWorkflowWithResolvableNamedTypeArgument {
 workflow myWorkflowWithUnresolvedTypeArgument {
     C<MY_UNRESOLVED_TYPE_PARAMETER = *>();
 }
+
+
+// TypeProjection ------------------------------------------------------------------------------------------------------
+workflow myWorkflowWithSimpleTypeProjection {
+    C<Int>();
+}
+
+workflow myWorkflowWithComplexTypeProjection {
+    C<out Int>();
+}
