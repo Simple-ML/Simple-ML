@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 // Plugins -------------------------------------------------------------------------------------------------------------
 
 plugins {
@@ -15,8 +17,7 @@ idea {
 
 // Variables -----------------------------------------------------------------------------------------------------------
 
-val javaSourceVersion by extra(JavaVersion.VERSION_11)
-val javaTargetVersion by extra(JavaVersion.VERSION_11)
+val javaVersion by extra(11)
 val xtextVersion by extra("2.26.0.M2")
 
 // Subprojects ---------------------------------------------------------------------------------------------------------
@@ -31,11 +32,5 @@ subprojects {
 
     configurations.all {
         exclude(group = "asm")
-    }
-
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-        kotlinOptions {
-            jvmTarget = javaTargetVersion.majorVersion
-        }
     }
 }

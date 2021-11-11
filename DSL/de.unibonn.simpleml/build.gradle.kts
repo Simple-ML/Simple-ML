@@ -1,5 +1,4 @@
-val javaSourceVersion: JavaVersion by rootProject.extra
-val javaTargetVersion: JavaVersion by rootProject.extra
+val javaVersion: Int by rootProject.extra
 val xtextVersion: String by rootProject.extra
 
 
@@ -12,8 +11,9 @@ plugins {
 }
 
 java {
-    sourceCompatibility = javaSourceVersion
-    targetCompatibility = javaTargetVersion
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(javaVersion))
+    }
 }
 
 idea {
