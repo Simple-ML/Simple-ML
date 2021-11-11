@@ -34,6 +34,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberAccessT
+import de.unibonn.simpleml.prolog_bridge.model.facts.NamedTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NodeWithParent
 import de.unibonn.simpleml.prolog_bridge.model.facts.NullT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
@@ -62,6 +63,7 @@ import de.unibonn.simpleml.util.getResourcePath
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldEndWith
 import org.junit.jupiter.api.Nested
@@ -1206,6 +1208,68 @@ class SimpleMLAstToPrologFactbaseTest {
     inner class Types {
 
         @Nested
+        inner class NamedType {
+            @Test
+            fun `should handle simple named types`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStep =
+                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleResolvableNamedType" }
+                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStep) }
+                namedTypeT.asClue {
+                    namedTypeT.typeArguments.shouldBeNull()
+                    namedTypeT.isNullable shouldBe false
+                }
+            }
+
+            @Test
+            fun `should reference declaration if possible`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStep =
+                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexResolvableNamedType" }
+                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStep) }
+                val declarationT = findUniqueFactOrFail<DeclarationT> { it.id == namedTypeT.declaration }
+                declarationT.asClue {
+                    declarationT.name shouldBe "C"
+                }
+            }
+
+            @Test
+            fun `should reference type arguments`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStep =
+                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexResolvableNamedType" }
+                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStep) }
+                shouldBeNChildrenOf<TypeArgumentT>(namedTypeT.typeArguments, namedTypeT, 1)
+            }
+
+            @Test
+            fun `should store nullability`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStep =
+                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexResolvableNamedType" }
+                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStep) }
+                namedTypeT.asClue {
+                    namedTypeT.isNullable shouldBe true
+                }
+            }
+
+            @Test
+            fun `should store name for unresolvable named types`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStep =
+                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowWithUnresolvableNamedType" }
+                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStep) }
+                val unresolvedT = findUniqueFactOrFail<UnresolvedT> { it.id == namedTypeT.declaration }
+                unresolvedT.asClue {
+                    unresolvedT.name shouldBe "MyUnresolvedDeclaration"
+                }
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStepT =
+                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleResolvableNamedType" }
+                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStepT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == namedTypeT.id }
+            }
+        }
+
+        @Nested
         inner class StarProjection {
             @Test
             fun `should handle star projections`() = withFactbaseFromFile("types.simpleml") {
@@ -1250,7 +1314,8 @@ class SimpleMLAstToPrologFactbaseTest {
 
             @Test
             fun `should reference type parameter if possible`() = withFactbaseFromFile("types.simpleml") {
-                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithResolvableNamedTypeArgument" }
+                val workflowT =
+                    findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithResolvableNamedTypeArgument" }
                 val typeArgumentT = findUniqueFactOrFail<TypeArgumentT> { isContainedIn(it, workflowT) }
                 val typeParameterT = findUniqueFactOrFail<TypeParameterT> { it.id == typeArgumentT.typeParameter }
                 typeParameterT.asClue {
@@ -1260,7 +1325,8 @@ class SimpleMLAstToPrologFactbaseTest {
 
             @Test
             fun `should reference value`() = withFactbaseFromFile("types.simpleml") {
-                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithResolvableNamedTypeArgument" }
+                val workflowT =
+                    findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithResolvableNamedTypeArgument" }
                 val typeArgumentT = findUniqueFactOrFail<TypeArgumentT> { isContainedIn(it, workflowT) }
                 shouldBeChildOf<NodeWithParent>(typeArgumentT.value, typeArgumentT)
             }
@@ -1322,7 +1388,8 @@ class SimpleMLAstToPrologFactbaseTest {
         inner class UnionType {
             @Test
             fun `should handle simple union types`() = withFactbaseFromFile("types.simpleml") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleUnionType" }
+                val workflowStepT =
+                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleUnionType" }
                 val unionTypeT = findUniqueFactOrFail<UnionTypeT> { isContainedIn(it, workflowStepT) }
                 unionTypeT.asClue {
                     unionTypeT.typeArguments.shouldBeEmpty()
@@ -1331,14 +1398,16 @@ class SimpleMLAstToPrologFactbaseTest {
 
             @Test
             fun `should store type arguments`() = withFactbaseFromFile("types.simpleml") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexUnionType" }
+                val workflowStepT =
+                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexUnionType" }
                 val unionTypeT = findUniqueFactOrFail<UnionTypeT> { isContainedIn(it, workflowStepT) }
                 shouldBeNChildrenOf<TypeArgumentT>(unionTypeT.typeArguments, unionTypeT, 2)
             }
 
             @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("types.simpleml") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleUnionType" }
+                val workflowStepT =
+                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleUnionType" }
                 val unionTypeT = findUniqueFactOrFail<UnionTypeT> { isContainedIn(it, workflowStepT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == unionTypeT.id }
             }

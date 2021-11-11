@@ -1,5 +1,13 @@
 package myPackage
 
+// Named type ----------------------------------------------------------------------------------------------------------
+step myWorkflowStepWithSimpleResolvableNamedType(a: C) {}
+
+step myWorkflowStepWithComplexResolvableNamedType(a: C<*>?) {}
+
+step myWorkflowWithUnresolvableNamedType(a: MyUnresolvedDeclaration) {}
+
+
 // Star projection -----------------------------------------------------------------------------------------------------
 workflow myWorkflowWithStarProjection {
     val starProjection = C<*>();

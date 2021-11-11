@@ -23,6 +23,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberAccessT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
+import de.unibonn.simpleml.prolog_bridge.model.facts.NamedTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NullT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
@@ -441,13 +442,22 @@ class SimpleMLAstToPrologFactbase {
 
             }
             is SmlNamedType -> {
+                visitCrossReference(obj, SimpleMLPackage.Literals.SML_NAMED_TYPE__DECLARATION, obj.declaration)
+                obj.typeArgumentsOrEmpty().forEach { visitTypeArgument(it, obj.id) }
 
+                +NamedTypeT(
+                    obj.id,
+                    parentId,
+                    obj.declaration.id,
+                    obj.typeArgumentList?.typeArguments?.map { it.id },
+                    obj.isNullable
+                )
             }
             is SmlThisType -> {
                 +ThisTypeT(obj.id, parentId)
             }
             is SmlUnionType -> {
-                obj.typeArgumentsOrEmpty().forEach { visitTypeArgument(it, obj.id)}
+                obj.typeArgumentsOrEmpty().forEach { visitTypeArgument(it, obj.id) }
 
                 +UnionTypeT(obj.id, parentId, obj.typeArgumentsOrEmpty().map { it.id })
             }
@@ -539,11 +549,6 @@ class SimpleMLAstToPrologFactbase {
 //                obj.typeArgumentsOrEmpty().forEach { visitTypeArgument(it, obj.id, obj.id) }
 //
 //                +NamedTypeT(obj.id, parentId, obj.declaration.id, obj.typeArgumentsOrEmpty().map { it.id }, obj.isNullable)
-//            }
-//            is SmlUnionType -> {
-//                obj.typeArgumentList.typeArguments.forEach { visitTypeArgument(it, obj.id, obj.id) }
-//
-//                +UnionTypeT(obj.id, parentId, obj.typeArgumentList.typeArguments.map { it.id })
 //            }
 //        }
 //
