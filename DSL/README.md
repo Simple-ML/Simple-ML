@@ -24,7 +24,6 @@ Note: This solution requires that Git itself can clone this private repository f
 
 ### Option 2: Custom Installation
 
-1. Install [OpenJDK 11](https://adoptopenjdk.net/).
 1. Install [Node.js](https://nodejs.org/en/).
 1. Install [VS Code](https://code.visualstudio.com/).
 1. Clone this repository.
