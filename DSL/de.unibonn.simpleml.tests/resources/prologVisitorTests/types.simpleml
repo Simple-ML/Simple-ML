@@ -1,16 +1,16 @@
 package myPackage
 
-// Callable type -----------------------------------------------------------------------------------------------------------
+// Callable types ------------------------------------------------------------------------------------------------------
 step myWorkflowStepWithSimpleCallableType(a: callable () -> ()) {}
 
 step myWorkflowStepWithComplexCallableType(a: callable (o, p) -> (s, r)) {}
 
 
-// Member type -----------------------------------------------------------------------------------------------------------
+// Member types --------------------------------------------------------------------------------------------------------
 step myWorkflowStepWithMemberType(a: A.B) {}
 
 
-// Named type ----------------------------------------------------------------------------------------------------------
+// Named types ---------------------------------------------------------------------------------------------------------
 step myWorkflowStepWithSimpleResolvableNamedType(a: C) {}
 
 step myWorkflowStepWithComplexResolvableNamedType(a: C<*>?) {}
@@ -18,17 +18,17 @@ step myWorkflowStepWithComplexResolvableNamedType(a: C<*>?) {}
 step myWorkflowWithUnresolvableNamedType(a: MyUnresolvedDeclaration) {}
 
 
-// Star projection -----------------------------------------------------------------------------------------------------
+// Star projections ----------------------------------------------------------------------------------------------------
 workflow myWorkflowWithStarProjection {
     val starProjection = C<*>();
 }
 
 
-// This type -----------------------------------------------------------------------------------------------------------
+// This types ----------------------------------------------------------------------------------------------------------
 step myWorkflowStepWithThisType(a: this) {}
 
 
-// Type argument -------------------------------------------------------------------------------------------------------
+// Type arguments ------------------------------------------------------------------------------------------------------
 class C<T>
 
 workflow myWorkflowWithPositionalTypeArgument {
@@ -44,7 +44,13 @@ workflow myWorkflowWithUnresolvedTypeArgument {
 }
 
 
-// Type projection -----------------------------------------------------------------------------------------------------
+// Type parameter constraints ------------------------------------------------------------------------------------------
+fun myFunctionWithResolvableTypeParameterConstraint<T>() where T sub Number
+
+fun myFunctionWithUnresolvableTypeParameterConstraint() where MY_UNRESOLVED_TYPE_PARAMETER sub Number
+
+
+// Type projections ----------------------------------------------------------------------------------------------------
 workflow myWorkflowWithSimpleTypeProjection {
     C<Int>();
 }
@@ -54,7 +60,7 @@ workflow myWorkflowWithComplexTypeProjection {
 }
 
 
-// Union type ----------------------------------------------------------------------------------------------------------
+// Union types ---------------------------------------------------------------------------------------------------------
 step myWorkflowStepWithSimpleUnionType(a: union<>) {}
 
 step myWorkflowStepWithComplexUnionType(a: union<Int, Number>) {}

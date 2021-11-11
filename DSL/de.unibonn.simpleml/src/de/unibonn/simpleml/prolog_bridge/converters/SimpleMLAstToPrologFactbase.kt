@@ -38,6 +38,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.StarProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ThisTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeArgumentT
+import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterConstraintT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.UnionTypeT
@@ -509,6 +510,10 @@ class SimpleMLAstToPrologFactbase {
     }
 
     private fun PlFactbase.visitTypeParameterConstraint(obj: SmlTypeParameterConstraint, parentId: Id<EObject>) {
+        visitCrossReference(obj, SimpleMLPackage.Literals.SML_TYPE_PARAMETER_CONSTRAINT__LEFT_OPERAND, obj.leftOperand)
+        visitType(obj.rightOperand, obj.id)
+
+        +TypeParameterConstraintT(obj.id, parentId, obj.leftOperand.id, obj.operator, obj.rightOperand.id)
         visitSourceLocation(obj)
     }
 
@@ -541,27 +546,6 @@ class SimpleMLAstToPrologFactbase {
     // *****************************************************************************************************************
     // Helpers
     // ****************************************************************************************************************/
-
-//    private fun PlFactbase.visitType(obj: SmlType?, parentId: Id) {
-//        if (obj == null) return
-//        when (obj) {
-//            is SmlCallableType -> {
-//                obj.parameterList.parameters.forEach { visitParameter(it, obj.id) }
-//                obj.resultList.results.forEach { visitDeclaration(it, obj.id) }
-//
-//                +CallableTypeT(obj.id, parentId, obj.parameterList.parameters.map { it.id }, obj.resultList.results.map { it.id })
-//            }
-//        }
-//
-//        +SourceLocationS(obj)
-//    }
-//    private fun PlFactbase.visitTypeParameterConstraint(obj: SmlTypeParameterConstraint, parentId: Id) {
-//        visitDeclaration(obj.leftOperand, obj.id)
-//        visitType(obj.rightOperand, obj.id)
-//
-//        +TypeParameterConstraintT(obj.id, obj.eResource().id, obj.leftOperand.id, obj.operator, obj.rightOperand.id)
-//        +SourceLocationS(obj)
-//    }
 
     private val <T : EObject> T.id: Id<T>
         get() = idManager.assignIdIfAbsent(this)

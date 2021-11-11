@@ -65,7 +65,6 @@ import de.unibonn.simpleml.util.getResourcePath
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldBeNull
-import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldEndWith
 import org.junit.jupiter.api.Nested
@@ -1213,7 +1212,8 @@ class SimpleMLAstToPrologFactbaseTest {
         inner class CallableType {
             @Test
             fun `should handle simple callable types`() = withFactbaseFromFile("types.simpleml") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleCallableType" }
+                val workflowStepT =
+                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleCallableType" }
                 val callableTypeT = findUniqueFactOrFail<CallableTypeT> { isContainedIn(it, workflowStepT) }
                 callableTypeT.asClue {
                     callableTypeT.parameters.shouldBeEmpty()
@@ -1223,21 +1223,24 @@ class SimpleMLAstToPrologFactbaseTest {
 
             @Test
             fun `should reference parameters`() = withFactbaseFromFile("types.simpleml") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexCallableType" }
+                val workflowStepT =
+                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexCallableType" }
                 val callableTypeT = findUniqueFactOrFail<CallableTypeT> { isContainedIn(it, workflowStepT) }
                 shouldBeNChildrenOf<ParameterT>(callableTypeT.parameters, callableTypeT, 2)
             }
 
             @Test
             fun `should reference results`() = withFactbaseFromFile("types.simpleml") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexCallableType" }
+                val workflowStepT =
+                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexCallableType" }
                 val callableTypeT = findUniqueFactOrFail<CallableTypeT> { isContainedIn(it, workflowStepT) }
                 shouldBeNChildrenOf<ResultT>(callableTypeT.results, callableTypeT, 2)
             }
 
             @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("types.simpleml") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleCallableType" }
+                val workflowStepT =
+                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleCallableType" }
                 val callableTypeT = findUniqueFactOrFail<CallableTypeT> { isContainedIn(it, workflowStepT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == callableTypeT.id }
             }
@@ -1271,9 +1274,9 @@ class SimpleMLAstToPrologFactbaseTest {
         inner class NamedType {
             @Test
             fun `should handle simple named types`() = withFactbaseFromFile("types.simpleml") {
-                val workflowStep =
+                val workflowStepT =
                     findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleResolvableNamedType" }
-                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStep) }
+                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStepT) }
                 namedTypeT.asClue {
                     namedTypeT.typeArguments.shouldBeNull()
                     namedTypeT.isNullable shouldBe false
@@ -1282,9 +1285,9 @@ class SimpleMLAstToPrologFactbaseTest {
 
             @Test
             fun `should reference declaration if possible`() = withFactbaseFromFile("types.simpleml") {
-                val workflowStep =
+                val workflowStepT =
                     findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexResolvableNamedType" }
-                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStep) }
+                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStepT) }
                 val declarationT = findUniqueFactOrFail<DeclarationT> { it.id == namedTypeT.declaration }
                 declarationT.asClue {
                     declarationT.name shouldBe "C"
@@ -1293,17 +1296,17 @@ class SimpleMLAstToPrologFactbaseTest {
 
             @Test
             fun `should reference type arguments`() = withFactbaseFromFile("types.simpleml") {
-                val workflowStep =
+                val workflowStepT =
                     findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexResolvableNamedType" }
-                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStep) }
+                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStepT) }
                 shouldBeNChildrenOf<TypeArgumentT>(namedTypeT.typeArguments, namedTypeT, 1)
             }
 
             @Test
             fun `should store nullability`() = withFactbaseFromFile("types.simpleml") {
-                val workflowStep =
+                val workflowStepT =
                     findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexResolvableNamedType" }
-                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStep) }
+                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStepT) }
                 namedTypeT.asClue {
                     namedTypeT.isNullable shouldBe true
                 }
@@ -1311,9 +1314,9 @@ class SimpleMLAstToPrologFactbaseTest {
 
             @Test
             fun `should store name for unresolvable named types`() = withFactbaseFromFile("types.simpleml") {
-                val workflowStep =
+                val workflowStepT =
                     findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowWithUnresolvableNamedType" }
-                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStep) }
+                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStepT) }
                 val unresolvedT = findUniqueFactOrFail<UnresolvedT> { it.id == namedTypeT.declaration }
                 unresolvedT.asClue {
                     unresolvedT.name shouldBe "MyUnresolvedDeclaration"
@@ -1406,6 +1409,62 @@ class SimpleMLAstToPrologFactbaseTest {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithPositionalTypeArgument" }
                 val typeArgumentT = findUniqueFactOrFail<TypeArgumentT> { isContainedIn(it, workflowT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == typeArgumentT.id }
+            }
+        }
+
+        @Nested
+        inner class TypeParameterConstraint {
+            @Test
+            fun `should reference left operand if possible`() = withFactbaseFromFile("types.simpleml") {
+                val functionT =
+                    findUniqueFactOrFail<FunctionT> { it.name == "myFunctionWithResolvableTypeParameterConstraint" }
+                val typeParameterConstraintT =
+                    findUniqueFactOrFail<TypeParameterConstraintT> { isContainedIn(it, functionT) }
+                val typeParameterT =
+                    findUniqueFactOrFail<TypeParameterT> { it.id == typeParameterConstraintT.leftOperand }
+                typeParameterT.asClue {
+                    typeParameterT.name shouldBe "T"
+                }
+            }
+
+            @Test
+            fun `should store operator`() = withFactbaseFromFile("types.simpleml") {
+                val functionT =
+                    findUniqueFactOrFail<FunctionT> { it.name == "myFunctionWithResolvableTypeParameterConstraint" }
+                val typeParameterConstraintT =
+                    findUniqueFactOrFail<TypeParameterConstraintT> { isContainedIn(it, functionT) }
+                typeParameterConstraintT.asClue {
+                    typeParameterConstraintT.operator shouldBe "sub"
+                }
+            }
+
+            @Test
+            fun `should reference right operand`() = withFactbaseFromFile("types.simpleml") {
+                val functionT =
+                    findUniqueFactOrFail<FunctionT> { it.name == "myFunctionWithResolvableTypeParameterConstraint" }
+                val typeParameterConstraintT =
+                    findUniqueFactOrFail<TypeParameterConstraintT> { isContainedIn(it, functionT) }
+                shouldBeChildOf<TypeT>(typeParameterConstraintT.rightOperand, typeParameterConstraintT)
+            }
+
+            @Test
+            fun `should store name for unresolvable type parameters`() = withFactbaseFromFile("types.simpleml") {
+                val functionT =
+                    findUniqueFactOrFail<FunctionT> { it.name == "myFunctionWithUnresolvableTypeParameterConstraint" }
+                val typeParameterConstraintT =
+                    findUniqueFactOrFail<TypeParameterConstraintT> { isContainedIn(it, functionT) }
+                val unresolvedT = findUniqueFactOrFail<UnresolvedT> { it.id == typeParameterConstraintT.leftOperand }
+                unresolvedT.asClue {
+                    unresolvedT.name shouldBe "MY_UNRESOLVED_TYPE_PARAMETER"
+                }
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("types.simpleml") {
+                val functionT =
+                    findUniqueFactOrFail<FunctionT> { it.name == "myFunctionWithResolvableTypeParameterConstraint" }
+                val typeParameterConstraintT = findUniqueFactOrFail<TypeParameterConstraintT> { isContainedIn(it, functionT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == typeParameterConstraintT.id }
             }
         }
 
