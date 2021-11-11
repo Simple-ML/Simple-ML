@@ -33,6 +33,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StarProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
+import de.unibonn.simpleml.prolog_bridge.model.facts.TypeArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.UnresolvedT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WildcardT
@@ -451,6 +452,16 @@ class SimpleMLAstToPrologFactbase {
     }
 
     private fun PlFactbase.visitTypeArgument(obj: SmlTypeArgument, parentId: Id<EObject>) {
+        obj.typeParameter?.let {
+            visitCrossReference(
+                obj,
+                SimpleMLPackage.Literals.SML_TYPE_ARGUMENT__TYPE_PARAMETER,
+                obj.typeParameter
+            )
+        }
+        visitTypeArgumentValue(obj.value, obj.id)
+
+        +TypeArgumentT(obj.id, parentId, obj.typeParameter?.id, obj.value.id)
         visitSourceLocation(obj)
     }
 

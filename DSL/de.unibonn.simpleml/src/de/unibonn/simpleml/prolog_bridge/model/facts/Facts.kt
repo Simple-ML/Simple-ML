@@ -41,6 +41,7 @@ import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlThisType
 import de.unibonn.simpleml.simpleML.SmlType
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
+import de.unibonn.simpleml.simpleML.SmlTypeArgumentValue
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
 import de.unibonn.simpleml.simpleML.SmlTypeProjection
@@ -1409,20 +1410,6 @@ data class UnionTypeT(
 }
 
 /**
- * This Prolog fact represents star projections `*`.
- *
- * @param id
- * The ID of this fact.
- *
- * @param parent
- * The ID of the containing typeArgumentT fact.
- */
-data class StarProjectionT(override val id: Id<SmlStarProjection>, override val parent: Id<SmlTypeArgument>) :
-    NodeWithParent("starProjectionT", id, parent) {
-    override fun toString() = super.toString()
-}
-
-/**
  * This Prolog fact represents type arguments.
  *
  * @param id
@@ -1442,9 +1429,53 @@ data class TypeArgumentT(
     override val id: Id<SmlTypeArgument>,
     override val parent: Id<EObject>,
     val typeParameter: Id<SmlTypeParameter>?,
-    val value: Id<SmlType>
+    val value: Id<SmlTypeArgumentValue>
 ) :
     NodeWithParent("typeArgumentT", id, parent, typeParameter, value) {
+    override fun toString() = super.toString()
+}
+
+/**
+ * A Prolog fact that can be used as the value of a type argument.
+ */
+interface TypeArgumentValueT
+
+/**
+ * This Prolog fact represents star projections `*`.
+ *
+ * @param id
+ * The ID of this fact.
+ *
+ * @param parent
+ * The ID of the containing typeArgumentT fact.
+ */
+data class StarProjectionT(override val id: Id<SmlStarProjection>, override val parent: Id<SmlTypeArgument>) :
+    NodeWithParent("starProjectionT", id, parent), TypeArgumentValueT {
+    override fun toString() = super.toString()
+}
+
+/**
+ * This Prolog fact represents type projections.
+ *
+ * @param id
+ * The ID of this fact.
+ *
+ * @param parent
+ * The ID of the containing typeArgumentT fact.
+ *
+ * @param variance
+ * The variance of this type projection ("in" for contravariance, "out" for covariance, or `null` for invariance).
+ *
+ * @param type
+ * The ID of the fact for the type to use for projection.
+ */
+data class TypeProjectionT(
+    override val id: Id<SmlTypeProjection>,
+    override val parent: Id<SmlTypeArgument>,
+    val variance: String?,
+    val type: Id<SmlType>
+) :
+    NodeWithParent("typeProjectionT", id, parent, variance, type), TypeArgumentValueT {
     override fun toString() = super.toString()
 }
 
@@ -1481,31 +1512,6 @@ data class TypeParameterConstraintT(
     operator,
     rightOperand
 ) {
-    override fun toString() = super.toString()
-}
-
-/**
- * This Prolog fact represents type projections.
- *
- * @param id
- * The ID of this fact.
- *
- * @param parent
- * The ID of the containing typeArgumentT fact.
- *
- * @param variance
- * The variance of this type projection ("in" for contravariance, "out" for covariance, or `null` for invariance).
- *
- * @param type
- * The ID of the fact for the type to use for projection.
- */
-data class TypeProjectionT(
-    override val id: Id<SmlTypeProjection>,
-    override val parent: Id<SmlTypeArgument>,
-    val variance: String?,
-    val type: Id<SmlType>
-) :
-    NodeWithParent("typeProjectionT", id, parent, variance, type) {
     override fun toString() = super.toString()
 }
 

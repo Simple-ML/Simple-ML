@@ -1,5 +1,22 @@
 package myPackage
 
+// StarProjection ------------------------------------------------------------------------------------------------------
 workflow myWorkflowWithStarProjection {
     val starProjection = C<*>();
+}
+
+
+// TypeArgument --------------------------------------------------------------------------------------------------------
+class C<T>
+
+workflow myWorkflowWithPositionalTypeArgument {
+    C<*>();
+}
+
+workflow myWorkflowWithResolvableNamedTypeArgument {
+    C<T = *>();
+}
+
+workflow myWorkflowWithUnresolvedTypeArgument {
+    C<MY_UNRESOLVED_TYPE_PARAMETER = *>();
 }

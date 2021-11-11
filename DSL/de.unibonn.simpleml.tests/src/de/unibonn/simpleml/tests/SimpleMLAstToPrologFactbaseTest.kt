@@ -899,8 +899,8 @@ class SimpleMLAstToPrologFactbaseTest {
             @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("expressions.simpleml") {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithPositionalArgument" }
-                val referenceT = findUniqueFactOrFail<ArgumentT> { isContainedIn(it, workflowT) }
-                findUniqueFactOrFail<SourceLocationS> { it.target == referenceT.id }
+                val argumentT = findUniqueFactOrFail<ArgumentT> { isContainedIn(it, workflowT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == argumentT.id }
             }
         }
 
@@ -1205,16 +1205,62 @@ class SimpleMLAstToPrologFactbaseTest {
         @Nested
         inner class StarProjection {
             @Test
-            fun `should handle star projections`() = withFactbaseFromFile("expressions.simpleml") {
+            fun `should handle star projections`() = withFactbaseFromFile("types.simpleml") {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithStarProjection" }
                 findUniqueFactOrFail<StarProjectionT> { isContainedIn(it, workflowT) }
             }
 
             @Test
-            fun `should store source location in separate relation`() = withFactbaseFromFile("expressions.simpleml") {
+            fun `should store source location in separate relation`() = withFactbaseFromFile("types.simpleml") {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithStarProjection" }
                 val starProjectionT = findUniqueFactOrFail<StarProjectionT> { isContainedIn(it, workflowT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == starProjectionT.id }
+            }
+        }
+
+        @Nested
+        inner class TypeArgument {
+            @Test
+            fun `should handle positional type arguments`() = withFactbaseFromFile("types.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithPositionalTypeArgument" }
+                val typeArgumentT = findUniqueFactOrFail<TypeArgumentT> { isContainedIn(it, workflowT) }
+                typeArgumentT.asClue {
+                    typeArgumentT.typeParameter.shouldBeNull()
+                }
+            }
+
+            @Test
+            fun `should reference type parameter if possible`() = withFactbaseFromFile("types.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithResolvableNamedTypeArgument" }
+                val typeArgumentT = findUniqueFactOrFail<TypeArgumentT> { isContainedIn(it, workflowT) }
+                val typeParameterT = findUniqueFactOrFail<TypeParameterT> { it.id == typeArgumentT.typeParameter }
+                typeParameterT.asClue {
+                    typeParameterT.name shouldBe "T"
+                }
+            }
+
+            @Test
+            fun `should reference value`() = withFactbaseFromFile("types.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithResolvableNamedTypeArgument" }
+                val typeArgumentT = findUniqueFactOrFail<TypeArgumentT> { isContainedIn(it, workflowT) }
+                shouldBeChildOf<NodeWithParent>(typeArgumentT.value, typeArgumentT)
+            }
+
+            @Test
+            fun `should store name for unresolvable type arguments`() = withFactbaseFromFile("types.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithUnresolvedTypeArgument" }
+                val typeArgumentT = findUniqueFactOrFail<TypeArgumentT> { isContainedIn(it, workflowT) }
+                val unresolvedT = findUniqueFactOrFail<UnresolvedT> { it.id == typeArgumentT.typeParameter }
+                unresolvedT.asClue {
+                    unresolvedT.name shouldBe "MY_UNRESOLVED_TYPE_PARAMETER"
+                }
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("types.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithPositionalTypeArgument" }
+                val typeArgumentT = findUniqueFactOrFail<TypeArgumentT> { isContainedIn(it, workflowT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == typeArgumentT.id }
             }
         }
     }
