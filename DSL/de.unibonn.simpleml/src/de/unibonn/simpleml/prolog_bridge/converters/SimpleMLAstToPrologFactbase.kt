@@ -33,6 +33,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StarProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ThisTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeProjectionT
@@ -442,7 +443,7 @@ class SimpleMLAstToPrologFactbase {
 
             }
             is SmlThisType -> {
-
+                +ThisTypeT(obj.id, parentId)
             }
             is SmlUnionType -> {
 

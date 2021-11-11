@@ -46,6 +46,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StarProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ThisTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterConstraintT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
@@ -1216,6 +1217,22 @@ class SimpleMLAstToPrologFactbaseTest {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithStarProjection" }
                 val starProjectionT = findUniqueFactOrFail<StarProjectionT> { isContainedIn(it, workflowT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == starProjectionT.id }
+            }
+        }
+
+        @Nested
+        inner class ThisType {
+            @Test
+            fun `should handle this types`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithThisType" }
+                findUniqueFactOrFail<ThisTypeT> { isContainedIn(it, workflowStepT) }
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithThisType" }
+                val thisTypeT = findUniqueFactOrFail<ThisTypeT> { isContainedIn(it, workflowStepT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == thisTypeT.id }
             }
         }
 
