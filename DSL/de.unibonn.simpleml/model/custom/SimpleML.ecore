@@ -24,7 +24,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//SmlType"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SmlClassOrInterface" eSuperTypes="#//SmlNamedTypeDeclaration">
+  <eClassifiers xsi:type="ecore:EClass" name="SmlClassOrInterface" abstract="true" eSuperTypes="#//SmlNamedTypeDeclaration">
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlClassOrInterfaceBody"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="constructor" eType="#//SmlConstructor"
