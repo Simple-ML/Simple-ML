@@ -31,6 +31,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.PrefixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ReferenceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
+import de.unibonn.simpleml.prolog_bridge.model.facts.StarProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.UnresolvedT
@@ -456,7 +457,7 @@ class SimpleMLAstToPrologFactbase {
     private fun PlFactbase.visitTypeArgumentValue(obj: SmlTypeArgumentValue, parentId: Id<SmlTypeArgument>) {
         when (obj) {
             is SmlStarProjection -> {
-
+                +StarProjectionT(obj.id, parentId)
             }
             is SmlTypeProjection -> {
 
@@ -500,31 +501,6 @@ class SimpleMLAstToPrologFactbase {
     // Helpers
     // ****************************************************************************************************************/
 
-//    private fun PlFactbase.visitExpression(obj: SmlExpression, parentId: Id, enclosingId: Id) {
-//        if (idManager.knowsObject(obj)) return
-//
-//        when (obj) {
-//            is SmlLambda -> {
-//                obj.body.statements.forEach { visitStatement(it, obj.id) }
-//                obj.parametersOrEmpty().forEach { visitParameter(it, parentId) }
-//                +LambdaT(obj.id, parentId, enclosingId, obj.parameterList?.parameters?.map { it.id }, obj.body.statements.map { it.id })
-//            }
-//            is SmlChainedExpression -> {
-//                visitExpression(obj.receiver, parentId, enclosingId)
-//
-//                when (obj) {
-//                    is SmlMemberAccess -> {
-//                        visitExpression(obj.receiver, obj.id, enclosingId)
-//                        visitExpression(obj.member, obj.id, enclosingId)
-//                        +MemberAccessT(obj.id, parentId, enclosingId, obj.receiver.id, obj.isNullable, obj.member.id)
-//                    }
-//                }
-//            }
-//        }
-//
-//        +SourceLocationS(obj)
-//    }
-//
 //    private fun PlFactbase.visitType(obj: SmlType?, parentId: Id) {
 //        if (obj == null) return
 //        when (obj) {

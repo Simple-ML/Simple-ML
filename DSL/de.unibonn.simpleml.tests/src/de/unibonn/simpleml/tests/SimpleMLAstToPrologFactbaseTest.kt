@@ -43,6 +43,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.PrefixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ReferenceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
+import de.unibonn.simpleml.prolog_bridge.model.facts.StarProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeArgumentT
@@ -1200,7 +1201,22 @@ class SimpleMLAstToPrologFactbaseTest {
 
     @Nested
     inner class Types {
-        // TODO
+
+        @Nested
+        inner class StarProjection {
+            @Test
+            fun `should handle star projections`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithStarProjection" }
+                findUniqueFactOrFail<StarProjectionT> { isContainedIn(it, workflowT) }
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithStarProjection" }
+                val starProjectionT = findUniqueFactOrFail<StarProjectionT> { isContainedIn(it, workflowT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == starProjectionT.id }
+            }
+        }
     }
 
 

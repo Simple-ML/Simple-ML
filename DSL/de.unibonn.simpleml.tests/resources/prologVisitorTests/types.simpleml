@@ -1,0 +1,5 @@
+package myPackage
+
+workflow myWorkflowWithStarProjection {
+    val starProjection = C<*>();
+}
