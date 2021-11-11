@@ -1,5 +1,8 @@
 package myPackage
 
+// Member type -----------------------------------------------------------------------------------------------------------
+step myWorkflowStepWithMemberType(a: A.B) {}
+
 // Named type ----------------------------------------------------------------------------------------------------------
 step myWorkflowStepWithSimpleResolvableNamedType(a: C) {}
 

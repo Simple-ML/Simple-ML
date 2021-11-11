@@ -34,6 +34,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberAccessT
+import de.unibonn.simpleml.prolog_bridge.model.facts.MemberTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NamedTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NodeWithParent
 import de.unibonn.simpleml.prolog_bridge.model.facts.NullT
@@ -1206,6 +1207,30 @@ class SimpleMLAstToPrologFactbaseTest {
 
     @Nested
     inner class Types {
+
+        @Nested
+        inner class MemberType {
+            @Test
+            fun `should reference receiver`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithMemberType" }
+                val memberTypeT = findUniqueFactOrFail<MemberTypeT> { isContainedIn(it, workflowStepT) }
+                shouldBeChildOf<TypeT>(memberTypeT.receiver, memberTypeT)
+            }
+
+            @Test
+            fun `should reference member`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithMemberType" }
+                val memberTypeT = findUniqueFactOrFail<MemberTypeT> { isContainedIn(it, workflowStepT) }
+                shouldBeChildOf<NamedTypeT>(memberTypeT.member, memberTypeT)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithMemberType" }
+                val memberTypeT = findUniqueFactOrFail<MemberTypeT> { isContainedIn(it, workflowStepT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == memberTypeT.id }
+            }
+        }
 
         @Nested
         inner class NamedType {

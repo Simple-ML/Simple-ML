@@ -22,6 +22,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberAccessT
+import de.unibonn.simpleml.prolog_bridge.model.facts.MemberTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NamedTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NullT
@@ -439,7 +440,10 @@ class SimpleMLAstToPrologFactbase {
 
             }
             is SmlMemberType -> {
+                visitType(obj.receiver, obj.id)
+                visitType(obj.member, obj.id)
 
+                +MemberTypeT(obj.id, parentId, obj.receiver.id, obj.member.id)
             }
             is SmlNamedType -> {
                 visitCrossReference(obj, SimpleMLPackage.Literals.SML_NAMED_TYPE__DECLARATION, obj.declaration)
@@ -537,18 +541,6 @@ class SimpleMLAstToPrologFactbase {
 //                obj.resultList.results.forEach { visitDeclaration(it, obj.id) }
 //
 //                +CallableTypeT(obj.id, parentId, obj.parameterList.parameters.map { it.id }, obj.resultList.results.map { it.id })
-//            }
-//            is SmlMemberType -> {
-//                visitType(obj.member, obj.id)
-//                visitType(obj.receiver, obj.id)
-//
-//                +MemberTypeT(obj.id, parentId, obj.receiver.id, obj.member.id)
-//            }
-//            is SmlNamedType -> {
-//                visitDeclaration(obj.declaration, obj.id)
-//                obj.typeArgumentsOrEmpty().forEach { visitTypeArgument(it, obj.id, obj.id) }
-//
-//                +NamedTypeT(obj.id, parentId, obj.declaration.id, obj.typeArgumentsOrEmpty().map { it.id }, obj.isNullable)
 //            }
 //        }
 //
