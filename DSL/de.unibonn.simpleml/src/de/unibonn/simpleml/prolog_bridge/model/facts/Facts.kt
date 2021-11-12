@@ -1603,15 +1603,15 @@ data class ModifierT(override val target: Id<SmlDeclaration>, val modifier: Stri
 }
 
 /**
- * This Prolog fact stores the file path of a compilation unit.
+ * This Prolog fact stores the resource URI of a compilation unit.
  *
  * @param target
  * The ID of the fact for the respective compilation unit.
  *
- * @param path
- * The file path of the compilation unit.
+ * @param uri
+ * The resource URI of the compilation unit.
  */
-data class FileS(override val target: Id<SmlCompilationUnit>, val path: String) : Relation("fileS", target, path) {
+data class ResourceS(override val target: Id<SmlCompilationUnit>, val uri: String) : Relation("resourceS", target, uri) {
     override fun toString() = super.toString()
 }
 
@@ -1635,11 +1635,12 @@ data class FileS(override val target: Id<SmlCompilationUnit>, val path: String) 
  */
 data class SourceLocationS(
     override val target: Id<EObject>,
+    val uriHash: String,
     val offset: Int,
     val line: Int,
     val column: Int,
     val length: Int
 ) :
-    Relation("sourceLocationS", target, offset, line, column, length) {
+    Relation("sourceLocationS", target, uriHash, offset, line, column, length) {
     override fun toString() = super.toString()
 }

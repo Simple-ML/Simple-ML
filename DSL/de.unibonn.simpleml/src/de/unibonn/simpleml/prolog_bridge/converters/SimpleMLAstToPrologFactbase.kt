@@ -13,7 +13,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionStatementT
-import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
+import de.unibonn.simpleml.prolog_bridge.model.facts.ResourceS
 import de.unibonn.simpleml.prolog_bridge.model.facts.FloatT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
@@ -109,9 +109,9 @@ import de.unibonn.simpleml.utils.statementsOrEmpty
 import de.unibonn.simpleml.utils.typeArgumentsOrEmpty
 import de.unibonn.simpleml.utils.typeParameterConstraintsOrEmpty
 import de.unibonn.simpleml.utils.typeParametersOrEmpty
-import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 
 class SimpleMLAstToPrologFactbase {
@@ -173,7 +173,7 @@ class SimpleMLAstToPrologFactbase {
         obj.members.forEach { this.visitDeclaration(it, obj.id) }
 
         +CompilationUnitT(obj.id, obj.name, obj.imports.map { it.id }, obj.members.map { it.id })
-        +FileS(obj.id, obj.eResource().uri.toUNIXString())
+        +ResourceS(obj.id, obj.eResource().uri.toString())
         visitSourceLocation(obj)
     }
 
@@ -523,10 +523,18 @@ class SimpleMLAstToPrologFactbase {
     // ****************************************************************************************************************/
 
     private fun PlFactbase.visitSourceLocation(obj: EObject) {
+        val uriHash = EcoreUtil2.getURI(obj).toString().split("#").last()
         val node = NodeModelUtils.getNode(obj)
         val location = NodeModelUtils.getLineAndColumn(node, node.offset)
 
-        +SourceLocationS(obj.id, location.line, location.column, node.offset, node.totalLength)
+        +SourceLocationS(
+            obj.id,
+            uriHash,
+            node.offset,
+            location.line,
+            location.column,
+            node.length
+        )
     }
 
     private fun PlFactbase.visitCrossReference(source: EObject, edge: EReference, target: EObject) {
@@ -552,9 +560,5 @@ class SimpleMLAstToPrologFactbase {
 
     private fun reset() {
         idManager = IdManager()
-    }
-
-    private fun URI.toUNIXString(): String {
-        return this.toFileString().replace("\\", "/")
     }
 }

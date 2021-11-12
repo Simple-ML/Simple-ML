@@ -25,7 +25,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionStatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionT
-import de.unibonn.simpleml.prolog_bridge.model.facts.FileS
+import de.unibonn.simpleml.prolog_bridge.model.facts.ResourceS
 import de.unibonn.simpleml.prolog_bridge.model.facts.FloatT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
@@ -64,6 +64,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.YieldT
 import de.unibonn.simpleml.util.getResourcePath
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.collections.shouldBeOneOf
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldEndWith
@@ -107,7 +108,9 @@ class SimpleMLAstToPrologFactbaseTest {
             @Test
             fun `should store package`() = withFactbaseFromFile("declarations.simpleml") {
                 val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
-                compilationUnitT shouldBe compilationUnitT.copy(`package` = "myPackage")
+                compilationUnitT.asClue {
+                    compilationUnitT.`package` shouldBe "myPackage"
+                }
             }
 
             @Test
@@ -123,12 +126,12 @@ class SimpleMLAstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should store filepath in separate relation`() = withFactbaseFromFile("empty.simpleml") {
+            fun `should store resource URI in separate relation`() = withFactbaseFromFile("empty.simpleml") {
                 val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
-                val fileT = findUniqueFactOrFail<FileS>()
-                fileT.asClue {
-                    fileT.target shouldBe compilationUnitT.id
-                    fileT.path shouldEndWith "prologVisitorTests/empty.simpleml"
+                val resourceS = findUniqueFactOrFail<ResourceS>()
+                resourceS.asClue {
+                    resourceS.target shouldBe compilationUnitT.id
+                    resourceS.uri shouldEndWith "prologVisitorTests/empty.simpleml"
                 }
             }
 
@@ -1586,6 +1589,56 @@ class SimpleMLAstToPrologFactbaseTest {
                     val annotationUseT = findUniqueFactOrFail<AnnotationUseT> { it.parent == classT.id }
                     findUniqueFactOrFail<SourceLocationS> { it.target == annotationUseT.id }
                 }
+        }
+
+        @Nested
+        inner class SourceLocation {
+
+            @Test
+            fun `should store uri hash`() = withFactbaseFromFile("declarations.simpleml") {
+                val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyOtherClass" }
+                val sourceLocationS = findUniqueFactOrFail<SourceLocationS> { it.target == importT.id }
+                sourceLocationS.asClue {
+                    sourceLocationS.uriHash shouldBe "//@imports.1"
+                }
+            }
+
+            @Test
+            fun `should store offset`() = withFactbaseFromFile("declarations.simpleml") {
+                val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyClass" }
+                val sourceLocationS = findUniqueFactOrFail<SourceLocationS> { it.target == importT.id }
+                sourceLocationS.asClue {
+                    // Actual offset depends on the new line characters (19 for just \n or \r and 21 for \r\n)
+                    sourceLocationS.offset shouldBeOneOf listOf(19, 21)
+                }
+            }
+
+            @Test
+            fun `should store line`() = withFactbaseFromFile("declarations.simpleml") {
+                val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyClass" }
+                val sourceLocationS = findUniqueFactOrFail<SourceLocationS> { it.target == importT.id }
+                sourceLocationS.asClue {
+                    sourceLocationS.line shouldBe 3
+                }
+            }
+
+            @Test
+            fun `should store column`() = withFactbaseFromFile("declarations.simpleml") {
+                val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyClass" }
+                val sourceLocationS = findUniqueFactOrFail<SourceLocationS> { it.target == importT.id }
+                sourceLocationS.asClue {
+                    sourceLocationS.column shouldBe 1
+                }
+            }
+
+            @Test
+            fun `should store length`() = withFactbaseFromFile("declarations.simpleml") {
+                val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyClass" }
+                val sourceLocationS = findUniqueFactOrFail<SourceLocationS> { it.target == importT.id }
+                sourceLocationS.asClue {
+                    sourceLocationS.length shouldBe 24
+                }
+            }
         }
     }
 
