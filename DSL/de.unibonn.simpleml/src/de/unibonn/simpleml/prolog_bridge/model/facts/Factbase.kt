@@ -7,7 +7,7 @@ private const val factPrefix = "simpleml"
 class PlFactbase {
     val facts = mutableListOf<PlFact>()
 
-    inline fun <reified T: Node> Id.resolve(): T? {
+    inline fun <reified T : Node> Id<*>.resolve(): T? {
         return findUniqueFact<T> { it.id == this }
     }
 
@@ -21,6 +21,27 @@ class PlFactbase {
 
     inline fun <reified T> findFacts(filter: (T) -> Boolean = { true }): List<T> {
         return facts.filterIsInstance<T>().filter(filter)
+    }
+
+    fun isContainedIn(descendant: Node, ancestor: Node): Boolean {
+        return isContainedIn(descendant, ancestor, mutableSetOf())
+    }
+
+    private tailrec fun isContainedIn(descendant: Node, ancestor: Node, visitedNodes: MutableSet<Node>): Boolean {
+        return when (descendant) {
+            ancestor -> true
+            !is NodeWithParent -> false
+            in visitedNodes -> false
+            else -> {
+                val parent = descendant.parent.resolve<Node>()
+                if (parent == null) {
+                    false
+                } else {
+                    visitedNodes += descendant
+                    isContainedIn(parent, ancestor, visitedNodes)
+                }
+            }
+        }
     }
 
     /**
@@ -39,25 +60,25 @@ class PlFactbase {
 
     private fun StringBuilder.appendDiscontiguousDirectives() {
         facts.map { it.functor }
-                .toSortedSet()
-                .forEach { appendLine(":- discontiguous($factPrefix:$it).") }
+            .toSortedSet()
+            .forEach { appendLine(":- discontiguous($factPrefix:$it).") }
     }
 
     private fun StringBuilder.appendNodes() {
         facts.filterIsInstance<Node>()
-                .sortedBy { it.id.value }
-                .forEach { appendLine("$factPrefix:$it") }
+            .sortedBy { it.id.value }
+            .forEach { appendLine("$factPrefix:$it") }
     }
 
     private fun StringBuilder.appendOtherFacts() {
         facts.filter { it !is Node }
-                .sortedBy { it.functor }
-                .forEach { appendLine("$factPrefix:$it") }
+            .sortedBy { it.functor }
+            .forEach { appendLine("$factPrefix:$it") }
     }
 
     private fun StringBuilder.appendPefCounts() {
         facts.groupBy { it.functor }
-                .toSortedMap()
-                .forEach { appendLine("$factPrefix:pefCount(${it.key}, ${it.value.size}).") }
+            .toSortedMap()
+            .forEach { appendLine("$factPrefix:pefCount(${it.key}, ${it.value.size}).") }
     }
 }
