@@ -6,6 +6,9 @@
 # Gradle
 .gradle/
 
+# IntelliJ
+.idea/
+
 # Generated stuff
 .DS_Store/
 /package-lock.json

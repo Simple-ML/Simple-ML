@@ -1,8 +1,20 @@
 package de.unibonn.simpleml.tests
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.tests.assertions.*
-import de.unibonn.simpleml.util.*
+import de.unibonn.simpleml.assertions.shouldHaveNoIssue
+import de.unibonn.simpleml.assertions.shouldHaveNoSemanticError
+import de.unibonn.simpleml.assertions.shouldHaveNoSemanticInfo
+import de.unibonn.simpleml.assertions.shouldHaveNoSemanticWarning
+import de.unibonn.simpleml.assertions.shouldHaveNoSyntaxError
+import de.unibonn.simpleml.assertions.shouldHaveSemanticError
+import de.unibonn.simpleml.assertions.shouldHaveSemanticInfo
+import de.unibonn.simpleml.assertions.shouldHaveSemanticWarning
+import de.unibonn.simpleml.assertions.shouldHaveSyntaxError
+import de.unibonn.simpleml.util.CategorizedTest
+import de.unibonn.simpleml.util.ParseWithStdlib
+import de.unibonn.simpleml.util.createDynamicTestsFromResourceFolder
+import de.unibonn.simpleml.util.getResourcePath
+import de.unibonn.simpleml.util.testDisplayName
 import de.unibonn.simpleml.utils.OriginalFilePath
 import de.unibonn.simpleml.utils.outerZipBy
 import org.eclipse.xtext.testing.InjectWith
@@ -26,15 +38,15 @@ private const val SEMANTIC_INFO = "semantic_info"
 private const val NO_SEMANTIC_INFO = "no_semantic_info"
 private const val NO_ISSUE = "no_issue"
 private val validSeverities = listOf(
-        SYNTAX_ERROR,
-        NO_SYNTAX_ERROR,
-        SEMANTIC_ERROR,
-        NO_SEMANTIC_ERROR,
-        SEMANTIC_WARNING,
-        NO_SEMANTIC_WARNING,
-        SEMANTIC_INFO,
-        NO_SEMANTIC_INFO,
-        NO_ISSUE
+    SYNTAX_ERROR,
+    NO_SYNTAX_ERROR,
+    SEMANTIC_ERROR,
+    NO_SEMANTIC_ERROR,
+    SEMANTIC_WARNING,
+    NO_SEMANTIC_WARNING,
+    SEMANTIC_INFO,
+    NO_SEMANTIC_INFO,
+    NO_ISSUE
 )
 
 @ExtendWith(InjectionExtension::class)
@@ -51,9 +63,9 @@ class SimpleMLLanguageTest {
     @TestFactory
     fun `should parse and validate`(): Stream<out DynamicNode> {
         return javaClass.classLoader
-                .getResourcePath("languageTests")
-                ?.createDynamicTestsFromResourceFolder(::validateTestFile, ::createTest)
-                ?: Stream.empty()
+            .getResourcePath("languageTests")
+            ?.createDynamicTestsFromResourceFolder(::validateTestFile, ::createTest)
+            ?: Stream.empty()
     }
 
     /**
@@ -91,35 +103,35 @@ class SimpleMLLanguageTest {
 
     private fun createTest(resourcePath: Path, filePath: Path, program: String) = sequence {
         expectedIssues(program)
-                .groupBy { it.severity to it.message }
-                .keys
-                .forEach { (severity, message) ->
-                    yield(CategorizedTest(
-                            severity,
-                            dynamicTest(testDisplayName(resourcePath, filePath, message), filePath.toUri()) {
-                                parsingTest(program, filePath, severity, message)
-                            }
-                    ))
-                }
+            .groupBy { it.severity to it.message }
+            .keys
+            .forEach { (severity, message) ->
+                yield(CategorizedTest(
+                    severity,
+                    dynamicTest(testDisplayName(resourcePath, filePath, message), filePath.toUri()) {
+                        parsingTest(program, filePath, severity, message)
+                    }
+                ))
+            }
     }
 
     private fun parsingTest(program: String, filePath: Path, severity: String, message: String) {
         val actualIssues = actualIssues(program, filePath)
         expectedIssues(program)
-                .filter { it.severity == severity && it.message == message }
-                .forEach {
-                    when (it.severity) {
-                        SYNTAX_ERROR -> actualIssues.shouldHaveSyntaxError(it)
-                        NO_SYNTAX_ERROR -> actualIssues.shouldHaveNoSyntaxError(it)
-                        SEMANTIC_ERROR -> actualIssues.shouldHaveSemanticError(it)
-                        NO_SEMANTIC_ERROR -> actualIssues.shouldHaveNoSemanticError(it)
-                        SEMANTIC_WARNING -> actualIssues.shouldHaveSemanticWarning(it)
-                        NO_SEMANTIC_WARNING -> actualIssues.shouldHaveNoSemanticWarning(it)
-                        SEMANTIC_INFO -> actualIssues.shouldHaveSemanticInfo(it)
-                        NO_SEMANTIC_INFO -> actualIssues.shouldHaveNoSemanticInfo(it)
-                        NO_ISSUE -> actualIssues.shouldHaveNoIssue(it)
-                    }
+            .filter { it.severity == severity && it.message == message }
+            .forEach {
+                when (it.severity) {
+                    SYNTAX_ERROR -> actualIssues.shouldHaveSyntaxError(it)
+                    NO_SYNTAX_ERROR -> actualIssues.shouldHaveNoSyntaxError(it)
+                    SEMANTIC_ERROR -> actualIssues.shouldHaveSemanticError(it)
+                    NO_SEMANTIC_ERROR -> actualIssues.shouldHaveNoSemanticError(it)
+                    SEMANTIC_WARNING -> actualIssues.shouldHaveSemanticWarning(it)
+                    NO_SEMANTIC_WARNING -> actualIssues.shouldHaveNoSemanticWarning(it)
+                    SEMANTIC_INFO -> actualIssues.shouldHaveSemanticInfo(it)
+                    NO_SEMANTIC_INFO -> actualIssues.shouldHaveNoSemanticInfo(it)
+                    NO_ISSUE -> actualIssues.shouldHaveNoIssue(it)
                 }
+            }
     }
 
     private fun expectedIssues(program: String): List<ExpectedIssue> {
@@ -134,10 +146,10 @@ class SimpleMLLanguageTest {
 
     private fun severitiesAndMessages(program: String): List<ExpectedIssue> {
         return """//\s*(?<severity>[^\s]*)\s*(?:"(?<message>[^"]*)")?"""
-                .toRegex()
-                .findAll(program)
-                .map { ExpectedIssue(it.groupValues[1], it.groupValues[2], null) }
-                .toList()
+            .toRegex()
+            .findAll(program)
+            .map { ExpectedIssue(it.groupValues[1], it.groupValues[2], null) }
+            .toList()
     }
 
     private fun locations(program: String): List<Location> {
@@ -185,9 +197,9 @@ class SimpleMLLanguageTest {
 }
 
 class ExpectedIssue(
-        val severity: String,
-        val message: String,
-        private val location: Location?
+    val severity: String,
+    val message: String,
+    private val location: Location?
 ) {
 
     fun matches(issue: Issue): Boolean {

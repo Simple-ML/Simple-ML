@@ -36,12 +36,11 @@ class Main @Inject constructor(
 
         // Check for syntax errors
         val issues = validator.validate(resource, CheckMode.ALL, CancelIndicator.NullImpl)
-//        issues.forEach { println(it) }
         require(issues.none { it.isSyntaxError }) { syntaxErrorMessage(issues) }
 
         // Configure and start the visitor
         val compilationUnit = resource.contents[0] as SmlCompilationUnit
-        return prologVisitor.createFactbase(compilationUnit)
+        return prologVisitor.createFactbase(listOf(compilationUnit))
     }
 
     private fun syntaxErrorMessage(issues: List<Issue>) = buildString {
