@@ -9,7 +9,7 @@ define([
 	'jquery',
 	'xtext/services/XtextService',
     'xtext/services/GetEmfModelService',
-	'xtext/services/GetProcessProposals',
+	'xtext/services/GetProcessProposalsService',
 	'xtext/services/CreateEntityService',
     'xtext/services/DeleteEntityService',
     'xtext/services/CreateAssociationService',

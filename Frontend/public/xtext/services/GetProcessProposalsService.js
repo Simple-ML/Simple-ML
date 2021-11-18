@@ -52,8 +52,6 @@
             data: serverData,
 
             success: function(result) {
-                editorContext.setText(result.fullText);
-                editorContext.setDirty();
                 var listeners = editorContext.updateServerState(result.fullText, result.stateId);
                 for (var i = 0; i < listeners.length; i++) {
                     listeners[i](params);
@@ -82,7 +80,6 @@
 
     GetProcessProposalsService.prototype._getSuccessCallback = function(editorContext, params, deferred) {
         return function(result) {
-            editorContext.setText(result.fullText);
             var listeners = editorContext.updateServerState(result.fullText, result.stateId);
             for (var i = 0; i < listeners.length; i++) {
                 listeners[i](params);
