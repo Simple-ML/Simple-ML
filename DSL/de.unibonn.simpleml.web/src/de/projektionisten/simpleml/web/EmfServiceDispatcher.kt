@@ -24,6 +24,7 @@ import de.unibonn.simpleml.utils.parametersOrEmpty
 import de.unibonn.simpleml.utils.resultsOrEmpty
 import de.unibonn.simpleml.utils.QualifiedNameProvider
 import de.unibonn.simpleml.utils.Proposals
+import de.unibonn.simpleml.utils.containingCompilationUnitOrNull
 import de.unibonn.simpleml.simpleML.*
 import de.projektionisten.simpleml.web.dto.CreateEntityDTO
 import de.projektionisten.simpleml.web.dto.ParameterDTO
@@ -125,7 +126,7 @@ class EmfServiceDispatcher @Inject constructor(
 
 	protected fun createEntity(context: IServiceContext): ServiceDescriptor {
 		val resourceDocument = getResourceDocument(super.getResourceID(context), context)
-		val astRoot = resourceDocument.resource.contents.get(0)
+		val astRoot = resourceDocument.resource.contents.get(0) as SmlCompilationUnit
 		val type = object: TypeToken<CreateEntityDTO>(){}.getType()
 		val createEntityDTO = jsonConverter.fromJson(context.getParameter("createEntityDTO"), type) as CreateEntityDTO
 
@@ -139,6 +140,8 @@ class EmfServiceDispatcher @Inject constructor(
 			val call = SimpleMLFactory.eINSTANCE.createSmlCall()
 			val argumentList = SimpleMLFactory.eINSTANCE.createSmlArgumentList()
 			val reference = SimpleMLFactory.eINSTANCE.createSmlReference()
+			val import = SimpleMLFactory.eINSTANCE.createSmlImport()
+			var importExists = false
 
 			when(functionRef) {
 				is SmlFunction -> {
@@ -147,8 +150,9 @@ class EmfServiceDispatcher @Inject constructor(
 				is SmlClass -> {
 					reference.declaration = functionRef as SmlClass
 				}
-			} 
-			
+			}
+
+			// create entity
 			call.receiver = reference
 			call.argumentList = argumentList
 			
@@ -158,7 +162,18 @@ class EmfServiceDispatcher @Inject constructor(
 			assignment.expression = call
 			assignment.assigneeList = assigneeList
 
-			((astRoot as SmlCompilationUnit).members[0] as SmlWorkflow).body.statements.add(assignment)
+			(astRoot.members[0] as SmlWorkflow).body.statements.add(assignment)
+
+			// create import-statement if necessary
+			astRoot.imports.forEach {
+				if(it.importedNamespace == reference.declaration.containingCompilationUnitOrNull()?.name + "." + reference.declaration.name) {
+					importExists = true
+				}
+			}
+			if(!importExists) {
+				import.importedNamespace = reference.declaration.containingCompilationUnitOrNull()?.name + "." + reference.declaration.name
+				astRoot.imports.add(import)
+			}
 		} else {
 			
 		}

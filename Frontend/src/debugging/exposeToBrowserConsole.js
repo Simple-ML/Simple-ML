@@ -25,7 +25,10 @@ const debugInterface = {
     h: { //helper
         flattenEmfModelTree: (emfModelTree) => EmfModelHelper.flattenEmfModelTree(emfModelTree),
         getFullHierarchy: (emfEntity) => EmfModelHelper.getFullHierarchy(emfEntity),
-        getFullHierarchy2: (emfEntity) => EmfModelHelper.getFullHierarchy2(emfEntity)
+        getFullHierarchy2: (emfEntity) => EmfModelHelper.getFullHierarchy2(emfEntity),
+        getSelectedEntity: () => {
+            return store.getState().graphicalEditor.entitySelected;
+        }
     },
     o: { //other
         showDefaultModal: () => store.dispatch(showModal(DefaultModal, {text: 'some text', message: 'some message'}))
