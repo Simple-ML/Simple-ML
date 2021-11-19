@@ -1,8 +1,8 @@
 package de.unibonn.simpleml.tests
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.simpleML.SimpleMLFactory
-import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.util.ParseWithStdlib
 import de.unibonn.simpleml.utils.Proposals
@@ -41,59 +41,86 @@ class ProposalsTest {
         |
         |step matching_a(a: A) {}
         |step matching_b(b: B) {}
+        |
+        |step test_callee() -> (test_result: A) {
+        |    val test_placeholder = A();
+        |}
     """.trimMargin()
 
     @Test
     fun `should contain workflow steps with primitive parameters when no result is passed`() {
-        val context = parseWithStdlib.parse(testProgram)
-        context.shouldNotBeNull()
+        val compilationUnit = parseWithStdlib.parse(testProgram)
+        compilationUnit.shouldNotBeNull()
 
-        val workflowSteps = context.membersOrEmpty()
+        val workflowSteps = compilationUnit.membersOrEmpty()
             .asSequence()
             .filterIsInstance<SmlWorkflowStep>()
             .filter { it.name.startsWith("primitive") }
             .toList()
         workflowSteps.shouldHaveSize(5)
 
-        val descriptions = proposals.listCallables(context, null)
+        val descriptions = proposals.listCallables(compilationUnit, null)
         descriptions.shouldContainValues(*workflowSteps.toTypedArray())
     }
 
     @Test
-    fun `should contain workflow steps with only matching parameters when a result is passed`() {
-        val context = parseWithStdlib.parse(testProgram)
-        context.shouldNotBeNull()
+    fun `should contain workflow steps with only matching parameters when a placeholder is passed`() {
+        val compilationUnit = parseWithStdlib.parse(testProgram)
+        compilationUnit.shouldNotBeNull()
 
-        val classA = context.membersOrEmpty()
+        val placeholder = compilationUnit.eAllContents()
             .asSequence()
-            .filterIsInstance<SmlClass>()
-            .filter { it.name == "A" }
+            .filterIsInstance<SmlPlaceholder>()
+            .filter { it.name == "test_placeholder" }
             .firstOrNull()
-        classA.shouldNotBeNull()
+        placeholder.shouldNotBeNull()
 
-        val result = SimpleMLFactory.eINSTANCE.createSmlResult().apply {
-            name = "r"
-            type = SimpleMLFactory.eINSTANCE.createSmlNamedType().apply {
-                isNullable = false
-                declaration = classA
-            }
-        }
-
-        val workflowStepA = context.membersOrEmpty()
+        val workflowStepA = compilationUnit.membersOrEmpty()
             .asSequence()
             .filterIsInstance<SmlWorkflowStep>()
             .filter { it.name == "matching_a" }
             .firstOrNull()
         workflowStepA.shouldNotBeNull()
 
-        val workflowStepB = context.membersOrEmpty()
+        val workflowStepB = compilationUnit.membersOrEmpty()
             .asSequence()
             .filterIsInstance<SmlWorkflowStep>()
             .filter { it.name == "matching_b" }
             .firstOrNull()
         workflowStepB.shouldNotBeNull()
 
-        val descriptions = proposals.listCallables(context, result)
+        val descriptions = proposals.listCallables(compilationUnit, placeholder)
+        descriptions.shouldContainValue(workflowStepA)
+        descriptions.shouldNotContainValue(workflowStepB)
+    }
+
+    @Test
+    fun `should contain workflow steps with only matching parameters when a result is passed`() {
+        val compilationUnit = parseWithStdlib.parse(testProgram)
+        compilationUnit.shouldNotBeNull()
+
+        val result = compilationUnit.eAllContents()
+            .asSequence()
+            .filterIsInstance<SmlResult>()
+            .filter { it.name == "test_result" }
+            .firstOrNull()
+        result.shouldNotBeNull()
+
+        val workflowStepA = compilationUnit.membersOrEmpty()
+            .asSequence()
+            .filterIsInstance<SmlWorkflowStep>()
+            .filter { it.name == "matching_a" }
+            .firstOrNull()
+        workflowStepA.shouldNotBeNull()
+
+        val workflowStepB = compilationUnit.membersOrEmpty()
+            .asSequence()
+            .filterIsInstance<SmlWorkflowStep>()
+            .filter { it.name == "matching_b" }
+            .firstOrNull()
+        workflowStepB.shouldNotBeNull()
+
+        val descriptions = proposals.listCallables(compilationUnit, result)
         descriptions.shouldContainValue(workflowStepA)
         descriptions.shouldNotContainValue(workflowStepB)
     }
