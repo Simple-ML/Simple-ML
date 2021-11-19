@@ -77,6 +77,12 @@ class Proposals @Inject constructor(
                         }
                     }
                     is SmlFunction -> {
+                        // Exclude interface methods
+                        if (obj.isInterfaceMember()) {
+                            return@filterValues false
+                        }
+
+                        // Check parameters
                         val hasMatchingParameter =
                             obj.parametersOrEmpty().any {
                                 typeConformance.isSubstitutableFor(declarationType, typeComputer.typeOf(it))
@@ -85,9 +91,9 @@ class Proposals @Inject constructor(
                             return@filterValues true
                         }
 
-                        // Check receiver for methods
+                        // Check receiver for class methods
                         val containingClassOrInterface =
-                            obj.containingClassOrInterfaceOrNull() ?: return@filterValues false
+                            obj.containingClassOrNull() ?: return@filterValues false
                         return@filterValues typeConformance.isSubstitutableFor(declarationType, containingClassOrInterface)
                     }
                     is SmlWorkflowStep -> {
