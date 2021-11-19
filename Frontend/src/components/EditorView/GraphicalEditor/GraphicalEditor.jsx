@@ -191,6 +191,19 @@ class GraphicalEditor extends React.Component {
                 // apply layout
                 layout.execute(parent);
             }
+
+            // add create-button to selected entity
+            if(this.props.entitySelected.id !== undefined) {
+
+
+
+                //TODO
+
+
+
+
+
+            }
         }
         finally
         {
@@ -288,7 +301,8 @@ GraphicalEditor.propTypes = {
 const mapStateToProps = state => {
     return {
         renderableEntities: state.emfModel.renderable,
-        entityAssociations: state.emfModel.associations
+        entityAssociations: state.emfModel.associations,
+        entitySelected: state.graphicalEditor.entitySelected
     }
 };
 

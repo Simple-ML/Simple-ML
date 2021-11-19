@@ -106,13 +106,17 @@ class EmfServiceDispatcher @Inject constructor(
 		val resourceDocument = getResourceDocument(super.getResourceID(context), context)
 		val frontendId = context.getParameter("frontendId")
 		val emfPath = context.getParameter("entityPath")
-		var emfEntity: SmlResult?
-
-		if(emfPath.isNullOrEmpty()) 
-			emfEntity = null
-		else
+		var emfEntity: SmlResult? = null
+println(emfPath)
+		if(!emfPath.isNullOrEmpty()) {
 			emfEntity = resourceDocument.resource.getEObject(emfPath) as SmlResult?
 
+			if(emfEntity == null) {
+				val stdLibEntity = stdLibResourceSetProvider.get(emfPath, context).getEObject(URI.createURI(emfPath), true)
+				emfEntity = (stdLibEntity as SmlFunction).resultsOrEmpty()[0] as SmlResult?
+			}
+		}
+println(emfEntity)
 		val astRoot = resourceDocument.resource.contents.get(0)
 		val proposals = proposals.listCallables(astRoot, emfEntity)
 		val result = ArrayList<ProcessMetadataDTO>();
