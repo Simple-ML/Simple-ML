@@ -30,10 +30,11 @@ import de.projektionisten.simpleml.web.dto.CreateEntityDTO
 import de.projektionisten.simpleml.web.dto.ParameterDTO
 import de.projektionisten.simpleml.web.dto.ProcessMetadataDTO
 import de.projektionisten.simpleml.web.dto.ProcessProposalsDTO
+import org.eclipse.xtext.web.server.persistence.IServerResourceHandler
+import java.lang.IllegalArgumentException
 
 
-
-@Singleton 
+@Singleton
 class EmfServiceDispatcher @Inject constructor(
 	private val serializer: ISerializer,
 	private val stdLibResourceSetProvider: SimpleMLResourceSetProvider,
@@ -47,29 +48,29 @@ class EmfServiceDispatcher @Inject constructor(
 	init {
 		val mapper = ObjectMapper()
 		val module = EMFModule()
-		
-			
+
+
 		module.typeInfo = EcoreTypeInfo("className",
 			object: ValueWriter<EClass, String> {
 				override fun writeValue(value: EClass, context: SerializerProvider): String {
 					return (value as EClassImpl).instanceClassName
 				}
 			}
-		)		
-		
+		)
+
 		mapper.registerModule(module)
 
 		val factory = JsonResourceFactory(mapper)
 		this.jsonMapper = factory.getMapper()
 	}
-	
+
 
 	protected override fun createServiceDescriptor(serviceType: String, context: IServiceContext): ServiceDescriptor {
 		return when (serviceType) {
-			"getEmfModel" -> 
+			"getEmfModel" ->
 				getEmfModel(context)
 			"getProcessMetadata" ->
-				getProcessMetadata(context)	
+				getProcessMetadata(context)
 			"getProcessProposals" ->
 				getProcessProposals(context)
 			"createEntity" ->
@@ -85,8 +86,8 @@ class EmfServiceDispatcher @Inject constructor(
 		}
 	}
 
-	
-	
+
+
 	protected fun getEmfModel(context: IServiceContext): ServiceDescriptor {
 		return context.createDefaultGetServiceResult("")
 	}
@@ -103,29 +104,42 @@ class EmfServiceDispatcher @Inject constructor(
 	}
 
 	protected fun getProcessProposals(context: IServiceContext): ServiceDescriptor {
-		val resourceDocument = getResourceDocument(super.getResourceID(context), context)
+		// getResourceDocument uses the FileResourceHandler, which already uses the SimpleMLResourceSetProvider internally
+		val resourceDocument = getResourceDocument(this.getResourceID(context), context)
+		if (resourceDocument == null) {
+			// TODO: handle error in a better way; should only happen when the server is restarted but the browser is not refreshed
+			throw IllegalArgumentException("Resource document not found")
+		}
+
 		val frontendId = context.getParameter("frontendId")
 		val emfPath = context.getParameter("entityPath")
-		var emfEntity: SmlResult? = null
-println(emfPath)
-		if(!emfPath.isNullOrEmpty()) {
-			emfEntity = resourceDocument.resource.getEObject(emfPath) as SmlResult?
+		println(emfPath)
+		val emfEntity = getEmfEntityByPath(resourceDocument, emfPath)
+		println(emfEntity)
 
-			if(emfEntity == null) {
-				val stdLibEntity = stdLibResourceSetProvider.get(emfPath, context).getEObject(URI.createURI(emfPath), true)
-				emfEntity = (stdLibEntity as SmlFunction).resultsOrEmpty()[0] as SmlResult?
-			}
+		if (emfEntity !is SmlDeclaration?) {
+			// TODO: handle error in a better way
+			throw IllegalArgumentException("EMF path must point to an SmlDeclaration")
 		}
-println(emfEntity)
-		val astRoot = resourceDocument.resource.contents.get(0)
+
+		val astRoot = resourceDocument.resource.contents[0]
 		val proposals = proposals.listCallables(astRoot, emfEntity)
-		val result = ArrayList<ProcessMetadataDTO>();
-
-		proposals.forEach {
-			result.add(getProcessMetadataFromURI(it.key.toString(), context))
-		}
+		val result = proposals.map { getProcessMetadataFromURI(it.key.toString(), context) }
 
 		return context.createDefaultPostServiceResult(jsonConverter.toJson(ProcessProposalsDTO(frontendId, emfPath, result)))
+	}
+
+	private fun getEmfEntityByPath(resourceDocument: XtextWebDocument, emfPath: String?): EObject? {
+		if (emfPath.isNullOrEmpty()) {
+			return null
+		}
+
+		val localEmfObject = resourceDocument.resource.getEObject(emfPath)
+		if (localEmfObject != null) {
+			return localEmfObject
+		}
+
+		return resourceDocument.resource.resourceSet.getEObject(URI.createURI(emfPath), false)
 	}
 
 	protected fun createEntity(context: IServiceContext): ServiceDescriptor {
@@ -159,10 +173,10 @@ println(emfEntity)
 			// create entity
 			call.receiver = reference
 			call.argumentList = argumentList
-			
+
 			placeholder.name = createEntityDTO.placeholderName
 			assigneeList.assignees.add(placeholder)
-			
+
 			assignment.expression = call
 			assignment.assigneeList = assigneeList
 
@@ -179,16 +193,16 @@ println(emfEntity)
 				astRoot.imports.add(import)
 			}
 		} else {
-			
+
 		}
 
 		return context.createDefaultPostServiceResult("")
 	}
-    
 
 
 
-	
+
+
 	private fun getProcessMetadataFromURI(uri: String, serviceContext: IServiceContext): ProcessMetadataDTO {
 		val resourceDocument = getResourceDocument(super.getResourceID(serviceContext), serviceContext)
         var entityName = ""
@@ -201,7 +215,7 @@ println(emfEntity)
             val resourceSet = stdLibResourceSetProvider.get(uri, serviceContext)
             entity = resourceSet.getEObject(URI.createURI(uri), true)
         }
-        
+
         if(entity !== null) {
             when (entity) {
                 is SmlFunction -> {
@@ -233,7 +247,7 @@ println(emfEntity)
 
 	protected fun XtextWebDocument.createErrorResult(text: String): ServiceDescriptor {
 		val serviceDescriptor = ServiceDescriptor()
-				
+
 		serviceDescriptor.setService(fun(): EmfServiceResult {
 				return EmfServiceResult(
 					"",
@@ -250,17 +264,17 @@ println(emfEntity)
 	protected fun IServiceContext.createDefaultGetServiceResult(data: String): ServiceDescriptor {
 		return this.createDefaultServiceResult(data, false)
 	}
-		
+
 	protected fun IServiceContext.createDefaultPostServiceResult(data: String): ServiceDescriptor {
 		return this.createDefaultServiceResult(data, true)
 	}
 
 	protected fun IServiceContext.createDefaultServiceResult(data: String, sideEffects: Boolean): ServiceDescriptor {
 		val resourceDocument = getResourceDocument(super.getResourceID(this), this)
-		
+
 		if(sideEffects) {
-			try {		
-				
+			try {
+
 				val astRoot = resourceDocument.resource.contents.get(0)
 				resourceDocument.text = serializer.serialize(astRoot)
 				getValidationService(this).service.apply()
@@ -270,7 +284,7 @@ println(emfEntity)
 		}
 		val emfModel = jsonMapper.writeValueAsString(resourceDocument.resource)
 		val serviceDescriptor = ServiceDescriptor()
-				
+
 		serviceDescriptor.setService(fun(): EmfServiceResult {
 				return EmfServiceResult(
 					resourceDocument.text,
