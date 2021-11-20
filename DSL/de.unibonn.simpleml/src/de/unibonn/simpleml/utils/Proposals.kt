@@ -92,9 +92,9 @@ class Proposals @Inject constructor(
                         }
 
                         // Check receiver for class methods
-                        val containingClassOrInterface =
+                        val containingClass =
                             obj.containingClassOrNull() ?: return@filterValues false
-                        return@filterValues typeConformance.isSubstitutableFor(declarationType, containingClassOrInterface)
+                        return@filterValues typeConformance.isSubstitutableFor(declarationType, containingClass)
                     }
                     is SmlWorkflowStep -> {
                         obj.parametersOrEmpty().any {
