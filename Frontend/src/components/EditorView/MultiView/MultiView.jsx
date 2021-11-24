@@ -88,7 +88,7 @@ class MultiView extends React.Component {
                         freeSolo
                         id="free-solo-2-demo"
                         disableClearable
-                        options={['Traffic and Geo', 'Weather']}
+                        options={['SpeedAverages']}
                         renderInput={(params) => (
                             <TextField
                             style= {{backgroundColor: 'white'}}
@@ -107,35 +107,66 @@ class MultiView extends React.Component {
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                        <Typography>Traffic and Geo</Typography>
+                        <Typography>SpeedAverages</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography>
-                                ADAC NRW und OSM
+                                Straßensegment (OpenStreetMap-ID)
                             </Typography>
                         </AccordionDetails>
                         <AccordionDetails>
                             <Typography>    
-                                ADAC Niedersachsen und OSM
-                            </Typography>
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                        >
-                        <Typography>Weather</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Typography>
-                                Wetter
+                                Ortstyp (Bezeichnung)
                             </Typography>
                         </AccordionDetails>
                         <AccordionDetails>
-                            <Typography>
-                                DWD.de
+                            <Typography>    
+                                Geschwindigkeitsbegrenzung (hat Geschwindigkeit)
+                            </Typography>
+                        </AccordionDetails>
+                        <AccordionDetails>
+                            <Typography>    
+                                Zeit (Zeit)
+                            </Typography>
+                        </AccordionDetails>
+                        <AccordionDetails>
+                            <Typography>    
+                                Zeit (Zeit)
+                            </Typography>
+                        </AccordionDetails>
+                        <AccordionDetails>
+                            <Typography>    
+                                Verkehrsfluss (Anzahl von Aufzeichnungen)
+                            </Typography>
+                        </AccordionDetails>
+                        <AccordionDetails>
+                            <Typography>    
+                                Verkehrsfluss (Fahrzeuganzahl)
+                            </Typography>
+                        </AccordionDetails>
+                        <AccordionDetails>
+                            <Typography>    
+                                Verkehrsfluss (Durchschnittsgeschwindigkeit)
+                            </Typography>
+                        </AccordionDetails>
+                        <AccordionDetails>
+                            <Typography>    
+                                Wetteraufzeichnung (Saison)
+                            </Typography>
+                        </AccordionDetails>
+                        <AccordionDetails>
+                            <Typography>    
+                                Wetteraufzeichnung (Tageslicht)
+                            </Typography>
+                        </AccordionDetails>
+                        <AccordionDetails>
+                            <Typography>    
+                                Zeit (am Wochenende)
+                            </Typography>
+                        </AccordionDetails>
+                        <AccordionDetails>
+                            <Typography>    
+                                Straßensegment (im Well-known-Binary-(WKB)-Format)
                             </Typography>
                         </AccordionDetails>
                     </Accordion>
