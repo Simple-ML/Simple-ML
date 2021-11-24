@@ -7,7 +7,12 @@ import de.unibonn.simpleml.tests.util.ParseWithStdlib
 import de.unibonn.simpleml.tests.util.getResourcePath
 import de.unibonn.simpleml.typing.Type
 import de.unibonn.simpleml.typing.TypeComputer
-import de.unibonn.simpleml.utils.*
+import de.unibonn.simpleml.utils.LIB_ANY
+import de.unibonn.simpleml.utils.LIB_BOOLEAN
+import de.unibonn.simpleml.utils.LIB_FLOAT
+import de.unibonn.simpleml.utils.LIB_INT
+import de.unibonn.simpleml.utils.LIB_STRING
+import de.unibonn.simpleml.utils.assignedOrNull
 import io.kotest.matchers.shouldBe
 import org.eclipse.emf.ecore.EObject
 import org.junit.jupiter.api.Nested
@@ -78,11 +83,11 @@ class TypeComputerTest {
         fun `arithmetic operations with only Int operands should have type Int`() {
             withCompilationUnitFromFile("expressions/operations/arithmetic.simpleml") {
                 listOf(
-                        "additionIntInt",
-                        "subtractionIntInt",
-                        "multiplicationIntInt",
-                        "divisionIntInt",
-                        "negationInt"
+                    "additionIntInt",
+                    "subtractionIntInt",
+                    "multiplicationIntInt",
+                    "divisionIntInt",
+                    "negationInt"
                 ).forEach {
                     placeholderWithName(it).assignedValueOrFail() shouldHaveType INT
                 }
@@ -93,16 +98,16 @@ class TypeComputerTest {
         fun `arithmetic operations without only Int operands should have type Float`() {
             withCompilationUnitFromFile("expressions/operations/arithmetic.simpleml") {
                 listOf(
-                        "additionIntFloat",
-                        "subtractionIntFloat",
-                        "multiplicationIntFloat",
-                        "divisionIntFloat",
-                        "negationFloat",
-                        "additionInvalid",
-                        "subtractionInvalid",
-                        "multiplicationInvalid",
-                        "divisionInvalid",
-                        "negationInvalid"
+                    "additionIntFloat",
+                    "subtractionIntFloat",
+                    "multiplicationIntFloat",
+                    "divisionIntFloat",
+                    "negationFloat",
+                    "additionInvalid",
+                    "subtractionInvalid",
+                    "multiplicationInvalid",
+                    "divisionInvalid",
+                    "negationInvalid"
                 ).forEach {
                     placeholderWithName(it).assignedValueOrFail() shouldHaveType FLOAT
                 }
@@ -113,14 +118,14 @@ class TypeComputerTest {
         fun `comparison operations should have type Boolean`() {
             withCompilationUnitFromFile("expressions/operations/comparison.simpleml") {
                 listOf(
-                        "lessThan",
-                        "lessThanOrEquals",
-                        "greaterThanOrEquals",
-                        "greaterThan",
-                        "lessThanInvalid",
-                        "lessThanOrEqualsInvalid",
-                        "greaterThanOrEqualsInvalid",
-                        "greaterThanInvalid"
+                    "lessThan",
+                    "lessThanOrEquals",
+                    "greaterThanOrEquals",
+                    "greaterThan",
+                    "lessThanInvalid",
+                    "lessThanOrEqualsInvalid",
+                    "greaterThanOrEqualsInvalid",
+                    "greaterThanInvalid"
                 ).forEach {
                     placeholderWithName(it).assignedValueOrFail() shouldHaveType BOOLEAN
                 }
@@ -149,12 +154,12 @@ class TypeComputerTest {
         fun `logical operations should have type Boolean`() {
             withCompilationUnitFromFile("expressions/operations/logical.simpleml") {
                 listOf(
-                        "conjunction",
-                        "disjunction",
-                        "negation",
-                        "conjunctionInvalid",
-                        "disjunctionInvalid",
-                        "negationInvalid"
+                    "conjunction",
+                    "disjunction",
+                    "negation",
+                    "conjunctionInvalid",
+                    "disjunctionInvalid",
+                    "negationInvalid"
                 ).forEach {
                     placeholderWithName(it).assignedValueOrFail() shouldHaveType BOOLEAN
                 }
@@ -173,14 +178,14 @@ class TypeComputerTest {
 
     private fun SmlPlaceholder.assignedValueOrFail(): EObject {
         return this.assignedOrNull()
-                ?: throw IllegalArgumentException("No value is assigned to placeholder with name '$name'.")
+            ?: throw IllegalArgumentException("No value is assigned to placeholder with name '$name'.")
     }
 
     private fun SmlCompilationUnit.placeholderWithName(name: String): SmlPlaceholder {
         val candidates = this.eAllContents().asSequence()
-                .filterIsInstance<SmlPlaceholder>()
-                .filter { it.name == name }
-                .toList()
+            .filterIsInstance<SmlPlaceholder>()
+            .filter { it.name == name }
+            .toList()
 
         when (candidates.size) {
             1 -> return candidates.first()
@@ -191,7 +196,7 @@ class TypeComputerTest {
     private fun withCompilationUnitFromFile(file: String, lambda: SmlCompilationUnit.() -> Unit) {
         val program = Files.readString(Path.of(testRoot, file))
         val compilationUnit = parseWithStdlib.parse(program)
-                ?: throw IllegalArgumentException("File is not a compilation unit.")
+            ?: throw IllegalArgumentException("File is not a compilation unit.")
         compilationUnit.apply(lambda)
     }
 

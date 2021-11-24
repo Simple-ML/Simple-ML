@@ -1,8 +1,15 @@
 package de.unibonn.simpleml.validation.expressions
 
-import de.unibonn.simpleml.simpleML.*
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
-import de.unibonn.simpleml.utils.*
+import de.unibonn.simpleml.simpleML.SmlAssignment
+import de.unibonn.simpleml.simpleML.SmlCall
+import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlExpressionStatement
+import de.unibonn.simpleml.simpleML.SmlMemberAccess
+import de.unibonn.simpleml.utils.CallableResult
+import de.unibonn.simpleml.utils.isRecursive
+import de.unibonn.simpleml.utils.maybeCallable
+import de.unibonn.simpleml.utils.resultsOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import org.eclipse.xtext.validation.Check
 
@@ -28,17 +35,17 @@ class CallChecker : AbstractSimpleMLChecker() {
 
         if (results.isEmpty() && !smlCall.hasValidContextForCallWithoutResults()) {
             error(
-                    "A call that produces no results is not allowed in this context.",
-                    source,
-                    feature,
-                    CONTEXT_OF_CALL_WITHOUT_RESULTS
+                "A call that produces no results is not allowed in this context.",
+                source,
+                feature,
+                CONTEXT_OF_CALL_WITHOUT_RESULTS
             )
         } else if (results.size > 1 && !smlCall.hasValidContextForCallWithMultipleResults()) {
             error(
-                    "A call that produces multiple results is not allowed in this context.",
-                    source,
-                    feature,
-                    CONTEXT_OF_CALL_WITH_MANY_RESULTS
+                "A call that produces multiple results is not allowed in this context.",
+                source,
+                feature,
+                CONTEXT_OF_CALL_WITH_MANY_RESULTS
             )
         }
     }
@@ -69,18 +76,18 @@ class CallChecker : AbstractSimpleMLChecker() {
         when (val maybeCallable = smlCall.maybeCallable()) {
             CallableResult.NotCallable -> {
                 error(
-                        "This expression must not be called.",
-                        Literals.SML_CHAINED_EXPRESSION__RECEIVER,
-                        RECEIVER_MUST_BE_CALLABLE
+                    "This expression must not be called.",
+                    Literals.SML_CHAINED_EXPRESSION__RECEIVER,
+                    RECEIVER_MUST_BE_CALLABLE
                 )
             }
             is CallableResult.Callable -> {
                 val callable = maybeCallable.callable
                 if (callable is SmlClass && callable.constructor == null) {
                     error(
-                            "Cannot create an instance of a class that has no constructor.",
-                            Literals.SML_CHAINED_EXPRESSION__RECEIVER,
-                            CALLED_CLASS_MUST_HAVE_CONSTRUCTOR
+                        "Cannot create an instance of a class that has no constructor.",
+                        Literals.SML_CHAINED_EXPRESSION__RECEIVER,
+                        CALLED_CLASS_MUST_HAVE_CONSTRUCTOR
                     )
                 }
             }
