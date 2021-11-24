@@ -69,7 +69,7 @@ inline fun <reified T : ExpressionT> PlFactbase.shouldBeChildExpressionOf(childI
     }
 }
 
-inline fun <reified T: ExpressionT> PlFactbase.shouldBeNChildExpressionsOf(
+inline fun <reified T : ExpressionT> PlFactbase.shouldBeNChildExpressionsOf(
     childIds: List<Id<SmlExpression>>?,
     parent: Node,
     n: Int

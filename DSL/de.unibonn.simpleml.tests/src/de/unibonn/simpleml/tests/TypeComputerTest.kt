@@ -25,7 +25,6 @@ class TypeComputerTest {
     private val parseWithStdlib: ParseWithStdlib
     private val typeComputer: TypeComputer
 
-
     init {
         SimpleMLStandaloneSetup().createInjectorAndDoEMFRegistration().apply {
             parseWithStdlib = getInstance(ParseWithStdlib::class.java)
@@ -72,7 +71,6 @@ class TypeComputerTest {
             }
         }
     }
-
 
     // Operations ------------------------------------------------------------------------------------------------------
 
@@ -166,7 +164,6 @@ class TypeComputerTest {
             }
         }
     }
-
 
     // *****************************************************************************************************************
     // Helpers

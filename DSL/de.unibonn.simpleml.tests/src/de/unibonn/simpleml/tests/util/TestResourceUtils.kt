@@ -17,36 +17,38 @@ fun ClassLoader.getResourcePath(fileOrFolder: String): Path? {
 }
 
 fun Path.createDynamicTestsFromResourceFolder(
-        validator: (program: String) -> String?,
-        categorizedTestCreator: (resourcePath: Path, filePath: Path, program: String) -> Sequence<CategorizedTest>
+    validator: (program: String) -> String?,
+    categorizedTestCreator: (resourcePath: Path, filePath: Path, program: String) -> Sequence<CategorizedTest>
 ): Stream<out DynamicNode> {
     return Files.walk(this)
-            .asSequence()
-            .filter(::isTestFile)
-            .flatMap { filePath -> createDynamicTestFromResource(this, filePath, validator, categorizedTestCreator) }
-            .groupBy { it.category }
-            .map { (category, tests) ->
-                DynamicContainer.dynamicContainer(category, tests.map { it.test })
-            }
-            .stream()
+        .asSequence()
+        .filter(::isTestFile)
+        .flatMap { filePath -> createDynamicTestFromResource(this, filePath, validator, categorizedTestCreator) }
+        .groupBy { it.category }
+        .map { (category, tests) ->
+            DynamicContainer.dynamicContainer(category, tests.map { it.test })
+        }
+        .stream()
 }
 
 private fun createDynamicTestFromResource(
-        resourcePath: Path,
-        filePath: Path,
-        validator: (program: String) -> String?,
-        categorizedTestCreator: (resourcePath: Path, filePath: Path, program: String) -> Sequence<CategorizedTest>
+    resourcePath: Path,
+    filePath: Path,
+    validator: (program: String) -> String?,
+    categorizedTestCreator: (resourcePath: Path, filePath: Path, program: String) -> Sequence<CategorizedTest>
 ) = sequence {
     val program = Files.readString(filePath)
 
     val testFileError = validator(program)
     if (testFileError != null) {
-        yield(CategorizedTest(
+        yield(
+            CategorizedTest(
                 "### BAD TEST FILE ###",
                 DynamicTest.dynamicTest(testDisplayName(resourcePath, filePath), filePath.toUri()) {
                     throw IllegalArgumentException(testFileError)
                 }
-        ))
+            )
+        )
     } else {
         yieldAll(categorizedTestCreator(resourcePath, filePath, program))
     }
@@ -54,8 +56,8 @@ private fun createDynamicTestFromResource(
 
 private fun isTestFile(filePath: Path): Boolean {
     return Files.isRegularFile(filePath) &&
-            filePath.fileName.toString().endsWith(".simpleml") &&
-            !filePath.fileName.toString().startsWith("_skip_")
+        filePath.fileName.toString().endsWith(".simpleml") &&
+        !filePath.fileName.toString().startsWith("_skip_")
 }
 
 fun testDisplayName(resourcePath: Path, filePath: Path, message: String = "") = buildString {

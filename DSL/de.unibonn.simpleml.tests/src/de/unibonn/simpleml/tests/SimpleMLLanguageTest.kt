@@ -59,7 +59,6 @@ class SimpleMLLanguageTest {
     @Inject
     lateinit var validationHelper: ValidationTestHelper
 
-
     @TestFactory
     fun `should parse and validate`(): Stream<out DynamicNode> {
         return javaClass.classLoader
@@ -106,12 +105,14 @@ class SimpleMLLanguageTest {
             .groupBy { it.severity to it.message }
             .keys
             .forEach { (severity, message) ->
-                yield(CategorizedTest(
-                    severity,
-                    dynamicTest(testDisplayName(resourcePath, filePath, message), filePath.toUri()) {
-                        parsingTest(program, filePath, severity, message)
-                    }
-                ))
+                yield(
+                    CategorizedTest(
+                        severity,
+                        dynamicTest(testDisplayName(resourcePath, filePath, message), filePath.toUri()) {
+                            parsingTest(program, filePath, severity, message)
+                        }
+                    )
+                )
             }
     }
 
