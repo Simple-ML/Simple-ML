@@ -136,6 +136,28 @@ fun SmlCall.maybeCallable(): CallableResult {
     return CallableResult.Unresolvable
 }
 
+fun SmlCall.isRecursive(): Boolean {
+    val containingWorkflowStep = this.containingWorkflowStepOrNull() ?: return false
+    val containingLambda = this.containingLambdaOrNull()
+
+    val origin = mutableSetOf<EObject>(containingWorkflowStep)
+    if (containingLambda != null) {
+        origin.add(containingLambda)
+    }
+
+    return this.isRecursive(origin, emptySet())
+}
+
+private fun SmlCall.isRecursive(origin: Set<EObject>, visited: Set<EObject>): Boolean {
+    return when (val callable = this.callableOrNull()) {
+        is SmlWorkflowStep -> callable in origin || callable !in visited && callable.descendants<SmlCall>()
+            .any { it.isRecursive(origin, visited + callable) }
+        is SmlLambda -> callable in origin || callable !in visited && callable.descendants<SmlCall>()
+            .any { it.isRecursive(origin, visited + callable) }
+        else -> false
+    }
+}
+
 fun SmlCall.parametersOrNull(): List<SmlParameter>? {
     return when (val callable = this.callableOrNull()) {
         is SmlClass -> callable.parametersOrEmpty()
@@ -285,7 +307,6 @@ fun EObject?.isCallable() =
 
 fun EObject.isInStubFile() = this.eResource().isStubFile()
 
-
 // Enum ----------------------------------------------------------------------------------------------------------------
 
 fun SmlEnum?.instancesOrEmpty() = this?.body?.instances.orEmpty()
@@ -295,8 +316,14 @@ fun SmlEnum?.instancesOrEmpty() = this?.body?.instances.orEmpty()
 
 fun SmlExpression.hasSideEffects(): Boolean {
     if (this is SmlCall) {
+        if (this.isRecursive()) {
+            return true
+        }
+
         val callable = this.callableOrNull()
-        return callable is SmlFunction && !callable.isPure() || callable is SmlWorkflowStep && !callable.isPure()
+        return callable is SmlFunction && !callable.isPure() ||
+                callable is SmlWorkflowStep && !callable.isInferredPure() ||
+                callable is SmlLambda && !callable.isInferredPure()
     }
 
     return false
@@ -342,6 +369,8 @@ fun SmlLambda?.placeholdersOrEmpty(): List<SmlPlaceholder> {
 
 fun SmlLambda?.statementsOrEmpty() = this?.body?.statements.orEmpty()
 
+fun SmlLambda.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }
+
 
 // Named Type ----------------------------------------------------------------------------------------------------------
 
@@ -353,24 +382,17 @@ fun SmlNamedType?.typeArgumentsOrEmpty() = this?.typeArgumentList?.typeArguments
 fun SmlParameter.isRequired() = this.defaultValue == null
 fun SmlParameter.isOptional() = this.defaultValue != null
 
-fun SmlParameter.usesIn(obj: EObject) =
-    obj.eAllContents()
-        .asSequence()
-        .filter { it is SmlReference && it.declaration == this }
+fun SmlParameter.usesIn(obj: EObject) = obj.descendants<SmlReference>().filter { it.declaration == this }
 
 
 // Placeholder ---------------------------------------------------------------------------------------------------------
 
 fun SmlPlaceholder.usesIn(obj: EObject): Sequence<SmlReference> {
-    return obj.eAllContents()
-        .asSequence()
-        .filterIsInstance<SmlStatement>()
+    return obj.descendants<SmlStatement>()
         .dropWhile { it !is SmlAssignment || this !in it.placeholdersOrEmpty() }
         .drop(1)
         .flatMap { statement ->
-            statement.eAllContents()
-                .asSequence()
-                .filterIsInstance<SmlReference>()
+            statement.descendants<SmlReference>()
                 .filter { it.declaration == this }
         }
 }
@@ -492,3 +514,5 @@ fun SmlWorkflowStep?.placeholdersOrEmpty(): List<SmlPlaceholder> {
 
 fun SmlWorkflowStep?.resultsOrEmpty() = this?.resultList?.results.orEmpty()
 fun SmlWorkflowStep?.statementsOrEmpty() = this?.body?.statements.orEmpty()
+
+fun SmlWorkflowStep.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }

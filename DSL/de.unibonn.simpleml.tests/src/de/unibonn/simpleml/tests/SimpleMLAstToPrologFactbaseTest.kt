@@ -73,8 +73,8 @@ import org.junit.jupiter.api.Test
 
 /**
  * ## Testing procedure for a fact:
- * - Checks its own primitive arguments
- * - Checks size of lists of children
+ * - Check its own primitive arguments
+ * - Check size of lists of children
  * - Ensure IDs of children are correct
  */
 class SimpleMLAstToPrologFactbaseTest {

@@ -8,6 +8,7 @@ import org.eclipse.xtext.validation.Check
 
 const val CONTEXT_OF_CALL_WITHOUT_RESULTS = "CONTEXT_OF_CALL_WITHOUT_RESULTS"
 const val CONTEXT_OF_CALL_WITH_MANY_RESULTS = "CONTEXT_OF_CALL_WITH_MANY_RESULTS"
+const val NO_RECURSION = "NO_RECURSION"
 const val RECEIVER_MUST_BE_CALLABLE = "RECEIVER_MUST_BE_CALLABLE"
 const val CALLED_CLASS_MUST_HAVE_CONSTRUCTOR = "CALLED_CLASS_MUST_HAVE_CONSTRUCTOR"
 
@@ -50,6 +51,17 @@ class CallChecker : AbstractSimpleMLChecker() {
     private fun SmlCall.hasValidContextForCallWithMultipleResults(): Boolean {
         val context = this.eContainer()
         return context is SmlAssignment || context is SmlExpressionStatement || context is SmlMemberAccess
+    }
+
+    @Check
+    fun recursion(smlCall: SmlCall) {
+        if (smlCall.isRecursive()) {
+            error(
+                "Recursive calls are not allowed.",
+                Literals.SML_CHAINED_EXPRESSION__RECEIVER,
+                NO_RECURSION
+            )
+        }
     }
 
     @Check
