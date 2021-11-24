@@ -3,8 +3,8 @@ package de.unibonn.simpleml.tests
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
-import de.unibonn.simpleml.util.ParseWithStdlib
-import de.unibonn.simpleml.util.getResourcePath
+import de.unibonn.simpleml.tests.util.ParseWithStdlib
+import de.unibonn.simpleml.tests.util.getResourcePath
 import de.unibonn.simpleml.typing.Type
 import de.unibonn.simpleml.typing.TypeComputer
 import de.unibonn.simpleml.utils.*

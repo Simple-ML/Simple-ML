@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.util
+package de.unibonn.simpleml.tests.util
 
 import org.eclipse.core.runtime.FileLocator
 import org.junit.jupiter.api.DynamicContainer

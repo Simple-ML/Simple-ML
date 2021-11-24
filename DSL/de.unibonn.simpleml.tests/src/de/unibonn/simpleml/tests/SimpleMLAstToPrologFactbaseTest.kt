@@ -1,14 +1,14 @@
 package de.unibonn.simpleml.tests
 
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
-import de.unibonn.simpleml.assertions.findUniqueFactOrFail
-import de.unibonn.simpleml.assertions.shouldBeChildExpressionOf
-import de.unibonn.simpleml.assertions.shouldBeChildOf
-import de.unibonn.simpleml.assertions.shouldBeCloseTo
-import de.unibonn.simpleml.assertions.shouldBeNChildExpressionsOf
-import de.unibonn.simpleml.assertions.shouldBeNChildrenOf
-import de.unibonn.simpleml.assertions.shouldHaveNAnnotationUses
-import de.unibonn.simpleml.assertions.shouldHaveNModifiers
+import de.unibonn.simpleml.tests.assertions.findUniqueFactOrFail
+import de.unibonn.simpleml.tests.assertions.shouldBeChildExpressionOf
+import de.unibonn.simpleml.tests.assertions.shouldBeChildOf
+import de.unibonn.simpleml.tests.assertions.shouldBeCloseTo
+import de.unibonn.simpleml.tests.assertions.shouldBeNChildExpressionsOf
+import de.unibonn.simpleml.tests.assertions.shouldBeNChildrenOf
+import de.unibonn.simpleml.tests.assertions.shouldHaveNAnnotationUses
+import de.unibonn.simpleml.tests.assertions.shouldHaveNModifiers
 import de.unibonn.simpleml.prolog_bridge.Main
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
@@ -61,7 +61,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.WildcardT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowStepT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowT
 import de.unibonn.simpleml.prolog_bridge.model.facts.YieldT
-import de.unibonn.simpleml.util.getResourcePath
+import de.unibonn.simpleml.tests.util.getResourcePath
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldBeOneOf
