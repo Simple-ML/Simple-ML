@@ -13,17 +13,12 @@ env:
   APPLY_FIXES_MODE: commit
   FILTER_REGEX_EXCLUDE: (\.github/workflows/)
 
-jobs:
-  # Cancel duplicate jobs: https://github.com/fkirc/skip-duplicate-actions#option-3-cancellation-only
-  cancel_duplicates:
-    name: Cancel duplicate jobs
-    runs-on: ubuntu-latest
-    steps:
-      - uses: fkirc/skip-duplicate-actions@master
-        with:
-          cancel_others: true
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
 
-  build:
+jobs:
+  lint:
     name: Mega-Linter
     runs-on: ubuntu-latest
     steps:
