@@ -15,6 +15,7 @@ import TextField from '@material-ui/core/TextField';
 // React.Components
 import GoldenLayoutComponent from './../../../helper/goldenLayoutServices/goldenLayoutComponent';
 import SideToolbar from './SideToolbar/SideToolbar';
+import Sidebar from './Sidebar/Sidebar'
 
 // Styles
 import './multiView.scss';
@@ -79,98 +80,7 @@ class MultiView extends React.Component {
                         })
                     }}
                 />
-                <div style= {{backgroundColor: 'white'}}>
-                    <header style= {{backgroundColor: 'white'}}>
-                        <h1>Select data set</h1>
-                        <p>Please select a data set</p>
-                    </header> 
-                    <Autocomplete
-                        freeSolo
-                        id="free-solo-2-demo"
-                        disableClearable
-                        options={['SpeedAverages']}
-                        renderInput={(params) => (
-                            <TextField
-                            style= {{backgroundColor: 'white'}}
-                                {...params}
-                                label="Search input"
-                                InputProps={{
-                                ...params.InputProps,
-                                type: 'search',
-                                }}
-                            />
-                        )}
-                    />
-                    <Accordion>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                        >
-                        <Typography>SpeedAverages</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Typography>
-                                Straßensegment (OpenStreetMap-ID)
-                            </Typography>
-                        </AccordionDetails>
-                        <AccordionDetails>
-                            <Typography>    
-                                Ortstyp (Bezeichnung)
-                            </Typography>
-                        </AccordionDetails>
-                        <AccordionDetails>
-                            <Typography>    
-                                Geschwindigkeitsbegrenzung (hat Geschwindigkeit)
-                            </Typography>
-                        </AccordionDetails>
-                        <AccordionDetails>
-                            <Typography>    
-                                Zeit (Zeit)
-                            </Typography>
-                        </AccordionDetails>
-                        <AccordionDetails>
-                            <Typography>    
-                                Zeit (Zeit)
-                            </Typography>
-                        </AccordionDetails>
-                        <AccordionDetails>
-                            <Typography>    
-                                Verkehrsfluss (Anzahl von Aufzeichnungen)
-                            </Typography>
-                        </AccordionDetails>
-                        <AccordionDetails>
-                            <Typography>    
-                                Verkehrsfluss (Fahrzeuganzahl)
-                            </Typography>
-                        </AccordionDetails>
-                        <AccordionDetails>
-                            <Typography>    
-                                Verkehrsfluss (Durchschnittsgeschwindigkeit)
-                            </Typography>
-                        </AccordionDetails>
-                        <AccordionDetails>
-                            <Typography>    
-                                Wetteraufzeichnung (Saison)
-                            </Typography>
-                        </AccordionDetails>
-                        <AccordionDetails>
-                            <Typography>    
-                                Wetteraufzeichnung (Tageslicht)
-                            </Typography>
-                        </AccordionDetails>
-                        <AccordionDetails>
-                            <Typography>    
-                                Zeit (am Wochenende)
-                            </Typography>
-                        </AccordionDetails>
-                        <AccordionDetails>
-                            <Typography>    
-                                Straßensegment (im Well-known-Binary-(WKB)-Format)
-                            </Typography>
-                        </AccordionDetails>
-                    </Accordion>
-                </div>
+                <Sidebar/>
             </div>
         )
     }
