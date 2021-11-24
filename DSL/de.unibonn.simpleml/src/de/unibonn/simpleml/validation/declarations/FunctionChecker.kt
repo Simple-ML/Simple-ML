@@ -2,10 +2,7 @@ package de.unibonn.simpleml.validation.declarations
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
-import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.simpleML.SmlMemberAccess
-import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.utils.*
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import org.eclipse.xtext.validation.Check
