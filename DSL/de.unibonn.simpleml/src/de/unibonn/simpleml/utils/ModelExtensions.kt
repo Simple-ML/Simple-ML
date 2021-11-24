@@ -43,11 +43,9 @@ import org.eclipse.emf.ecore.resource.Resource
 
 fun SmlAnnotation?.parametersOrEmpty() = this?.parameterList?.parameters.orEmpty()
 
-
 // Annotation Use ------------------------------------------------------------------------------------------------------
 
 fun SmlAnnotationUse?.argumentsOrEmpty() = this?.argumentList?.arguments.orEmpty()
-
 
 // Argument ------------------------------------------------------------------------------------------------------------
 
@@ -71,7 +69,6 @@ fun SmlArgument.parameterOrNull(): SmlParameter? {
     }
 }
 
-
 // ArgumentList --------------------------------------------------------------------------------------------------------
 
 fun SmlArgumentList.parametersOrNull(): List<SmlParameter>? {
@@ -82,7 +79,6 @@ fun SmlArgumentList.parametersOrNull(): List<SmlParameter>? {
 
     return emptyList()
 }
-
 
 // Call ----------------------------------------------------------------------------------------------------------------
 
@@ -136,6 +132,28 @@ fun SmlCall.maybeCallable(): CallableResult {
     return CallableResult.Unresolvable
 }
 
+fun SmlCall.isRecursive(): Boolean {
+    val containingWorkflowStep = this.containingWorkflowStepOrNull() ?: return false
+    val containingLambda = this.containingLambdaOrNull()
+
+    val origin = mutableSetOf<EObject>(containingWorkflowStep)
+    if (containingLambda != null) {
+        origin.add(containingLambda)
+    }
+
+    return this.isRecursive(origin, emptySet())
+}
+
+private fun SmlCall.isRecursive(origin: Set<EObject>, visited: Set<EObject>): Boolean {
+    return when (val callable = this.callableOrNull()) {
+        is SmlWorkflowStep -> callable in origin || callable !in visited && callable.descendants<SmlCall>()
+            .any { it.isRecursive(origin, visited + callable) }
+        is SmlLambda -> callable in origin || callable !in visited && callable.descendants<SmlCall>()
+            .any { it.isRecursive(origin, visited + callable) }
+        else -> false
+    }
+}
+
 fun SmlCall.parametersOrNull(): List<SmlParameter>? {
     return when (val callable = this.callableOrNull()) {
         is SmlClass -> callable.parametersOrEmpty()
@@ -161,9 +179,7 @@ fun SmlCall.resultsOrNull(): List<SmlDeclaration>? {
 fun SmlCall?.argumentsOrEmpty() = this?.argumentList?.arguments.orEmpty()
 fun SmlCall?.typeArgumentsOrEmpty() = this?.typeArgumentList?.typeArguments.orEmpty()
 
-
 // ClassOrInterface ----------------------------------------------------------------------------------------------------
-
 
 fun SmlClassOrInterface?.membersOrEmpty() = this?.body?.members.orEmpty()
 
@@ -187,11 +203,9 @@ fun SmlClassOrInterface?.parentClassOrNull(): SmlClass? {
 fun SmlClassOrInterface?.parentInterfacesOrEmpty() =
     this.parentTypesOrEmpty().mapNotNull { it.resolveToInterfaceOrNull() }
 
-
 // Compilation Unit ----------------------------------------------------------------------------------------------------
 
 fun SmlCompilationUnit?.membersOrEmpty() = this?.members.orEmpty()
-
 
 // Declaration ---------------------------------------------------------------------------------------------------------
 
@@ -204,7 +218,7 @@ fun SmlDeclaration.isOverride() = SML_OVERRIDE in this.modifiers
 fun SmlDeclaration.isPure() = SML_PURE in this.modifiers
 fun SmlDeclaration.isStatic(): Boolean {
     return SML_STATIC in this.modifiers || !this.isCompilationUnitMember() &&
-            (this is SmlClass || this is SmlEnum || this is SmlInterface)
+        (this is SmlClass || this is SmlEnum || this is SmlInterface)
 }
 
 fun SmlDeclaration.isClassOrInterfaceMember() = this.containingClassOrInterfaceOrNull() != null
@@ -212,15 +226,16 @@ fun SmlDeclaration.isClassMember() = this.containingClassOrInterfaceOrNull() is 
 fun SmlDeclaration.isInterfaceMember() = this.containingClassOrInterfaceOrNull() is SmlInterface
 fun SmlDeclaration.isCompilationUnitMember(): Boolean {
     return !isClassOrInterfaceMember() &&
-            (this is SmlAnnotation
-                    || this is SmlClass
-                    || this is SmlEnum
-                    || this is SmlFunction
-                    || this is SmlInterface
-                    || this is SmlWorkflow
-                    || this is SmlWorkflowStep)
+        (
+            this is SmlAnnotation ||
+                this is SmlClass ||
+                this is SmlEnum ||
+                this is SmlFunction ||
+                this is SmlInterface ||
+                this is SmlWorkflow ||
+                this is SmlWorkflowStep
+            )
 }
-
 
 // Assignment ----------------------------------------------------------------------------------------------------------
 
@@ -228,7 +243,6 @@ fun SmlAssignment.assigneesOrEmpty() = this.assigneeList?.assignees.orEmpty()
 fun SmlAssignment.lambdaYieldsOrEmpty() = this.assigneesOrEmpty().filterIsInstance<SmlLambdaYield>()
 fun SmlAssignment.placeholdersOrEmpty() = this.assigneesOrEmpty().filterIsInstance<SmlPlaceholder>()
 fun SmlAssignment.yieldsOrEmpty() = this.assigneesOrEmpty().filterIsInstance<SmlYield>()
-
 
 // Assignee ------------------------------------------------------------------------------------------------------------
 
@@ -263,7 +277,6 @@ fun SmlAssignee.maybeAssigned(): AssignedResult {
     }
 }
 
-
 // EObject -------------------------------------------------------------------------------------------------------------
 
 fun EObject?.containingClassOrInterfaceOrNull() = this?.closestAncestorOrNull<SmlClassOrInterface>()
@@ -278,30 +291,33 @@ fun EObject?.containingWorkflowStepOrNull() = this?.closestAncestorOrNull<SmlWor
 
 fun EObject?.isCallable() =
     this is SmlClass ||
-            this is SmlFunction ||
-            this is SmlCallableType ||
-            this is SmlLambda ||
-            this is SmlWorkflowStep
+        this is SmlFunction ||
+        this is SmlCallableType ||
+        this is SmlLambda ||
+        this is SmlWorkflowStep
 
 fun EObject.isInStubFile() = this.eResource().isStubFile()
-
 
 // Enum ----------------------------------------------------------------------------------------------------------------
 
 fun SmlEnum?.instancesOrEmpty() = this?.body?.instances.orEmpty()
 
-
 // Expression ----------------------------------------------------------------------------------------------------------
 
 fun SmlExpression.hasSideEffects(): Boolean {
     if (this is SmlCall) {
+        if (this.isRecursive()) {
+            return true
+        }
+
         val callable = this.callableOrNull()
-        return callable is SmlFunction && !callable.isPure() || callable is SmlWorkflowStep && !callable.isPure()
+        return callable is SmlFunction && !callable.isPure() ||
+            callable is SmlWorkflowStep && !callable.isInferredPure() ||
+            callable is SmlLambda && !callable.isInferredPure()
     }
 
     return false
 }
-
 
 // Function ------------------------------------------------------------------------------------------------------------
 
@@ -312,17 +328,14 @@ fun SmlFunction?.resultsOrEmpty() = this?.resultList?.results.orEmpty()
 fun SmlFunction?.typeParametersOrEmpty() = this?.typeParameterList?.typeParameters.orEmpty()
 fun SmlFunction?.typeParameterConstraintsOrEmpty() = this?.typeParameterConstraintList?.constraints.orEmpty()
 
-
 // Function Type -------------------------------------------------------------------------------------------------------
 
 fun SmlCallableType?.parametersOrEmpty() = this?.parameterList?.parameters.orEmpty()
 fun SmlCallableType?.resultsOrEmpty() = this?.resultList?.results.orEmpty()
 
-
 // Import --------------------------------------------------------------------------------------------------------------
 
 fun SmlImport.isQualified() = !this.importedNamespace.endsWith(".*")
-
 
 // Lambda --------------------------------------------------------------------------------------------------------------
 
@@ -342,39 +355,30 @@ fun SmlLambda?.placeholdersOrEmpty(): List<SmlPlaceholder> {
 
 fun SmlLambda?.statementsOrEmpty() = this?.body?.statements.orEmpty()
 
+fun SmlLambda.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }
 
 // Named Type ----------------------------------------------------------------------------------------------------------
 
 fun SmlNamedType?.typeArgumentsOrEmpty() = this?.typeArgumentList?.typeArguments.orEmpty()
-
 
 // Parameter -----------------------------------------------------------------------------------------------------------
 
 fun SmlParameter.isRequired() = this.defaultValue == null
 fun SmlParameter.isOptional() = this.defaultValue != null
 
-fun SmlParameter.usesIn(obj: EObject) =
-    obj.eAllContents()
-        .asSequence()
-        .filter { it is SmlReference && it.declaration == this }
-
+fun SmlParameter.usesIn(obj: EObject) = obj.descendants<SmlReference>().filter { it.declaration == this }
 
 // Placeholder ---------------------------------------------------------------------------------------------------------
 
 fun SmlPlaceholder.usesIn(obj: EObject): Sequence<SmlReference> {
-    return obj.eAllContents()
-        .asSequence()
-        .filterIsInstance<SmlStatement>()
+    return obj.descendants<SmlStatement>()
         .dropWhile { it !is SmlAssignment || this !in it.placeholdersOrEmpty() }
         .drop(1)
         .flatMap { statement ->
-            statement.eAllContents()
-                .asSequence()
-                .filterIsInstance<SmlReference>()
+            statement.descendants<SmlReference>()
                 .filter { it.declaration == this }
         }
 }
-
 
 // Resource ------------------------------------------------------------------------------------------------------------
 
@@ -391,7 +395,6 @@ fun Resource.isStubFile(): Boolean {
     return this.uri.toString().endsWith(".stub.simpleml")
 }
 
-
 // Type ----------------------------------------------------------------------------------------------------------------
 
 fun SmlType?.resolveToClassOrInterfaceOrNull(): SmlClassOrInterface? {
@@ -405,7 +408,6 @@ fun SmlType?.resolveToClassOrInterfaceOrNull(): SmlClassOrInterface? {
 fun SmlType?.resolveToClassOrNull() = this.resolveToClassOrInterfaceOrNull() as? SmlClass
 fun SmlType?.resolveToFunctionTypeOrNull() = this as? SmlCallableType
 fun SmlType?.resolveToInterfaceOrNull() = this.resolveToClassOrInterfaceOrNull() as? SmlInterface
-
 
 // TypeArgument --------------------------------------------------------------------------------------------------------
 
@@ -428,7 +430,6 @@ fun SmlTypeArgument.typeParameterOrNull(): SmlTypeParameter? {
         }
     }
 }
-
 
 // TypeArgumentList ----------------------------------------------------------------------------------------------------
 
@@ -463,11 +464,9 @@ fun SmlTypeParameterConstraintList.typeParametersOrNull(): List<SmlTypeParameter
     }
 }
 
-
 // UnionType -----------------------------------------------------------------------------------------------------------
 
 fun SmlUnionType?.typeArgumentsOrEmpty() = this?.typeArgumentList?.typeArguments.orEmpty()
-
 
 // Workflow ------------------------------------------------------------------------------------------------------------
 
@@ -478,7 +477,6 @@ fun SmlWorkflow?.placeholdersOrEmpty(): List<SmlPlaceholder> {
 }
 
 fun SmlWorkflow?.statementsOrEmpty() = this?.body?.statements.orEmpty()
-
 
 // Workflow Steps ------------------------------------------------------------------------------------------------------
 
@@ -492,3 +490,5 @@ fun SmlWorkflowStep?.placeholdersOrEmpty(): List<SmlPlaceholder> {
 
 fun SmlWorkflowStep?.resultsOrEmpty() = this?.resultList?.results.orEmpty()
 fun SmlWorkflowStep?.statementsOrEmpty() = this?.body?.statements.orEmpty()
+
+fun SmlWorkflowStep.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }

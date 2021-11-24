@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.assertions
+package de.unibonn.simpleml.tests.assertions
 
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
 import de.unibonn.simpleml.prolog_bridge.model.facts.DeclarationT
@@ -69,7 +69,7 @@ inline fun <reified T : ExpressionT> PlFactbase.shouldBeChildExpressionOf(childI
     }
 }
 
-inline fun <reified T: ExpressionT> PlFactbase.shouldBeNChildExpressionsOf(
+inline fun <reified T : ExpressionT> PlFactbase.shouldBeNChildExpressionsOf(
     childIds: List<Id<SmlExpression>>?,
     parent: Node,
     n: Int

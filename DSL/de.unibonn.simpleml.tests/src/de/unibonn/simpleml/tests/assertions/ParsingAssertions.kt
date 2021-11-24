@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.assertions
+package de.unibonn.simpleml.tests.assertions
 
 import de.unibonn.simpleml.tests.ExpectedIssue
 import org.eclipse.xtext.diagnostics.Severity

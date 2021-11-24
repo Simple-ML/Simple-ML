@@ -1,14 +1,6 @@
 package de.unibonn.simpleml.tests
 
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
-import de.unibonn.simpleml.assertions.findUniqueFactOrFail
-import de.unibonn.simpleml.assertions.shouldBeChildExpressionOf
-import de.unibonn.simpleml.assertions.shouldBeChildOf
-import de.unibonn.simpleml.assertions.shouldBeCloseTo
-import de.unibonn.simpleml.assertions.shouldBeNChildExpressionsOf
-import de.unibonn.simpleml.assertions.shouldBeNChildrenOf
-import de.unibonn.simpleml.assertions.shouldHaveNAnnotationUses
-import de.unibonn.simpleml.assertions.shouldHaveNModifiers
 import de.unibonn.simpleml.prolog_bridge.Main
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
@@ -25,7 +17,6 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionStatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionT
-import de.unibonn.simpleml.prolog_bridge.model.facts.ResourceS
 import de.unibonn.simpleml.prolog_bridge.model.facts.FloatT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
@@ -44,6 +35,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlaceholderT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PrefixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ReferenceT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ResourceS
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StarProjectionT
@@ -61,7 +53,15 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.WildcardT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowStepT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowT
 import de.unibonn.simpleml.prolog_bridge.model.facts.YieldT
-import de.unibonn.simpleml.util.getResourcePath
+import de.unibonn.simpleml.tests.assertions.findUniqueFactOrFail
+import de.unibonn.simpleml.tests.assertions.shouldBeChildExpressionOf
+import de.unibonn.simpleml.tests.assertions.shouldBeChildOf
+import de.unibonn.simpleml.tests.assertions.shouldBeCloseTo
+import de.unibonn.simpleml.tests.assertions.shouldBeNChildExpressionsOf
+import de.unibonn.simpleml.tests.assertions.shouldBeNChildrenOf
+import de.unibonn.simpleml.tests.assertions.shouldHaveNAnnotationUses
+import de.unibonn.simpleml.tests.assertions.shouldHaveNModifiers
+import de.unibonn.simpleml.tests.util.getResourcePath
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldBeOneOf
@@ -73,8 +73,8 @@ import org.junit.jupiter.api.Test
 
 /**
  * ## Testing procedure for a fact:
- * - Checks its own primitive arguments
- * - Checks size of lists of children
+ * - Check its own primitive arguments
+ * - Check size of lists of children
  * - Ensure IDs of children are correct
  */
 class SimpleMLAstToPrologFactbaseTest {
@@ -84,7 +84,6 @@ class SimpleMLAstToPrologFactbaseTest {
         .getInstance(Main::class.java)
 
     private val testRoot = javaClass.classLoader.getResourcePath("prologVisitorTests").toString()
-
 
     // *****************************************************************************************************************
     // Definitions
@@ -731,7 +730,6 @@ class SimpleMLAstToPrologFactbaseTest {
         }
     }
 
-
     // *****************************************************************************************************************
     // Statements
     // ****************************************************************************************************************/
@@ -858,7 +856,6 @@ class SimpleMLAstToPrologFactbaseTest {
             }
         }
     }
-
 
     // *****************************************************************************************************************
     // Expressions
@@ -1203,7 +1200,6 @@ class SimpleMLAstToPrologFactbaseTest {
         }
     }
 
-
     // *****************************************************************************************************************
     // Types
     // ****************************************************************************************************************/
@@ -1536,7 +1532,6 @@ class SimpleMLAstToPrologFactbaseTest {
         }
     }
 
-
     // *****************************************************************************************************************
     // Other
     // ****************************************************************************************************************/
@@ -1641,7 +1636,6 @@ class SimpleMLAstToPrologFactbaseTest {
             }
         }
     }
-
 
     // *****************************************************************************************************************
     // Helpers

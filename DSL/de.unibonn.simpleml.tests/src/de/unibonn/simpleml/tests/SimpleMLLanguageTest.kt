@@ -1,20 +1,20 @@
 package de.unibonn.simpleml.tests
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.assertions.shouldHaveNoIssue
-import de.unibonn.simpleml.assertions.shouldHaveNoSemanticError
-import de.unibonn.simpleml.assertions.shouldHaveNoSemanticInfo
-import de.unibonn.simpleml.assertions.shouldHaveNoSemanticWarning
-import de.unibonn.simpleml.assertions.shouldHaveNoSyntaxError
-import de.unibonn.simpleml.assertions.shouldHaveSemanticError
-import de.unibonn.simpleml.assertions.shouldHaveSemanticInfo
-import de.unibonn.simpleml.assertions.shouldHaveSemanticWarning
-import de.unibonn.simpleml.assertions.shouldHaveSyntaxError
-import de.unibonn.simpleml.util.CategorizedTest
-import de.unibonn.simpleml.util.ParseWithStdlib
-import de.unibonn.simpleml.util.createDynamicTestsFromResourceFolder
-import de.unibonn.simpleml.util.getResourcePath
-import de.unibonn.simpleml.util.testDisplayName
+import de.unibonn.simpleml.tests.assertions.shouldHaveNoIssue
+import de.unibonn.simpleml.tests.assertions.shouldHaveNoSemanticError
+import de.unibonn.simpleml.tests.assertions.shouldHaveNoSemanticInfo
+import de.unibonn.simpleml.tests.assertions.shouldHaveNoSemanticWarning
+import de.unibonn.simpleml.tests.assertions.shouldHaveNoSyntaxError
+import de.unibonn.simpleml.tests.assertions.shouldHaveSemanticError
+import de.unibonn.simpleml.tests.assertions.shouldHaveSemanticInfo
+import de.unibonn.simpleml.tests.assertions.shouldHaveSemanticWarning
+import de.unibonn.simpleml.tests.assertions.shouldHaveSyntaxError
+import de.unibonn.simpleml.tests.util.CategorizedTest
+import de.unibonn.simpleml.tests.util.ParseWithStdlib
+import de.unibonn.simpleml.tests.util.createDynamicTestsFromResourceFolder
+import de.unibonn.simpleml.tests.util.getResourcePath
+import de.unibonn.simpleml.tests.util.testDisplayName
 import de.unibonn.simpleml.utils.OriginalFilePath
 import de.unibonn.simpleml.utils.outerZipBy
 import org.eclipse.xtext.testing.InjectWith
@@ -58,7 +58,6 @@ class SimpleMLLanguageTest {
 
     @Inject
     lateinit var validationHelper: ValidationTestHelper
-
 
     @TestFactory
     fun `should parse and validate`(): Stream<out DynamicNode> {
@@ -106,12 +105,14 @@ class SimpleMLLanguageTest {
             .groupBy { it.severity to it.message }
             .keys
             .forEach { (severity, message) ->
-                yield(CategorizedTest(
-                    severity,
-                    dynamicTest(testDisplayName(resourcePath, filePath, message), filePath.toUri()) {
-                        parsingTest(program, filePath, severity, message)
-                    }
-                ))
+                yield(
+                    CategorizedTest(
+                        severity,
+                        dynamicTest(testDisplayName(resourcePath, filePath, message), filePath.toUri()) {
+                            parsingTest(program, filePath, severity, message)
+                        }
+                    )
+                )
             }
     }
 

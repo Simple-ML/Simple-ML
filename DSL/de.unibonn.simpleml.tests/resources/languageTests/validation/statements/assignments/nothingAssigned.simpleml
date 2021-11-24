@@ -1,3 +1,5 @@
+package tests.nothing_assigned
+
 fun noResults()
 fun oneResult() -> first: Int
 fun twoResults() -> (first: Int, second: Int)
