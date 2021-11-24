@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import de.unibonn.simpleml.simpleML.SimpleMLFactory
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
-import de.unibonn.simpleml.util.ParseWithStdlib
+import de.unibonn.simpleml.tests.util.ParseWithStdlib
 import de.unibonn.simpleml.utils.Proposals
 import de.unibonn.simpleml.utils.membersOrEmpty
 import io.kotest.matchers.collections.shouldHaveSize

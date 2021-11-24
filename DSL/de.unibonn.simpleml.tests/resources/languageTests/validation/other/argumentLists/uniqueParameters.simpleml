@@ -1,3 +1,5 @@
+package tests.unique_parameters
+
 annotation A(a: Int, b: Int or 0)
 
 @A(

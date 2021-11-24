@@ -1,3 +1,5 @@
+package tests.assignee_list_can_be_removed
+
 fun f() -> (a: Int, b: Int)
 
 class MyClass {
