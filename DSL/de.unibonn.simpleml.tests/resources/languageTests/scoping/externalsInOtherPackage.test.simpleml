@@ -1,0 +1,5 @@
+package tests.languageTests.scoping2
+
+annotation AnnotationInOtherPackage
+
+step myStepForYield() -> resultInOtherPackage: Int {}

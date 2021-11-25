@@ -4,19 +4,29 @@ import com.google.inject.Inject
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlResult
+import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.tests.util.ParseHelper
 import de.unibonn.simpleml.tests.util.ResourceName
 import de.unibonn.simpleml.utils.descendants
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldHaveSize
-import io.kotest.matchers.sequences.shouldHaveSize
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+
+private const val ANNOTATION_USE = "annotationUse"
+private const val ARGUMENT = "argument"
+private const val NAMED_TYPE = "namedType"
+private const val REFERENCE = "reference"
+private const val TYPE_ARGUMENT = "typeArgument"
+private const val TYPE_PARAMETER_CONSTRAINT = "typeParameterConstraint"
+private const val YIELD = "yield"
 
 @ExtendWith(InjectionExtension::class)
 @InjectWith(SimpleMLInjectorProvider::class)
@@ -29,20 +39,20 @@ class ScopingTest {
     inner class AnnotationUse {
 
         @Test
-        fun `should resolve annotations in same file`() = withResource("annotationUse") {
+        fun `should resolve annotations in same file`() = withResource(ANNOTATION_USE) {
             val annotationUses = this.descendants<SmlAnnotationUse>().toList()
             annotationUses.shouldHaveSize(4)
 
-            val localAnnotations = this.descendants<SmlAnnotation>().toList()
-            localAnnotations.shouldHaveSize(1)
+            val annotationInSameFile = this.descendants<SmlAnnotation>().firstOrNull()
+            annotationInSameFile.shouldNotBeNull()
 
             val referencedAnnotation = annotationUses[0].annotation
             referencedAnnotation.eIsProxy().shouldBeFalse()
-            referencedAnnotation.shouldBe(localAnnotations[0])
+            referencedAnnotation.shouldBe(annotationInSameFile)
         }
 
         @Test
-        fun `should resolve annotations in same package`() = withResource("annotationUse") {
+        fun `should resolve annotations in same package`() = withResource(ANNOTATION_USE) {
             val annotationUses = this.descendants<SmlAnnotationUse>().toList()
             annotationUses.shouldHaveSize(4)
 
@@ -52,7 +62,7 @@ class ScopingTest {
         }
 
         @Test
-        fun `should resolve annotations in other package when imported`() = withResource("annotationUse") {
+        fun `should resolve annotations in another package when imported`() = withResource(ANNOTATION_USE) {
             val annotationUses = this.descendants<SmlAnnotationUse>().toList()
             annotationUses.shouldHaveSize(4)
 
@@ -62,12 +72,55 @@ class ScopingTest {
         }
 
         @Test
-        fun `should not resolve other annotations`() = withResource("annotationUse") {
+        fun `should not resolve other annotations`() = withResource(ANNOTATION_USE) {
             val annotationUses = this.descendants<SmlAnnotationUse>().toList()
             annotationUses.shouldHaveSize(4)
+            annotationUses[3].annotation.eIsProxy().shouldBeTrue()
+        }
+    }
 
-            val annotation = annotationUses[3].annotation
-            annotation.eIsProxy().shouldBeTrue()
+    @Nested
+    inner class Yield {
+
+        @Test
+        fun `should resolve result in same function`() = withResource(YIELD) {
+            val yields = this.descendants<SmlYield>().toList()
+            yields.shouldHaveSize(5)
+
+            val resultsInSameFunction = this.descendants<SmlResult>().find { it.name == "resultInSameFunction" }
+            resultsInSameFunction.shouldNotBeNull()
+
+            val referencedResult = yields[0].result
+            referencedResult.eIsProxy().shouldBeFalse()
+            referencedResult.shouldBe(resultsInSameFunction)
+        }
+
+        @Test
+        fun `should not resolve result in another function in same file`() = withResource(YIELD) {
+            val yields = this.descendants<SmlYield>().toList()
+            yields.shouldHaveSize(5)
+            yields[1].result.eIsProxy().shouldBeTrue()
+        }
+
+        @Test
+        fun `should not resolve result in another function in same package`() = withResource(YIELD) {
+            val yields = this.descendants<SmlYield>().toList()
+            yields.shouldHaveSize(5)
+            yields[2].result.eIsProxy().shouldBeTrue()
+        }
+
+        @Test
+        fun `should not resolve result in another function in another package`() = withResource(YIELD) {
+            val yields = this.descendants<SmlYield>().toList()
+            yields.shouldHaveSize(5)
+            yields[3].result.eIsProxy().shouldBeTrue()
+        }
+
+        @Test
+        fun `should not resolve other results`() = withResource(YIELD) {
+            val yields = this.descendants<SmlYield>().toList()
+            yields.shouldHaveSize(5)
+            yields[4].result.eIsProxy().shouldBeTrue()
         }
     }
 
@@ -79,8 +132,8 @@ class ScopingTest {
             parseHelper.parseResourceWithContext(
                 "languageTests/scoping/$resourceName.test.simpleml",
                 listOf(
-                    "languageTests/scoping/externalsInOtherPackage.stub.simpleml",
-                    "languageTests/scoping/externalsInSamePackage.stub.simpleml",
+                    "languageTests/scoping/externalsInOtherPackage.test.simpleml",
+                    "languageTests/scoping/externalsInSamePackage.test.simpleml",
                 )
             ) ?: throw IllegalArgumentException("File is not a compilation unit.")
 

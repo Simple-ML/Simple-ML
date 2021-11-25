@@ -2,9 +2,9 @@ package tests.languageTests.scoping
 
 import tests.languageTests.scoping2.AnnotationInOtherPackage
 
-annotation LocalAnnotation
+annotation AnnotationInSameFile
 
-@LocalAnnotation
+@AnnotationInSameFile
 @AnnotationInSamePackage
 @AnnotationInOtherPackage
 @UnresolvedAnnotation
