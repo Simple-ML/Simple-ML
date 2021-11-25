@@ -4,10 +4,12 @@ import com.google.inject.Inject
 import com.google.inject.Provider
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.utils.SimpleMLStdlib
+import org.eclipse.core.runtime.FileLocator
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtext.testing.util.ParseHelper
 import java.nio.file.Files
+import java.nio.file.Paths
 
 typealias ResourceName = String
 
@@ -41,7 +43,7 @@ class ParseHelper @Inject constructor(
     }
 
     fun parseResourceWithContext(resourceName: ResourceName, context: List<ResourceName>): SmlCompilationUnit? {
-        return readProgramTextFromResource(resourceName)?.let { parseResourceWithContext(it, context) }
+        return readProgramTextFromResource(resourceName)?.let { parseProgramTextWithContext(it, context) }
     }
 
     private fun readProgramTextFromResource(resourceName: ResourceName): String? {
@@ -56,11 +58,14 @@ class ParseHelper @Inject constructor(
     private fun createResourceSetFromContext(context: List<ResourceName>): ResourceSet {
         val result = resourceSetProvider.get()
         for (resourceName in context) {
-            val resourcePath = javaClass.classLoader.getResourcePath(resourceName) ?: continue
-            val resourceUri = URI.createURI(resourcePath.toString().replace("%3A", ":"))
+            val resourceUrl = javaClass.classLoader.getResource(resourceName) ?: continue
+            val resourceFileUri = FileLocator.resolve(resourceUrl).toURI()
+            val resourceEmfUri = URI.createURI(resourceFileUri.toString(), false)
+            val resourcePath = Paths.get(resourceFileUri)
+
             result
-                .createResource(resourceUri)
-                .load(Files.newInputStream(resourcePath), result.loadOptions)
+                .createResource(resourceEmfUri)
+                ?.load(Files.newInputStream(resourcePath), result.loadOptions)
         }
         return result
     }
