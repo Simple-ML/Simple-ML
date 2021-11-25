@@ -30,8 +30,8 @@ fun myFunction<TYPE_PARAMETER_IN_SAME_FUNCTION>(
 
     paramTypeParameterInSameFunction: TYPE_PARAMETER_IN_SAME_FUNCTION,
     paramTypeParameterInSameFile: TYPE_PARAMETER_IN_SAME_FILE,
-    paramTypeParameterInSamePackage: TYPE_PARAMETER_IN_SAME_PACKAGE,
-    paramTypeParameterInOtherPackage: TYPE_PARAMETER_IN_OTHER_PACKAGE,
+    paramTypeParameterInSamePackage: TYPE_PARAMETER_IN_SAME_PACKAGE1,
+    paramTypeParameterInOtherPackage: TYPE_PARAMETER_IN_OTHER_PACKAGE1,
 
     paramUnresolvedNamedTypeDeclaration: UnresolvedNamedTypeDeclaration,
     paramNotANamedTypeDeclaration: NotANamedTypeDeclaration

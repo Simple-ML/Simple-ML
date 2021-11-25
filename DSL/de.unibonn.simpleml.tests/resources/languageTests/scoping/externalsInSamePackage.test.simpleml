@@ -4,12 +4,15 @@ package tests.languageTests.scoping
 annotation AnnotationInSamePackage
 
 // Testing arguments
-fun functionForArgumentInSamePackage(parameterInSamePackage: Int)
+fun functionForArgumentsInSamePackage(parameterInSamePackage: Int)
 
 // Testing named types
-class ClassInSamePackage<TYPE_PARAMETER_IN_SAME_PACKAGE>
+class ClassInSamePackage<TYPE_PARAMETER_IN_SAME_PACKAGE1>
 enum EnumInSamePackage
 interface InterfaceInSamePackage
+
+// Testing type arguments
+fun functionForTypeArgumentsInSamePackage<TYPE_PARAMETER_IN_SAME_PACKAGE2>()
 
 // Testing yields
 step myStepForYields3() -> resultInSamePackage: Int {}

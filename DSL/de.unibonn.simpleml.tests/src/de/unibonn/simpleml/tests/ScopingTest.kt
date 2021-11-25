@@ -11,6 +11,7 @@ import de.unibonn.simpleml.simpleML.SmlInterface
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlResult
+import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.tests.util.ParseHelper
@@ -103,11 +104,6 @@ class ScopingTest {
 
     @Nested
     inner class Argument {
-        /*
-            functionForArgumentInSameFile(parameterInSameFile = 1);
-    functionForArgumentInSamePackage(parameterInSamePackage = 1);
-    functionForArgumentInOtherPackage1(parameterInOtherPackage1 = 1);
-         */
 
         @Test
         fun `should resolve parameter in called function in same file`() =
@@ -447,6 +443,93 @@ class ScopingTest {
 
             val referencedInterface = parameterType.declaration
             referencedInterface.eIsProxy().shouldBeTrue()
+        }
+    }
+
+    @Nested
+    inner class TypeArgument {
+
+        @Test
+        fun `should resolve type parameter in used declaration in same file`() =
+            withResource(TYPE_ARGUMENT) {
+                val typeArguments = this.descendants<SmlTypeArgument>().toList()
+                typeArguments.shouldHaveSize(9)
+
+                val typeParameterInSameFile =
+                    this.descendants<SmlTypeParameter>().find { it.name == "TYPE_PARAMETER_IN_SAME_FILE" }
+                typeParameterInSameFile.shouldNotBeNull()
+
+                val referencedTypeParameter = typeArguments[0].typeParameter
+                referencedTypeParameter.eIsProxy().shouldBeFalse()
+                referencedTypeParameter.shouldBe(typeParameterInSameFile)
+            }
+
+        @Test
+        fun `should resolve type parameter in used declaration in same package`() =
+            withResource(TYPE_ARGUMENT) {
+                val typeArguments = this.descendants<SmlTypeArgument>().toList()
+                typeArguments.shouldHaveSize(9)
+
+                val referencedTypeParameter = typeArguments[1].typeParameter
+                referencedTypeParameter.eIsProxy().shouldBeFalse()
+                referencedTypeParameter.name.shouldBe("TYPE_PARAMETER_IN_SAME_PACKAGE2")
+            }
+
+        @Test
+        fun `should resolve type parameter in used declaration that is imported and in another package`() =
+            withResource(TYPE_ARGUMENT) {
+                val typeArguments = this.descendants<SmlTypeArgument>().toList()
+                typeArguments.shouldHaveSize(9)
+
+                val referencedTypeParameter = typeArguments[2].typeParameter
+                referencedTypeParameter.eIsProxy().shouldBeFalse()
+                referencedTypeParameter.name.shouldBe("TYPE_PARAMETER_IN_OTHER_PACKAGE2")
+            }
+
+        @Test
+        fun `should not resolve type parameter in used declaration that is not imported and in another package`() =
+            withResource(TYPE_ARGUMENT) {
+                val typeArguments = this.descendants<SmlTypeArgument>().toList()
+                typeArguments.shouldHaveSize(9)
+                typeArguments[3].typeParameter.eIsProxy().shouldBeTrue()
+            }
+
+        @Test
+        fun `should not resolve type parameter in declaration other than used one in same package`() =
+            withResource(TYPE_ARGUMENT) {
+                val typeArguments = this.descendants<SmlTypeArgument>().toList()
+                typeArguments.shouldHaveSize(9)
+                typeArguments[4].typeParameter.eIsProxy().shouldBeTrue()
+            }
+
+        @Test
+        fun `should not resolve type parameter in declaration other than used one that is imported and in another package`() =
+            withResource(TYPE_ARGUMENT) {
+                val typeArguments = this.descendants<SmlTypeArgument>().toList()
+                typeArguments.shouldHaveSize(9)
+                typeArguments[5].typeParameter.eIsProxy().shouldBeTrue()
+            }
+
+        @Test
+        fun `should not resolve type parameter in declaration other than used one that is not imported and in another package`() =
+            withResource(TYPE_ARGUMENT) {
+                val typeArguments = this.descendants<SmlTypeArgument>().toList()
+                typeArguments.shouldHaveSize(9)
+                typeArguments[6].typeParameter.eIsProxy().shouldBeTrue()
+            }
+
+        @Test
+        fun `should not resolve other type parameters`() = withResource(TYPE_ARGUMENT) {
+            val typeArguments = this.descendants<SmlTypeArgument>().toList()
+            typeArguments.shouldHaveSize(9)
+            typeArguments[7].typeParameter.eIsProxy().shouldBeTrue()
+        }
+
+        @Test
+        fun `should not resolve something that is not a type parameter`() = withResource(TYPE_ARGUMENT) {
+            val typeArguments = this.descendants<SmlTypeArgument>().toList()
+            typeArguments.shouldHaveSize(9)
+            typeArguments[8].typeParameter.eIsProxy().shouldBeTrue()
         }
     }
 

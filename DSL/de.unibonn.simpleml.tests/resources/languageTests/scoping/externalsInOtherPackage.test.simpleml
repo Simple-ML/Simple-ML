@@ -5,16 +5,20 @@ annotation AnnotationInOtherPackage1
 annotation AnnotationInOtherPackage2
 
 // Testing arguments
-fun functionForArgumentInOtherPackage1(parameterInOtherPackage1: Int)
-fun functionForArgumentInOtherPackage2(parameterInOtherPackage2: Int)
+fun functionForArgumentsInOtherPackage1(parameterInOtherPackage1: Int)
+fun functionForArgumentsInOtherPackage2(parameterInOtherPackage2: Int)
 
 // Testing named types
-class ClassInOtherPackage1<TYPE_PARAMETER_IN_OTHER_PACKAGE>
+class ClassInOtherPackage1<TYPE_PARAMETER_IN_OTHER_PACKAGE1>
 class ClassInOtherPackage2
 enum EnumInOtherPackage1
 enum EnumInOtherPackage2
 interface InterfaceInOtherPackage1
 interface InterfaceInOtherPackage2
+
+// Testing type arguments
+fun functionForTypeArgumentsInOtherPackage1<TYPE_PARAMETER_IN_OTHER_PACKAGE2>()
+fun functionForTypeArgumentsInOtherPackage2<TYPE_PARAMETER_IN_OTHER_PACKAGE3>()
 
 // Testing yields
 step myStepForYields() -> resultInOtherPackage: Int {}

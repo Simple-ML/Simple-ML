@@ -1,0 +1,20 @@
+package tests.languageTests.scoping
+
+import tests.languageTests.scoping2.functionForTypeArgumentsInOtherPackage1
+
+fun functionForTypeArgumentsInSameFile<TYPE_PARAMETER_IN_SAME_FILE>()
+
+step NOT_A_TYPE_PARAMETER() {}
+
+workflow myWorkflowForArgument {
+    functionForTypeArgumentsInSameFile<TYPE_PARAMETER_IN_SAME_FILE = *>();
+    functionForTypeArgumentsInSamePackage<TYPE_PARAMETER_IN_SAME_PACKAGE2 = *>();
+    functionForTypeArgumentsInOtherPackage1<TYPE_PARAMETER_IN_OTHER_PACKAGE2 = *>();
+    functionForTypeArgumentsInOtherPackage2<TYPE_PARAMETER_IN_OTHER_PACKAGE3 = *>();
+
+    functionForTypeArgumentsInSameFile<TYPE_PARAMETER_IN_SAME_PACKAGE2 = *>();
+    functionForTypeArgumentsInSameFile<TYPE_PARAMETER_IN_OTHER_PACKAGE2 = *>();
+    functionForTypeArgumentsInSameFile<TYPE_PARAMETER_IN_OTHER_PACKAGE3 = *>();
+    functionForTypeArgumentsInSameFile<UNRESOLVED_TYPE_PARAMETER = *>();
+    functionForTypeArgumentsInSameFile<NOT_A_TYPE_PARAMETER = *>();
+}
