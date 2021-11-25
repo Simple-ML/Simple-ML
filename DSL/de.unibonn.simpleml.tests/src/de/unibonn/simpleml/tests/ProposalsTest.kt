@@ -45,7 +45,7 @@ class ProposalsTest {
 
     @Test
     fun `should contain workflow steps with primitive parameters when no result is passed`() {
-        val context = parseHelper.parseProgramWithStdlib(testProgram)
+        val context = parseHelper.parseProgramTextWithStdlib(testProgram)
         context.shouldNotBeNull()
 
         val workflowSteps = context.membersOrEmpty()
@@ -61,7 +61,7 @@ class ProposalsTest {
 
     @Test
     fun `should contain workflow steps with only matching parameters when a result is passed`() {
-        val context = parseHelper.parseProgramWithStdlib(testProgram)
+        val context = parseHelper.parseProgramTextWithStdlib(testProgram)
         context.shouldNotBeNull()
 
         val classA = context.membersOrEmpty()

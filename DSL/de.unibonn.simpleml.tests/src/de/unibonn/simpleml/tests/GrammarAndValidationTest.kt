@@ -57,7 +57,7 @@ class GrammarAndValidationTest {
     private lateinit var parseHelper: ParseHelper
 
     @Inject
-    lateinit var validationHelper: ValidationTestHelper
+    private lateinit var validationHelper: ValidationTestHelper
 
     @TestFactory
     fun `should parse and validate`(): Stream<out DynamicNode> {
@@ -100,7 +100,7 @@ class GrammarAndValidationTest {
         }
 
         // Must be able to parse the test file
-        if (parseHelper.parseProgramWithStdlib(program) == null) {
+        if (parseHelper.parseProgramTextWithStdlib(program) == null) {
             return "Could not parse test file."
         }
 
@@ -198,7 +198,7 @@ class GrammarAndValidationTest {
     }
 
     private fun actualIssues(program: String, filePath: Path): List<Issue> {
-        val parsingResult = parseHelper.parseProgramWithStdlib(program) ?: return emptyList()
+        val parsingResult = parseHelper.parseProgramTextWithStdlib(program) ?: return emptyList()
         parsingResult.eResource().eAdapters().add(OriginalFilePath(filePath.toString()))
         return validationHelper.validate(parsingResult)
     }
