@@ -55,7 +55,6 @@ class SimpleMLScopeProvider @Inject constructor(
 ) : AbstractSimpleMLScopeProvider() {
 
     override fun getScope(context: EObject, reference: EReference): IScope {
-        println(context)
         return when (context) {
             is SmlArgument -> scopeForArgumentParameter(context)
             is SmlReference -> scopeForReferenceDeclaration(context)
@@ -91,12 +90,8 @@ class SimpleMLScopeProvider @Inject constructor(
                     it != null && it.eObjectOrProxy.eResource() != resource
                 }
                 val declarationsInThisFile = declarationsInThisFile(resource, externalDeclarations)
-                val locals = locals(context, declarationsInThisFile)
 
-                println(locals)
-                println(externalDeclarations)
-
-                locals
+                locals(context, declarationsInThisFile)
             }
         }
     }
