@@ -20,5 +20,10 @@ interface InterfaceInOtherPackage2
 fun functionForTypeArgumentsInOtherPackage1<TYPE_PARAMETER_IN_OTHER_PACKAGE2>()
 fun functionForTypeArgumentsInOtherPackage2<TYPE_PARAMETER_IN_OTHER_PACKAGE3>()
 
+// Testing type parameter constraints
+fun functionForTypeParameterConstraintsInOtherPackage1<TYPE_PARAMETER_IN_OTHER_PACKAGE4>()
+fun functionForTypeParameterConstraintsInOtherPackage2<TYPE_PARAMETER_IN_OTHER_PACKAGE5>()
+
 // Testing yields
-step myStepForYields() -> resultInOtherPackage: Int {}
+step stepForYieldsInOtherPackage1() -> resultInOtherPackage: Int {}
+step stepForYieldsInOtherPackage2() -> resultInOtherPackage: Int {}

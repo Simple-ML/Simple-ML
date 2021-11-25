@@ -14,5 +14,8 @@ interface InterfaceInSamePackage
 // Testing type arguments
 fun functionForTypeArgumentsInSamePackage<TYPE_PARAMETER_IN_SAME_PACKAGE2>()
 
+// Testing type parameter constraints
+fun functionForTypeParameterConstraintsInSamePackage<TYPE_PARAMETER_IN_SAME_PACKAGE3>()
+
 // Testing yields
-step myStepForYields3() -> resultInSamePackage: Int {}
+step stepForYieldsInSamePackage() -> resultInSamePackage: Int {}

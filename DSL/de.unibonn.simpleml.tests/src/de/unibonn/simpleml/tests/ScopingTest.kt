@@ -13,6 +13,7 @@ import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
+import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.tests.util.ParseHelper
 import de.unibonn.simpleml.tests.util.ResourceName
@@ -88,7 +89,7 @@ class ScopingTest {
         }
 
         @Test
-        fun `should not resolve other annotations`() = withResource(ANNOTATION_USE) {
+        fun `should not resolve unknown declaration`() = withResource(ANNOTATION_USE) {
             val annotationUses = this.descendants<SmlAnnotationUse>().toList()
             annotationUses.shouldHaveSize(6)
             annotationUses[4].annotation.eIsProxy().shouldBeTrue()
@@ -174,7 +175,7 @@ class ScopingTest {
             }
 
         @Test
-        fun `should not resolve other parameters`() = withResource(ARGUMENT) {
+        fun `should not resolve unknown declaration`() = withResource(ARGUMENT) {
             val arguments = this.descendants<SmlArgument>().toList()
             arguments.shouldHaveSize(9)
             arguments[7].parameter.eIsProxy().shouldBeTrue()
@@ -420,7 +421,7 @@ class ScopingTest {
             }
 
         @Test
-        fun `should not resolve other named type declarations`() = withResource(NAMED_TYPE) {
+        fun `should not resolve unknown declaration`() = withResource(NAMED_TYPE) {
             val paramUnresolvedNamedTypeDeclaration =
                 this.descendants<SmlParameter>().find { it.name == "paramUnresolvedNamedTypeDeclaration" }
             paramUnresolvedNamedTypeDeclaration.shouldNotBeNull()
@@ -519,7 +520,7 @@ class ScopingTest {
             }
 
         @Test
-        fun `should not resolve other type parameters`() = withResource(TYPE_ARGUMENT) {
+        fun `should not resolve unknown declaration`() = withResource(TYPE_ARGUMENT) {
             val typeArguments = this.descendants<SmlTypeArgument>().toList()
             typeArguments.shouldHaveSize(9)
             typeArguments[7].typeParameter.eIsProxy().shouldBeTrue()
@@ -534,14 +535,79 @@ class ScopingTest {
     }
 
     @Nested
+    inner class TypeParameterConstraint {
+
+        @Test
+        fun `should resolve type parameter in same declaration`() = withResource(TYPE_PARAMETER_CONSTRAINT) {
+            val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
+            typeParameterConstraints.shouldHaveSize(7)
+
+            val typeParameterInSameDeclaration =
+                this.descendants<SmlTypeParameter>().find { it.name == "TYPE_PARAMETER_IN_SAME_FUNCTION" }
+            typeParameterInSameDeclaration.shouldNotBeNull()
+
+            val referencedTypeParameter = typeParameterConstraints[0].leftOperand
+            referencedTypeParameter.eIsProxy().shouldBeFalse()
+            referencedTypeParameter.shouldBe(typeParameterInSameDeclaration)
+        }
+
+        @Test
+        fun `should not resolve type parameter in another declaration in same file`() = withResource(
+            TYPE_PARAMETER_CONSTRAINT
+        ) {
+            val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
+            typeParameterConstraints.shouldHaveSize(7)
+            typeParameterConstraints[1].leftOperand.eIsProxy().shouldBeTrue()
+        }
+
+        @Test
+        fun `should not resolve type parameter in another declaration in same package`() =
+            withResource(TYPE_PARAMETER_CONSTRAINT) {
+                val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
+                typeParameterConstraints.shouldHaveSize(7)
+                typeParameterConstraints[2].leftOperand.eIsProxy().shouldBeTrue()
+            }
+
+        @Test
+        fun `should not resolve type parameter in another declaration that is imported and in another package`() =
+            withResource(TYPE_PARAMETER_CONSTRAINT) {
+                val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
+                typeParameterConstraints.shouldHaveSize(7)
+                typeParameterConstraints[3].leftOperand.eIsProxy().shouldBeTrue()
+            }
+
+        @Test
+        fun `should not resolve type parameter in another declaration that is not imported and in another package`() =
+            withResource(TYPE_PARAMETER_CONSTRAINT) {
+                val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
+                typeParameterConstraints.shouldHaveSize(7)
+                typeParameterConstraints[4].leftOperand.eIsProxy().shouldBeTrue()
+            }
+
+        @Test
+        fun `should not resolve unknown declaration`() = withResource(TYPE_PARAMETER_CONSTRAINT) {
+            val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
+            typeParameterConstraints.shouldHaveSize(7)
+            typeParameterConstraints[5].leftOperand.eIsProxy().shouldBeTrue()
+        }
+
+        @Test
+        fun `should not something that is not a type parameter`() = withResource(TYPE_PARAMETER_CONSTRAINT) {
+            val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
+            typeParameterConstraints.shouldHaveSize(7)
+            typeParameterConstraints[6].leftOperand.eIsProxy().shouldBeTrue()
+        }
+    }
+
+    @Nested
     inner class Yield {
 
         @Test
-        fun `should resolve result in same function`() = withResource(YIELD) {
+        fun `should resolve result in same workflow step`() = withResource(YIELD) {
             val yields = this.descendants<SmlYield>().toList()
-            yields.shouldHaveSize(6)
+            yields.shouldHaveSize(7)
 
-            val resultsInSameFunction = this.descendants<SmlResult>().find { it.name == "resultInSameFunction" }
+            val resultsInSameFunction = this.descendants<SmlResult>().find { it.name == "resultInSameStep" }
             resultsInSameFunction.shouldNotBeNull()
 
             val referencedResult = yields[0].result
@@ -550,38 +616,47 @@ class ScopingTest {
         }
 
         @Test
-        fun `should not resolve result in another function in same file`() = withResource(YIELD) {
+        fun `should not resolve result in another workflow step in same file`() = withResource(YIELD) {
             val yields = this.descendants<SmlYield>().toList()
-            yields.shouldHaveSize(6)
+            yields.shouldHaveSize(7)
             yields[1].result.eIsProxy().shouldBeTrue()
         }
 
         @Test
-        fun `should not resolve result in another function in same package`() = withResource(YIELD) {
+        fun `should not resolve result in another workflow step in same package`() = withResource(YIELD) {
             val yields = this.descendants<SmlYield>().toList()
-            yields.shouldHaveSize(6)
+            yields.shouldHaveSize(7)
             yields[2].result.eIsProxy().shouldBeTrue()
         }
 
         @Test
-        fun `should not resolve result in another function in another package`() = withResource(YIELD) {
-            val yields = this.descendants<SmlYield>().toList()
-            yields.shouldHaveSize(6)
-            yields[3].result.eIsProxy().shouldBeTrue()
-        }
+        fun `should not resolve result in another workflow step that is imported and in another package`() =
+            withResource(YIELD) {
+                val yields = this.descendants<SmlYield>().toList()
+                yields.shouldHaveSize(7)
+                yields[3].result.eIsProxy().shouldBeTrue()
+            }
 
         @Test
-        fun `should not resolve other results`() = withResource(YIELD) {
+        fun `should not resolve result in another workflow step that is not imported and in another package`() =
+            withResource(YIELD) {
+                val yields = this.descendants<SmlYield>().toList()
+                yields.shouldHaveSize(7)
+                yields[4].result.eIsProxy().shouldBeTrue()
+            }
+
+        @Test
+        fun `should not resolve unknown declaration`() = withResource(YIELD) {
             val yields = this.descendants<SmlYield>().toList()
-            yields.shouldHaveSize(6)
-            yields[4].result.eIsProxy().shouldBeTrue()
+            yields.shouldHaveSize(7)
+            yields[5].result.eIsProxy().shouldBeTrue()
         }
 
         @Test
         fun `should not something that is not a result`() = withResource(YIELD) {
             val yields = this.descendants<SmlYield>().toList()
-            yields.shouldHaveSize(6)
-            yields[5].result.eIsProxy().shouldBeTrue()
+            yields.shouldHaveSize(7)
+            yields[6].result.eIsProxy().shouldBeTrue()
         }
     }
 
