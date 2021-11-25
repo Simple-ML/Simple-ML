@@ -1,0 +1,38 @@
+package tests.languageTests.scoping
+
+import tests.languageTests.scoping2.ClassInOtherPackage1
+import tests.languageTests.scoping2.EnumInOtherPackage1
+import tests.languageTests.scoping2.InterfaceInOtherPackage1
+
+
+class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE>
+enum EnumInSameFile
+interface InterfaceInSameFile
+
+fun NotANamedTypeDeclaration()
+
+fun myFunction<TYPE_PARAMETER_IN_SAME_FUNCTION>(
+    paramClassInSameFile: ClassInSameFile<*>,
+    paramEnumInSameFile: EnumInSameFile,
+    paramInterfaceInSameFile: InterfaceInSameFile,
+
+    paramClassInSamePackage: ClassInSamePackage<*>,
+    paramEnumInSamePackage: EnumInSamePackage,
+    paramInterfaceInSamePackage: InterfaceInSamePackage,
+
+    paramClassInOtherPackage1: ClassInOtherPackage1<*>,
+    paramEnumInOtherPackage1: EnumInOtherPackage1,
+    paramInterfaceInOtherPackage1: InterfaceInOtherPackage1,
+
+    paramClassInOtherPackage2: ClassInOtherPackage2<*>,
+    paramEnumInOtherPackage2: EnumInOtherPackage2,
+    paramInterfaceInOtherPackage2: InterfaceInOtherPackage2,
+
+    paramTypeParameterInSameFunction: TYPE_PARAMETER_IN_SAME_FUNCTION,
+    paramTypeParameterInSameFile: TYPE_PARAMETER_IN_SAME_FILE,
+    paramTypeParameterInSamePackage: TYPE_PARAMETER_IN_SAME_PACKAGE,
+    paramTypeParameterInOtherPackage: TYPE_PARAMETER_IN_OTHER_PACKAGE,
+
+    paramUnresolvedNamedTypeDeclaration: UnresolvedNamedTypeDeclaration,
+    paramNotANamedTypeDeclaration: NotANamedTypeDeclaration
+)

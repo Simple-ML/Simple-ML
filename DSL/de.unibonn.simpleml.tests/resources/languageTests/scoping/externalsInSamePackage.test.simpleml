@@ -1,5 +1,12 @@
 package tests.languageTests.scoping
 
+// Testing annotation uses
 annotation AnnotationInSamePackage
 
+// Testing named types
+class ClassInSamePackage<TYPE_PARAMETER_IN_SAME_PACKAGE>
+enum EnumInSamePackage
+interface InterfaceInSamePackage
+
+// Testing yields
 step myStepForYield3() -> resultInSamePackage: Int {}

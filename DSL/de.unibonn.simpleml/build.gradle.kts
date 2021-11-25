@@ -19,7 +19,6 @@ java {
 idea {
     module {
         excludeDirs.add(file("META-INF"))
-        excludeDirs.add(file("model"))
     }
 }
 

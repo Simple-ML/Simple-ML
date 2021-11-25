@@ -1,11 +1,14 @@
 package tests.languageTests.scoping
 
+interface notAResult
+
 step myStepForYield() -> resultInSameFunction: Int {
     yield resultInSameFunction = 1;
     yield resultInSameFile = 1;
     yield resultInSamePackage = 1;
     yield resultInOtherPackage = 1;
     yield unresolvedResult = 1;
+    yield notAResult = 1;
 }
 
 step myStepForYield2() -> resultInSameFile: Int {}
