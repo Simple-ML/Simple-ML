@@ -41,17 +41,17 @@ step a() {
     };
 
     val lambda1 = lambda {
-        // semantic_error "Recursive calls are not allowed."
+        // no_semantic_error "Recursive calls are not allowed."
         »lambda1«();
     };
 
     val lambda2 = lambda {
-        // semantic_error "Recursive calls are not allowed."
+        // no_semantic_error "Recursive calls are not allowed."
         »lambda3«();
     };
 
     val lambda3 = lambda {
-        // semantic_error "Recursive calls are not allowed."
+        // no_semantic_error "Recursive calls are not allowed."
         »lambda2«();
     };
 }
