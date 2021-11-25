@@ -4,6 +4,10 @@ package tests.languageTests.scoping2
 annotation AnnotationInOtherPackage1
 annotation AnnotationInOtherPackage2
 
+// Testing arguments
+fun functionForArgumentInOtherPackage1(parameterInOtherPackage1: Int)
+fun functionForArgumentInOtherPackage2(parameterInOtherPackage2: Int)
+
 // Testing named types
 class ClassInOtherPackage1<TYPE_PARAMETER_IN_OTHER_PACKAGE>
 class ClassInOtherPackage2
@@ -13,4 +17,4 @@ interface InterfaceInOtherPackage1
 interface InterfaceInOtherPackage2
 
 // Testing yields
-step myStepForYield() -> resultInOtherPackage: Int {}
+step myStepForYields() -> resultInOtherPackage: Int {}

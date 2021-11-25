@@ -3,6 +3,7 @@ package de.unibonn.simpleml.tests
 import com.google.inject.Inject
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
+import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlEnum
@@ -97,6 +98,97 @@ class ScopingTest {
             val annotationUses = this.descendants<SmlAnnotationUse>().toList()
             annotationUses.shouldHaveSize(6)
             annotationUses[5].annotation.eIsProxy().shouldBeTrue()
+        }
+    }
+
+    @Nested
+    inner class Argument {
+        /*
+            functionForArgumentInSameFile(parameterInSameFile = 1);
+    functionForArgumentInSamePackage(parameterInSamePackage = 1);
+    functionForArgumentInOtherPackage1(parameterInOtherPackage1 = 1);
+         */
+
+        @Test
+        fun `should resolve parameter in called function in same file`() =
+            withResource(ARGUMENT) {
+                val arguments = this.descendants<SmlArgument>().toList()
+                arguments.shouldHaveSize(9)
+
+                val parameterInSameFile = this.descendants<SmlParameter>().find { it.name == "parameterInSameFile" }
+                parameterInSameFile.shouldNotBeNull()
+
+                val referencedParameter = arguments[0].parameter
+                referencedParameter.eIsProxy().shouldBeFalse()
+                referencedParameter.shouldBe(parameterInSameFile)
+            }
+
+        @Test
+        fun `should resolve parameter in called function in same package`() =
+            withResource(ARGUMENT) {
+                val arguments = this.descendants<SmlArgument>().toList()
+                arguments.shouldHaveSize(9)
+
+                val referencedParameter = arguments[1].parameter
+                referencedParameter.eIsProxy().shouldBeFalse()
+                referencedParameter.name.shouldBe("parameterInSamePackage")
+            }
+
+        @Test
+        fun `should resolve parameter in called function that is imported and in another package`() =
+            withResource(ARGUMENT) {
+                val arguments = this.descendants<SmlArgument>().toList()
+                arguments.shouldHaveSize(9)
+
+                val referencedParameter = arguments[2].parameter
+                referencedParameter.eIsProxy().shouldBeFalse()
+                referencedParameter.name.shouldBe("parameterInOtherPackage1")
+            }
+
+        @Test
+        fun `should not resolve parameter in called function that is not imported and in another package`() =
+            withResource(ARGUMENT) {
+                val arguments = this.descendants<SmlArgument>().toList()
+                arguments.shouldHaveSize(9)
+                arguments[3].parameter.eIsProxy().shouldBeTrue()
+            }
+
+        @Test
+        fun `should not resolve parameter in function other than called one in same package`() =
+            withResource(ARGUMENT) {
+                val arguments = this.descendants<SmlArgument>().toList()
+                arguments.shouldHaveSize(9)
+                arguments[4].parameter.eIsProxy().shouldBeTrue()
+            }
+
+        @Test
+        fun `should not resolve parameter in function other than called one that is imported and in another package`() =
+            withResource(ARGUMENT) {
+                val arguments = this.descendants<SmlArgument>().toList()
+                arguments.shouldHaveSize(9)
+                arguments[5].parameter.eIsProxy().shouldBeTrue()
+            }
+
+        @Test
+        fun `should not resolve parameter in function other than called one that is not imported and in another package`() =
+            withResource(ARGUMENT) {
+                val arguments = this.descendants<SmlArgument>().toList()
+                arguments.shouldHaveSize(9)
+                arguments[6].parameter.eIsProxy().shouldBeTrue()
+            }
+
+        @Test
+        fun `should not resolve other parameters`() = withResource(ARGUMENT) {
+            val arguments = this.descendants<SmlArgument>().toList()
+            arguments.shouldHaveSize(9)
+            arguments[7].parameter.eIsProxy().shouldBeTrue()
+        }
+
+        @Test
+        fun `should not resolve something that is not a parameter`() = withResource(ARGUMENT) {
+            val arguments = this.descendants<SmlArgument>().toList()
+            arguments.shouldHaveSize(9)
+            arguments[8].parameter.eIsProxy().shouldBeTrue()
         }
     }
 
