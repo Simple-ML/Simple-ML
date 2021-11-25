@@ -11,7 +11,7 @@ import de.unibonn.simpleml.tests.assertions.shouldHaveSemanticInfo
 import de.unibonn.simpleml.tests.assertions.shouldHaveSemanticWarning
 import de.unibonn.simpleml.tests.assertions.shouldHaveSyntaxError
 import de.unibonn.simpleml.tests.util.CategorizedTest
-import de.unibonn.simpleml.tests.util.ParseWithStdlib
+import de.unibonn.simpleml.tests.util.ParseHelper
 import de.unibonn.simpleml.tests.util.createDynamicTestsFromResourceFolder
 import de.unibonn.simpleml.tests.util.getResourcePath
 import de.unibonn.simpleml.tests.util.testDisplayName
@@ -51,20 +51,27 @@ private val validSeverities = listOf(
 
 @ExtendWith(InjectionExtension::class)
 @InjectWith(SimpleMLInjectorProvider::class)
-class SimpleMLLanguageTest {
+class GrammarAndValidationTest {
 
     @Inject
-    private lateinit var parseWithStdlib: ParseWithStdlib
+    private lateinit var parseHelper: ParseHelper
 
     @Inject
     lateinit var validationHelper: ValidationTestHelper
 
     @TestFactory
     fun `should parse and validate`(): Stream<out DynamicNode> {
-        return javaClass.classLoader
-            .getResourcePath("languageTests")
+        val grammarTests = javaClass.classLoader
+            .getResourcePath("languageTests/grammar")
             ?.createDynamicTestsFromResourceFolder(::validateTestFile, ::createTest)
             ?: Stream.empty()
+
+        val validationTests = javaClass.classLoader
+            .getResourcePath("languageTests/validation")
+            ?.createDynamicTestsFromResourceFolder(::validateTestFile, ::createTest)
+            ?: Stream.empty()
+
+        return Stream.concat(grammarTests, validationTests)
     }
 
     /**
@@ -93,7 +100,7 @@ class SimpleMLLanguageTest {
         }
 
         // Must be able to parse the test file
-        if (parseWithStdlib.parse(program) == null) {
+        if (parseHelper.parseProgramWithStdlib(program) == null) {
             return "Could not parse test file."
         }
 
@@ -191,7 +198,7 @@ class SimpleMLLanguageTest {
     }
 
     private fun actualIssues(program: String, filePath: Path): List<Issue> {
-        val parsingResult = parseWithStdlib.parse(program) ?: return emptyList()
+        val parsingResult = parseHelper.parseProgramWithStdlib(program) ?: return emptyList()
         parsingResult.eResource().eAdapters().add(OriginalFilePath(filePath.toString()))
         return validationHelper.validate(parsingResult)
     }

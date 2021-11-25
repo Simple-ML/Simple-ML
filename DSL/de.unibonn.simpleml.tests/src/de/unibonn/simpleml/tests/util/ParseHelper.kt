@@ -7,14 +7,14 @@ import de.unibonn.simpleml.utils.SimpleMLStdlib
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtext.testing.util.ParseHelper
 
-class ParseWithStdlib @Inject constructor(
+class ParseHelper @Inject constructor(
     private val parseHelper: ParseHelper<SmlCompilationUnit>,
     private val resourceSetProvider: Provider<ResourceSet>,
     private val stdlib: SimpleMLStdlib
 ) {
-    fun parse(input: String): SmlCompilationUnit? {
+    fun parseProgramWithStdlib(program: String): SmlCompilationUnit? {
         val resourceSet = resourceSetProvider.get()
         stdlib.load(resourceSet)
-        return parseHelper.parse(input, resourceSet)
+        return parseHelper.parse(program, resourceSet)
     }
 }

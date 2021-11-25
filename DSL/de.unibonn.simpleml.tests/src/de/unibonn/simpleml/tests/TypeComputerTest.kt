@@ -3,7 +3,7 @@ package de.unibonn.simpleml.tests
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
-import de.unibonn.simpleml.tests.util.ParseWithStdlib
+import de.unibonn.simpleml.tests.util.ParseHelper
 import de.unibonn.simpleml.tests.util.getResourcePath
 import de.unibonn.simpleml.typing.Type
 import de.unibonn.simpleml.typing.TypeComputer
@@ -22,12 +22,12 @@ import java.nio.file.Path
 
 @Suppress("PrivatePropertyName")
 class TypeComputerTest {
-    private val parseWithStdlib: ParseWithStdlib
+    private val parseHelper: ParseHelper
     private val typeComputer: TypeComputer
 
     init {
         SimpleMLStandaloneSetup().createInjectorAndDoEMFRegistration().apply {
-            parseWithStdlib = getInstance(ParseWithStdlib::class.java)
+            parseHelper = getInstance(ParseHelper::class.java)
             typeComputer = getInstance(TypeComputer::class.java)
         }
     }
@@ -192,7 +192,7 @@ class TypeComputerTest {
 
     private fun withCompilationUnitFromFile(file: String, lambda: SmlCompilationUnit.() -> Unit) {
         val program = Files.readString(Path.of(testRoot, file))
-        val compilationUnit = parseWithStdlib.parse(program)
+        val compilationUnit = parseHelper.parseProgramWithStdlib(program)
             ?: throw IllegalArgumentException("File is not a compilation unit.")
         compilationUnit.apply(lambda)
     }
