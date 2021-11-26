@@ -5,13 +5,23 @@ import tests.languageTests.scoping.namedType2.EnumInOtherPackage1
 import tests.languageTests.scoping.namedType2.InterfaceInOtherPackage1
 
 
-class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE>
+class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE> {
+    class ClassInClassInSameFile
+    enum EnumInClassInSameFile
+    interface InterfaceInClassInSameFile
+}
+
 enum EnumInSameFile
-interface InterfaceInSameFile
+
+interface InterfaceInSameFile {
+    class ClassInInterfaceInSameFile
+    enum EnumInInterfaceInSameFile
+    interface InterfaceInInterfaceInSameFile
+}
 
 fun NotANamedTypeDeclaration()
 
-fun myFunction<TYPE_PARAMETER_IN_SAME_FUNCTION>(
+fun directNamedTypes<TYPE_PARAMETER_IN_SAME_FUNCTION>(
     paramClassInSameFile: ClassInSameFile<*>,
     paramEnumInSameFile: EnumInSameFile,
     paramInterfaceInSameFile: InterfaceInSameFile,
@@ -35,4 +45,22 @@ fun myFunction<TYPE_PARAMETER_IN_SAME_FUNCTION>(
 
     paramUnresolvedNamedTypeDeclaration: UnresolvedNamedTypeDeclaration,
     paramNotANamedTypeDeclaration: NotANamedTypeDeclaration
+)
+
+fun memberTypes(
+    paramClassInClassInSameFile: ClassInSameFile<*>.ClassInClassInSameFile,
+    paramEnumInClassInSameFile: ClassInSameFile<*>.EnumInClassInSameFile,
+    paramInterfaceInClassInSameFile: ClassInSameFile<*>.InterfaceInClassInSameFile,
+
+    paramClassInInterfaceInSameFile: InterfaceInSameFile.ClassInInterfaceInSameFile,
+    paramEnumInInterfaceInSameFile: InterfaceInSameFile.EnumInInterfaceInSameFile,
+    paramInterfaceInInterfaceInSameFile: InterfaceInSameFile.InterfaceInInterfaceInSameFile,
+
+    paramUnqualifiedClassInClassInSameFile: ClassInClassInSameFile,
+    paramUnqualifiedEnumInClassInSameFile: EnumInClassInSameFile,
+    paramUnqualifiedInterfaceInClassInSameFile: InterfaceInClassInSameFile,
+
+    paramUnqualifiedClassInInterfaceInSameFile: ClassInInterfaceInSameFile,
+    paramUnqualifiedEnumInInterfaceInSameFile: EnumInInterfaceInSameFile,
+    paramUnqualifiedInterfaceInInterfaceInSameFile: InterfaceInInterfaceInSameFile,
 )
