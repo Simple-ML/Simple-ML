@@ -171,12 +171,13 @@ step directReferencesToWorkflows() {
 }
 
 step forwardReferences() {
-    val a = b;
-    val b = 1;
-
+    a;
     val f = lambda {
+        a;
         f;
     };
+
+    val a = 1;
 }
 
 step shadowedReferences(ClassInSameFile: Int) {

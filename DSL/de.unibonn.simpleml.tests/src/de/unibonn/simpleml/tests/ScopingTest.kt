@@ -1096,6 +1096,34 @@ class ScopingTest {
         }
 
         @Test
+        fun `should not resolve placeholder declared later in same workflow step`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("forwardReferences")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(3)
+            references[0].declaration.shouldNotBeResolved()
+        }
+
+        @Test
+        fun `should not resolve placeholder declared later from nested lambda`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("forwardReferences")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(3)
+            references[1].declaration.shouldNotBeResolved()
+        }
+
+        @Test
+        fun `should not resolve placeholder that lambda is assigned to from body of lambda`() =
+            withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("forwardReferences")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(3)
+                references[2].declaration.shouldNotBeResolved()
+            }
+
+        @Test
         fun `should not resolve function locals`() = withResource(REFERENCE) {
             val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToFunctionLocals")
 
