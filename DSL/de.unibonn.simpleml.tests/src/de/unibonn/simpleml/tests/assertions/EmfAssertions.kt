@@ -39,7 +39,7 @@ fun SmlDeclaration.shouldBeResolved() {
     }
 }
 
-fun SmlDeclaration.shouldBeUnresolved() {
+fun SmlDeclaration.shouldNotBeResolved() {
     if (!this.eIsProxy()) {
         throw AssertionError("Expected cross-reference to be unresolved but it wasn't.")
     }
