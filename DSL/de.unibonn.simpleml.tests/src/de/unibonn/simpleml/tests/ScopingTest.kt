@@ -868,6 +868,74 @@ class ScopingTest {
         }
 
         @Test
+        fun `should resolve parameter of workflow step in same workflow step`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToParameters")
+            val parameterInStep = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInStep")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(5)
+
+            val declaration = references[0].declaration
+            declaration.shouldBeResolved()
+            declaration.shouldBe(parameterInStep)
+        }
+
+        @Test
+        fun `should resolve parameter of workflow step in lambda in same workflow step`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToParameters")
+            val parameterInStep = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInStep")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(5)
+
+            val declaration = references[1].declaration
+            declaration.shouldBeResolved()
+            declaration.shouldBe(parameterInStep)
+        }
+
+        @Test
+        fun `should resolve parameter of lambda in same lambda`() =
+            withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToParameters")
+                val parameterInLambda = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInLambda")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(5)
+
+                val declaration = references[2].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(parameterInLambda)
+            }
+
+        @Test
+        fun `should resolve parameter of workflow step in lambda within lambda in same workflow step`() =
+            withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToParameters")
+                val parameterInStep = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInStep")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(5)
+
+                val declaration = references[3].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(parameterInStep)
+            }
+
+        @Test
+        fun `should resolve parameter of lambda in nested lambda`() =
+            withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToParameters")
+                val parameterInLambda = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInLambda")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(5)
+
+                val declaration = references[4].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(parameterInLambda)
+            }
+
+        @Test
         fun `should not resolve function locals`() = withResource(REFERENCE) {
             val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToFunctionLocals")
 

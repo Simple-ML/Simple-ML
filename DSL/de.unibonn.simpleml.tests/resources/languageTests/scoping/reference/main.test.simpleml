@@ -185,7 +185,9 @@ step shadowedReferences(ClassInSameFile: Int) {
     val ClassInSameFile = 1;
     ClassInSameFile;
 
-    val f = lambda {
+    val f = lambda (ClassInSameFile: Int) {
+        ClassInSameFile;
+
         val ClassInSameFile = 1;
         ClassInSameFile;
     };
