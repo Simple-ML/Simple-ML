@@ -812,6 +812,52 @@ class ScopingTest {
         }
 
         @Test
+        fun `should resolve interface in same file`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToInterfaces")
+            val interfaceInSameFile = findUniqueDeclarationOrFail<SmlInterface>("InterfaceInSameFile")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(4)
+
+            val declaration = references[0].declaration
+            declaration.shouldBeResolved()
+            declaration.shouldBe(interfaceInSameFile)
+        }
+
+        @Test
+        fun `should resolve interface in same package`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToInterfaces")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(4)
+
+            val declaration = references[1].declaration
+            declaration.shouldBeResolved()
+            declaration.name.shouldBe("InterfaceInSamePackage")
+        }
+
+        @Test
+        fun `should resolve interface in another package if imported`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToInterfaces")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(4)
+
+            val declaration = references[2].declaration
+            declaration.shouldBeResolved()
+            declaration.name.shouldBe("InterfaceInOtherPackage1")
+        }
+
+        @Test
+        fun `should not resolve interface in another package if not imported`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToInterfaces")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(4)
+            references[3].declaration.shouldBeUnresolved()
+        }
+
+        @Test
         fun `should not resolve function locals`() = withResource(REFERENCE) {
             val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToFunctionLocals")
 
