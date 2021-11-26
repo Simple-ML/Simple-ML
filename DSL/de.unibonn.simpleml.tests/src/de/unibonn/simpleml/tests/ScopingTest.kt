@@ -7,6 +7,7 @@ import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlEnum
+import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlInterface
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -758,6 +759,52 @@ class ScopingTest {
         @Test
         fun `should not resolve enum in another package if not imported`() = withResource(REFERENCE) {
             val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToEnums")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(4)
+            references[3].declaration.shouldBeUnresolved()
+        }
+
+        @Test
+        fun `should resolve global function in same file`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToGlobalFunctions")
+            val globalFunctionInSameFile = findUniqueDeclarationOrFail<SmlFunction>("globalFunctionInSameFile")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(4)
+
+            val declaration = references[0].declaration
+            declaration.shouldBeResolved()
+            declaration.shouldBe(globalFunctionInSameFile)
+        }
+
+        @Test
+        fun `should resolve global function in same package`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToGlobalFunctions")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(4)
+
+            val declaration = references[1].declaration
+            declaration.shouldBeResolved()
+            declaration.name.shouldBe("globalFunctionInSamePackage")
+        }
+
+        @Test
+        fun `should resolve global function in another package if imported`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToGlobalFunctions")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(4)
+
+            val declaration = references[2].declaration
+            declaration.shouldBeResolved()
+            declaration.name.shouldBe("globalFunctionInOtherPackage1")
+        }
+
+        @Test
+        fun `should not resolve global function in another package if not imported`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToGlobalFunctions")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
