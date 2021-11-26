@@ -11,19 +11,22 @@ import de.unibonn.simpleml.simpleML.SmlInterface
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
+import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.tests.assertions.findUniqueDeclarationOrFail
 import de.unibonn.simpleml.tests.util.ParseHelper
 import de.unibonn.simpleml.tests.util.ResourceName
 import de.unibonn.simpleml.utils.descendants
+import io.kotest.assertions.asClue
+import io.kotest.assertions.forEachAsClue
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldHaveSize
-import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import org.eclipse.xtext.testing.InjectWith
@@ -631,15 +634,84 @@ class ScopingTest {
         }
     }
 
-//    @Nested
-//    inner class Reference {
-//        @Test
-//        fun `should not resolve unknown declaration`() = withResource(REFERENCE) {
-//            val yields = this.descendants<SmlYield>().toList()
-//            yields.shouldHaveSize(7)
-//            yields[5].result.eIsProxy().shouldBeTrue()
-//        }
-//    }
+    @Nested
+    inner class Reference {
+
+        @Test
+        fun `should not resolve function locals`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToFunctionLocals")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(2)
+            references.forEachAsClue {
+                it.declaration.eIsProxy().shouldBeTrue()
+            }
+        }
+
+        @Test
+        fun `should not resolve lambda locals`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToLambdaLocals")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(3)
+            references[0].declaration.eIsProxy().shouldBeTrue()
+        }
+
+        @Test
+        fun `should not resolve workflow step locals`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToWorkflowStepLocals")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(3)
+            references.forEachAsClue {
+                it.declaration.eIsProxy().shouldBeTrue()
+            }
+        }
+
+        @Test
+        fun `should not resolve unknown declaration`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("unresolvedReferences")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(1)
+            references[0].declaration.eIsProxy().shouldBeTrue()
+        }
+
+        @Nested
+        inner class MemberAccess {
+
+            @Test
+            fun `should not resolve class members with unqualified access`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("unqualifiedReferencesToClassMembers")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(7)
+                references.forEachAsClue {
+                    it.declaration.eIsProxy().shouldBeTrue()
+                }
+            }
+
+            @Test
+            fun `should not resolve enum instances with unqualified access`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("unqualifiedReferencesToEnumInstances")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(1)
+                references[0].declaration.eIsProxy().shouldBeTrue()
+            }
+
+            @Test
+            fun `should not resolve interface members with unqualified access`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("unqualifiedReferencesToInterfaceMembers")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(7)
+                references.forEachAsClue {
+                    it.declaration.eIsProxy().shouldBeTrue()
+                }
+            }
+        }
+    }
 
     @Nested
     inner class TypeArgument {

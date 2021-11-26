@@ -309,7 +309,7 @@ step referencesToWorkflowStepResults() {
 
 // Access to locals from outside -----------------------------------------------
 
-step referencesToGlobalFunctionLocals() {
+step referencesToFunctionLocals() {
     globalFunctionParameterInSameFile;
     globalFunctionResultInSameFile;
 }
