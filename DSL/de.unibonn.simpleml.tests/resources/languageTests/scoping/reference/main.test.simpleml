@@ -10,13 +10,18 @@ import tests.languageTests.scoping.reference2.workflowInOtherPackage1
 
 annotation AnnotationInSameFile
 
-class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE>
-constructor (constructorParameterInSameFile: Int) {
+class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE> constructor() {
     static attr classStaticAttributeInSameFile: Int
     attr classInstanceAttributeInSameFile: Int
 
-    static fun classStaticMethodInSameFile(classStaticMethodParameterInSameFile: Int) -> classStaticMethodResultInSameFile: Int
-    fun classInstanceMethodInSameFile(classInstanceMethodParameterInSameFile: Int) -> classInstanceMethodResultInSameFile: Int
+    class ClassInClassInSameFile
+
+    enum EnumInClassInSameFile
+
+    static fun classStaticMethodInSameFile() -> classStaticMethodResultInSameFile: Int
+    fun classInstanceMethodInSameFile() -> classInstanceMethodResultInSameFile: Int
+
+    interface InterfaceInClassInSameFile
 }
 
 enum EnumInSameFile {
@@ -29,8 +34,14 @@ interface InterfaceInSameFile {
     static attr interfaceStaticAttributeInSameFile: Int
     attr interfaceInstanceAttributeInSameFile: Int
 
+    class ClassInInterfaceInSameFile
+
+    enum EnumInInterfaceInSameFile
+
     static fun interfaceStaticMethodInSameFile() -> interfaceStaticMethodResultInSameFile: Int
     fun interfaceInstanceMethodInSameFile() -> interfaceInstanceMethodInSameFile: Int
+
+    interface InterfaceInInterfaceInSameFile
 }
 fun interfaceInSameFileFactory() -> result: InterfaceInSameFile
 
@@ -41,54 +52,165 @@ step stepInSameFile(stepParameterInSameFile: Int) -> stepResultInSameFile: Int {
 workflow workflowInSameFile {}
 
 
-// Test references -------------------------------------------------------------
+// Direct references -----------------------------------------------------------
 
-step directReferences() {
-    // TODO
+step directReferencesToAnnotations() {
+    AnnotationInSameFile;
+    AnnotationInSamePackage;
+    AnnotationInOtherPackage1;
+    AnnotationInOtherPackage2;
+}
+
+step directReferencesToClasses() {
+    ClassInSameFile;
+    ClassInSamePackage;
+    ClassInOtherPackage1;
+    ClassInOtherPackage2;
+}
+
+step directReferencesToEnums() {
+    EnumInSameFile;
+    EnumInSamePackage;
+    EnumInOtherPackage1;
+    EnumInOtherPackage2;
+}
+
+step directReferencesToGlobalFunctions() {
+    globalFunctionInSameFile;
+    globalFunctionInSamePackage;
+    globalFunctionInOtherPackage1;
+    globalFunctionInOtherPackage2;
+}
+
+step directReferencesToInterfaces() {
+    InterfaceInSameFile;
+    InterfaceInSamePackage;
+    InterfaceInOtherPackage1;
+    InterfaceInOtherPackage2;
+}
+
+step directReferencesToLambdaYields() {
+    val f = lambda {
+        yield lambdaYield = 1;
+        lambdaYield;
+    };
+}
+
+step directReferencesToParameters(parameterInStep: Int) {
+    parameterInStep;
+
+    val f = lambda (parameterInLambda: Int) {
+        parameterInStep;
+        parameterInLambda;
+
+        val f = lambda {
+            parameterInStep;
+            parameterInLambda;
+        };
+    };
+}
+
+step directReferencesToPlaceholders() {
+    val placeholderInStep = 1;
+    placeholderInStep;
+
+    val f = lambda () {
+        val placeholderInLambda = 1;
+        placeholderInStep;
+        placeholderInLambda;
+
+        val f = lambda {
+            placeholderInStep;
+            placeholderInLambda;
+        };
+    };
+}
+
+step directReferencesToTypeParameters() {
+    TYPE_PARAMETER_IN_SAME_FILE;
+}
+
+step directReferencesToWorkflowSteps() {
+    stepInSameFile;
+    stepInSamePackage;
+    stepInOtherPackage1;
+    stepInOtherPackage2;
+}
+
+step directReferencesToWorkflows() {
+    workflowInSameFile;
+    workflowInSamePackage;
+    workflowInOtherPackage1;
+    workflowInOtherPackage2;
 }
 
 step forwardReferences() {
-    // TODO
+    val a = b;
+    val b = 1;
+
+    val f = lambda {
+        f;
+    };
 }
 
-step shadowedReferences() {
-    // TODO
+step shadowedReferences(ClassInSameFile: Int) {
+    ClassInSameFile;
+
+    val ClassInSameFile = 1;
+    ClassInSameFile;
+
+    val f = lambda {
+        val ClassInSameFile = 1;
+        ClassInSameFile;
+    };
 }
+
+// Access to members -----------------------------------------------------------
 
 step referencesToClassMembers() {
-    // TODO
+    ClassInSameFile.classStaticAttributeInSameFile;
+    ClassInSameFile<*>().classInstanceAttributeInSameFile;
+    ClassInSameFile.ClassInClassInSameFile;
+    ClassInSameFile.EnumInClassInSameFile;
+    ClassInSameFile.classStaticMethodInSameFile;
+    ClassInSameFile<*>().classInstanceMethodInSameFile();
+    ClassInSameFile.InterfaceInClassInSameFile;
 }
 
 step referencesToEnumInstances() {
-    // TODO
+    EnumInSameFile.ENUM_INSTANCE_IN_SAME_FILE;
 }
 
 step referencesToInterfaceMembers() {
-    // TODO
+    InterfaceInSameFile.interfaceStaticAttributeInSameFile;
+    interfaceInSameFileFactory().interfaceInstanceAttributeInSameFile;
+    InterfaceInSameFile.ClassInInterfaceInSameFile;
+    InterfaceInSameFile.EnumInInterfaceInSameFile;
+    InterfaceInSameFile.interfaceStaticMethodInSameFile;
+    interfaceInSameFileFactory().interfaceInstanceMethodInSameFile();
+    InterfaceInSameFile.InterfaceInInterfaceInSameFile;
 }
+
+// Access to results of callable -----------------------------------------------
 
 step referencesToCallableTypeResults(f: callable () -> (callableTypeResult: Int)) {
     f().callableTypeResult;
-}
-
-step referencesToConstructorResults() {
-    ClassInSameFile<*>(1).instance;
 }
 
 step referencesToFunctionResults() {
     ClassInSameFile.classStaticMethodInSameFile(1).classStaticMethodResultInSameFile;
     ClassInSameFile<*>(1).classInstanceMethodInSameFile(1).classInstanceMethodResultInSameFile;
 
+    globalFunctionInSameFile(1).globalFunctionResultInSameFile;
+
     InterfaceInSameFile.interfaceStaticMethodInSameFile().interfaceStaticMethodResultInSameFile;
     interfaceInSameFileFactory().interfaceInstanceMethodInSameFile().interfaceInstanceMethodResultInSameFile;
-
-    globalFunctionInSameFile(1).globalFunctionResultInSameFile;
 }
 
 step referencesToLambdaResults() {
     val f = lambda {
         yield lambdaResult = 1;
-    }
+    };
     
     f().lambdaResult;
 }
@@ -97,51 +219,66 @@ step referencesToWorkflowStepResults() {
     stepInSameFile(1).stepResultInSameFile;
 }
 
-step referencesToTypeParameters() {
-    TYPE_PARAMETER_IN_SAME_FILE;
-}
+// Access to locals from outside -----------------------------------------------
 
-step referencesToClassInternas() {
-    constructorParameterInSameFile;
-
-    classStaticAttributeInSameFile;
-    classInstanceAttributeInSameFile;
-
-    classStaticMethodInSameFile;
-    classStaticMethodParameterInSameFile;
-    classStaticMethodResultInSameFile;
-    
-    classInstanceMethodInSameFile;
-    classInstanceMethodParameterInSameFile;
-    classInstanceMethodResultInSameFile;
-}
-
-step referencesToEnumInternas() {
-    ENUM_INSTANCE_IN_SAME_FILE;
-}
-
-step referencesToInterfaceInternas() {
-    interfaceStaticAttributeInSameFile;
-    interfaceInstanceAttributeInSameFile;
-
-    interfaceStaticMethodInSameFile;
-    interfaceStaticMethodResultInSameFile;
-
-    interfaceInstanceMethodInSameFile;
-    interfaceInstanceMethodInSameFile;
-}
-
-step referencesToGlobalFunctionInternas() {
+step referencesToGlobalFunctionLocals() {
     globalFunctionParameterInSameFile;
     globalFunctionResultInSameFile;
 }
 
-step referencesToWorkflowStepInternas() {
+step referencesToLambdaLocals() {
+    val f = lambda (lambdaParameter: Int) {
+        val lambdaPlaceholder = 1;
+        yield lambdaYield = 1;
+    };
+
+    lambdaParameter;
+    lambdaPlaceholder;
+    lambdaYield;
+}
+
+step referencesToWorkflowStepLocals() {
     stepParameterInSameFile;
     stepResultInSameFile;
     placeholderInSameFile;
 }
 
-step unresolvedReference() {
+// Unqualified access to members -----------------------------------------------
+
+step unqualifiedReferencesToClassMembers() {
+    classStaticAttributeInSameFile;
+    classInstanceAttributeInSameFile;
+
+    ClassInClassInSameFile;
+
+    EnumInClassInSameFile;
+
+    classStaticMethodInSameFile;
+    classInstanceMethodInSameFile;
+
+    InterfaceInClassInSameFile;
+}
+
+step unqualifiedReferencesToEnumInstances() {
+    ENUM_INSTANCE_IN_SAME_FILE;
+}
+
+step unqualifiedReferencesToInterfaceMembers() {
+    interfaceStaticAttributeInSameFile;
+    interfaceInstanceAttributeInSameFile;
+
+    ClassInInterfaceInSameFile;
+
+    EnumInInterfaceInSameFile;
+
+    interfaceStaticMethodInSameFile;
+    interfaceInstanceMethodInSameFile;
+
+    InterfaceInInterfaceInSameFile;
+}
+
+// Other unresolved references -------------------------------------------------
+
+step unresolvedReferences() {
     unresolvedReference;
 }
