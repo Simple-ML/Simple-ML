@@ -26,6 +26,7 @@ import de.unibonn.simpleml.tests.assertions.shouldNotBeResolved
 import de.unibonn.simpleml.tests.util.ParseHelper
 import de.unibonn.simpleml.tests.util.ResourceName
 import de.unibonn.simpleml.utils.descendants
+import de.unibonn.simpleml.utils.parametersOrEmpty
 import io.kotest.assertions.forEachAsClue
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -1121,6 +1122,70 @@ class ScopingTest {
                 val references = step.descendants<SmlReference>().toList()
                 references.shouldHaveSize(3)
                 references[2].declaration.shouldNotBeResolved()
+            }
+
+        @Test
+        fun `should resolve declaration shadowed by parameter of workflow step`() =
+            withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("shadowedReferences")
+
+                val parameters = step.parametersOrEmpty()
+                parameters.shouldHaveSize(1)
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(4)
+
+                val declaration = references[0].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(parameters[0])
+            }
+
+        @Test
+        fun `should resolve declaration shadowed by placeholder of workflow step`() =
+            withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("shadowedReferences")
+
+                val placeholders = step.descendants<SmlPlaceholder>().toList()
+                placeholders.shouldHaveSize(3)
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(4)
+
+                val declaration = references[1].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(placeholders[0])
+            }
+
+        @Test
+        fun `should resolve declaration shadowed by parameter of lambda`() =
+            withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("shadowedReferences")
+
+                val parameters = step.body.descendants<SmlParameter>().toList()
+                parameters.shouldHaveSize(1)
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(4)
+
+                val declaration = references[2].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(parameters[0])
+            }
+
+        @Test
+        fun `should resolve declaration shadowed by placeholder of lambda`() =
+            withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("shadowedReferences")
+
+                val placeholders = step.descendants<SmlPlaceholder>().toList()
+                placeholders.shouldHaveSize(3)
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(4)
+
+                val declaration = references[3].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(placeholders[2])
             }
 
         @Test
