@@ -1,0 +1,5 @@
+package tests.languageTests.scoping.namedType
+
+class ClassInSamePackage<TYPE_PARAMETER_IN_SAME_PACKAGE>
+enum EnumInSamePackage
+interface InterfaceInSamePackage

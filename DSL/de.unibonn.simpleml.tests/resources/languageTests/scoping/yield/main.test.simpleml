@@ -1,12 +1,12 @@
-package tests.languageTests.scoping
+package tests.languageTests.scoping.yield
 
-import tests.languageTests.scoping2.stepForYieldsInOtherPackage1
+import tests.languageTests.scoping.yield2.stepInOtherPackage1
 
-step stepForYieldsInSameFile() -> resultInSameFile: Int {}
+step stepInSameFile() -> resultInSameFile: Int {}
 
 interface notAResult
 
-step stepForYieldsInSameStep() -> resultInSameStep: Int {
+step stepInSameStep() -> resultInSameStep: Int {
     yield resultInSameStep = 1;
     yield resultInSameFile = 1;
     yield resultInSamePackage = 1;

@@ -1,6 +1,6 @@
-package tests.languageTests.scoping
+package tests.languageTests.scoping.annotationUse
 
-import tests.languageTests.scoping2.AnnotationInOtherPackage1
+import tests.languageTests.scoping.annotationUse2.AnnotationInOtherPackage1
 
 annotation AnnotationInSameFile
 

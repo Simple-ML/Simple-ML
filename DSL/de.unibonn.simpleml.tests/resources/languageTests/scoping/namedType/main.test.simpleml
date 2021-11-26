@@ -1,8 +1,8 @@
-package tests.languageTests.scoping
+package tests.languageTests.scoping.namedType
 
-import tests.languageTests.scoping2.ClassInOtherPackage1
-import tests.languageTests.scoping2.EnumInOtherPackage1
-import tests.languageTests.scoping2.InterfaceInOtherPackage1
+import tests.languageTests.scoping.namedType2.ClassInOtherPackage1
+import tests.languageTests.scoping.namedType2.EnumInOtherPackage1
+import tests.languageTests.scoping.namedType2.InterfaceInOtherPackage1
 
 
 class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE>
@@ -30,8 +30,8 @@ fun myFunction<TYPE_PARAMETER_IN_SAME_FUNCTION>(
 
     paramTypeParameterInSameFunction: TYPE_PARAMETER_IN_SAME_FUNCTION,
     paramTypeParameterInSameFile: TYPE_PARAMETER_IN_SAME_FILE,
-    paramTypeParameterInSamePackage: TYPE_PARAMETER_IN_SAME_PACKAGE1,
-    paramTypeParameterInOtherPackage: TYPE_PARAMETER_IN_OTHER_PACKAGE1,
+    paramTypeParameterInSamePackage: TYPE_PARAMETER_IN_SAME_PACKAGE,
+    paramTypeParameterInOtherPackage: TYPE_PARAMETER_IN_OTHER_PACKAGE,
 
     paramUnresolvedNamedTypeDeclaration: UnresolvedNamedTypeDeclaration,
     paramNotANamedTypeDeclaration: NotANamedTypeDeclaration

@@ -473,7 +473,7 @@ class ScopingTest {
 
                 val referencedTypeParameter = typeArguments[1].typeParameter
                 referencedTypeParameter.eIsProxy().shouldBeFalse()
-                referencedTypeParameter.name.shouldBe("TYPE_PARAMETER_IN_SAME_PACKAGE2")
+                referencedTypeParameter.name.shouldBe("TYPE_PARAMETER_IN_SAME_PACKAGE")
             }
 
         @Test
@@ -484,7 +484,7 @@ class ScopingTest {
 
                 val referencedTypeParameter = typeArguments[2].typeParameter
                 referencedTypeParameter.eIsProxy().shouldBeFalse()
-                referencedTypeParameter.name.shouldBe("TYPE_PARAMETER_IN_OTHER_PACKAGE2")
+                referencedTypeParameter.name.shouldBe("TYPE_PARAMETER_IN_OTHER_PACKAGE1")
             }
 
         @Test
@@ -664,12 +664,13 @@ class ScopingTest {
         resourceName: ResourceName,
         lambda: SmlCompilationUnit.() -> Unit
     ) {
+
         val compilationUnit =
             parseHelper.parseResourceWithContext(
-                "languageTests/scoping/$resourceName.test.simpleml",
+                "languageTests/scoping/$resourceName/main.test.simpleml",
                 listOf(
-                    "languageTests/scoping/externalsInOtherPackage.test.simpleml",
-                    "languageTests/scoping/externalsInSamePackage.test.simpleml",
+                    "languageTests/scoping/$resourceName/externalsInOtherPackage.test.simpleml",
+                    "languageTests/scoping/$resourceName/externalsInSamePackage.test.simpleml",
                 )
             ) ?: throw IllegalArgumentException("File is not a compilation unit.")
 

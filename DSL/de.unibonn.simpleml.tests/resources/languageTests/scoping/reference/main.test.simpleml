@@ -1,0 +1,55 @@
+package tests.languageTests.scoping.reference
+
+class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE>
+enum EnumInSameFile {
+    
+}
+interface InterfaceInSameFile
+
+step directReferences() {
+    
+}
+
+step forwardReferences() {
+    
+}
+
+step shadowedReferences() {
+
+}
+
+step referencesToClassMembers() {
+
+}
+
+step referencesToEnumInstances() {
+
+}
+
+step referencesToInterfaceMembers() {
+
+}
+
+step referencesToCallableTypeResults() {
+
+}
+
+step referencesToConstructorResults() {
+
+}
+
+step referencesToFunctionResults() {
+
+}
+
+step referencesToLambdaResults() {
+
+}
+
+step referencesToWorkflowStepResults() {
+
+}
+
+step unresolvedReferences() {
+    
+}
