@@ -10,7 +10,20 @@ import tests.languageTests.scoping.reference2.workflowInOtherPackage1
 
 annotation AnnotationInSameFile
 
-class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE> constructor() {
+open class SuperClass {
+    static attr superClassStaticAttribute: Int
+    attr superClassInstanceAttribute: Int
+
+    class ClassInSuperClass
+
+    enum EnumInSuperClass
+
+    static fun superClassStaticMethod()
+    fun superClassInstanceMethod()
+
+    interface InterfaceInSuperClass
+}
+class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE> constructor() sub SuperClass {
     static attr classStaticAttributeInSameFile: Int
     attr classInstanceAttributeInSameFile: Int
 
@@ -30,7 +43,20 @@ enum EnumInSameFile {
 
 fun globalFunctionInSameFile(globalFunctionParameterInSameFile: Int) -> globalFunctionResultInSameFile: Int
 
-interface InterfaceInSameFile {
+interface SuperInterface {
+    static attr superInterfaceStaticAttribute: Int
+    attr superInterfaceInstanceAttribute: Int
+
+    class ClassInSuperInterface
+
+    enum EnumInSuperInterface
+
+    static fun superInterfaceStaticMethod()
+    fun superInterfaceInstanceMethod()
+
+    interface InterfaceInSuperInterface
+}
+interface InterfaceInSameFile sub SuperInterface {
     static attr interfaceStaticAttributeInSameFile: Int
     attr interfaceInstanceAttributeInSameFile: Int
 
@@ -165,7 +191,7 @@ step shadowedReferences(ClassInSameFile: Int) {
     };
 }
 
-// Access to members -----------------------------------------------------------
+// Access to own members -------------------------------------------------------
 
 step referencesToClassMembers() {
     ClassInSameFile.classStaticAttributeInSameFile;
@@ -189,6 +215,68 @@ step referencesToInterfaceMembers() {
     InterfaceInSameFile.interfaceStaticMethodInSameFile;
     interfaceInSameFileFactory().interfaceInstanceMethodInSameFile();
     InterfaceInSameFile.InterfaceInInterfaceInSameFile;
+}
+
+// Access to inherited members -------------------------------------------------
+
+step referencesToInheritedClassMembers() {
+    ClassInSameFile.superClassStaticAttribute;
+    ClassInSameFile<*>().superClassInstanceAttribute;
+    ClassInSameFile.ClassInSuperClass;
+    ClassInSameFile.EnumInSuperClass;
+    ClassInSameFile.superClassStaticMethod;
+    ClassInSameFile<*>().superClassInstanceMethod();
+    ClassInSameFile.InterfaceInSuperClass;
+}
+
+step referencesToInheritedInterfaceMembers() {
+    InterfaceInSameFile.superInterfaceStaticAttribute;
+    interfaceInSameFileFactory().superInterfaceInstanceAttribute;
+    InterfaceInSameFile.ClassInSuperInterface;
+    InterfaceInSameFile.EnumInSuperInterface;
+    InterfaceInSameFile.superInterfaceStaticMethod;
+    interfaceInSameFileFactory().superInterfaceInstanceMethod();
+    InterfaceInSameFile.InterfaceInSuperInterface;
+}
+
+// Access to static members from instance --------------------------------------
+
+step referencesToStaticClassMembersFromInstance() {
+    ClassInSameFile<*>().superClassStaticAttribute;
+    ClassInSameFile<*>().ClassInSuperClass;
+    ClassInSameFile<*>().EnumInSuperClass;
+    ClassInSameFile<*>().superClassStaticMethod;
+    ClassInSameFile<*>().InterfaceInSuperClass;
+}
+
+step referencesToStaticInterfaceMembersFromInstance() {
+    interfaceInSameFileFactory().superInterfaceStaticAttribute;
+    interfaceInSameFileFactory().ClassInSuperInterface;
+    interfaceInSameFileFactory().EnumInSuperInterface;
+    interfaceInSameFileFactory().superInterfaceStaticMethod;
+    interfaceInSameFileFactory().InterfaceInSuperInterface;
+}
+
+// Access to instance members from class/interface -----------------------------
+
+step referencesToInheritedClassMembers() {
+    ClassInSameFile.superClassStaticAttribute;
+    ClassInSameFile<*>().superClassInstanceAttribute;
+    ClassInSameFile.ClassInSuperClass;
+    ClassInSameFile.EnumInSuperClass;
+    ClassInSameFile.superClassStaticMethod;
+    ClassInSameFile<*>().superClassInstanceMethod();
+    ClassInSameFile.InterfaceInSuperClass;
+}
+
+step referencesToInheritedInterfaceMembers() {
+    InterfaceInSameFile.superInterfaceStaticAttribute;
+    interfaceInSameFileFactory().superInterfaceInstanceAttribute;
+    InterfaceInSameFile.ClassInSuperInterface;
+    InterfaceInSameFile.EnumInSuperInterface;
+    InterfaceInSameFile.superInterfaceStaticMethod;
+    interfaceInSameFileFactory().superInterfaceInstanceMethod();
+    InterfaceInSameFile.InterfaceInSuperInterface;
 }
 
 // Access to results of callable -----------------------------------------------

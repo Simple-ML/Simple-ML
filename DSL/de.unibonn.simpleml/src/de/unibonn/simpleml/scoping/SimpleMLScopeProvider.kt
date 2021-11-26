@@ -11,6 +11,7 @@ import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlLambda
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
+import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlReference
@@ -57,10 +58,11 @@ class SimpleMLScopeProvider @Inject constructor(
     override fun getScope(context: EObject, reference: EReference): IScope {
         return when (context) {
             is SmlArgument -> scopeForArgumentParameter(context)
+            is SmlNamedType -> scopeForNamedTypeDeclaration(context)
             is SmlReference -> scopeForReferenceDeclaration(context)
             is SmlTypeArgument -> scopeForTypeArgumentTypeParameter(context)
             is SmlTypeParameterConstraint -> scopeForTypeParameterConstraintLeftOperand(context)
-            is SmlAnnotationUse, is SmlNamedType, is SmlYield -> {
+            is SmlAnnotationUse, is SmlYield -> {
                 super.getScope(context, reference)
             }
             else -> IScope.NULLSCOPE
@@ -164,6 +166,20 @@ class SimpleMLScopeProvider @Inject constructor(
             .takeWhile { it !== containingStatement }
             .filterIsInstance<SmlAssignment>()
             .flatMap { it.placeholdersOrEmpty() }
+    }
+
+    private fun scopeForNamedTypeDeclaration(context: SmlNamedType): IScope {
+        val container = context.eContainer()
+        return when {
+            container is SmlMemberType && container.member == context -> scopeForMemberTypeDeclaration(container)
+            else -> {
+                super.getScope(context, SimpleMLPackage.Literals.SML_NAMED_TYPE__DECLARATION)
+            }
+        }
+    }
+
+    private fun scopeForMemberTypeDeclaration(context: SmlMemberType): IScope {
+        return IScope.NULLSCOPE
     }
 
     private fun scopeForTypeArgumentTypeParameter(smlTypeArgument: SmlTypeArgument): IScope {

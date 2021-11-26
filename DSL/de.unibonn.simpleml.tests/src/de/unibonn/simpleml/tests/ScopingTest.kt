@@ -8,6 +8,7 @@ import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlInterface
+import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlResult
@@ -445,7 +446,266 @@ class ScopingTest {
             val referencedInterface = parameterType.declaration
             referencedInterface.eIsProxy().shouldBeTrue()
         }
+
+        @Nested
+        inner class MemberType {
+            @Test
+            fun `should resolve class within class with qualified access`() = withResource(NAMED_TYPE) {
+                val paramClassInClassInSameFile =
+                    this.descendants<SmlParameter>().find { it.name == "paramClassInClassInSameFile" }
+                paramClassInClassInSameFile.shouldNotBeNull()
+
+                val classInSameFile = this.descendants<SmlClass>().find { it.name == "ClassInClassInSameFile" }
+                classInSameFile.shouldNotBeNull()
+
+                val parameterType = paramClassInClassInSameFile.type
+                parameterType.shouldBeInstanceOf<SmlMemberType>()
+
+                val referencedClass = parameterType.member.declaration
+                referencedClass.eIsProxy().shouldBeFalse()
+                referencedClass.shouldBe(classInSameFile)
+            }
+
+            @Test
+            fun `should resolve enum within class with qualified access`() = withResource(NAMED_TYPE) {
+                val paramEnumInClassInSameFile =
+                    this.descendants<SmlParameter>().find { it.name == "paramEnumInClassInSameFile" }
+                paramEnumInClassInSameFile.shouldNotBeNull()
+
+                val enumInSameFile = this.descendants<SmlEnum>().find { it.name == "EnumInClassInSameFile" }
+                enumInSameFile.shouldNotBeNull()
+
+                val parameterType = paramEnumInClassInSameFile.type
+                parameterType.shouldBeInstanceOf<SmlMemberType>()
+
+                val referencedEnum = parameterType.member.declaration
+                referencedEnum.eIsProxy().shouldBeFalse()
+                referencedEnum.shouldBe(enumInSameFile)
+            }
+
+            @Test
+            fun `should resolve interface within class with qualified access`() = withResource(NAMED_TYPE) {
+                val paramInterfaceInClassInSameFile =
+                    this.descendants<SmlParameter>().find { it.name == "paramInterfaceInClassInSameFile" }
+                paramInterfaceInClassInSameFile.shouldNotBeNull()
+
+                val interfaceInSameFile = this.descendants<SmlInterface>().find { it.name == "InterfaceInClassInSameFile" }
+                interfaceInSameFile.shouldNotBeNull()
+
+                val parameterType = paramInterfaceInClassInSameFile.type
+                parameterType.shouldBeInstanceOf<SmlMemberType>()
+
+                val referencedInterface = parameterType.member.declaration
+                referencedInterface.eIsProxy().shouldBeFalse()
+                referencedInterface.shouldBe(interfaceInSameFile)
+            }
+
+            @Test
+            fun `should not resolve class within interface with qualified access`() = withResource(NAMED_TYPE) {
+                val paramClassInInterfaceInSameFile =
+                    this.descendants<SmlParameter>().find { it.name == "paramClassInInterfaceInSameFile" }
+                paramClassInInterfaceInSameFile.shouldNotBeNull()
+
+                val parameterType = paramClassInInterfaceInSameFile.type
+                parameterType.shouldBeInstanceOf<SmlMemberType>()
+
+                parameterType.member.declaration.eIsProxy().shouldBeTrue()
+            }
+
+            @Test
+            fun `should not resolve enum within interface with qualified access`() = withResource(NAMED_TYPE) {
+                val paramEnumInInterfaceInSameFile =
+                    this.descendants<SmlParameter>().find { it.name == "paramEnumInInterfaceInSameFile" }
+                paramEnumInInterfaceInSameFile.shouldNotBeNull()
+
+                val parameterType = paramEnumInInterfaceInSameFile.type
+                parameterType.shouldBeInstanceOf<SmlMemberType>()
+
+                parameterType.member.declaration.eIsProxy().shouldBeTrue()
+            }
+
+            @Test
+            fun `should not resolve interface within interface with qualified access`() = withResource(NAMED_TYPE) {
+                val paramInterfaceInInterfaceInSameFile =
+                    this.descendants<SmlParameter>().find { it.name == "paramInterfaceInInterfaceInSameFile" }
+                paramInterfaceInInterfaceInSameFile.shouldNotBeNull()
+
+                val parameterType = paramInterfaceInInterfaceInSameFile.type
+                parameterType.shouldBeInstanceOf<SmlMemberType>()
+
+                parameterType.member.declaration.eIsProxy().shouldBeTrue()
+            }
+
+            @Test
+            fun `should not resolve class within class with unqualified access`() = withResource(NAMED_TYPE) {
+                val paramUnqualifiedClassInClassInSameFile =
+                    this.descendants<SmlParameter>().find { it.name == "paramUnqualifiedClassInClassInSameFile" }
+                paramUnqualifiedClassInClassInSameFile.shouldNotBeNull()
+
+                val parameterType = paramUnqualifiedClassInClassInSameFile.type
+                parameterType.shouldBeInstanceOf<SmlNamedType>()
+
+                parameterType.declaration.eIsProxy().shouldBeTrue()
+            }
+
+            @Test
+            fun `should not resolve enum within class with unqualified access`() = withResource(NAMED_TYPE) {
+                val paramUnqualifiedEnumInClassInSameFile =
+                    this.descendants<SmlParameter>().find { it.name == "paramUnqualifiedEnumInClassInSameFile" }
+                paramUnqualifiedEnumInClassInSameFile.shouldNotBeNull()
+
+                val parameterType = paramUnqualifiedEnumInClassInSameFile.type
+                parameterType.shouldBeInstanceOf<SmlNamedType>()
+
+                parameterType.declaration.eIsProxy().shouldBeTrue()
+            }
+
+            @Test
+            fun `should not resolve interface within class with unqualified access`() = withResource(NAMED_TYPE) {
+                val paramUnqualifiedInterfaceInClassInSameFile =
+                    this.descendants<SmlParameter>().find { it.name == "paramUnqualifiedInterfaceInClassInSameFile" }
+                paramUnqualifiedInterfaceInClassInSameFile.shouldNotBeNull()
+
+                val parameterType = paramUnqualifiedInterfaceInClassInSameFile.type
+                parameterType.shouldBeInstanceOf<SmlNamedType>()
+
+                parameterType.declaration.eIsProxy().shouldBeTrue()
+            }
+
+            @Test
+            fun `should not resolve class within interface with unqualified access`() = withResource(NAMED_TYPE) {
+                val paramUnqualifiedClassInInterfaceInSameFile =
+                    this.descendants<SmlParameter>().find { it.name == "paramUnqualifiedClassInInterfaceInSameFile" }
+                paramUnqualifiedClassInInterfaceInSameFile.shouldNotBeNull()
+
+                val parameterType = paramUnqualifiedClassInInterfaceInSameFile.type
+                parameterType.shouldBeInstanceOf<SmlNamedType>()
+
+                parameterType.declaration.eIsProxy().shouldBeTrue()
+            }
+
+            @Test
+            fun `should not resolve enum within interface with unqualified access`() = withResource(NAMED_TYPE) {
+                val paramUnqualifiedEnumInInterfaceInSameFile =
+                    this.descendants<SmlParameter>().find { it.name == "paramUnqualifiedEnumInInterfaceInSameFile" }
+                paramUnqualifiedEnumInInterfaceInSameFile.shouldNotBeNull()
+
+                val parameterType = paramUnqualifiedEnumInInterfaceInSameFile.type
+                parameterType.shouldBeInstanceOf<SmlNamedType>()
+
+                parameterType.declaration.eIsProxy().shouldBeTrue()
+            }
+
+            @Test
+            fun `should not resolve interface within interface with unqualified access`() = withResource(NAMED_TYPE) {
+                val paramUnqualifiedInterfaceInInterfaceInSameFile =
+                    this.descendants<SmlParameter>().find { it.name == "paramUnqualifiedInterfaceInInterfaceInSameFile" }
+                paramUnqualifiedInterfaceInInterfaceInSameFile.shouldNotBeNull()
+
+                val parameterType = paramUnqualifiedInterfaceInInterfaceInSameFile.type
+                parameterType.shouldBeInstanceOf<SmlNamedType>()
+
+                parameterType.declaration.eIsProxy().shouldBeTrue()
+            }
+
+            @Test
+            fun `should resolve inherited class within class with qualified access`() = withResource(NAMED_TYPE) {
+                val paramClassInSuperClass =
+                    this.descendants<SmlParameter>().find { it.name == "paramClassInSuperClass" }
+                paramClassInSuperClass.shouldNotBeNull()
+
+                val classInSameFile = this.descendants<SmlClass>().find { it.name == "ClassInSuperClass" }
+                classInSameFile.shouldNotBeNull()
+
+                val parameterType = paramClassInSuperClass.type
+                parameterType.shouldBeInstanceOf<SmlMemberType>()
+
+                val referencedClass = parameterType.member.declaration
+                referencedClass.eIsProxy().shouldBeFalse()
+                referencedClass.shouldBe(classInSameFile)
+            }
+
+            @Test
+            fun `should resolve inherited enum within class with qualified access`() = withResource(NAMED_TYPE) {
+                val paramEnumInSuperClass =
+                    this.descendants<SmlParameter>().find { it.name == "paramEnumInSuperClass" }
+                paramEnumInSuperClass.shouldNotBeNull()
+
+                val enumInSameFile = this.descendants<SmlEnum>().find { it.name == "EnumInSuperClass" }
+                enumInSameFile.shouldNotBeNull()
+
+                val parameterType = paramEnumInSuperClass.type
+                parameterType.shouldBeInstanceOf<SmlMemberType>()
+
+                val referencedEnum = parameterType.member.declaration
+                referencedEnum.eIsProxy().shouldBeFalse()
+                referencedEnum.shouldBe(enumInSameFile)
+            }
+
+            @Test
+            fun `should resolve inherited interface within class with qualified access`() = withResource(NAMED_TYPE) {
+                val paramInterfaceInSuperClass =
+                    this.descendants<SmlParameter>().find { it.name == "paramInterfaceInSuperClass" }
+                paramInterfaceInSuperClass.shouldNotBeNull()
+
+                val interfaceInSameFile = this.descendants<SmlInterface>().find { it.name == "InterfaceInSuperClass" }
+                interfaceInSameFile.shouldNotBeNull()
+
+                val parameterType = paramInterfaceInSuperClass.type
+                parameterType.shouldBeInstanceOf<SmlMemberType>()
+
+                val referencedInterface = parameterType.member.declaration
+                referencedInterface.eIsProxy().shouldBeFalse()
+                referencedInterface.shouldBe(interfaceInSameFile)
+            }
+
+            @Test
+            fun `should not resolve inherited class within interface with qualified access`() = withResource(NAMED_TYPE) {
+                val paramClassInSuperInterface =
+                    this.descendants<SmlParameter>().find { it.name == "paramClassInSuperInterface" }
+                paramClassInSuperInterface.shouldNotBeNull()
+
+                val parameterType = paramClassInSuperInterface.type
+                parameterType.shouldBeInstanceOf<SmlMemberType>()
+
+                parameterType.member.declaration.eIsProxy().shouldBeTrue()
+            }
+
+            @Test
+            fun `should not resolve inherited enum within interface with qualified access`() = withResource(NAMED_TYPE) {
+                val paramEnumInSuperInterface =
+                    this.descendants<SmlParameter>().find { it.name == "paramEnumInSuperInterface" }
+                paramEnumInSuperInterface.shouldNotBeNull()
+
+                val parameterType = paramEnumInSuperInterface.type
+                parameterType.shouldBeInstanceOf<SmlMemberType>()
+
+                parameterType.member.declaration.eIsProxy().shouldBeTrue()
+            }
+
+            @Test
+            fun `should not resolve inherited interface within interface with qualified access`() = withResource(NAMED_TYPE) {
+                val paramInterfaceInSuperInterface =
+                    this.descendants<SmlParameter>().find { it.name == "paramInterfaceInSuperInterface" }
+                paramInterfaceInSuperInterface.shouldNotBeNull()
+
+                val parameterType = paramInterfaceInSuperInterface.type
+                parameterType.shouldBeInstanceOf<SmlMemberType>()
+
+                parameterType.member.declaration.eIsProxy().shouldBeTrue()
+            }
+        }
     }
+
+//    @Nested
+//    inner class Reference {
+//        @Test
+//        fun `should not resolve unknown declaration`() = withResource(REFERENCE) {
+//            val yields = this.descendants<SmlYield>().toList()
+//            yields.shouldHaveSize(7)
+//            yields[5].result.eIsProxy().shouldBeTrue()
+//        }
+//    }
 
     @Nested
     inner class TypeArgument {

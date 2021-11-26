@@ -4,8 +4,12 @@ import tests.languageTests.scoping.namedType2.ClassInOtherPackage1
 import tests.languageTests.scoping.namedType2.EnumInOtherPackage1
 import tests.languageTests.scoping.namedType2.InterfaceInOtherPackage1
 
-
-class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE> {
+open class SuperClass {
+    class ClassInSuperClass
+    enum EnumInSuperClass
+    interface InterfaceInSuperClass
+}
+class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE> sub SuperClass {
     class ClassInClassInSameFile
     enum EnumInClassInSameFile
     interface InterfaceInClassInSameFile
@@ -13,7 +17,12 @@ class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE> {
 
 enum EnumInSameFile
 
-interface InterfaceInSameFile {
+interface SuperInterface {
+    class ClassInSuperInterface
+    enum EnumInSuperInterface
+    interface InterfaceInSuperInterface
+}
+interface InterfaceInSameFile sub SuperInterface {
     class ClassInInterfaceInSameFile
     enum EnumInInterfaceInSameFile
     interface InterfaceInInterfaceInSameFile
@@ -63,4 +72,14 @@ fun memberTypes(
     paramUnqualifiedClassInInterfaceInSameFile: ClassInInterfaceInSameFile,
     paramUnqualifiedEnumInInterfaceInSameFile: EnumInInterfaceInSameFile,
     paramUnqualifiedInterfaceInInterfaceInSameFile: InterfaceInInterfaceInSameFile,
+)
+
+fun inheritedMemberTypes(
+    paramClassInSuperClass: ClassInSameFile<*>.ClassInSuperClass,
+    paramEnumInSuperClass: ClassInSameFile<*>.EnumInSuperClass,
+    paramInterfaceInSuperClass: ClassInSameFile<*>.InterfaceInSuperClass,
+
+    paramClassInSuperInterface: InterfaceInSameFile.ClassInSuperInterface,
+    paramEnumInSuperInterface: InterfaceInSameFile.EnumInSuperInterface,
+    paramInterfaceInSuperInterface: InterfaceInSameFile.InterfaceInSuperInterface,
 )
