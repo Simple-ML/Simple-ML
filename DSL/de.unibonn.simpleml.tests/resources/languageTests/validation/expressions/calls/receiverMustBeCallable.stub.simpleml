@@ -22,7 +22,8 @@ step test(a: Int, b: callable () -> ()) {
     val c = 1;
     val d = lambda () {};
 
-    // semantic_error "This expression must not be called."
+    /* References cannot point to annotations in the first place. */
+    // no_semantic_error "This expression must not be called."
     »MyAnnotation«();
     // no_semantic_error "This expression must not be called."
     »MyClass«();

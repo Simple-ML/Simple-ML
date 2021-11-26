@@ -638,6 +638,42 @@ class ScopingTest {
     inner class Reference {
 
         @Test
+        fun `should not resolve annotation in same file`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToAnnotations")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(4)
+            references[0].declaration.eIsProxy().shouldBeTrue()
+        }
+
+        @Test
+        fun `should not resolve annotation in same package`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToAnnotations")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(4)
+            references[1].declaration.eIsProxy().shouldBeTrue()
+        }
+
+        @Test
+        fun `should not resolve annotation in another package if imported`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToAnnotations")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(4)
+            references[2].declaration.eIsProxy().shouldBeTrue()
+        }
+
+        @Test
+        fun `should not resolve annotation in another package if not imported`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToAnnotations")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(4)
+            references[3].declaration.eIsProxy().shouldBeTrue()
+        }
+
+        @Test
         fun `should not resolve function locals`() = withResource(REFERENCE) {
             val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToFunctionLocals")
 

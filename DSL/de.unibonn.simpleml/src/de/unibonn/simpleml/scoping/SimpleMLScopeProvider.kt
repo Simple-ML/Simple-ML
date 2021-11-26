@@ -2,6 +2,7 @@ package de.unibonn.simpleml.scoping
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
+import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlArgumentList
@@ -90,7 +91,7 @@ class SimpleMLScopeProvider @Inject constructor(
                     super.delegateGetScope(context, SimpleMLPackage.Literals.SML_REFERENCE__DECLARATION)
                 ) {
                     // Keep only external declarations, since this also includes all local declarations
-                    it != null && it.eObjectOrProxy.eResource() != resource
+                    it != null && it.eObjectOrProxy.eResource() != resource && it.eObjectOrProxy !is SmlAnnotation
                 }
                 val declarationsInThisFile = declarationsInThisFile(resource, externalDeclarations)
 
@@ -156,8 +157,13 @@ class SimpleMLScopeProvider @Inject constructor(
     }
 
     private fun declarationsInThisFile(resource: Resource, externalDeclarations: IScope): IScope {
+        val members = resource.compilationUnitOrNull()
+            ?.members
+            ?.filter { it !is SmlAnnotation }
+            ?: emptyList()
+
         return Scopes.scopeFor(
-            resource.compilationUnitOrNull()?.members ?: emptyList(),
+            members,
             externalDeclarations
         )
     }
