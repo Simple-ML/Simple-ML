@@ -16,6 +16,7 @@ import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
 import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.tests.assertions.findUniqueDeclarationOrFail
 import de.unibonn.simpleml.tests.util.ParseHelper
 import de.unibonn.simpleml.tests.util.ResourceName
 import de.unibonn.simpleml.utils.descendants
@@ -54,8 +55,7 @@ class ScopingTest {
             val annotationUses = this.descendants<SmlAnnotationUse>().toList()
             annotationUses.shouldHaveSize(6)
 
-            val annotationInSameFile = this.descendants<SmlAnnotation>().firstOrNull()
-            annotationInSameFile.shouldNotBeNull()
+            val annotationInSameFile = findUniqueDeclarationOrFail<SmlAnnotation>("AnnotationInSameFile")
 
             val referencedAnnotation = annotationUses[0].annotation
             referencedAnnotation.eIsProxy().shouldBeFalse()
@@ -113,8 +113,7 @@ class ScopingTest {
                 val arguments = this.descendants<SmlArgument>().toList()
                 arguments.shouldHaveSize(9)
 
-                val parameterInSameFile = this.descendants<SmlParameter>().find { it.name == "parameterInSameFile" }
-                parameterInSameFile.shouldNotBeNull()
+                val parameterInSameFile = findUniqueDeclarationOrFail<SmlParameter>("parameterInSameFile")
 
                 val referencedParameter = arguments[0].parameter
                 referencedParameter.eIsProxy().shouldBeFalse()
@@ -195,11 +194,8 @@ class ScopingTest {
 
         @Test
         fun `should resolve class in same file`() = withResource(NAMED_TYPE) {
-            val paramClassInSameFile = this.descendants<SmlParameter>().find { it.name == "paramClassInSameFile" }
-            paramClassInSameFile.shouldNotBeNull()
-
-            val classInSameFile = this.descendants<SmlClass>().find { it.name == "ClassInSameFile" }
-            classInSameFile.shouldNotBeNull()
+            val paramClassInSameFile = findUniqueDeclarationOrFail<SmlParameter>("paramClassInSameFile")
+            val classInSameFile = findUniqueDeclarationOrFail<SmlClass>("ClassInSameFile")
 
             val parameterType = paramClassInSameFile.type
             parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -211,11 +207,8 @@ class ScopingTest {
 
         @Test
         fun `should resolve enum in same file`() = withResource(NAMED_TYPE) {
-            val paramEnumInSameFile = this.descendants<SmlParameter>().find { it.name == "paramEnumInSameFile" }
-            paramEnumInSameFile.shouldNotBeNull()
-
-            val enumInSameFile = this.descendants<SmlEnum>().find { it.name == "EnumInSameFile" }
-            enumInSameFile.shouldNotBeNull()
+            val paramEnumInSameFile = findUniqueDeclarationOrFail<SmlParameter>("paramEnumInSameFile")
+            val enumInSameFile = findUniqueDeclarationOrFail<SmlEnum>("EnumInSameFile")
 
             val parameterType = paramEnumInSameFile.type
             parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -227,12 +220,8 @@ class ScopingTest {
 
         @Test
         fun `should resolve interface in same file`() = withResource(NAMED_TYPE) {
-            val paramInterfaceInSameFile =
-                this.descendants<SmlParameter>().find { it.name == "paramInterfaceInSameFile" }
-            paramInterfaceInSameFile.shouldNotBeNull()
-
-            val interfaceInSameFile = this.descendants<SmlInterface>().find { it.name == "InterfaceInSameFile" }
-            interfaceInSameFile.shouldNotBeNull()
+            val paramInterfaceInSameFile = findUniqueDeclarationOrFail<SmlParameter>("paramInterfaceInSameFile")
+            val interfaceInSameFile = findUniqueDeclarationOrFail<SmlInterface>("InterfaceInSameFile")
 
             val parameterType = paramInterfaceInSameFile.type
             parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -244,8 +233,7 @@ class ScopingTest {
 
         @Test
         fun `should resolve class in same package`() = withResource(NAMED_TYPE) {
-            val paramClassInSamePackage = this.descendants<SmlParameter>().find { it.name == "paramClassInSamePackage" }
-            paramClassInSamePackage.shouldNotBeNull()
+            val paramClassInSamePackage = findUniqueDeclarationOrFail<SmlParameter>("paramClassInSamePackage")
 
             val parameterType = paramClassInSamePackage.type
             parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -257,8 +245,7 @@ class ScopingTest {
 
         @Test
         fun `should resolve enum in same package`() = withResource(NAMED_TYPE) {
-            val paramEnumInSamePackage = this.descendants<SmlParameter>().find { it.name == "paramEnumInSamePackage" }
-            paramEnumInSamePackage.shouldNotBeNull()
+            val paramEnumInSamePackage = findUniqueDeclarationOrFail<SmlParameter>("paramEnumInSamePackage")
 
             val parameterType = paramEnumInSamePackage.type
             parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -270,9 +257,7 @@ class ScopingTest {
 
         @Test
         fun `should resolve interface in same package`() = withResource(NAMED_TYPE) {
-            val paramInterfaceInSamePackage =
-                this.descendants<SmlParameter>().find { it.name == "paramInterfaceInSamePackage" }
-            paramInterfaceInSamePackage.shouldNotBeNull()
+            val paramInterfaceInSamePackage = findUniqueDeclarationOrFail<SmlParameter>("paramInterfaceInSamePackage")
 
             val parameterType = paramInterfaceInSamePackage.type
             parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -284,9 +269,7 @@ class ScopingTest {
 
         @Test
         fun `should resolve class in another package if imported`() = withResource(NAMED_TYPE) {
-            val paramClassInOtherPackage1 =
-                this.descendants<SmlParameter>().find { it.name == "paramClassInOtherPackage1" }
-            paramClassInOtherPackage1.shouldNotBeNull()
+            val paramClassInOtherPackage1 = findUniqueDeclarationOrFail<SmlParameter>("paramClassInOtherPackage1")
 
             val parameterType = paramClassInOtherPackage1.type
             parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -298,9 +281,7 @@ class ScopingTest {
 
         @Test
         fun `should resolve enum in another package if imported`() = withResource(NAMED_TYPE) {
-            val paramEnumInOtherPackage1 =
-                this.descendants<SmlParameter>().find { it.name == "paramEnumInOtherPackage1" }
-            paramEnumInOtherPackage1.shouldNotBeNull()
+            val paramEnumInOtherPackage1 = findUniqueDeclarationOrFail<SmlParameter>("paramEnumInOtherPackage1")
 
             val parameterType = paramEnumInOtherPackage1.type
             parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -313,8 +294,7 @@ class ScopingTest {
         @Test
         fun `should resolve interface in another package if imported`() = withResource(NAMED_TYPE) {
             val paramInterfaceInOtherPackage1 =
-                this.descendants<SmlParameter>().find { it.name == "paramInterfaceInOtherPackage1" }
-            paramInterfaceInOtherPackage1.shouldNotBeNull()
+                findUniqueDeclarationOrFail<SmlParameter>("paramInterfaceInOtherPackage1")
 
             val parameterType = paramInterfaceInOtherPackage1.type
             parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -326,9 +306,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve class in another package if not imported`() = withResource(NAMED_TYPE) {
-            val paramClassInOtherPackage2 =
-                this.descendants<SmlParameter>().find { it.name == "paramClassInOtherPackage2" }
-            paramClassInOtherPackage2.shouldNotBeNull()
+            val paramClassInOtherPackage2 = findUniqueDeclarationOrFail<SmlParameter>("paramClassInOtherPackage2")
 
             val parameterType = paramClassInOtherPackage2.type
             parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -339,9 +317,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve enum in another package if not imported`() = withResource(NAMED_TYPE) {
-            val paramEnumInOtherPackage2 =
-                this.descendants<SmlParameter>().find { it.name == "paramEnumInOtherPackage2" }
-            paramEnumInOtherPackage2.shouldNotBeNull()
+            val paramEnumInOtherPackage2 = findUniqueDeclarationOrFail<SmlParameter>("paramEnumInOtherPackage2")
 
             val parameterType = paramEnumInOtherPackage2.type
             parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -353,8 +329,7 @@ class ScopingTest {
         @Test
         fun `should not resolve interface in another package if not imported`() = withResource(NAMED_TYPE) {
             val paramInterfaceInOtherPackage2 =
-                this.descendants<SmlParameter>().find { it.name == "paramInterfaceInOtherPackage2" }
-            paramInterfaceInOtherPackage2.shouldNotBeNull()
+                findUniqueDeclarationOrFail<SmlParameter>("paramInterfaceInOtherPackage2")
 
             val parameterType = paramInterfaceInOtherPackage2.type
             parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -366,12 +341,8 @@ class ScopingTest {
         @Test
         fun `should resolve type parameters in same function`() = withResource(NAMED_TYPE) {
             val paramTypeParameterInSameFunction =
-                this.descendants<SmlParameter>().find { it.name == "paramTypeParameterInSameFunction" }
-            paramTypeParameterInSameFunction.shouldNotBeNull()
-
-            val typeParameter =
-                this.descendants<SmlTypeParameter>().find { it.name == "TYPE_PARAMETER_IN_SAME_FUNCTION" }
-            typeParameter.shouldNotBeNull()
+                findUniqueDeclarationOrFail<SmlParameter>("paramTypeParameterInSameFunction")
+            val typeParameter = findUniqueDeclarationOrFail<SmlTypeParameter>("TYPE_PARAMETER_IN_SAME_FUNCTION")
 
             val parameterType = paramTypeParameterInSameFunction.type
             parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -383,9 +354,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve type parameters in another declaration in same file`() = withResource(NAMED_TYPE) {
-            val paramTypeParameterInSameFile =
-                this.descendants<SmlParameter>().find { it.name == "paramTypeParameterInSameFile" }
-            paramTypeParameterInSameFile.shouldNotBeNull()
+            val paramTypeParameterInSameFile = findUniqueDeclarationOrFail<SmlParameter>("paramTypeParameterInSameFile")
 
             val parameterType = paramTypeParameterInSameFile.type
             parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -397,8 +366,7 @@ class ScopingTest {
         @Test
         fun `should not resolve type parameters in another declaration in same package`() = withResource(NAMED_TYPE) {
             val paramTypeParameterInSamePackage =
-                this.descendants<SmlParameter>().find { it.name == "paramTypeParameterInSamePackage" }
-            paramTypeParameterInSamePackage.shouldNotBeNull()
+                findUniqueDeclarationOrFail<SmlParameter>("paramTypeParameterInSamePackage")
 
             val parameterType = paramTypeParameterInSamePackage.type
             parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -411,8 +379,7 @@ class ScopingTest {
         fun `should not resolve type parameters in another declaration in another package`() =
             withResource(NAMED_TYPE) {
                 val paramTypeParameterInOtherPackage =
-                    this.descendants<SmlParameter>().find { it.name == "paramTypeParameterInOtherPackage" }
-                paramTypeParameterInOtherPackage.shouldNotBeNull()
+                    findUniqueDeclarationOrFail<SmlParameter>("paramTypeParameterInOtherPackage")
 
                 val parameterType = paramTypeParameterInOtherPackage.type
                 parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -424,8 +391,7 @@ class ScopingTest {
         @Test
         fun `should not resolve unknown declaration`() = withResource(NAMED_TYPE) {
             val paramUnresolvedNamedTypeDeclaration =
-                this.descendants<SmlParameter>().find { it.name == "paramUnresolvedNamedTypeDeclaration" }
-            paramUnresolvedNamedTypeDeclaration.shouldNotBeNull()
+                findUniqueDeclarationOrFail<SmlParameter>("paramUnresolvedNamedTypeDeclaration")
 
             val parameterType = paramUnresolvedNamedTypeDeclaration.type
             parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -437,8 +403,7 @@ class ScopingTest {
         @Test
         fun `should not resolve something that is not a named type declaration`() = withResource(NAMED_TYPE) {
             val paramNotANamedTypeDeclaration =
-                this.descendants<SmlParameter>().find { it.name == "paramNotANamedTypeDeclaration" }
-            paramNotANamedTypeDeclaration.shouldNotBeNull()
+                findUniqueDeclarationOrFail<SmlParameter>("paramNotANamedTypeDeclaration")
 
             val parameterType = paramNotANamedTypeDeclaration.type
             parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -452,11 +417,8 @@ class ScopingTest {
             @Test
             fun `should resolve class within class with qualified access`() = withResource(NAMED_TYPE) {
                 val paramClassInClassInSameFile =
-                    this.descendants<SmlParameter>().find { it.name == "paramClassInClassInSameFile" }
-                paramClassInClassInSameFile.shouldNotBeNull()
-
-                val classInSameFile = this.descendants<SmlClass>().find { it.name == "ClassInClassInSameFile" }
-                classInSameFile.shouldNotBeNull()
+                    findUniqueDeclarationOrFail<SmlParameter>("paramClassInClassInSameFile")
+                val classInSameFile = findUniqueDeclarationOrFail<SmlClass>("ClassInClassInSameFile")
 
                 val parameterType = paramClassInClassInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlMemberType>()
@@ -468,12 +430,8 @@ class ScopingTest {
 
             @Test
             fun `should resolve enum within class with qualified access`() = withResource(NAMED_TYPE) {
-                val paramEnumInClassInSameFile =
-                    this.descendants<SmlParameter>().find { it.name == "paramEnumInClassInSameFile" }
-                paramEnumInClassInSameFile.shouldNotBeNull()
-
-                val enumInSameFile = this.descendants<SmlEnum>().find { it.name == "EnumInClassInSameFile" }
-                enumInSameFile.shouldNotBeNull()
+                val paramEnumInClassInSameFile = findUniqueDeclarationOrFail<SmlParameter>("paramEnumInClassInSameFile")
+                val enumInSameFile = findUniqueDeclarationOrFail<SmlEnum>("EnumInClassInSameFile")
 
                 val parameterType = paramEnumInClassInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlMemberType>()
@@ -486,11 +444,8 @@ class ScopingTest {
             @Test
             fun `should resolve interface within class with qualified access`() = withResource(NAMED_TYPE) {
                 val paramInterfaceInClassInSameFile =
-                    this.descendants<SmlParameter>().find { it.name == "paramInterfaceInClassInSameFile" }
-                paramInterfaceInClassInSameFile.shouldNotBeNull()
-
-                val interfaceInSameFile = this.descendants<SmlInterface>().find { it.name == "InterfaceInClassInSameFile" }
-                interfaceInSameFile.shouldNotBeNull()
+                    findUniqueDeclarationOrFail<SmlParameter>("paramInterfaceInClassInSameFile")
+                val interfaceInSameFile = findUniqueDeclarationOrFail<SmlInterface>("InterfaceInClassInSameFile")
 
                 val parameterType = paramInterfaceInClassInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlMemberType>()
@@ -503,8 +458,7 @@ class ScopingTest {
             @Test
             fun `should not resolve class within interface with qualified access`() = withResource(NAMED_TYPE) {
                 val paramClassInInterfaceInSameFile =
-                    this.descendants<SmlParameter>().find { it.name == "paramClassInInterfaceInSameFile" }
-                paramClassInInterfaceInSameFile.shouldNotBeNull()
+                    findUniqueDeclarationOrFail<SmlParameter>("paramClassInInterfaceInSameFile")
 
                 val parameterType = paramClassInInterfaceInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlMemberType>()
@@ -515,8 +469,7 @@ class ScopingTest {
             @Test
             fun `should not resolve enum within interface with qualified access`() = withResource(NAMED_TYPE) {
                 val paramEnumInInterfaceInSameFile =
-                    this.descendants<SmlParameter>().find { it.name == "paramEnumInInterfaceInSameFile" }
-                paramEnumInInterfaceInSameFile.shouldNotBeNull()
+                    findUniqueDeclarationOrFail<SmlParameter>("paramEnumInInterfaceInSameFile")
 
                 val parameterType = paramEnumInInterfaceInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlMemberType>()
@@ -527,8 +480,7 @@ class ScopingTest {
             @Test
             fun `should not resolve interface within interface with qualified access`() = withResource(NAMED_TYPE) {
                 val paramInterfaceInInterfaceInSameFile =
-                    this.descendants<SmlParameter>().find { it.name == "paramInterfaceInInterfaceInSameFile" }
-                paramInterfaceInInterfaceInSameFile.shouldNotBeNull()
+                    findUniqueDeclarationOrFail<SmlParameter>("paramInterfaceInInterfaceInSameFile")
 
                 val parameterType = paramInterfaceInInterfaceInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlMemberType>()
@@ -539,8 +491,7 @@ class ScopingTest {
             @Test
             fun `should not resolve class within class with unqualified access`() = withResource(NAMED_TYPE) {
                 val paramUnqualifiedClassInClassInSameFile =
-                    this.descendants<SmlParameter>().find { it.name == "paramUnqualifiedClassInClassInSameFile" }
-                paramUnqualifiedClassInClassInSameFile.shouldNotBeNull()
+                    findUniqueDeclarationOrFail<SmlParameter>("paramUnqualifiedClassInClassInSameFile")
 
                 val parameterType = paramUnqualifiedClassInClassInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -551,8 +502,7 @@ class ScopingTest {
             @Test
             fun `should not resolve enum within class with unqualified access`() = withResource(NAMED_TYPE) {
                 val paramUnqualifiedEnumInClassInSameFile =
-                    this.descendants<SmlParameter>().find { it.name == "paramUnqualifiedEnumInClassInSameFile" }
-                paramUnqualifiedEnumInClassInSameFile.shouldNotBeNull()
+                    findUniqueDeclarationOrFail<SmlParameter>("paramUnqualifiedEnumInClassInSameFile")
 
                 val parameterType = paramUnqualifiedEnumInClassInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -563,8 +513,7 @@ class ScopingTest {
             @Test
             fun `should not resolve interface within class with unqualified access`() = withResource(NAMED_TYPE) {
                 val paramUnqualifiedInterfaceInClassInSameFile =
-                    this.descendants<SmlParameter>().find { it.name == "paramUnqualifiedInterfaceInClassInSameFile" }
-                paramUnqualifiedInterfaceInClassInSameFile.shouldNotBeNull()
+                    findUniqueDeclarationOrFail<SmlParameter>("paramUnqualifiedInterfaceInClassInSameFile")
 
                 val parameterType = paramUnqualifiedInterfaceInClassInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -575,8 +524,7 @@ class ScopingTest {
             @Test
             fun `should not resolve class within interface with unqualified access`() = withResource(NAMED_TYPE) {
                 val paramUnqualifiedClassInInterfaceInSameFile =
-                    this.descendants<SmlParameter>().find { it.name == "paramUnqualifiedClassInInterfaceInSameFile" }
-                paramUnqualifiedClassInInterfaceInSameFile.shouldNotBeNull()
+                    findUniqueDeclarationOrFail<SmlParameter>("paramUnqualifiedClassInInterfaceInSameFile")
 
                 val parameterType = paramUnqualifiedClassInInterfaceInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -587,8 +535,7 @@ class ScopingTest {
             @Test
             fun `should not resolve enum within interface with unqualified access`() = withResource(NAMED_TYPE) {
                 val paramUnqualifiedEnumInInterfaceInSameFile =
-                    this.descendants<SmlParameter>().find { it.name == "paramUnqualifiedEnumInInterfaceInSameFile" }
-                paramUnqualifiedEnumInInterfaceInSameFile.shouldNotBeNull()
+                    findUniqueDeclarationOrFail<SmlParameter>("paramUnqualifiedEnumInInterfaceInSameFile")
 
                 val parameterType = paramUnqualifiedEnumInInterfaceInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -599,8 +546,7 @@ class ScopingTest {
             @Test
             fun `should not resolve interface within interface with unqualified access`() = withResource(NAMED_TYPE) {
                 val paramUnqualifiedInterfaceInInterfaceInSameFile =
-                    this.descendants<SmlParameter>().find { it.name == "paramUnqualifiedInterfaceInInterfaceInSameFile" }
-                paramUnqualifiedInterfaceInInterfaceInSameFile.shouldNotBeNull()
+                    findUniqueDeclarationOrFail<SmlParameter>("paramUnqualifiedInterfaceInInterfaceInSameFile")
 
                 val parameterType = paramUnqualifiedInterfaceInInterfaceInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlNamedType>()
@@ -610,12 +556,8 @@ class ScopingTest {
 
             @Test
             fun `should resolve inherited class within class with qualified access`() = withResource(NAMED_TYPE) {
-                val paramClassInSuperClass =
-                    this.descendants<SmlParameter>().find { it.name == "paramClassInSuperClass" }
-                paramClassInSuperClass.shouldNotBeNull()
-
-                val classInSameFile = this.descendants<SmlClass>().find { it.name == "ClassInSuperClass" }
-                classInSameFile.shouldNotBeNull()
+                val paramClassInSuperClass = findUniqueDeclarationOrFail<SmlParameter>("paramClassInSuperClass")
+                val classInSameFile = findUniqueDeclarationOrFail<SmlClass>("ClassInSuperClass")
 
                 val parameterType = paramClassInSuperClass.type
                 parameterType.shouldBeInstanceOf<SmlMemberType>()
@@ -627,12 +569,8 @@ class ScopingTest {
 
             @Test
             fun `should resolve inherited enum within class with qualified access`() = withResource(NAMED_TYPE) {
-                val paramEnumInSuperClass =
-                    this.descendants<SmlParameter>().find { it.name == "paramEnumInSuperClass" }
-                paramEnumInSuperClass.shouldNotBeNull()
-
-                val enumInSameFile = this.descendants<SmlEnum>().find { it.name == "EnumInSuperClass" }
-                enumInSameFile.shouldNotBeNull()
+                val paramEnumInSuperClass = findUniqueDeclarationOrFail<SmlParameter>("paramEnumInSuperClass")
+                val enumInSameFile = findUniqueDeclarationOrFail<SmlEnum>("EnumInSuperClass")
 
                 val parameterType = paramEnumInSuperClass.type
                 parameterType.shouldBeInstanceOf<SmlMemberType>()
@@ -644,12 +582,8 @@ class ScopingTest {
 
             @Test
             fun `should resolve inherited interface within class with qualified access`() = withResource(NAMED_TYPE) {
-                val paramInterfaceInSuperClass =
-                    this.descendants<SmlParameter>().find { it.name == "paramInterfaceInSuperClass" }
-                paramInterfaceInSuperClass.shouldNotBeNull()
-
-                val interfaceInSameFile = this.descendants<SmlInterface>().find { it.name == "InterfaceInSuperClass" }
-                interfaceInSameFile.shouldNotBeNull()
+                val paramInterfaceInSuperClass = findUniqueDeclarationOrFail<SmlParameter>("paramInterfaceInSuperClass")
+                val interfaceInSameFile = findUniqueDeclarationOrFail<SmlInterface>("InterfaceInSuperClass")
 
                 val parameterType = paramInterfaceInSuperClass.type
                 parameterType.shouldBeInstanceOf<SmlMemberType>()
@@ -660,40 +594,40 @@ class ScopingTest {
             }
 
             @Test
-            fun `should not resolve inherited class within interface with qualified access`() = withResource(NAMED_TYPE) {
-                val paramClassInSuperInterface =
-                    this.descendants<SmlParameter>().find { it.name == "paramClassInSuperInterface" }
-                paramClassInSuperInterface.shouldNotBeNull()
+            fun `should not resolve inherited class within interface with qualified access`() =
+                withResource(NAMED_TYPE) {
+                    val paramClassInSuperInterface =
+                        findUniqueDeclarationOrFail<SmlParameter>("paramClassInSuperInterface")
 
-                val parameterType = paramClassInSuperInterface.type
-                parameterType.shouldBeInstanceOf<SmlMemberType>()
+                    val parameterType = paramClassInSuperInterface.type
+                    parameterType.shouldBeInstanceOf<SmlMemberType>()
 
-                parameterType.member.declaration.eIsProxy().shouldBeTrue()
-            }
-
-            @Test
-            fun `should not resolve inherited enum within interface with qualified access`() = withResource(NAMED_TYPE) {
-                val paramEnumInSuperInterface =
-                    this.descendants<SmlParameter>().find { it.name == "paramEnumInSuperInterface" }
-                paramEnumInSuperInterface.shouldNotBeNull()
-
-                val parameterType = paramEnumInSuperInterface.type
-                parameterType.shouldBeInstanceOf<SmlMemberType>()
-
-                parameterType.member.declaration.eIsProxy().shouldBeTrue()
-            }
+                    parameterType.member.declaration.eIsProxy().shouldBeTrue()
+                }
 
             @Test
-            fun `should not resolve inherited interface within interface with qualified access`() = withResource(NAMED_TYPE) {
-                val paramInterfaceInSuperInterface =
-                    this.descendants<SmlParameter>().find { it.name == "paramInterfaceInSuperInterface" }
-                paramInterfaceInSuperInterface.shouldNotBeNull()
+            fun `should not resolve inherited enum within interface with qualified access`() =
+                withResource(NAMED_TYPE) {
+                    val paramEnumInSuperInterface =
+                        findUniqueDeclarationOrFail<SmlParameter>("paramEnumInSuperInterface")
 
-                val parameterType = paramInterfaceInSuperInterface.type
-                parameterType.shouldBeInstanceOf<SmlMemberType>()
+                    val parameterType = paramEnumInSuperInterface.type
+                    parameterType.shouldBeInstanceOf<SmlMemberType>()
 
-                parameterType.member.declaration.eIsProxy().shouldBeTrue()
-            }
+                    parameterType.member.declaration.eIsProxy().shouldBeTrue()
+                }
+
+            @Test
+            fun `should not resolve inherited interface within interface with qualified access`() =
+                withResource(NAMED_TYPE) {
+                    val paramInterfaceInSuperInterface =
+                        findUniqueDeclarationOrFail<SmlParameter>("paramInterfaceInSuperInterface")
+
+                    val parameterType = paramInterfaceInSuperInterface.type
+                    parameterType.shouldBeInstanceOf<SmlMemberType>()
+
+                    parameterType.member.declaration.eIsProxy().shouldBeTrue()
+                }
         }
     }
 
@@ -717,8 +651,7 @@ class ScopingTest {
                 typeArguments.shouldHaveSize(9)
 
                 val typeParameterInSameFile =
-                    this.descendants<SmlTypeParameter>().find { it.name == "TYPE_PARAMETER_IN_SAME_FILE" }
-                typeParameterInSameFile.shouldNotBeNull()
+                    findUniqueDeclarationOrFail<SmlTypeParameter>("TYPE_PARAMETER_IN_SAME_FILE")
 
                 val referencedTypeParameter = typeArguments[0].typeParameter
                 referencedTypeParameter.eIsProxy().shouldBeFalse()
@@ -803,8 +736,7 @@ class ScopingTest {
             typeParameterConstraints.shouldHaveSize(7)
 
             val typeParameterInSameDeclaration =
-                this.descendants<SmlTypeParameter>().find { it.name == "TYPE_PARAMETER_IN_SAME_FUNCTION" }
-            typeParameterInSameDeclaration.shouldNotBeNull()
+                findUniqueDeclarationOrFail<SmlTypeParameter>("TYPE_PARAMETER_IN_SAME_FUNCTION")
 
             val referencedTypeParameter = typeParameterConstraints[0].leftOperand
             referencedTypeParameter.eIsProxy().shouldBeFalse()
@@ -867,8 +799,7 @@ class ScopingTest {
             val yields = this.descendants<SmlYield>().toList()
             yields.shouldHaveSize(7)
 
-            val resultsInSameFunction = this.descendants<SmlResult>().find { it.name == "resultInSameStep" }
-            resultsInSameFunction.shouldNotBeNull()
+            val resultsInSameFunction = findUniqueDeclarationOrFail<SmlResult>("resultInSameStep")
 
             val referencedResult = yields[0].result
             referencedResult.eIsProxy().shouldBeFalse()
