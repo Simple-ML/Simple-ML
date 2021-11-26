@@ -12,6 +12,7 @@ import de.unibonn.simpleml.simpleML.SmlInterface
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
@@ -933,6 +934,74 @@ class ScopingTest {
                 val declaration = references[4].declaration
                 declaration.shouldBeResolved()
                 declaration.shouldBe(parameterInLambda)
+            }
+
+        @Test
+        fun `should resolve placeholder of workflow step in same workflow step`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToPlaceholders")
+            val placeholderInStep = step.findUniqueDeclarationOrFail<SmlPlaceholder>("placeholderInStep")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(5)
+
+            val declaration = references[0].declaration
+            declaration.shouldBeResolved()
+            declaration.shouldBe(placeholderInStep)
+        }
+
+        @Test
+        fun `should resolve placeholder of workflow step in lambda in same workflow step`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToPlaceholders")
+            val placeholderInStep = step.findUniqueDeclarationOrFail<SmlPlaceholder>("placeholderInStep")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(5)
+
+            val declaration = references[1].declaration
+            declaration.shouldBeResolved()
+            declaration.shouldBe(placeholderInStep)
+        }
+
+        @Test
+        fun `should resolve placeholder of lambda in same lambda`() =
+            withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToPlaceholders")
+                val placeholderInLambda = step.findUniqueDeclarationOrFail<SmlPlaceholder>("placeholderInLambda")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(5)
+
+                val declaration = references[2].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(placeholderInLambda)
+            }
+
+        @Test
+        fun `should resolve placeholder of workflow step in lambda within lambda in same workflow step`() =
+            withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToPlaceholders")
+                val placeholderInStep = step.findUniqueDeclarationOrFail<SmlPlaceholder>("placeholderInStep")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(5)
+
+                val declaration = references[3].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(placeholderInStep)
+            }
+
+        @Test
+        fun `should resolve placeholder of lambda in nested lambda`() =
+            withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToPlaceholders")
+                val placeholderInLambda = step.findUniqueDeclarationOrFail<SmlPlaceholder>("placeholderInLambda")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(5)
+
+                val declaration = references[4].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(placeholderInLambda)
             }
 
         @Test
