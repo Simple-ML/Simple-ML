@@ -24,10 +24,7 @@ import de.unibonn.simpleml.tests.assertions.shouldBeUnresolved
 import de.unibonn.simpleml.tests.util.ParseHelper
 import de.unibonn.simpleml.tests.util.ResourceName
 import de.unibonn.simpleml.utils.descendants
-import io.kotest.assertions.asClue
 import io.kotest.assertions.forEachAsClue
-import io.kotest.matchers.booleans.shouldBeFalse
-import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -669,6 +666,52 @@ class ScopingTest {
         @Test
         fun `should not resolve annotation in another package if not imported`() = withResource(REFERENCE) {
             val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToAnnotations")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(4)
+            references[3].declaration.shouldBeUnresolved()
+        }
+
+        @Test
+        fun `should resolve class in same file`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToClasses")
+            val classInSameFile = findUniqueDeclarationOrFail<SmlClass>("ClassInSameFile")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(4)
+
+            val declaration = references[0].declaration
+            declaration.shouldBeResolved()
+            declaration.shouldBe(classInSameFile)
+        }
+
+        @Test
+        fun `should resolve class in same package`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToClasses")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(4)
+
+            val declaration = references[1].declaration
+            declaration.shouldBeResolved()
+            declaration.name.shouldBe("ClassInSamePackage")
+        }
+
+        @Test
+        fun `should resolve class in another package if imported`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToClasses")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(4)
+
+            val declaration = references[2].declaration
+            declaration.shouldBeResolved()
+            declaration.name.shouldBe("ClassInOtherPackage1")
+        }
+
+        @Test
+        fun `should not resolve class in another package if not imported`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToClasses")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)

@@ -2,7 +2,6 @@ package de.unibonn.simpleml.tests.assertions
 
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.utils.descendants
-import io.kotest.assertions.asClue
 import org.eclipse.emf.ecore.EObject
 
 /**
@@ -35,17 +34,13 @@ inline fun <reified T : SmlDeclaration> EObject.shouldHaveUniqueDeclaration(name
 }
 
 fun SmlDeclaration.shouldBeResolved() {
-    this.asClue {
-        if (this.eIsProxy()) {
-            throw AssertionError("Expected cross-reference to be resolved but it wasn't.")
-        }
+    if (this.eIsProxy()) {
+        throw AssertionError("Expected cross-reference to be resolved but it wasn't.")
     }
 }
 
 fun SmlDeclaration.shouldBeUnresolved() {
-    this.asClue {
-        if (!this.eIsProxy()) {
-            throw AssertionError("Expected cross-reference to be unresolved but it wasn't.")
-        }
+    if (!this.eIsProxy()) {
+        throw AssertionError("Expected cross-reference to be unresolved but it wasn't.")
     }
 }
