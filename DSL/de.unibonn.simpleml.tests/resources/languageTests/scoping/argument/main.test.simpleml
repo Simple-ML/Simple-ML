@@ -1,4 +1,4 @@
-package tests.languageTests.scoping.argument
+package tests.languageTests.scoping.argument1
 
 import tests.languageTests.scoping.argument2.functionInOtherPackage1
 

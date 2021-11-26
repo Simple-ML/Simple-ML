@@ -1,55 +1,147 @@
-package tests.languageTests.scoping.reference
+package tests.languageTests.scoping.reference1
+
+import tests.languageTests.scoping.reference2.AnnotationInOtherPackage1
+import tests.languageTests.scoping.reference2.ClassInOtherPackage1
+import tests.languageTests.scoping.reference2.EnumInOtherPackage1
+import tests.languageTests.scoping.reference2.globalFunctionInOtherPackage1
+import tests.languageTests.scoping.reference2.InterfaceInOtherPackage1
+import tests.languageTests.scoping.reference2.stepInOtherPackage1
+import tests.languageTests.scoping.reference2.workflowInOtherPackage1
+
+annotation AnnotationInSameFile
 
 class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE>
-enum EnumInSameFile {
-    
+constructor (constructorParameterInSameFile: Int) {
+    static attr classStaticAttributeInSameFile: Int
+    attr classInstanceAttributeInSameFile: Int
+
+    static fun classStaticMethodInSameFile(classStaticMethodParameterInSameFile: Int) -> classStaticMethodResultInSameFile: Int
+    fun classInstanceMethodInSameFile(classInstanceMethodParameterInSameFile: Int) -> classInstanceMethodResultInSameFile: Int
 }
-interface InterfaceInSameFile
+
+enum EnumInSameFile {
+    ENUM_INSTANCE_IN_SAME_FILE
+}
+
+fun globalFunctionInSameFile(globalFunctionParameterInSameFile: Int) -> globalFunctionResultInSameFile: Int
+
+interface InterfaceInSameFile {
+    static attr interfaceStaticAttributeInSameFile: Int
+    attr interfaceInstanceAttributeInSameFile: Int
+
+    static fun interfaceStaticMethodInSameFile() -> interfaceStaticMethodResultInSameFile: Int
+    fun interfaceInstanceMethodInSameFile() -> interfaceInstanceMethodInSameFile: Int
+}
+fun interfaceInSameFileFactory() -> result: InterfaceInSameFile
+
+step stepInSameFile(stepParameterInSameFile: Int) -> stepResultInSameFile: Int {
+    val placeholderInSameFile = 1;
+}
+
+workflow workflowInSameFile {}
+
+
+// Test references -------------------------------------------------------------
 
 step directReferences() {
-    
+    // TODO
 }
 
 step forwardReferences() {
-    
+    // TODO
 }
 
 step shadowedReferences() {
-
+    // TODO
 }
 
 step referencesToClassMembers() {
-
+    // TODO
 }
 
 step referencesToEnumInstances() {
-
+    // TODO
 }
 
 step referencesToInterfaceMembers() {
-
+    // TODO
 }
 
-step referencesToCallableTypeResults() {
-
+step referencesToCallableTypeResults(f: callable () -> (callableTypeResult: Int)) {
+    f().callableTypeResult;
 }
 
 step referencesToConstructorResults() {
-
+    ClassInSameFile<*>(1).instance;
 }
 
 step referencesToFunctionResults() {
+    ClassInSameFile.classStaticMethodInSameFile(1).classStaticMethodResultInSameFile;
+    ClassInSameFile<*>(1).classInstanceMethodInSameFile(1).classInstanceMethodResultInSameFile;
 
+    InterfaceInSameFile.interfaceStaticMethodInSameFile().interfaceStaticMethodResultInSameFile;
+    interfaceInSameFileFactory().interfaceInstanceMethodInSameFile().interfaceInstanceMethodResultInSameFile;
+
+    globalFunctionInSameFile(1).globalFunctionResultInSameFile;
 }
 
 step referencesToLambdaResults() {
-
+    val f = lambda {
+        yield lambdaResult = 1;
+    }
+    
+    f().lambdaResult;
 }
 
 step referencesToWorkflowStepResults() {
-
+    stepInSameFile(1).stepResultInSameFile;
 }
 
-step unresolvedReferences() {
+step referencesToTypeParameters() {
+    TYPE_PARAMETER_IN_SAME_FILE;
+}
+
+step referencesToClassInternas() {
+    constructorParameterInSameFile;
+
+    classStaticAttributeInSameFile;
+    classInstanceAttributeInSameFile;
+
+    classStaticMethodInSameFile;
+    classStaticMethodParameterInSameFile;
+    classStaticMethodResultInSameFile;
     
+    classInstanceMethodInSameFile;
+    classInstanceMethodParameterInSameFile;
+    classInstanceMethodResultInSameFile;
+}
+
+step referencesToEnumInternas() {
+    ENUM_INSTANCE_IN_SAME_FILE;
+}
+
+step referencesToInterfaceInternas() {
+    interfaceStaticAttributeInSameFile;
+    interfaceInstanceAttributeInSameFile;
+
+    interfaceStaticMethodInSameFile;
+    interfaceStaticMethodResultInSameFile;
+
+    interfaceInstanceMethodInSameFile;
+    interfaceInstanceMethodInSameFile;
+}
+
+step referencesToGlobalFunctionInternas() {
+    globalFunctionParameterInSameFile;
+    globalFunctionResultInSameFile;
+}
+
+step referencesToWorkflowStepInternas() {
+    stepParameterInSameFile;
+    stepResultInSameFile;
+    placeholderInSameFile;
+}
+
+step unresolvedReference() {
+    unresolvedReference;
 }

@@ -1,3 +1,3 @@
-package tests.languageTests.scoping.annotationUse
+package tests.languageTests.scoping.annotationUse1
 
 annotation AnnotationInSamePackage

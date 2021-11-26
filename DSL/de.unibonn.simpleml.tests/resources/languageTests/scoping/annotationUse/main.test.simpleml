@@ -1,4 +1,4 @@
-package tests.languageTests.scoping.annotationUse
+package tests.languageTests.scoping.annotationUse1
 
 import tests.languageTests.scoping.annotationUse2.AnnotationInOtherPackage1
 
