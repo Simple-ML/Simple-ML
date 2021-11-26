@@ -19,6 +19,8 @@ import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.tests.assertions.findUniqueDeclarationOrFail
+import de.unibonn.simpleml.tests.assertions.shouldBeResolved
+import de.unibonn.simpleml.tests.assertions.shouldBeUnresolved
 import de.unibonn.simpleml.tests.util.ParseHelper
 import de.unibonn.simpleml.tests.util.ResourceName
 import de.unibonn.simpleml.utils.descendants
@@ -61,7 +63,7 @@ class ScopingTest {
             val annotationInSameFile = findUniqueDeclarationOrFail<SmlAnnotation>("AnnotationInSameFile")
 
             val referencedAnnotation = annotationUses[0].annotation
-            referencedAnnotation.eIsProxy().shouldBeFalse()
+            referencedAnnotation.shouldBeResolved()
             referencedAnnotation.shouldBe(annotationInSameFile)
         }
 
@@ -71,7 +73,7 @@ class ScopingTest {
             annotationUses.shouldHaveSize(6)
 
             val annotation = annotationUses[1].annotation
-            annotation.eIsProxy().shouldBeFalse()
+            annotation.shouldBeResolved()
             annotation.name.shouldBe("AnnotationInSamePackage")
         }
 
@@ -81,7 +83,7 @@ class ScopingTest {
             annotationUses.shouldHaveSize(6)
 
             val annotation = annotationUses[2].annotation
-            annotation.eIsProxy().shouldBeFalse()
+            annotation.shouldBeResolved()
             annotation.name.shouldBe("AnnotationInOtherPackage1")
         }
 
@@ -89,21 +91,21 @@ class ScopingTest {
         fun `should not resolve annotations in another package if not imported`() = withResource(ANNOTATION_USE) {
             val annotationUses = this.descendants<SmlAnnotationUse>().toList()
             annotationUses.shouldHaveSize(6)
-            annotationUses[3].annotation.eIsProxy().shouldBeTrue()
+            annotationUses[3].annotation.shouldBeUnresolved()
         }
 
         @Test
         fun `should not resolve unknown declaration`() = withResource(ANNOTATION_USE) {
             val annotationUses = this.descendants<SmlAnnotationUse>().toList()
             annotationUses.shouldHaveSize(6)
-            annotationUses[4].annotation.eIsProxy().shouldBeTrue()
+            annotationUses[4].annotation.shouldBeUnresolved()
         }
 
         @Test
         fun `should not resolve something that is not an annotation`() = withResource(ANNOTATION_USE) {
             val annotationUses = this.descendants<SmlAnnotationUse>().toList()
             annotationUses.shouldHaveSize(6)
-            annotationUses[5].annotation.eIsProxy().shouldBeTrue()
+            annotationUses[5].annotation.shouldBeUnresolved()
         }
     }
 
@@ -119,7 +121,7 @@ class ScopingTest {
                 val parameterInSameFile = findUniqueDeclarationOrFail<SmlParameter>("parameterInSameFile")
 
                 val referencedParameter = arguments[0].parameter
-                referencedParameter.eIsProxy().shouldBeFalse()
+                referencedParameter.shouldBeResolved()
                 referencedParameter.shouldBe(parameterInSameFile)
             }
 
@@ -130,7 +132,7 @@ class ScopingTest {
                 arguments.shouldHaveSize(9)
 
                 val referencedParameter = arguments[1].parameter
-                referencedParameter.eIsProxy().shouldBeFalse()
+                referencedParameter.shouldBeResolved()
                 referencedParameter.name.shouldBe("parameterInSamePackage")
             }
 
@@ -141,7 +143,7 @@ class ScopingTest {
                 arguments.shouldHaveSize(9)
 
                 val referencedParameter = arguments[2].parameter
-                referencedParameter.eIsProxy().shouldBeFalse()
+                referencedParameter.shouldBeResolved()
                 referencedParameter.name.shouldBe("parameterInOtherPackage1")
             }
 
@@ -150,7 +152,7 @@ class ScopingTest {
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
                 arguments.shouldHaveSize(9)
-                arguments[3].parameter.eIsProxy().shouldBeTrue()
+                arguments[3].parameter.shouldBeUnresolved()
             }
 
         @Test
@@ -158,7 +160,7 @@ class ScopingTest {
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
                 arguments.shouldHaveSize(9)
-                arguments[4].parameter.eIsProxy().shouldBeTrue()
+                arguments[4].parameter.shouldBeUnresolved()
             }
 
         @Test
@@ -166,7 +168,7 @@ class ScopingTest {
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
                 arguments.shouldHaveSize(9)
-                arguments[5].parameter.eIsProxy().shouldBeTrue()
+                arguments[5].parameter.shouldBeUnresolved()
             }
 
         @Test
@@ -174,21 +176,21 @@ class ScopingTest {
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
                 arguments.shouldHaveSize(9)
-                arguments[6].parameter.eIsProxy().shouldBeTrue()
+                arguments[6].parameter.shouldBeUnresolved()
             }
 
         @Test
         fun `should not resolve unknown declaration`() = withResource(ARGUMENT) {
             val arguments = this.descendants<SmlArgument>().toList()
             arguments.shouldHaveSize(9)
-            arguments[7].parameter.eIsProxy().shouldBeTrue()
+            arguments[7].parameter.shouldBeUnresolved()
         }
 
         @Test
         fun `should not resolve something that is not a parameter`() = withResource(ARGUMENT) {
             val arguments = this.descendants<SmlArgument>().toList()
             arguments.shouldHaveSize(9)
-            arguments[8].parameter.eIsProxy().shouldBeTrue()
+            arguments[8].parameter.shouldBeUnresolved()
         }
     }
 
@@ -204,7 +206,7 @@ class ScopingTest {
             parameterType.shouldBeInstanceOf<SmlNamedType>()
 
             val referencedClass = parameterType.declaration
-            referencedClass.eIsProxy().shouldBeFalse()
+            referencedClass.shouldBeResolved()
             referencedClass.shouldBe(classInSameFile)
         }
 
@@ -217,7 +219,7 @@ class ScopingTest {
             parameterType.shouldBeInstanceOf<SmlNamedType>()
 
             val referencedEnum = parameterType.declaration
-            referencedEnum.eIsProxy().shouldBeFalse()
+            referencedEnum.shouldBeResolved()
             referencedEnum.shouldBe(enumInSameFile)
         }
 
@@ -230,7 +232,7 @@ class ScopingTest {
             parameterType.shouldBeInstanceOf<SmlNamedType>()
 
             val referencedInterface = parameterType.declaration
-            referencedInterface.eIsProxy().shouldBeFalse()
+            referencedInterface.shouldBeResolved()
             referencedInterface.shouldBe(interfaceInSameFile)
         }
 
@@ -242,7 +244,7 @@ class ScopingTest {
             parameterType.shouldBeInstanceOf<SmlNamedType>()
 
             val referencedClass = parameterType.declaration
-            referencedClass.eIsProxy().shouldBeFalse()
+            referencedClass.shouldBeResolved()
             referencedClass.name.shouldBe("ClassInSamePackage")
         }
 
@@ -254,7 +256,7 @@ class ScopingTest {
             parameterType.shouldBeInstanceOf<SmlNamedType>()
 
             val referencedEnum = parameterType.declaration
-            referencedEnum.eIsProxy().shouldBeFalse()
+            referencedEnum.shouldBeResolved()
             referencedEnum.name.shouldBe("EnumInSamePackage")
         }
 
@@ -266,7 +268,7 @@ class ScopingTest {
             parameterType.shouldBeInstanceOf<SmlNamedType>()
 
             val referencedInterface = parameterType.declaration
-            referencedInterface.eIsProxy().shouldBeFalse()
+            referencedInterface.shouldBeResolved()
             referencedInterface.name.shouldBe("InterfaceInSamePackage")
         }
 
@@ -278,7 +280,7 @@ class ScopingTest {
             parameterType.shouldBeInstanceOf<SmlNamedType>()
 
             val referencedClass = parameterType.declaration
-            referencedClass.eIsProxy().shouldBeFalse()
+            referencedClass.shouldBeResolved()
             referencedClass.name.shouldBe("ClassInOtherPackage1")
         }
 
@@ -290,7 +292,7 @@ class ScopingTest {
             parameterType.shouldBeInstanceOf<SmlNamedType>()
 
             val referencedEnum = parameterType.declaration
-            referencedEnum.eIsProxy().shouldBeFalse()
+            referencedEnum.shouldBeResolved()
             referencedEnum.name.shouldBe("EnumInOtherPackage1")
         }
 
@@ -303,7 +305,7 @@ class ScopingTest {
             parameterType.shouldBeInstanceOf<SmlNamedType>()
 
             val referencedInterface = parameterType.declaration
-            referencedInterface.eIsProxy().shouldBeFalse()
+            referencedInterface.shouldBeResolved()
             referencedInterface.name.shouldBe("InterfaceInOtherPackage1")
         }
 
@@ -315,7 +317,7 @@ class ScopingTest {
             parameterType.shouldBeInstanceOf<SmlNamedType>()
 
             val referencedClass = parameterType.declaration
-            referencedClass.eIsProxy().shouldBeTrue()
+            referencedClass.shouldBeUnresolved()
         }
 
         @Test
@@ -326,7 +328,7 @@ class ScopingTest {
             parameterType.shouldBeInstanceOf<SmlNamedType>()
 
             val referencedEnum = parameterType.declaration
-            referencedEnum.eIsProxy().shouldBeTrue()
+            referencedEnum.shouldBeUnresolved()
         }
 
         @Test
@@ -338,7 +340,7 @@ class ScopingTest {
             parameterType.shouldBeInstanceOf<SmlNamedType>()
 
             val referencedInterface = parameterType.declaration
-            referencedInterface.eIsProxy().shouldBeTrue()
+            referencedInterface.shouldBeUnresolved()
         }
 
         @Test
@@ -351,7 +353,7 @@ class ScopingTest {
             parameterType.shouldBeInstanceOf<SmlNamedType>()
 
             val referencedTypeParameter = parameterType.declaration
-            referencedTypeParameter.eIsProxy().shouldBeFalse()
+            referencedTypeParameter.shouldBeResolved()
             referencedTypeParameter.shouldBe(typeParameter)
         }
 
@@ -363,7 +365,7 @@ class ScopingTest {
             parameterType.shouldBeInstanceOf<SmlNamedType>()
 
             val referencedInterface = parameterType.declaration
-            referencedInterface.eIsProxy().shouldBeTrue()
+            referencedInterface.shouldBeUnresolved()
         }
 
         @Test
@@ -375,7 +377,7 @@ class ScopingTest {
             parameterType.shouldBeInstanceOf<SmlNamedType>()
 
             val referencedInterface = parameterType.declaration
-            referencedInterface.eIsProxy().shouldBeTrue()
+            referencedInterface.shouldBeUnresolved()
         }
 
         @Test
@@ -388,7 +390,7 @@ class ScopingTest {
                 parameterType.shouldBeInstanceOf<SmlNamedType>()
 
                 val referencedInterface = parameterType.declaration
-                referencedInterface.eIsProxy().shouldBeTrue()
+                referencedInterface.shouldBeUnresolved()
             }
 
         @Test
@@ -400,7 +402,7 @@ class ScopingTest {
             parameterType.shouldBeInstanceOf<SmlNamedType>()
 
             val referencedInterface = parameterType.declaration
-            referencedInterface.eIsProxy().shouldBeTrue()
+            referencedInterface.shouldBeUnresolved()
         }
 
         @Test
@@ -412,7 +414,7 @@ class ScopingTest {
             parameterType.shouldBeInstanceOf<SmlNamedType>()
 
             val referencedInterface = parameterType.declaration
-            referencedInterface.eIsProxy().shouldBeTrue()
+            referencedInterface.shouldBeUnresolved()
         }
 
         @Nested
@@ -427,7 +429,7 @@ class ScopingTest {
                 parameterType.shouldBeInstanceOf<SmlMemberType>()
 
                 val referencedClass = parameterType.member.declaration
-                referencedClass.eIsProxy().shouldBeFalse()
+                referencedClass.shouldBeResolved()
                 referencedClass.shouldBe(classInSameFile)
             }
 
@@ -440,7 +442,7 @@ class ScopingTest {
                 parameterType.shouldBeInstanceOf<SmlMemberType>()
 
                 val referencedEnum = parameterType.member.declaration
-                referencedEnum.eIsProxy().shouldBeFalse()
+                referencedEnum.shouldBeResolved()
                 referencedEnum.shouldBe(enumInSameFile)
             }
 
@@ -454,7 +456,7 @@ class ScopingTest {
                 parameterType.shouldBeInstanceOf<SmlMemberType>()
 
                 val referencedInterface = parameterType.member.declaration
-                referencedInterface.eIsProxy().shouldBeFalse()
+                referencedInterface.shouldBeResolved()
                 referencedInterface.shouldBe(interfaceInSameFile)
             }
 
@@ -466,7 +468,7 @@ class ScopingTest {
                 val parameterType = paramClassInInterfaceInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlMemberType>()
 
-                parameterType.member.declaration.eIsProxy().shouldBeTrue()
+                parameterType.member.declaration.shouldBeUnresolved()
             }
 
             @Test
@@ -477,7 +479,7 @@ class ScopingTest {
                 val parameterType = paramEnumInInterfaceInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlMemberType>()
 
-                parameterType.member.declaration.eIsProxy().shouldBeTrue()
+                parameterType.member.declaration.shouldBeUnresolved()
             }
 
             @Test
@@ -488,7 +490,7 @@ class ScopingTest {
                 val parameterType = paramInterfaceInInterfaceInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlMemberType>()
 
-                parameterType.member.declaration.eIsProxy().shouldBeTrue()
+                parameterType.member.declaration.shouldBeUnresolved()
             }
 
             @Test
@@ -499,7 +501,7 @@ class ScopingTest {
                 val parameterType = paramUnqualifiedClassInClassInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlNamedType>()
 
-                parameterType.declaration.eIsProxy().shouldBeTrue()
+                parameterType.declaration.shouldBeUnresolved()
             }
 
             @Test
@@ -510,7 +512,7 @@ class ScopingTest {
                 val parameterType = paramUnqualifiedEnumInClassInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlNamedType>()
 
-                parameterType.declaration.eIsProxy().shouldBeTrue()
+                parameterType.declaration.shouldBeUnresolved()
             }
 
             @Test
@@ -521,7 +523,7 @@ class ScopingTest {
                 val parameterType = paramUnqualifiedInterfaceInClassInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlNamedType>()
 
-                parameterType.declaration.eIsProxy().shouldBeTrue()
+                parameterType.declaration.shouldBeUnresolved()
             }
 
             @Test
@@ -532,7 +534,7 @@ class ScopingTest {
                 val parameterType = paramUnqualifiedClassInInterfaceInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlNamedType>()
 
-                parameterType.declaration.eIsProxy().shouldBeTrue()
+                parameterType.declaration.shouldBeUnresolved()
             }
 
             @Test
@@ -543,7 +545,7 @@ class ScopingTest {
                 val parameterType = paramUnqualifiedEnumInInterfaceInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlNamedType>()
 
-                parameterType.declaration.eIsProxy().shouldBeTrue()
+                parameterType.declaration.shouldBeUnresolved()
             }
 
             @Test
@@ -554,7 +556,7 @@ class ScopingTest {
                 val parameterType = paramUnqualifiedInterfaceInInterfaceInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlNamedType>()
 
-                parameterType.declaration.eIsProxy().shouldBeTrue()
+                parameterType.declaration.shouldBeUnresolved()
             }
 
             @Test
@@ -566,7 +568,7 @@ class ScopingTest {
                 parameterType.shouldBeInstanceOf<SmlMemberType>()
 
                 val referencedClass = parameterType.member.declaration
-                referencedClass.eIsProxy().shouldBeFalse()
+                referencedClass.shouldBeResolved()
                 referencedClass.shouldBe(classInSameFile)
             }
 
@@ -579,7 +581,7 @@ class ScopingTest {
                 parameterType.shouldBeInstanceOf<SmlMemberType>()
 
                 val referencedEnum = parameterType.member.declaration
-                referencedEnum.eIsProxy().shouldBeFalse()
+                referencedEnum.shouldBeResolved()
                 referencedEnum.shouldBe(enumInSameFile)
             }
 
@@ -592,7 +594,7 @@ class ScopingTest {
                 parameterType.shouldBeInstanceOf<SmlMemberType>()
 
                 val referencedInterface = parameterType.member.declaration
-                referencedInterface.eIsProxy().shouldBeFalse()
+                referencedInterface.shouldBeResolved()
                 referencedInterface.shouldBe(interfaceInSameFile)
             }
 
@@ -605,7 +607,7 @@ class ScopingTest {
                     val parameterType = paramClassInSuperInterface.type
                     parameterType.shouldBeInstanceOf<SmlMemberType>()
 
-                    parameterType.member.declaration.eIsProxy().shouldBeTrue()
+                    parameterType.member.declaration.shouldBeUnresolved()
                 }
 
             @Test
@@ -617,7 +619,7 @@ class ScopingTest {
                     val parameterType = paramEnumInSuperInterface.type
                     parameterType.shouldBeInstanceOf<SmlMemberType>()
 
-                    parameterType.member.declaration.eIsProxy().shouldBeTrue()
+                    parameterType.member.declaration.shouldBeUnresolved()
                 }
 
             @Test
@@ -629,7 +631,7 @@ class ScopingTest {
                     val parameterType = paramInterfaceInSuperInterface.type
                     parameterType.shouldBeInstanceOf<SmlMemberType>()
 
-                    parameterType.member.declaration.eIsProxy().shouldBeTrue()
+                    parameterType.member.declaration.shouldBeUnresolved()
                 }
         }
     }
@@ -643,7 +645,7 @@ class ScopingTest {
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
-            references[0].declaration.eIsProxy().shouldBeTrue()
+            references[0].declaration.shouldBeUnresolved()
         }
 
         @Test
@@ -652,7 +654,7 @@ class ScopingTest {
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
-            references[1].declaration.eIsProxy().shouldBeTrue()
+            references[1].declaration.shouldBeUnresolved()
         }
 
         @Test
@@ -661,7 +663,7 @@ class ScopingTest {
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
-            references[2].declaration.eIsProxy().shouldBeTrue()
+            references[2].declaration.shouldBeUnresolved()
         }
 
         @Test
@@ -670,7 +672,7 @@ class ScopingTest {
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
-            references[3].declaration.eIsProxy().shouldBeTrue()
+            references[3].declaration.shouldBeUnresolved()
         }
 
         @Test
@@ -680,7 +682,7 @@ class ScopingTest {
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(2)
             references.forEachAsClue {
-                it.declaration.eIsProxy().shouldBeTrue()
+                it.declaration.shouldBeUnresolved()
             }
         }
 
@@ -690,7 +692,7 @@ class ScopingTest {
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(3)
-            references[0].declaration.eIsProxy().shouldBeTrue()
+            references[0].declaration.shouldBeUnresolved()
         }
 
         @Test
@@ -700,7 +702,7 @@ class ScopingTest {
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(3)
             references.forEachAsClue {
-                it.declaration.eIsProxy().shouldBeTrue()
+                it.declaration.shouldBeUnresolved()
             }
         }
 
@@ -710,7 +712,7 @@ class ScopingTest {
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(1)
-            references[0].declaration.eIsProxy().shouldBeTrue()
+            references[0].declaration.shouldBeUnresolved()
         }
 
         @Nested
@@ -723,7 +725,7 @@ class ScopingTest {
                 val references = step.descendants<SmlReference>().toList()
                 references.shouldHaveSize(7)
                 references.forEachAsClue {
-                    it.declaration.eIsProxy().shouldBeTrue()
+                    it.declaration.shouldBeUnresolved()
                 }
             }
 
@@ -733,7 +735,7 @@ class ScopingTest {
 
                 val references = step.descendants<SmlReference>().toList()
                 references.shouldHaveSize(1)
-                references[0].declaration.eIsProxy().shouldBeTrue()
+                references[0].declaration.shouldBeUnresolved()
             }
 
             @Test
@@ -743,7 +745,7 @@ class ScopingTest {
                 val references = step.descendants<SmlReference>().toList()
                 references.shouldHaveSize(7)
                 references.forEachAsClue {
-                    it.declaration.eIsProxy().shouldBeTrue()
+                    it.declaration.shouldBeUnresolved()
                 }
             }
         }
@@ -762,7 +764,7 @@ class ScopingTest {
                     findUniqueDeclarationOrFail<SmlTypeParameter>("TYPE_PARAMETER_IN_SAME_FILE")
 
                 val referencedTypeParameter = typeArguments[0].typeParameter
-                referencedTypeParameter.eIsProxy().shouldBeFalse()
+                referencedTypeParameter.shouldBeResolved()
                 referencedTypeParameter.shouldBe(typeParameterInSameFile)
             }
 
@@ -773,7 +775,7 @@ class ScopingTest {
                 typeArguments.shouldHaveSize(9)
 
                 val referencedTypeParameter = typeArguments[1].typeParameter
-                referencedTypeParameter.eIsProxy().shouldBeFalse()
+                referencedTypeParameter.shouldBeResolved()
                 referencedTypeParameter.name.shouldBe("TYPE_PARAMETER_IN_SAME_PACKAGE")
             }
 
@@ -784,7 +786,7 @@ class ScopingTest {
                 typeArguments.shouldHaveSize(9)
 
                 val referencedTypeParameter = typeArguments[2].typeParameter
-                referencedTypeParameter.eIsProxy().shouldBeFalse()
+                referencedTypeParameter.shouldBeResolved()
                 referencedTypeParameter.name.shouldBe("TYPE_PARAMETER_IN_OTHER_PACKAGE1")
             }
 
@@ -793,7 +795,7 @@ class ScopingTest {
             withResource(TYPE_ARGUMENT) {
                 val typeArguments = this.descendants<SmlTypeArgument>().toList()
                 typeArguments.shouldHaveSize(9)
-                typeArguments[3].typeParameter.eIsProxy().shouldBeTrue()
+                typeArguments[3].typeParameter.shouldBeUnresolved()
             }
 
         @Test
@@ -801,7 +803,7 @@ class ScopingTest {
             withResource(TYPE_ARGUMENT) {
                 val typeArguments = this.descendants<SmlTypeArgument>().toList()
                 typeArguments.shouldHaveSize(9)
-                typeArguments[4].typeParameter.eIsProxy().shouldBeTrue()
+                typeArguments[4].typeParameter.shouldBeUnresolved()
             }
 
         @Test
@@ -809,7 +811,7 @@ class ScopingTest {
             withResource(TYPE_ARGUMENT) {
                 val typeArguments = this.descendants<SmlTypeArgument>().toList()
                 typeArguments.shouldHaveSize(9)
-                typeArguments[5].typeParameter.eIsProxy().shouldBeTrue()
+                typeArguments[5].typeParameter.shouldBeUnresolved()
             }
 
         @Test
@@ -817,21 +819,21 @@ class ScopingTest {
             withResource(TYPE_ARGUMENT) {
                 val typeArguments = this.descendants<SmlTypeArgument>().toList()
                 typeArguments.shouldHaveSize(9)
-                typeArguments[6].typeParameter.eIsProxy().shouldBeTrue()
+                typeArguments[6].typeParameter.shouldBeUnresolved()
             }
 
         @Test
         fun `should not resolve unknown declaration`() = withResource(TYPE_ARGUMENT) {
             val typeArguments = this.descendants<SmlTypeArgument>().toList()
             typeArguments.shouldHaveSize(9)
-            typeArguments[7].typeParameter.eIsProxy().shouldBeTrue()
+            typeArguments[7].typeParameter.shouldBeUnresolved()
         }
 
         @Test
         fun `should not resolve something that is not a type parameter`() = withResource(TYPE_ARGUMENT) {
             val typeArguments = this.descendants<SmlTypeArgument>().toList()
             typeArguments.shouldHaveSize(9)
-            typeArguments[8].typeParameter.eIsProxy().shouldBeTrue()
+            typeArguments[8].typeParameter.shouldBeUnresolved()
         }
     }
 
@@ -847,7 +849,7 @@ class ScopingTest {
                 findUniqueDeclarationOrFail<SmlTypeParameter>("TYPE_PARAMETER_IN_SAME_FUNCTION")
 
             val referencedTypeParameter = typeParameterConstraints[0].leftOperand
-            referencedTypeParameter.eIsProxy().shouldBeFalse()
+            referencedTypeParameter.shouldBeResolved()
             referencedTypeParameter.shouldBe(typeParameterInSameDeclaration)
         }
 
@@ -857,7 +859,7 @@ class ScopingTest {
         ) {
             val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
             typeParameterConstraints.shouldHaveSize(7)
-            typeParameterConstraints[1].leftOperand.eIsProxy().shouldBeTrue()
+            typeParameterConstraints[1].leftOperand.shouldBeUnresolved()
         }
 
         @Test
@@ -865,7 +867,7 @@ class ScopingTest {
             withResource(TYPE_PARAMETER_CONSTRAINT) {
                 val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
                 typeParameterConstraints.shouldHaveSize(7)
-                typeParameterConstraints[2].leftOperand.eIsProxy().shouldBeTrue()
+                typeParameterConstraints[2].leftOperand.shouldBeUnresolved()
             }
 
         @Test
@@ -873,7 +875,7 @@ class ScopingTest {
             withResource(TYPE_PARAMETER_CONSTRAINT) {
                 val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
                 typeParameterConstraints.shouldHaveSize(7)
-                typeParameterConstraints[3].leftOperand.eIsProxy().shouldBeTrue()
+                typeParameterConstraints[3].leftOperand.shouldBeUnresolved()
             }
 
         @Test
@@ -881,21 +883,21 @@ class ScopingTest {
             withResource(TYPE_PARAMETER_CONSTRAINT) {
                 val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
                 typeParameterConstraints.shouldHaveSize(7)
-                typeParameterConstraints[4].leftOperand.eIsProxy().shouldBeTrue()
+                typeParameterConstraints[4].leftOperand.shouldBeUnresolved()
             }
 
         @Test
         fun `should not resolve unknown declaration`() = withResource(TYPE_PARAMETER_CONSTRAINT) {
             val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
             typeParameterConstraints.shouldHaveSize(7)
-            typeParameterConstraints[5].leftOperand.eIsProxy().shouldBeTrue()
+            typeParameterConstraints[5].leftOperand.shouldBeUnresolved()
         }
 
         @Test
         fun `should not something that is not a type parameter`() = withResource(TYPE_PARAMETER_CONSTRAINT) {
             val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
             typeParameterConstraints.shouldHaveSize(7)
-            typeParameterConstraints[6].leftOperand.eIsProxy().shouldBeTrue()
+            typeParameterConstraints[6].leftOperand.shouldBeUnresolved()
         }
     }
 
@@ -910,7 +912,7 @@ class ScopingTest {
             val resultsInSameFunction = findUniqueDeclarationOrFail<SmlResult>("resultInSameStep")
 
             val referencedResult = yields[0].result
-            referencedResult.eIsProxy().shouldBeFalse()
+            referencedResult.shouldBeResolved()
             referencedResult.shouldBe(resultsInSameFunction)
         }
 
@@ -918,14 +920,14 @@ class ScopingTest {
         fun `should not resolve result in another workflow step in same file`() = withResource(YIELD) {
             val yields = this.descendants<SmlYield>().toList()
             yields.shouldHaveSize(7)
-            yields[1].result.eIsProxy().shouldBeTrue()
+            yields[1].result.shouldBeUnresolved()
         }
 
         @Test
         fun `should not resolve result in another workflow step in same package`() = withResource(YIELD) {
             val yields = this.descendants<SmlYield>().toList()
             yields.shouldHaveSize(7)
-            yields[2].result.eIsProxy().shouldBeTrue()
+            yields[2].result.shouldBeUnresolved()
         }
 
         @Test
@@ -933,7 +935,7 @@ class ScopingTest {
             withResource(YIELD) {
                 val yields = this.descendants<SmlYield>().toList()
                 yields.shouldHaveSize(7)
-                yields[3].result.eIsProxy().shouldBeTrue()
+                yields[3].result.shouldBeUnresolved()
             }
 
         @Test
@@ -941,21 +943,21 @@ class ScopingTest {
             withResource(YIELD) {
                 val yields = this.descendants<SmlYield>().toList()
                 yields.shouldHaveSize(7)
-                yields[4].result.eIsProxy().shouldBeTrue()
+                yields[4].result.shouldBeUnresolved()
             }
 
         @Test
         fun `should not resolve unknown declaration`() = withResource(YIELD) {
             val yields = this.descendants<SmlYield>().toList()
             yields.shouldHaveSize(7)
-            yields[5].result.eIsProxy().shouldBeTrue()
+            yields[5].result.shouldBeUnresolved()
         }
 
         @Test
         fun `should not something that is not a result`() = withResource(YIELD) {
             val yields = this.descendants<SmlYield>().toList()
             yields.shouldHaveSize(7)
-            yields[6].result.eIsProxy().shouldBeTrue()
+            yields[6].result.shouldBeUnresolved()
         }
     }
 
