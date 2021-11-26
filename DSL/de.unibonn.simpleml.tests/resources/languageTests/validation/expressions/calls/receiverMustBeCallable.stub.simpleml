@@ -43,7 +43,8 @@ step test(a: Int, b: callable () -> ()) {
     »myFunction«();
     // semantic_error "This expression must not be called."
     »MyInterface«();
-    // semantic_error "This expression must not be called."
+    /* References cannot point to workflows in the first place. */
+    // no_semantic_error "This expression must not be called."
     »myWorkflow«();
     // semantic_error "This expression must not be called."
     »a«();

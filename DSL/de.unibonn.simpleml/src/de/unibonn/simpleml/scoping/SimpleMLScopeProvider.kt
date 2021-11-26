@@ -22,6 +22,7 @@ import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraintList
+import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.typing.ClassType
@@ -159,7 +160,7 @@ class SimpleMLScopeProvider @Inject constructor(
     private fun declarationsInThisFile(resource: Resource, externalDeclarations: IScope): IScope {
         val members = resource.compilationUnitOrNull()
             ?.members
-            ?.filter { it !is SmlAnnotation }
+            ?.filter { it !is SmlAnnotation && it !is SmlWorkflow }
             ?: emptyList()
 
         return Scopes.scopeFor(
