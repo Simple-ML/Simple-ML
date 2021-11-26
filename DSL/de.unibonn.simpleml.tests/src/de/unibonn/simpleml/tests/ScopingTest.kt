@@ -1005,6 +1005,15 @@ class ScopingTest {
             }
 
         @Test
+        fun `should not resolve type parameters`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToTypeParameters")
+
+            val reference = step.descendants<SmlReference>().firstOrNull()
+            reference.shouldNotBeNull()
+            reference.declaration.shouldNotBeResolved()
+        }
+
+        @Test
         fun `should not resolve function locals`() = withResource(REFERENCE) {
             val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToFunctionLocals")
 
