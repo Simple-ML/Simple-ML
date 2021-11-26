@@ -13,6 +13,7 @@ import de.unibonn.simpleml.simpleML.SmlLambda
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
+import de.unibonn.simpleml.simpleML.SmlNamedTypeDeclaration
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlStatement
@@ -105,7 +106,7 @@ class SimpleMLScopeProvider @Inject constructor(
         //  names into the type???
 
         return when {
-            type.isNullable && !context.isNullable -> IScope.NULLSCOPE // TODO: should be able to access extension methods that work on nullable types
+            type.isNullable && !context.isNullable -> IScope.NULLSCOPE
             type is ClassType -> {
                 val members = type.smlClass.membersOrEmpty().filter { it.isStatic() == type.isStatic }
                 val superTypeMembers = classHierarchy.superClassMembers(type.smlClass)
@@ -179,7 +180,20 @@ class SimpleMLScopeProvider @Inject constructor(
     }
 
     private fun scopeForMemberTypeDeclaration(context: SmlMemberType): IScope {
-        return IScope.NULLSCOPE
+        val type = (typeComputer.typeOf(context.receiver) as? NamedType) ?: return IScope.NULLSCOPE
+
+        return when {
+            type.isNullable -> IScope.NULLSCOPE
+            type is ClassType -> {
+                val members = type.smlClass.membersOrEmpty().filterIsInstance<SmlNamedTypeDeclaration>()
+                val superTypeMembers = classHierarchy.superClassMembers(type.smlClass)
+                    .filterIsInstance<SmlNamedTypeDeclaration>()
+                    .toList()
+
+                Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers))
+            }
+            else -> IScope.NULLSCOPE
+        }
     }
 
     private fun scopeForTypeArgumentTypeParameter(smlTypeArgument: SmlTypeArgument): IScope {
