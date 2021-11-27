@@ -8,6 +8,7 @@ import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlEnum
+import de.unibonn.simpleml.simpleML.SmlEnumInstance
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlInterface
 import de.unibonn.simpleml.simpleML.SmlMemberType
@@ -1328,6 +1329,20 @@ class ScopingTest {
                 val declaration = references[13].declaration
                 declaration.shouldBeResolved()
                 declaration.shouldBe(interfaceInClassInSameFile)
+            }
+
+            @Test
+            fun `should resolve enum instance`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToEnumInstances")
+                val enumInstanceInSameFile =
+                    findUniqueDeclarationOrFail<SmlEnumInstance>("ENUM_INSTANCE_IN_SAME_FILE")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(2)
+
+                val declaration = references[1].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(enumInstanceInSameFile)
             }
 
             @Test
