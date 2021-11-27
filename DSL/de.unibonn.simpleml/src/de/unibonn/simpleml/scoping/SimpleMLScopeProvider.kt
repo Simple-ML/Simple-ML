@@ -127,6 +127,10 @@ class SimpleMLScopeProvider @Inject constructor(
                 Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers))
             }
             type is InterfaceType -> {
+                if (type.isStatic) {
+                    return IScope.NULLSCOPE
+                }
+
                 val members = type.smlInterface.membersOrEmpty()
                     .filterIsInstance<SmlFunction>()
                     .filter { !it.isStatic() }

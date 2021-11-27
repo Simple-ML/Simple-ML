@@ -1767,6 +1767,21 @@ class ScopingTest {
             }
 
             @Test
+            fun `should not resolve instance interface members accessed from interface`() = withResource(REFERENCE) {
+                val step =
+                    findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInstanceInterfaceMembersFromInterface")
+                val interfaceInSameFile = findUniqueDeclarationOrFail<SmlInterface>("InterfaceInSameFile")
+
+                val references = step.descendants<SmlReference>()
+                    .filter { it.declaration != interfaceInSameFile }
+                    .toList()
+                references.shouldHaveSize(4)
+                references.forEachAsClue {
+                    it.declaration.shouldNotBeResolved()
+                }
+            }
+
+            @Test
             fun `should not resolve class members with unqualified access`() = withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("unqualifiedReferencesToClassMembers")
 
