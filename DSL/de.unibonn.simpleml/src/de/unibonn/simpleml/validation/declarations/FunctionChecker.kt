@@ -3,7 +3,14 @@ package de.unibonn.simpleml.validation.declarations
 import com.google.inject.Inject
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.utils.*
+import de.unibonn.simpleml.utils.ClassHierarchy
+import de.unibonn.simpleml.utils.isClassMember
+import de.unibonn.simpleml.utils.isOpen
+import de.unibonn.simpleml.utils.isOverride
+import de.unibonn.simpleml.utils.isPure
+import de.unibonn.simpleml.utils.isStatic
+import de.unibonn.simpleml.utils.parametersOrEmpty
+import de.unibonn.simpleml.utils.resultsOrEmpty
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import org.eclipse.xtext.validation.Check
 
@@ -18,16 +25,16 @@ const val PURE_PROPAGATES = "PURE_PROPAGATES"
 const val STATIC_PROPAGATES = "STATIC_PROPAGATES"
 
 class FunctionChecker @Inject constructor(
-        private val classHierarchy: ClassHierarchy
+    private val classHierarchy: ClassHierarchy
 ) : AbstractSimpleMLChecker() {
 
     @Check
     fun mustNotBeOpenAndStatic(smlFunction: SmlFunction) {
         if (smlFunction.isClassMember() && smlFunction.isOpen() && smlFunction.isStatic()) {
             error(
-                    "A function must not be static and open.",
-                    Literals.SML_DECLARATION__NAME,
-                    FUNCTION_MUST_NOT_BE_OPEN_AND_STATIC
+                "A function must not be static and open.",
+                Literals.SML_DECLARATION__NAME,
+                FUNCTION_MUST_NOT_BE_OPEN_AND_STATIC
             )
         }
     }
@@ -36,9 +43,9 @@ class FunctionChecker @Inject constructor(
     fun mustNotBeOverrideAndStatic(smlFunction: SmlFunction) {
         if (smlFunction.isClassMember() && smlFunction.isOverride() && smlFunction.isStatic()) {
             error(
-                    "A function must not be static and override.",
-                    Literals.SML_DECLARATION__NAME,
-                    FUNCTION_MUST_NOT_BE_OVERRIDE_AND_STATIC
+                "A function must not be static and override.",
+                Literals.SML_DECLARATION__NAME,
+                FUNCTION_MUST_NOT_BE_OVERRIDE_AND_STATIC
             )
         }
     }
@@ -49,9 +56,9 @@ class FunctionChecker @Inject constructor(
             val hiddenFunction = classHierarchy.hiddenFunction(smlFunction)
             if (hiddenFunction != null && !hiddenFunction.isStatic()) {
                 error(
-                        "One of the supertypes of this class declares a non-static function with this name, so this must be non-static as well.",
-                        Literals.SML_DECLARATION__NAME,
-                        NON_STATIC_PROPAGATES
+                    "One of the supertypes of this class declares a non-static function with this name, so this must be non-static as well.",
+                    Literals.SML_DECLARATION__NAME,
+                    NON_STATIC_PROPAGATES
                 )
             }
         }
@@ -62,9 +69,9 @@ class FunctionChecker @Inject constructor(
         val hiddenFunction = classHierarchy.hiddenFunction(smlFunction)
         if (hiddenFunction != null && !hiddenFunction.isOpen() && !hiddenFunction.isStatic()) {
             error(
-                    "The overridden function must be open.",
-                    Literals.SML_DECLARATION__NAME,
-                    OVERRIDDEN_FUNCTION_MUST_BE_OPEN
+                "The overridden function must be open.",
+                Literals.SML_DECLARATION__NAME,
+                OVERRIDDEN_FUNCTION_MUST_BE_OPEN
             )
         }
     }
@@ -75,9 +82,9 @@ class FunctionChecker @Inject constructor(
             val hiddenFunction = classHierarchy.hiddenFunction(smlFunction)
             if (hiddenFunction != null && !hiddenFunction.isStatic()) {
                 error(
-                        "An overriding function must have the override modifier.",
-                        Literals.SML_DECLARATION__NAME,
-                        OVERRIDING_FUNCTION_MUST_HAVE_OVERRIDE_MODIFIER
+                    "An overriding function must have the override modifier.",
+                    Literals.SML_DECLARATION__NAME,
+                    OVERRIDING_FUNCTION_MUST_HAVE_OVERRIDE_MODIFIER
                 )
             }
         }
@@ -89,9 +96,9 @@ class FunctionChecker @Inject constructor(
             val hiddenFunction = classHierarchy.hiddenFunction(smlFunction)
             if (hiddenFunction != null && hiddenFunction.isStatic()) {
                 error(
-                        "The overridden function must not be static.",
-                        Literals.SML_DECLARATION__NAME,
-                        OVERRIDING_FUNCTION_MUST_NOT_BE_STATIC
+                    "The overridden function must not be static.",
+                    Literals.SML_DECLARATION__NAME,
+                    OVERRIDING_FUNCTION_MUST_NOT_BE_STATIC
                 )
             }
         }
@@ -101,9 +108,9 @@ class FunctionChecker @Inject constructor(
     fun overridingFunctionMustOverrideSomething(smlFunction: SmlFunction) {
         if (smlFunction.isOverride() && classHierarchy.hiddenFunction(smlFunction) == null) {
             error(
-                    "This function does not override anything.",
-                    Literals.SML_DECLARATION__NAME,
-                    OVERRIDING_FUNCTION_MUST_OVERRIDE_SOMETHING
+                "This function does not override anything.",
+                Literals.SML_DECLARATION__NAME,
+                OVERRIDING_FUNCTION_MUST_OVERRIDE_SOMETHING
             )
         }
     }
@@ -114,9 +121,9 @@ class FunctionChecker @Inject constructor(
             val hiddenFunction = classHierarchy.hiddenFunction(smlFunction)
             if (hiddenFunction != null && hiddenFunction.isPure()) {
                 error(
-                        "One of the supertypes of this class declares a pure function with this name, so this must be pure as well.",
-                        Literals.SML_DECLARATION__NAME,
-                        PURE_PROPAGATES
+                    "One of the supertypes of this class declares a pure function with this name, so this must be pure as well.",
+                    Literals.SML_DECLARATION__NAME,
+                    PURE_PROPAGATES
                 )
             }
         }
@@ -128,9 +135,9 @@ class FunctionChecker @Inject constructor(
             val hiddenFunction = classHierarchy.hiddenFunction(smlFunction)
             if (hiddenFunction != null && hiddenFunction.isStatic()) {
                 error(
-                        "One of the supertypes of this class declares a static function with this name, so this must be static as well.",
-                        Literals.SML_DECLARATION__NAME,
-                        STATIC_PROPAGATES
+                    "One of the supertypes of this class declares a static function with this name, so this must be static as well.",
+                    Literals.SML_DECLARATION__NAME,
+                    STATIC_PROPAGATES
                 )
             }
         }
