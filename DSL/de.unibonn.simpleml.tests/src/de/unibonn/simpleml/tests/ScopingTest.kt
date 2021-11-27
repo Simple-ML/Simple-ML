@@ -1356,13 +1356,14 @@ class ScopingTest {
             }
 
             @Test
-            fun `should not resolve instance interface attribute accessed from interface instance`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInterfaceMembers")
+            fun `should not resolve instance interface attribute accessed from interface instance`() =
+                withResource(REFERENCE) {
+                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInterfaceMembers")
 
-                val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(14)
-                references[3].declaration.shouldNotBeResolved()
-            }
+                    val references = step.descendants<SmlReference>().toList()
+                    references.shouldHaveSize(14)
+                    references[3].declaration.shouldNotBeResolved()
+                }
 
             @Test
             fun `should not resolve nested class accessed from interface`() = withResource(REFERENCE) {
@@ -1392,18 +1393,19 @@ class ScopingTest {
             }
 
             @Test
-            fun `should resolve instance interface method accessed from interface instance`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInterfaceMembers")
-                val interfaceInstanceMethodInSameFile =
-                    findUniqueDeclarationOrFail<SmlFunction>("interfaceInstanceMethodInSameFile")
+            fun `should resolve instance interface method accessed from interface instance`() =
+                withResource(REFERENCE) {
+                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInterfaceMembers")
+                    val interfaceInstanceMethodInSameFile =
+                        findUniqueDeclarationOrFail<SmlFunction>("interfaceInstanceMethodInSameFile")
 
-                val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(14)
+                    val references = step.descendants<SmlReference>().toList()
+                    references.shouldHaveSize(14)
 
-                val declaration = references[11].declaration
-                declaration.shouldBeResolved()
-                declaration.shouldBe(interfaceInstanceMethodInSameFile)
-            }
+                    val declaration = references[11].declaration
+                    declaration.shouldBeResolved()
+                    declaration.shouldBe(interfaceInstanceMethodInSameFile)
+                }
 
             @Test
             fun `should not resolve nested interface accessed from interface`() = withResource(REFERENCE) {
@@ -1412,6 +1414,105 @@ class ScopingTest {
                 val references = step.descendants<SmlReference>().toList()
                 references.shouldHaveSize(14)
                 references[13].declaration.shouldNotBeResolved()
+            }
+
+            @Test
+            fun `should resolve inherited static class attribute accessed from class`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInheritedClassMembers")
+                val superClassStaticAttribute =
+                    findUniqueDeclarationOrFail<SmlAttribute>("superClassStaticAttribute")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+
+                val declaration = references[1].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(superClassStaticAttribute)
+            }
+
+            @Test
+            fun `should resolve inherited instance class attribute accessed from class instance`() =
+                withResource(REFERENCE) {
+                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInheritedClassMembers")
+                    val superClassInstanceAttribute =
+                        findUniqueDeclarationOrFail<SmlAttribute>("superClassInstanceAttribute")
+
+                    val references = step.descendants<SmlReference>().toList()
+                    references.shouldHaveSize(14)
+
+                    val declaration = references[3].declaration
+                    declaration.shouldBeResolved()
+                    declaration.shouldBe(superClassInstanceAttribute)
+                }
+
+            @Test
+            fun `should resolve inherited nested class accessed from class`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInheritedClassMembers")
+                val classInSuperClass =
+                    findUniqueDeclarationOrFail<SmlClass>("ClassInSuperClass")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+
+                val declaration = references[5].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(classInSuperClass)
+            }
+
+            @Test
+            fun `should resolve inherited nested enum accessed from class`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInheritedClassMembers")
+                val enumInSuperClass =
+                    findUniqueDeclarationOrFail<SmlEnum>("EnumInSuperClass")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+
+                val declaration = references[7].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(enumInSuperClass)
+            }
+
+            @Test
+            fun `should resolve inherited static class method accessed from class`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInheritedClassMembers")
+                val superClassStaticMethod =
+                    findUniqueDeclarationOrFail<SmlFunction>("superClassStaticMethod")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+
+                val declaration = references[9].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(superClassStaticMethod)
+            }
+
+            @Test
+            fun `should resolve inherited instance class method accessed from class instance`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInheritedClassMembers")
+                val superClassInstanceMethod =
+                    findUniqueDeclarationOrFail<SmlFunction>("superClassInstanceMethod")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+
+                val declaration = references[11].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(superClassInstanceMethod)
+            }
+
+            @Test
+            fun `should resolve inherited nested interface accessed from class`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInheritedClassMembers")
+                val interfaceInSuperClass =
+                    findUniqueDeclarationOrFail<SmlInterface>("InterfaceInSuperClass")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+
+                val declaration = references[13].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(interfaceInSuperClass)
             }
 
             @Test
