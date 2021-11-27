@@ -1847,7 +1847,8 @@ class ScopingTest {
             @Test
             fun `should resolve result of function with multiple results`() = withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToFunctionResults")
-                val globalFunctionWithTwoResults = findUniqueDeclarationOrFail<SmlFunction>("globalFunctionWithTwoResults")
+                val globalFunctionWithTwoResults =
+                    findUniqueDeclarationOrFail<SmlFunction>("globalFunctionWithTwoResults")
                 val result1 = globalFunctionWithTwoResults.findUniqueDeclarationOrFail<SmlResult>("result1")
 
                 val references = step.descendants<SmlReference>().toList()
@@ -1871,6 +1872,30 @@ class ScopingTest {
             fun `should resolve result of lambda with multiple results`() = withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToLambdaResults")
                 val result1 = step.findUniqueDeclarationOrFail<SmlLambdaYield>("result1")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(4)
+
+                val declaration = references[3].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(result1)
+            }
+
+            @Test
+            fun `should not resolve result of workflow step with one result`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToWorkflowStepResults")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(4)
+                references[1].declaration.shouldNotBeResolved()
+            }
+
+            @Test
+            fun `should resolve result of workflow step with multiple results`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToWorkflowStepResults")
+                val stepInSameFileWithTwoResults =
+                    findUniqueDeclarationOrFail<SmlWorkflowStep>("stepInSameFileWithTwoResults")
+                val result1 = stepInSameFileWithTwoResults.findUniqueDeclarationOrFail<SmlResult>("result1")
 
                 val references = step.descendants<SmlReference>().toList()
                 references.shouldHaveSize(4)
