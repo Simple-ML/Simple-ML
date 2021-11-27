@@ -1,0 +1,20 @@
+package tests.languageTests.scoping.argument1
+
+import tests.languageTests.scoping.argument2.functionInOtherPackage1
+
+fun functionInSameFile(parameterInSameFile: Int)
+
+enum notAParameter
+
+workflow workflowForArgument {
+    functionInSameFile(parameterInSameFile = 1);
+    functionInSamePackage(parameterInSamePackage = 1);
+    functionInOtherPackage1(parameterInOtherPackage1 = 1);
+    functionInOtherPackage2(parameterInOtherPackage2 = 1);
+
+    functionInSameFile(parameterInSamePackage = 1);
+    functionInSameFile(parameterInOtherPackage1 = 1);
+    functionInSameFile(parameterInOtherPackage2 = 1);
+    functionInSameFile(unresolvedParameter = 1);
+    functionInSameFile(notAParameter = 1);
+}

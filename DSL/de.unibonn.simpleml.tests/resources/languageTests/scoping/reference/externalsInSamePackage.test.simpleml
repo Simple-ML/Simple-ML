@@ -1,0 +1,9 @@
+package tests.languageTests.scoping.reference1
+
+annotation AnnotationInSamePackage
+class ClassInSamePackage
+enum EnumInSamePackage
+fun globalFunctionInSamePackage()
+interface InterfaceInSamePackage
+step stepInSamePackage() {}
+workflow workflowInSamePackage {}

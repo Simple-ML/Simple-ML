@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import de.unibonn.simpleml.simpleML.SimpleMLFactory
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
-import de.unibonn.simpleml.tests.util.ParseWithStdlib
+import de.unibonn.simpleml.tests.util.ParseHelper
 import de.unibonn.simpleml.utils.Proposals
 import de.unibonn.simpleml.utils.membersOrEmpty
 import io.kotest.matchers.collections.shouldHaveSize
@@ -25,7 +25,7 @@ class ProposalsTest {
     private lateinit var proposals: Proposals
 
     @Inject
-    private lateinit var parseWithStdlib: ParseWithStdlib
+    private lateinit var parseHelper: ParseHelper
 
     private val testProgram = """
         |package test
@@ -45,7 +45,7 @@ class ProposalsTest {
 
     @Test
     fun `should contain workflow steps with primitive parameters when no result is passed`() {
-        val context = parseWithStdlib.parse(testProgram)
+        val context = parseHelper.parseProgramTextWithStdlib(testProgram)
         context.shouldNotBeNull()
 
         val workflowSteps = context.membersOrEmpty()
@@ -61,7 +61,7 @@ class ProposalsTest {
 
     @Test
     fun `should contain workflow steps with only matching parameters when a result is passed`() {
-        val context = parseWithStdlib.parse(testProgram)
+        val context = parseHelper.parseProgramTextWithStdlib(testProgram)
         context.shouldNotBeNull()
 
         val classA = context.membersOrEmpty()

@@ -78,9 +78,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlWorkflow/body"/>
     </genClasses>
     <genClasses ecoreClass="SimpleML.ecore#//SmlWorkflowStep">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlWorkflowStep/body"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlWorkflowStep/parameterList"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlWorkflowStep/resultList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlWorkflowStep/body"/>
     </genClasses>
     <genClasses ecoreClass="SimpleML.ecore#//SmlBlock">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlBlock/statements"/>

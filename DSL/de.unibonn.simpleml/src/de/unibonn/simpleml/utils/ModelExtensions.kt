@@ -297,6 +297,7 @@ fun EObject?.isCallable() =
         this is SmlWorkflowStep
 
 fun EObject.isInStubFile() = this.eResource().isStubFile()
+fun EObject.isInTestFile() = this.eResource().isTestFile()
 
 // Enum ----------------------------------------------------------------------------------------------------------------
 
@@ -387,12 +388,15 @@ fun Resource?.compilationUnitOrNull() = this?.allContents
     ?.filterIsInstance<SmlCompilationUnit>()
     ?.firstOrNull()
 
-fun Resource.isStubFile(): Boolean {
+fun Resource.isStubFile() = this.nameEndsWith(".stub.simpleml")
+fun Resource.isTestFile() = this.nameEndsWith(".test.simpleml")
+
+private fun Resource.nameEndsWith(suffix: String): Boolean {
     this.eAdapters().filterIsInstance<OriginalFilePath>().firstOrNull()?.let {
-        return it.path.endsWith(".stub.simpleml")
+        return it.path.endsWith(suffix)
     }
 
-    return this.uri.toString().endsWith(".stub.simpleml")
+    return this.uri.toString().endsWith(suffix)
 }
 
 // Type ----------------------------------------------------------------------------------------------------------------

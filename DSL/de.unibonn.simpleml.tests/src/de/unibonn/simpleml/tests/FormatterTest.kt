@@ -17,7 +17,7 @@ import java.util.stream.Stream
 
 @ExtendWith(InjectionExtension::class)
 @InjectWith(SimpleMLInjectorProvider::class)
-class SimpleMLFormatterTest {
+class FormatterTest {
 
     @Inject
     lateinit var formatter: FormatterTestHelper
