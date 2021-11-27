@@ -77,6 +77,35 @@ step stepInSameFile(stepParameterInSameFile: Int) -> stepResultInSameFile: Int {
 
 workflow workflowInSameFile {}
 
+interface InterfaceForOverriding {
+    fun instanceMethodForOverriding()
+}
+open class SuperClassForOverriding constructor()
+sub InterfaceForOverriding {
+    attr instanceAttributeForOverriding: Int
+    open override fun instanceMethodForOverriding()
+}
+class SubClassForOverriding constructor()
+sub SuperClassForOverriding {
+    attr instanceAttributeForOverriding: Int
+    override fun instanceMethodForOverriding()
+}
+
+open class SuperClassForHiding {
+    static attr staticAttributeForHiding: Int
+    class NestedClassForHiding
+    enum NestedEnumForHiding
+    static fun staticMethodForHiding()
+    interface NestedInterfaceForHiding
+}
+class SubClassForHiding sub SuperClassForHiding {
+    static attr staticAttributeForHiding: Int
+    class NestedClassForHiding
+    enum NestedEnumForHiding
+    static fun staticMethodForHiding()
+    interface NestedInterfaceForHiding
+}
+
 
 // Direct references -----------------------------------------------------------
 
@@ -240,6 +269,31 @@ step referencesToInheritedInterfaceMembers() {
     InterfaceInSameFile.superInterfaceStaticMethod;
     interfaceInSameFileFactory().superInterfaceInstanceMethod();
     InterfaceInSameFile.InterfaceInSuperInterface;
+}
+
+
+// Overriding ------------------------------------------------------------------
+step referencesToOverriddenMembers() {
+    SuperClassForOverriding().instanceAttributeForOverriding;
+    SuperClassForOverriding().instanceMethodForOverriding();
+
+    SubClassForOverriding().instanceAttributeForOverriding;
+    SubClassForOverriding().instanceMethodForOverriding();
+}
+
+// Hiding ----------------------------------------------------------------------
+step referencesToHiddenMembers() {
+    SuperClassForHiding.staticAttributeForHiding;
+    SuperClassForHiding.NestedClassForHiding;
+    SuperClassForHiding.NestedEnumForHiding;
+    SuperClassForHiding.staticMethodForHiding;
+    SuperClassForHiding.NestedInterfaceForHiding;
+
+    SubClassForHiding.staticAttributeForHiding;
+    SubClassForHiding.NestedClassForHiding;
+    SubClassForHiding.NestedEnumForHiding;
+    SubClassForHiding.staticMethodForHiding;
+    SubClassForHiding.NestedInterfaceForHiding;
 }
 
 // Access to static members from instance --------------------------------------
