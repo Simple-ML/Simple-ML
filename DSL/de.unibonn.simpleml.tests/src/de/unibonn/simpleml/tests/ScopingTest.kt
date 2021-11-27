@@ -1901,7 +1901,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve result of lambda with one result without matching member`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToCallableTypeResults")
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToLambdaResults")
                 val singleResult = step.findUniqueDeclarationOrFail<SmlLambdaYield>("singleResult")
 
                 val references = step.descendants<SmlReference>().toList()

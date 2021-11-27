@@ -42,7 +42,7 @@ enum EnumInSameFile {
 }
 
 fun globalFunctionInSameFile(globalFunctionParameterInSameFile: Int) -> globalFunctionResultInSameFile: Int
-fun globalFunctionWithOneResultWithIdenticalAttribute() -> result: ClassForResultMemberAccess
+fun globalFunctionWithOneResultWithIdenticalMember() -> result: ClassForResultMemberAccess
 fun globalFunctionWithTwoResults() -> (result1: Int, result2: Int)
 
 interface SuperInterface {
@@ -350,17 +350,17 @@ step referencesToInstanceInterfaceMembersFromInterface() {
 
 step referencesToCallableTypeResults(
     callableWithOneResult: callable () -> (singleResult: Int),
-    callableWithOneResultWithIdenticalAttribute: callable () -> (result: ClassForResultMemberAccess),
+    callableWithOneResultWithIdenticalMember: callable () -> (result: ClassForResultMemberAccess),
     callableWithTwoResults: callable () -> (result1: Int, result2: Int)
 ) {
     callableWithOneResult().singleResult;
-    callableWithOneResultWithIdenticalAttribute().result;
+    callableWithOneResultWithIdenticalMember().result;
     callableWithTwoResults().result1;
 }
 
 step referencesToFunctionResults() {
     globalFunctionInSameFile(1).globalFunctionResultInSameFile;
-    globalFunctionWithOneResultWithIdenticalAttribute.result;
+    globalFunctionWithOneResultWithIdenticalMember().result;
     globalFunctionWithTwoResults().result1;
 }
 
