@@ -106,27 +106,29 @@ class SimpleMLScopeProvider @Inject constructor(
     private fun scopeForMemberAccessDeclaration(context: SmlMemberAccess): IScope {
         val receiver = context.receiver
 
-        // Call with multiple results
+        // Call results
+        var resultScope = IScope.NULLSCOPE
         if (receiver is SmlCall) {
             val results = receiver.resultsOrNull()
             when {
                 results == null -> return IScope.NULLSCOPE
                 results.size > 1 -> return Scopes.scopeFor(results)
+                results.size == 1 -> resultScope = Scopes.scopeFor(results)
             }
         }
 
-        // Other cases
-        val type = (typeComputer.typeOf(receiver) as? NamedType) ?: return IScope.NULLSCOPE
+        // Members
+        val type = (typeComputer.typeOf(receiver) as? NamedType) ?: return resultScope
 
         return when {
-            type.isNullable && !context.isNullable -> IScope.NULLSCOPE
+            type.isNullable && !context.isNullable -> resultScope
             type is ClassType -> {
                 val members = type.smlClass.membersOrEmpty().filter { it.isStatic() == type.isStatic }
                 val superTypeMembers = classHierarchy.superClassMembers(type.smlClass)
                     .filter { it.isStatic() == type.isStatic }
                     .toList()
 
-                Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers))
+                Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers, resultScope))
             }
             type is EnumType -> {
                 val members = when {
@@ -135,7 +137,7 @@ class SimpleMLScopeProvider @Inject constructor(
                 }
                 val superTypeMembers = emptyList<SmlDeclaration>()
 
-                Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers))
+                Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers, resultScope))
             }
             type is InterfaceType -> {
                 if (type.isStatic) {
@@ -150,9 +152,9 @@ class SimpleMLScopeProvider @Inject constructor(
                     .filter { !it.isStatic() }
                     .toList()
 
-                Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers))
+                Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers, resultScope))
             }
-            else -> IScope.NULLSCOPE
+            else -> resultScope
         }
     }
 
