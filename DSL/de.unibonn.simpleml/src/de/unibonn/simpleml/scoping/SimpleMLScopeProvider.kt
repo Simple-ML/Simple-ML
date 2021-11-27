@@ -106,7 +106,7 @@ class SimpleMLScopeProvider @Inject constructor(
     private fun scopeForMemberAccessDeclaration(context: SmlMemberAccess): IScope {
         val receiver = context.receiver
 
-        // Call with multiple results
+        // Call results
         if (receiver is SmlCall) {
             val results = receiver.resultsOrNull()
             when {
