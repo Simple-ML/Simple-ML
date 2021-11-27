@@ -41,7 +41,6 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
-
 private const val ANNOTATION_USE = "annotationUse"
 private const val ARGUMENT = "argument"
 private const val NAMED_TYPE = "namedType"
