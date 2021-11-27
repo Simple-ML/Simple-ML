@@ -40,6 +40,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
+
 private const val ANNOTATION_USE = "annotationUse"
 private const val ARGUMENT = "argument"
 private const val NAMED_TYPE = "namedType"
@@ -1343,6 +1344,74 @@ class ScopingTest {
                 val declaration = references[1].declaration
                 declaration.shouldBeResolved()
                 declaration.shouldBe(enumInstanceInSameFile)
+            }
+
+            @Test
+            fun `should not resolve static interface attribute accessed from interface`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInterfaceMembers")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+                references[1].declaration.shouldNotBeResolved()
+            }
+
+            @Test
+            fun `should not resolve instance interface attribute accessed from interface instance`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInterfaceMembers")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+                references[3].declaration.shouldNotBeResolved()
+            }
+
+            @Test
+            fun `should not resolve nested class accessed from interface`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInterfaceMembers")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+                references[5].declaration.shouldNotBeResolved()
+            }
+
+            @Test
+            fun `should not resolve nested enum accessed from interface`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInterfaceMembers")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+                references[7].declaration.shouldNotBeResolved()
+            }
+
+            @Test
+            fun `should not resolve static interface method accessed from interface`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInterfaceMembers")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+                references[9].declaration.shouldNotBeResolved()
+            }
+
+            @Test
+            fun `should resolve instance interface method accessed from interface instance`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInterfaceMembers")
+                val interfaceInstanceMethodInSameFile =
+                    findUniqueDeclarationOrFail<SmlFunction>("interfaceInstanceMethodInSameFile")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+
+                val declaration = references[11].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(interfaceInstanceMethodInSameFile)
+            }
+
+            @Test
+            fun `should not resolve nested interface accessed from interface`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInterfaceMembers")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+                references[13].declaration.shouldNotBeResolved()
             }
 
             @Test
