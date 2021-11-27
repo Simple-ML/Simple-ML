@@ -1724,6 +1724,20 @@ class ScopingTest {
             }
 
             @Test
+            fun `should not resolve static class members accessed from instance`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToStaticClassMembersFromInstance")
+                val classInSameFile = findUniqueDeclarationOrFail<SmlClass>("ClassInSameFile")
+
+                val references = step.descendants<SmlReference>()
+                    .filter { it.declaration != classInSameFile }
+                    .toList()
+                references.shouldHaveSize(10)
+                references.forEachAsClue {
+                    it.declaration.shouldNotBeResolved()
+                }
+            }
+
+            @Test
             fun `should not resolve class members with unqualified access`() = withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("unqualifiedReferencesToClassMembers")
 
