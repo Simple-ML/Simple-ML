@@ -42,6 +42,7 @@ enum EnumInSameFile {
 }
 
 fun globalFunctionInSameFile(globalFunctionParameterInSameFile: Int) -> globalFunctionResultInSameFile: Int
+fun globalFunctionWithTwoResults() -> (result1: Int, result2: Int)
 
 interface SuperInterface {
     static attr superInterfaceStaticAttribute: Int
@@ -74,6 +75,7 @@ fun interfaceInSameFileFactory() -> result: InterfaceInSameFile
 step stepInSameFile(stepParameterInSameFile: Int) -> stepResultInSameFile: Int {
     val placeholderInSameFile = 1;
 }
+step stepInSameFileWithTwoResults() -> (result1: Int, result2: Int) {}
 
 workflow workflowInSameFile {}
 
@@ -340,30 +342,35 @@ step referencesToInstanceInterfaceMembersFromInterface() {
 
 // Access to results of callable -----------------------------------------------
 
-step referencesToCallableTypeResults(f: callable () -> (callableTypeResult: Int)) {
-    f().callableTypeResult;
+step referencesToCallableTypeResults(
+    callableWithOneResult: callable () -> (result: Int),
+    callableWithTwoResults: callable () -> (result1: Int, result2: Int)
+) {
+    callableWithOneResult().result;
+    callableWithTwoResults().result1;
 }
 
 step referencesToFunctionResults() {
-    ClassInSameFile.classStaticMethodInSameFile(1).classStaticMethodResultInSameFile;
-    ClassInSameFile<*>(1).classInstanceMethodInSameFile(1).classInstanceMethodResultInSameFile;
-
     globalFunctionInSameFile(1).globalFunctionResultInSameFile;
-
-    InterfaceInSameFile.interfaceStaticMethodInSameFile().interfaceStaticMethodResultInSameFile;
-    interfaceInSameFileFactory().interfaceInstanceMethodInSameFile().interfaceInstanceMethodResultInSameFile;
+    globalFunctionWithTwoResults().result1;
 }
 
 step referencesToLambdaResults() {
-    val f = lambda {
-        yield lambdaResult = 1;
+    val lambdaWithOneResult = lambda {
+        yield result = 1;
+    };
+    val lambdaWithTwoResults = lambda {
+        yield result1 = 1;
+        yield result2 = 1;
     };
     
-    f().lambdaResult;
+    lambdaWithOneResult().result;
+    lambdaWithTwoResults().result1;
 }
 
 step referencesToWorkflowStepResults() {
     stepInSameFile(1).stepResultInSameFile;
+    stepInSameFileWithTwoResults().result1;
 }
 
 // Access to locals from outside -----------------------------------------------

@@ -8,6 +8,7 @@ import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlArgumentList
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlBlock
+import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlLambda
@@ -39,6 +40,7 @@ import de.unibonn.simpleml.utils.membersOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
 import de.unibonn.simpleml.utils.parametersOrNull
 import de.unibonn.simpleml.utils.placeholdersOrEmpty
+import de.unibonn.simpleml.utils.resultsOrNull
 import de.unibonn.simpleml.utils.typeParametersOrNull
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
@@ -102,10 +104,19 @@ class SimpleMLScopeProvider @Inject constructor(
     }
 
     private fun scopeForMemberAccessDeclaration(context: SmlMemberAccess): IScope {
-        val type = (typeComputer.typeOf(context.receiver) as? NamedType) ?: return IScope.NULLSCOPE
+        val receiver = context.receiver
 
-        // TODO we also want to access results of a function by name call().result (maybe it does make sense to put the
-        //  names into the type???
+        // Call with multiple results
+        if (receiver is SmlCall) {
+            val results = receiver.resultsOrNull()
+            when {
+                results == null -> return IScope.NULLSCOPE
+                results.size > 1 -> return Scopes.scopeFor(results)
+            }
+        }
+
+        // Other cases
+        val type = (typeComputer.typeOf(receiver) as? NamedType) ?: return IScope.NULLSCOPE
 
         return when {
             type.isNullable && !context.isNullable -> IScope.NULLSCOPE

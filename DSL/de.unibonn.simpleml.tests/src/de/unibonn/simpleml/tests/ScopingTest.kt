@@ -1811,6 +1811,28 @@ class ScopingTest {
                     it.declaration.shouldNotBeResolved()
                 }
             }
+
+            @Test
+            fun `should not resolve result of callable type with one result`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToCallableTypeResults")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(4)
+                references[1].declaration.shouldNotBeResolved()
+            }
+
+            @Test
+            fun `should resolve result of callable type with multiple results`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToCallableTypeResults")
+                val result1 = step.findUniqueDeclarationOrFail<SmlResult>("result1")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(4)
+
+                val declaration = references[3].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(result1)
+            }
         }
     }
 
