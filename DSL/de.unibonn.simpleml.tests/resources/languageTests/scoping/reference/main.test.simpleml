@@ -283,12 +283,6 @@ step referencesToOverriddenMembers() {
 
 // Hiding ----------------------------------------------------------------------
 step referencesToHiddenMembers() {
-    SuperClassForHiding.staticAttributeForHiding;
-    SuperClassForHiding.NestedClassForHiding;
-    SuperClassForHiding.NestedEnumForHiding;
-    SuperClassForHiding.staticMethodForHiding;
-    SuperClassForHiding.NestedInterfaceForHiding;
-
     SubClassForHiding.staticAttributeForHiding;
     SubClassForHiding.NestedClassForHiding;
     SubClassForHiding.NestedEnumForHiding;

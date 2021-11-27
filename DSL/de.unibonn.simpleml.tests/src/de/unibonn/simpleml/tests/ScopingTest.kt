@@ -1649,6 +1649,81 @@ class ScopingTest {
             }
 
             @Test
+            fun `should resolve hidden static attribute`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToHiddenMembers")
+                val subClassForHiding = findUniqueDeclarationOrFail<SmlClass>("SubClassForHiding")
+                val staticAttributeForHiding =
+                    subClassForHiding.findUniqueDeclarationOrFail<SmlAttribute>("staticAttributeForHiding")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(10)
+
+                val declaration = references[1].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(staticAttributeForHiding)
+            }
+
+            @Test
+            fun `should resolve hidden nested class`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToHiddenMembers")
+                val subClassForHiding = findUniqueDeclarationOrFail<SmlClass>("SubClassForHiding")
+                val nestedClassForHiding =
+                    subClassForHiding.findUniqueDeclarationOrFail<SmlClass>("NestedClassForHiding")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(10)
+
+                val declaration = references[3].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(nestedClassForHiding)
+            }
+
+            @Test
+            fun `should resolve hidden nested enum`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToHiddenMembers")
+                val subClassForHiding = findUniqueDeclarationOrFail<SmlClass>("SubClassForHiding")
+                val nestedEnumForHiding =
+                    subClassForHiding.findUniqueDeclarationOrFail<SmlEnum>("NestedEnumForHiding")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(10)
+
+                val declaration = references[5].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(nestedEnumForHiding)
+            }
+
+            @Test
+            fun `should resolve hidden static method`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToHiddenMembers")
+                val subClassForHiding = findUniqueDeclarationOrFail<SmlClass>("SubClassForHiding")
+                val staticMethodForHiding =
+                    subClassForHiding.findUniqueDeclarationOrFail<SmlFunction>("staticMethodForHiding")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(10)
+
+                val declaration = references[7].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(staticMethodForHiding)
+            }
+
+            @Test
+            fun `should resolve hidden nested interface`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToHiddenMembers")
+                val subClassForHiding = findUniqueDeclarationOrFail<SmlClass>("SubClassForHiding")
+                val nestedInterfaceForHiding =
+                    subClassForHiding.findUniqueDeclarationOrFail<SmlInterface>("NestedInterfaceForHiding")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(10)
+
+                val declaration = references[9].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(nestedInterfaceForHiding)
+            }
+
+            @Test
             fun `should not resolve class members with unqualified access`() = withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("unqualifiedReferencesToClassMembers")
 
