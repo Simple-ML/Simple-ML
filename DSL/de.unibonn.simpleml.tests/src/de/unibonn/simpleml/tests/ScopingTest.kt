@@ -1813,13 +1813,66 @@ class ScopingTest {
             }
 
             @Test
-            fun `should not resolve result of callable type with one result`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToCallableTypeResults")
+            fun `should resolve result of callable type with one result without matching member`() =
+                withResource(REFERENCE) {
+                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToCallableTypeResults")
+                    val singleResult = step.findUniqueDeclarationOrFail<SmlResult>("singleResult")
 
-                val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(4)
-                references[1].declaration.shouldNotBeResolved()
-            }
+                    val references = step.descendants<SmlReference>().toList()
+                    references.shouldHaveSize(10)
+
+                    val declaration = references[1].declaration
+                    declaration.shouldBeResolved()
+                    declaration.shouldBe(singleResult)
+                }
+
+            @Test
+            fun `should resolve attribute for callable type with one result with matching class attribute`() =
+                withResource(REFERENCE) {
+                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToCallableTypeResults")
+                    val classForResultMemberAccess = findUniqueDeclarationOrFail<SmlClass>("ClassForResultMemberAccess")
+                    val result = classForResultMemberAccess.findUniqueDeclarationOrFail<SmlAttribute>("result")
+
+                    val references = step.descendants<SmlReference>().toList()
+                    references.shouldHaveSize(10)
+
+                    val declaration = references[3].declaration
+                    declaration.shouldBeResolved()
+                    declaration.shouldBe(result)
+                }
+
+            @Test
+            fun `should resolve result for callable type with one result with matching enum instance`() =
+                withResource(REFERENCE) {
+                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToCallableTypeResults")
+                    val callableWithOneResultWithIdenticalEnumInstance =
+                        step.findUniqueDeclarationOrFail<SmlParameter>("callableWithOneResultWithIdenticalEnumInstance")
+                    val result =
+                        callableWithOneResultWithIdenticalEnumInstance.findUniqueDeclarationOrFail<SmlResult>("result")
+
+                    val references = step.descendants<SmlReference>().toList()
+                    references.shouldHaveSize(10)
+
+                    val declaration = references[5].declaration
+                    declaration.shouldBeResolved()
+                    declaration.shouldBe(result)
+                }
+
+            @Test
+            fun `should resolve method for callable type with one result with matching interface method`() =
+                withResource(REFERENCE) {
+                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToCallableTypeResults")
+                    val interfaceForResultMemberAccess =
+                        findUniqueDeclarationOrFail<SmlInterface>("InterfaceForResultMemberAccess")
+                    val result = interfaceForResultMemberAccess.findUniqueDeclarationOrFail<SmlFunction>("result")
+
+                    val references = step.descendants<SmlReference>().toList()
+                    references.shouldHaveSize(10)
+
+                    val declaration = references[7].declaration
+                    declaration.shouldBeResolved()
+                    declaration.shouldBe(result)
+                }
 
             @Test
             fun `should resolve result of callable type with multiple results`() = withResource(REFERENCE) {
@@ -1827,21 +1880,42 @@ class ScopingTest {
                 val result1 = step.findUniqueDeclarationOrFail<SmlResult>("result1")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(4)
+                references.shouldHaveSize(10)
 
-                val declaration = references[3].declaration
+                val declaration = references[9].declaration
                 declaration.shouldBeResolved()
                 declaration.shouldBe(result1)
             }
 
             @Test
-            fun `should not resolve result of function with one result`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToFunctionResults")
+            fun `should resolve result of function with one result without matching member`() =
+                withResource(REFERENCE) {
+                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToFunctionResults")
+                    val globalFunctionResultInSameFile =
+                        findUniqueDeclarationOrFail<SmlResult>("globalFunctionResultInSameFile")
 
-                val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(4)
-                references[1].declaration.shouldNotBeResolved()
-            }
+                    val references = step.descendants<SmlReference>().toList()
+                    references.shouldHaveSize(6)
+
+                    val declaration = references[1].declaration
+                    declaration.shouldBeResolved()
+                    declaration.shouldBe(globalFunctionResultInSameFile)
+                }
+
+            @Test
+            fun `should resolve member for function with one result with matching member`() =
+                withResource(REFERENCE) {
+                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToFunctionResults")
+                    val classForResultMemberAccess = findUniqueDeclarationOrFail<SmlClass>("ClassForResultMemberAccess")
+                    val result = classForResultMemberAccess.findUniqueDeclarationOrFail<SmlAttribute>("result")
+
+                    val references = step.descendants<SmlReference>().toList()
+                    references.shouldHaveSize(6)
+
+                    val declaration = references[3].declaration
+                    declaration.shouldBeResolved()
+                    declaration.shouldBe(result)
+                }
 
             @Test
             fun `should resolve result of function with multiple results`() = withResource(REFERENCE) {
@@ -1851,21 +1925,40 @@ class ScopingTest {
                 val result1 = globalFunctionWithTwoResults.findUniqueDeclarationOrFail<SmlResult>("result1")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(4)
+                references.shouldHaveSize(6)
 
-                val declaration = references[3].declaration
+                val declaration = references[5].declaration
                 declaration.shouldBeResolved()
                 declaration.shouldBe(result1)
             }
 
             @Test
-            fun `should not resolve result of lambda with one result`() = withResource(REFERENCE) {
+            fun `should resolve result of lambda with one result without matching member`() = withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToLambdaResults")
+                val singleResult = step.findUniqueDeclarationOrFail<SmlLambdaYield>("singleResult")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(4)
-                references[1].declaration.shouldNotBeResolved()
+                references.shouldHaveSize(7)
+
+                val declaration = references[2].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(singleResult)
             }
+
+            @Test
+            fun `should resolve member for lambda with one result with matching member`() =
+                withResource(REFERENCE) {
+                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToLambdaResults")
+                    val classForResultMemberAccess = findUniqueDeclarationOrFail<SmlClass>("ClassForResultMemberAccess")
+                    val result = classForResultMemberAccess.findUniqueDeclarationOrFail<SmlAttribute>("result")
+
+                    val references = step.descendants<SmlReference>().toList()
+                    references.shouldHaveSize(7)
+
+                    val declaration = references[4].declaration
+                    declaration.shouldBeResolved()
+                    declaration.shouldBe(result)
+                }
 
             @Test
             fun `should resolve result of lambda with multiple results`() = withResource(REFERENCE) {
@@ -1873,33 +1966,53 @@ class ScopingTest {
                 val result1 = step.findUniqueDeclarationOrFail<SmlLambdaYield>("result1")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(4)
+                references.shouldHaveSize(7)
 
-                val declaration = references[3].declaration
+                val declaration = references[6].declaration
                 declaration.shouldBeResolved()
                 declaration.shouldBe(result1)
             }
 
             @Test
-            fun `should not resolve result of workflow step with one result`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToWorkflowStepResults")
+            fun `should resolve result of workflow step with one result without matching member`() =
+                withResource(REFERENCE) {
+                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToWorkflowStepResults")
+                    val stepResultInSameFile = findUniqueDeclarationOrFail<SmlResult>("stepResultInSameFile")
 
-                val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(4)
-                references[1].declaration.shouldNotBeResolved()
-            }
+                    val references = step.descendants<SmlReference>().toList()
+                    references.shouldHaveSize(6)
+
+                    val declaration = references[1].declaration
+                    declaration.shouldBeResolved()
+                    declaration.shouldBe(stepResultInSameFile)
+                }
+
+            @Test
+            fun `should resolve member for workflow step with one result with matching member`() =
+                withResource(REFERENCE) {
+                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToWorkflowStepResults")
+                    val classForResultMemberAccess = findUniqueDeclarationOrFail<SmlClass>("ClassForResultMemberAccess")
+                    val result = classForResultMemberAccess.findUniqueDeclarationOrFail<SmlAttribute>("result")
+
+                    val references = step.descendants<SmlReference>().toList()
+                    references.shouldHaveSize(6)
+
+                    val declaration = references[3].declaration
+                    declaration.shouldBeResolved()
+                    declaration.shouldBe(result)
+                }
 
             @Test
             fun `should resolve result of workflow step with multiple results`() = withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToWorkflowStepResults")
                 val stepInSameFileWithTwoResults =
-                    findUniqueDeclarationOrFail<SmlWorkflowStep>("stepInSameFileWithTwoResults")
+                    findUniqueDeclarationOrFail<SmlWorkflowStep>("stepWithTwoResults")
                 val result1 = stepInSameFileWithTwoResults.findUniqueDeclarationOrFail<SmlResult>("result1")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(4)
+                references.shouldHaveSize(6)
 
-                val declaration = references[3].declaration
+                val declaration = references[5].declaration
                 declaration.shouldBeResolved()
                 declaration.shouldBe(result1)
             }

@@ -42,6 +42,7 @@ enum EnumInSameFile {
 }
 
 fun globalFunctionInSameFile(globalFunctionParameterInSameFile: Int) -> globalFunctionResultInSameFile: Int
+fun globalFunctionWithOneResultWithIdenticalMember() -> result: ClassForResultMemberAccess
 fun globalFunctionWithTwoResults() -> (result1: Int, result2: Int)
 
 interface SuperInterface {
@@ -75,7 +76,8 @@ fun interfaceInSameFileFactory() -> result: InterfaceInSameFile
 step stepInSameFile(stepParameterInSameFile: Int) -> stepResultInSameFile: Int {
     val placeholderInSameFile = 1;
 }
-step stepInSameFileWithTwoResults() -> (result1: Int, result2: Int) {}
+step stepWithOneResultWithIdenticalMember() -> result: ClassForResultMemberAccess {}
+step stepWithTwoResults() -> (result1: Int, result2: Int) {}
 
 workflow workflowInSameFile {}
 
@@ -107,6 +109,17 @@ class SubClassForHiding sub SuperClassForHiding {
     static fun staticMethodForHiding()
     interface NestedInterfaceForHiding
 }
+
+class ClassForResultMemberAccess constructor () {
+    attr result: Int
+}
+enum EnumForResultMemberAccess {
+    result
+}
+interface InterfaceForResultMemberAccess {
+    fun result()
+}
+
 
 
 // Direct references -----------------------------------------------------------
@@ -343,34 +356,46 @@ step referencesToInstanceInterfaceMembersFromInterface() {
 // Access to results of callable -----------------------------------------------
 
 step referencesToCallableTypeResults(
-    callableWithOneResult: callable () -> (result: Int),
+    callableWithOneResult: callable () -> (singleResult: Int),
+    callableWithOneResultWithIdenticalClassAttribute: callable () -> (result: ClassForResultMemberAccess),
+    callableWithOneResultWithIdenticalEnumInstance: callable () -> (result: EnumForResultMemberAccess),
+    callableWithOneResultWithIdenticalInterfaceMethod: callable () -> (result: InterfaceForResultMemberAccess),
     callableWithTwoResults: callable () -> (result1: Int, result2: Int)
 ) {
-    callableWithOneResult().result;
+    callableWithOneResult().singleResult;
+    callableWithOneResultWithIdenticalClassAttribute().result;
+    callableWithOneResultWithIdenticalEnumInstance().result;
+    callableWithOneResultWithIdenticalInterfaceMethod().result;
     callableWithTwoResults().result1;
 }
 
 step referencesToFunctionResults() {
     globalFunctionInSameFile(1).globalFunctionResultInSameFile;
+    globalFunctionWithOneResultWithIdenticalMember().result;
     globalFunctionWithTwoResults().result1;
 }
 
 step referencesToLambdaResults() {
     val lambdaWithOneResult = lambda {
-        yield result = 1;
+        yield singleResult = 1;
+    };
+    val lambdaWithOneResultWithIdenticalMember = lambda {
+        yield result = ClassForResultMemberAccess();
     };
     val lambdaWithTwoResults = lambda {
         yield result1 = 1;
         yield result2 = 1;
     };
     
-    lambdaWithOneResult().result;
+    lambdaWithOneResult().singleResult;
+    lambdaWithOneResultWithIdenticalMember().result;
     lambdaWithTwoResults().result1;
 }
 
 step referencesToWorkflowStepResults() {
     stepInSameFile(1).stepResultInSameFile;
-    stepInSameFileWithTwoResults().result1;
+    stepWithOneResultWithIdenticalMember().result;
+    stepWithTwoResults().result1;
 }
 
 // Access to locals from outside -----------------------------------------------

@@ -28,6 +28,7 @@ import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlType
+import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.LIB_ANY
 import de.unibonn.simpleml.utils.LIB_BOOLEAN
@@ -108,6 +109,10 @@ class TypeComputer @Inject constructor(
                 assigned.inferType(isStatic = false)
             }
             this is SmlResult -> type.inferType(isStatic = false)
+            this is SmlWorkflowStep -> CallableType(
+                parametersOrEmpty().map { it.inferType(false) },
+                resultsOrEmpty().map { it.inferType(false) }
+            )
             else -> ANY
         }
     }
@@ -122,7 +127,28 @@ class TypeComputer @Inject constructor(
 
             this is SmlCall -> when (val callable = callableOrNull()) {
                 is SmlClass -> ClassType(callable, isNullable = false, isStatic = false)
+                is SmlCallableType -> {
+                    val results = callable.resultsOrEmpty()
+                    when (results.size) {
+                        1 -> results.first().inferType(false)
+                        else -> TupleType(results.map { it.inferType(false) })
+                    }
+                }
                 is SmlFunction -> {
+                    val results = callable.resultsOrEmpty()
+                    when (results.size) {
+                        1 -> results.first().inferType(false)
+                        else -> TupleType(results.map { it.inferType(false) })
+                    }
+                }
+                is SmlLambda -> {
+                    val results = callable.lambdaYieldsOrEmpty()
+                    when (results.size) {
+                        1 -> results.first().inferType(false)
+                        else -> TupleType(results.map { it.inferType(false) })
+                    }
+                }
+                is SmlWorkflowStep -> {
                     val results = callable.resultsOrEmpty()
                     when (results.size) {
                         1 -> results.first().inferType(false)
