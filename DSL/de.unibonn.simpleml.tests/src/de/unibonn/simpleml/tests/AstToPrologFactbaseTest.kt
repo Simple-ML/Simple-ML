@@ -77,7 +77,7 @@ import org.junit.jupiter.api.Test
  * - Check size of lists of children
  * - Ensure IDs of children are correct
  */
-class SimpleMLAstToPrologFactbaseTest {
+class AstToPrologFactbaseTest {
 
     private val main = SimpleMLStandaloneSetup()
         .createInjectorAndDoEMFRegistration()

@@ -11,9 +11,9 @@ import java.util.stream.Stream
 import kotlin.streams.asSequence
 
 fun ClassLoader.getResourcePath(fileOrFolder: String): Path? {
-    val resourcesUrl = getResource(fileOrFolder) ?: return null
-    val resourcesUri = FileLocator.resolve(resourcesUrl).toURI()
-    return Paths.get(resourcesUri)
+    val resourceUrl = getResource(fileOrFolder) ?: return null
+    val resourceUri = FileLocator.resolve(resourceUrl).toURI()
+    return Paths.get(resourceUri)
 }
 
 fun Path.createDynamicTestsFromResourceFolder(

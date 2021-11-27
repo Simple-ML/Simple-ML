@@ -100,11 +100,11 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlWorkflowStep" eSuperTypes="#//SmlDeclaration">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlBlock"
-        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="resultList" eType="#//SmlResultList"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlBlock"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlBlock">
