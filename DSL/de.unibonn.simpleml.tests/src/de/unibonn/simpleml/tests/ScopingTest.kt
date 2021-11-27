@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlArgument
+import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlEnum
@@ -1230,6 +1231,104 @@ class ScopingTest {
 
         @Nested
         inner class MemberAccess {
+
+            @Test
+            fun `should resolve static class attribute accessed from class`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToClassMembers")
+                val classStaticAttributeInSameFile =
+                    findUniqueDeclarationOrFail<SmlAttribute>("classStaticAttributeInSameFile")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+
+                val declaration = references[1].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(classStaticAttributeInSameFile)
+            }
+
+            @Test
+            fun `should resolve instance class attribute accessed from class instance`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToClassMembers")
+                val classInstanceAttributeInSameFile =
+                    findUniqueDeclarationOrFail<SmlAttribute>("classInstanceAttributeInSameFile")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+
+                val declaration = references[3].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(classInstanceAttributeInSameFile)
+            }
+
+            @Test
+            fun `should resolve nested class accessed from class`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToClassMembers")
+                val classInClassInSameFile =
+                    findUniqueDeclarationOrFail<SmlClass>("ClassInClassInSameFile")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+
+                val declaration = references[5].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(classInClassInSameFile)
+            }
+
+            @Test
+            fun `should resolve nested enum accessed from class`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToClassMembers")
+                val enumInClassInSameFile =
+                    findUniqueDeclarationOrFail<SmlEnum>("EnumInClassInSameFile")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+
+                val declaration = references[7].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(enumInClassInSameFile)
+            }
+
+            @Test
+            fun `should resolve static class method accessed from class`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToClassMembers")
+                val classStaticMethodInSameFile =
+                    findUniqueDeclarationOrFail<SmlFunction>("classStaticMethodInSameFile")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+
+                val declaration = references[9].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(classStaticMethodInSameFile)
+            }
+
+            @Test
+            fun `should resolve instance class method accessed from class instance`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToClassMembers")
+                val classInstanceMethodInSameFile =
+                    findUniqueDeclarationOrFail<SmlFunction>("classInstanceMethodInSameFile")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+
+                val declaration = references[11].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(classInstanceMethodInSameFile)
+            }
+
+            @Test
+            fun `should resolve nested interface accessed from class`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToClassMembers")
+                val interfaceInClassInSameFile =
+                    findUniqueDeclarationOrFail<SmlInterface>("InterfaceInClassInSameFile")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(14)
+
+                val declaration = references[13].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(interfaceInClassInSameFile)
+            }
 
             @Test
             fun `should not resolve class members with unqualified access`() = withResource(REFERENCE) {
