@@ -1833,6 +1833,29 @@ class ScopingTest {
                 declaration.shouldBeResolved()
                 declaration.shouldBe(result1)
             }
+
+            @Test
+            fun `should not resolve result of function with one result`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToFunctionResults")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(4)
+                references[1].declaration.shouldNotBeResolved()
+            }
+
+            @Test
+            fun `should resolve result of function with multiple results`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToFunctionResults")
+                val globalFunctionWithTwoResults = findUniqueDeclarationOrFail<SmlFunction>("globalFunctionWithTwoResults")
+                val result1 = globalFunctionWithTwoResults.findUniqueDeclarationOrFail<SmlResult>("result1")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(4)
+
+                val declaration = references[3].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(result1)
+            }
         }
     }
 
