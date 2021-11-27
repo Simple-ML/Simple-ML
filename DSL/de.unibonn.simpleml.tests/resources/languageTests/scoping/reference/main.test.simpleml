@@ -113,6 +113,13 @@ class SubClassForHiding sub SuperClassForHiding {
 class ClassForResultMemberAccess constructor () {
     attr result: Int
 }
+enum EnumForResultMemberAccess {
+    result
+}
+interface InterfaceForResultMemberAccess {
+    fun result()
+}
+
 
 
 // Direct references -----------------------------------------------------------
@@ -350,11 +357,15 @@ step referencesToInstanceInterfaceMembersFromInterface() {
 
 step referencesToCallableTypeResults(
     callableWithOneResult: callable () -> (singleResult: Int),
-    callableWithOneResultWithIdenticalMember: callable () -> (result: ClassForResultMemberAccess),
+    callableWithOneResultWithIdenticalClassAttribute: callable () -> (result: ClassForResultMemberAccess),
+    callableWithOneResultWithIdenticalEnumInstance: callable () -> (result: EnumForResultMemberAccess),
+    callableWithOneResultWithIdenticalInterfaceMethod: callable () -> (result: InterfaceForResultMemberAccess),
     callableWithTwoResults: callable () -> (result1: Int, result2: Int)
 ) {
     callableWithOneResult().singleResult;
-    callableWithOneResultWithIdenticalMember().result;
+    callableWithOneResultWithIdenticalClassAttribute().result;
+    callableWithOneResultWithIdenticalEnumInstance().result;
+    callableWithOneResultWithIdenticalInterfaceMethod().result;
     callableWithTwoResults().result1;
 }
 

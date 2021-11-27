@@ -1819,7 +1819,7 @@ class ScopingTest {
                     val singleResult = step.findUniqueDeclarationOrFail<SmlResult>("singleResult")
 
                     val references = step.descendants<SmlReference>().toList()
-                    references.shouldHaveSize(6)
+                    references.shouldHaveSize(10)
 
                     val declaration = references[1].declaration
                     declaration.shouldBeResolved()
@@ -1827,16 +1827,49 @@ class ScopingTest {
                 }
 
             @Test
-            fun `should resolve member for callable type with one result with matching member`() =
+            fun `should resolve attribute for callable type with one result with matching class attribute`() =
                 withResource(REFERENCE) {
                     val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToCallableTypeResults")
                     val classForResultMemberAccess = findUniqueDeclarationOrFail<SmlClass>("ClassForResultMemberAccess")
                     val result = classForResultMemberAccess.findUniqueDeclarationOrFail<SmlAttribute>("result")
 
                     val references = step.descendants<SmlReference>().toList()
-                    references.shouldHaveSize(6)
+                    references.shouldHaveSize(10)
 
                     val declaration = references[3].declaration
+                    declaration.shouldBeResolved()
+                    declaration.shouldBe(result)
+                }
+
+            @Test
+            fun `should resolve result for callable type with one result with matching enum instance`() =
+                withResource(REFERENCE) {
+                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToCallableTypeResults")
+                    val callableWithOneResultWithIdenticalEnumInstance =
+                        step.findUniqueDeclarationOrFail<SmlParameter>("callableWithOneResultWithIdenticalEnumInstance")
+                    val result =
+                        callableWithOneResultWithIdenticalEnumInstance.findUniqueDeclarationOrFail<SmlResult>("result")
+
+                    val references = step.descendants<SmlReference>().toList()
+                    references.shouldHaveSize(10)
+
+                    val declaration = references[5].declaration
+                    declaration.shouldBeResolved()
+                    declaration.shouldBe(result)
+                }
+
+            @Test
+            fun `should resolve method for callable type with one result with matching interface method`() =
+                withResource(REFERENCE) {
+                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToCallableTypeResults")
+                    val interfaceForResultMemberAccess =
+                        findUniqueDeclarationOrFail<SmlInterface>("InterfaceForResultMemberAccess")
+                    val result = interfaceForResultMemberAccess.findUniqueDeclarationOrFail<SmlFunction>("result")
+
+                    val references = step.descendants<SmlReference>().toList()
+                    references.shouldHaveSize(10)
+
+                    val declaration = references[7].declaration
                     declaration.shouldBeResolved()
                     declaration.shouldBe(result)
                 }
@@ -1847,9 +1880,9 @@ class ScopingTest {
                 val result1 = step.findUniqueDeclarationOrFail<SmlResult>("result1")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(6)
+                references.shouldHaveSize(10)
 
-                val declaration = references[5].declaration
+                val declaration = references[9].declaration
                 declaration.shouldBeResolved()
                 declaration.shouldBe(result1)
             }
