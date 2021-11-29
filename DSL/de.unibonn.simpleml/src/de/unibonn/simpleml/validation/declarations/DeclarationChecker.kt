@@ -1,8 +1,26 @@
 package de.unibonn.simpleml.validation.declarations
 
-import de.unibonn.simpleml.simpleML.*
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
-import de.unibonn.simpleml.utils.*
+import de.unibonn.simpleml.simpleML.SmlAnnotation
+import de.unibonn.simpleml.simpleML.SmlAttribute
+import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlDeclaration
+import de.unibonn.simpleml.simpleML.SmlEnum
+import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlResult
+import de.unibonn.simpleml.simpleML.SmlTypeParameter
+import de.unibonn.simpleml.simpleML.SmlWorkflow
+import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.utils.SML_DEPRECATED
+import de.unibonn.simpleml.utils.SML_OPEN
+import de.unibonn.simpleml.utils.SML_PURE
+import de.unibonn.simpleml.utils.SML_STATIC
+import de.unibonn.simpleml.utils.duplicatesBy
+import de.unibonn.simpleml.utils.isClassMember
+import de.unibonn.simpleml.utils.isCompilationUnitMember
+import de.unibonn.simpleml.utils.isDeprecated
+import de.unibonn.simpleml.utils.isRequired
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import org.eclipse.xtext.validation.Check
 

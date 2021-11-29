@@ -1,7 +1,70 @@
 package de.unibonn.simpleml.formatting2
 
-import de.unibonn.simpleml.simpleML.*
-import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.*
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ANNOTATION_USE__ANNOTATION
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ARGUMENT__PARAMETER
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_COMPILATION_UNIT__NAME
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_DECLARATION__MODIFIERS
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_DECLARATION__NAME
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_IMPORT__ALIAS
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_IMPORT__IMPORTED_NAMESPACE
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_INFIX_OPERATION__OPERATOR
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_MEMBER_ACCESS__NULLABLE
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_NAMED_TYPE__DECLARATION
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_NAMED_TYPE__NULLABLE
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_PREFIX_OPERATION__OPERATOR
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_ARGUMENT__TYPE_PARAMETER
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_PARAMETER_CONSTRAINT__LEFT_OPERAND
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_PARAMETER_CONSTRAINT__OPERATOR
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_PARAMETER__VARIANCE
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_PROJECTION__VARIANCE
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_YIELD__RESULT
+import de.unibonn.simpleml.simpleML.SmlAnnotation
+import de.unibonn.simpleml.simpleML.SmlAnnotationUse
+import de.unibonn.simpleml.simpleML.SmlArgument
+import de.unibonn.simpleml.simpleML.SmlArgumentList
+import de.unibonn.simpleml.simpleML.SmlAssigneeList
+import de.unibonn.simpleml.simpleML.SmlAssignment
+import de.unibonn.simpleml.simpleML.SmlAttribute
+import de.unibonn.simpleml.simpleML.SmlBlock
+import de.unibonn.simpleml.simpleML.SmlCall
+import de.unibonn.simpleml.simpleML.SmlCallableType
+import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlClassBody
+import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlConstructor
+import de.unibonn.simpleml.simpleML.SmlDeclaration
+import de.unibonn.simpleml.simpleML.SmlEnum
+import de.unibonn.simpleml.simpleML.SmlEnumBody
+import de.unibonn.simpleml.simpleML.SmlEnumInstance
+import de.unibonn.simpleml.simpleML.SmlExpressionStatement
+import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.simpleML.SmlImport
+import de.unibonn.simpleml.simpleML.SmlInfixOperation
+import de.unibonn.simpleml.simpleML.SmlLambda
+import de.unibonn.simpleml.simpleML.SmlLambdaYield
+import de.unibonn.simpleml.simpleML.SmlMemberAccess
+import de.unibonn.simpleml.simpleML.SmlMemberType
+import de.unibonn.simpleml.simpleML.SmlNamedType
+import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlParameterList
+import de.unibonn.simpleml.simpleML.SmlParentTypeList
+import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
+import de.unibonn.simpleml.simpleML.SmlParenthesizedType
+import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.simpleML.SmlPrefixOperation
+import de.unibonn.simpleml.simpleML.SmlResult
+import de.unibonn.simpleml.simpleML.SmlResultList
+import de.unibonn.simpleml.simpleML.SmlTypeArgument
+import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
+import de.unibonn.simpleml.simpleML.SmlTypeParameter
+import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
+import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraintList
+import de.unibonn.simpleml.simpleML.SmlTypeParameterList
+import de.unibonn.simpleml.simpleML.SmlTypeProjection
+import de.unibonn.simpleml.simpleML.SmlUnionType
+import de.unibonn.simpleml.simpleML.SmlWorkflow
+import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.simpleML.SmlYield
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.formatting2.AbstractFormatter2
@@ -607,10 +670,10 @@ class SimpleMLFormatter : AbstractFormatter2() {
 
                 // Feature "operator"
                 doc.formatFeature(
-                        obj,
-                        SML_PREFIX_OPERATION__OPERATOR,
-                        prepend = null,
-                        append = if (obj.operator == "not") oneSpace else noSpace
+                    obj,
+                    SML_PREFIX_OPERATION__OPERATOR,
+                    prepend = null,
+                    append = if (obj.operator == "not") oneSpace else noSpace
                 )
 
                 // EObject "operand"
@@ -808,9 +871,9 @@ class SimpleMLFormatter : AbstractFormatter2() {
     }
 
     private fun IFormattableDocument.formatObject(
-            obj: EObject?,
-            prepend: KFunction1<Format, Unit>? = null,
-            append: KFunction1<Format, Unit>? = null
+        obj: EObject?,
+        prepend: KFunction1<Format, Unit>? = null,
+        append: KFunction1<Format, Unit>? = null
     ) {
         if (obj != null) {
             if (prepend != null) {
@@ -824,10 +887,10 @@ class SimpleMLFormatter : AbstractFormatter2() {
     }
 
     private fun IFormattableDocument.formatFeature(
-            obj: EObject?,
-            feature: EStructuralFeature,
-            prepend: KFunction1<Format, Unit>? = null,
-            append: KFunction1<Format, Unit>? = null
+        obj: EObject?,
+        feature: EStructuralFeature,
+        prepend: KFunction1<Format, Unit>? = null,
+        append: KFunction1<Format, Unit>? = null
     ) {
         if (obj == null) {
             return
@@ -845,10 +908,10 @@ class SimpleMLFormatter : AbstractFormatter2() {
     }
 
     private fun IFormattableDocument.formatKeyword(
-            obj: EObject?,
-            keyword: String,
-            prepend: KFunction1<Format, Unit>? = null,
-            append: KFunction1<Format, Unit>? = null
+        obj: EObject?,
+        keyword: String,
+        prepend: KFunction1<Format, Unit>? = null,
+        append: KFunction1<Format, Unit>? = null
     ) {
         if (obj == null) {
             return
@@ -865,7 +928,10 @@ class SimpleMLFormatter : AbstractFormatter2() {
         }
     }
 
-    private fun IFormattableDocument.formatAnnotationsAndModifiers(obj: SmlDeclaration, inlineAnnotations: Boolean = false) {
+    private fun IFormattableDocument.formatAnnotationsAndModifiers(
+        obj: SmlDeclaration,
+        inlineAnnotations: Boolean = false
+    ) {
 
         // Feature "annotations"
         obj.annotations.forEach {
