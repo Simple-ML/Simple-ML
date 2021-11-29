@@ -72,6 +72,7 @@ SmlAttribute
 
 // Classes -------------------------------------------------------------------------------------------------------------
 
+@Exported
 SmlClass
 	: annotations+=SmlAnnotationUse*
 	  modifiers+=SmlModifier*

@@ -1004,7 +1004,7 @@ class ScopingTest {
                     findUniqueDeclarationOrFail<SmlAttribute>("classStaticAttributeInSameFile")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(14)
+                references.shouldHaveSize(12)
 
                 val declaration = references[1].declaration
                 declaration.shouldBeResolved()
@@ -1018,7 +1018,7 @@ class ScopingTest {
                     findUniqueDeclarationOrFail<SmlAttribute>("classInstanceAttributeInSameFile")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(14)
+                references.shouldHaveSize(12)
 
                 val declaration = references[3].declaration
                 declaration.shouldBeResolved()
@@ -1032,7 +1032,7 @@ class ScopingTest {
                     findUniqueDeclarationOrFail<SmlClass>("ClassInClassInSameFile")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(14)
+                references.shouldHaveSize(12)
 
                 val declaration = references[5].declaration
                 declaration.shouldBeResolved()
@@ -1046,7 +1046,7 @@ class ScopingTest {
                     findUniqueDeclarationOrFail<SmlEnum>("EnumInClassInSameFile")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(14)
+                references.shouldHaveSize(12)
 
                 val declaration = references[7].declaration
                 declaration.shouldBeResolved()
@@ -1060,7 +1060,7 @@ class ScopingTest {
                     findUniqueDeclarationOrFail<SmlFunction>("classStaticMethodInSameFile")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(14)
+                references.shouldHaveSize(12)
 
                 val declaration = references[9].declaration
                 declaration.shouldBeResolved()
@@ -1074,7 +1074,7 @@ class ScopingTest {
                     findUniqueDeclarationOrFail<SmlFunction>("classInstanceMethodInSameFile")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(14)
+                references.shouldHaveSize(12)
 
                 val declaration = references[11].declaration
                 declaration.shouldBeResolved()
@@ -1102,7 +1102,7 @@ class ScopingTest {
                     findUniqueDeclarationOrFail<SmlAttribute>("superClassStaticAttribute")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(14)
+                references.shouldHaveSize(12)
 
                 val declaration = references[1].declaration
                 declaration.shouldBeResolved()
@@ -1117,7 +1117,7 @@ class ScopingTest {
                         findUniqueDeclarationOrFail<SmlAttribute>("superClassInstanceAttribute")
 
                     val references = step.descendants<SmlReference>().toList()
-                    references.shouldHaveSize(14)
+                    references.shouldHaveSize(12)
 
                     val declaration = references[3].declaration
                     declaration.shouldBeResolved()
@@ -1131,7 +1131,7 @@ class ScopingTest {
                     findUniqueDeclarationOrFail<SmlClass>("ClassInSuperClass")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(14)
+                references.shouldHaveSize(12)
 
                 val declaration = references[5].declaration
                 declaration.shouldBeResolved()
@@ -1145,7 +1145,7 @@ class ScopingTest {
                     findUniqueDeclarationOrFail<SmlEnum>("EnumInSuperClass")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(14)
+                references.shouldHaveSize(12)
 
                 val declaration = references[7].declaration
                 declaration.shouldBeResolved()
@@ -1159,7 +1159,7 @@ class ScopingTest {
                     findUniqueDeclarationOrFail<SmlFunction>("superClassStaticMethod")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(14)
+                references.shouldHaveSize(12)
 
                 val declaration = references[9].declaration
                 declaration.shouldBeResolved()
@@ -1174,7 +1174,7 @@ class ScopingTest {
                         findUniqueDeclarationOrFail<SmlFunction>("superClassInstanceMethod")
 
                     val references = step.descendants<SmlReference>().toList()
-                    references.shouldHaveSize(14)
+                    references.shouldHaveSize(12)
 
                     val declaration = references[11].declaration
                     declaration.shouldBeResolved()
@@ -1219,7 +1219,7 @@ class ScopingTest {
                     subClassForHiding.findUniqueDeclarationOrFail<SmlAttribute>("staticAttributeForHiding")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(10)
+                references.shouldHaveSize(8)
 
                 val declaration = references[1].declaration
                 declaration.shouldBeResolved()
@@ -1234,7 +1234,7 @@ class ScopingTest {
                     subClassForHiding.findUniqueDeclarationOrFail<SmlClass>("NestedClassForHiding")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(10)
+                references.shouldHaveSize(8)
 
                 val declaration = references[3].declaration
                 declaration.shouldBeResolved()
@@ -1249,7 +1249,7 @@ class ScopingTest {
                     subClassForHiding.findUniqueDeclarationOrFail<SmlEnum>("NestedEnumForHiding")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(10)
+                references.shouldHaveSize(8)
 
                 val declaration = references[5].declaration
                 declaration.shouldBeResolved()
@@ -1264,7 +1264,7 @@ class ScopingTest {
                     subClassForHiding.findUniqueDeclarationOrFail<SmlFunction>("staticMethodForHiding")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(10)
+                references.shouldHaveSize(8)
 
                 val declaration = references[7].declaration
                 declaration.shouldBeResolved()
@@ -1279,7 +1279,7 @@ class ScopingTest {
                 val references = step.descendants<SmlReference>()
                     .filter { it.declaration != classInSameFile }
                     .toList()
-                references.shouldHaveSize(10)
+                references.shouldHaveSize(8)
                 references.forEachAsClue {
                     it.declaration.shouldNotBeResolved()
                 }
@@ -1304,7 +1304,7 @@ class ScopingTest {
                 val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("unqualifiedReferencesToClassMembers")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(7)
+                references.shouldHaveSize(6)
                 references.forEachAsClue {
                     it.declaration.shouldNotBeResolved()
                 }
@@ -1326,7 +1326,7 @@ class ScopingTest {
                     val singleResult = step.findUniqueDeclarationOrFail<SmlResult>("singleResult")
 
                     val references = step.descendants<SmlReference>().toList()
-                    references.shouldHaveSize(10)
+                    references.shouldHaveSize(8)
 
                     val declaration = references[1].declaration
                     declaration.shouldBeResolved()
@@ -1341,7 +1341,7 @@ class ScopingTest {
                     val result = classForResultMemberAccess.findUniqueDeclarationOrFail<SmlAttribute>("result")
 
                     val references = step.descendants<SmlReference>().toList()
-                    references.shouldHaveSize(10)
+                    references.shouldHaveSize(8)
 
                     val declaration = references[3].declaration
                     declaration.shouldBeResolved()
@@ -1358,7 +1358,7 @@ class ScopingTest {
                         callableWithOneResultWithIdenticalEnumInstance.findUniqueDeclarationOrFail<SmlResult>("result")
 
                     val references = step.descendants<SmlReference>().toList()
-                    references.shouldHaveSize(10)
+                    references.shouldHaveSize(8)
 
                     val declaration = references[5].declaration
                     declaration.shouldBeResolved()
@@ -1371,9 +1371,9 @@ class ScopingTest {
                 val result1 = step.findUniqueDeclarationOrFail<SmlResult>("result1")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(10)
+                references.shouldHaveSize(8)
 
-                val declaration = references[9].declaration
+                val declaration = references[7].declaration
                 declaration.shouldBeResolved()
                 declaration.shouldBe(result1)
             }
