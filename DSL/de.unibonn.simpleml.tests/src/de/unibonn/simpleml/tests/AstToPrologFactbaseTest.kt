@@ -31,6 +31,8 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.NamedTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NodeWithParent
 import de.unibonn.simpleml.prolog_bridge.model.facts.NullT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ParenthesizedExpressionT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ParenthesizedTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlaceholderT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PrefixOperationT
@@ -1125,6 +1127,25 @@ class AstToPrologFactbaseTest {
         }
 
         @Nested
+        inner class ParenthesizedExpression {
+            @Test
+            fun `should reference expression`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithParenthesizedExpression" }
+                val parenthesizedExpressionT =
+                    findUniqueFactOrFail<ParenthesizedExpressionT> { isContainedIn(it, workflowT) }
+                shouldBeChildExpressionOf<ExpressionT>(parenthesizedExpressionT.expression, parenthesizedExpressionT)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithParenthesizedExpression" }
+                val parenthesizedExpressionT =
+                    findUniqueFactOrFail<ParenthesizedExpressionT> { isContainedIn(it, workflowT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == parenthesizedExpressionT.id }
+            }
+        }
+
+        @Nested
         inner class PrefixOperation {
             @Test
             fun `should store operator`() = withFactbaseFromFile("expressions.simpleml") {
@@ -1332,6 +1353,25 @@ class AstToPrologFactbaseTest {
         }
 
         @Nested
+        inner class ParenthesizedType {
+            @Test
+            fun `should reference type`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStepT =
+                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithParenthesizedType" }
+                val parenthesizedTypeT = findUniqueFactOrFail<ParenthesizedTypeT> { isContainedIn(it, workflowStepT) }
+                shouldBeChildOf<TypeT>(parenthesizedTypeT.type, parenthesizedTypeT)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("types.simpleml") {
+                val workflowStepT =
+                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithParenthesizedType" }
+                val parenthesizedTypeT = findUniqueFactOrFail<ParenthesizedTypeT> { isContainedIn(it, workflowStepT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == parenthesizedTypeT.id }
+            }
+        }
+
+        @Nested
         inner class StarProjection {
             @Test
             fun `should handle star projections`() = withFactbaseFromFile("types.simpleml") {
@@ -1462,7 +1502,8 @@ class AstToPrologFactbaseTest {
             fun `should store source location in separate relation`() = withFactbaseFromFile("types.simpleml") {
                 val functionT =
                     findUniqueFactOrFail<FunctionT> { it.name == "myFunctionWithResolvableTypeParameterConstraint" }
-                val typeParameterConstraintT = findUniqueFactOrFail<TypeParameterConstraintT> { isContainedIn(it, functionT) }
+                val typeParameterConstraintT =
+                    findUniqueFactOrFail<TypeParameterConstraintT> { isContainedIn(it, functionT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == typeParameterConstraintT.id }
             }
         }

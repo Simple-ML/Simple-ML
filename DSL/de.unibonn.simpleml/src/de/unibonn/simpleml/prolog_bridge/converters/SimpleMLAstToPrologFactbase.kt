@@ -28,6 +28,8 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NamedTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NullT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ParenthesizedExpressionT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ParenthesizedTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlaceholderT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PrefixOperationT
@@ -79,6 +81,8 @@ import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlNull
 import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
+import de.unibonn.simpleml.simpleML.SmlParenthesizedType
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlReference
@@ -413,6 +417,11 @@ class SimpleMLAstToPrologFactbase {
             is SmlNull -> {
                 +NullT(obj.id, parentId, enclosingId)
             }
+            is SmlParenthesizedExpression -> {
+                visitExpression(obj.expression, obj.id, enclosingId)
+
+                +ParenthesizedExpressionT(obj.id, parentId, enclosingId, obj.expression.id)
+            }
             is SmlPrefixOperation -> {
                 visitExpression(obj.operand, obj.id, enclosingId)
 
@@ -466,6 +475,11 @@ class SimpleMLAstToPrologFactbase {
                     obj.typeArgumentList?.typeArguments?.map { it.id },
                     obj.isNullable
                 )
+            }
+            is SmlParenthesizedType -> {
+                visitType(obj.type, obj.id)
+
+                +ParenthesizedTypeT(obj.id, parentId, obj.type.id)
             }
             is SmlThisType -> {
                 +ThisTypeT(obj.id, parentId)

@@ -148,13 +148,13 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 }
 
                 // Feature "name"
-                doc.formatFeature(obj, SML_DECLARATION__NAME, oneSpace, null)
+                doc.formatFeature(obj, SML_DECLARATION__NAME, oneSpace, noSpace)
 
                 // Keyword ":"
                 doc.formatKeyword(obj, ":", noSpace, oneSpace)
 
                 // EObject "type"
-                doc.formatType(obj.type, oneSpace, null)
+                doc.formatObject(obj.type, oneSpace, null)
             }
             is SmlClass -> {
 
@@ -201,7 +201,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
 
                 // Feature "parentTypes"
                 obj.parentTypes.forEach {
-                    doc.formatType(it)
+                    doc.formatObject(it)
                 }
 
                 // Keywords ","
@@ -420,7 +420,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatKeyword(obj, "=", oneSpace, oneSpace)
 
                 // EObject "value"
-                doc.formatExpression(obj.value)
+                doc.formatObject(obj.value)
             }
             is SmlParameterList -> {
 
@@ -458,7 +458,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatKeyword(obj, ":", noSpace, oneSpace)
 
                 // EObject "type"
-                doc.formatType(obj.type)
+                doc.formatObject(obj.type)
 
                 // Keyword "or"
                 doc.formatKeyword(obj, "or", oneSpace, oneSpace)
@@ -500,7 +500,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatKeyword(obj, ":", noSpace, oneSpace)
 
                 // EObject "type"
-                doc.formatType(obj.type)
+                doc.formatObject(obj.type)
             }
 
 
@@ -538,7 +538,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatKeyword(obj, "=", oneSpace, oneSpace)
 
                 // EObject "expression"
-                doc.formatExpression(obj.expression)
+                doc.formatObject(obj.expression)
 
                 // Keyword ";"
                 doc.formatKeyword(obj, ";", noSpace, null)
@@ -586,7 +586,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
             is SmlExpressionStatement -> {
 
                 // EObject "expression"
-                doc.formatExpression(obj.expression)
+                doc.formatObject(obj.expression)
 
                 // Keyword ";"
                 doc.formatKeyword(obj, ";", noSpace, null)
@@ -600,7 +600,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
             is SmlCall -> {
 
                 // EObject "receiver"
-                doc.formatExpression(obj.receiver, null, noSpace)
+                doc.formatObject(obj.receiver, null, noSpace)
 
                 // EObject "typeArgumentList"
                 doc.formatObject(obj.typeArgumentList, null, noSpace)
@@ -611,18 +611,18 @@ class SimpleMLFormatter : AbstractFormatter2() {
             is SmlInfixOperation -> {
 
                 // EObject "leftOperand"
-                doc.formatExpression(obj.leftOperand, null, oneSpace)
+                doc.formatObject(obj.leftOperand, null, oneSpace)
 
                 // Feature "operator"
                 doc.formatFeature(obj, SML_INFIX_OPERATION__OPERATOR, oneSpace, oneSpace)
 
                 // EObject "rightOperand"
-                doc.formatExpression(obj.rightOperand, oneSpace, null)
+                doc.formatObject(obj.rightOperand, oneSpace, null)
             }
             is SmlMemberAccess -> {
 
                 // EObject "receiver"
-                doc.formatExpression(obj.receiver, null, noSpace)
+                doc.formatObject(obj.receiver, null, noSpace)
 
                 // Feature "nullable"
                 doc.formatFeature(obj, SML_MEMBER_ACCESS__NULLABLE, noSpace, noSpace)
@@ -644,18 +644,29 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 )
 
                 // EObject "operand"
-                doc.formatExpression(obj.operand)
+                doc.formatObject(obj.operand)
             }
             is SmlLambda -> {
 
                 // Keyword "lambda"
-                doc.formatKeyword(obj, "lambda", null, null)
+                doc.formatKeyword(obj, "lambda", null, oneSpace)
 
                 // EObject "parameterList"
-                doc.formatObject(obj.parameterList, oneSpace, null)
+                doc.formatObject(obj.parameterList, oneSpace, oneSpace)
 
                 // EObject "body"
                 doc.formatObject(obj.body, oneSpace, null)
+            }
+            is SmlParenthesizedExpression -> {
+
+                // Keyword "("
+                doc.formatKeyword(obj, "(", null, noSpace)
+
+                // EObject "expression"
+                doc.formatObject(obj.expression, noSpace, noSpace)
+
+                // Keyword ")"
+                doc.formatKeyword(obj, ")", noSpace, null)
             }
 
 
@@ -691,10 +702,21 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatFeature(obj, SML_NAMED_TYPE__DECLARATION)
 
                 // EObject "typeArgumentList"
-                doc.formatObject(obj.typeArgumentList, noSpace, null)
+                doc.formatObject(obj.typeArgumentList, noSpace, noSpace)
 
                 // Feature "nullable"
                 doc.formatFeature(obj, SML_NAMED_TYPE__NULLABLE, noSpace, null)
+            }
+            is SmlParenthesizedType -> {
+
+                // Keyword "("
+                doc.formatKeyword(obj, "(", null, noSpace)
+
+                // EObject "type"
+                doc.formatObject(obj.type, noSpace, noSpace)
+
+                // Keyword ")"
+                doc.formatKeyword(obj, ")", noSpace, null)
             }
             is SmlUnionType -> {
 
@@ -737,7 +759,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatFeature(obj, SML_TYPE_PROJECTION__VARIANCE, null, oneSpace)
 
                 // EObject "type"
-                doc.formatType(obj.type)
+                doc.formatObject(obj.type)
             }
             is SmlTypeParameterList -> {
 
@@ -792,7 +814,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatFeature(obj, SML_TYPE_PARAMETER_CONSTRAINT__OPERATOR, oneSpace, oneSpace)
 
                 // EObject "rightOperand"
-                doc.formatType(obj.rightOperand, oneSpace, null)
+                doc.formatObject(obj.rightOperand, oneSpace, null)
             }
         }
     }
@@ -893,38 +915,6 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 append(it, oneSpace)
             }
         }
-    }
-
-    private fun IFormattableDocument.formatExpression(
-            obj: SmlExpression?,
-            prepend: KFunction1<Format, Unit>? = null,
-            append: KFunction1<Format, Unit>? = null
-    ) {
-
-        // Keyword "("
-        formatKeyword(obj, "(", null, noSpace)
-
-        // Type itself
-        formatObject(obj, prepend, append)
-
-        // Keyword ")"
-        formatKeyword(obj, ")", noSpace, null)
-    }
-
-    private fun IFormattableDocument.formatType(
-            obj: SmlType?,
-            prepend: KFunction1<Format, Unit>? = null,
-            append: KFunction1<Format, Unit>? = null
-    ) {
-
-        // Keyword "("
-        formatKeyword(obj, "(", null, noSpace)
-
-        // Type itself
-        formatObject(obj, prepend, append)
-
-        // Keyword ")"
-        formatKeyword(obj, ")", noSpace, null)
     }
 
     private fun IFormattableDocument.formatCommas(obj: EObject) {

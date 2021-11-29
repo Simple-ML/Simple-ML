@@ -170,6 +170,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="SmlReference" eSuperTypes="#//SmlExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="declaration" eType="#//SmlDeclaration"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SmlParenthesizedExpression" eSuperTypes="#//SmlExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//SmlExpression"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlChainedExpression" abstract="true"
       eSuperTypes="#//SmlExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="receiver" eType="#//SmlExpression"
@@ -215,6 +219,10 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlThisType" eSuperTypes="#//SmlType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SmlParenthesizedType" eSuperTypes="#//SmlType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//SmlType"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlUnionType" eSuperTypes="#//SmlType">
     <eStructuralFeatures xsi:type="ecore:EReference" name="typeArgumentList" eType="#//SmlTypeArgumentList"
         containment="true"/>

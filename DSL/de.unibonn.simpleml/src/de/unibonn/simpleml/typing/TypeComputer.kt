@@ -22,6 +22,8 @@ import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlNull
 import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
+import de.unibonn.simpleml.simpleML.SmlParenthesizedType
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlReference
@@ -181,6 +183,9 @@ class TypeComputer @Inject constructor(
                 member.inferType(isStatic = false)
             }
             this is SmlNull -> stdlibType(context, LIB_ANY, isNullable = true)
+            this is SmlParenthesizedExpression -> {
+                this.expression.inferType(isStatic)
+            }
             this is SmlPrefixOperation -> when (operator) {
                 "not" -> BOOLEAN
                 "-" -> when (this.operand.inferType(false)) {
@@ -212,6 +217,9 @@ class TypeComputer @Inject constructor(
             this is SmlNamedType -> {
                 val declaration = this.declaration ?: return ANY
                 declaration.inferType(isStatic = isStatic)
+            }
+            this is SmlParenthesizedType -> {
+                this.type.inferType(isStatic)
             }
             else -> ANY
         }
