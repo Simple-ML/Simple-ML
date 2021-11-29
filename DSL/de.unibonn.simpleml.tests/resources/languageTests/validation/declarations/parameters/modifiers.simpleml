@@ -46,30 +46,6 @@ fun myFunction1(»open« »override« »pure« »static« a: Int)
 // no_semantic_error "A parameter must not have this modifier."
 fun myFunction2(»deprecated« a: Int)
 
-// no_semantic_error "A parameter must not have this modifier."
-// no_semantic_error "A parameter must not have this modifier."
-// no_semantic_error "A parameter must not have this modifier."
-// no_semantic_error "A parameter must not have this modifier."
-// no_semantic_error "A parameter must not have this modifier."
-interface MyInterface constructor(»deprecated« »open« »override« »pure« »static« a: Int) {
-
-    // no_semantic_error "A parameter must not have this modifier."
-    // no_semantic_error "A parameter must not have this modifier."
-    // no_semantic_error "A parameter must not have this modifier."
-    // no_semantic_error "A parameter must not have this modifier."
-    // no_semantic_error "A parameter must not have this modifier."
-    class MyClass constructor(»deprecated« »open« »override« »pure« »static« a: Int)
-
-    // semantic_error "A parameter must not have this modifier."
-    // semantic_error "A parameter must not have this modifier."
-    // semantic_error "A parameter must not have this modifier."
-    // semantic_error "A parameter must not have this modifier."
-    fun myFunction1(»open« »override« »pure« »static« a: Int)
-
-    // no_semantic_error "A parameter must not have this modifier."
-    fun myFunction2(»deprecated« a: Int)
-}
-
 // semantic_error "A parameter must not have this modifier."
 // semantic_error "A parameter must not have this modifier."
 // semantic_error "A parameter must not have this modifier."

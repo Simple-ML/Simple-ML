@@ -15,14 +15,14 @@ deprecated annotation MyComplexAnnotation(
 )
 
 
-// Classes & Attributes ------------------------------------------------------------------------------------------------
+// Classes, Attributes & Type parameters -------------------------------------------------------------------------------
 class MySimpleClass
 
 @MySimpleAnnotation
 deprecated class MyComplexClass
-    <T1, T2>
+    <MY_SIMPLE_TYPE_PARAMETER, @AnnotationUse deprecated out MY_COMPLEX_TYPE_PARAMETER>
     constructor(a, b)
-    sub SuperClass, SuperInterface
+    sub SuperClass1, SuperClass2
     where T1 super Number, T2 sub Number
 {
     attr mySimpleAttribute
@@ -30,7 +30,6 @@ deprecated class MyComplexClass
 
     class MyClass
     enum MyEnum
-    interface MyInterface
     fun MyFunction()
 }
 
@@ -54,24 +53,6 @@ deprecated fun myComplexFunction
     (mySimpleParameter, @AnnotationUse deprecated vararg myComplexParameter: Int or 3)
     -> (mySimpleResult, @AnnotationUse deprecated myComplexResult: Int)
     where T1 super Number, T2 sub Number
-
-
-// Interfaces & Type Parameters ----------------------------------------------------------------------------------------
-interface MySimpleInterface
-
-@MySimpleAnnotation
-deprecated interface MyComplexInterface
-    <MY_SIMPLE_TYPE_PARAMETER, @AnnotationUse deprecated out MY_COMPLEX_TYPE_PARAMETER>
-    constructor(a, b)
-    sub SuperClass, SuperInterface
-    where T1 super Number, T2 sub Number
-{
-    attr myAttribute
-    class MyClass
-    enum MyEnum
-    interface MyInterface
-    fun MyFunction()
-}
 
 
 // Workflows -----------------------------------------------------------------------------------------------------------

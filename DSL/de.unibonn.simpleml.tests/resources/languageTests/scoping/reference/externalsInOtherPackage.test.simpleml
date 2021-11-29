@@ -12,9 +12,6 @@ enum EnumInOtherPackage2
 fun globalFunctionInOtherPackage1()
 fun globalFunctionInOtherPackage2()
 
-interface InterfaceInOtherPackage1
-interface InterfaceInOtherPackage2
-
 step stepInOtherPackage1() {}
 step stepInOtherPackage2() {}
 

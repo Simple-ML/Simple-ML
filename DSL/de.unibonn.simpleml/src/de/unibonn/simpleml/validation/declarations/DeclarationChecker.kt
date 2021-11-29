@@ -1,8 +1,26 @@
 package de.unibonn.simpleml.validation.declarations
 
-import de.unibonn.simpleml.simpleML.*
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
-import de.unibonn.simpleml.utils.*
+import de.unibonn.simpleml.simpleML.SmlAnnotation
+import de.unibonn.simpleml.simpleML.SmlAttribute
+import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlDeclaration
+import de.unibonn.simpleml.simpleML.SmlEnum
+import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlResult
+import de.unibonn.simpleml.simpleML.SmlTypeParameter
+import de.unibonn.simpleml.simpleML.SmlWorkflow
+import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.utils.SML_DEPRECATED
+import de.unibonn.simpleml.utils.SML_OPEN
+import de.unibonn.simpleml.utils.SML_PURE
+import de.unibonn.simpleml.utils.SML_STATIC
+import de.unibonn.simpleml.utils.duplicatesBy
+import de.unibonn.simpleml.utils.isClassMember
+import de.unibonn.simpleml.utils.isCompilationUnitMember
+import de.unibonn.simpleml.utils.isDeprecated
+import de.unibonn.simpleml.utils.isRequired
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import org.eclipse.xtext.validation.Check
 
@@ -50,17 +68,17 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
         if (smlDeclaration.shouldCheckDeclarationModifiers()) {
             val duplicateModifiers = smlDeclaration.modifiers.duplicatesBy { it }
             smlDeclaration.modifiers
-                    .forEachIndexed { index, modifier ->
-                        if (modifier in duplicateModifiers) {
-                            error(
-                                    "Modifiers must be unique.",
-                                    Literals.SML_DECLARATION__MODIFIERS,
-                                    index,
-                                    DUPLICATE_MODIFIER,
-                                    modifier
-                            )
-                        }
+                .forEachIndexed { index, modifier ->
+                    if (modifier in duplicateModifiers) {
+                        error(
+                            "Modifiers must be unique.",
+                            Literals.SML_DECLARATION__MODIFIERS,
+                            index,
+                            DUPLICATE_MODIFIER,
+                            modifier
+                        )
                     }
+                }
         }
     }
 
@@ -87,41 +105,12 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
             smlFunction.reportInvalidModifiers("A top-level function must not have this modifier.") {
                 it !in setOf(SML_DEPRECATED, SML_PURE)
             }
-        } else if (smlFunction.isInterfaceMember()) {
-            smlFunction.reportInvalidModifiers("An interface method must not have this modifier.") {
-                it == SML_STATIC
-            }
-
-            smlFunction.reportUnnecessaryModifiers("An interface method is always open.") {
-                it == SML_OPEN
-            }
-        }
-    }
-
-    @Check
-    fun interfaceModifiers(smlInterface: SmlInterface) {
-        if (smlInterface.isClassMember()) {
-            smlInterface.reportInvalidModifiers("A nested interface must not have this modifier.") {
-                it !in setOf(SML_DEPRECATED, SML_OPEN, SML_STATIC)
-            }
-
-            smlInterface.reportUnnecessaryModifiers("A nested interface is always static.") {
-                it == SML_STATIC
-            }
-        } else if (smlInterface.isCompilationUnitMember()) {
-            smlInterface.reportInvalidModifiers("A top-level interface must not have this modifier.") {
-                it !in setOf(SML_DEPRECATED, SML_OPEN)
-            }
-        }
-
-        smlInterface.reportUnnecessaryModifiers("An interface is always open.") {
-            it == SML_OPEN
         }
     }
 
     @Check
     fun parameterModifiers(smlParameter: SmlParameter) {
-        if (smlParameter.shouldCheckParameterModifiers()) {
+        if (true) {
             smlParameter.reportInvalidModifiers("A parameter must not have this modifier.") {
                 it !in setOf(SML_DEPRECATED)
             }
@@ -130,14 +119,14 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun mustNotDeprecateRequiredParameter(smlParameter: SmlParameter) {
-        if (smlParameter.isRequired() && smlParameter.isDeprecated() && smlParameter.shouldCheckParameterModifiers()) {
+        if (smlParameter.isRequired() && smlParameter.isDeprecated() && true) {
             val index = smlParameter.modifiers.indexOf(SML_DEPRECATED)
             error(
-                    "A required parameter cannot be deprecated.",
-                    Literals.SML_DECLARATION__MODIFIERS,
-                    index,
-                    INVALID_MODIFIER,
-                    SML_DEPRECATED
+                "A required parameter cannot be deprecated.",
+                Literals.SML_DECLARATION__MODIFIERS,
+                index,
+                INVALID_MODIFIER,
+                SML_DEPRECATED
             )
         }
     }
@@ -151,7 +140,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun typeParameterModifiers(smlTypeParameter: SmlTypeParameter) {
-        if (smlTypeParameter.shouldCheckTypeParameterModifiers()) {
+        if (true) {
             smlTypeParameter.reportInvalidModifiers("A type parameter must have no modifiers.") { true }
         }
     }
@@ -167,61 +156,39 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
     }
 
     private fun SmlDeclaration.shouldCheckDeclarationModifiers(): Boolean {
-        return when {
-            this.isInterfaceMember() -> this is SmlFunction
-            else -> this !is SmlParameter &&
-                    this !is SmlResult &&
-                    this !is SmlTypeParameter &&
-                    this !is SmlWorkflow &&
-                    this !is SmlWorkflowStep
-        }
-    }
-
-    /**
-     * Returns if it makes senses to check the modifiers of a parameter. We already report other errors for classes or
-     * interfaces nested inside interfaces. The only way to fix those errors is to remove the declaration altogether,
-     * including the parameter.
-     */
-    private fun SmlParameter.shouldCheckParameterModifiers(): Boolean {
-        val declarationOrNull = this.closestAncestorOrNull<SmlDeclaration>()
-
-        return declarationOrNull is SmlFunction ||
-                declarationOrNull != null && declarationOrNull !is SmlInterface && !declarationOrNull.isInterfaceMember()
-    }
-
-    /**
-     * Returns if it makes senses to check the modifiers of a type parameter. We already report other errors for
-     * classes or interfaces nested inside interfaces. The only way to fix those errors is to remove the declaration
-     * altogether, including the type parameter.
-     */
-    private fun SmlTypeParameter.shouldCheckTypeParameterModifiers(): Boolean {
-        val declarationOrNull = this.closestAncestorOrNull<SmlDeclaration>()
-        return declarationOrNull is SmlFunction || declarationOrNull != null && !declarationOrNull.isInterfaceMember()
+        return this !is SmlParameter &&
+            this !is SmlResult &&
+            this !is SmlTypeParameter &&
+            this !is SmlWorkflow &&
+            this !is SmlWorkflowStep
     }
 
     private fun SmlDeclaration.reportInvalidModifiers(message: String, isInvalid: (modifier: String) -> Boolean) {
         this.modifiers.forEachIndexed { index, modifier ->
             if (isInvalid(modifier)) {
                 error(
-                        message,
-                        Literals.SML_DECLARATION__MODIFIERS,
-                        index,
-                        INVALID_MODIFIER,
-                        modifier
+                    message,
+                    Literals.SML_DECLARATION__MODIFIERS,
+                    index,
+                    INVALID_MODIFIER,
+                    modifier
                 )
             }
         }
     }
 
-    private fun SmlDeclaration.reportUnnecessaryModifiers(message: String, isUnnecessary: (modifier: String) -> Boolean) {
+    private fun SmlDeclaration.reportUnnecessaryModifiers(
+        message: String,
+        isUnnecessary: (modifier: String) -> Boolean
+    ) {
         this.modifiers.forEachIndexed { index, modifier ->
             if (isUnnecessary(modifier)) {
                 info(
-                        message,
-                        Literals.SML_DECLARATION__MODIFIERS,
-                        index,
-                        UNNECESSARY_MODIFIER,
-                        modifier
+                    message,
+                    Literals.SML_DECLARATION__MODIFIERS,
+                    index,
+                    UNNECESSARY_MODIFIER,
+                    modifier
                 )
             }
         }

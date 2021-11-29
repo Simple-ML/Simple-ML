@@ -1,64 +1,43 @@
 package de.unibonn.simpleml.utils
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.simpleML.*
-import org.eclipse.emf.ecore.EObject
-import java.util.*
+import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlFunction
 
 class ClassHierarchy @Inject constructor(
-        private val stdlib: SimpleMLStdlib
+    private val stdlib: SimpleMLStdlib
 ) {
 
     // ClassOrInterface ------------------------------------------------------------------------------------------------
 
-    fun isSubtypeOf(smlClassOrInterface: SmlClassOrInterface, other: SmlClassOrInterface) =
-            smlClassOrInterface == other || other in superClassesOrInterfaces(smlClassOrInterface)
+    fun isSubtypeOf(smlClass: SmlClass, other: SmlClass) =
+        smlClass == other || other in superClasses(smlClass)
 
-    fun superClassesOrInterfaces(smlClassOrInterface: SmlClassOrInterface) =
-            superClasses(smlClassOrInterface) + superInterfaces(smlClassOrInterface)
-
-    fun superClasses(smlClassOrInterface: SmlClassOrInterface) = sequence<SmlClass> {
+    fun superClasses(smlClass: SmlClass) = sequence<SmlClass> {
         val visited = mutableSetOf<SmlClass>()
 
-        var current = smlClassOrInterface.parentClassOrNull()
+        var current = smlClass.parentClassOrNull()
         while (current != null && current !in visited) {
             yield(current)
             visited += current
             current = current.parentClassOrNull()
         }
 
-        val anyClass = stdlib.getClass(smlClassOrInterface, LIB_ANY)
-        if (anyClass != null && smlClassOrInterface != anyClass && visited.lastOrNull() != anyClass) {
+        val anyClass = stdlib.getClass(smlClass, LIB_ANY)
+        if (anyClass != null && smlClass != anyClass && visited.lastOrNull() != anyClass) {
             yield(anyClass)
         }
     }
 
-    fun superInterfaces(smlClassOrInterface: SmlClassOrInterface) = sequence<SmlInterface> {
-        val visited = mutableSetOf<SmlInterface>()
-        val toDo = LinkedList(smlClassOrInterface.parentInterfacesOrEmpty())
-        while (toDo.isNotEmpty()) {
-            val current = toDo.pollFirst()
-            yield(current)
-            visited += current
-            toDo.addAll(current.parentInterfacesOrEmpty())
-        }
-    }
-
-    fun superClassOrInterfaceMembers(smlClassOrInterface: SmlClassOrInterface) =
-            superClassMembers(smlClassOrInterface) + superInterfaceMembers(smlClassOrInterface)
-
-    fun superClassMembers(smlClassOrInterface: SmlClassOrInterface) =
-            superClasses(smlClassOrInterface).flatMap { it.membersOrEmpty().asSequence() }
-
-    fun superInterfaceMembers(smlClassOrInterface: SmlClassOrInterface) =
-            superInterfaces(smlClassOrInterface).flatMap { it.membersOrEmpty().asSequence() }
+    fun superClassMembers(smlClass: SmlClass) =
+        superClasses(smlClass).flatMap { it.membersOrEmpty().asSequence() }
 
     // Function --------------------------------------------------------------------------------------------------------
 
     fun hiddenFunction(smlFunction: SmlFunction): SmlFunction? {
-        val containingClassOrInterface = smlFunction.closestAncestorOrNull<SmlClassOrInterface>() ?: return null
-        return superClassOrInterfaceMembers(containingClassOrInterface)
-                .filterIsInstance<SmlFunction>()
-                .firstOrNull { it.name == smlFunction.name }
+        val containingClassOrInterface = smlFunction.closestAncestorOrNull<SmlClass>() ?: return null
+        return superClassMembers(containingClassOrInterface)
+            .filterIsInstance<SmlFunction>()
+            .firstOrNull { it.name == smlFunction.name }
     }
 }

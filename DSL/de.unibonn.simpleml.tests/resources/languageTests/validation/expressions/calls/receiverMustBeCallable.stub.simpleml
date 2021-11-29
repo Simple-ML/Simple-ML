@@ -7,14 +7,11 @@ class MyClass {
     class MyClass
     enum MyEnum
     fun myFunction()
-    interface MyInterface
 }
 
 enum MyEnum
 
 fun myFunction()
-
-interface MyInterface
 
 workflow myWorkflow {}
 
@@ -36,13 +33,9 @@ step test(a: Int, b: callable () -> ()) {
     // no_semantic_error "This expression must not be called."
     »MyClass().myFunction«();
     // semantic_error "This expression must not be called."
-    »MyClass.MyInterface«();
-    // semantic_error "This expression must not be called."
     »MyEnum«();
     // no_semantic_error "This expression must not be called."
     »myFunction«();
-    // semantic_error "This expression must not be called."
-    »MyInterface«();
     /* References cannot point to workflows in the first place. */
     // no_semantic_error "This expression must not be called."
     »myWorkflow«();

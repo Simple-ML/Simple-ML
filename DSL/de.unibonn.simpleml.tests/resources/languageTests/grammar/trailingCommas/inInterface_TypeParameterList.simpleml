@@ -1,5 +1,0 @@
-package tests.trailingComma.inInterfaceTypeParameterList
-
-// no_syntax_error
-
-interface C<K, V, >

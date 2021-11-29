@@ -6,12 +6,7 @@ open class MyOpenClass {
     static fun staticFunction()
 }
 
-interface MyInterface {
-    fun interfaceFunction1()
-    fun interfaceFunction2()
-}
-
-class MyClass sub MyOpenClass, MyInterface {
+class MyClass sub MyOpenClass {
     // no_semantic_error "An overriding function must have the override modifier."
     fun »ownFunction«()
 
@@ -21,9 +16,4 @@ class MyClass sub MyOpenClass, MyInterface {
     override fun »classFunction2«()
     // no_semantic_error "An overriding function must have the override modifier."
     fun »staticFunction«()
-
-    // semantic_error "An overriding function must have the override modifier."
-    fun »interfaceFunction1«()
-    // no_semantic_error "An overriding function must have the override modifier."
-    override fun »interfaceFunction2«()
 }

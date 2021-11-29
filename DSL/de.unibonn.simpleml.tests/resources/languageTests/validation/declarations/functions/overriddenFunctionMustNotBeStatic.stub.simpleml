@@ -6,11 +6,7 @@ open class MyOpenClass {
     static fun staticFunction()
 }
 
-interface MyInterface {
-    fun openFunction2()
-}
-
-class MyClass sub MyOpenClass, MyInterface {
+class MyClass sub MyOpenClass {
     // no_semantic_error "The overridden function must not be static."
     fun »ownFunction«()
     // no_semantic_error "The overridden function must not be static."
@@ -24,7 +20,4 @@ class MyClass sub MyOpenClass, MyInterface {
     override fun »closedFunction«()
     // semantic_error "The overridden function must not be static."
     override fun »staticFunction«()
-
-    // no_semantic_error "The overridden function must not be static."
-    override fun »openFunction2«()
 }

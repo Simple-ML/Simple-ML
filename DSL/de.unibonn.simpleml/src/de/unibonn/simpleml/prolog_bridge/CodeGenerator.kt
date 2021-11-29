@@ -3,8 +3,30 @@ package de.unibonn.simpleml.prolog_bridge
 import com.google.inject.Inject
 import com.google.inject.Provider
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
-import de.unibonn.simpleml.prolog_bridge.model.facts.*
-import de.unibonn.simpleml.simpleML.*
+import de.unibonn.simpleml.prolog_bridge.model.facts.PlAtom
+import de.unibonn.simpleml.prolog_bridge.model.facts.PlBooleanAtom
+import de.unibonn.simpleml.prolog_bridge.model.facts.PlFact
+import de.unibonn.simpleml.prolog_bridge.model.facts.PlList
+import de.unibonn.simpleml.prolog_bridge.model.facts.PlNull
+import de.unibonn.simpleml.prolog_bridge.model.facts.PlNumber
+import de.unibonn.simpleml.prolog_bridge.model.facts.PlString
+import de.unibonn.simpleml.prolog_bridge.model.facts.PlTerm
+import de.unibonn.simpleml.simpleML.SimpleMLFactory
+import de.unibonn.simpleml.simpleML.SmlAnnotation
+import de.unibonn.simpleml.simpleML.SmlArgumentList
+import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlConstructor
+import de.unibonn.simpleml.simpleML.SmlDeclaration
+import de.unibonn.simpleml.simpleML.SmlExpression
+import de.unibonn.simpleml.simpleML.SmlNamedType
+import de.unibonn.simpleml.simpleML.SmlNamedTypeDeclaration
+import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlParameterList
+import de.unibonn.simpleml.simpleML.SmlReference
+import de.unibonn.simpleml.simpleML.SmlResult
+import de.unibonn.simpleml.simpleML.SmlType
+import de.unibonn.simpleml.simpleML.SmlTypeArgumentValue
+import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
@@ -17,7 +39,6 @@ import org.eclipse.xtext.serializer.impl.Serializer
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.*
 import java.util.regex.Pattern
 
 class CodeGenerator {
@@ -47,12 +68,10 @@ class CodeGenerator {
                     }
                     line = br.readLine()
                 }
-
             }
         } catch (e: IOException) {
             System.err.format("IOException: %s%n", e)
         }
-
     }
 
     fun getData(): List<String> {
@@ -238,7 +257,7 @@ class CodeGenerator {
                 addList(e.argumentList.arguments as EList<EObject>, handleList(f.plArguments[4]) as List<EObject>)
                 e.typeArgumentList = SimpleMLFactory.eINSTANCE.createSmlTypeArgumentList()
 
-                //TODO das hier auslagern, wird wohl häufiger benutzt
+                // TODO das hier auslagern, wird wohl häufiger benutzt
                 val l = handleList(f.plArguments[5])
                 if (l != null) addList(e.typeArgumentList.typeArguments as EList<EObject>, l)
                 else e.typeArgumentList = null
@@ -409,7 +428,10 @@ class CodeGenerator {
 
                 e.declaration = handleInt(f.plArguments[2]) as SmlNamedTypeDeclaration?
                 e.typeArgumentList = SimpleMLFactory.eINSTANCE.createSmlTypeArgumentList()
-                addList(e.typeArgumentList.typeArguments as EList<EObject>, handleList(f.plArguments[3]) as List<EObject>)
+                addList(
+                    e.typeArgumentList.typeArguments as EList<EObject>,
+                    handleList(f.plArguments[3]) as List<EObject>
+                )
                 e.isNullable = handleBoolean(f.plArguments[4])
 
                 return e
@@ -424,9 +446,15 @@ class CodeGenerator {
                 e.resultList = SimpleMLFactory.eINSTANCE.createSmlResultList()
                 addList(e.resultList.results as EList<EObject>, handleList(f.plArguments[6]) as List<EObject>)
                 e.typeParameterConstraintList = SimpleMLFactory.eINSTANCE.createSmlTypeParameterConstraintList()
-                addList(e.typeParameterConstraintList.constraints as EList<EObject>, handleList(f.plArguments[7]) as List<EObject>)
+                addList(
+                    e.typeParameterConstraintList.constraints as EList<EObject>,
+                    handleList(f.plArguments[7]) as List<EObject>
+                )
                 e.typeParameterList = SimpleMLFactory.eINSTANCE.createSmlTypeParameterList()
-                addList(e.typeParameterList.typeParameters as EList<EObject>, handleList(f.plArguments[8]) as List<EObject>)
+                addList(
+                    e.typeParameterList.typeParameters as EList<EObject>,
+                    handleList(f.plArguments[8]) as List<EObject>
+                )
 
                 return e
             }
@@ -505,28 +533,26 @@ class CodeGenerator {
 
                 return e
             }
-            "simpleml:interfaceT" -> {
-                val e = SimpleMLFactory.eINSTANCE.createSmlInterface()
-                eob[key] = e
-
-                //TODO: Here same as class when restructuring
-
-                return e
-            }
             "simpleml:classT" -> {
-                val e = SimpleMLFactory.eINSTANCE.createSmlInterface()
+                val e = SimpleMLFactory.eINSTANCE.createSmlClass()
                 eob[key] = e
 
                 e.name = handleStringAsString(f.plArguments[2])
-                e.body = SimpleMLFactory.eINSTANCE.createSmlClassOrInterfaceBody()
+                e.body = SimpleMLFactory.eINSTANCE.createSmlClassBody()
                 addList(e.body.members as EList<EObject>, handleList(f.plArguments[3]) as List<EObject>)
                 e.constructor = handleInt(f.plArguments[4]) as SmlConstructor?
                 e.parentTypeList = SimpleMLFactory.eINSTANCE.createSmlParentTypeList()
                 addList(e.parentTypeList.parentTypes as EList<EObject>, handleList(f.plArguments[5]) as List<EObject>)
                 e.typeParameterConstraintList = SimpleMLFactory.eINSTANCE.createSmlTypeParameterConstraintList()
-                addList(e.typeParameterConstraintList.constraints as EList<EObject>, handleList(f.plArguments[6]) as List<EObject>)
+                addList(
+                    e.typeParameterConstraintList.constraints as EList<EObject>,
+                    handleList(f.plArguments[6]) as List<EObject>
+                )
                 e.typeParameterList = SimpleMLFactory.eINSTANCE.createSmlTypeParameterList()
-                addList(e.typeParameterList.typeParameters as EList<EObject>, handleList(f.plArguments[7]) as List<EObject>)
+                addList(
+                    e.typeParameterList.typeParameters as EList<EObject>,
+                    handleList(f.plArguments[7]) as List<EObject>
+                )
 
                 return e
             }
@@ -554,21 +580,16 @@ class CodeGenerator {
                 eob[key] = e
 
                 e.typeArgumentList = SimpleMLFactory.eINSTANCE.createSmlTypeArgumentList()
-                addList(e.typeArgumentList.typeArguments as EList<EObject>, handleList(f.plArguments[2]) as List<EObject>)
-
-                return e
-            }
-            "simpleml:thisTypeT" -> {
-                val e = SimpleMLFactory.eINSTANCE.createSmlThisType()
-                eob[key] = e
+                addList(
+                    e.typeArgumentList.typeArguments as EList<EObject>,
+                    handleList(f.plArguments[2]) as List<EObject>
+                )
 
                 return e
             }
             else -> return null
         }
-
     }
-
 
     fun run() {
 
@@ -596,15 +617,14 @@ class CodeGenerator {
 
         try {
             val saveOptions = SaveOptions
-                    .newBuilder()
-                    .format()
-                    .options
-                    .toOptionsMap()
+                .newBuilder()
+                .format()
+                .options
+                .toOptionsMap()
             resource.save(saveOptions)
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
     }
 
     companion object {

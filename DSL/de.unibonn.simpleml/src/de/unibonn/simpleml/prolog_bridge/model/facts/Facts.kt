@@ -23,7 +23,6 @@ import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
-import de.unibonn.simpleml.simpleML.SmlInterface
 import de.unibonn.simpleml.simpleML.SmlLambda
 import de.unibonn.simpleml.simpleML.SmlLambdaYield
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
@@ -38,7 +37,6 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStarProjection
 import de.unibonn.simpleml.simpleML.SmlStatement
 import de.unibonn.simpleml.simpleML.SmlString
-import de.unibonn.simpleml.simpleML.SmlThisType
 import de.unibonn.simpleml.simpleML.SmlType
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentValue
@@ -133,7 +131,6 @@ sealed class NodeWithParent(factName: String, id: Id<EObject>, parent: Id<EObjec
     abstract val parent: Id<EObject>
 }
 
-
 /**********************************************************************************************************************
  * Compilation Unit
  **********************************************************************************************************************/
@@ -186,7 +183,6 @@ data class ImportT(
     NodeWithParent("importT", id, parent, importedNamespace, alias) {
     override fun toString() = super.toString()
 }
-
 
 /**********************************************************************************************************************
  * Declarations
@@ -439,66 +435,6 @@ data class FunctionT(
 }
 
 /**
- * This Prolog fact represents interfaces.
- *
- * @param id
- * The ID of this fact.
- *
- * @param parent
- * The ID of the fact for the containing compilation unit, class or interface.
- *
- * @param name
- * The name of the interface.
- *
- * @param typeParameters
- * The list of type parameters or null. Each element in the list is the ID of a typeParameterT fact for the respective
- * type parameter. Note that an empty list is used for a interface with an empty type parameter list, e.g.
- * `interface A<>`, while null is used for a interface with no type parameter list at all, like `interface B`.
- *
- * @param parameters
- * The list of parameters or null. Each element in the list is the ID of a parameterT fact for the respective parameter.
- * Note that an empty list is used for a interface with a constructor with an empty parameter list, e.g.
- * `interface A()`, while null is used for a interface with no constructor at all, like `interface B`.
- *
- * @param parentTypes
- * The IDs of the facts for the parent types of this interface or null if the interface has no parent types. Note that
- * the grammar forbids the use of the keyword `sub` without any parent types afterwards, so this will never be set to an
- * empty list.
- *
- * @param typeParameterConstraints
- * The IDs of the typeParameterConstraintT facts for the type parameter constraints of this interface or null if the
- * interface has no type parameter constraints. Note that the grammar forbids the use of the keyword `where` without any
- * type parameter constraints afterwards, so this will never be set to an empty list.
- *
- * @param members
- * The list of interface members or null. Each element in the list is the ID of the fact for the respective member. Note
- * that an empty list is used for an interface with an empty body, e.g. `interface A {}`, while null is used for a
- * interface without a body, like `interface B`.
- */
-data class InterfaceT(
-    override val id: Id<SmlInterface>,
-    override val parent: Id<EObject>, // SmlClassOrInterface | SmlCompilationUnit
-    override val name: String,
-    val typeParameters: List<Id<SmlTypeParameter>>?,
-    val parameters: List<Id<SmlParameter>>?,
-    val parentTypes: List<Id<SmlType>>?,
-    val typeParameterConstraints: List<Id<SmlTypeParameterConstraint>>?,
-    val members: List<Id<SmlDeclaration>>?
-) : DeclarationT(
-    "interfaceT",
-    id,
-    parent,
-    name,
-    typeParameters,
-    parameters,
-    parentTypes,
-    typeParameterConstraints,
-    members
-) {
-    override fun toString() = super.toString()
-}
-
-/**
  * This Prolog fact represents parameters.
  *
  * @param id
@@ -656,7 +592,6 @@ data class WorkflowStepT(
     override fun toString() = super.toString()
 }
 
-
 /**********************************************************************************************************************
  * Statements
  **********************************************************************************************************************/
@@ -812,7 +747,6 @@ data class ExpressionStatementT(
     StatementT("expressionStatementT", id, parent, expression) {
     override fun toString() = super.toString()
 }
-
 
 /**********************************************************************************************************************
  * Expressions
@@ -1244,7 +1178,6 @@ data class StringT(
     override fun toString() = super.toString()
 }
 
-
 /**********************************************************************************************************************
  * Types
  **********************************************************************************************************************/
@@ -1370,20 +1303,6 @@ data class NamedTypeT(
  */
 data class ParenthesizedTypeT(override val id: Id<SmlType>, override val parent: Id<EObject>, val type: Id<SmlType>) :
     TypeT("parenthesizedTypeT", id, parent, type) {
-    override fun toString() = super.toString()
-}
-
-/**
- * This Prolog fact represents the `this` type that can be used in interfaces.
- *
- * @param id
- * The ID of this fact.
- *
- * @param parent
- * The ID of the fact for the logical parent, e.g. a parameter.
- */
-data class ThisTypeT(override val id: Id<SmlThisType>, override val parent: Id<EObject>) :
-    TypeT("thisTypeT", id, parent) {
     override fun toString() = super.toString()
 }
 
@@ -1515,7 +1434,6 @@ data class TypeParameterConstraintT(
     override fun toString() = super.toString()
 }
 
-
 /**********************************************************************************************************************
  * Other
  **********************************************************************************************************************/
@@ -1561,7 +1479,6 @@ data class AnnotationUseT(
 data class UnresolvedT(override val id: Id<EObject>, val name: String) : Node("unresolvedT", id, name) {
     override fun toString() = super.toString()
 }
-
 
 /**********************************************************************************************************************
  * Relations

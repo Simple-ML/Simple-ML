@@ -4,7 +4,7 @@ import tests.languageTests.scoping.yield2.stepInOtherPackage1
 
 step stepInSameFile() -> resultInSameFile: Int {}
 
-interface notAResult
+class notAResult
 
 step stepInSameStep() -> resultInSameStep: Int {
     yield resultInSameStep = 1;

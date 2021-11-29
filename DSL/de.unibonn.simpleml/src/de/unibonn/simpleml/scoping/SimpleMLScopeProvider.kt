@@ -10,7 +10,6 @@ import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlBlock
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlDeclaration
-import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlLambda
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
@@ -28,7 +27,6 @@ import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.typing.ClassType
 import de.unibonn.simpleml.typing.EnumType
-import de.unibonn.simpleml.typing.InterfaceType
 import de.unibonn.simpleml.typing.NamedType
 import de.unibonn.simpleml.typing.TypeComputer
 import de.unibonn.simpleml.utils.ClassHierarchy
@@ -136,21 +134,6 @@ class SimpleMLScopeProvider @Inject constructor(
                     else -> emptyList()
                 }
                 val superTypeMembers = emptyList<SmlDeclaration>()
-
-                Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers, resultScope))
-            }
-            type is InterfaceType -> {
-                if (type.isStatic) {
-                    return IScope.NULLSCOPE
-                }
-
-                val members = type.smlInterface.membersOrEmpty()
-                    .filterIsInstance<SmlFunction>()
-                    .filter { !it.isStatic() }
-                val superTypeMembers = classHierarchy.superInterfaceMembers(type.smlInterface)
-                    .filterIsInstance<SmlFunction>()
-                    .filter { !it.isStatic() }
-                    .toList()
 
                 Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers, resultScope))
             }
