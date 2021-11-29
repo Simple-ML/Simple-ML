@@ -6,7 +6,7 @@ plugins {
     id("com.github.node-gradle.node") version "3.1.1" apply false
 
     idea
-    id("org.jetbrains.kotlinx.kover") version "0.4.2"
+    id("org.jetbrains.kotlinx.kover") version "0.4.4"
 }
 
 repositories {
