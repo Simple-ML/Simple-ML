@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.generator
 
 import de.unibonn.simpleml.utils.SML_STUB_EXTENSION
+import de.unibonn.simpleml.utils.SML_TEST_EXTENSION
 import de.unibonn.simpleml.utils.SML_WORKFLOW_EXTENSION
 import de.unibonn.simpleml.utils.compilationUnitOrNull
 import org.eclipse.emf.common.util.URI
@@ -16,6 +17,7 @@ fun Resource.baseFileName(): String {
             .split("/")
             .last()
             .removeSuffix(SML_STUB_EXTENSION)
+            .removeSuffix(SML_TEST_EXTENSION)
             .removeSuffix(SML_WORKFLOW_EXTENSION)
 }
 

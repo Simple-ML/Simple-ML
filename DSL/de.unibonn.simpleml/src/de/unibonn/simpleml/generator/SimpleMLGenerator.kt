@@ -241,6 +241,9 @@ class SimpleMLGenerator @Inject constructor(
                 }
                 "$receiver($arguments)"
             }
+            is SmlParenthesizedExpression -> {
+                "(${expr.expression})"
+            }
             is SmlPrefixOperation -> {
                 "${expr.operator} (${compileExpression(expr.operand)})"
             }
