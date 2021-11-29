@@ -121,7 +121,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should reference members`() = withFactbaseFromFile("declarations.simpleml") {
                 val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
-                shouldBeNChildrenOf<DeclarationT>(compilationUnitT.members, compilationUnitT, 14)
+                shouldBeNChildrenOf<DeclarationT>(compilationUnitT.members, compilationUnitT, 12)
             }
 
             @Test
@@ -294,7 +294,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should reference members`() = withFactbaseFromFile("declarations.simpleml") {
                 val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
-                shouldBeNChildrenOf<DeclarationT>(classT.members, classT, 6)
+                shouldBeNChildrenOf<DeclarationT>(classT.members, classT, 5)
             }
 
             @Test

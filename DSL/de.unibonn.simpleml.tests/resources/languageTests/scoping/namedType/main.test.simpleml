@@ -2,50 +2,32 @@ package tests.languageTests.scoping.namedType1
 
 import tests.languageTests.scoping.namedType2.ClassInOtherPackage1
 import tests.languageTests.scoping.namedType2.EnumInOtherPackage1
-import tests.languageTests.scoping.namedType2.InterfaceInOtherPackage1
 
 open class SuperClass {
     class ClassInSuperClass
     enum EnumInSuperClass
-    interface InterfaceInSuperClass
 }
 class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE> sub SuperClass {
     class ClassInClassInSameFile
     enum EnumInClassInSameFile
-    interface InterfaceInClassInSameFile
 }
 
 enum EnumInSameFile
-
-interface SuperInterface {
-    class ClassInSuperInterface
-    enum EnumInSuperInterface
-    interface InterfaceInSuperInterface
-}
-interface InterfaceInSameFile sub SuperInterface {
-    class ClassInInterfaceInSameFile
-    enum EnumInInterfaceInSameFile
-    interface InterfaceInInterfaceInSameFile
-}
 
 fun NotANamedTypeDeclaration()
 
 fun directNamedTypes<TYPE_PARAMETER_IN_SAME_FUNCTION>(
     paramClassInSameFile: ClassInSameFile<*>,
     paramEnumInSameFile: EnumInSameFile,
-    paramInterfaceInSameFile: InterfaceInSameFile,
 
     paramClassInSamePackage: ClassInSamePackage<*>,
     paramEnumInSamePackage: EnumInSamePackage,
-    paramInterfaceInSamePackage: InterfaceInSamePackage,
 
     paramClassInOtherPackage1: ClassInOtherPackage1<*>,
     paramEnumInOtherPackage1: EnumInOtherPackage1,
-    paramInterfaceInOtherPackage1: InterfaceInOtherPackage1,
 
     paramClassInOtherPackage2: ClassInOtherPackage2<*>,
     paramEnumInOtherPackage2: EnumInOtherPackage2,
-    paramInterfaceInOtherPackage2: InterfaceInOtherPackage2,
 
     paramTypeParameterInSameFunction: TYPE_PARAMETER_IN_SAME_FUNCTION,
     paramTypeParameterInSameFile: TYPE_PARAMETER_IN_SAME_FILE,
@@ -59,27 +41,12 @@ fun directNamedTypes<TYPE_PARAMETER_IN_SAME_FUNCTION>(
 fun memberTypes(
     paramClassInClassInSameFile: ClassInSameFile<*>.ClassInClassInSameFile,
     paramEnumInClassInSameFile: ClassInSameFile<*>.EnumInClassInSameFile,
-    paramInterfaceInClassInSameFile: ClassInSameFile<*>.InterfaceInClassInSameFile,
-
-    paramClassInInterfaceInSameFile: InterfaceInSameFile.ClassInInterfaceInSameFile,
-    paramEnumInInterfaceInSameFile: InterfaceInSameFile.EnumInInterfaceInSameFile,
-    paramInterfaceInInterfaceInSameFile: InterfaceInSameFile.InterfaceInInterfaceInSameFile,
 
     paramUnqualifiedClassInClassInSameFile: ClassInClassInSameFile,
     paramUnqualifiedEnumInClassInSameFile: EnumInClassInSameFile,
-    paramUnqualifiedInterfaceInClassInSameFile: InterfaceInClassInSameFile,
-
-    paramUnqualifiedClassInInterfaceInSameFile: ClassInInterfaceInSameFile,
-    paramUnqualifiedEnumInInterfaceInSameFile: EnumInInterfaceInSameFile,
-    paramUnqualifiedInterfaceInInterfaceInSameFile: InterfaceInInterfaceInSameFile,
 )
 
 fun inheritedMemberTypes(
     paramClassInSuperClass: ClassInSameFile<*>.ClassInSuperClass,
     paramEnumInSuperClass: ClassInSameFile<*>.EnumInSuperClass,
-    paramInterfaceInSuperClass: ClassInSameFile<*>.InterfaceInSuperClass,
-
-    paramClassInSuperInterface: InterfaceInSameFile.ClassInSuperInterface,
-    paramEnumInSuperInterface: InterfaceInSameFile.EnumInSuperInterface,
-    paramInterfaceInSuperInterface: InterfaceInSameFile.InterfaceInSuperInterface,
 )

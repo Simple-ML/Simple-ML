@@ -6,8 +6,6 @@ annotation »MyAnnotation«
 class »MyClass«
 // semantic_error "A workflow file must only declare workflows and workflow steps."
 enum »MyEnum«
-// semantic_error "A workflow file must only declare workflows and workflow steps."
-interface »MyInterface«
 
 // no_semantic_error "A workflow file must only declare workflows and workflow steps."
 step »myStep«() {}

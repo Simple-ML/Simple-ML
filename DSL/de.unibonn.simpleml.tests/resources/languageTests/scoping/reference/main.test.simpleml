@@ -4,7 +4,6 @@ import tests.languageTests.scoping.reference2.AnnotationInOtherPackage1
 import tests.languageTests.scoping.reference2.ClassInOtherPackage1
 import tests.languageTests.scoping.reference2.EnumInOtherPackage1
 import tests.languageTests.scoping.reference2.globalFunctionInOtherPackage1
-import tests.languageTests.scoping.reference2.InterfaceInOtherPackage1
 import tests.languageTests.scoping.reference2.stepInOtherPackage1
 import tests.languageTests.scoping.reference2.workflowInOtherPackage1
 
@@ -20,8 +19,6 @@ open class SuperClass {
 
     static fun superClassStaticMethod()
     fun superClassInstanceMethod()
-
-    interface InterfaceInSuperClass
 }
 class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE> constructor() sub SuperClass {
     static attr classStaticAttributeInSameFile: Int
@@ -33,8 +30,6 @@ class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE> constructor() sub SuperClass 
 
     static fun classStaticMethodInSameFile() -> classStaticMethodResultInSameFile: Int
     fun classInstanceMethodInSameFile() -> classInstanceMethodResultInSameFile: Int
-
-    interface InterfaceInClassInSameFile
 }
 
 enum EnumInSameFile {
@@ -45,33 +40,6 @@ fun globalFunctionInSameFile(globalFunctionParameterInSameFile: Int) -> globalFu
 fun globalFunctionWithOneResultWithIdenticalMember() -> result: ClassForResultMemberAccess
 fun globalFunctionWithTwoResults() -> (result1: Int, result2: Int)
 
-interface SuperInterface {
-    static attr superInterfaceStaticAttribute: Int
-    attr superInterfaceInstanceAttribute: Int
-
-    class ClassInSuperInterface
-
-    enum EnumInSuperInterface
-
-    static fun superInterfaceStaticMethod()
-    fun superInterfaceInstanceMethod()
-
-    interface InterfaceInSuperInterface
-}
-interface InterfaceInSameFile sub SuperInterface {
-    static attr interfaceStaticAttributeInSameFile: Int
-    attr interfaceInstanceAttributeInSameFile: Int
-
-    class ClassInInterfaceInSameFile
-
-    enum EnumInInterfaceInSameFile
-
-    static fun interfaceStaticMethodInSameFile() -> interfaceStaticMethodResultInSameFile: Int
-    fun interfaceInstanceMethodInSameFile() -> interfaceInstanceMethodInSameFile: Int
-
-    interface InterfaceInInterfaceInSameFile
-}
-fun interfaceInSameFileFactory() -> result: InterfaceInSameFile
 
 step stepInSameFile(stepParameterInSameFile: Int) -> stepResultInSameFile: Int {
     val placeholderInSameFile = 1;
@@ -81,11 +49,7 @@ step stepWithTwoResults() -> (result1: Int, result2: Int) {}
 
 workflow workflowInSameFile {}
 
-interface InterfaceForOverriding {
-    fun instanceMethodForOverriding()
-}
-open class SuperClassForOverriding constructor()
-sub InterfaceForOverriding {
+open class SuperClassForOverriding constructor() {
     attr instanceAttributeForOverriding: Int
     open override fun instanceMethodForOverriding()
 }
@@ -100,14 +64,12 @@ open class SuperClassForHiding {
     class NestedClassForHiding
     enum NestedEnumForHiding
     static fun staticMethodForHiding()
-    interface NestedInterfaceForHiding
 }
 class SubClassForHiding sub SuperClassForHiding {
     static attr staticAttributeForHiding: Int
     class NestedClassForHiding
     enum NestedEnumForHiding
     static fun staticMethodForHiding()
-    interface NestedInterfaceForHiding
 }
 
 class ClassForResultMemberAccess constructor () {
@@ -116,10 +78,6 @@ class ClassForResultMemberAccess constructor () {
 enum EnumForResultMemberAccess {
     result
 }
-interface InterfaceForResultMemberAccess {
-    fun result()
-}
-
 
 
 // Direct references -----------------------------------------------------------
@@ -150,13 +108,6 @@ step directReferencesToGlobalFunctions() {
     globalFunctionInSamePackage;
     globalFunctionInOtherPackage1;
     globalFunctionInOtherPackage2;
-}
-
-step directReferencesToInterfaces() {
-    InterfaceInSameFile;
-    InterfaceInSamePackage;
-    InterfaceInOtherPackage1;
-    InterfaceInOtherPackage2;
 }
 
 step directReferencesToLambdaYields() {
@@ -247,22 +198,12 @@ step referencesToClassMembers() {
     ClassInSameFile.EnumInClassInSameFile;
     ClassInSameFile.classStaticMethodInSameFile;
     ClassInSameFile<*>().classInstanceMethodInSameFile();
-    ClassInSameFile.InterfaceInClassInSameFile;
 }
 
 step referencesToEnumInstances() {
     EnumInSameFile.ENUM_INSTANCE_IN_SAME_FILE;
 }
 
-step referencesToInterfaceMembers() {
-    InterfaceInSameFile.interfaceStaticAttributeInSameFile;
-    interfaceInSameFileFactory().interfaceInstanceAttributeInSameFile;
-    InterfaceInSameFile.ClassInInterfaceInSameFile;
-    InterfaceInSameFile.EnumInInterfaceInSameFile;
-    InterfaceInSameFile.interfaceStaticMethodInSameFile;
-    interfaceInSameFileFactory().interfaceInstanceMethodInSameFile();
-    InterfaceInSameFile.InterfaceInInterfaceInSameFile;
-}
 
 // Access to inherited members -------------------------------------------------
 
@@ -273,17 +214,6 @@ step referencesToInheritedClassMembers() {
     ClassInSameFile.EnumInSuperClass;
     ClassInSameFile.superClassStaticMethod;
     ClassInSameFile<*>().superClassInstanceMethod();
-    ClassInSameFile.InterfaceInSuperClass;
-}
-
-step referencesToInheritedInterfaceMembers() {
-    InterfaceInSameFile.superInterfaceStaticAttribute;
-    interfaceInSameFileFactory().superInterfaceInstanceAttribute;
-    InterfaceInSameFile.ClassInSuperInterface;
-    InterfaceInSameFile.EnumInSuperInterface;
-    InterfaceInSameFile.superInterfaceStaticMethod;
-    interfaceInSameFileFactory().superInterfaceInstanceMethod();
-    InterfaceInSameFile.InterfaceInSuperInterface;
 }
 
 
@@ -302,7 +232,6 @@ step referencesToHiddenMembers() {
     SubClassForHiding.NestedClassForHiding;
     SubClassForHiding.NestedEnumForHiding;
     SubClassForHiding.staticMethodForHiding;
-    SubClassForHiding.NestedInterfaceForHiding;
 }
 
 // Access to static members from instance --------------------------------------
@@ -312,30 +241,15 @@ step referencesToStaticClassMembersFromInstance() {
     ClassInSameFile<*>().ClassInClassInSameFile;
     ClassInSameFile<*>().EnumInClassInSameFile;
     ClassInSameFile<*>().classStaticMethodInSameFile;
-    ClassInSameFile<*>().InterfaceInClassInSameFile;
 
     ClassInSameFile<*>().superClassStaticAttribute;
     ClassInSameFile<*>().ClassInSuperClass;
     ClassInSameFile<*>().EnumInSuperClass;
     ClassInSameFile<*>().superClassStaticMethod;
-    ClassInSameFile<*>().InterfaceInSuperClass;
 }
 
-step referencesToStaticInterfaceMembersFromInstance() {
-    interfaceInSameFileFactory().interfaceStaticAttributeInSameFile;
-    interfaceInSameFileFactory().ClassInInterfaceInSameFile;
-    interfaceInSameFileFactory().EnumInInterfaceInSameFile;
-    interfaceInSameFileFactory().interfaceStaticMethodInSameFile;
-    interfaceInSameFileFactory().InterfaceInInterfaceInSameFile;
 
-    interfaceInSameFileFactory().superInterfaceStaticAttribute;
-    interfaceInSameFileFactory().ClassInSuperInterface;
-    interfaceInSameFileFactory().EnumInSuperInterface;
-    interfaceInSameFileFactory().superInterfaceStaticMethod;
-    interfaceInSameFileFactory().InterfaceInSuperInterface;
-}
-
-// Access to instance members from class/interface -----------------------------
+// Access to instance members from class ---------------------------------------
 
 step referencesToInstanceClassMembersFromClass() {
     ClassInSameFile.classInstanceAttributeInSameFile;
@@ -345,13 +259,6 @@ step referencesToInstanceClassMembersFromClass() {
     ClassInSameFile.superClassInstanceMethod();
 }
 
-step referencesToInstanceInterfaceMembersFromInterface() {
-    InterfaceInSameFile.interfaceInstanceAttributeInSameFile;
-    InterfaceInSameFile.interfaceInstanceMethodInSameFile();
-
-    InterfaceInSameFile.superInterfaceInstanceAttribute;
-    InterfaceInSameFile.superInterfaceInstanceMethod();
-}
 
 // Access to results of callable -----------------------------------------------
 
@@ -359,13 +266,11 @@ step referencesToCallableTypeResults(
     callableWithOneResult: callable () -> (singleResult: Int),
     callableWithOneResultWithIdenticalClassAttribute: callable () -> (result: ClassForResultMemberAccess),
     callableWithOneResultWithIdenticalEnumInstance: callable () -> (result: EnumForResultMemberAccess),
-    callableWithOneResultWithIdenticalInterfaceMethod: callable () -> (result: InterfaceForResultMemberAccess),
     callableWithTwoResults: callable () -> (result1: Int, result2: Int)
 ) {
     callableWithOneResult().singleResult;
     callableWithOneResultWithIdenticalClassAttribute().result;
     callableWithOneResultWithIdenticalEnumInstance().result;
-    callableWithOneResultWithIdenticalInterfaceMethod().result;
     callableWithTwoResults().result1;
 }
 
@@ -434,27 +339,12 @@ step unqualifiedReferencesToClassMembers() {
 
     classStaticMethodInSameFile;
     classInstanceMethodInSameFile;
-
-    InterfaceInClassInSameFile;
 }
 
 step unqualifiedReferencesToEnumInstances() {
     ENUM_INSTANCE_IN_SAME_FILE;
 }
 
-step unqualifiedReferencesToInterfaceMembers() {
-    interfaceStaticAttributeInSameFile;
-    interfaceInstanceAttributeInSameFile;
-
-    ClassInInterfaceInSameFile;
-
-    EnumInInterfaceInSameFile;
-
-    interfaceStaticMethodInSameFile;
-    interfaceInstanceMethodInSameFile;
-
-    InterfaceInInterfaceInSameFile;
-}
 
 // Other unresolved references -------------------------------------------------
 

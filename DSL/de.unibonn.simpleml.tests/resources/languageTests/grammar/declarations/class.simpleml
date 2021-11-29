@@ -6,12 +6,11 @@ class MySimpleClass
 deprecated class MyComplexClass
     <@AnnotationUse deprecated T1, in T2, out T3>
     constructor(@AnnotationUse deprecated a: Int, vararg b: Int or 3)
-    sub SuperClass, SuperInterface
+    sub SuperClass1, SuperClass2
     where T2 super Number, T3 sub Number
 {
     @AnnotationUse deprecated attr myAttribute: Int
     @AnnotationUse deprecated class MyClass
     @AnnotationUse deprecated enum MyEnum
-    @AnnotationUse deprecated interface MyInterface
     @AnnotationUse deprecated fun MyFunction()
 }
