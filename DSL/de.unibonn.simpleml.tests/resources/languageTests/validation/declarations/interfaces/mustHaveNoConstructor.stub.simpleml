@@ -1,4 +1,0 @@
-package tests.mustHaveNoConstructor
-
-// semantic_error "An interface must have no constructor."
-interface MyInterface »constructor()«

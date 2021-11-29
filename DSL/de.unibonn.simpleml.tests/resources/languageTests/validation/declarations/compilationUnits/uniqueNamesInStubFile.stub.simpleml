@@ -20,11 +20,6 @@ fun »myFun«()
 // semantic_error "A declaration with name 'myFun' exists already in this file."
 fun »myFun«()
 
-// semantic_error "A declaration with name 'MyInterface' exists already in this file."
-interface »MyInterface«
-// semantic_error "A declaration with name 'MyInterface' exists already in this file."
-interface »MyInterface«
-
 
 // semantic_error "A declaration with name 'Bla' exists already in this file."
 annotation »Bla«
@@ -34,5 +29,3 @@ class »Bla«
 enum »Bla«
 // semantic_error "A declaration with name 'Bla' exists already in this file."
 fun »Bla«()
-// semantic_error "A declaration with name 'Bla' exists already in this file."
-interface »Bla«

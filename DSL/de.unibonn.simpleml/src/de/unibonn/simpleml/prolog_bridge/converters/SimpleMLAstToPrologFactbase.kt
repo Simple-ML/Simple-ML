@@ -13,13 +13,11 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionStatementT
-import de.unibonn.simpleml.prolog_bridge.model.facts.ResourceS
 import de.unibonn.simpleml.prolog_bridge.model.facts.FloatT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InfixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.IntT
-import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberAccessT
@@ -34,11 +32,11 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlaceholderT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PrefixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ReferenceT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ResourceS
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StarProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
-import de.unibonn.simpleml.prolog_bridge.model.facts.ThisTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterConstraintT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
@@ -73,7 +71,6 @@ import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
-import de.unibonn.simpleml.simpleML.SmlInterface
 import de.unibonn.simpleml.simpleML.SmlLambda
 import de.unibonn.simpleml.simpleML.SmlLambdaYield
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
@@ -90,7 +87,6 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStarProjection
 import de.unibonn.simpleml.simpleML.SmlStatement
 import de.unibonn.simpleml.simpleML.SmlString
-import de.unibonn.simpleml.simpleML.SmlThisType
 import de.unibonn.simpleml.simpleML.SmlType
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentValue
@@ -243,24 +239,6 @@ class SimpleMLAstToPrologFactbase {
                     obj.typeParameterConstraintList?.constraints?.map { it.id },
                 )
             }
-            is SmlInterface -> {
-                obj.typeParametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
-                obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
-                obj.parentTypesOrEmpty().forEach { visitType(it, obj.id) }
-                obj.typeParameterConstraintsOrEmpty().forEach { visitTypeParameterConstraint(it, obj.id) }
-                obj.membersOrEmpty().forEach { visitDeclaration(it, obj.id) }
-
-                +InterfaceT(
-                    obj.id,
-                    parentId,
-                    obj.name,
-                    obj.typeParameterList?.typeParameters?.map { it.id },
-                    obj.constructor?.parameterList?.parameters?.map { it.id },
-                    obj.parentTypeList?.parentTypes?.map { it.id },
-                    obj.typeParameterConstraintList?.constraints?.map { it.id },
-                    obj.body?.members?.map { it.id }
-                )
-            }
             is SmlParameter -> {
                 obj.type?.let { visitType(it, obj.id) }
                 obj.defaultValue?.let { visitExpression(it, obj.id, obj.id) }
@@ -310,7 +288,6 @@ class SimpleMLAstToPrologFactbase {
     private fun PlFactbase.visitModifier(modifier: String, target: Id<SmlDeclaration>) {
         +ModifierT(target, modifier)
     }
-
 
     // *****************************************************************************************************************
     // Statements
@@ -440,7 +417,6 @@ class SimpleMLAstToPrologFactbase {
         visitSourceLocation(obj)
     }
 
-
     // *****************************************************************************************************************
     // Types
     // ****************************************************************************************************************/
@@ -480,9 +456,6 @@ class SimpleMLAstToPrologFactbase {
                 visitType(obj.type, obj.id)
 
                 +ParenthesizedTypeT(obj.id, parentId, obj.type.id)
-            }
-            is SmlThisType -> {
-                +ThisTypeT(obj.id, parentId)
             }
             is SmlUnionType -> {
                 obj.typeArgumentsOrEmpty().forEach { visitTypeArgument(it, obj.id) }
@@ -531,7 +504,6 @@ class SimpleMLAstToPrologFactbase {
         visitSourceLocation(obj)
     }
 
-
     // *****************************************************************************************************************
     // Other
     // ****************************************************************************************************************/
@@ -563,7 +535,6 @@ class SimpleMLAstToPrologFactbase {
             .findNodesForFeature(eObject, eReference)
             .joinToString("") { it.text }
     }
-
 
     // *****************************************************************************************************************
     // Helpers

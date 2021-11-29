@@ -28,13 +28,6 @@ package tests.uniqueModifiers
 »deprecated« »deprecated« fun myFunction2()
 
 
-// no_semantic_error "Modifiers must be unique."
-»deprecated« interface MyInterface1
-// semantic_error "Modifiers must be unique."
-// semantic_error "Modifiers must be unique."
-»deprecated« »deprecated« interface MyInterface2
-
-
 fun myFunction4<
     // no_semantic_error "Modifiers must be unique."
     »deprecated« T1,
@@ -84,50 +77,8 @@ class MyClass4 {
     // semantic_error "Modifiers must be unique."
     // semantic_error "Modifiers must be unique."
     »deprecated« »deprecated« fun myFunction2()
-
-
-    // no_semantic_error "Modifiers must be unique."
-    »deprecated« interface MyInterface1
-    // semantic_error "Modifiers must be unique."
-    // semantic_error "Modifiers must be unique."
-    »deprecated« »deprecated« interface MyInterface2
 }
 
-interface MyInterface4 {
-    // no_semantic_error "Modifiers must be unique."
-    »deprecated« val myAttribute1: Int
-    // no_semantic_error "Modifiers must be unique."
-    // no_semantic_error "Modifiers must be unique."
-    »deprecated« »deprecated« attr myAttribute2: Int
-
-
-    // no_semantic_error "Modifiers must be unique."
-    »deprecated« class MyClass1
-    // no_semantic_error "Modifiers must be unique."
-    // no_semantic_error "Modifiers must be unique."
-    »deprecated« »deprecated« class MyClass2
-
-
-    // no_semantic_error "Modifiers must be unique."
-    »deprecated« enum MyEnum1
-    // no_semantic_error "Modifiers must be unique."
-    // no_semantic_error "Modifiers must be unique."
-    »deprecated« »deprecated« enum MyEnum2
-
-
-    // no_semantic_error "Modifiers must be unique."
-    »deprecated« fun myFunction1()
-    // semantic_error "Modifiers must be unique."
-    // semantic_error "Modifiers must be unique."
-    »deprecated« »deprecated« fun myFunction2()
-
-
-    // no_semantic_error "Modifiers must be unique."
-    »deprecated« interface MyInterface1
-    // no_semantic_error "Modifiers must be unique."
-    // no_semantic_error "Modifiers must be unique."
-    »deprecated« »deprecated« interface MyInterface2
-}
 
 // no_semantic_error "Modifiers must be unique."
 »deprecated« step myStep1 {}

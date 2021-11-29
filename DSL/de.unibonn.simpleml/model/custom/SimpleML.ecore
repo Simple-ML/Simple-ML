@@ -24,8 +24,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//SmlType"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SmlClassOrInterface" abstract="true" eSuperTypes="#//SmlNamedTypeDeclaration">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlClassOrInterfaceBody"
+  <eClassifiers xsi:type="ecore:EClass" name="SmlClass" abstract="false" eSuperTypes="#//SmlNamedTypeDeclaration">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlClassBody"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="constructor" eType="#//SmlConstructor"
         containment="true"/>
@@ -36,13 +36,11 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterList" eType="#//SmlTypeParameterList"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SmlClass" eSuperTypes="#//SmlClassOrInterface"/>
-  <eClassifiers xsi:type="ecore:EClass" name="SmlInterface" eSuperTypes="#//SmlClassOrInterface"/>
   <eClassifiers xsi:type="ecore:EClass" name="SmlConstructor">
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SmlClassOrInterfaceBody">
+  <eClassifiers xsi:type="ecore:EClass" name="SmlClassBody">
     <eStructuralFeatures xsi:type="ecore:EReference" name="members" upperBound="-1"
         eType="#//SmlDeclaration" containment="true"/>
   </eClassifiers>
@@ -218,7 +216,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="typeArgumentList" eType="#//SmlTypeArgumentList"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SmlThisType" eSuperTypes="#//SmlType"/>
   <eClassifiers xsi:type="ecore:EClass" name="SmlParenthesizedType" eSuperTypes="#//SmlType">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//SmlType"
         containment="true"/>

@@ -9,14 +9,12 @@ import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.simpleML.SmlClassOrInterface
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlExpression
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
-import de.unibonn.simpleml.simpleML.SmlInterface
 import de.unibonn.simpleml.simpleML.SmlLambda
 import de.unibonn.simpleml.simpleML.SmlLambdaYield
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
@@ -179,29 +177,23 @@ fun SmlCall.resultsOrNull(): List<SmlDeclaration>? {
 fun SmlCall?.argumentsOrEmpty() = this?.argumentList?.arguments.orEmpty()
 fun SmlCall?.typeArgumentsOrEmpty() = this?.typeArgumentList?.typeArguments.orEmpty()
 
-// ClassOrInterface ----------------------------------------------------------------------------------------------------
+// Class ---------------------------------------------------------------------------------------------------------------
 
-fun SmlClassOrInterface?.membersOrEmpty() = this?.body?.members.orEmpty()
+fun SmlClass?.membersOrEmpty() = this?.body?.members.orEmpty()
 
-fun SmlClassOrInterface?.parametersOrEmpty() = this?.constructor?.parameterList?.parameters.orEmpty()
-fun SmlClassOrInterface?.typeParametersOrEmpty() = this?.typeParameterList?.typeParameters.orEmpty()
-fun SmlClassOrInterface?.typeParameterConstraintsOrEmpty() = this?.typeParameterConstraintList?.constraints.orEmpty()
+fun SmlClass?.parametersOrEmpty() = this?.constructor?.parameterList?.parameters.orEmpty()
+fun SmlClass?.typeParametersOrEmpty() = this?.typeParameterList?.typeParameters.orEmpty()
+fun SmlClass?.typeParameterConstraintsOrEmpty() = this?.typeParameterConstraintList?.constraints.orEmpty()
 
-fun SmlClassOrInterface?.parentTypesOrEmpty() = this?.parentTypeList?.parentTypes.orEmpty()
-fun SmlClassOrInterface?.parentClassesOrInterfacesOrEmpty() =
-    this.parentClassesOrEmpty() + this.parentInterfacesOrEmpty()
-
-fun SmlClassOrInterface?.parentClassesOrEmpty() = this.parentTypesOrEmpty().mapNotNull { it.resolveToClassOrNull() }
-fun SmlClassOrInterface?.parentClassOrNull(): SmlClass? {
+fun SmlClass?.parentTypesOrEmpty() = this?.parentTypeList?.parentTypes.orEmpty()
+fun SmlClass?.parentClassesOrEmpty() = this.parentTypesOrEmpty().mapNotNull { it.resolveToClassOrNull() }
+fun SmlClass?.parentClassOrNull(): SmlClass? {
     val resolvedParentClasses = this.parentClassesOrEmpty()
     return when (resolvedParentClasses.size) {
         1 -> resolvedParentClasses.first()
         else -> null
     }
 }
-
-fun SmlClassOrInterface?.parentInterfacesOrEmpty() =
-    this.parentTypesOrEmpty().mapNotNull { it.resolveToInterfaceOrNull() }
 
 // Compilation Unit ----------------------------------------------------------------------------------------------------
 
@@ -211,27 +203,24 @@ fun SmlCompilationUnit?.membersOrEmpty() = this?.members.orEmpty()
 
 fun SmlDeclaration.isDeprecated() = SML_DEPRECATED in this.modifiers
 fun SmlDeclaration.isOpen(): Boolean {
-    return SML_OPEN in this.modifiers || this is SmlInterface || this is SmlFunction && this.isInterfaceMember()
+    return SML_OPEN in this.modifiers
 }
 
 fun SmlDeclaration.isOverride() = SML_OVERRIDE in this.modifiers
 fun SmlDeclaration.isPure() = SML_PURE in this.modifiers
 fun SmlDeclaration.isStatic(): Boolean {
     return SML_STATIC in this.modifiers || !this.isCompilationUnitMember() &&
-        (this is SmlClass || this is SmlEnum || this is SmlInterface)
+        (this is SmlClass || this is SmlEnum)
 }
 
-fun SmlDeclaration.isClassOrInterfaceMember() = this.containingClassOrInterfaceOrNull() != null
-fun SmlDeclaration.isClassMember() = this.containingClassOrInterfaceOrNull() is SmlClass
-fun SmlDeclaration.isInterfaceMember() = this.containingClassOrInterfaceOrNull() is SmlInterface
+fun SmlDeclaration.isClassMember() = this.containingClassOrNull() != null
 fun SmlDeclaration.isCompilationUnitMember(): Boolean {
-    return !isClassOrInterfaceMember() &&
+    return !isClassMember() &&
         (
             this is SmlAnnotation ||
                 this is SmlClass ||
                 this is SmlEnum ||
                 this is SmlFunction ||
-                this is SmlInterface ||
                 this is SmlWorkflow ||
                 this is SmlWorkflowStep
             )
@@ -279,10 +268,8 @@ fun SmlAssignee.maybeAssigned(): AssignedResult {
 
 // EObject -------------------------------------------------------------------------------------------------------------
 
-fun EObject?.containingClassOrInterfaceOrNull() = this?.closestAncestorOrNull<SmlClassOrInterface>()
 fun EObject?.containingClassOrNull() = this?.closestAncestorOrNull<SmlClass>()
 fun EObject?.containingEnumOrNull() = this?.closestAncestorOrNull<SmlEnum>()
-fun EObject?.containingInterfaceOrNull() = this?.closestAncestorOrNull<SmlInterface>()
 fun EObject?.containingCompilationUnitOrNull() = this?.closestAncestorOrNull<SmlCompilationUnit>()
 fun EObject?.containingFunctionOrNull() = this?.closestAncestorOrNull<SmlFunction>()
 fun EObject?.containingLambdaOrNull() = this?.closestAncestorOrNull<SmlLambda>()
@@ -401,17 +388,14 @@ private fun Resource.nameEndsWith(suffix: String): Boolean {
 
 // Type ----------------------------------------------------------------------------------------------------------------
 
-fun SmlType?.resolveToClassOrInterfaceOrNull(): SmlClassOrInterface? {
+fun SmlType?.resolveToClassOrNull(): SmlClass? {
     return when (this) {
-        is SmlNamedType -> this.declaration as? SmlClassOrInterface
-        is SmlMemberType -> this.member.resolveToClassOrInterfaceOrNull()
+        is SmlNamedType -> this.declaration as? SmlClass
+        is SmlMemberType -> this.member.resolveToClassOrNull()
         else -> null
     }
 }
-
-fun SmlType?.resolveToClassOrNull() = this.resolveToClassOrInterfaceOrNull() as? SmlClass
 fun SmlType?.resolveToFunctionTypeOrNull() = this as? SmlCallableType
-fun SmlType?.resolveToInterfaceOrNull() = this.resolveToClassOrInterfaceOrNull() as? SmlInterface
 
 // TypeArgument --------------------------------------------------------------------------------------------------------
 
@@ -441,13 +425,13 @@ fun SmlTypeArgumentList.typeParametersOrNull(): List<SmlTypeParameter>? {
     when (val parent = this.eContainer()) {
         is SmlCall -> {
             when (val callable = parent.callableOrNull()) {
-                is SmlClassOrInterface -> return callable.typeParametersOrEmpty()
+                is SmlClass -> return callable.typeParametersOrEmpty()
                 is SmlFunction -> return callable.typeParametersOrEmpty()
             }
         }
         is SmlNamedType -> {
             when (val declaration = parent.declaration) {
-                is SmlClassOrInterface -> return declaration.typeParametersOrEmpty()
+                is SmlClass -> return declaration.typeParametersOrEmpty()
                 is SmlFunction -> return declaration.typeParametersOrEmpty()
             }
         }
@@ -462,7 +446,7 @@ fun SmlTypeArgumentList.typeParametersOrNull(): List<SmlTypeParameter>? {
 
 fun SmlTypeParameterConstraintList.typeParametersOrNull(): List<SmlTypeParameter>? {
     return when (val parent = this.eContainer()) {
-        is SmlClassOrInterface -> parent.typeParametersOrEmpty()
+        is SmlClass -> parent.typeParametersOrEmpty()
         is SmlFunction -> parent.typeParametersOrEmpty()
         else -> null
     }

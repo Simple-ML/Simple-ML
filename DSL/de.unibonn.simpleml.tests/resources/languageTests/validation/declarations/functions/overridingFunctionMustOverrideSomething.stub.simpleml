@@ -4,17 +4,10 @@ open class MyOpenClass {
     open fun classFunction()
 }
 
-interface MyInterface {
-    fun interfaceFunction()
-}
-
-class MyClass sub MyOpenClass, MyInterface {
+class MyClass sub MyOpenClass {
     // semantic_error "This function does not override anything."
     override fun »ownFunction«()
 
     // no_semantic_error "This function does not override anything."
     override fun »classFunction«()
-
-    // no_semantic_error "This function does not override anything."
-    override fun »interfaceFunction«()
 }

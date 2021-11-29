@@ -22,11 +22,6 @@ class MyClass {
     // semantic_error "A declaration with name 'MyEnum' exists already in this class."
     enum »MyEnum«
 
-    // semantic_error "A declaration with name 'MyInterface' exists already in this class."
-    interface »MyInterface«
-    // semantic_error "A declaration with name 'MyInterface' exists already in this class."
-    interface »MyInterface«
-
 
     // semantic_error "A declaration with name 'Bla' exists already in this class."
     attr »Bla«: Int
@@ -36,6 +31,4 @@ class MyClass {
     fun »Bla«()
     // semantic_error "A declaration with name 'Bla' exists already in this class."
     enum »Bla«
-    // semantic_error "A declaration with name 'Bla' exists already in this class."
-    interface »Bla«
 }

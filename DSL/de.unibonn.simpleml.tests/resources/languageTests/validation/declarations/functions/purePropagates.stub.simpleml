@@ -5,12 +5,7 @@ open class MyOpenClass {
     open fun impureFunction1()
 }
 
-interface MyInterface {
-    pure fun pureFunction2()
-    fun impureFunction2()
-}
-
-class MyClass sub MyOpenClass, MyInterface {
+class MyClass sub MyOpenClass {
     // no_semantic_error "One of the supertypes of this class declares a pure function with this name, so this must be pure as well."
     pure fun »ownPureFunction«()
     // no_semantic_error "One of the supertypes of this class declares a pure function with this name, so this must be pure as well."
@@ -20,21 +15,4 @@ class MyClass sub MyOpenClass, MyInterface {
     override pure fun »pureFunction1«()
     // no_semantic_error "One of the supertypes of this class declares a pure function with this name, so this must be pure as well."
     override pure fun »impureFunction1«()
-
-    // semantic_error "One of the supertypes of this class declares a pure function with this name, so this must be pure as well."
-    override fun »pureFunction2«()
-    // no_semantic_error "One of the supertypes of this class declares a pure function with this name, so this must be pure as well."
-    override fun »impureFunction2«()
-}
-
-interface MyInterface2 sub MyInterface {
-    // no_semantic_error "One of the supertypes of this class declares a pure function with this name, so this must be pure as well."
-    pure fun »ownPureFunction«()
-    // no_semantic_error "One of the supertypes of this class declares a pure function with this name, so this must be pure as well."
-    fun »ownImpureFunction«()
-
-    // semantic_error "One of the supertypes of this class declares a pure function with this name, so this must be pure as well."
-    override fun »pureFunction2«()
-    // no_semantic_error "One of the supertypes of this class declares a pure function with this name, so this must be pure as well."
-    override fun »impureFunction2«()
 }

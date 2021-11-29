@@ -4,6 +4,5 @@ annotation AnnotationInSamePackage
 class ClassInSamePackage
 enum EnumInSamePackage
 fun globalFunctionInSamePackage()
-interface InterfaceInSamePackage
 step stepInSamePackage() {}
 workflow workflowInSamePackage {}

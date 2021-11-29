@@ -6,12 +6,7 @@ open class MyOpenClass {
     static fun staticFunction()
 }
 
-interface MyInterface {
-    open fun explicitlyOpenFunction()
-    fun implicitlyOpenFunction()
-}
-
-class MyClass sub MyOpenClass, MyInterface {
+class MyClass sub MyOpenClass {
     // no_semantic_error "The overridden function must be open."
     fun »ownFunction«()
     // no_semantic_error "The overridden function must be open."
@@ -23,9 +18,4 @@ class MyClass sub MyOpenClass, MyInterface {
     override fun »closedFunction«()
     // no_semantic_error "The overridden function must be open."
     override fun »staticFunction«()
-
-    // no_semantic_error "The overridden function must be open."
-    override fun »explicitlyOpenFunction«()
-    // no_semantic_error "The overridden function must be open."
-    override fun »implicitlyOpenFunction«()
 }

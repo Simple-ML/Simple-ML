@@ -14,7 +14,6 @@ import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
-import de.unibonn.simpleml.simpleML.SmlInterface
 import de.unibonn.simpleml.simpleML.SmlLambda
 import de.unibonn.simpleml.simpleML.SmlLambdaYield
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
@@ -100,7 +99,6 @@ class TypeComputer @Inject constructor(
                 parametersOrEmpty().map { it.inferType(false) },
                 resultsOrEmpty().map { it.inferType(false) }
             )
-            this is SmlInterface -> InterfaceType(this, isNullable = false, isStatic = isStatic)
             this is SmlLambdaYield -> {
                 val assigned = assignedOrNull() ?: return ANY
                 assigned.inferType(isStatic = false)

@@ -1,14 +1,11 @@
 package de.unibonn.simpleml.typing
 
-import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
-import de.unibonn.simpleml.simpleML.SmlInterface
-import org.eclipse.xtext.naming.IQualifiedNameProvider
 
 // TODO this breaks in Eclipse; we get reference errors; always use injection via annotations!!!!!!!!!!
-//private val qualifiedNameProvider: IQualifiedNameProvider =
+// private val qualifiedNameProvider: IQualifiedNameProvider =
 //        SimpleMLStandaloneSetup()
 //                .createInjectorAndDoEMFRegistration()
 //                .getInstance(IQualifiedNameProvider::class.java)
@@ -47,7 +44,8 @@ class CallableType(val parameters: List<Type>, val results: List<Type>) : Type()
 
 sealed class NamedType(smlDeclaration: SmlDeclaration) : Type() {
     val simpleName: String = smlDeclaration.name
-    val qualifiedName: String = simpleName // TODO qualifiedNameProvider.getFullyQualifiedName(smlDeclaration).toString()
+    val qualifiedName: String =
+        simpleName // TODO qualifiedNameProvider.getFullyQualifiedName(smlDeclaration).toString()
 
     abstract val isNullable: Boolean
     abstract val isStatic: Boolean
@@ -68,28 +66,19 @@ sealed class NamedType(smlDeclaration: SmlDeclaration) : Type() {
 }
 
 data class ClassType(
-        val smlClass: SmlClass,
-        override val isNullable: Boolean,
-        override val isStatic: Boolean
+    val smlClass: SmlClass,
+    override val isNullable: Boolean,
+    override val isStatic: Boolean
 ) : NamedType(smlClass) {
 
     override fun toString() = super.toString()
 }
 
 data class EnumType(
-        val smlEnum: SmlEnum,
-        override val isNullable: Boolean,
-        override val isStatic: Boolean
+    val smlEnum: SmlEnum,
+    override val isNullable: Boolean,
+    override val isStatic: Boolean
 ) : NamedType(smlEnum) {
-
-    override fun toString() = super.toString()
-}
-
-data class InterfaceType(
-        val smlInterface: SmlInterface,
-        override val isNullable: Boolean,
-        override val isStatic: Boolean
-) : NamedType(smlInterface) {
 
     override fun toString() = super.toString()
 }
