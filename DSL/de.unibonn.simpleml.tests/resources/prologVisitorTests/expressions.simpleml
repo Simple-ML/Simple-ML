@@ -62,6 +62,12 @@ workflow myWorkflowWithOperations {
 }
 
 
+// Parenthesized expression --------------------------------------------------------------------------------------------
+workflow myWorkflowWithParenthesizedExpression {
+    val parenthesizedExpression = (1);
+}
+
+
 // References ----------------------------------------------------------------------------------------------------------
 workflow myWorkflowWithResolvableReference {
     val a = 1;

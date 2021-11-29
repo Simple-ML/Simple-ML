@@ -1150,7 +1150,7 @@ data class NullT(override val id: Id<SmlNull>, override val parent: Id<EObject>,
  * @param expression
  * The ID of the fact for the expression inside the parentheses.
  */
-data class ParenthesizedExpression(
+data class ParenthesizedExpressionT(
     override val id: Id<SmlExpression>,
     override val parent: Id<EObject>,
     override val enclosing: Id<EObject>,
@@ -1368,7 +1368,7 @@ data class NamedTypeT(
  * @param type
  * The ID of the fact for the type inside the parentheses.
  */
-data class ParenthesizedType(override val id: Id<SmlType>, override val parent: Id<EObject>, val type: Id<SmlType>) :
+data class ParenthesizedTypeT(override val id: Id<SmlType>, override val parent: Id<EObject>, val type: Id<SmlType>) :
     TypeT("parenthesizedTypeT", id, parent, type) {
     override fun toString() = super.toString()
 }

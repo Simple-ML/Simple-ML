@@ -135,6 +135,9 @@
     <genClasses ecoreClass="SimpleML.ecore#//SmlReference">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlReference/declaration"/>
     </genClasses>
+    <genClasses ecoreClass="SimpleML.ecore#//SmlParenthesizedExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlParenthesizedExpression/expression"/>
+    </genClasses>
     <genClasses ecoreClass="SimpleML.ecore#//SmlChainedExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlChainedExpression/receiver"/>
     </genClasses>
@@ -168,6 +171,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlNamedType/typeArgumentList"/>
     </genClasses>
     <genClasses ecoreClass="SimpleML.ecore#//SmlThisType"/>
+    <genClasses ecoreClass="SimpleML.ecore#//SmlParenthesizedType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlParenthesizedType/type"/>
+    </genClasses>
     <genClasses ecoreClass="SimpleML.ecore#//SmlUnionType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlUnionType/typeArgumentList"/>
     </genClasses>

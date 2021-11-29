@@ -113,8 +113,12 @@ SmlParentType returns SmlType
 
 SmlParentPrimaryType returns SmlType
 	: SmlNamedType
-	| '(' SmlParentType ')'
+	| SmlParentParenthesizedType
 	;
+
+SmlParentParenthesizedType returns SmlParenthesizedType
+    : '(' type=SmlParentType ')'
+    ;
 
 SmlClassOrInterfaceBody
 	: {SmlClassOrInterfaceBody} '{' members+=SmlClassOrInterfaceMember* '}'
@@ -395,7 +399,7 @@ SmlPrimaryExpression returns SmlExpression
 	: SmlLambda
 	| SmlLiteral
 	| SmlReference
-	| '(' SmlExpression ')'
+	| SmlParenthesizedExpression
 	;
 
 SmlLiteral
@@ -431,6 +435,9 @@ SmlReference
 	: declaration=[SmlDeclaration]
 	;
 
+SmlParenthesizedExpression
+    : '(' expression=SmlExpression ')'
+    ;
 
 
 /**********************************************************************************************************************
@@ -482,10 +489,17 @@ SmlPrimaryType returns SmlType
 	: SmlCallableType
 	| SmlNamedType
 	| SmlUnionType
-	| {SmlThisType} 'this'
-	| '(' SmlType ')'
+	| SmlThisType
+	| SmlParenthesizedType
 	;
 
+SmlThisType
+    : {SmlThisType} 'this'
+    ;
+
+SmlParenthesizedType
+    : '(' type=SmlType ')'
+    ;
 
 // Callable Types ------------------------------------------------------------------------------------------------------
 

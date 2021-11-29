@@ -18,6 +18,10 @@ step myWorkflowStepWithComplexResolvableNamedType(a: C<*>?) {}
 step myWorkflowWithUnresolvableNamedType(a: MyUnresolvedDeclaration) {}
 
 
+// Parenthesized expression --------------------------------------------------------------------------------------------
+step myWorkflowStepWithParenthesizedType(a: (C)) {}
+
+
 // Star projections ----------------------------------------------------------------------------------------------------
 workflow myWorkflowWithStarProjection {
     val starProjection = C<*>();
