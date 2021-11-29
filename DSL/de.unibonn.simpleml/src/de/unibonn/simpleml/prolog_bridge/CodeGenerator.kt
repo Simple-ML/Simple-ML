@@ -68,12 +68,10 @@ class CodeGenerator {
                     }
                     line = br.readLine()
                 }
-
             }
         } catch (e: IOException) {
             System.err.format("IOException: %s%n", e)
         }
-
     }
 
     fun getData(): List<String> {
@@ -259,7 +257,7 @@ class CodeGenerator {
                 addList(e.argumentList.arguments as EList<EObject>, handleList(f.plArguments[4]) as List<EObject>)
                 e.typeArgumentList = SimpleMLFactory.eINSTANCE.createSmlTypeArgumentList()
 
-                //TODO das hier auslagern, wird wohl häufiger benutzt
+                // TODO das hier auslagern, wird wohl häufiger benutzt
                 val l = handleList(f.plArguments[5])
                 if (l != null) addList(e.typeArgumentList.typeArguments as EList<EObject>, l)
                 else e.typeArgumentList = null
@@ -591,9 +589,7 @@ class CodeGenerator {
             }
             else -> return null
         }
-
     }
-
 
     fun run() {
 
@@ -629,7 +625,6 @@ class CodeGenerator {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
     }
 
     companion object {

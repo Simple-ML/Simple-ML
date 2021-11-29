@@ -131,7 +131,6 @@ class SimpleMLFormatter : AbstractFormatter2() {
                         doc.append(it, newLine)
                     } else {
                         doc.append(it, noSpace)
-
                     }
                 }
 
@@ -536,7 +535,6 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatObject(obj.type)
             }
 
-
             /**********************************************************************************************************
              * Statements
              **********************************************************************************************************/
@@ -625,7 +623,6 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatKeyword(obj, ";", noSpace, null)
             }
 
-
             /**********************************************************************************************************
              * Expressions
              **********************************************************************************************************/
@@ -701,7 +698,6 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // Keyword ")"
                 doc.formatKeyword(obj, ")", noSpace, null)
             }
-
 
             /**********************************************************************************************************
              * Types

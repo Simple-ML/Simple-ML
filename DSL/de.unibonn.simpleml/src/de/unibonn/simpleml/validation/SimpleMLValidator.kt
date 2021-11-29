@@ -1,6 +1,5 @@
 package de.unibonn.simpleml.validation
 
-
 import de.unibonn.simpleml.validation.declarations.AnnotationChecker
 import de.unibonn.simpleml.validation.declarations.AttributeChecker
 import de.unibonn.simpleml.validation.declarations.ClassChecker
@@ -26,7 +25,6 @@ import de.unibonn.simpleml.validation.types.CallableTypeChecker
 import de.unibonn.simpleml.validation.types.NamedTypeChecker
 import de.unibonn.simpleml.validation.types.UnionTypeChecker
 import org.eclipse.xtext.validation.ComposedChecks
-
 
 /**
  * This class contains custom validation rules.

@@ -157,10 +157,10 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
 
     private fun SmlDeclaration.shouldCheckDeclarationModifiers(): Boolean {
         return this !is SmlParameter &&
-                this !is SmlResult &&
-                this !is SmlTypeParameter &&
-                this !is SmlWorkflow &&
-                this !is SmlWorkflowStep
+            this !is SmlResult &&
+            this !is SmlTypeParameter &&
+            this !is SmlWorkflow &&
+            this !is SmlWorkflowStep
     }
 
     private fun SmlDeclaration.reportInvalidModifiers(message: String, isInvalid: (modifier: String) -> Boolean) {

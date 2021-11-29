@@ -13,7 +13,6 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionStatementT
-import de.unibonn.simpleml.prolog_bridge.model.facts.ResourceS
 import de.unibonn.simpleml.prolog_bridge.model.facts.FloatT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
@@ -33,6 +32,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlaceholderT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PrefixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ReferenceT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ResourceS
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StarProjectionT
@@ -289,7 +289,6 @@ class SimpleMLAstToPrologFactbase {
         +ModifierT(target, modifier)
     }
 
-
     // *****************************************************************************************************************
     // Statements
     // ****************************************************************************************************************/
@@ -418,7 +417,6 @@ class SimpleMLAstToPrologFactbase {
         visitSourceLocation(obj)
     }
 
-
     // *****************************************************************************************************************
     // Types
     // ****************************************************************************************************************/
@@ -506,7 +504,6 @@ class SimpleMLAstToPrologFactbase {
         visitSourceLocation(obj)
     }
 
-
     // *****************************************************************************************************************
     // Other
     // ****************************************************************************************************************/
@@ -538,7 +535,6 @@ class SimpleMLAstToPrologFactbase {
             .findNodesForFeature(eObject, eReference)
             .joinToString("") { it.text }
     }
-
 
     // *****************************************************************************************************************
     // Helpers

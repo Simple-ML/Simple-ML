@@ -131,7 +131,6 @@ sealed class NodeWithParent(factName: String, id: Id<EObject>, parent: Id<EObjec
     abstract val parent: Id<EObject>
 }
 
-
 /**********************************************************************************************************************
  * Compilation Unit
  **********************************************************************************************************************/
@@ -184,7 +183,6 @@ data class ImportT(
     NodeWithParent("importT", id, parent, importedNamespace, alias) {
     override fun toString() = super.toString()
 }
-
 
 /**********************************************************************************************************************
  * Declarations
@@ -594,7 +592,6 @@ data class WorkflowStepT(
     override fun toString() = super.toString()
 }
 
-
 /**********************************************************************************************************************
  * Statements
  **********************************************************************************************************************/
@@ -750,7 +747,6 @@ data class ExpressionStatementT(
     StatementT("expressionStatementT", id, parent, expression) {
     override fun toString() = super.toString()
 }
-
 
 /**********************************************************************************************************************
  * Expressions
@@ -1182,7 +1178,6 @@ data class StringT(
     override fun toString() = super.toString()
 }
 
-
 /**********************************************************************************************************************
  * Types
  **********************************************************************************************************************/
@@ -1439,7 +1434,6 @@ data class TypeParameterConstraintT(
     override fun toString() = super.toString()
 }
 
-
 /**********************************************************************************************************************
  * Other
  **********************************************************************************************************************/
@@ -1485,7 +1479,6 @@ data class AnnotationUseT(
 data class UnresolvedT(override val id: Id<EObject>, val name: String) : Node("unresolvedT", id, name) {
     override fun toString() = super.toString()
 }
-
 
 /**********************************************************************************************************************
  * Relations

@@ -24,9 +24,9 @@ class NamedTypeChecker : AbstractSimpleMLChecker() {
 
         if (typeParameters.isNotEmpty()) {
             error(
-                    "This type is generic and, therefore, requires a list of type arguments.",
-                    SimpleMLPackage.Literals.SML_NAMED_TYPE__DECLARATION,
-                    NAMED_TYPE_MISSING_TYPE_ARGUMENT_LIST
+                "This type is generic and, therefore, requires a list of type arguments.",
+                SimpleMLPackage.Literals.SML_NAMED_TYPE__DECLARATION,
+                NAMED_TYPE_MISSING_TYPE_ARGUMENT_LIST
             )
         }
     }

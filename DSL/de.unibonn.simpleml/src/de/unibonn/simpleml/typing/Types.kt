@@ -5,7 +5,7 @@ import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
 
 // TODO this breaks in Eclipse; we get reference errors; always use injection via annotations!!!!!!!!!!
-//private val qualifiedNameProvider: IQualifiedNameProvider =
+// private val qualifiedNameProvider: IQualifiedNameProvider =
 //        SimpleMLStandaloneSetup()
 //                .createInjectorAndDoEMFRegistration()
 //                .getInstance(IQualifiedNameProvider::class.java)
