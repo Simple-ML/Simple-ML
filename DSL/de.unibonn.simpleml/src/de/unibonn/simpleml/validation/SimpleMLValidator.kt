@@ -35,7 +35,6 @@ import org.eclipse.xtext.validation.ComposedChecks
     EnumChecker::class,
     FunctionChecker::class,
     ImportChecker::class,
-    InterfaceChecker::class,
     ParameterChecker::class,
     ParameterListChecker::class,
     PlaceholderChecker::class,

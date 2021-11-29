@@ -9,7 +9,7 @@ import org.eclipse.xtext.validation.Check
 
 const val CLASS_MUST_HAVE_ONLY_ONE_PARENT_CLASS = "CLASS_MUST_HAVE_ONLY_ONE_PARENT_CLASS"
 const val CLASS_MUST_HAVE_UNIQUE_PARENT_TYPES = "CLASS_MUST_HAVE_UNIQUE_PARENT_TYPES"
-const val CLASS_MUST_INHERIT_ONLY_INTERFACES_AND_ONE_OPEN_CLASS = "CLASS_MUST_INHERIT_ONLY_INTERFACES_AND_ONE_OPEN_CLASS"
+const val CLASS_MUST_INHERIT_ONLY_ONE_OPEN_CLASS = "CLASS_MUST_INHERIT_ONLY_INTERFACES_AND_ONE_OPEN_CLASS"
 const val CLASS_MUST_NOT_BE_SUBTYPE_OF_ITSELF = "CLASS_MUST_NOT_BE_SUBTYPE_OF_ITSELF"
 const val PARENT_CLASS_MUST_BE_OPEN = "PARENT_CLASS_MUST_BE_OPEN"
 const val UNNECESSARY_CLASS_BODY = "UNNECESSARY_CLASS_BODY"
@@ -40,14 +40,14 @@ class ClassChecker @Inject constructor(
         if (smlClass.body != null && smlClass.membersOrEmpty().isEmpty()) {
             warning(
                     "Unnecessary class body.",
-                    Literals.SML_CLASS_OR_INTERFACE__BODY,
+                    Literals.SML_CLASS__BODY,
                     UNNECESSARY_CLASS_BODY
             )
         }
     }
 
     @Check
-    fun mustInheritOnlyOpenClassesAndInterfaces(smlClass: SmlClass) {
+    fun mustInheritOnlyOpenClasses(smlClass: SmlClass) {
         smlClass.parentTypesOrEmpty()
                 .filter {
                     val resolvedClass = it.resolveToClassOrNull()
@@ -63,13 +63,13 @@ class ClassChecker @Inject constructor(
                 }
 
         smlClass.parentTypesOrEmpty()
-                .filter { it.resolveToClassOrInterfaceOrNull() == null }
+                .filter { it.resolveToClassOrNull() == null }
                 .forEach {
                     error(
-                            "A class must only inherit interfaces and one open class.",
+                            "A class must only inherit classes.",
                             it,
                             null,
-                            CLASS_MUST_INHERIT_ONLY_INTERFACES_AND_ONE_OPEN_CLASS
+                            CLASS_MUST_INHERIT_ONLY_ONE_OPEN_CLASS
                     )
                 }
     }
@@ -100,8 +100,8 @@ class ClassChecker @Inject constructor(
     @Check
     fun uniqueParentTypes(smlClass: SmlClass) {
         smlClass.parentTypesOrEmpty()
-                .filter { it.resolveToClassOrInterfaceOrNull() != null }
-                .duplicatesBy { it.resolveToClassOrInterfaceOrNull()?.name }
+                .filter { it.resolveToClassOrNull() != null }
+                .duplicatesBy { it.resolveToClassOrNull()?.name }
                 .forEach {
                     error(
                             "Parent types must be unique.",

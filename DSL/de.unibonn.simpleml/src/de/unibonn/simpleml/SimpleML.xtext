@@ -32,7 +32,6 @@ SmlCompilationUnitMember returns SmlDeclaration
 	| SmlClass
 	| SmlEnum
 	| SmlFunction
-	| SmlInterface
 	| SmlWorkflow
 	| SmlWorkflowStep
 	;
@@ -71,9 +70,8 @@ SmlAttribute
 	;
 
 
-// Classes/Interfaces --------------------------------------------------------------------------------------------------
+// Classes -------------------------------------------------------------------------------------------------------------
 
-@Exported
 SmlClass
 	: annotations+=SmlAnnotationUse*
 	  modifiers+=SmlModifier*
@@ -83,20 +81,7 @@ SmlClass
 	  constructor=SmlConstructor?
 	  parentTypeList=SmlParentTypeList?
 	  typeParameterConstraintList=SmlTypeParameterConstraintList?
-	  body=SmlClassOrInterfaceBody?
-	;
-
-@Exported
-SmlInterface
-	: annotations+=SmlAnnotationUse*
-	  modifiers+=SmlModifier*
-	  'interface'
-	  name=ID
-	  typeParameterList=SmlTypeParameterList?
-	  constructor=SmlConstructor?
-	  parentTypeList=SmlParentTypeList?
-	  typeParameterConstraintList=SmlTypeParameterConstraintList?
-	  body=SmlClassOrInterfaceBody?
+	  body=SmlClassBody?
 	;
 
 SmlConstructor
@@ -120,16 +105,15 @@ SmlParentParenthesizedType returns SmlParenthesizedType
     : '(' type=SmlParentType ')'
     ;
 
-SmlClassOrInterfaceBody
-	: {SmlClassOrInterfaceBody} '{' members+=SmlClassOrInterfaceMember* '}'
+SmlClassBody
+	: {SmlClassBody} '{' members+=SmlClassMember* '}'
 	;
 
-SmlClassOrInterfaceMember returns SmlDeclaration
+SmlClassMember returns SmlDeclaration
 	: SmlAttribute
 	| SmlClass
 	| SmlEnum
 	| SmlFunction
-	| SmlInterface
 	;
 
 
@@ -489,13 +473,8 @@ SmlPrimaryType returns SmlType
 	: SmlCallableType
 	| SmlNamedType
 	| SmlUnionType
-	| SmlThisType
 	| SmlParenthesizedType
 	;
-
-SmlThisType
-    : {SmlThisType} 'this'
-    ;
 
 SmlParenthesizedType
     : '(' type=SmlType ')'

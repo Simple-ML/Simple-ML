@@ -10,7 +10,6 @@ import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumInstance
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.simpleML.SmlInterface
 import de.unibonn.simpleml.simpleML.SmlLambdaYield
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -228,19 +227,6 @@ class ScopingTest {
         }
 
         @Test
-        fun `should resolve interface in same file`() = withResource(NAMED_TYPE) {
-            val paramInterfaceInSameFile = findUniqueDeclarationOrFail<SmlParameter>("paramInterfaceInSameFile")
-            val interfaceInSameFile = findUniqueDeclarationOrFail<SmlInterface>("InterfaceInSameFile")
-
-            val parameterType = paramInterfaceInSameFile.type
-            parameterType.shouldBeInstanceOf<SmlNamedType>()
-
-            val referencedInterface = parameterType.declaration
-            referencedInterface.shouldBeResolved()
-            referencedInterface.shouldBe(interfaceInSameFile)
-        }
-
-        @Test
         fun `should resolve class in same package`() = withResource(NAMED_TYPE) {
             val paramClassInSamePackage = findUniqueDeclarationOrFail<SmlParameter>("paramClassInSamePackage")
 
@@ -451,20 +437,6 @@ class ScopingTest {
             }
 
             @Test
-            fun `should resolve interface within class with qualified access`() = withResource(NAMED_TYPE) {
-                val paramInterfaceInClassInSameFile =
-                    findUniqueDeclarationOrFail<SmlParameter>("paramInterfaceInClassInSameFile")
-                val interfaceInSameFile = findUniqueDeclarationOrFail<SmlInterface>("InterfaceInClassInSameFile")
-
-                val parameterType = paramInterfaceInClassInSameFile.type
-                parameterType.shouldBeInstanceOf<SmlMemberType>()
-
-                val referencedInterface = parameterType.member.declaration
-                referencedInterface.shouldBeResolved()
-                referencedInterface.shouldBe(interfaceInSameFile)
-            }
-
-            @Test
             fun `should not resolve class within interface with qualified access`() = withResource(NAMED_TYPE) {
                 val paramClassInInterfaceInSameFile =
                     findUniqueDeclarationOrFail<SmlParameter>("paramClassInInterfaceInSameFile")
@@ -587,19 +559,6 @@ class ScopingTest {
                 val referencedEnum = parameterType.member.declaration
                 referencedEnum.shouldBeResolved()
                 referencedEnum.shouldBe(enumInSameFile)
-            }
-
-            @Test
-            fun `should resolve inherited interface within class with qualified access`() = withResource(NAMED_TYPE) {
-                val paramInterfaceInSuperClass = findUniqueDeclarationOrFail<SmlParameter>("paramInterfaceInSuperClass")
-                val interfaceInSameFile = findUniqueDeclarationOrFail<SmlInterface>("InterfaceInSuperClass")
-
-                val parameterType = paramInterfaceInSuperClass.type
-                parameterType.shouldBeInstanceOf<SmlMemberType>()
-
-                val referencedInterface = parameterType.member.declaration
-                referencedInterface.shouldBeResolved()
-                referencedInterface.shouldBe(interfaceInSameFile)
             }
 
             @Test
@@ -815,19 +774,6 @@ class ScopingTest {
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
             references[3].declaration.shouldNotBeResolved()
-        }
-
-        @Test
-        fun `should resolve interface in same file`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToInterfaces")
-            val interfaceInSameFile = findUniqueDeclarationOrFail<SmlInterface>("InterfaceInSameFile")
-
-            val references = step.descendants<SmlReference>().toList()
-            references.shouldHaveSize(4)
-
-            val declaration = references[0].declaration
-            declaration.shouldBeResolved()
-            declaration.shouldBe(interfaceInSameFile)
         }
 
         @Test
@@ -1319,20 +1265,6 @@ class ScopingTest {
             }
 
             @Test
-            fun `should resolve nested interface accessed from class`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToClassMembers")
-                val interfaceInClassInSameFile =
-                    findUniqueDeclarationOrFail<SmlInterface>("InterfaceInClassInSameFile")
-
-                val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(14)
-
-                val declaration = references[13].declaration
-                declaration.shouldBeResolved()
-                declaration.shouldBe(interfaceInClassInSameFile)
-            }
-
-            @Test
             fun `should resolve enum instance`() = withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToEnumInstances")
                 val enumInstanceInSameFile =
@@ -1501,20 +1433,6 @@ class ScopingTest {
                     declaration.shouldBeResolved()
                     declaration.shouldBe(superClassInstanceMethod)
                 }
-
-            @Test
-            fun `should resolve inherited nested interface accessed from class`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInheritedClassMembers")
-                val interfaceInSuperClass =
-                    findUniqueDeclarationOrFail<SmlInterface>("InterfaceInSuperClass")
-
-                val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(14)
-
-                val declaration = references[13].declaration
-                declaration.shouldBeResolved()
-                declaration.shouldBe(interfaceInSuperClass)
-            }
 
             @Test
             fun `should not resolve inherited static interface attribute accessed from interface`() =
@@ -1709,21 +1627,6 @@ class ScopingTest {
             }
 
             @Test
-            fun `should resolve hidden nested interface`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToHiddenMembers")
-                val subClassForHiding = findUniqueDeclarationOrFail<SmlClass>("SubClassForHiding")
-                val nestedInterfaceForHiding =
-                    subClassForHiding.findUniqueDeclarationOrFail<SmlInterface>("NestedInterfaceForHiding")
-
-                val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(10)
-
-                val declaration = references[9].declaration
-                declaration.shouldBeResolved()
-                declaration.shouldBe(nestedInterfaceForHiding)
-            }
-
-            @Test
             fun `should not resolve static class members accessed from instance`() = withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToStaticClassMembersFromInstance")
                 val classInSameFile = findUniqueDeclarationOrFail<SmlClass>("ClassInSameFile")
@@ -1759,21 +1662,6 @@ class ScopingTest {
 
                 val references = step.descendants<SmlReference>()
                     .filter { it.declaration != classInSameFile }
-                    .toList()
-                references.shouldHaveSize(4)
-                references.forEachAsClue {
-                    it.declaration.shouldNotBeResolved()
-                }
-            }
-
-            @Test
-            fun `should not resolve instance interface members accessed from interface`() = withResource(REFERENCE) {
-                val step =
-                    findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInstanceInterfaceMembersFromInterface")
-                val interfaceInSameFile = findUniqueDeclarationOrFail<SmlInterface>("InterfaceInSameFile")
-
-                val references = step.descendants<SmlReference>()
-                    .filter { it.declaration != interfaceInSameFile }
                     .toList()
                 references.shouldHaveSize(4)
                 references.forEachAsClue {
@@ -1854,22 +1742,6 @@ class ScopingTest {
                     references.shouldHaveSize(10)
 
                     val declaration = references[5].declaration
-                    declaration.shouldBeResolved()
-                    declaration.shouldBe(result)
-                }
-
-            @Test
-            fun `should resolve method for callable type with one result with matching interface method`() =
-                withResource(REFERENCE) {
-                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToCallableTypeResults")
-                    val interfaceForResultMemberAccess =
-                        findUniqueDeclarationOrFail<SmlInterface>("InterfaceForResultMemberAccess")
-                    val result = interfaceForResultMemberAccess.findUniqueDeclarationOrFail<SmlFunction>("result")
-
-                    val references = step.descendants<SmlReference>().toList()
-                    references.shouldHaveSize(10)
-
-                    val declaration = references[7].declaration
                     declaration.shouldBeResolved()
                     declaration.shouldBe(result)
                 }

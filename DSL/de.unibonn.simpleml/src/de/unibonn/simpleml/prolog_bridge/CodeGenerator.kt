@@ -505,20 +505,12 @@ class CodeGenerator {
 
                 return e
             }
-            "simpleml:interfaceT" -> {
-                val e = SimpleMLFactory.eINSTANCE.createSmlInterface()
-                eob[key] = e
-
-                //TODO: Here same as class when restructuring
-
-                return e
-            }
             "simpleml:classT" -> {
-                val e = SimpleMLFactory.eINSTANCE.createSmlInterface()
+                val e = SimpleMLFactory.eINSTANCE.createSmlClass()
                 eob[key] = e
 
                 e.name = handleStringAsString(f.plArguments[2])
-                e.body = SimpleMLFactory.eINSTANCE.createSmlClassOrInterfaceBody()
+                e.body = SimpleMLFactory.eINSTANCE.createSmlClassBody()
                 addList(e.body.members as EList<EObject>, handleList(f.plArguments[3]) as List<EObject>)
                 e.constructor = handleInt(f.plArguments[4]) as SmlConstructor?
                 e.parentTypeList = SimpleMLFactory.eINSTANCE.createSmlParentTypeList()
@@ -555,12 +547,6 @@ class CodeGenerator {
 
                 e.typeArgumentList = SimpleMLFactory.eINSTANCE.createSmlTypeArgumentList()
                 addList(e.typeArgumentList.typeArguments as EList<EObject>, handleList(f.plArguments[2]) as List<EObject>)
-
-                return e
-            }
-            "simpleml:thisTypeT" -> {
-                val e = SimpleMLFactory.eINSTANCE.createSmlThisType()
-                eob[key] = e
 
                 return e
             }

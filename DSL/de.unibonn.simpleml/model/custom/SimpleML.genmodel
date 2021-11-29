@@ -23,20 +23,18 @@
     <genClasses ecoreClass="SimpleML.ecore#//SmlAttribute">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAttribute/type"/>
     </genClasses>
-    <genClasses ecoreClass="SimpleML.ecore#//SmlClassOrInterface">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClassOrInterface/body"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClassOrInterface/constructor"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClassOrInterface/parentTypeList"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClassOrInterface/typeParameterConstraintList"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClassOrInterface/typeParameterList"/>
+    <genClasses ecoreClass="SimpleML.ecore#//SmlClass">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClass/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClass/constructor"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClass/parentTypeList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClass/typeParameterConstraintList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClass/typeParameterList"/>
     </genClasses>
-    <genClasses ecoreClass="SimpleML.ecore#//SmlClass"/>
-    <genClasses ecoreClass="SimpleML.ecore#//SmlInterface"/>
     <genClasses ecoreClass="SimpleML.ecore#//SmlConstructor">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlConstructor/parameterList"/>
     </genClasses>
-    <genClasses ecoreClass="SimpleML.ecore#//SmlClassOrInterfaceBody">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClassOrInterfaceBody/members"/>
+    <genClasses ecoreClass="SimpleML.ecore#//SmlClassBody">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClassBody/members"/>
     </genClasses>
     <genClasses ecoreClass="SimpleML.ecore#//SmlCompilationUnit">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlCompilationUnit/imports"/>
@@ -170,7 +168,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlNamedType/nullable"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlNamedType/typeArgumentList"/>
     </genClasses>
-    <genClasses ecoreClass="SimpleML.ecore#//SmlThisType"/>
     <genClasses ecoreClass="SimpleML.ecore#//SmlParenthesizedType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlParenthesizedType/type"/>
     </genClasses>

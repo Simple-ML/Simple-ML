@@ -22,7 +22,6 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InfixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.IntT
-import de.unibonn.simpleml.prolog_bridge.model.facts.InterfaceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberAccessT
@@ -43,7 +42,6 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StarProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
-import de.unibonn.simpleml.prolog_bridge.model.facts.ThisTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterConstraintT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
@@ -440,72 +438,6 @@ class AstToPrologFactbaseTest {
             fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
                 val functionT = findUniqueFactOrFail<FunctionT> { it.name == "mySimpleFunction" }
                 findUniqueFactOrFail<SourceLocationS> { it.target == functionT.id }
-            }
-        }
-
-        @Nested
-        inner class Interface {
-            @Test
-            fun `should handle simple interfaces`() = withFactbaseFromFile("declarations.simpleml") {
-                val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MySimpleInterface" }
-                interfaceT.asClue {
-                    interfaceT.typeParameters.shouldBeNull()
-                    interfaceT.parameters.shouldBeNull()
-                    interfaceT.parentTypes.shouldBeNull()
-                    interfaceT.typeParameterConstraints.shouldBeNull()
-                    interfaceT.members.shouldBeNull()
-                }
-
-                shouldHaveNAnnotationUses(interfaceT, 0)
-                shouldHaveNModifiers(interfaceT, 0)
-            }
-
-            @Test
-            fun `should reference type parameters`() = withFactbaseFromFile("declarations.simpleml") {
-                val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
-                shouldBeNChildrenOf<TypeParameterT>(interfaceT.typeParameters, interfaceT, 2)
-            }
-
-            @Test
-            fun `should reference parameters`() = withFactbaseFromFile("declarations.simpleml") {
-                val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
-                shouldBeNChildrenOf<ParameterT>(interfaceT.parameters, interfaceT, 2)
-            }
-
-            @Test
-            fun `should reference parent types`() = withFactbaseFromFile("declarations.simpleml") {
-                val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
-                shouldBeNChildrenOf<TypeT>(interfaceT.parentTypes, interfaceT, 2)
-            }
-
-            @Test
-            fun `should reference type parameter constraints`() = withFactbaseFromFile("declarations.simpleml") {
-                val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
-                shouldBeNChildrenOf<TypeParameterConstraintT>(interfaceT.typeParameterConstraints, interfaceT, 2)
-            }
-
-            @Test
-            fun `should reference members`() = withFactbaseFromFile("declarations.simpleml") {
-                val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
-                shouldBeNChildrenOf<DeclarationT>(interfaceT.members, interfaceT, 5)
-            }
-
-            @Test
-            fun `should store annotation uses`() = withFactbaseFromFile("declarations.simpleml") {
-                val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
-                shouldHaveNAnnotationUses(interfaceT, 1)
-            }
-
-            @Test
-            fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
-                val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MyComplexInterface" }
-                shouldHaveNModifiers(interfaceT, 1)
-            }
-
-            @Test
-            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
-                val interfaceT = findUniqueFactOrFail<InterfaceT> { it.name == "MySimpleInterface" }
-                findUniqueFactOrFail<SourceLocationS> { it.target == interfaceT.id }
             }
         }
 
@@ -1384,22 +1316,6 @@ class AstToPrologFactbaseTest {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithStarProjection" }
                 val starProjectionT = findUniqueFactOrFail<StarProjectionT> { isContainedIn(it, workflowT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == starProjectionT.id }
-            }
-        }
-
-        @Nested
-        inner class ThisType {
-            @Test
-            fun `should handle this types`() = withFactbaseFromFile("types.simpleml") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithThisType" }
-                findUniqueFactOrFail<ThisTypeT> { isContainedIn(it, workflowStepT) }
-            }
-
-            @Test
-            fun `should store source location in separate relation`() = withFactbaseFromFile("types.simpleml") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithThisType" }
-                val thisTypeT = findUniqueFactOrFail<ThisTypeT> { isContainedIn(it, workflowStepT) }
-                findUniqueFactOrFail<SourceLocationS> { it.target == thisTypeT.id }
             }
         }
 

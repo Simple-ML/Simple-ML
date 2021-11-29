@@ -207,7 +207,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // Keywords ","
                 doc.formatCommas(obj)
             }
-            is SmlClassOrInterfaceBody -> {
+            is SmlClassBody -> {
 
                 // Keyword "{"
                 val openingBrace = obj.regionForKeyword("{")
@@ -322,36 +322,6 @@ class SimpleMLFormatter : AbstractFormatter2() {
 
                 // EObject "typeParameterConstraintList"
                 doc.formatObject(obj.typeParameterConstraintList, oneSpace, null)
-            }
-            is SmlInterface -> {
-
-                // Features "annotations" and "modifiers"
-                doc.formatAnnotationsAndModifiers(obj)
-
-                // Keyword "interface"
-                if (obj.annotations.isNotEmpty() || obj.modifiers.isNotEmpty()) {
-                    doc.formatKeyword(obj, "interface", oneSpace, oneSpace)
-                } else {
-                    doc.formatKeyword(obj, "interface", null, oneSpace)
-                }
-
-                // Feature "name"
-                doc.formatFeature(obj, SML_DECLARATION__NAME, oneSpace, null)
-
-                // EObject "typeParameterList"
-                doc.formatObject(obj.typeParameterList, noSpace, null)
-
-                // EObject "constructor"
-                doc.formatObject(obj.constructor, oneSpace, null)
-
-                // EObject "parentTypeList"
-                doc.formatObject(obj.parentTypeList, oneSpace, null)
-
-                // EObject "typeParameterConstraintList"
-                doc.formatObject(obj.typeParameterConstraintList, oneSpace, null)
-
-                // EObject "body"
-                doc.formatObject(obj.body, oneSpace, null)
             }
             is SmlWorkflow -> {
 
