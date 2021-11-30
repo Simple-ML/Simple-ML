@@ -13,33 +13,34 @@ import org.eclipse.xtext.validation.CheckType
 const val UNRESOLVED_IMPORTED_NAMESPACE = "UNRESOLVED_IMPORTED_NAMESPACE"
 
 class ImportChecker @Inject constructor(
-        private val indexExtensions: SimpleMLIndexExtensions
+    private val indexExtensions: SimpleMLIndexExtensions
 ) : AbstractSimpleMLChecker() {
 
     @Check(CheckType.NORMAL)
     fun unresolvedNamespace(smlImport: SmlImport) {
-        val availableNamespaces = indexExtensions.visibleExternalGlobalDeclarationDescriptions(smlImport).keys
+        val availableNamespaces =
+            indexExtensions.visibleGlobalDeclarationDescriptions(smlImport).map { it.qualifiedName }
 
         if (smlImport.isQualified()) {
             val importedNamespace = QualifiedName.create(
-                    smlImport.importedNamespace.split(".")
+                smlImport.importedNamespace.split(".")
             )
             if (availableNamespaces.none { it == importedNamespace }) {
                 error(
-                        "No declaration with qualified name '$importedNamespace' exists.",
-                        Literals.SML_IMPORT__IMPORTED_NAMESPACE,
-                        UNRESOLVED_IMPORTED_NAMESPACE
+                    "No declaration with qualified name '$importedNamespace' exists.",
+                    Literals.SML_IMPORT__IMPORTED_NAMESPACE,
+                    UNRESOLVED_IMPORTED_NAMESPACE
                 )
             }
         } else {
             val importedNamespace = QualifiedName.create(
-                    smlImport.importedNamespace.removeSuffix(".*").split(".")
+                smlImport.importedNamespace.removeSuffix(".*").split(".")
             )
             if (availableNamespaces.none { it.startsWith(importedNamespace) }) {
                 error(
-                        "No package with qualified name '$importedNamespace' exists.",
-                        Literals.SML_IMPORT__IMPORTED_NAMESPACE,
-                        UNRESOLVED_IMPORTED_NAMESPACE
+                    "No package with qualified name '$importedNamespace' exists.",
+                    Literals.SML_IMPORT__IMPORTED_NAMESPACE,
+                    UNRESOLVED_IMPORTED_NAMESPACE
                 )
             }
         }
