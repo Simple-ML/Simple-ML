@@ -4,8 +4,12 @@ package tests.unresolvedNamespace
 import »simpleml.collection.List«
 // no_semantic_error "No declaration with qualified name 'simpleml.collections.List' exists."
 import »simpleml.collections.List«
+// no_semantic_error "No declaration with qualified name 'tests.unresolvedNamespace.C' exists."
+import »tests.unresolvedNamespace.C«
 
 // semantic_error "No package with qualified name 'simpleml.collection' exists."
 import »simpleml.collection.*«
 // no_semantic_error "No package with qualified name 'simpleml.collections' exists."
 import »simpleml.collections.*«
+
+class C

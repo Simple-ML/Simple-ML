@@ -216,7 +216,8 @@ class CodeGenerator {
                 eob[key] = e
 
                 e.importedNamespace = handleStringAsString(f.plArguments[2])
-                e.alias = handleStringAsString(f.plArguments[3])
+                e.alias = SimpleMLFactory.eINSTANCE.createSmlImportAlias()
+                e.alias.name = handleStringAsString(f.plArguments[3])
 
                 return e
             }

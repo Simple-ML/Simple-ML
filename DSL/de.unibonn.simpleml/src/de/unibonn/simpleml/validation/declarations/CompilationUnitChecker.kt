@@ -1,14 +1,21 @@
 package de.unibonn.simpleml.validation.declarations
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.simpleML.SimpleMLPackage
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlDeclaration
+import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.utils.SimpleMLIndexExtensions
+import de.unibonn.simpleml.utils.duplicatesBy
+import de.unibonn.simpleml.utils.importedNameOrNull
 import de.unibonn.simpleml.utils.isInStubFile
 import de.unibonn.simpleml.utils.isInTestFile
+import de.unibonn.simpleml.utils.isQualified
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.REDECLARATION
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.validation.CheckType
@@ -17,7 +24,7 @@ const val REDECLARATION_IN_OTHER_FILE = "REDECLARATION_IN_OTHER_FILE"
 const val STUB_FILE_MUST_DECLARE_PACKAGE = "STUB_FILE_MUST_DECLARE_PACKAGE"
 const val STUB_FILE_MUST_NOT_DECLARE_WORKFLOWS = "STUB_FILE_MUST_NOT_DECLARE_WORKFLOWS"
 const val WORKFLOW_FILE_MUST_DECLARE_PACKAGE = "WORKFLOW_FILE_MUST_DECLARE_PACKAGE"
-const val WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_FUNCTIONS =
+const val WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_WORKFLOW_STEPS =
     "WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_FUNCTIONS"
 
 class CompilationUnitChecker @Inject constructor(
@@ -46,7 +53,7 @@ class CompilationUnitChecker @Inject constructor(
                         "A workflow file must only declare workflows and workflow steps.",
                         it,
                         Literals.SML_DECLARATION__NAME,
-                        WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_FUNCTIONS
+                        WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_WORKFLOW_STEPS
                     )
                 }
         }
@@ -75,8 +82,42 @@ class CompilationUnitChecker @Inject constructor(
 
     @Check
     fun uniqueNames(smlCompilationUnit: SmlCompilationUnit) {
-        smlCompilationUnit.members
-            .reportDuplicateNames { "A declaration with name '${it.name}' exists already in this file." }
+        val namedEObjects = smlCompilationUnit.imports.filter { it.isQualified() } + smlCompilationUnit.members
+
+        namedEObjects.duplicatesBy {
+            when (it) {
+                is SmlImport -> it.importedNameOrNull()
+                is SmlDeclaration -> it.name
+                else -> throw AssertionError("$it is neither an import nor a declaration.")
+            }
+        }.forEach {
+            when {
+                it is SmlImport && it.alias == null -> {
+                    error(
+                        "A declaration with name '${it.importedNameOrNull()}' exists already in this file.",
+                        it,
+                        Literals.SML_IMPORT__IMPORTED_NAMESPACE,
+                        REDECLARATION
+                    )
+                }
+                it is SmlImport && it.alias != null -> {
+                    error(
+                        "A declaration with name '${it.importedNameOrNull()}' exists already in this file.",
+                        it.alias,
+                        Literals.SML_IMPORT_ALIAS__NAME,
+                        REDECLARATION
+                    )
+                }
+                it is SmlDeclaration -> {
+                    error(
+                        "A declaration with name '${it.name}' exists already in this file.",
+                        it,
+                        Literals.SML_DECLARATION__NAME,
+                        REDECLARATION
+                    )
+                }
+            }
+        }
     }
 
     @Check(CheckType.NORMAL)
