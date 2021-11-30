@@ -17,7 +17,7 @@ const val REDECLARATION_IN_OTHER_FILE = "REDECLARATION_IN_OTHER_FILE"
 const val STUB_FILE_MUST_DECLARE_PACKAGE = "STUB_FILE_MUST_DECLARE_PACKAGE"
 const val STUB_FILE_MUST_NOT_DECLARE_WORKFLOWS = "STUB_FILE_MUST_NOT_DECLARE_WORKFLOWS"
 const val WORKFLOW_FILE_MUST_DECLARE_PACKAGE = "WORKFLOW_FILE_MUST_DECLARE_PACKAGE"
-const val WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_FUNCTIONS =
+const val WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_WORKFLOW_STEPS =
     "WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_FUNCTIONS"
 
 class CompilationUnitChecker @Inject constructor(
@@ -46,7 +46,7 @@ class CompilationUnitChecker @Inject constructor(
                         "A workflow file must only declare workflows and workflow steps.",
                         it,
                         Literals.SML_DECLARATION__NAME,
-                        WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_FUNCTIONS
+                        WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_WORKFLOW_STEPS
                     )
                 }
         }

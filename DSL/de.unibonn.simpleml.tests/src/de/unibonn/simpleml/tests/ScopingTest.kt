@@ -42,6 +42,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 
 private const val ANNOTATION_USE = "annotationUse"
 private const val ARGUMENT = "argument"
+private const val IMPORT_WITH_ALIAS = "importWithAlias"
 private const val NAMED_TYPE = "namedType"
 private const val REFERENCE = "reference"
 private const val TYPE_ARGUMENT = "typeArgument"
@@ -194,6 +195,80 @@ class ScopingTest {
             val arguments = this.descendants<SmlArgument>().toList()
             arguments.shouldHaveSize(9)
             arguments[8].parameter.shouldNotBeResolved()
+        }
+    }
+
+    @Nested
+    inner class ImportWithAlias {
+
+        @Test
+        fun `should resolve alias name of declaration in same file`() = withResource(IMPORT_WITH_ALIAS) {
+            val aliasNameInSameFile = findUniqueDeclarationOrFail<SmlParameter>("aliasNameInSameFile")
+            val classInSameFile = findUniqueDeclarationOrFail<SmlClass>("ClassInSameFile")
+
+            val type = aliasNameInSameFile.type
+            type.shouldBeInstanceOf<SmlNamedType>()
+
+            val declaration = type.declaration
+            declaration.shouldBeResolved()
+            declaration.shouldBe(classInSameFile)
+        }
+
+        @Test
+        fun `should resolve original name of declaration in same file`() = withResource(IMPORT_WITH_ALIAS) {
+            val originalNameInSameFile = findUniqueDeclarationOrFail<SmlParameter>("originalNameInSameFile")
+
+            val type = originalNameInSameFile.type
+            type.shouldBeInstanceOf<SmlNamedType>()
+
+            val declaration = type.declaration
+            declaration.shouldBeResolved()
+            declaration.name.shouldBe("ClassInSameFile")
+        }
+
+        @Test
+        fun `should resolve alias name of declaration in same package`() = withResource(IMPORT_WITH_ALIAS) {
+            val aliasNameInSamePackage = findUniqueDeclarationOrFail<SmlParameter>("aliasNameInSamePackage")
+
+            val type = aliasNameInSamePackage.type
+            type.shouldBeInstanceOf<SmlNamedType>()
+
+            val declaration = type.declaration
+            declaration.shouldBeResolved()
+            declaration.name.shouldBe("ClassInSamePackage")
+        }
+
+        @Test
+        fun `should resolve original name of declaration in same package`() = withResource(IMPORT_WITH_ALIAS) {
+            val originalNameInSamePackage = findUniqueDeclarationOrFail<SmlParameter>("originalNameInSamePackage")
+
+            val type = originalNameInSamePackage.type
+            type.shouldBeInstanceOf<SmlNamedType>()
+
+            val declaration = type.declaration
+            declaration.shouldBeResolved()
+            declaration.name.shouldBe("ClassInSamePackage")
+        }
+
+        @Test
+        fun `should resolve alias name of declaration in other package`() = withResource(IMPORT_WITH_ALIAS) {
+            val aliasNameInOtherPackage = findUniqueDeclarationOrFail<SmlParameter>("aliasNameInOtherPackage")
+
+            val type = aliasNameInOtherPackage.type
+            type.shouldBeInstanceOf<SmlNamedType>()
+
+            val declaration = type.declaration
+            declaration.shouldBeResolved()
+            declaration.name.shouldBe("ClassInOtherPackage")
+        }
+
+        @Test
+        fun `should not resolve original name of declaration in other package`() = withResource(IMPORT_WITH_ALIAS) {
+            val originalNameInOtherPackage = findUniqueDeclarationOrFail<SmlParameter>("originalNameInOtherPackage")
+
+            val type = originalNameInOtherPackage.type
+            type.shouldBeInstanceOf<SmlNamedType>()
+            type.declaration.shouldNotBeResolved()
         }
     }
 
