@@ -5,7 +5,7 @@ import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ARGUMENT__PARAM
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_COMPILATION_UNIT__NAME
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_DECLARATION__MODIFIERS
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_DECLARATION__NAME
-import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_IMPORT_ALIAS__ALIAS
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_IMPORT_ALIAS__NAME
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_IMPORT__IMPORTED_NAMESPACE
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_INFIX_OPERATION__OPERATOR
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_MEMBER_ACCESS__NULLABLE
@@ -160,7 +160,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 }
 
                 // EObject "aliasDeclaration"
-                doc.formatObject(obj.aliasDeclaration, oneSpace, noSpace)
+                doc.formatObject(obj.alias, oneSpace, noSpace)
             }
             is SmlImportAlias -> {
 
@@ -168,7 +168,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatKeyword(obj, "as", null, oneSpace)
 
                 // Feature "alias"
-                doc.formatFeature(obj, SML_IMPORT_ALIAS__ALIAS, null, noSpace)
+                doc.formatFeature(obj, SML_IMPORT_ALIAS__NAME, null, noSpace)
             }
             is SmlAnnotation -> {
 
