@@ -98,6 +98,7 @@ import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.utils.alias
 import de.unibonn.simpleml.utils.argumentsOrEmpty
 import de.unibonn.simpleml.utils.assigneesOrEmpty
 import de.unibonn.simpleml.utils.instancesOrEmpty
@@ -178,7 +179,7 @@ class SimpleMLAstToPrologFactbase {
     }
 
     private fun PlFactbase.visitImport(obj: SmlImport, parentId: Id<SmlCompilationUnit>) {
-        +ImportT(obj.id, parentId, obj.importedNamespace, obj.alias)
+        +ImportT(obj.id, parentId, obj.importedNamespace, obj.alias())
         visitSourceLocation(obj)
     }
 

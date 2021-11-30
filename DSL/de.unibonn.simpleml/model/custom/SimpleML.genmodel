@@ -43,7 +43,10 @@
     </genClasses>
     <genClasses ecoreClass="SimpleML.ecore#//SmlImport">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlImport/importedNamespace"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlImport/alias"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlImport/aliasDeclaration"/>
+    </genClasses>
+    <genClasses ecoreClass="SimpleML.ecore#//SmlImportAlias">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlImportAlias/alias"/>
     </genClasses>
     <genClasses ecoreClass="SimpleML.ecore#//SmlEnum">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlEnum/body"/>

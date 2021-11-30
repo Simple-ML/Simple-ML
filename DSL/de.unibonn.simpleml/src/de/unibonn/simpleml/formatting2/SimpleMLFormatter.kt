@@ -5,7 +5,7 @@ import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ARGUMENT__PARAM
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_COMPILATION_UNIT__NAME
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_DECLARATION__MODIFIERS
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_DECLARATION__NAME
-import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_IMPORT__ALIAS
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_IMPORT_ALIAS__ALIAS
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_IMPORT__IMPORTED_NAMESPACE
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_INFIX_OPERATION__OPERATOR
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_MEMBER_ACCESS__NULLABLE
@@ -39,6 +39,7 @@ import de.unibonn.simpleml.simpleML.SmlEnumInstance
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
+import de.unibonn.simpleml.simpleML.SmlImportAlias
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlLambda
 import de.unibonn.simpleml.simpleML.SmlLambdaYield
@@ -156,17 +157,18 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 val importedNamespace = obj.regionForFeature(SML_IMPORT__IMPORTED_NAMESPACE)
                 if (importedNamespace != null) {
                     doc.addReplacer(WhitespaceCollapser(doc, importedNamespace))
-
-                    if (obj.regionForKeyword("as") == null) {
-                        doc.append(importedNamespace, noSpace)
-                    }
                 }
 
+                // EObject "aliasDeclaration"
+                doc.formatObject(obj.aliasDeclaration, oneSpace, noSpace)
+            }
+            is SmlImportAlias -> {
+
                 // Keyword "as"
-                doc.formatKeyword(obj, "as", oneSpace, oneSpace)
+                doc.formatKeyword(obj, "as", null, oneSpace)
 
                 // Feature "alias"
-                doc.formatFeature(obj, SML_IMPORT__ALIAS, null, noSpace)
+                doc.formatFeature(obj, SML_IMPORT_ALIAS__ALIAS, null, noSpace)
             }
             is SmlAnnotation -> {
 

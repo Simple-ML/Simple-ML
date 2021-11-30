@@ -324,6 +324,7 @@ fun SmlCallableType?.resultsOrEmpty() = this?.resultList?.results.orEmpty()
 // Import --------------------------------------------------------------------------------------------------------------
 
 fun SmlImport.isQualified() = !this.importedNamespace.endsWith(".*")
+fun SmlImport.alias() = this.aliasDeclaration?.alias
 
 // Lambda --------------------------------------------------------------------------------------------------------------
 

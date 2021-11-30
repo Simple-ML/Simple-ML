@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.utils.SimpleMLIndexExtensions
+import de.unibonn.simpleml.utils.alias
 import de.unibonn.simpleml.utils.isQualified
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import org.eclipse.xtext.naming.QualifiedName
@@ -11,6 +12,7 @@ import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.validation.CheckType
 
 const val UNRESOLVED_IMPORTED_NAMESPACE = "UNRESOLVED_IMPORTED_NAMESPACE"
+const val WILDCARD_IMPORT_WITH_ALIAS = "WILDCARD_IMPORT_WITH_ALIAS"
 
 class ImportChecker @Inject constructor(
     private val indexExtensions: SimpleMLIndexExtensions
@@ -43,6 +45,17 @@ class ImportChecker @Inject constructor(
                     UNRESOLVED_IMPORTED_NAMESPACE
                 )
             }
+        }
+    }
+
+    @Check
+    fun wildcardImportWithAlias(smlImport: SmlImport) {
+        if (!smlImport.isQualified() && smlImport.alias() != null) {
+            error(
+                "A wildcard import must not have an alias.",
+                Literals.SML_IMPORT__ALIAS_DECLARATION,
+                WILDCARD_IMPORT_WITH_ALIAS
+            )
         }
     }
 }

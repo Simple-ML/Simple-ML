@@ -24,8 +24,12 @@ SmlCompilationUnit
 	;
 
 SmlImport
-	: 'import' importedNamespace=QualifiedNameWithWildcard ('as' alias=ID)?
+	: 'import' importedNamespace=QualifiedNameWithWildcard aliasDeclaration=SmlImportAlias?
 	;
+
+SmlImportAlias
+    : 'as' alias=ID
+    ;
 
 SmlCompilationUnitMember returns SmlDeclaration
 	: SmlAnnotation
