@@ -359,6 +359,15 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 } else {
                     doc.formatFeature(obj, SML_DECLARATION__NAME)
                 }
+
+                // EObject "typeParameterList"
+                doc.formatObject(obj.typeParameterList, noSpace, null)
+
+                // EObject "parameterList"
+                doc.formatObject(obj.parameterList, noSpace, null)
+
+                // EObject "typeParameterConstraintList"
+                doc.formatObject(obj.typeParameterConstraintList, oneSpace, null)
             }
             is SmlFunction -> {
 

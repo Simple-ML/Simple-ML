@@ -1,0 +1,45 @@
+enum myEnum {
+    MyVariant1,
+
+    @Annotation1     @Annotation2
+         MyVariant2
+         ,
+
+    open    deprecated
+      MyVariant3,
+
+    @Annotation1       @Annotation2
+       open
+   deprecated     MyVariant4     <
+   @AnnotationUse 
+             deprecated   
+       T1, in T2,    out 
+       T3    >    
+       (
+         
+         @AnnotationUse 
+deprecated      a : 
+   Int ,  vararg 
+               
+               b: 
+      Int   or  3
+       )         where    T2 
+  super  Number   ,    T3   sub
+     Number
+}
+
+------------------------------------------------------------------------------------------------------------------------
+
+enum myEnum {
+    MyVariant1,
+
+    @Annotation1
+    @Annotation2
+    MyVariant2,
+
+    open deprecated MyVariant3,
+
+    @Annotation1
+    @Annotation2
+    open deprecated MyVariant4<@AnnotationUse deprecated T1, in T2, out T3>(@AnnotationUse deprecated a: Int, vararg b: Int or 3) where T2 super Number, T3 sub Number
+}
