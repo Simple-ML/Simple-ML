@@ -52,10 +52,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlEnum/body"/>
     </genClasses>
     <genClasses ecoreClass="SimpleML.ecore#//SmlEnumBody">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlEnumBody/instances"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlEnumBody/variants"/>
     </genClasses>
-    <genClasses ecoreClass="SimpleML.ecore#//SmlEnumInstance">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlEnumInstance/parameterList"/>
+    <genClasses ecoreClass="SimpleML.ecore#//SmlEnumVariant">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlEnumVariant/parameterList"/>
     </genClasses>
     <genClasses ecoreClass="SimpleML.ecore#//SmlFunction">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlFunction/parameterList"/>

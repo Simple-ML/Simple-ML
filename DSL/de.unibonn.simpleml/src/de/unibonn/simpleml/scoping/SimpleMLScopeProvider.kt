@@ -32,7 +32,7 @@ import de.unibonn.simpleml.typing.TypeComputer
 import de.unibonn.simpleml.utils.ClassHierarchy
 import de.unibonn.simpleml.utils.closestAncestorOrNull
 import de.unibonn.simpleml.utils.compilationUnitOrNull
-import de.unibonn.simpleml.utils.instancesOrEmpty
+import de.unibonn.simpleml.utils.variantsOrEmpty
 import de.unibonn.simpleml.utils.isStatic
 import de.unibonn.simpleml.utils.membersOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
@@ -130,7 +130,7 @@ class SimpleMLScopeProvider @Inject constructor(
             }
             type is EnumType -> {
                 val members = when {
-                    type.isStatic -> type.smlEnum.instancesOrEmpty()
+                    type.isStatic -> type.smlEnum.variantsOrEmpty()
                     else -> emptyList()
                 }
                 val superTypeMembers = emptyList<SmlDeclaration>()

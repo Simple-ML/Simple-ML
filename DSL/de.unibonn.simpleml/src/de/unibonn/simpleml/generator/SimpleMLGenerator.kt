@@ -21,8 +21,8 @@ class SimpleMLGenerator @Inject constructor(
     private val indent = "    "
 
     override fun doGenerate(resource: Resource, fsa: IFileSystemAccess2, context: IGeneratorContext) {
-        if (resource.isStubFile()) {
-            return // We do not generate anything for stub files yet
+        if (!resource.isWorkflowFile()) {
+            return
         }
 
         generateDeclarationFile(resource, fsa, context)

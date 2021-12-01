@@ -8,7 +8,7 @@ import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
-import de.unibonn.simpleml.simpleML.SmlEnumInstance
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpression
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlFunction
@@ -91,7 +91,7 @@ class TypeComputer @Inject constructor(
             this is SmlAttribute -> type.inferType(isStatic = false)
             this is SmlClass -> ClassType(this, isNullable = false, isStatic = isStatic)
             this is SmlEnum -> EnumType(this, isNullable = false, isStatic = isStatic)
-            this is SmlEnumInstance -> {
+            this is SmlEnumVariant -> {
                 val enum = containingEnumOrNull() ?: return ANY
                 EnumType(enum, isNullable = false, isStatic = false)
             }

@@ -63,10 +63,10 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlEnumBody">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="instances" upperBound="-1"
-        eType="#//SmlEnumInstance" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variants" upperBound="-1"
+        eType="#//SmlEnumVariant" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SmlEnumInstance" eSuperTypes="#//SmlDeclaration">
+  <eClassifiers xsi:type="ecore:EClass" name="SmlEnumVariant" eSuperTypes="#//SmlDeclaration">
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList"
         containment="true"/>
   </eClassifiers>
