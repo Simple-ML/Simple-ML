@@ -2,7 +2,7 @@ package tests.calledClassMustHaveConstructor
 
 class A
 
-class B constructor()
+class B()
 
 workflow test {
 
@@ -12,4 +12,3 @@ workflow test {
     // no_semantic_error "Cannot create an instance of a class that has no constructor."
     val b = »B«();
 }
-

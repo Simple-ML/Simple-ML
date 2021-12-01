@@ -4,7 +4,7 @@ annotation A(a: Int, b: Int or 0)
 
 // semantic_error "The parameter 'a' is required and must be set here."
 @A»()«
-class C constructor(a: Int, b: Int or 0)
+class C(a: Int, b: Int or 0)
 
 enum E {
     V(a: Int, b: Int or 0)

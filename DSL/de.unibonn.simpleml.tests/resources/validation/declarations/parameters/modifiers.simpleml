@@ -13,16 +13,16 @@ annotation MyAnnotation2(»deprecated« a: Int)
 // semantic_error "A parameter must not have this modifier."
 // semantic_error "A parameter must not have this modifier."
 // semantic_error "A parameter must not have this modifier."
-class MyClass1 constructor(»open« »override« »pure« »static« a: Int) {
+class MyClass1(»open« »override« »pure« »static« a: Int) {
 
     // semantic_error "A parameter must not have this modifier."
     // semantic_error "A parameter must not have this modifier."
     // semantic_error "A parameter must not have this modifier."
     // semantic_error "A parameter must not have this modifier."
-    class MyClass1 constructor(»open« »override« »pure« »static« a: Int)
+    class MyClass1(»open« »override« »pure« »static« a: Int)
 
     // no_semantic_error "A parameter must not have this modifier."
-    class MyClass2 constructor(»deprecated« a: Int)
+    class MyClass2(»deprecated« a: Int)
 
     // semantic_error "A parameter must not have this modifier."
     // semantic_error "A parameter must not have this modifier."
@@ -35,7 +35,7 @@ class MyClass1 constructor(»open« »override« »pure« »static« a: Int) {
 }
 
 // no_semantic_error "A parameter must not have this modifier."
-class MyClass2 constructor(»deprecated« a: Int)
+class MyClass2(»deprecated« a: Int)
 
 // semantic_error "A parameter must not have this modifier."
 // semantic_error "A parameter must not have this modifier."

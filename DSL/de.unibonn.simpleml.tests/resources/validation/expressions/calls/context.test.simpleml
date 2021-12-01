@@ -1,6 +1,6 @@
 package tests.context
 
-class MyClass constructor() {
+class MyClass() {
     fun noResults()
     fun oneResult() -> first: Int
     fun twoResults() -> (first: Int, second: Int)

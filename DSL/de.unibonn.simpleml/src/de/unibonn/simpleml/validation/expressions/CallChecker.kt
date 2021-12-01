@@ -85,7 +85,7 @@ class CallChecker : AbstractSimpleMLChecker() {
             }
             is CallableResult.Callable -> {
                 val callable = maybeCallable.callable
-                if (callable is SmlClass && callable.constructor == null) {
+                if (callable is SmlClass && callable.parameterList == null) {
                     error(
                         "Cannot create an instance of a class that has no constructor.",
                         Literals.SML_CHAINED_EXPRESSION__RECEIVER,

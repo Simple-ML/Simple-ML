@@ -6,7 +6,7 @@ annotation MyAnnotation3(vararg a: Int)
 @MyAnnotation1»(1, 2, 3)«
 // semantic_error "Expected exactly 1 argument but got 3."
 @MyAnnotation2»(1, 2, 3)«
-class MyClass1 constructor(a: Int, b: Int or 0)
+class MyClass1(a: Int, b: Int or 0)
 
 // no_semantic_error "Expected between 1 and 2 arguments but got 0."
 @MyAnnotation1»(1)«
@@ -14,8 +14,8 @@ class MyClass1 constructor(a: Int, b: Int or 0)
 @MyAnnotation2»(1)«
 // no_semantic_error "Expected exactly 1 argument but got 2."
 @MyAnnotation3»(1, 2)«
-class MyClass2 constructor(a: Int)
-class MyClass3 constructor(vararg a: Int)
+class MyClass2(a: Int)
+class MyClass3(vararg a: Int)
 
 enum MyEnum {
     MyVariant1(a: Int, b: Int or 0)

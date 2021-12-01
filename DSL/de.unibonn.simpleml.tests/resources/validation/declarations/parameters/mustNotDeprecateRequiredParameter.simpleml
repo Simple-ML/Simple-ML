@@ -6,11 +6,11 @@ annotation MyAnnotation(»deprecated« a: Int, »deprecated« b: Int or 3)
 
 // semantic_error "A required parameter cannot be deprecated."
 // no_semantic_error "A required parameter cannot be deprecated."
-class MyClass constructor(»deprecated« a: Int, »deprecated« b: Int or 3) {
+class MyClass(»deprecated« a: Int, »deprecated« b: Int or 3) {
 
     // semantic_error "A required parameter cannot be deprecated."
     // no_semantic_error "A required parameter cannot be deprecated."
-    class MyClass constructor(»deprecated« a: Int, »deprecated« b: Int or 3)
+    class MyClass(»deprecated« a: Int, »deprecated« b: Int or 3)
 
     // semantic_error "A required parameter cannot be deprecated."
     // no_semantic_error "A required parameter cannot be deprecated."

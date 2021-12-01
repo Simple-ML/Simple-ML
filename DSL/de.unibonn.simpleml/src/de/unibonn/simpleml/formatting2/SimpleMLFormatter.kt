@@ -31,7 +31,6 @@ import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlClassBody
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
-import de.unibonn.simpleml.simpleML.SmlConstructor
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumBody
@@ -244,7 +243,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatObject(obj.typeParameterList, noSpace, null)
 
                 // EObject "constructor"
-                doc.formatObject(obj.constructor, oneSpace, null)
+                doc.formatObject(obj.parameterList, noSpace, null)
 
                 // EObject "parentTypeList"
                 doc.formatObject(obj.parentTypeList, oneSpace, null)
@@ -254,14 +253,6 @@ class SimpleMLFormatter : AbstractFormatter2() {
 
                 // EObject "body"
                 doc.formatObject(obj.body, oneSpace, null)
-            }
-            is SmlConstructor -> {
-
-                // Keyword "constructor"
-                doc.formatKeyword(obj, "constructor", null, noSpace)
-
-                // EObject "parameterList
-                doc.formatObject(obj.parameterList, noSpace, null)
             }
             is SmlParentTypeList -> {
 

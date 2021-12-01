@@ -2,4 +2,4 @@ package tests.trailingComma.inClassParameterList
 
 // no_syntax_error
 
-class C constructor(a: Int, b: Int, )
+class C(a: Int, b: Int, )
