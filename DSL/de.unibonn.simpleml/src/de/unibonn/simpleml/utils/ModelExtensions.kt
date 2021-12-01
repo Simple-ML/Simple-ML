@@ -288,7 +288,7 @@ fun EObject.isInTestFile() = this.eResource().isTestFile()
 
 // Enum ----------------------------------------------------------------------------------------------------------------
 
-fun SmlEnum?.instancesOrEmpty() = this?.body?.instances.orEmpty()
+fun SmlEnum?.variantsOrEmpty() = this?.body?.variants.orEmpty()
 
 // Expression ----------------------------------------------------------------------------------------------------------
 
@@ -390,6 +390,7 @@ fun Resource?.compilationUnitOrNull() = this?.allContents
 
 fun Resource.isStubFile() = this.nameEndsWith(".stub.simpleml")
 fun Resource.isTestFile() = this.nameEndsWith(".test.simpleml")
+fun Resource.isWorkflowFile() = !this.isStubFile() && !this.isTestFile()
 
 private fun Resource.nameEndsWith(suffix: String): Boolean {
     this.eAdapters().filterIsInstance<OriginalFilePath>().firstOrNull()?.let {
