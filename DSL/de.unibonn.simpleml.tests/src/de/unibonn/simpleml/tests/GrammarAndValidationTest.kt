@@ -62,12 +62,12 @@ class GrammarAndValidationTest {
     @TestFactory
     fun `should parse and validate`(): Stream<out DynamicNode> {
         val grammarTests = javaClass.classLoader
-            .getResourcePath("languageTests/grammar")
+            .getResourcePath("grammar")
             ?.createDynamicTestsFromResourceFolder(::validateTestFile, ::createTest)
             ?: Stream.empty()
 
         val validationTests = javaClass.classLoader
-            .getResourcePath("languageTests/validation")
+            .getResourcePath("validation")
             ?.createDynamicTestsFromResourceFolder(::validateTestFile, ::createTest)
             ?: Stream.empty()
 

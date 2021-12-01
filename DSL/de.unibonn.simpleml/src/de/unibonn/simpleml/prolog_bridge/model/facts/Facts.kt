@@ -15,7 +15,7 @@ import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
-import de.unibonn.simpleml.simpleML.SmlEnumInstance
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpression
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlFloat
@@ -346,8 +346,8 @@ data class ClassT(
  * @param name
  * The name of the enum.
  *
- * @param instances
- * The list of instances or null. Each element in the list is the ID of the enumInstanceT fact for the respective
+ * @param variants
+ * The list of instances or null. Each element in the list is the ID of the enumVariantT fact for the respective
  * instance. Note that an empty list is used for an enum with an empty body, e.g. `enum A {}`, while null is used for
  * an enum without a body, like `enum B`.
  */
@@ -355,9 +355,9 @@ data class EnumT(
     override val id: Id<SmlEnum>,
     override val parent: Id<EObject>, // SmlClassOrInterface | SmlCompilationUnit
     override val name: String,
-    val instances: List<Id<SmlEnumInstance>>?
+    val variants: List<Id<SmlEnumVariant>>?
 ) :
-    DeclarationT("enumT", id, parent, name, instances) {
+    DeclarationT("enumT", id, parent, name, variants) {
     override fun toString() = super.toString()
 }
 
@@ -373,12 +373,15 @@ data class EnumT(
  * @param name
  * The name of the enum instance.
  */
-data class EnumInstanceT(
-    override val id: Id<SmlEnumInstance>,
+data class EnumVariantT(
+    override val id: Id<SmlEnumVariant>,
     override val parent: Id<EObject>, // Actually just SmlEnum but this allows a handleDeclaration function
-    override val name: String
+    override val name: String,
+    val typeParameters: List<Id<SmlTypeParameter>>?,
+    val parameters: List<Id<SmlParameter>>?,
+    val typeParameterConstraints: List<Id<SmlTypeParameterConstraint>>?
 ) :
-    DeclarationT("enumInstanceT", id, parent, name) {
+    DeclarationT("enumVariantT", id, parent, name, typeParameters, parameters, typeParameterConstraints) {
     override fun toString() = super.toString()
 }
 

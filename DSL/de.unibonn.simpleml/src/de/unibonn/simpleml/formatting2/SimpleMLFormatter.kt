@@ -35,7 +35,7 @@ import de.unibonn.simpleml.simpleML.SmlConstructor
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumBody
-import de.unibonn.simpleml.simpleML.SmlEnumInstance
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
@@ -318,16 +318,16 @@ class SimpleMLFormatter : AbstractFormatter2() {
             is SmlEnumBody -> {
                 // Keyword "{"
                 val openingBrace = obj.regionForKeyword("{")
-                if (obj.instances.isEmpty()) {
+                if (obj.variants.isEmpty()) {
                     doc.append(openingBrace, noSpace)
                 } else {
                     doc.append(openingBrace, newLine)
                 }
 
-                // Feature "instances"
-                obj.instances.forEach {
+                // Feature "variants"
+                obj.variants.forEach {
                     doc.format(it)
-                    if (obj.instances.first() != it) {
+                    if (obj.variants.first() != it) {
                         doc.prepend(it, newLines(2))
                     }
                 }
@@ -340,7 +340,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
 
                 // Keyword "}"
                 val closingBrace = obj.regionForKeyword("}")
-                if (obj.instances.isEmpty()) {
+                if (obj.variants.isEmpty()) {
                     doc.prepend(closingBrace, noSpace)
                 } else {
                     doc.prepend(closingBrace, newLine)
@@ -348,7 +348,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
 
                 doc.interior(openingBrace, closingBrace, indent)
             }
-            is SmlEnumInstance -> {
+            is SmlEnumVariant -> {
 
                 // Features "annotations" and "modifiers"
                 doc.formatAnnotationsAndModifiers(obj)
@@ -359,6 +359,15 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 } else {
                     doc.formatFeature(obj, SML_DECLARATION__NAME)
                 }
+
+                // EObject "typeParameterList"
+                doc.formatObject(obj.typeParameterList, noSpace, null)
+
+                // EObject "parameterList"
+                doc.formatObject(obj.parameterList, noSpace, null)
+
+                // EObject "typeParameterConstraintList"
+                doc.formatObject(obj.typeParameterConstraintList, oneSpace, null)
             }
             is SmlFunction -> {
 

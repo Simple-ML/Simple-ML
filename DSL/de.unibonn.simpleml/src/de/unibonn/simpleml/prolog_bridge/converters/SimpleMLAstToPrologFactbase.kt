@@ -10,8 +10,8 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.CallT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CallableTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
-import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
+import de.unibonn.simpleml.prolog_bridge.model.facts.EnumVariantT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionStatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FloatT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
@@ -63,7 +63,7 @@ import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
-import de.unibonn.simpleml.simpleML.SmlEnumInstance
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpression
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlFloat
@@ -101,7 +101,6 @@ import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.aliasName
 import de.unibonn.simpleml.utils.argumentsOrEmpty
 import de.unibonn.simpleml.utils.assigneesOrEmpty
-import de.unibonn.simpleml.utils.instancesOrEmpty
 import de.unibonn.simpleml.utils.membersOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
 import de.unibonn.simpleml.utils.parentTypesOrEmpty
@@ -110,6 +109,7 @@ import de.unibonn.simpleml.utils.statementsOrEmpty
 import de.unibonn.simpleml.utils.typeArgumentsOrEmpty
 import de.unibonn.simpleml.utils.typeParameterConstraintsOrEmpty
 import de.unibonn.simpleml.utils.typeParametersOrEmpty
+import de.unibonn.simpleml.utils.variantsOrEmpty
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.EcoreUtil2
@@ -217,12 +217,23 @@ class SimpleMLAstToPrologFactbase {
                 )
             }
             is SmlEnum -> {
-                obj.instancesOrEmpty().forEach { visitDeclaration(it, obj.id) }
+                obj.variantsOrEmpty().forEach { visitDeclaration(it, obj.id) }
 
-                +EnumT(obj.id, parentId, obj.name, obj.body?.instances?.map { it.id })
+                +EnumT(obj.id, parentId, obj.name, obj.body?.variants?.map { it.id })
             }
-            is SmlEnumInstance -> {
-                +EnumInstanceT(obj.id, parentId, obj.name)
+            is SmlEnumVariant -> {
+                obj.typeParametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
+                obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
+                obj.typeParameterConstraintsOrEmpty().forEach { visitTypeParameterConstraint(it, obj.id) }
+
+                +EnumVariantT(
+                    obj.id,
+                    parentId,
+                    obj.name,
+                    obj.typeParameterList?.typeParameters?.map { it.id },
+                    obj.parameterList?.parameters?.map { it.id },
+                    obj.typeParameterConstraintList?.constraints?.map { it.id },
+                )
             }
             is SmlFunction -> {
                 obj.typeParametersOrEmpty().forEach { visitDeclaration(it, obj.id) }

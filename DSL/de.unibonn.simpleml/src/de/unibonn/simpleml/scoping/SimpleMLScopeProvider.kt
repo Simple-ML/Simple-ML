@@ -27,12 +27,12 @@ import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.typing.ClassType
 import de.unibonn.simpleml.typing.EnumType
+import de.unibonn.simpleml.typing.EnumVariantType
 import de.unibonn.simpleml.typing.NamedType
 import de.unibonn.simpleml.typing.TypeComputer
 import de.unibonn.simpleml.utils.ClassHierarchy
 import de.unibonn.simpleml.utils.closestAncestorOrNull
 import de.unibonn.simpleml.utils.compilationUnitOrNull
-import de.unibonn.simpleml.utils.instancesOrEmpty
 import de.unibonn.simpleml.utils.isStatic
 import de.unibonn.simpleml.utils.membersOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
@@ -40,6 +40,7 @@ import de.unibonn.simpleml.utils.parametersOrNull
 import de.unibonn.simpleml.utils.placeholdersOrEmpty
 import de.unibonn.simpleml.utils.resultsOrNull
 import de.unibonn.simpleml.utils.typeParametersOrNull
+import de.unibonn.simpleml.utils.variantsOrEmpty
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.Resource
@@ -130,13 +131,14 @@ class SimpleMLScopeProvider @Inject constructor(
             }
             type is EnumType -> {
                 val members = when {
-                    type.isStatic -> type.smlEnum.instancesOrEmpty()
+                    type.isStatic -> type.smlEnum.variantsOrEmpty()
                     else -> emptyList()
                 }
                 val superTypeMembers = emptyList<SmlDeclaration>()
 
                 Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers, resultScope))
             }
+            type is EnumVariantType -> Scopes.scopeFor(type.smlEnumVariant.parametersOrEmpty())
             else -> resultScope
         }
     }
@@ -199,6 +201,7 @@ class SimpleMLScopeProvider @Inject constructor(
 
                 Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers))
             }
+            type is EnumType -> Scopes.scopeFor(type.smlEnum.variantsOrEmpty())
             else -> IScope.NULLSCOPE
         }
     }

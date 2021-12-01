@@ -12,6 +12,7 @@ import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpression
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
@@ -155,6 +156,7 @@ private fun SmlCall.isRecursive(origin: Set<EObject>, visited: Set<EObject>): Bo
 fun SmlCall.parametersOrNull(): List<SmlParameter>? {
     return when (val callable = this.callableOrNull()) {
         is SmlClass -> callable.parametersOrEmpty()
+        is SmlEnumVariant -> callable.parametersOrEmpty()
         is SmlFunction -> callable.parametersOrEmpty()
         is SmlCallableType -> callable.parametersOrEmpty()
         is SmlLambda -> callable.parametersOrEmpty()
@@ -166,6 +168,7 @@ fun SmlCall.parametersOrNull(): List<SmlParameter>? {
 fun SmlCall.resultsOrNull(): List<SmlDeclaration>? {
     return when (val callable = this.callableOrNull()) {
         is SmlClass -> listOf(callable)
+        is SmlEnumVariant -> listOf(callable)
         is SmlFunction -> callable.resultsOrEmpty()
         is SmlCallableType -> callable.resultsOrEmpty()
         is SmlLambda -> callable.lambdaYieldsOrEmpty()
@@ -210,20 +213,20 @@ fun SmlDeclaration.isOverride() = SML_OVERRIDE in this.modifiers
 fun SmlDeclaration.isPure() = SML_PURE in this.modifiers
 fun SmlDeclaration.isStatic(): Boolean {
     return SML_STATIC in this.modifiers || !this.isCompilationUnitMember() &&
-            (this is SmlClass || this is SmlEnum)
+        (this is SmlClass || this is SmlEnum)
 }
 
 fun SmlDeclaration.isClassMember() = this.containingClassOrNull() != null
 fun SmlDeclaration.isCompilationUnitMember(): Boolean {
     return !isClassMember() &&
-            (
-                    this is SmlAnnotation ||
-                            this is SmlClass ||
-                            this is SmlEnum ||
-                            this is SmlFunction ||
-                            this is SmlWorkflow ||
-                            this is SmlWorkflowStep
-                    )
+        (
+            this is SmlAnnotation ||
+                this is SmlClass ||
+                this is SmlEnum ||
+                this is SmlFunction ||
+                this is SmlWorkflow ||
+                this is SmlWorkflowStep
+            )
 }
 
 // Assignment ----------------------------------------------------------------------------------------------------------
@@ -278,17 +281,24 @@ fun EObject?.containingWorkflowStepOrNull() = this?.closestAncestorOrNull<SmlWor
 
 fun EObject?.isCallable() =
     this is SmlClass ||
-            this is SmlFunction ||
-            this is SmlCallableType ||
-            this is SmlLambda ||
-            this is SmlWorkflowStep
+        this is SmlEnumVariant ||
+        this is SmlFunction ||
+        this is SmlCallableType ||
+        this is SmlLambda ||
+        this is SmlWorkflowStep
 
 fun EObject.isInStubFile() = this.eResource().isStubFile()
 fun EObject.isInTestFile() = this.eResource().isTestFile()
 
 // Enum ----------------------------------------------------------------------------------------------------------------
 
-fun SmlEnum?.instancesOrEmpty() = this?.body?.instances.orEmpty()
+fun SmlEnum?.variantsOrEmpty() = this?.body?.variants.orEmpty()
+
+// Enum Variant --------------------------------------------------------------------------------------------------------
+
+fun SmlEnumVariant?.parametersOrEmpty() = this?.parameterList?.parameters.orEmpty()
+fun SmlEnumVariant?.typeParametersOrEmpty() = this?.typeParameterList?.typeParameters.orEmpty()
+fun SmlEnumVariant?.typeParameterConstraintsOrEmpty() = this?.typeParameterConstraintList?.constraints.orEmpty()
 
 // Expression ----------------------------------------------------------------------------------------------------------
 
@@ -300,8 +310,8 @@ fun SmlExpression.hasSideEffects(): Boolean {
 
         val callable = this.callableOrNull()
         return callable is SmlFunction && !callable.isPure() ||
-                callable is SmlWorkflowStep && !callable.isInferredPure() ||
-                callable is SmlLambda && !callable.isInferredPure()
+            callable is SmlWorkflowStep && !callable.isInferredPure() ||
+            callable is SmlLambda && !callable.isInferredPure()
     }
 
     return false
@@ -390,6 +400,7 @@ fun Resource?.compilationUnitOrNull() = this?.allContents
 
 fun Resource.isStubFile() = this.nameEndsWith(".stub.simpleml")
 fun Resource.isTestFile() = this.nameEndsWith(".test.simpleml")
+fun Resource.isWorkflowFile() = !this.isStubFile() && !this.isTestFile()
 
 private fun Resource.nameEndsWith(suffix: String): Boolean {
     this.eAdapters().filterIsInstance<OriginalFilePath>().firstOrNull()?.let {
