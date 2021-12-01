@@ -68,11 +68,16 @@ import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.xtext.TerminalRule
 import org.eclipse.xtext.formatting2.AbstractFormatter2
 import org.eclipse.xtext.formatting2.FormatterPreferenceKeys.indentation
 import org.eclipse.xtext.formatting2.IFormattableDocument
+import org.eclipse.xtext.formatting2.ITextReplacer
 import org.eclipse.xtext.formatting2.ITextReplacerContext
 import org.eclipse.xtext.formatting2.internal.AbstractTextReplacer
+import org.eclipse.xtext.formatting2.internal.CommentReplacer
+import org.eclipse.xtext.formatting2.internal.WhitespaceReplacer
+import org.eclipse.xtext.formatting2.regionaccess.IComment
 import org.eclipse.xtext.formatting2.regionaccess.ISemanticRegion
 import org.eclipse.xtext.formatting2.regionaccess.ITextReplacement
 import org.eclipse.xtext.preferences.MapBasedPreferenceValues
@@ -859,6 +864,19 @@ class SimpleMLFormatter : AbstractFormatter2() {
         }
     }
 
+    /**
+     * Formats comments, including test markers. Without this override formatting a file with test markers throws an
+     * exception in VS Code.
+     */
+    override fun createCommentReplacer(comment: IComment): ITextReplacer? {
+        val grammarElement = comment.grammarElement
+        if (grammarElement is TerminalRule && grammarElement.name == "TEST_MARKER") {
+            return TestMarkerReplacer(comment)
+        }
+
+        return super.createCommentReplacer(comment)
+    }
+
     /******************************************************************************************************************
      * Helpers
      ******************************************************************************************************************/
@@ -965,6 +983,20 @@ class SimpleMLFormatter : AbstractFormatter2() {
         commas.forEach {
             prepend(it, noSpace)
             append(it, oneSpace)
+        }
+    }
+}
+
+class TestMarkerReplacer(comment: IComment) : CommentReplacer(comment) {
+    override fun createReplacements(context: ITextReplacerContext): ITextReplacerContext {
+        return context
+    }
+
+    override fun configureWhitespace(leading: WhitespaceReplacer, trailing: WhitespaceReplacer) {
+        if (comment.text == "»") {
+            trailing.formatting.space = ""
+        } else if (comment.text == "«") {
+            leading.formatting.space = ""
         }
     }
 }
