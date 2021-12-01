@@ -28,6 +28,10 @@ workflow myWorkflow {
 
 // semantic_error "A parameter must have a type."
 // no_semantic_error "A parameter must have a type."
-step myStep(
+step myStep1(»a«, »b«: Int) {}
+
+// semantic_error "A parameter must have a type."
+// no_semantic_error "A parameter must have a type."
+step myStep2(
     f: callable (»a«, »b«: Int) -> ()
 ) {}

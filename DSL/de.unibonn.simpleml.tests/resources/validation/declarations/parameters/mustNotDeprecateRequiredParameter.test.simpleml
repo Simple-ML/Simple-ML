@@ -23,6 +23,10 @@ fun myFunction(»deprecated« a: Int, »deprecated« b: Int or 3)
 
 // semantic_error "A required parameter cannot be deprecated."
 // no_semantic_error "A required parameter cannot be deprecated."
-step myStep(
+step myStep1(»deprecated« a: Int, »deprecated« b: Int or 3) {}
+
+// semantic_error "A required parameter cannot be deprecated."
+// no_semantic_error "A required parameter cannot be deprecated."
+step myStep2(
     f: callable (»deprecated« a: Int, »deprecated« b: Int or 3) -> ()
 ) {}
