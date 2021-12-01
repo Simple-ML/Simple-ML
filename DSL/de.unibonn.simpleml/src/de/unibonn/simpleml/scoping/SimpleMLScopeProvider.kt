@@ -33,7 +33,6 @@ import de.unibonn.simpleml.typing.TypeComputer
 import de.unibonn.simpleml.utils.ClassHierarchy
 import de.unibonn.simpleml.utils.closestAncestorOrNull
 import de.unibonn.simpleml.utils.compilationUnitOrNull
-import de.unibonn.simpleml.utils.variantsOrEmpty
 import de.unibonn.simpleml.utils.isStatic
 import de.unibonn.simpleml.utils.membersOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
@@ -41,6 +40,7 @@ import de.unibonn.simpleml.utils.parametersOrNull
 import de.unibonn.simpleml.utils.placeholdersOrEmpty
 import de.unibonn.simpleml.utils.resultsOrNull
 import de.unibonn.simpleml.utils.typeParametersOrNull
+import de.unibonn.simpleml.utils.variantsOrEmpty
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.Resource

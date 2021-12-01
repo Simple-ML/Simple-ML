@@ -213,20 +213,20 @@ fun SmlDeclaration.isOverride() = SML_OVERRIDE in this.modifiers
 fun SmlDeclaration.isPure() = SML_PURE in this.modifiers
 fun SmlDeclaration.isStatic(): Boolean {
     return SML_STATIC in this.modifiers || !this.isCompilationUnitMember() &&
-            (this is SmlClass || this is SmlEnum)
+        (this is SmlClass || this is SmlEnum)
 }
 
 fun SmlDeclaration.isClassMember() = this.containingClassOrNull() != null
 fun SmlDeclaration.isCompilationUnitMember(): Boolean {
     return !isClassMember() &&
-            (
-                    this is SmlAnnotation ||
-                            this is SmlClass ||
-                            this is SmlEnum ||
-                            this is SmlFunction ||
-                            this is SmlWorkflow ||
-                            this is SmlWorkflowStep
-                    )
+        (
+            this is SmlAnnotation ||
+                this is SmlClass ||
+                this is SmlEnum ||
+                this is SmlFunction ||
+                this is SmlWorkflow ||
+                this is SmlWorkflowStep
+            )
 }
 
 // Assignment ----------------------------------------------------------------------------------------------------------
@@ -281,11 +281,11 @@ fun EObject?.containingWorkflowStepOrNull() = this?.closestAncestorOrNull<SmlWor
 
 fun EObject?.isCallable() =
     this is SmlClass ||
-            this is SmlEnumVariant ||
-            this is SmlFunction ||
-            this is SmlCallableType ||
-            this is SmlLambda ||
-            this is SmlWorkflowStep
+        this is SmlEnumVariant ||
+        this is SmlFunction ||
+        this is SmlCallableType ||
+        this is SmlLambda ||
+        this is SmlWorkflowStep
 
 fun EObject.isInStubFile() = this.eResource().isStubFile()
 fun EObject.isInTestFile() = this.eResource().isTestFile()
@@ -310,8 +310,8 @@ fun SmlExpression.hasSideEffects(): Boolean {
 
         val callable = this.callableOrNull()
         return callable is SmlFunction && !callable.isPure() ||
-                callable is SmlWorkflowStep && !callable.isInferredPure() ||
-                callable is SmlLambda && !callable.isInferredPure()
+            callable is SmlWorkflowStep && !callable.isInferredPure() ||
+            callable is SmlLambda && !callable.isInferredPure()
     }
 
     return false

@@ -13,8 +13,8 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.CallableTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.DeclarationT
-import de.unibonn.simpleml.prolog_bridge.model.facts.EnumVariantT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
+import de.unibonn.simpleml.prolog_bridge.model.facts.EnumVariantT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionStatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FloatT

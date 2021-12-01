@@ -10,8 +10,8 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.CallT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CallableTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
-import de.unibonn.simpleml.prolog_bridge.model.facts.EnumVariantT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
+import de.unibonn.simpleml.prolog_bridge.model.facts.EnumVariantT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionStatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FloatT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
@@ -101,7 +101,6 @@ import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.aliasName
 import de.unibonn.simpleml.utils.argumentsOrEmpty
 import de.unibonn.simpleml.utils.assigneesOrEmpty
-import de.unibonn.simpleml.utils.variantsOrEmpty
 import de.unibonn.simpleml.utils.membersOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
 import de.unibonn.simpleml.utils.parentTypesOrEmpty
@@ -110,6 +109,7 @@ import de.unibonn.simpleml.utils.statementsOrEmpty
 import de.unibonn.simpleml.utils.typeArgumentsOrEmpty
 import de.unibonn.simpleml.utils.typeParameterConstraintsOrEmpty
 import de.unibonn.simpleml.utils.typeParametersOrEmpty
+import de.unibonn.simpleml.utils.variantsOrEmpty
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.EcoreUtil2

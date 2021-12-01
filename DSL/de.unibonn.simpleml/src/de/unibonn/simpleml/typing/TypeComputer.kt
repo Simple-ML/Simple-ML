@@ -40,7 +40,6 @@ import de.unibonn.simpleml.utils.QualifiedNameProvider
 import de.unibonn.simpleml.utils.SimpleMLStdlib
 import de.unibonn.simpleml.utils.assignedOrNull
 import de.unibonn.simpleml.utils.callableOrNull
-import de.unibonn.simpleml.utils.containingEnumOrNull
 import de.unibonn.simpleml.utils.lambdaYieldsOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
 import de.unibonn.simpleml.utils.resultsOrEmpty

@@ -1,7 +1,6 @@
 package de.unibonn.simpleml.validation.declarations
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.simpleML.SimpleMLPackage
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlDeclaration
@@ -69,7 +68,7 @@ class CompilationUnitChecker @Inject constructor(
                     STUB_FILE_MUST_DECLARE_PACKAGE
                 )
             }
-        } else if (!smlCompilationUnit.isInTestFile()){
+        } else if (!smlCompilationUnit.isInTestFile()) {
             if (smlCompilationUnit.name == null) {
                 error(
                     "A workflow file must declare its package.",
