@@ -1,8 +1,35 @@
 package de.unibonn.simpleml.generator
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.simpleML.*
-import de.unibonn.simpleml.utils.*
+import de.unibonn.simpleml.simpleML.SmlAssignment
+import de.unibonn.simpleml.simpleML.SmlBoolean
+import de.unibonn.simpleml.simpleML.SmlCall
+import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlExpression
+import de.unibonn.simpleml.simpleML.SmlExpressionStatement
+import de.unibonn.simpleml.simpleML.SmlFloat
+import de.unibonn.simpleml.simpleML.SmlInfixOperation
+import de.unibonn.simpleml.simpleML.SmlInt
+import de.unibonn.simpleml.simpleML.SmlMemberAccess
+import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
+import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.simpleML.SmlPrefixOperation
+import de.unibonn.simpleml.simpleML.SmlReference
+import de.unibonn.simpleml.simpleML.SmlStatement
+import de.unibonn.simpleml.simpleML.SmlString
+import de.unibonn.simpleml.simpleML.SmlWorkflow
+import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.utils.assigneesOrEmpty
+import de.unibonn.simpleml.utils.compilationUnitOrNull
+import de.unibonn.simpleml.utils.containingCompilationUnitOrNull
+import de.unibonn.simpleml.utils.isCompilationUnitMember
+import de.unibonn.simpleml.utils.isNamed
+import de.unibonn.simpleml.utils.isWorkflowFile
+import de.unibonn.simpleml.utils.parametersOrEmpty
+import de.unibonn.simpleml.utils.placeholdersOrEmpty
+import de.unibonn.simpleml.utils.resultsOrEmpty
+import de.unibonn.simpleml.utils.statementsOrEmpty
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
@@ -15,7 +42,7 @@ import org.eclipse.xtext.naming.IQualifiedNameProvider
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
 class SimpleMLGenerator @Inject constructor(
-        private val qualifiedNameProvider: IQualifiedNameProvider
+    private val qualifiedNameProvider: IQualifiedNameProvider
 ) : AbstractGenerator() {
 
     private val indent = "    "
@@ -57,14 +84,14 @@ class SimpleMLGenerator @Inject constructor(
      */
     private fun generateWorkflowFiles(resource: Resource, fsa: IFileSystemAccess2, context: IGeneratorContext) {
         resource.allContents.asSequence()
-                .filterIsInstance<SmlWorkflow>()
-                .forEach {
-                    if (context.cancelIndicator.isCanceled) {
-                        return
-                    }
+            .filterIsInstance<SmlWorkflow>()
+            .forEach {
+                if (context.cancelIndicator.isCanceled) {
+                    return
+                }
 
-                    val fileName = "${resource.baseGeneratedFilePath()}_${it.name}.py"
-                    val content = """
+                val fileName = "${resource.baseGeneratedFilePath()}_${it.name}.py"
+                val content = """
                         |from gen_${resource.baseFileName()} import ${it.name}
                         |
                         |if __name__ == '__main__':
@@ -72,8 +99,8 @@ class SimpleMLGenerator @Inject constructor(
                         |
                     """.trimMargin()
 
-                    fsa.generateFile(fileName, content)
-                }
+                fsa.generateFile(fileName, content)
+            }
     }
 
     private fun compile(compilationUnit: SmlCompilationUnit) = buildString {
@@ -90,11 +117,11 @@ class SimpleMLGenerator @Inject constructor(
 
         // Workflow steps
         val workflowStepString = compilationUnit.members
-                .filterIsInstance<SmlWorkflowStep>()
-                .sortedBy { it.name }
-                .joinToString("\n") {
-                    compileWorkflowSteps(it)
-                }
+            .filterIsInstance<SmlWorkflowStep>()
+            .sortedBy { it.name }
+            .joinToString("\n") {
+                compileWorkflowSteps(it)
+            }
         if (workflowStepString.isNotBlank()) {
             appendLine("# Workflow steps ---------------------------------------------------------------\n")
             appendLine(workflowStepString)
@@ -102,11 +129,11 @@ class SimpleMLGenerator @Inject constructor(
 
         // Workflows
         val workflowString = compilationUnit.members
-                .filterIsInstance<SmlWorkflow>()
-                .sortedBy { it.name }
-                .joinToString("\n") {
-                    compileWorkflow(it)
-                }
+            .filterIsInstance<SmlWorkflow>()
+            .sortedBy { it.name }
+            .joinToString("\n") {
+                compileWorkflow(it)
+            }
         if (workflowString.isNotBlank()) {
             appendLine("# Workflows --------------------------------------------------------------------\n")
             append(workflowString)
@@ -117,36 +144,36 @@ class SimpleMLGenerator @Inject constructor(
         // TODO split this into a function that gets all external references inside an arbitrary eObject
 
         compilationUnit.eAllContents()
-                .asSequence()
-                .filterIsInstance<SmlReference>()
-                .map { it.declaration }
-                .filter { it.isCompilationUnitMember() && it.containingCompilationUnitOrNull() != compilationUnit }
-                .mapNotNull {
-                    val importPath = qualifiedNameProvider.getFullyQualifiedName(it).toString()
-                            .split(".")
-                            .dropLast(1)
-                            .toMutableList()
+            .asSequence()
+            .filterIsInstance<SmlReference>()
+            .map { it.declaration }
+            .filter { it.isCompilationUnitMember() && it.containingCompilationUnitOrNull() != compilationUnit }
+            .mapNotNull {
+                val importPath = qualifiedNameProvider.getFullyQualifiedName(it).toString()
+                    .split(".")
+                    .dropLast(1)
+                    .toMutableList()
 
-                    if (importPath.isEmpty()) {
-                        println("Declaration not in a package $it.")
-                        null
-                    } else {
-                        if (importPath.first() != "simpleml") {
-                            val fileName = it.eResource().baseFileName().split("/").last()
-                            importPath += fileName
-                        }
-
-                        ImportData(importPath.joinToString("."), it.name)
+                if (importPath.isEmpty()) {
+                    println("Declaration not in a package $it.")
+                    null
+                } else {
+                    if (importPath.first() != "simpleml") {
+                        val fileName = it.eResource().baseFileName().split("/").last()
+                        importPath += fileName
                     }
+
+                    ImportData(importPath.joinToString("."), it.name)
                 }
-                .toSet()
-                .groupBy { it.importPath }
-                .entries
-                .sortedBy { it.key }
-                .forEach { (key, value) ->
-                    val declarationNames = value.sortedBy { it.declarationName }.joinToString { it.declarationName }
-                    appendLine("from $key import $declarationNames")
-                }
+            }
+            .toSet()
+            .groupBy { it.importPath }
+            .entries
+            .sortedBy { it.key }
+            .forEach { (key, value) ->
+                val declarationNames = value.sortedBy { it.declarationName }.joinToString { it.declarationName }
+                appendLine("from $key import $declarationNames")
+            }
     }
 
     private data class ImportData(val importPath: String, val declarationName: String)
