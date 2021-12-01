@@ -451,6 +451,7 @@ fun SmlTypeArgumentList.typeParametersOrNull(): List<SmlTypeParameter>? {
         is SmlCall -> {
             when (val callable = parent.callableOrNull()) {
                 is SmlClass -> return callable.typeParametersOrEmpty()
+                is SmlEnumVariant -> return callable.typeParametersOrEmpty()
                 is SmlFunction -> return callable.typeParametersOrEmpty()
             }
         }
