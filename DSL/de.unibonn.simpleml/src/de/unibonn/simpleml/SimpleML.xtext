@@ -133,7 +133,7 @@ SmlEnum
 	;
 
 SmlEnumBody
-	: {SmlEnumBody} '{' (variants+=SmlEnumVariant (',' variants+=SmlEnumVariant)* ','?)? '}'
+	: {SmlEnumBody} '{' variants+=SmlEnumVariant* '}'
 	;
 
 @Exported

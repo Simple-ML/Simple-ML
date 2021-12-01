@@ -1,12 +1,11 @@
 enum myEnum {
-    MyVariant1,
+    MyVariant1
 
     @Annotation1     @Annotation2
          MyVariant2
-         ,
 
     open    deprecated
-      MyVariant3,
+      MyVariant3
 
     @Annotation1       @Annotation2
        open
@@ -31,13 +30,13 @@ deprecated      a :
 ------------------------------------------------------------------------------------------------------------------------
 
 enum myEnum {
-    MyVariant1,
+    MyVariant1
 
     @Annotation1
     @Annotation2
-    MyVariant2,
+    MyVariant2
 
-    open deprecated MyVariant3,
+    open deprecated MyVariant3
 
     @Annotation1
     @Annotation2

@@ -8,8 +8,8 @@ enum       myEnum1
 @Annotation1    @Annotation2  open
        deprecated
         enum
-    myEnum4 {   MY_INSTANCE_1,
-        MY_INSTANCE_2,
+    myEnum4 {   MY_INSTANCE_1
+        MY_INSTANCE_2
  }
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -25,7 +25,7 @@ open deprecated enum myEnum3
 @Annotation1
 @Annotation2
 open deprecated enum myEnum4 {
-    MY_INSTANCE_1,
+    MY_INSTANCE_1
 
-    MY_INSTANCE_2,
+    MY_INSTANCE_2
 }
