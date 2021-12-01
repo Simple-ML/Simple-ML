@@ -9,7 +9,10 @@ class MyClass {
     fun myFunction()
 }
 
-enum MyEnum
+enum MyEnum {
+    MySimpleEnumInstance,
+    MyComplexEnumInstance()
+}
 
 fun myFunction()
 
@@ -34,6 +37,10 @@ step test(a: Int, b: callable () -> ()) {
     »MyClass().myFunction«();
     // semantic_error "This expression must not be called."
     »MyEnum«();
+    // no_semantic_error "This expression must not be called."
+    »MyEnum.MySimpleEnumInstance«();
+    // no_semantic_error "This expression must not be called."
+    »MyEnum.MyComplexEnumInstance«();
     // no_semantic_error "This expression must not be called."
     »myFunction«();
     /* References cannot point to workflows in the first place. */

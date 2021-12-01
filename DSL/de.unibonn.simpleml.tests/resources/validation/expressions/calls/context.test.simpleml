@@ -1,9 +1,13 @@
 package tests.context
 
-class MyClass {
+class MyClass constructor() {
     fun noResults()
     fun oneResult() -> first: Int
     fun twoResults() -> (first: Int, second: Int)
+}
+
+enum MyEnum {
+    
 }
 
 fun functionNoResults()
