@@ -222,7 +222,18 @@ class SimpleMLAstToPrologFactbase {
                 +EnumT(obj.id, parentId, obj.name, obj.body?.variants?.map { it.id })
             }
             is SmlEnumVariant -> {
-                +EnumVariantT(obj.id, parentId, obj.name)
+                obj.typeParametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
+                obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
+                obj.typeParameterConstraintsOrEmpty().forEach { visitTypeParameterConstraint(it, obj.id) }
+
+                +EnumVariantT(
+                    obj.id,
+                    parentId,
+                    obj.name,
+                    obj.typeParameterList?.typeParameters?.map { it.id },
+                    obj.parameterList?.parameters?.map { it.id },
+                    obj.typeParameterConstraintList?.constraints?.map { it.id },
+                )
             }
             is SmlFunction -> {
                 obj.typeParametersOrEmpty().forEach { visitDeclaration(it, obj.id) }

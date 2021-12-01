@@ -376,9 +376,12 @@ data class EnumT(
 data class EnumVariantT(
     override val id: Id<SmlEnumVariant>,
     override val parent: Id<EObject>, // Actually just SmlEnum but this allows a handleDeclaration function
-    override val name: String
+    override val name: String,
+    val typeParameters: List<Id<SmlTypeParameter>>?,
+    val parameters: List<Id<SmlParameter>>?,
+    val typeParameterConstraints: List<Id<SmlTypeParameterConstraint>>?
 ) :
-    DeclarationT("enumVariantT", id, parent, name) {
+    DeclarationT("enumVariantT", id, parent, name, typeParameters, parameters, typeParameterConstraints) {
     override fun toString() = super.toString()
 }
 

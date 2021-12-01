@@ -34,13 +34,13 @@ deprecated class MyComplexClass
 }
 
 
-// Enums & Enum instances ----------------------------------------------------------------------------------------------
+// Enums & Enum variants -----------------------------------------------------------------------------------------------
 enum MySimpleEnum
 
 @MySimpleAnnotation
 deprecated enum MyComplexEnum {
-    MY_SIMPLE_INSTANCE,
-    @AnnotationUse deprecated MY_COMPLEX_INSTANCE
+    MySimpleVariant,
+    @AnnotationUse deprecated MyComplexVariant<T1, T2>(a, b) where T1 super Number, T2 sub Number
 }
 
 

@@ -12,6 +12,7 @@ import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpression
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
@@ -289,6 +290,12 @@ fun EObject.isInTestFile() = this.eResource().isTestFile()
 // Enum ----------------------------------------------------------------------------------------------------------------
 
 fun SmlEnum?.variantsOrEmpty() = this?.body?.variants.orEmpty()
+
+// Enum Variant --------------------------------------------------------------------------------------------------------
+
+fun SmlEnumVariant?.parametersOrEmpty() = this?.parameterList?.parameters.orEmpty()
+fun SmlEnumVariant?.typeParametersOrEmpty() = this?.typeParameterList?.typeParameters.orEmpty()
+fun SmlEnumVariant?.typeParameterConstraintsOrEmpty() = this?.typeParameterConstraintList?.constraints.orEmpty()
 
 // Expression ----------------------------------------------------------------------------------------------------------
 
