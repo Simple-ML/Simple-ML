@@ -133,14 +133,17 @@ SmlEnum
 	;
 
 SmlEnumBody
-	: {SmlEnumBody} '{' (instances+=SmlEnumInstance (',' instances+=SmlEnumInstance)* ','?)? '}'
+	: {SmlEnumBody} '{' (variants+=SmlEnumVariant (',' variants+=SmlEnumVariant)* ','?)? '}'
 	;
 
 @Exported
-SmlEnumInstance
+SmlEnumVariant
 	: annotations+=SmlAnnotationUse*
 	  modifiers+=SmlModifier*
       name=ID
+      typeParameterList=SmlTypeParameterList?
+      parameterList=SmlParameterList?
+      typeParameterConstraintList=SmlTypeParameterConstraintList?
 	;
 
 

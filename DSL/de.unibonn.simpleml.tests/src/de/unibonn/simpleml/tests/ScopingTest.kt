@@ -8,7 +8,7 @@ import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlEnum
-import de.unibonn.simpleml.simpleML.SmlEnumInstance
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlLambdaYield
 import de.unibonn.simpleml.simpleML.SmlMemberType
@@ -475,13 +475,25 @@ class ScopingTest {
             }
 
             @Test
+            fun `should resolve enum variant with qualified access`() = withResource(NAMED_TYPE) {
+                val paramEnumVariantInSameFile = findUniqueDeclarationOrFail<SmlParameter>("paramEnumVariantInSameFile")
+                val enumVariantInSameFile = findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameFile")
+
+                val parameterType = paramEnumVariantInSameFile.type
+                parameterType.shouldBeInstanceOf<SmlMemberType>()
+
+                val referencedEnumVariant = parameterType.member.declaration
+                referencedEnumVariant.shouldBeResolved()
+                referencedEnumVariant.shouldBe(enumVariantInSameFile)
+            }
+
+            @Test
             fun `should not resolve class within class with unqualified access`() = withResource(NAMED_TYPE) {
                 val paramUnqualifiedClassInClassInSameFile =
                     findUniqueDeclarationOrFail<SmlParameter>("paramUnqualifiedClassInClassInSameFile")
 
                 val parameterType = paramUnqualifiedClassInClassInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlNamedType>()
-
                 parameterType.declaration.shouldNotBeResolved()
             }
 
@@ -492,7 +504,16 @@ class ScopingTest {
 
                 val parameterType = paramUnqualifiedEnumInClassInSameFile.type
                 parameterType.shouldBeInstanceOf<SmlNamedType>()
+                parameterType.declaration.shouldNotBeResolved()
+            }
 
+            @Test
+            fun `should not resolve enum variant with unqualified access`() = withResource(NAMED_TYPE) {
+                val paramUnqualifiedEnumVariantInSameFile =
+                    findUniqueDeclarationOrFail<SmlParameter>("paramUnqualifiedEnumVariantInSameFile")
+
+                val parameterType = paramUnqualifiedEnumVariantInSameFile.type
+                parameterType.shouldBeInstanceOf<SmlNamedType>()
                 parameterType.declaration.shouldNotBeResolved()
             }
 
@@ -1157,10 +1178,10 @@ class ScopingTest {
             }
 
             @Test
-            fun `should resolve enum instance`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToEnumInstances")
+            fun `should resolve enum variants`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToEnumVariants")
                 val enumInstanceInSameFile =
-                    findUniqueDeclarationOrFail<SmlEnumInstance>("ENUM_INSTANCE_IN_SAME_FILE")
+                    findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameFile")
 
                 val references = step.descendants<SmlReference>().toList()
                 references.shouldHaveSize(2)
@@ -1168,6 +1189,20 @@ class ScopingTest {
                 val declaration = references[1].declaration
                 declaration.shouldBeResolved()
                 declaration.shouldBe(enumInstanceInSameFile)
+            }
+
+            @Test
+            fun `should resolve parameters of enum variants`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToEnumVariantParameters")
+                val enumVariantParameterInSameFile =
+                    findUniqueDeclarationOrFail<SmlParameter>("enumVariantParameterInSameFile")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(3)
+
+                val declaration = references[2].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(enumVariantParameterInSameFile)
             }
 
             @Test
@@ -1386,8 +1421,17 @@ class ScopingTest {
             }
 
             @Test
-            fun `should not resolve enum instances with unqualified access`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("unqualifiedReferencesToEnumInstances")
+            fun `should not resolve enum variants with unqualified access`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("unqualifiedReferencesToEnumVariants")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(1)
+                references[0].declaration.shouldNotBeResolved()
+            }
+
+            @Test
+            fun `should not resolve parameters of enum variants with unqualified access`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("unqualifiedReferencesToEnumVariantParameters")
 
                 val references = step.descendants<SmlReference>().toList()
                 references.shouldHaveSize(1)
@@ -1424,13 +1468,13 @@ class ScopingTest {
                 }
 
             @Test
-            fun `should resolve result for callable type with one result with matching enum instance`() =
+            fun `should resolve result for callable type with one result with matching enum variant`() =
                 withResource(REFERENCE) {
                     val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToCallableTypeResults")
-                    val callableWithOneResultWithIdenticalEnumInstance =
-                        step.findUniqueDeclarationOrFail<SmlParameter>("callableWithOneResultWithIdenticalEnumInstance")
+                    val callableWithOneResultWithIdenticalEnumVariant =
+                        step.findUniqueDeclarationOrFail<SmlParameter>("callableWithOneResultWithIdenticalEnumVariant")
                     val result =
-                        callableWithOneResultWithIdenticalEnumInstance.findUniqueDeclarationOrFail<SmlResult>("result")
+                        callableWithOneResultWithIdenticalEnumVariant.findUniqueDeclarationOrFail<SmlResult>("result")
 
                     val references = step.descendants<SmlReference>().toList()
                     references.shouldHaveSize(8)
@@ -1802,10 +1846,10 @@ class ScopingTest {
 
         val compilationUnit =
             parseHelper.parseResourceWithContext(
-                "languageTests/scoping/$resourceName/main.test.simpleml",
+                "scoping/$resourceName/main.test.simpleml",
                 listOf(
-                    "languageTests/scoping/$resourceName/externalsInOtherPackage.test.simpleml",
-                    "languageTests/scoping/$resourceName/externalsInSamePackage.test.simpleml",
+                    "scoping/$resourceName/externalsInOtherPackage.test.simpleml",
+                    "scoping/$resourceName/externalsInSamePackage.test.simpleml",
                 )
             ) ?: throw IllegalArgumentException("File is not a compilation unit.")
 

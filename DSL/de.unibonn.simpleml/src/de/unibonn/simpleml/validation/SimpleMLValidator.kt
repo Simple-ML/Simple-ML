@@ -6,6 +6,7 @@ import de.unibonn.simpleml.validation.declarations.ClassChecker
 import de.unibonn.simpleml.validation.declarations.CompilationUnitChecker
 import de.unibonn.simpleml.validation.declarations.DeclarationChecker
 import de.unibonn.simpleml.validation.declarations.EnumChecker
+import de.unibonn.simpleml.validation.declarations.EnumVariantChecker
 import de.unibonn.simpleml.validation.declarations.FunctionChecker
 import de.unibonn.simpleml.validation.declarations.ImportChecker
 import de.unibonn.simpleml.validation.declarations.ParameterChecker
@@ -42,6 +43,7 @@ import org.eclipse.xtext.validation.ComposedChecks
         CompilationUnitChecker::class,
         DeclarationChecker::class,
         EnumChecker::class,
+        EnumVariantChecker::class,
         FunctionChecker::class,
         ImportChecker::class,
         ParameterChecker::class,

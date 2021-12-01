@@ -13,8 +13,8 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.CallableTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.DeclarationT
-import de.unibonn.simpleml.prolog_bridge.model.facts.EnumInstanceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
+import de.unibonn.simpleml.prolog_bridge.model.facts.EnumVariantT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionStatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FloatT
@@ -83,7 +83,7 @@ class AstToPrologFactbaseTest {
         .createInjectorAndDoEMFRegistration()
         .getInstance(Main::class.java)
 
-    private val testRoot = javaClass.classLoader.getResourcePath("prologVisitorTests").toString()
+    private val testRoot = javaClass.classLoader.getResourcePath("astToPrologFactbase").toString()
 
     // *****************************************************************************************************************
     // Definitions
@@ -130,7 +130,7 @@ class AstToPrologFactbaseTest {
                 val resourceS = findUniqueFactOrFail<ResourceS>()
                 resourceS.asClue {
                     resourceS.target shouldBe compilationUnitT.id
-                    resourceS.uri shouldEndWith "prologVisitorTests/empty.simpleml"
+                    resourceS.uri shouldEndWith "astToPrologFactbase/empty.simpleml"
                 }
             }
 
@@ -322,7 +322,7 @@ class AstToPrologFactbaseTest {
             fun `should handle simple enums`() = withFactbaseFromFile("declarations.simpleml") {
                 val enumT = findUniqueFactOrFail<EnumT> { it.name == "MySimpleEnum" }
                 enumT.asClue {
-                    enumT.instances.shouldBeNull()
+                    enumT.variants.shouldBeNull()
                 }
 
                 shouldHaveNAnnotationUses(enumT, 0)
@@ -332,7 +332,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should reference instances`() = withFactbaseFromFile("declarations.simpleml") {
                 val enumT = findUniqueFactOrFail<EnumT> { it.name == "MyComplexEnum" }
-                shouldBeNChildrenOf<EnumInstanceT>(enumT.instances, enumT, 2)
+                shouldBeNChildrenOf<EnumVariantT>(enumT.variants, enumT, 2)
             }
 
             @Test
@@ -358,27 +358,45 @@ class AstToPrologFactbaseTest {
         inner class EnumInstance {
             @Test
             fun `should handle simple enum instances`() = withFactbaseFromFile("declarations.simpleml") {
-                val enumInstanceT = findUniqueFactOrFail<EnumInstanceT> { it.name == "MY_SIMPLE_INSTANCE" }
-                shouldHaveNAnnotationUses(enumInstanceT, 0)
-                shouldHaveNModifiers(enumInstanceT, 0)
+                val enumVariantT = findUniqueFactOrFail<EnumVariantT> { it.name == "MySimpleVariant" }
+                shouldHaveNAnnotationUses(enumVariantT, 0)
+                shouldHaveNModifiers(enumVariantT, 0)
             }
 
             @Test
             fun `should store annotation uses`() = withFactbaseFromFile("declarations.simpleml") {
-                val enumInstanceT = findUniqueFactOrFail<EnumInstanceT> { it.name == "MY_COMPLEX_INSTANCE" }
-                shouldHaveNAnnotationUses(enumInstanceT, 1)
+                val enumVariantT = findUniqueFactOrFail<EnumVariantT> { it.name == "MyComplexVariant" }
+                shouldHaveNAnnotationUses(enumVariantT, 1)
             }
 
             @Test
             fun `should store modifiers`() = withFactbaseFromFile("declarations.simpleml") {
-                val enumInstanceT = findUniqueFactOrFail<EnumInstanceT> { it.name == "MY_COMPLEX_INSTANCE" }
-                shouldHaveNModifiers(enumInstanceT, 1)
+                val enumVariantT = findUniqueFactOrFail<EnumVariantT> { it.name == "MyComplexVariant" }
+                shouldHaveNModifiers(enumVariantT, 1)
+            }
+
+            @Test
+            fun `should reference type parameters`() = withFactbaseFromFile("declarations.simpleml") {
+                val enumVariantT = findUniqueFactOrFail<EnumVariantT> { it.name == "MyComplexVariant" }
+                shouldBeNChildrenOf<TypeParameterT>(enumVariantT.typeParameters, enumVariantT, 2)
+            }
+
+            @Test
+            fun `should reference parameters`() = withFactbaseFromFile("declarations.simpleml") {
+                val enumVariantT = findUniqueFactOrFail<EnumVariantT> { it.name == "MyComplexVariant" }
+                shouldBeNChildrenOf<ParameterT>(enumVariantT.parameters, enumVariantT, 2)
+            }
+
+            @Test
+            fun `should reference type parameter constraints`() = withFactbaseFromFile("declarations.simpleml") {
+                val enumVariantT = findUniqueFactOrFail<EnumVariantT> { it.name == "MyComplexVariant" }
+                shouldBeNChildrenOf<TypeParameterConstraintT>(enumVariantT.typeParameterConstraints, enumVariantT, 2)
             }
 
             @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
-                val enumInstanceT = findUniqueFactOrFail<EnumInstanceT> { it.name == "MY_SIMPLE_INSTANCE" }
-                findUniqueFactOrFail<SourceLocationS> { it.target == enumInstanceT.id }
+                val enumVariantT = findUniqueFactOrFail<EnumVariantT> { it.name == "MySimpleVariant" }
+                findUniqueFactOrFail<SourceLocationS> { it.target == enumVariantT.id }
             }
         }
 

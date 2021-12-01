@@ -1,0 +1,10 @@
+// no_syntax_error
+enum MySimpleEnum
+
+@AnnotationUse deprecated enum MyComplexEnum {
+    MySimpleVariant,
+    @AnnotationUse deprecated MyComplexVariant
+        <@AnnotationUse deprecated T1, in T2, out T3>
+        (@AnnotationUse deprecated a: Int, vararg b: Int or 3)
+        where T2 super Number, T3 sub Number
+}

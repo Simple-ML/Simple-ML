@@ -7,6 +7,7 @@ import de.unibonn.simpleml.utils.ClassHierarchy
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.isOpen
 import de.unibonn.simpleml.utils.membersOrEmpty
+import de.unibonn.simpleml.utils.parametersOrEmpty
 import de.unibonn.simpleml.utils.parentTypesOrEmpty
 import de.unibonn.simpleml.utils.resolveToClassOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
@@ -98,6 +99,9 @@ class ClassChecker @Inject constructor(
 
     @Check
     fun uniqueNames(smlClass: SmlClass) {
+        smlClass.parametersOrEmpty()
+            .reportDuplicateNames { "A parameter with name '${it.name}' exists already in this class." }
+
         smlClass.membersOrEmpty()
             .reportDuplicateNames { "A declaration with name '${it.name}' exists already in this class." }
     }

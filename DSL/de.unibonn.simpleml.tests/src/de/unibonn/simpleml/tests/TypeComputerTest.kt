@@ -32,7 +32,7 @@ class TypeComputerTest {
         }
     }
 
-    private val testRoot = javaClass.classLoader.getResourcePath("typeComputerTests").toString()
+    private val testRoot = javaClass.classLoader.getResourcePath("typeComputer").toString()
 
     // *****************************************************************************************************************
     // Expressions

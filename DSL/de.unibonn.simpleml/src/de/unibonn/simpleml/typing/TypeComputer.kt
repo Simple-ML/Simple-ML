@@ -8,7 +8,7 @@ import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
-import de.unibonn.simpleml.simpleML.SmlEnumInstance
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpression
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlFunction
@@ -40,7 +40,6 @@ import de.unibonn.simpleml.utils.QualifiedNameProvider
 import de.unibonn.simpleml.utils.SimpleMLStdlib
 import de.unibonn.simpleml.utils.assignedOrNull
 import de.unibonn.simpleml.utils.callableOrNull
-import de.unibonn.simpleml.utils.containingEnumOrNull
 import de.unibonn.simpleml.utils.lambdaYieldsOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
 import de.unibonn.simpleml.utils.resultsOrEmpty
@@ -91,10 +90,7 @@ class TypeComputer @Inject constructor(
             this is SmlAttribute -> type.inferType(isStatic = false)
             this is SmlClass -> ClassType(this, isNullable = false, isStatic = isStatic)
             this is SmlEnum -> EnumType(this, isNullable = false, isStatic = isStatic)
-            this is SmlEnumInstance -> {
-                val enum = containingEnumOrNull() ?: return ANY
-                EnumType(enum, isNullable = false, isStatic = false)
-            }
+            this is SmlEnumVariant -> EnumVariantType(this, isNullable = false, isStatic = isStatic)
             this is SmlFunction -> CallableType(
                 parametersOrEmpty().map { it.inferType(false) },
                 resultsOrEmpty().map { it.inferType(false) }

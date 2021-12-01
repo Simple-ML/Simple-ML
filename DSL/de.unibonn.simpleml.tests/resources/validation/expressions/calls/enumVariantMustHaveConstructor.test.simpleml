@@ -1,0 +1,19 @@
+package tests.validation.expressions.calls.enumVariantMustHaveConstructor
+
+enum E {
+    A,
+    B(),
+    C(c: Int)
+}
+
+workflow test {
+
+    // semantic_error "Cannot create an instance of an enum variant that has no constructor."
+    val a = »E.A«();
+
+    // no_semantic_error "Cannot create an instance of an enum variant that has no constructor."
+    val b = »E.B«();
+
+    // no_semantic_error "Cannot create an instance of an enum variant that has no constructor."
+    val c = »E.C«(1);
+}

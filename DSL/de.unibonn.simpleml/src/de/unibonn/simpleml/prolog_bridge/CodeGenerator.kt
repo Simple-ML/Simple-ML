@@ -517,8 +517,8 @@ class CodeGenerator {
 
                 return e
             }
-            "simpleml:enumInstanceT" -> {
-                val e = SimpleMLFactory.eINSTANCE.createSmlEnumInstance()
+            "simpleml:enumVariantT" -> {
+                val e = SimpleMLFactory.eINSTANCE.createSmlEnumVariant()
                 eob[key] = e
 
                 e.name = handleStringAsString(f.plArguments[2])
@@ -563,7 +563,7 @@ class CodeGenerator {
 
                 e.name = handleStringAsString(f.plArguments[2])
                 e.body = SimpleMLFactory.eINSTANCE.createSmlEnumBody()
-                addList(e.body.instances as EList<EObject>, handleList(f.plArguments[3]) as List<EObject>)
+                addList(e.body.variants as EList<EObject>, handleList(f.plArguments[3]) as List<EObject>)
 
                 return e
             }

@@ -3,6 +3,7 @@ package de.unibonn.simpleml.typing
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
 
 // TODO this breaks in Eclipse; we get reference errors; always use injection via annotations!!!!!!!!!!
 // private val qualifiedNameProvider: IQualifiedNameProvider =
@@ -79,6 +80,15 @@ data class EnumType(
     override val isNullable: Boolean,
     override val isStatic: Boolean
 ) : NamedType(smlEnum) {
+
+    override fun toString() = super.toString()
+}
+
+data class EnumVariantType(
+    val smlEnumVariant: SmlEnumVariant,
+    override val isNullable: Boolean,
+    override val isStatic: Boolean
+) : NamedType(smlEnumVariant) {
 
     override fun toString() = super.toString()
 }

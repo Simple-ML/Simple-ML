@@ -27,7 +27,7 @@ class FormatterTest {
     @TestFactory
     fun `should be formatted properly`(): Stream<out DynamicNode> {
         return javaClass.classLoader
-            .getResourcePath("formattingTests")
+            .getResourcePath("formatting")
             ?.createDynamicTestsFromResourceFolder(::validateTestFile, ::createTest)
             ?: Stream.empty()
     }
