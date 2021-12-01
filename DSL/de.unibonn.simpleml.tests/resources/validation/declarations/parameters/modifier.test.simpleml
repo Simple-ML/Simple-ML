@@ -50,11 +50,20 @@ fun myFunction2(»deprecated« a: Int)
 // semantic_error "A parameter must not have this modifier."
 // semantic_error "A parameter must not have this modifier."
 // semantic_error "A parameter must not have this modifier."
-step myStep1(
+step myStep1(»open« »override« »pure« »static« a: Int) {}
+
+// no_semantic_error "A parameter must not have this modifier."
+step myStep2(»deprecated« a: Int) {}
+
+// semantic_error "A parameter must not have this modifier."
+// semantic_error "A parameter must not have this modifier."
+// semantic_error "A parameter must not have this modifier."
+// semantic_error "A parameter must not have this modifier."
+step myStep3(
     f: callable (»open« »override« »pure« »static« a: Int) -> ()
 ) {}
 
 // no_semantic_error "A parameter must not have this modifier."
-step myStep2(
+step myStep4(
     f: callable (»deprecated« a: Int) -> ()
 ) {}

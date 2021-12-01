@@ -4,14 +4,19 @@ step myStep1  (  )  {      }    @Annotation1
 
       open
        deprecated
-    step myStep3(    )  ->   a     :   Int  {
+    step myStep3(    )  
+    
+    ->   a     :   Int  {
     }
 
 @Annotation1
  @Annotation2  open      deprecated
   step
    myStep4
-   (   a  :   Int  ,  b :   Int )      ->   (
+   (   a  :   Int  ,  b :   Int
+   
+    )     
+     ->   (
    a:
    Int   ,    b  :   Int  )
    {

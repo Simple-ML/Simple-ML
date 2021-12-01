@@ -224,7 +224,7 @@ SmlWorkflowStep
 	  modifiers+=SmlModifier*
 	  'step'
 	  name=ID
-	  parameterList=SmlSimpleParameterList
+	  parameterList=SmlParameterList
 	  resultList=SmlWorkflowStepResultList?
 	  body=SmlBlock
 	;
