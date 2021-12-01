@@ -1,6 +1,13 @@
 package tests.uniqueNames
 
-class MyClass {
+class MyClass constructor (
+    // semantic_error "A parameter with name 'duplicateParameter' exists already in this class."
+    »duplicateParameter«: Int,
+    // semantic_error "A parameter with name 'duplicateParameter' exists already in this class."
+    »duplicateParameter«: Int,
+    // no_semantic_error "A parameter with name 'uniqueParameter' exists already in this class."
+    »uniqueParameter«: Int,
+) {
 
 	// semantic_error "A declaration with name 'myAttribute' exists already in this class."
     attr »myAttribute«: Int

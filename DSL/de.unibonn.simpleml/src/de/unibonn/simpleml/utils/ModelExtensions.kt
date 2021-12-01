@@ -156,6 +156,7 @@ private fun SmlCall.isRecursive(origin: Set<EObject>, visited: Set<EObject>): Bo
 fun SmlCall.parametersOrNull(): List<SmlParameter>? {
     return when (val callable = this.callableOrNull()) {
         is SmlClass -> callable.parametersOrEmpty()
+        is SmlEnumVariant -> callable.parametersOrEmpty()
         is SmlFunction -> callable.parametersOrEmpty()
         is SmlCallableType -> callable.parametersOrEmpty()
         is SmlLambda -> callable.parametersOrEmpty()
@@ -167,6 +168,7 @@ fun SmlCall.parametersOrNull(): List<SmlParameter>? {
 fun SmlCall.resultsOrNull(): List<SmlDeclaration>? {
     return when (val callable = this.callableOrNull()) {
         is SmlClass -> listOf(callable)
+        is SmlEnumVariant -> listOf(callable)
         is SmlFunction -> callable.resultsOrEmpty()
         is SmlCallableType -> callable.resultsOrEmpty()
         is SmlLambda -> callable.lambdaYieldsOrEmpty()
@@ -279,6 +281,7 @@ fun EObject?.containingWorkflowStepOrNull() = this?.closestAncestorOrNull<SmlWor
 
 fun EObject?.isCallable() =
     this is SmlClass ||
+            this is SmlEnumVariant ||
             this is SmlFunction ||
             this is SmlCallableType ||
             this is SmlLambda ||

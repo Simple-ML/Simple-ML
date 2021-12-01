@@ -4,6 +4,7 @@ import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.utils.CallableResult
@@ -18,6 +19,7 @@ const val CONTEXT_OF_CALL_WITH_MANY_RESULTS = "CONTEXT_OF_CALL_WITH_MANY_RESULTS
 const val NO_RECURSION = "NO_RECURSION"
 const val RECEIVER_MUST_BE_CALLABLE = "RECEIVER_MUST_BE_CALLABLE"
 const val CALLED_CLASS_MUST_HAVE_CONSTRUCTOR = "CALLED_CLASS_MUST_HAVE_CONSTRUCTOR"
+const val CALLED_ENUM_VARIANT_MUST_HAVE_CONSTRUCTOR = "CALLED_ENUM_VARIANT_MUST_HAVE_CONSTRUCTOR"
 
 class CallChecker : AbstractSimpleMLChecker() {
 
@@ -88,6 +90,12 @@ class CallChecker : AbstractSimpleMLChecker() {
                         "Cannot create an instance of a class that has no constructor.",
                         Literals.SML_CHAINED_EXPRESSION__RECEIVER,
                         CALLED_CLASS_MUST_HAVE_CONSTRUCTOR
+                    )
+                } else if (callable is SmlEnumVariant && callable.parameterList == null) {
+                    error(
+                        "Cannot create an instance of an enum variant that has no constructor.",
+                        Literals.SML_CHAINED_EXPRESSION__RECEIVER,
+                        CALLED_ENUM_VARIANT_MUST_HAVE_CONSTRUCTOR
                     )
                 }
             }
