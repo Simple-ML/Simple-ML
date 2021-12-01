@@ -39,7 +39,7 @@ enum MySimpleEnum
 
 @MySimpleAnnotation
 deprecated enum MyComplexEnum {
-    MySimpleVariant,
+    MySimpleVariant
     @AnnotationUse deprecated MyComplexVariant<T1, T2>(a, b) where T1 super Number, T2 sub Number
 }
 

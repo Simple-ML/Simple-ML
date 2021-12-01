@@ -2,7 +2,7 @@ package tests.validation.declarations.enumVariants.emptyParameterList
 
 enum MyEnum {
     // semantic_warning "Unnecessary parameter list."
-    MyVariant1»()«,
+    MyVariant1»()«
     // no_semantic_warning "Unnecessary parameter list."
-    MyVariant2»(a: Int)«,
+    MyVariant2»(a: Int)«
 }

@@ -7,6 +7,6 @@ enum MyEnum {
         // semantic_error "A parameter with name 'duplicateParameter' exists already in this enum variant."
         »duplicateParameter«: Int,
         // no_semantic_error "A parameter with name 'uniqueParameter' exists already in this enum variant."
-        »uniqueParameter«: Int,
+        »uniqueParameter«: Int
     )
 }

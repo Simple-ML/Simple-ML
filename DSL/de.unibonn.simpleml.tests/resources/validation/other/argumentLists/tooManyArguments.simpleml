@@ -18,8 +18,8 @@ class MyClass2 constructor(a: Int)
 class MyClass3 constructor(vararg a: Int)
 
 enum MyEnum {
-    MyVariant1(a: Int, b: Int or 0),
-    MyVariant2(a: Int),
+    MyVariant1(a: Int, b: Int or 0)
+    MyVariant2(a: Int)
     MyVariant3(vararg a: Int)
 }
 
