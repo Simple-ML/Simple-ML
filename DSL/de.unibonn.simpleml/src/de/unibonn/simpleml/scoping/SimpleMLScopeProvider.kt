@@ -27,6 +27,7 @@ import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.typing.ClassType
 import de.unibonn.simpleml.typing.EnumType
+import de.unibonn.simpleml.typing.EnumVariantType
 import de.unibonn.simpleml.typing.NamedType
 import de.unibonn.simpleml.typing.TypeComputer
 import de.unibonn.simpleml.utils.ClassHierarchy
@@ -137,6 +138,7 @@ class SimpleMLScopeProvider @Inject constructor(
 
                 Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers, resultScope))
             }
+            type is EnumVariantType -> Scopes.scopeFor(type.smlEnumVariant.parametersOrEmpty())
             else -> resultScope
         }
     }
@@ -199,6 +201,7 @@ class SimpleMLScopeProvider @Inject constructor(
 
                 Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers))
             }
+            type is EnumType -> Scopes.scopeFor(type.smlEnum.variantsOrEmpty())
             else -> IScope.NULLSCOPE
         }
     }

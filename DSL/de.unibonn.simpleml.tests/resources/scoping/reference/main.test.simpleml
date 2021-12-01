@@ -33,7 +33,7 @@ class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE> constructor() sub SuperClass 
 }
 
 enum EnumInSameFile {
-    ENUM_INSTANCE_IN_SAME_FILE
+    EnumVariantInSameFile(enumVariantParameterInSameFile: Int)
 }
 
 fun globalFunctionInSameFile(globalFunctionParameterInSameFile: Int) -> globalFunctionResultInSameFile: Int
@@ -200,8 +200,12 @@ step referencesToClassMembers() {
     ClassInSameFile<*>().classInstanceMethodInSameFile();
 }
 
-step referencesToEnumInstances() {
-    EnumInSameFile.ENUM_INSTANCE_IN_SAME_FILE;
+step referencesToEnumVariants() {
+    EnumInSameFile.EnumVariantInSameFile;
+}
+
+step referencesToEnumVariantParameters() {
+    EnumInSameFile.EnumVariantInSameFile.enumVariantParameterInSameFile;
 }
 
 
@@ -265,12 +269,12 @@ step referencesToInstanceClassMembersFromClass() {
 step referencesToCallableTypeResults(
     callableWithOneResult: callable () -> (singleResult: Int),
     callableWithOneResultWithIdenticalClassAttribute: callable () -> (result: ClassForResultMemberAccess),
-    callableWithOneResultWithIdenticalEnumInstance: callable () -> (result: EnumForResultMemberAccess),
+    callableWithOneResultWithIdenticalEnumVariant: callable () -> (result: EnumForResultMemberAccess),
     callableWithTwoResults: callable () -> (result1: Int, result2: Int)
 ) {
     callableWithOneResult().singleResult;
     callableWithOneResultWithIdenticalClassAttribute().result;
-    callableWithOneResultWithIdenticalEnumInstance().result;
+    callableWithOneResultWithIdenticalEnumVariant().result;
     callableWithTwoResults().result1;
 }
 
@@ -340,8 +344,12 @@ step unqualifiedReferencesToClassMembers() {
     classInstanceMethodInSameFile;
 }
 
-step unqualifiedReferencesToEnumInstances() {
-    ENUM_INSTANCE_IN_SAME_FILE;
+step unqualifiedReferencesToEnumVariants() {
+    EnumVariantInSameFile;
+}
+
+step unqualifiedReferencesToEnumVariantParameters() {
+    enumVariantParameterInSameFile;
 }
 
 

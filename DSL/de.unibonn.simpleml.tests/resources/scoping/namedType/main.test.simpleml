@@ -12,7 +12,9 @@ class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE> sub SuperClass {
     enum EnumInClassInSameFile
 }
 
-enum EnumInSameFile
+enum EnumInSameFile {
+    EnumVariantInSameFile
+}
 
 fun NotANamedTypeDeclaration()
 
@@ -41,9 +43,11 @@ fun directNamedTypes<TYPE_PARAMETER_IN_SAME_FUNCTION>(
 fun memberTypes(
     paramClassInClassInSameFile: ClassInSameFile<*>.ClassInClassInSameFile,
     paramEnumInClassInSameFile: ClassInSameFile<*>.EnumInClassInSameFile,
+    paramEnumVariantInSameFile: EnumInSameFile.EnumVariantInSameFile,
 
     paramUnqualifiedClassInClassInSameFile: ClassInClassInSameFile,
     paramUnqualifiedEnumInClassInSameFile: EnumInClassInSameFile,
+    paramUnqualifiedEnumVariantInSameFile: EnumVariantInSameFile,
 )
 
 fun inheritedMemberTypes(

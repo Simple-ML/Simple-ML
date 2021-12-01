@@ -91,10 +91,7 @@ class TypeComputer @Inject constructor(
             this is SmlAttribute -> type.inferType(isStatic = false)
             this is SmlClass -> ClassType(this, isNullable = false, isStatic = isStatic)
             this is SmlEnum -> EnumType(this, isNullable = false, isStatic = isStatic)
-            this is SmlEnumVariant -> {
-                val enum = containingEnumOrNull() ?: return ANY
-                EnumType(enum, isNullable = false, isStatic = false)
-            }
+            this is SmlEnumVariant -> EnumVariantType(this, isNullable = false, isStatic = isStatic)
             this is SmlFunction -> CallableType(
                 parametersOrEmpty().map { it.inferType(false) },
                 resultsOrEmpty().map { it.inferType(false) }
