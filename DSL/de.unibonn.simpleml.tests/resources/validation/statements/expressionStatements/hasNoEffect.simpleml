@@ -3,7 +3,7 @@ package tests.has_no_effect
 fun impureFunction()
 pure fun pureFunction() -> a: Int
 
-class MyClass constructor() {
+class MyClass() {
     fun impureFunction()
     pure fun pureFunction()
 }

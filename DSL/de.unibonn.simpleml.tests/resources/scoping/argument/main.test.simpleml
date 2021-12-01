@@ -4,7 +4,7 @@ import tests.languageTests.scoping.argument2.functionInOtherPackage1
 
 annotation AnnotationInSameFile(parameterInAnnotationInSameFile: Int)
 
-class ClassInSameFile constructor(parameterInClassInSameFile: Int)
+class ClassInSameFile(parameterInClassInSameFile: Int)
 
 enum EnumInSameFile {
     EnumVariantInSameFile(parameterInEnumVariantInSameFile: Int)

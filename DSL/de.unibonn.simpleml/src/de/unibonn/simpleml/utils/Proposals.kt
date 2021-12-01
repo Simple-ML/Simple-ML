@@ -41,7 +41,7 @@ class Proposals @Inject constructor(
             .filterValues { obj ->
                 val res = when (obj) {
                     is SmlClass -> {
-                        obj.constructor != null && obj.parametersOrEmpty().all {
+                        obj.parameterList != null && obj.parametersOrEmpty().all {
                             typeComputer.hasPrimitiveType(it)
                         }
                     }
@@ -72,7 +72,7 @@ class Proposals @Inject constructor(
             .filterValues { obj ->
                 when (obj) {
                     is SmlClass -> {
-                        obj.constructor != null && obj.parametersOrEmpty().any {
+                        obj.parameterList != null && obj.parametersOrEmpty().any {
                             typeConformance.isSubstitutableFor(resultType, typeComputer.typeOf(it))
                         }
                     }

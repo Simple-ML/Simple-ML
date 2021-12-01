@@ -83,14 +83,10 @@ SmlClass
 	  'class'
 	  name=ID
 	  typeParameterList=SmlTypeParameterList?
-	  constructor=SmlConstructor?
+	  parameterList=SmlParameterList?
 	  parentTypeList=SmlParentTypeList?
 	  typeParameterConstraintList=SmlTypeParameterConstraintList?
 	  body=SmlClassBody?
-	;
-
-SmlConstructor
-	: 'constructor' parameterList=SmlParameterList
 	;
 
 SmlParentTypeList

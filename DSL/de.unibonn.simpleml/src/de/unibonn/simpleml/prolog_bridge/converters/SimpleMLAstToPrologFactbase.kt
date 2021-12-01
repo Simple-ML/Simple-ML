@@ -210,7 +210,7 @@ class SimpleMLAstToPrologFactbase {
                     parentId,
                     obj.name,
                     obj.typeParameterList?.typeParameters?.map { it.id },
-                    obj.constructor?.parameterList?.parameters?.map { it.id },
+                    obj.parameterList?.parameters?.map { it.id },
                     obj.parentTypeList?.parentTypes?.map { it.id },
                     obj.typeParameterConstraintList?.constraints?.map { it.id },
                     obj.body?.members?.map { it.id }

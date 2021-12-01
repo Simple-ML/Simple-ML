@@ -15,7 +15,6 @@ import de.unibonn.simpleml.simpleML.SimpleMLFactory
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlArgumentList
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
-import de.unibonn.simpleml.simpleML.SmlConstructor
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlExpression
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -525,15 +524,6 @@ class CodeGenerator {
 
                 return e
             }
-            "simpleml:constructorT" -> {
-                val e = SimpleMLFactory.eINSTANCE.createSmlConstructor()
-                eob[key] = e
-
-                e.parameterList = SimpleMLFactory.eINSTANCE.createSmlParameterList()
-                addList(e.parameterList.parameters as EList<EObject>, handleList(f.plArguments[2]) as List<EObject>)
-
-                return e
-            }
             "simpleml:classT" -> {
                 val e = SimpleMLFactory.eINSTANCE.createSmlClass()
                 eob[key] = e
@@ -541,7 +531,8 @@ class CodeGenerator {
                 e.name = handleStringAsString(f.plArguments[2])
                 e.body = SimpleMLFactory.eINSTANCE.createSmlClassBody()
                 addList(e.body.members as EList<EObject>, handleList(f.plArguments[3]) as List<EObject>)
-                e.constructor = handleInt(f.plArguments[4]) as SmlConstructor?
+                e.parameterList = SimpleMLFactory.eINSTANCE.createSmlParameterList()
+                addList(e.parameterList.parameters as EList<EObject>, handleList(f.plArguments[4]) as List<EObject>)
                 e.parentTypeList = SimpleMLFactory.eINSTANCE.createSmlParentTypeList()
                 addList(e.parentTypeList.parentTypes as EList<EObject>, handleList(f.plArguments[5]) as List<EObject>)
                 e.typeParameterConstraintList = SimpleMLFactory.eINSTANCE.createSmlTypeParameterConstraintList()

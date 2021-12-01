@@ -184,7 +184,7 @@ fun SmlCall?.typeArgumentsOrEmpty() = this?.typeArgumentList?.typeArguments.orEm
 
 fun SmlClass?.membersOrEmpty() = this?.body?.members.orEmpty()
 
-fun SmlClass?.parametersOrEmpty() = this?.constructor?.parameterList?.parameters.orEmpty()
+fun SmlClass?.parametersOrEmpty() = this?.parameterList?.parameters.orEmpty()
 fun SmlClass?.typeParametersOrEmpty() = this?.typeParameterList?.typeParameters.orEmpty()
 fun SmlClass?.typeParameterConstraintsOrEmpty() = this?.typeParameterConstraintList?.constraints.orEmpty()
 

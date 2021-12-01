@@ -6,10 +6,10 @@ annotation MyAnnotation(»a«, »b«: Int)
 
 // semantic_error "A parameter must have a type."
 // no_semantic_error "A parameter must have a type."
-class MyClass constructor(»a«, »b«: Int) {
+class MyClass(»a«, »b«: Int) {
     // semantic_error "A parameter must have a type."
     // no_semantic_error "A parameter must have a type."
-    class MyClass constructor(»a«, »b«: Int) {}
+    class MyClass(»a«, »b«: Int) {}
 
     // semantic_error "A parameter must have a type."
     // no_semantic_error "A parameter must have a type."

@@ -20,7 +20,7 @@ open class SuperClass {
     static fun superClassStaticMethod()
     fun superClassInstanceMethod()
 }
-class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE> constructor() sub SuperClass {
+class ClassInSameFile<TYPE_PARAMETER_IN_SAME_FILE>() sub SuperClass {
     static attr classStaticAttributeInSameFile: Int
     attr classInstanceAttributeInSameFile: Int
 
@@ -49,11 +49,11 @@ step stepWithTwoResults() -> (result1: Int, result2: Int) {}
 
 workflow workflowInSameFile {}
 
-open class SuperClassForOverriding constructor() {
+open class SuperClassForOverriding() {
     attr instanceAttributeForOverriding: Int
     open override fun instanceMethodForOverriding()
 }
-class SubClassForOverriding constructor()
+class SubClassForOverriding()
 sub SuperClassForOverriding {
     attr instanceAttributeForOverriding: Int
     override fun instanceMethodForOverriding()
@@ -72,7 +72,7 @@ class SubClassForHiding sub SuperClassForHiding {
     static fun staticMethodForHiding()
 }
 
-class ClassForResultMemberAccess constructor () {
+class ClassForResultMemberAccess() {
     attr result: Int
 }
 enum EnumForResultMemberAccess {
