@@ -117,25 +117,109 @@ class ScopingTest {
     inner class Argument {
 
         @Test
-        fun `should resolve parameter in called function in same file`() =
+        fun `should resolve parameter in use annotation in same file`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(9)
+                arguments.shouldHaveSize(15)
 
-                val parameterInSameFile = findUniqueDeclarationOrFail<SmlParameter>("parameterInSameFile")
+                val parameterInAnnotationInSameFile =
+                    findUniqueDeclarationOrFail<SmlParameter>("parameterInAnnotationInSameFile")
 
                 val referencedParameter = arguments[0].parameter
                 referencedParameter.shouldBeResolved()
-                referencedParameter.shouldBe(parameterInSameFile)
+                referencedParameter.shouldBe(parameterInAnnotationInSameFile)
+            }
+
+        @Test
+        fun `should resolve parameter in called callable in same workflow step`() =
+            withResource(ARGUMENT) {
+                val arguments = this.descendants<SmlArgument>().toList()
+                arguments.shouldHaveSize(15)
+
+                val parameterInCallableInSameStep =
+                    findUniqueDeclarationOrFail<SmlParameter>("parameterInCallableInSameStep")
+
+                val referencedParameter = arguments[1].parameter
+                referencedParameter.shouldBeResolved()
+                referencedParameter.shouldBe(parameterInCallableInSameStep)
+            }
+
+        @Test
+        fun `should resolve parameter in called class in same file`() =
+            withResource(ARGUMENT) {
+                val arguments = this.descendants<SmlArgument>().toList()
+                arguments.shouldHaveSize(15)
+
+                val parameterInClassInSameFile = findUniqueDeclarationOrFail<SmlParameter>("parameterInClassInSameFile")
+
+                val referencedParameter = arguments[2].parameter
+                referencedParameter.shouldBeResolved()
+                referencedParameter.shouldBe(parameterInClassInSameFile)
+            }
+
+        @Test
+        fun `should resolve parameter in called enum variant in same file`() =
+            withResource(ARGUMENT) {
+                val arguments = this.descendants<SmlArgument>().toList()
+                arguments.shouldHaveSize(15)
+
+                val parameterInEnumVariantInSameFile =
+                    findUniqueDeclarationOrFail<SmlParameter>("parameterInEnumVariantInSameFile")
+
+                val referencedParameter = arguments[3].parameter
+                referencedParameter.shouldBeResolved()
+                referencedParameter.shouldBe(parameterInEnumVariantInSameFile)
+            }
+
+        @Test
+        fun `should resolve parameter in called function in same file`() =
+            withResource(ARGUMENT) {
+                val arguments = this.descendants<SmlArgument>().toList()
+                arguments.shouldHaveSize(15)
+
+                val parameterInFunctionSameFile =
+                    findUniqueDeclarationOrFail<SmlParameter>("parameterInFunctionSameFile")
+
+                val referencedParameter = arguments[4].parameter
+                referencedParameter.shouldBeResolved()
+                referencedParameter.shouldBe(parameterInFunctionSameFile)
+            }
+
+        @Test
+        fun `should resolve parameter in called lambda in same workflow step`() =
+            withResource(ARGUMENT) {
+                val arguments = this.descendants<SmlArgument>().toList()
+                arguments.shouldHaveSize(15)
+
+                val parameterInLambdaInSameStep =
+                    findUniqueDeclarationOrFail<SmlParameter>("parameterInLambdaInSameStep")
+
+                val referencedParameter = arguments[5].parameter
+                referencedParameter.shouldBeResolved()
+                referencedParameter.shouldBe(parameterInLambdaInSameStep)
+            }
+
+        @Test
+        fun `should resolve parameter in called workflow step in same file`() =
+            withResource(ARGUMENT) {
+                val arguments = this.descendants<SmlArgument>().toList()
+                arguments.shouldHaveSize(15)
+
+                val parameterInWorkflowStepInSameFile =
+                    findUniqueDeclarationOrFail<SmlParameter>("parameterInWorkflowStepInSameFile")
+
+                val referencedParameter = arguments[6].parameter
+                referencedParameter.shouldBeResolved()
+                referencedParameter.shouldBe(parameterInWorkflowStepInSameFile)
             }
 
         @Test
         fun `should resolve parameter in called function in same package`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(9)
+                arguments.shouldHaveSize(15)
 
-                val referencedParameter = arguments[1].parameter
+                val referencedParameter = arguments[7].parameter
                 referencedParameter.shouldBeResolved()
                 referencedParameter.name.shouldBe("parameterInSamePackage")
             }
@@ -144,9 +228,9 @@ class ScopingTest {
         fun `should resolve parameter in called function that is imported and in another package`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(9)
+                arguments.shouldHaveSize(15)
 
-                val referencedParameter = arguments[2].parameter
+                val referencedParameter = arguments[8].parameter
                 referencedParameter.shouldBeResolved()
                 referencedParameter.name.shouldBe("parameterInOtherPackage1")
             }
@@ -155,46 +239,46 @@ class ScopingTest {
         fun `should not resolve parameter in called function that is not imported and in another package`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(9)
-                arguments[3].parameter.shouldNotBeResolved()
+                arguments.shouldHaveSize(15)
+                arguments[9].parameter.shouldNotBeResolved()
             }
 
         @Test
         fun `should not resolve parameter in function other than called one in same package`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(9)
-                arguments[4].parameter.shouldNotBeResolved()
+                arguments.shouldHaveSize(15)
+                arguments[10].parameter.shouldNotBeResolved()
             }
 
         @Test
         fun `should not resolve parameter in function other than called one that is imported and in another package`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(9)
-                arguments[5].parameter.shouldNotBeResolved()
+                arguments.shouldHaveSize(15)
+                arguments[11].parameter.shouldNotBeResolved()
             }
 
         @Test
         fun `should not resolve parameter in function other than called one that is not imported and in another package`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(9)
-                arguments[6].parameter.shouldNotBeResolved()
+                arguments.shouldHaveSize(15)
+                arguments[12].parameter.shouldNotBeResolved()
             }
 
         @Test
         fun `should not resolve unknown declaration`() = withResource(ARGUMENT) {
             val arguments = this.descendants<SmlArgument>().toList()
-            arguments.shouldHaveSize(9)
-            arguments[7].parameter.shouldNotBeResolved()
+            arguments.shouldHaveSize(15)
+            arguments[13].parameter.shouldNotBeResolved()
         }
 
         @Test
         fun `should not resolve something that is not a parameter`() = withResource(ARGUMENT) {
             val arguments = this.descendants<SmlArgument>().toList()
-            arguments.shouldHaveSize(9)
-            arguments[8].parameter.shouldNotBeResolved()
+            arguments.shouldHaveSize(15)
+            arguments[14].parameter.shouldNotBeResolved()
         }
     }
 
@@ -1633,15 +1717,43 @@ class ScopingTest {
     inner class TypeArgument {
 
         @Test
-        fun `should resolve type parameter in used declaration in same file`() =
+        fun `should resolve type parameter in used class in same file`() =
             withResource(TYPE_ARGUMENT) {
                 val typeArguments = this.descendants<SmlTypeArgument>().toList()
-                typeArguments.shouldHaveSize(9)
+                typeArguments.shouldHaveSize(11)
 
                 val typeParameterInSameFile =
-                    findUniqueDeclarationOrFail<SmlTypeParameter>("TYPE_PARAMETER_IN_SAME_FILE")
+                    findUniqueDeclarationOrFail<SmlTypeParameter>("TYPE_PARAMETER_IN_CLASS_IN_SAME_FILE")
 
                 val referencedTypeParameter = typeArguments[0].typeParameter
+                referencedTypeParameter.shouldBeResolved()
+                referencedTypeParameter.shouldBe(typeParameterInSameFile)
+            }
+
+        @Test
+        fun `should resolve type parameter in used enum variant in same file`() =
+            withResource(TYPE_ARGUMENT) {
+                val typeArguments = this.descendants<SmlTypeArgument>().toList()
+                typeArguments.shouldHaveSize(11)
+
+                val typeParameterInSameFile =
+                    findUniqueDeclarationOrFail<SmlTypeParameter>("TYPE_PARAMETER_IN_ENUM_VARIANT_IN_SAME_FILE")
+
+                val referencedTypeParameter = typeArguments[1].typeParameter
+                referencedTypeParameter.shouldBeResolved()
+                referencedTypeParameter.shouldBe(typeParameterInSameFile)
+            }
+
+        @Test
+        fun `should resolve type parameter in used function in same file`() =
+            withResource(TYPE_ARGUMENT) {
+                val typeArguments = this.descendants<SmlTypeArgument>().toList()
+                typeArguments.shouldHaveSize(11)
+
+                val typeParameterInSameFile =
+                    findUniqueDeclarationOrFail<SmlTypeParameter>("TYPE_PARAMETER_IN_FUNCTION_IN_SAME_FILE")
+
+                val referencedTypeParameter = typeArguments[2].typeParameter
                 referencedTypeParameter.shouldBeResolved()
                 referencedTypeParameter.shouldBe(typeParameterInSameFile)
             }
@@ -1650,9 +1762,9 @@ class ScopingTest {
         fun `should resolve type parameter in used declaration in same package`() =
             withResource(TYPE_ARGUMENT) {
                 val typeArguments = this.descendants<SmlTypeArgument>().toList()
-                typeArguments.shouldHaveSize(9)
+                typeArguments.shouldHaveSize(11)
 
-                val referencedTypeParameter = typeArguments[1].typeParameter
+                val referencedTypeParameter = typeArguments[3].typeParameter
                 referencedTypeParameter.shouldBeResolved()
                 referencedTypeParameter.name.shouldBe("TYPE_PARAMETER_IN_SAME_PACKAGE")
             }
@@ -1661,9 +1773,9 @@ class ScopingTest {
         fun `should resolve type parameter in used declaration that is imported and in another package`() =
             withResource(TYPE_ARGUMENT) {
                 val typeArguments = this.descendants<SmlTypeArgument>().toList()
-                typeArguments.shouldHaveSize(9)
+                typeArguments.shouldHaveSize(11)
 
-                val referencedTypeParameter = typeArguments[2].typeParameter
+                val referencedTypeParameter = typeArguments[4].typeParameter
                 referencedTypeParameter.shouldBeResolved()
                 referencedTypeParameter.name.shouldBe("TYPE_PARAMETER_IN_OTHER_PACKAGE1")
             }
@@ -1672,46 +1784,46 @@ class ScopingTest {
         fun `should not resolve type parameter in used declaration that is not imported and in another package`() =
             withResource(TYPE_ARGUMENT) {
                 val typeArguments = this.descendants<SmlTypeArgument>().toList()
-                typeArguments.shouldHaveSize(9)
-                typeArguments[3].typeParameter.shouldNotBeResolved()
+                typeArguments.shouldHaveSize(11)
+                typeArguments[5].typeParameter.shouldNotBeResolved()
             }
 
         @Test
         fun `should not resolve type parameter in declaration other than used one in same package`() =
             withResource(TYPE_ARGUMENT) {
                 val typeArguments = this.descendants<SmlTypeArgument>().toList()
-                typeArguments.shouldHaveSize(9)
-                typeArguments[4].typeParameter.shouldNotBeResolved()
+                typeArguments.shouldHaveSize(11)
+                typeArguments[6].typeParameter.shouldNotBeResolved()
             }
 
         @Test
         fun `should not resolve type parameter in declaration other than used one that is imported and in another package`() =
             withResource(TYPE_ARGUMENT) {
                 val typeArguments = this.descendants<SmlTypeArgument>().toList()
-                typeArguments.shouldHaveSize(9)
-                typeArguments[5].typeParameter.shouldNotBeResolved()
+                typeArguments.shouldHaveSize(11)
+                typeArguments[7].typeParameter.shouldNotBeResolved()
             }
 
         @Test
         fun `should not resolve type parameter in declaration other than used one that is not imported and in another package`() =
             withResource(TYPE_ARGUMENT) {
                 val typeArguments = this.descendants<SmlTypeArgument>().toList()
-                typeArguments.shouldHaveSize(9)
-                typeArguments[6].typeParameter.shouldNotBeResolved()
+                typeArguments.shouldHaveSize(11)
+                typeArguments[8].typeParameter.shouldNotBeResolved()
             }
 
         @Test
         fun `should not resolve unknown declaration`() = withResource(TYPE_ARGUMENT) {
             val typeArguments = this.descendants<SmlTypeArgument>().toList()
-            typeArguments.shouldHaveSize(9)
-            typeArguments[7].typeParameter.shouldNotBeResolved()
+            typeArguments.shouldHaveSize(11)
+            typeArguments[9].typeParameter.shouldNotBeResolved()
         }
 
         @Test
         fun `should not resolve something that is not a type parameter`() = withResource(TYPE_ARGUMENT) {
             val typeArguments = this.descendants<SmlTypeArgument>().toList()
-            typeArguments.shouldHaveSize(9)
-            typeArguments[8].typeParameter.shouldNotBeResolved()
+            typeArguments.shouldHaveSize(11)
+            typeArguments[10].typeParameter.shouldNotBeResolved()
         }
     }
 
@@ -1719,8 +1831,37 @@ class ScopingTest {
     inner class TypeParameterConstraint {
 
         @Test
-        fun `should resolve type parameter in same declaration`() = withResource(TYPE_PARAMETER_CONSTRAINT) {
-            val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
+        fun `should resolve type parameter in same class`() = withResource(TYPE_PARAMETER_CONSTRAINT) {
+            val testClass = findUniqueDeclarationOrFail<SmlClass>("TestClass")
+            val typeParameterConstraints = testClass.descendants<SmlTypeParameterConstraint>().toList()
+            typeParameterConstraints.shouldHaveSize(1)
+
+            val typeParameterInSameDeclaration =
+                findUniqueDeclarationOrFail<SmlTypeParameter>("TYPE_PARAMETER_IN_SAME_CLASS")
+
+            val referencedTypeParameter = typeParameterConstraints[0].leftOperand
+            referencedTypeParameter.shouldBeResolved()
+            referencedTypeParameter.shouldBe(typeParameterInSameDeclaration)
+        }
+
+        @Test
+        fun `should resolve type parameter in same enum variant`() = withResource(TYPE_PARAMETER_CONSTRAINT) {
+            val testEnumVariant = findUniqueDeclarationOrFail<SmlEnumVariant>("TestEnumVariant")
+            val typeParameterConstraints = testEnumVariant.descendants<SmlTypeParameterConstraint>().toList()
+            typeParameterConstraints.shouldHaveSize(1)
+
+            val typeParameterInSameDeclaration =
+                findUniqueDeclarationOrFail<SmlTypeParameter>("TYPE_PARAMETER_IN_SAME_ENUM_VARIANT")
+
+            val referencedTypeParameter = typeParameterConstraints[0].leftOperand
+            referencedTypeParameter.shouldBeResolved()
+            referencedTypeParameter.shouldBe(typeParameterInSameDeclaration)
+        }
+
+        @Test
+        fun `should resolve type parameter in same function`() = withResource(TYPE_PARAMETER_CONSTRAINT) {
+            val testFunction = findUniqueDeclarationOrFail<SmlFunction>("testFunction")
+            val typeParameterConstraints = testFunction.descendants<SmlTypeParameterConstraint>().toList()
             typeParameterConstraints.shouldHaveSize(7)
 
             val typeParameterInSameDeclaration =
@@ -1735,7 +1876,8 @@ class ScopingTest {
         fun `should not resolve type parameter in another declaration in same file`() = withResource(
             TYPE_PARAMETER_CONSTRAINT
         ) {
-            val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
+            val testFunction = findUniqueDeclarationOrFail<SmlFunction>("testFunction")
+            val typeParameterConstraints = testFunction.descendants<SmlTypeParameterConstraint>().toList()
             typeParameterConstraints.shouldHaveSize(7)
             typeParameterConstraints[1].leftOperand.shouldNotBeResolved()
         }
@@ -1743,7 +1885,8 @@ class ScopingTest {
         @Test
         fun `should not resolve type parameter in another declaration in same package`() =
             withResource(TYPE_PARAMETER_CONSTRAINT) {
-                val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
+                val testFunction = findUniqueDeclarationOrFail<SmlFunction>("testFunction")
+                val typeParameterConstraints = testFunction.descendants<SmlTypeParameterConstraint>().toList()
                 typeParameterConstraints.shouldHaveSize(7)
                 typeParameterConstraints[2].leftOperand.shouldNotBeResolved()
             }
@@ -1751,7 +1894,8 @@ class ScopingTest {
         @Test
         fun `should not resolve type parameter in another declaration that is imported and in another package`() =
             withResource(TYPE_PARAMETER_CONSTRAINT) {
-                val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
+                val testFunction = findUniqueDeclarationOrFail<SmlFunction>("testFunction")
+                val typeParameterConstraints = testFunction.descendants<SmlTypeParameterConstraint>().toList()
                 typeParameterConstraints.shouldHaveSize(7)
                 typeParameterConstraints[3].leftOperand.shouldNotBeResolved()
             }
@@ -1759,21 +1903,24 @@ class ScopingTest {
         @Test
         fun `should not resolve type parameter in another declaration that is not imported and in another package`() =
             withResource(TYPE_PARAMETER_CONSTRAINT) {
-                val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
+                val testFunction = findUniqueDeclarationOrFail<SmlFunction>("testFunction")
+                val typeParameterConstraints = testFunction.descendants<SmlTypeParameterConstraint>().toList()
                 typeParameterConstraints.shouldHaveSize(7)
                 typeParameterConstraints[4].leftOperand.shouldNotBeResolved()
             }
 
         @Test
         fun `should not resolve unknown declaration`() = withResource(TYPE_PARAMETER_CONSTRAINT) {
-            val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
+            val testFunction = findUniqueDeclarationOrFail<SmlFunction>("testFunction")
+            val typeParameterConstraints = testFunction.descendants<SmlTypeParameterConstraint>().toList()
             typeParameterConstraints.shouldHaveSize(7)
             typeParameterConstraints[5].leftOperand.shouldNotBeResolved()
         }
 
         @Test
         fun `should not something that is not a type parameter`() = withResource(TYPE_PARAMETER_CONSTRAINT) {
-            val typeParameterConstraints = this.descendants<SmlTypeParameterConstraint>().toList()
+            val testFunction = findUniqueDeclarationOrFail<SmlFunction>("testFunction")
+            val typeParameterConstraints = testFunction.descendants<SmlTypeParameterConstraint>().toList()
             typeParameterConstraints.shouldHaveSize(7)
             typeParameterConstraints[6].leftOperand.shouldNotBeResolved()
         }
