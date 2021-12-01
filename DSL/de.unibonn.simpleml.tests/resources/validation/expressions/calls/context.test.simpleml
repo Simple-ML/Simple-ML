@@ -5,9 +5,11 @@ class MyClass constructor() {
     fun oneResult() -> first: Int
     fun twoResults() -> (first: Int, second: Int)
 }
+class MyClassWithoutConstructor
 
 enum MyEnum {
-    
+    MyVariant(),
+    MyVariantWithoutConstructor
 }
 
 fun functionNoResults()
@@ -36,6 +38,21 @@ step test(
     val a = »MyClass«();
 	// no_semantic_error "A call that produces multiple results is not allowed in this context."
     val b = »MyClass«();
+
+    // no_semantic_error "A call that produces no results is not allowed in this context."
+    val c = »MyClassWithoutConstructor«();
+	// no_semantic_error "A call that produces multiple results is not allowed in this context."
+    val d = »MyClassWithoutConstructor«();
+
+    // no_semantic_error "A call that produces no results is not allowed in this context."
+    val e = »MyEnum.MyVariant«();
+	// no_semantic_error "A call that produces multiple results is not allowed in this context."
+    val f = »MyEnum.MyVariant«();
+
+    // no_semantic_error "A call that produces no results is not allowed in this context."
+    val g = »MyEnum.MyVariantWithoutConstructor«();
+	// no_semantic_error "A call that produces multiple results is not allowed in this context."
+    val h = »MyEnum.MyVariantWithoutConstructor«();
 
 	// semantic_error "A call that produces no results is not allowed in this context."
     MyClass().»noResults«() + 1;
@@ -93,7 +110,7 @@ step test(
     »functionTwoResults«().first;
 
     // semantic_error "A call that produces no results is not allowed in this context."
-    val c = »functionNoResults«();
+    val x = »functionNoResults«();
     // no_semantic_error "A call that produces multiple results is not allowed in this context."
-    (val d, val e) = »functionTwoResults«();
+    (val y, val z) = »functionTwoResults«();
 }

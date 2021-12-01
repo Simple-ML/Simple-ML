@@ -17,6 +17,12 @@ class MyClass1 constructor(a: Int, b: Int or 0)
 class MyClass2 constructor(a: Int)
 class MyClass3 constructor(vararg a: Int)
 
+enum MyEnum {
+    MyVariant1(a: Int, b: Int or 0),
+    MyVariant2(a: Int),
+    MyVariant3(vararg a: Int)
+}
+
 fun myFunction1(a: Int, b: Int or 0)
 fun myFunction2(a: Int)
 fun myFunction3(vararg a: Int)
@@ -45,6 +51,17 @@ workflow myWorkflow {
     MyClass2»(1)«;
     // no_semantic_error "Expected exactly 1 argument but got 2."
     MyClass3»(1, 2)«;
+
+    // semantic_error "Expected between 1 and 2 arguments but got 3."
+    MyEnum.MyVariant1»(1, 2, 3)«;
+    // semantic_error "Expected exactly 1 argument but got 3."
+    MyEnum.MyVariant2»(1, 2, 3)«;
+    // no_semantic_error "Expected between 1 and 2 arguments but got 0."
+    MyEnum.MyVariant1»(1)«;
+    // no_semantic_error "Expected exactly 1 argument but got 0."
+    MyEnum.MyVariant2»(1)«;
+    // no_semantic_error "Expected exactly 1 argument but got 2."
+    MyEnum.MyVariant3»(1, 2)«;
 
     // semantic_error "Expected between 1 and 2 arguments but got 3."
     myFunction1»(1, 2, 3)«;

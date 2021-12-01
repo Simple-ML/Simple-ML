@@ -1,4 +1,4 @@
-package tests.languageTests.validation.expressions.enumVariantMustHaveConstructor
+package tests.validation.expressions.calls.enumVariantMustHaveConstructor
 
 enum E {
     A,

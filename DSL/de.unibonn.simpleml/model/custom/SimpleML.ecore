@@ -67,18 +67,22 @@
         eType="#//SmlEnumVariant" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlEnumVariant" eSuperTypes="#//SmlDeclaration">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterList" eType="#//SmlTypeParameterList"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterConstraintList"
+        eType="#//SmlTypeParameterConstraintList" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlFunction" eSuperTypes="#//SmlDeclaration">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterList" eType="#//SmlTypeParameterList"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="resultList" eType="#//SmlResultList"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterConstraintList"
         eType="#//SmlTypeParameterConstraintList" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterList" eType="#//SmlTypeParameterList"
-        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlParameterList">
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
