@@ -54,7 +54,9 @@
     <genClasses ecoreClass="SimpleML.ecore#//SmlEnumBody">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlEnumBody/instances"/>
     </genClasses>
-    <genClasses ecoreClass="SimpleML.ecore#//SmlEnumInstance"/>
+    <genClasses ecoreClass="SimpleML.ecore#//SmlEnumInstance">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlEnumInstance/parameterList"/>
+    </genClasses>
     <genClasses ecoreClass="SimpleML.ecore#//SmlFunction">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlFunction/parameterList"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlFunction/resultList"/>

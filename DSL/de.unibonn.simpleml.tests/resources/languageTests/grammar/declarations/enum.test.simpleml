@@ -1,0 +1,7 @@
+// no_syntax_error
+enum MySimpleEnum
+
+@AnnotationUse deprecated enum MyComplexEnum {
+    MySimpleInstance,
+    @AnnotationUse deprecated MyComplexInstance(@AnnotationUse deprecated a: Int, vararg b: Int or 3)
+}

@@ -69,7 +69,7 @@ class CompilationUnitChecker @Inject constructor(
                     STUB_FILE_MUST_DECLARE_PACKAGE
                 )
             }
-        } else {
+        } else if (!smlCompilationUnit.isInTestFile()){
             if (smlCompilationUnit.name == null) {
                 error(
                     "A workflow file must declare its package.",

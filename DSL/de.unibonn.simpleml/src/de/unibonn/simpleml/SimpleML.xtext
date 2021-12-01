@@ -141,6 +141,7 @@ SmlEnumInstance
 	: annotations+=SmlAnnotationUse*
 	  modifiers+=SmlModifier*
       name=ID
+      parameterList=SmlParameterList?
 	;
 
 
