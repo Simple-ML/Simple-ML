@@ -243,7 +243,7 @@ class CodeGenerator {
                 eob[key] = e
 
                 e.name = handleStringAsString(f.plArguments[2])
-                addList(e.annotations as EList<EObject>, handleList(f.plArguments[3]) as List<EObject>)
+//                addList(e.annotations as EList<EObject>, handleList(f.plArguments[3]) as List<EObject>)
                 addList(e.modifiers as EList<EObject>, handleList(f.plArguments[4]) as List<EObject>)
 
                 return e

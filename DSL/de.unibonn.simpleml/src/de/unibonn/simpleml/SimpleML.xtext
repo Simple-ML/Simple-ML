@@ -15,7 +15,6 @@ import 'http://www.unibonn.de/simpleml/SimpleML'
 
 // Compilations Units --------------------------------------------------------------------------------------------------
 
-@Exported
 SmlCompilationUnit
     : {SmlCompilationUnit}
       ('package' name=QualifiedName)?
@@ -32,24 +31,51 @@ SmlImportAlias
     ;
 
 SmlCompilationUnitMember returns SmlDeclaration
-    : SmlAnnotation
-    | SmlClass
-    | SmlEnum
-    | SmlFunction
-    | SmlWorkflow
-    | SmlWorkflowStep
+    : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
+
+    ( {SmlAnnotation.annotationHolder=current}
+          modifiers+=SmlModifier*
+          'annotation' name=ID
+          parameterList=SmlParameterList?
+
+    | {SmlClass.annotationHolder=current}
+          modifiers+=SmlModifier*
+          'class' name=ID
+          typeParameterList=SmlTypeParameterList?
+          parameterList=SmlParameterList?
+          parentTypeList=SmlParentTypeList?
+          typeParameterConstraintList=SmlTypeParameterConstraintList?
+          body=SmlClassBody?
+
+    | {SmlEnum.annotationHolder=current}
+          modifiers+=SmlModifier*
+          'enum' name=ID
+          body=SmlEnumBody?
+
+    | {SmlFunction.annotationHolder=current}
+          modifiers+=SmlModifier*
+          'fun' name=ID
+          typeParameterList=SmlTypeParameterList?
+          parameterList=SmlParameterList
+          resultList=SmlResultList?
+          typeParameterConstraintList=SmlTypeParameterConstraintList?
+
+    | {SmlWorkflow.annotationHolder=current}
+          modifiers+=SmlModifier*
+          'workflow' name=ID
+          body=SmlBlock
+
+    | {SmlWorkflowStep.annotationHolder=current}
+          modifiers+=SmlModifier*
+          'step' name=ID
+          parameterList=SmlParameterList
+          resultList=SmlWorkflowStepResultList?
+          body=SmlBlock
+    )
     ;
 
 
 // Annotations ---------------------------------------------------------------------------------------------------------
-
-@Exported
-SmlAnnotation
-    : annotations+=SmlAnnotationUse*
-      modifiers+=SmlModifier*
-      'annotation' name=ID
-      parameterList=SmlParameterList?
-    ;
 
 SmlAnnotationUse
     : '@' annotation=[SmlAnnotation] argumentList=SmlAnnotationUseArgumentList?
@@ -60,34 +86,11 @@ SmlAnnotationUseArgumentList returns SmlArgumentList
     ;
 
 SmlAnnotationUseArgument returns SmlArgument
-    : (parameter=[SmlParameter] '=')? value=SmlConstantExpression
-    ;
-
-
-// Attributes ----------------------------------------------------------------------------------------------------------
-
-@Exported
-SmlAttribute
-    : annotations+=SmlAnnotationUse*
-      modifiers+=SmlModifier*
-      'attr' name=ID (':' type=SmlType)?
+    : (parameter=[SmlParameter] '=')? value=SmlExpression
     ;
 
 
 // Classes -------------------------------------------------------------------------------------------------------------
-
-@Exported
-SmlClass
-    : annotations+=SmlAnnotationUse*
-      modifiers+=SmlModifier*
-      'class'
-      name=ID
-      typeParameterList=SmlTypeParameterList?
-      parameterList=SmlParameterList?
-      parentTypeList=SmlParentTypeList?
-      typeParameterConstraintList=SmlTypeParameterConstraintList?
-      body=SmlClassBody?
-    ;
 
 SmlParentTypeList
     : 'sub' parentTypes+=SmlParentType (',' parentTypes+=SmlParentType)* ','?
@@ -111,28 +114,43 @@ SmlClassBody
     ;
 
 SmlClassMember returns SmlDeclaration
-    : SmlAttribute
-    | SmlClass
-    | SmlEnum
-    | SmlFunction
+    : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
+
+    ( {SmlAttribute.annotationHolder=current}
+          modifiers+=SmlModifier*
+          'attr' name=ID (':' type=SmlType)?
+
+    | {SmlClass.annotationHolder=current}
+          modifiers+=SmlModifier*
+          'class' name=ID
+          typeParameterList=SmlTypeParameterList?
+          parameterList=SmlParameterList?
+          parentTypeList=SmlParentTypeList?
+          typeParameterConstraintList=SmlTypeParameterConstraintList?
+          body=SmlClassBody?
+
+    | {SmlEnum.annotationHolder=current}
+          modifiers+=SmlModifier*
+          'enum' name=ID
+          body=SmlEnumBody?
+
+    | {SmlFunction.annotationHolder=current}
+          modifiers+=SmlModifier*
+          'fun' name=ID
+          typeParameterList=SmlTypeParameterList?
+          parameterList=SmlParameterList
+          resultList=SmlResultList?
+          typeParameterConstraintList=SmlTypeParameterConstraintList?
+    )
     ;
 
 
 // Enums ---------------------------------------------------------------------------------------------------------------
 
-@Exported
-SmlEnum
-    : annotations+=SmlAnnotationUse*
-      modifiers+=SmlModifier*
-      'enum' name=ID
-      body=SmlEnumBody?
-    ;
-
 SmlEnumBody
     : {SmlEnumBody} '{' variants+=SmlEnumVariant* '}'
     ;
 
-@Exported
 SmlEnumVariant
     : annotations+=SmlAnnotationUse*
       modifiers+=SmlModifier*
@@ -143,41 +161,24 @@ SmlEnumVariant
     ;
 
 
-// Functions -----------------------------------------------------------------------------------------------------------
-
-@Exported
-SmlFunction
-    : annotations+=SmlAnnotationUse*
-      modifiers+=SmlModifier*
-      'fun'
-      name=ID
-      typeParameterList=SmlTypeParameterList?
-      parameterList=SmlParameterList
-      resultList=SmlResultList?
-      typeParameterConstraintList=SmlTypeParameterConstraintList?
-    ;
-
-
 // Parameters ----------------------------------------------------------------------------------------------------------
 
 SmlParameterList
     : {SmlParameterList} '(' (parameters+=SmlParameter (',' parameters+=SmlParameter)* ','?)? ')'
     ;
 
-@Exported
 SmlParameter
     : annotations+=SmlAnnotationUse*
       modifiers+=SmlModifier*
       vararg?='vararg'?
       name=ID (':' type=SmlType)?
-      ('or' defaultValue=SmlConstantExpression)?
+      ('or' defaultValue=SmlExpression)?
     ;
 
 SmlSimpleParameterList returns SmlParameterList
     : {SmlParameterList} '(' (parameters+=SmlSimpleParameter (',' parameters+=SmlSimpleParameter)* ','?)? ')'
     ;
 
-@Exported
 SmlSimpleParameter returns SmlParameter
     : name=ID (':' type=SmlType)?
     ;
@@ -205,29 +206,6 @@ SmlWorkflowStepResult returns SmlResult
     : name=ID (':' type=SmlType)?
     ;
 
-
-// Workflows -----------------------------------------------------------------------------------------------------------
-
-SmlWorkflow
-    : annotations+=SmlAnnotationUse*
-      modifiers+=SmlModifier*
-      'workflow' name=ID
-      body=SmlBlock
-    ;
-
-
-// Workflow Steps ------------------------------------------------------------------------------------------------------
-
-@Exported
-SmlWorkflowStep
-    : annotations+=SmlAnnotationUse*
-      modifiers+=SmlModifier*
-      'step'
-      name=ID
-      parameterList=SmlParameterList
-      resultList=SmlWorkflowStepResultList?
-      body=SmlBlock
-    ;
 
 
 /**********************************************************************************************************************
@@ -446,14 +424,6 @@ SmlParenthesizedExpression
     : '(' expression=SmlExpression ')'
     ;
 
-
-/**********************************************************************************************************************
- * Constant Expressions
- **********************************************************************************************************************/
-
-SmlConstantExpression returns SmlExpression
-    : SmlLiteral
-    ;
 
 
 /**********************************************************************************************************************

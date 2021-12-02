@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="simpleML" nsURI="http://www.unibonn.de/simpleml/SimpleML" nsPrefix="simpleML">
-  <eClassifiers xsi:type="ecore:EClass" name="SmlDeclaration" abstract="true">
+  <eClassifiers xsi:type="ecore:EClass" name="SmlDeclaration" abstract="false">
     <eStructuralFeatures xsi:type="ecore:EReference" name="annotations" upperBound="-1"
         eType="#//SmlAnnotationUse" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="annotationHolder" eType="#//SmlAnnotationUseHolder"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="modifiers" unique="false"
         upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -15,6 +17,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotationUseHolder" eSuperTypes="#//SmlDeclaration"/>
   <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotationUse">
     <eStructuralFeatures xsi:type="ecore:EReference" name="annotation" eType="#//SmlAnnotation"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="argumentList" eType="#//SmlArgumentList"
