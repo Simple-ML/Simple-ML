@@ -1,7 +1,13 @@
 // no_syntax_error
 
 workflow myWorkflow {
+    "";
     "myString";
     "'";
     "\n";
+    "
+        multi
+        line
+        string
+    ";
 }

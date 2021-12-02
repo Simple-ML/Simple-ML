@@ -622,7 +622,8 @@ terminal fragment STRING_DELIMITER
 
 terminal fragment STRING_TEXT
     : ESCAPE_SEQUENCE
-    | !('\\'|STRING_DELIMITER|TEMPLATE_EXPRESSION_START)
+    | '{' !'{'
+    | !('\\'|STRING_DELIMITER|'{')
     ;
 
 terminal fragment ESCAPE_SEQUENCE
@@ -630,11 +631,11 @@ terminal fragment ESCAPE_SEQUENCE
     ;
 
 terminal fragment TEMPLATE_EXPRESSION_START
-    : '{'
+    : '{{'
     ;
 
 terminal fragment TEMPLATE_EXPRESSION_END
-    : '}'
+    : '}}'
     ;
 
 terminal TEMPLATE_STRING_START
