@@ -31,7 +31,7 @@ SmlImportAlias
     ;
 
 SmlCompilationUnitMember returns SmlDeclaration
-    : {SmlDeclaration} annotations+=SmlAnnotationUse*
+    : {SmlAnnotationHolder} annotations+=SmlAnnotationUse*
 
     ( {SmlAnnotation.annotationHolder=current}
           modifiers+=SmlModifier*
@@ -114,7 +114,7 @@ SmlClassBody
     ;
 
 SmlClassMember returns SmlDeclaration
-    : {SmlDeclaration} annotations+=SmlAnnotationUse*
+    : {SmlAnnotationHolder} annotations+=SmlAnnotationUse*
 
     ( {SmlAttribute.annotationHolder=current}
           modifiers+=SmlModifier*
