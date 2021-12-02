@@ -100,8 +100,7 @@ class GraphicalEditor extends React.Component {
                 const cell = me.getCell();
                 
                 if(cell && !cell.source && !cell.target) {
-                    this.props.openContextMenu(cell, me.getX() + 10, me.getY() - 10);
-                    this.props.entitySelect(cell.emfReference);
+
                 } else {
                     this.props.entityDeselect();
                 }
@@ -190,19 +189,6 @@ class GraphicalEditor extends React.Component {
 
                 // apply layout
                 layout.execute(parent);
-            }
-
-            // add create-button to selected entity
-            if(this.props.entitySelected.id !== undefined) {
-
-
-
-                //TODO
-
-
-
-
-
             }
         }
         finally
@@ -302,7 +288,6 @@ const mapStateToProps = state => {
     return {
         renderableEntities: state.emfModel.renderable,
         entityAssociations: state.emfModel.associations,
-        entitySelected: state.graphicalEditor.entitySelected
     }
 };
 

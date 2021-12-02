@@ -1,5 +1,10 @@
 import React from 'react';
+
 import store from '../../reduxStore';
+import mouseDataWrapper from '../../mouse'
+
+import { entitySelect } from '../../reducers/graphicalEditor';
+import { openContextMenu } from '../../reducers/contextMenu';
 
 import MxGraphVertexComponent from '../../components/EditorView/GraphicalEditor/MxGraphVertexComponent';
 import icon from '../../images/graph/Model/selected.svg';
@@ -23,10 +28,18 @@ export default class GenericProcessCall extends MxGraphVertexComponent {
         this.state = {
             selected: false,
             metadata: {}
-        }
+        };
+    }
+    
+    entitySelect = (entity) => { 
+        store.dispatch(entitySelect(entity)) ;
     }
 
-    getEmfRef(emfEntity) {
+    openContextMenu = (context, x, y) => {
+        store.dispatch(openContextMenu(context, x, y));
+    }
+
+    getEmfRef = (emfEntity) => {
         if(emfEntity.getChild('@member')) {
             return this.getEmfRef(emfEntity.getChild('@member'))
         } else if(emfEntity.getChild('@receiver')) {
@@ -77,7 +90,16 @@ export default class GenericProcessCall extends MxGraphVertexComponent {
     render() {
         return(
             <div className={genericProcessCallStyle.IconContainer}>
-                <img src={this.setIcon()}/>
+                <img src={this.setIcon()} alt={''} onClick={
+                    () => {
+                        this.entitySelect(this.props.emfEntity);
+                        this.openContextMenu({
+                            vertex: true,
+                            emfReference: this.props.emfEntity
+                        }, mouseDataWrapper.data.x, mouseDataWrapper.data.y);
+                    }
+                }/>
+                <div className={genericProcessCallStyle.Port} onClick={() => console.log('hello')}></div>
                 <div className={genericProcessCallStyle.IconLabel}>
                     {this.state.metadata ? this.state.metadata.name : ''}
                 </div>
