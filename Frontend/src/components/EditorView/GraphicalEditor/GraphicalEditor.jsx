@@ -42,7 +42,11 @@ class GraphicalEditor extends React.Component {
     createButtonClick = () => {
         let {x, y} = ReactDOM.findDOMNode(this.createButtonRef.current).getBoundingClientRect();
         XtextServices.getProcessProposals('-1', '');
-        this.props.openContextMenu({id: '-1'}, x, y);
+        this.props.openContextMenu({
+            emfReference:{
+                id: '-1'
+            }
+        }, x, y);
     }
 
     componentDidMount() {

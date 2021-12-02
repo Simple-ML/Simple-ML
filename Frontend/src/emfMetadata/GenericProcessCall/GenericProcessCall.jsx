@@ -6,6 +6,9 @@ import mouseDataWrapper from '../../mouse'
 import { entitySelect } from '../../reducers/graphicalEditor';
 import { openContextMenu } from '../../reducers/contextMenu';
 
+import XtextServices from '../../serverConnection/XtextServices'
+import EmfModelHelper from '../../helper/EmfModelHelper';
+
 import MxGraphVertexComponent from '../../components/EditorView/GraphicalEditor/MxGraphVertexComponent';
 import icon from '../../images/graph/Model/selected.svg';
 import iconSelected from '../../images/graph/Model/Primary.svg';
@@ -16,6 +19,9 @@ import genericProcessCallStyle from './genericProcessCall.module.scss';
  * Lookup MxGraphVertexComponent.js
  */
 export default class GenericProcessCall extends MxGraphVertexComponent {
+
+    portSize = 10;
+    portOffset = 3;
 
     constructor(props) {
         super(props);
@@ -59,24 +65,37 @@ export default class GenericProcessCall extends MxGraphVertexComponent {
         };
     }
 
-    calculateInputPortData(parentVertex) {
-        let portDataContainer = [];
+    filterComplexInputsOrOutputs = (inputsOrOutputs) => {
+        const result = [];
 
-        // this.props.emfEntity.children.forEach((element, index) => {
-        //     let text = '';                       // TODO: get portname from emfEntity -> ProcessCallDefinition
-        //     let sizeX = 16;
-        //     let sizeY = 16;
+        if(inputsOrOutputs !== undefined) {
+            inputsOrOutputs.forEach((item, index) => {
+                let type = item.type.split('.');
+                type = type[type.length - 1];
 
-        //     // position is relative to parentVertex.geometry.width -> the positionrange is 0.0 - 1.0
-        //     let posX = (parentVertex.geometry.width / (this.props.emfEntity.children.length + 1) * (index + 1) - (sizeX / 2)) / parentVertex.geometry.width;
-        //     let posY = -(sizeY / 2) / parentVertex.geometry.height;
-        //     let emfEntity = element;
-            
-        //     portDataContainer.push({ 
-        //         text, sizeX, sizeY, posX, posY, emfEntity
-        //     });    
-        // });
-        return portDataContainer;
+                switch(type) {
+                    case 'String':
+                    case 'Int':
+                        return;
+                    default:
+                        result.push({ index, item });
+                }
+            })
+        }
+
+        return result;
+    }
+
+    calculatePortPosition = (iconSize, maxPorts, portIndex) => {
+        if(maxPorts === 0) {
+            return { x: 0, y: 0 };
+        }
+
+        return {
+            x: (iconSize / (maxPorts + 1)) * (portIndex + 1),
+            y: Math.sin(Math.acos((portIndex + 1) / (maxPorts + 1) - 0.5)) * (iconSize / 2)
+        }
+        
     }
 
     setIcon() {
@@ -88,21 +107,77 @@ export default class GenericProcessCall extends MxGraphVertexComponent {
     }
 
     render() {
+        let complexInputs = [];
+        let complexOutputs = [];
+
+        if(this.state.metadata?.input !== undefined) {
+            complexInputs = this.filterComplexInputsOrOutputs(this.state.metadata.input)
+        }
+        if(this.state.metadata?.input !== undefined) {
+            complexOutputs = this.filterComplexInputsOrOutputs(this.state.metadata.output)
+        }
+        const iconSize = this.props.emfEntity.metadata.mxGraphMetadata.height > this.props.emfEntity.metadata.mxGraphMetadata.width ?
+            this.props.emfEntity.metadata.mxGraphMetadata.height : this.props.emfEntity.metadata.mxGraphMetadata.width;
+
         return(
             <div className={genericProcessCallStyle.IconContainer}>
                 <img src={this.setIcon()} alt={''} onClick={
                     () => {
                         this.entitySelect(this.props.emfEntity);
-                        this.openContextMenu({
-                            vertex: true,
-                            emfReference: this.props.emfEntity
-                        }, mouseDataWrapper.data.x, mouseDataWrapper.data.y);
+                        // this.openContextMenu({
+                        //     vertex: true,
+                        //     emfReference: this.props.emfEntity
+                        // }, mouseDataWrapper.data.x, mouseDataWrapper.data.y);
                     }
                 }/>
-                <div className={genericProcessCallStyle.Port} onClick={() => console.log('hello')}></div>
                 <div className={genericProcessCallStyle.IconLabel}>
                     {this.state.metadata ? this.state.metadata.name : ''}
                 </div>
+                {   // input-ports
+                    complexInputs.map((item, index) => {
+                        const position = this.calculatePortPosition(iconSize, complexInputs.length, index);
+
+                        return <div 
+                            key={index} 
+                            className={genericProcessCallStyle.Port} 
+                            style={{
+                                left: position.x - this.portSize / 2,
+                                top: iconSize / 2 - position.y - this.portSize / 2 - this.portOffset,
+                                height: this.portSize,
+                                width: this.portSize
+                            }}
+                            >
+                            </div>
+                    })
+                }
+                
+                {   // output-ports
+                    complexOutputs.map((item, index) => {
+                        const position = this.calculatePortPosition(iconSize, complexOutputs.length, index);
+
+                        return <div 
+                            key={index} 
+                            className={genericProcessCallStyle.Port} 
+                            style={{
+                                left: position.x - this.portSize / 2,
+                                top: iconSize / 2 + position.y - this.portSize / 2 + this.portOffset,
+                                height: this.portSize,
+                                width: this.portSize
+                            }}
+                            onClick={() => {
+                                XtextServices.getProcessProposals(
+                                    this.props.emfEntity.id, 
+                                    this.state.metadata.emfPath + '/@resultList/@results.' + index
+                                )
+                                this.openContextMenu({
+                                    vertex: true,
+                                    emfReference: this.props.emfEntity
+                                }, mouseDataWrapper.data.x, mouseDataWrapper.data.y);
+                            }}
+                            >
+                            </div>
+                    })
+                }
             </div>
         )
     }

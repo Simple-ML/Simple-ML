@@ -25,8 +25,8 @@ class ContextMenu extends React.Component {
     inferFromContextDynamically = (context, context2) => {
         let result = [];
 
-        if(context.id !== undefined && context.id === context2.frontendId) {
-            context2.proposals.forEach((item) => {
+        if(context?.emfReference?.id + '' === context2?.frontendId) {
+            context2.proposals?.forEach((item) => {
                 result.push({
                     metaData: {
                         icon: editIcon,
@@ -43,7 +43,6 @@ class ContextMenu extends React.Component {
                 });
             });
         }
-
         return result;
     }
 
