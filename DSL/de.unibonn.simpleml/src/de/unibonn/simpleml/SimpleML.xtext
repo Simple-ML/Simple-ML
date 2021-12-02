@@ -123,11 +123,11 @@ SmlClassBody
 SmlClassMember returns SmlDeclaration
     : SmlAnnotationUseList
 
-    ( {SmlAttribute.annotations=current}
+    ( {SmlAttribute.annotationList=current}
           modifiers+=SmlModifier*
           'attr' name=ID (':' type=SmlType)?
 
-    | {SmlClass.annotations=current}
+    | {SmlClass.annotationList=current}
           modifiers+=SmlModifier*
           'class'
           name=ID
@@ -137,12 +137,12 @@ SmlClassMember returns SmlDeclaration
           typeParameterConstraintList=SmlTypeParameterConstraintList?
           body=SmlClassBody?
 
-    | {SmlEnum.annotations=current}
+    | {SmlEnum.annotationList=current}
           modifiers+=SmlModifier*
           'enum' name=ID
           body=SmlEnumBody?
 
-    | {SmlFunction.annotations=current}
+    | {SmlFunction.annotationList=current}
           modifiers+=SmlModifier*
           'fun'
           name=ID
@@ -161,7 +161,7 @@ SmlEnumBody
     ;
 
 SmlEnumVariant
-    : annotations+=SmlAnnotationUse*
+    : annotationList=SmlAnnotationUseList
       modifiers+=SmlModifier*
       name=ID
       typeParameterList=SmlTypeParameterList?
@@ -177,7 +177,7 @@ SmlParameterList
     ;
 
 SmlParameter
-    : annotations+=SmlAnnotationUse*
+    : annotationList=SmlAnnotationUseList
       modifiers+=SmlModifier*
       vararg?='vararg'?
       name=ID (':' type=SmlType)?
@@ -201,7 +201,7 @@ SmlResultList
     ;
 
 SmlResult
-    : annotations+=SmlAnnotationUse*
+    : annotationList=SmlAnnotationUseList
       modifiers+=SmlModifier*
       name=ID (':' type=SmlType)?
     ;
@@ -526,7 +526,7 @@ SmlTypeParameterList
     ;
 
 SmlTypeParameter
-    : annotations+=SmlAnnotationUse*
+    : annotationList=SmlAnnotationUseList
       modifiers+=SmlModifier*
       variance=SmlTypeParameterVariance?
       name=ID

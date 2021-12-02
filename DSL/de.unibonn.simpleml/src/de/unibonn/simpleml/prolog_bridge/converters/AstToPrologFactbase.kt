@@ -103,6 +103,7 @@ import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.aliasName
+import de.unibonn.simpleml.utils.annotationsOrEmpty
 import de.unibonn.simpleml.utils.argumentsOrEmpty
 import de.unibonn.simpleml.utils.assigneesOrEmpty
 import de.unibonn.simpleml.utils.membersOrEmpty
@@ -189,7 +190,7 @@ class AstToPrologFactbase {
     }
 
     private fun PlFactbase.visitDeclaration(obj: SmlDeclaration, parentId: Id<EObject>) {
-        obj.annotations.forEach { visitAnnotationUse(it, obj.id) }
+        obj.annotationsOrEmpty().forEach { visitAnnotationUse(it, obj.id) }
         obj.modifiers.forEach { visitModifier(it, obj.id) }
 
         when (obj) {

@@ -229,6 +229,7 @@ fun SmlDeclaration.isCompilationUnitMember(): Boolean {
                 this is SmlWorkflowStep
             )
 }
+fun SmlDeclaration?.annotationsOrEmpty() = this?.annotationList?.annotations.orEmpty()
 
 // Assignment ----------------------------------------------------------------------------------------------------------
 
@@ -294,6 +295,7 @@ fun EObject.isInTestFile() = this.eResource().isTestFile()
 // Enum ----------------------------------------------------------------------------------------------------------------
 
 fun SmlEnum?.variantsOrEmpty() = this?.body?.variants.orEmpty()
+fun SmlEnum?.isConstant() = this.variantsOrEmpty().all { it.parameterList == null }
 
 // Enum Variant --------------------------------------------------------------------------------------------------------
 
