@@ -1,0 +1,4 @@
+package simpleml.lang
+
+@Description("Name of the corresponding API element in Python.")
+annotation PythonName(name: String)
