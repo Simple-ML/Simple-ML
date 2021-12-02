@@ -200,8 +200,19 @@ step referencesToClassMembers() {
     ClassInSameFile<*>().classInstanceMethodInSameFile();
 }
 
-step referencesToEnumVariants() {
+@Target(EnumInSameFile.EnumVariantInSameFile)
+step referencesToEnumVariants(@Target(EnumInSameFile.EnumVariantInSameFile) referenceToEnumVariantFromParameterAnnotation: Int) {
     EnumInSameFile.EnumVariantInSameFile;
+}
+
+class ReferencesToEnumVariants {
+    @Target(EnumInSameClass.EnumVariantInSameClass)
+    @Target(EnumInSameFile.EnumVariantInSameFile)
+    class ReferencesToEnumVariantsInnerClass
+
+    enum EnumInSameClass {
+        EnumVariantInSameClass
+    }
 }
 
 step referencesToEnumVariantParameters() {

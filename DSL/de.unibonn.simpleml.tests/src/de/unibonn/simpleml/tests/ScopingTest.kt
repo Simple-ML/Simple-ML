@@ -27,6 +27,7 @@ import de.unibonn.simpleml.tests.assertions.shouldBeResolved
 import de.unibonn.simpleml.tests.assertions.shouldNotBeResolved
 import de.unibonn.simpleml.tests.util.ParseHelper
 import de.unibonn.simpleml.tests.util.ResourceName
+import de.unibonn.simpleml.utils.annotationsOrEmpty
 import de.unibonn.simpleml.utils.descendants
 import de.unibonn.simpleml.utils.parametersOrEmpty
 import io.kotest.assertions.forEachAsClue
@@ -1264,15 +1265,83 @@ class ScopingTest {
             @Test
             fun `should resolve enum variants`() = withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToEnumVariants")
-                val enumInstanceInSameFile =
+                val enumVariantInSameFile =
                     findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameFile")
 
-                val references = step.descendants<SmlReference>().toList()
+                val references = step.body.descendants<SmlReference>().toList()
                 references.shouldHaveSize(2)
 
                 val declaration = references[1].declaration
                 declaration.shouldBeResolved()
-                declaration.shouldBe(enumInstanceInSameFile)
+                declaration.shouldBe(enumVariantInSameFile)
+            }
+
+            @Test
+            fun `should resolve enum variants from workflow step annotation`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToEnumVariants")
+                val enumVariantInSameFile =
+                    findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameFile")
+
+                val annotations = step.annotationsOrEmpty()
+                annotations.shouldHaveSize(1)
+
+                val references = annotations[0].descendants<SmlReference>().toList()
+                references.shouldHaveSize(2)
+
+                val declaration = references[1].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(enumVariantInSameFile)
+            }
+
+            @Test
+            fun `should resolve enum variants from parameter annotation`() = withResource(REFERENCE) {
+                val parameter = findUniqueDeclarationOrFail<SmlParameter>("referenceToEnumVariantFromParameterAnnotation")
+                val enumVariantInSameFile =
+                    findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameFile")
+
+                val annotations = parameter.annotationsOrEmpty()
+                annotations.shouldHaveSize(1)
+
+                val references = annotations[0].descendants<SmlReference>().toList()
+                references.shouldHaveSize(2)
+
+                val declaration = references[1].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(enumVariantInSameFile)
+            }
+
+            @Test
+            fun `should resolve enum variants of nested enum from class annotation`() = withResource(REFERENCE) {
+                val parameter = findUniqueDeclarationOrFail<SmlClass>("ReferencesToEnumVariantsInnerClass")
+                val enumVariantInSameFile =
+                    findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameFile")
+
+                val annotations = parameter.annotationsOrEmpty()
+                annotations.shouldHaveSize(2)
+
+                val references = annotations[0].descendants<SmlReference>().toList()
+                references.shouldHaveSize(2)
+
+                val declaration = references[1].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(enumVariantInSameFile)
+            }
+
+            @Test
+            fun `should resolve enum variants of global enum from class annotation`() = withResource(REFERENCE) {
+                val parameter = findUniqueDeclarationOrFail<SmlClass>("ReferencesToEnumVariantsInnerClass")
+                val enumVariantInSameClass =
+                    findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameClass")
+
+                val annotations = parameter.annotationsOrEmpty()
+                annotations.shouldHaveSize(2)
+
+                val references = annotations[0].descendants<SmlReference>().toList()
+                references.shouldHaveSize(2)
+
+                val declaration = references[1].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(enumVariantInSameClass)
             }
 
             @Test
