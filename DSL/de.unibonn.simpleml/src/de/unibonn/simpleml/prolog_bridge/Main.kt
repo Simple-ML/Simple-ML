@@ -64,12 +64,12 @@ fun main() {
 
     Files.write(Paths.get("prolog_facts.pl"), factbase.toString().toByteArray())*/
 
-    //TESTING ALL ELEMENTS
+    // TESTING ALL ELEMENTS
     val injector = SimpleMLStandaloneSetup().createInjectorAndDoEMFRegistration()
     val main = injector.getInstance(Main::class.java)
 
     File("testPrologVisitor").walkTopDown().forEach {
-        if(it.isFile) {
+        if (it.isFile) {
             val factbase = main.createFactbase(it.absolutePath)
             val path = ("PrologFacts/" + it.path).replace(it.name, "")
             Files.createDirectories(Paths.get(path))
@@ -77,7 +77,6 @@ fun main() {
         }
     }
 
-
     val time1 = System.currentTimeMillis()
-    println((time1 - time0)/1000.0)
+    println((time1 - time0) / 1000.0)
 }

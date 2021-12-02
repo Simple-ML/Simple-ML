@@ -421,7 +421,6 @@ fun SmlTemplateStringPart.realValue(): String {
         .removeSuffix("\"") // TEMPLATE_STRING_END
 }
 
-
 // Type ----------------------------------------------------------------------------------------------------------------
 
 fun SmlType?.resolveToClassOrNull(): SmlClass? {
