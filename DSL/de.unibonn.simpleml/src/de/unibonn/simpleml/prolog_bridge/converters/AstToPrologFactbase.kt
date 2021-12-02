@@ -37,6 +37,8 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StarProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
+import de.unibonn.simpleml.prolog_bridge.model.facts.TemplateStringPartT
+import de.unibonn.simpleml.prolog_bridge.model.facts.TemplateStringT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterConstraintT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
@@ -87,6 +89,8 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStarProjection
 import de.unibonn.simpleml.simpleML.SmlStatement
 import de.unibonn.simpleml.simpleML.SmlString
+import de.unibonn.simpleml.simpleML.SmlTemplateString
+import de.unibonn.simpleml.simpleML.SmlTemplateStringPart
 import de.unibonn.simpleml.simpleML.SmlType
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentValue
@@ -104,6 +108,7 @@ import de.unibonn.simpleml.utils.assigneesOrEmpty
 import de.unibonn.simpleml.utils.membersOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
 import de.unibonn.simpleml.utils.parentTypesOrEmpty
+import de.unibonn.simpleml.utils.realValue
 import de.unibonn.simpleml.utils.resultsOrEmpty
 import de.unibonn.simpleml.utils.statementsOrEmpty
 import de.unibonn.simpleml.utils.typeArgumentsOrEmpty
@@ -115,7 +120,7 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 
-class SimpleMLAstToPrologFactbase {
+class AstToPrologFactbase {
     private var idManager = IdManager<EObject>()
 
     fun createFactbase(compilationUnits: List<SmlCompilationUnit>): PlFactbase {
@@ -423,6 +428,14 @@ class SimpleMLAstToPrologFactbase {
             }
             is SmlString -> {
                 +StringT(obj.id, parentId, enclosingId, obj.value)
+            }
+            is SmlTemplateString -> {
+                obj.expressions.forEach { visitExpression(it, obj.id, enclosingId) }
+
+                +TemplateStringT(obj.id, parentId, enclosingId, obj.expressions.map { it.id })
+            }
+            is SmlTemplateStringPart -> {
+                +TemplateStringPartT(obj.id, parentId, enclosingId, obj.realValue())
             }
         }
 

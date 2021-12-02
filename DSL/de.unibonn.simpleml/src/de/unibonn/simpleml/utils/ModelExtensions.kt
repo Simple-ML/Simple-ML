@@ -26,6 +26,7 @@ import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStatement
+import de.unibonn.simpleml.simpleML.SmlTemplateStringPart
 import de.unibonn.simpleml.simpleML.SmlType
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
@@ -409,6 +410,17 @@ private fun Resource.nameEndsWith(suffix: String): Boolean {
 
     return this.uri.toString().endsWith(suffix)
 }
+
+// Template string part ------------------------------------------------------------------------------------------------
+
+fun SmlTemplateStringPart.realValue(): String {
+    return this.value
+        .removePrefix("}}") // TEMPLATE_STRING_INBETWEEN & TEMPLATE_STRING_END
+        .removePrefix("\"") // TEMPLATE_STRING_START
+        .removeSuffix("{{") // TEMPLATE_STRING_START & TEMPLATE_STRING_INBETWEEN
+        .removeSuffix("\"") // TEMPLATE_STRING_END
+}
+
 
 // Type ----------------------------------------------------------------------------------------------------------------
 

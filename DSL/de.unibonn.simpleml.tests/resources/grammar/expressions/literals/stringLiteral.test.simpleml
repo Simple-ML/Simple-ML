@@ -10,4 +10,5 @@ workflow myWorkflow {
         line
         string
     ";
+    "not a template { ??? }";
 }
