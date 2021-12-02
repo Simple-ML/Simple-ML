@@ -1,8 +1,8 @@
 grammar de.unibonn.simpleml.SimpleML hidden (
-	WS,
-	SL_COMMENT,
-	ML_COMMENT,
-	TEST_MARKER
+    WS,
+    SL_COMMENT,
+    ML_COMMENT,
+    TEST_MARKER
 )
 import 'http://www.eclipse.org/emf/2002/Ecore' as ecore
 import 'http://www.unibonn.de/simpleml/SimpleML'
@@ -17,217 +17,217 @@ import 'http://www.unibonn.de/simpleml/SimpleML'
 
 @Exported
 SmlCompilationUnit
-	: {SmlCompilationUnit}
-	  ('package' name=QualifiedName)?
-	  imports+=SmlImport*
-	  members+=SmlCompilationUnitMember*
-	;
+    : {SmlCompilationUnit}
+      ('package' name=QualifiedName)?
+      imports+=SmlImport*
+      members+=SmlCompilationUnitMember*
+    ;
 
 SmlImport
-	: 'import' importedNamespace=QualifiedNameWithWildcard alias=SmlImportAlias?
-	;
+    : 'import' importedNamespace=QualifiedNameWithWildcard alias=SmlImportAlias?
+    ;
 
 SmlImportAlias
     : 'as' name=ID
     ;
 
 SmlCompilationUnitMember returns SmlDeclaration
-	: SmlAnnotation
-	| SmlClass
-	| SmlEnum
-	| SmlFunction
-	| SmlWorkflow
-	| SmlWorkflowStep
-	;
+    : SmlAnnotation
+    | SmlClass
+    | SmlEnum
+    | SmlFunction
+    | SmlWorkflow
+    | SmlWorkflowStep
+    ;
 
 
 // Annotations ---------------------------------------------------------------------------------------------------------
 
 @Exported
 SmlAnnotation
-	: annotations+=SmlAnnotationUse*
-	  modifiers+=SmlModifier*
-	  'annotation' name=ID
-	  parameterList=SmlParameterList?
-	;
+    : annotations+=SmlAnnotationUse*
+      modifiers+=SmlModifier*
+      'annotation' name=ID
+      parameterList=SmlParameterList?
+    ;
 
 SmlAnnotationUse
-	: '@' annotation=[SmlAnnotation] argumentList=SmlAnnotationUseArgumentList?
-	;
+    : '@' annotation=[SmlAnnotation] argumentList=SmlAnnotationUseArgumentList?
+    ;
 
 SmlAnnotationUseArgumentList returns SmlArgumentList
-	: {SmlArgumentList} '(' (arguments+=SmlAnnotationUseArgument (',' arguments+=SmlAnnotationUseArgument)* ','?)? ')'
-	;
+    : {SmlArgumentList} '(' (arguments+=SmlAnnotationUseArgument (',' arguments+=SmlAnnotationUseArgument)* ','?)? ')'
+    ;
 
 SmlAnnotationUseArgument returns SmlArgument
-	: (parameter=[SmlParameter] '=')? value=SmlConstantExpression
-	;
+    : (parameter=[SmlParameter] '=')? value=SmlConstantExpression
+    ;
 
 
 // Attributes ----------------------------------------------------------------------------------------------------------
 
 @Exported
 SmlAttribute
-	: annotations+=SmlAnnotationUse*
-	  modifiers+=SmlModifier*
-	  'attr' name=ID (':' type=SmlType)?
-	;
+    : annotations+=SmlAnnotationUse*
+      modifiers+=SmlModifier*
+      'attr' name=ID (':' type=SmlType)?
+    ;
 
 
 // Classes -------------------------------------------------------------------------------------------------------------
 
 @Exported
 SmlClass
-	: annotations+=SmlAnnotationUse*
-	  modifiers+=SmlModifier*
-	  'class'
-	  name=ID
-	  typeParameterList=SmlTypeParameterList?
-	  parameterList=SmlParameterList?
-	  parentTypeList=SmlParentTypeList?
-	  typeParameterConstraintList=SmlTypeParameterConstraintList?
-	  body=SmlClassBody?
-	;
+    : annotations+=SmlAnnotationUse*
+      modifiers+=SmlModifier*
+      'class'
+      name=ID
+      typeParameterList=SmlTypeParameterList?
+      parameterList=SmlParameterList?
+      parentTypeList=SmlParentTypeList?
+      typeParameterConstraintList=SmlTypeParameterConstraintList?
+      body=SmlClassBody?
+    ;
 
 SmlParentTypeList
-	: 'sub' parentTypes+=SmlParentType (',' parentTypes+=SmlParentType)* ','?
-	;
+    : 'sub' parentTypes+=SmlParentType (',' parentTypes+=SmlParentType)* ','?
+    ;
 
 SmlParentType returns SmlType
-	: SmlParentPrimaryType =>({SmlMemberType.receiver=current} '.' member=SmlNamedType)*
-	;
+    : SmlParentPrimaryType =>({SmlMemberType.receiver=current} '.' member=SmlNamedType)*
+    ;
 
 SmlParentPrimaryType returns SmlType
-	: SmlNamedType
-	| SmlParentParenthesizedType
-	;
+    : SmlNamedType
+    | SmlParentParenthesizedType
+    ;
 
 SmlParentParenthesizedType returns SmlParenthesizedType
     : '(' type=SmlParentType ')'
     ;
 
 SmlClassBody
-	: {SmlClassBody} '{' members+=SmlClassMember* '}'
-	;
+    : {SmlClassBody} '{' members+=SmlClassMember* '}'
+    ;
 
 SmlClassMember returns SmlDeclaration
-	: SmlAttribute
-	| SmlClass
-	| SmlEnum
-	| SmlFunction
-	;
+    : SmlAttribute
+    | SmlClass
+    | SmlEnum
+    | SmlFunction
+    ;
 
 
 // Enums ---------------------------------------------------------------------------------------------------------------
 
 @Exported
 SmlEnum
-	: annotations+=SmlAnnotationUse*
-	  modifiers+=SmlModifier*
-	  'enum' name=ID
-	  body=SmlEnumBody?
-	;
+    : annotations+=SmlAnnotationUse*
+      modifiers+=SmlModifier*
+      'enum' name=ID
+      body=SmlEnumBody?
+    ;
 
 SmlEnumBody
-	: {SmlEnumBody} '{' variants+=SmlEnumVariant* '}'
-	;
+    : {SmlEnumBody} '{' variants+=SmlEnumVariant* '}'
+    ;
 
 @Exported
 SmlEnumVariant
-	: annotations+=SmlAnnotationUse*
-	  modifiers+=SmlModifier*
+    : annotations+=SmlAnnotationUse*
+      modifiers+=SmlModifier*
       name=ID
       typeParameterList=SmlTypeParameterList?
       parameterList=SmlParameterList?
       typeParameterConstraintList=SmlTypeParameterConstraintList?
-	;
+    ;
 
 
 // Functions -----------------------------------------------------------------------------------------------------------
 
 @Exported
 SmlFunction
-	: annotations+=SmlAnnotationUse*
-	  modifiers+=SmlModifier*
-	  'fun'
-	  name=ID
-	  typeParameterList=SmlTypeParameterList?
-	  parameterList=SmlParameterList
-	  resultList=SmlResultList?
-	  typeParameterConstraintList=SmlTypeParameterConstraintList?
-	;
+    : annotations+=SmlAnnotationUse*
+      modifiers+=SmlModifier*
+      'fun'
+      name=ID
+      typeParameterList=SmlTypeParameterList?
+      parameterList=SmlParameterList
+      resultList=SmlResultList?
+      typeParameterConstraintList=SmlTypeParameterConstraintList?
+    ;
 
 
 // Parameters ----------------------------------------------------------------------------------------------------------
 
 SmlParameterList
-	: {SmlParameterList} '(' (parameters+=SmlParameter (',' parameters+=SmlParameter)* ','?)? ')'
-	;
+    : {SmlParameterList} '(' (parameters+=SmlParameter (',' parameters+=SmlParameter)* ','?)? ')'
+    ;
 
 @Exported
 SmlParameter
-	: annotations+=SmlAnnotationUse*
-	  modifiers+=SmlModifier*
-	  vararg?='vararg'?
-	  name=ID (':' type=SmlType)?
-	  ('or' defaultValue=SmlConstantExpression)?
-	;
+    : annotations+=SmlAnnotationUse*
+      modifiers+=SmlModifier*
+      vararg?='vararg'?
+      name=ID (':' type=SmlType)?
+      ('or' defaultValue=SmlConstantExpression)?
+    ;
 
 SmlSimpleParameterList returns SmlParameterList
-	: {SmlParameterList} '(' (parameters+=SmlSimpleParameter (',' parameters+=SmlSimpleParameter)* ','?)? ')'
-	;
+    : {SmlParameterList} '(' (parameters+=SmlSimpleParameter (',' parameters+=SmlSimpleParameter)* ','?)? ')'
+    ;
 
 @Exported
 SmlSimpleParameter returns SmlParameter
-	: name=ID (':' type=SmlType)?
-	;
+    : name=ID (':' type=SmlType)?
+    ;
 
 
 // Results -------------------------------------------------------------------------------------------------------------
 
 SmlResultList
-	: {SmlResultList} '->' results+=SmlResult // If there is exactly one result we need no parentheses
-	| {SmlResultList} '->' '(' (results+=SmlResult (',' results+=SmlResult)* ','?)? ')'
-	;
+    : {SmlResultList} '->' results+=SmlResult // If there is exactly one result we need no parentheses
+    | {SmlResultList} '->' '(' (results+=SmlResult (',' results+=SmlResult)* ','?)? ')'
+    ;
 
 SmlResult
-	: annotations+=SmlAnnotationUse*
-	  modifiers+=SmlModifier*
-	  name=ID (':' type=SmlType)?
-	;
+    : annotations+=SmlAnnotationUse*
+      modifiers+=SmlModifier*
+      name=ID (':' type=SmlType)?
+    ;
 
 SmlWorkflowStepResultList returns SmlResultList
-	: {SmlResultList} '->' results+=SmlWorkflowStepResult // If there is exactly one result we need no parentheses
-	| {SmlResultList} '->' '(' (results+=SmlWorkflowStepResult (',' results+=SmlWorkflowStepResult)* ','?)? ')'
-	;
+    : {SmlResultList} '->' results+=SmlWorkflowStepResult // If there is exactly one result we need no parentheses
+    | {SmlResultList} '->' '(' (results+=SmlWorkflowStepResult (',' results+=SmlWorkflowStepResult)* ','?)? ')'
+    ;
 
 SmlWorkflowStepResult returns SmlResult
-	: name=ID (':' type=SmlType)?
-	;
+    : name=ID (':' type=SmlType)?
+    ;
 
 
 // Workflows -----------------------------------------------------------------------------------------------------------
 
 SmlWorkflow
-	: annotations+=SmlAnnotationUse*
-	  modifiers+=SmlModifier*
-	  'workflow' name=ID
-	  body=SmlBlock
-	;
+    : annotations+=SmlAnnotationUse*
+      modifiers+=SmlModifier*
+      'workflow' name=ID
+      body=SmlBlock
+    ;
 
 
 // Workflow Steps ------------------------------------------------------------------------------------------------------
 
 @Exported
 SmlWorkflowStep
-	: annotations+=SmlAnnotationUse*
-	  modifiers+=SmlModifier*
-	  'step'
-	  name=ID
-	  parameterList=SmlParameterList
-	  resultList=SmlWorkflowStepResultList?
-	  body=SmlBlock
-	;
+    : annotations+=SmlAnnotationUse*
+      modifiers+=SmlModifier*
+      'step'
+      name=ID
+      parameterList=SmlParameterList
+      resultList=SmlWorkflowStepResultList?
+      body=SmlBlock
+    ;
 
 
 /**********************************************************************************************************************
@@ -237,65 +237,65 @@ SmlWorkflowStep
 // Functions and workflows --------------------------------------------------------------------------------------------
 
 SmlBlock
-	: {SmlBlock} '{' statements+=SmlStatement* '}'
-	;
+    : {SmlBlock} '{' statements+=SmlStatement* '}'
+    ;
 
 SmlStatement
-	: SmlAssignment
-	| SmlExpressionStatement
-	;
+    : SmlAssignment
+    | SmlExpressionStatement
+    ;
 
 SmlAssignment
-	: assigneeList=SmlAssigneeList '=' expression=SmlExpression ';'
-	;
+    : assigneeList=SmlAssigneeList '=' expression=SmlExpression ';'
+    ;
 
 SmlAssigneeList
-	: {SmlAssigneeList} assignees+=SmlAssignee
-	| {SmlAssigneeList} '(' (assignees+=SmlAssignee (',' assignees+=SmlAssignee)* ','?)? ')'
-	;
+    : {SmlAssigneeList} assignees+=SmlAssignee
+    | {SmlAssigneeList} '(' (assignees+=SmlAssignee (',' assignees+=SmlAssignee)* ','?)? ')'
+    ;
 
 SmlAssignee
-	: {SmlPlaceholder} 'val' name=ID
-	| {SmlWildcard}    '_'
-	| {SmlYield}       'yield' result=[SmlResult]
-	;
+    : {SmlPlaceholder} 'val' name=ID
+    | {SmlWildcard}    '_'
+    | {SmlYield}       'yield' result=[SmlResult]
+    ;
 
 SmlExpressionStatement
-	: expression=SmlExpression ';'
-	;
+    : expression=SmlExpression ';'
+    ;
 
 
 // Lambdas -------------------------------------------------------------------------------------------------------------
 
 SmlLambda
-	: 'lambda'
-	  parameterList=SmlSimpleParameterList?
-	  body=SmlLambdaBlock
-	;
+    : 'lambda'
+      parameterList=SmlSimpleParameterList?
+      body=SmlLambdaBlock
+    ;
 
 SmlLambdaBlock returns SmlBlock
-	: {SmlBlock} '{' statements+=SmlLambdaStatement* '}'
-	;
+    : {SmlBlock} '{' statements+=SmlLambdaStatement* '}'
+    ;
 
 SmlLambdaStatement returns SmlStatement
-	: SmlLambdaAssignment
-	| SmlExpressionStatement
-	;
+    : SmlLambdaAssignment
+    | SmlExpressionStatement
+    ;
 
 SmlLambdaAssignment returns SmlAssignment
-	: assigneeList=SmlLambdaAssigneeList '=' expression=SmlExpression ';'
-	;
+    : assigneeList=SmlLambdaAssigneeList '=' expression=SmlExpression ';'
+    ;
 
 SmlLambdaAssigneeList returns SmlAssigneeList
-	: {SmlAssigneeList} assignees+=SmlLambdaAssignee
-	| {SmlAssigneeList} '(' (assignees+=SmlLambdaAssignee (',' assignees+=SmlLambdaAssignee)* ','?)? ')'
-	;
+    : {SmlAssigneeList} assignees+=SmlLambdaAssignee
+    | {SmlAssigneeList} '(' (assignees+=SmlLambdaAssignee (',' assignees+=SmlLambdaAssignee)* ','?)? ')'
+    ;
 
 SmlLambdaAssignee returns SmlAssignee
-	: {SmlPlaceholder} 'val' name=ID
-	| {SmlWildcard}    '_'
-	| {SmlLambdaYield} 'yield' name=ID
-	;
+    : {SmlPlaceholder} 'val' name=ID
+    | {SmlWildcard}    '_'
+    | {SmlLambdaYield} 'yield' name=ID
+    ;
 
 
 /**********************************************************************************************************************
@@ -303,8 +303,8 @@ SmlLambdaAssignee returns SmlAssignee
  **********************************************************************************************************************/
 
 SmlExpression
-	: SmlOrExpression
-	;
+    : SmlOrExpression
+    ;
 
 SmlOrExpression returns SmlExpression
     : SmlAndExpression ({SmlInfixOperation.leftOperand=current} operator='or' rightOperand=SmlAndExpression)*
@@ -369,34 +369,35 @@ SmlUnaryOperation returns SmlExpression
     ;
 
 SmlChainedExpression returns SmlExpression
-	: SmlPrimaryExpression =>(
-		  {SmlCall.receiver=current}          typeArgumentList=SmlTypeArgumentList? argumentList=SmlCallArgumentList
-		| {SmlMemberAccess.receiver=current}  (nullable?='?')? '.' member=SmlReference
-	)*
-	;
+    : SmlPrimaryExpression =>(
+          {SmlCall.receiver=current}          typeArgumentList=SmlTypeArgumentList? argumentList=SmlCallArgumentList
+        | {SmlMemberAccess.receiver=current}  (nullable?='?')? '.' member=SmlReference
+    )*
+    ;
 
 SmlCallArgumentList returns SmlArgumentList
-	: {SmlArgumentList} '(' (arguments+=SmlCallArgument (',' arguments+=SmlCallArgument)* ','?)? ')'
-	;
+    : {SmlArgumentList} '(' (arguments+=SmlCallArgument (',' arguments+=SmlCallArgument)* ','?)? ')'
+    ;
 
 SmlCallArgument returns SmlArgument
-	: (parameter=[SmlParameter] '=')? value=SmlExpression
-	;
+    : (parameter=[SmlParameter] '=')? value=SmlExpression
+    ;
 
 SmlPrimaryExpression returns SmlExpression
-	: SmlLambda
-	| SmlLiteral
-	| SmlReference
-	| SmlParenthesizedExpression
-	;
+    : SmlLambda
+    | SmlLiteral
+    | SmlParenthesizedExpression
+    | SmlReference
+    | SmlTemplateString
+    ;
 
 SmlLiteral
-	: SmlBoolean
-	| SmlFloat
+    : SmlBoolean
+    | SmlFloat
     | SmlInt
     | SmlNull
-	| SmlString
-	;
+    | SmlString
+    ;    
 
 SmlBoolean
     : true?='true'
@@ -404,24 +405,42 @@ SmlBoolean
     ;
 
 SmlFloat
-	: value=FLOAT
-	;
+    : value=FLOAT
+    ;
 
 SmlInt
-	: value=INT
-	;
+    : value=INT
+    ;
 
 SmlNull
-	: {SmlNull} 'null'
-	;
+    : {SmlNull} 'null'
+    ;
 
 SmlString
-	: value=STRING
-	;
+    : value=STRING
+    ;
+
+SmlTemplateString
+    : expressions+=SmlTemplateStringStart expressions+=SmlExpression?
+      (expressions+=SmlTemplateStringInbetween expressions+=SmlExpression?)*
+      expressions+=SmlTemplateStringEnd
+    ;
+
+SmlTemplateStringStart returns SmlTemplateStringPart
+    : value=TEMPLATE_STRING_START
+    ;
+
+SmlTemplateStringInbetween returns SmlTemplateStringPart
+    : value=TEMPLATE_STRING_INBETWEEN
+    ;
+
+SmlTemplateStringEnd returns SmlTemplateStringPart
+    : value=TEMPLATE_STRING_END
+    ;
 
 SmlReference
-	: declaration=[SmlDeclaration]
-	;
+    : declaration=[SmlDeclaration]
+    ;
 
 SmlParenthesizedExpression
     : '(' expression=SmlExpression ')'
@@ -433,8 +452,8 @@ SmlParenthesizedExpression
  **********************************************************************************************************************/
 
 SmlConstantExpression returns SmlExpression
-	: SmlLiteral
-	;
+    : SmlLiteral
+    ;
 
 
 /**********************************************************************************************************************
@@ -442,12 +461,12 @@ SmlConstantExpression returns SmlExpression
  **********************************************************************************************************************/
 
 SmlModifier
-	: 'deprecated'
-	| 'open'
-	| 'override'
-	| 'pure'
-	| 'static'
-	;
+    : 'deprecated'
+    | 'open'
+    | 'override'
+    | 'pure'
+    | 'static'
+    ;
 
 
 
@@ -456,12 +475,12 @@ SmlModifier
  **********************************************************************************************************************/
 
 QualifiedName
-	: ID ('.' ID)*
-	;
+    : ID ('.' ID)*
+    ;
 
 QualifiedNameWithWildcard
-	: QualifiedName '.*'?
-	;
+    : QualifiedName '.*'?
+    ;
 
 
 
@@ -470,15 +489,15 @@ QualifiedNameWithWildcard
  **********************************************************************************************************************/
 
 SmlType
-	: SmlPrimaryType =>({SmlMemberType.receiver=current} '.' member=SmlNamedType)*
-	;
+    : SmlPrimaryType =>({SmlMemberType.receiver=current} '.' member=SmlNamedType)*
+    ;
 
 SmlPrimaryType returns SmlType
-	: SmlCallableType
-	| SmlNamedType
-	| SmlUnionType
-	| SmlParenthesizedType
-	;
+    : SmlCallableType
+    | SmlNamedType
+    | SmlUnionType
+    | SmlParenthesizedType
+    ;
 
 SmlParenthesizedType
     : '(' type=SmlType ')'
@@ -487,83 +506,83 @@ SmlParenthesizedType
 // Callable Types ------------------------------------------------------------------------------------------------------
 
 SmlCallableType
-	: 'callable'
-	  parameterList=SmlParameterList
-	  resultList=SmlResultList
-	;
+    : 'callable'
+      parameterList=SmlParameterList
+      resultList=SmlResultList
+    ;
 
 
 // Named Types ---------------------------------------------------------------------------------------------------------
 
 SmlNamedType
-	: declaration=[SmlNamedTypeDeclaration]
-	  typeArgumentList=SmlTypeArgumentList?
-	  (nullable?='?')?
-	;
+    : declaration=[SmlNamedTypeDeclaration]
+      typeArgumentList=SmlTypeArgumentList?
+      (nullable?='?')?
+    ;
 
 
 // Union Types ---------------------------------------------------------------------------------------------------------
 
 SmlUnionType
-	: 'union' typeArgumentList=SmlUnionTypeArgumentList
-	;
+    : 'union' typeArgumentList=SmlUnionTypeArgumentList
+    ;
 
 SmlUnionTypeArgumentList returns SmlTypeArgumentList
-	: {SmlTypeArgumentList} ('<' (typeArguments+=SmlUnionTypeArgument (',' typeArguments+=SmlUnionTypeArgument)* ','?)? '>')
-	;
+    : {SmlTypeArgumentList} ('<' (typeArguments+=SmlUnionTypeArgument (',' typeArguments+=SmlUnionTypeArgument)* ','?)? '>')
+    ;
 
 SmlUnionTypeArgument returns SmlTypeArgument
-	: value=SmlUnionTypeArgumentValue
-	;
+    : value=SmlUnionTypeArgumentValue
+    ;
 
 SmlUnionTypeArgumentValue returns SmlTypeArgumentValue
-	: {SmlTypeProjection} type=SmlType
-	;
+    : {SmlTypeProjection} type=SmlType
+    ;
 
 
 // Generics ------------------------------------------------------------------------------------------------------------
 
 SmlTypeParameterList
-	: {SmlTypeParameterList} ('<' (typeParameters+=SmlTypeParameter (',' typeParameters+=SmlTypeParameter)* ','?)? '>')
-	;
+    : {SmlTypeParameterList} ('<' (typeParameters+=SmlTypeParameter (',' typeParameters+=SmlTypeParameter)* ','?)? '>')
+    ;
 
 SmlTypeParameter
-	: annotations+=SmlAnnotationUse*
-	  modifiers+=SmlModifier*
-	  variance=SmlTypeParameterVariance?
-	  name=ID
-	;
+    : annotations+=SmlAnnotationUse*
+      modifiers+=SmlModifier*
+      variance=SmlTypeParameterVariance?
+      name=ID
+    ;
 
 SmlTypeParameterVariance
-	: 'in'
-	| 'out'
-	;
+    : 'in'
+    | 'out'
+    ;
 
 SmlTypeParameterConstraintList
-	: 'where' constraints+=SmlTypeParameterConstraint (',' constraints+=SmlTypeParameterConstraint)* ','?
-	;
+    : 'where' constraints+=SmlTypeParameterConstraint (',' constraints+=SmlTypeParameterConstraint)* ','?
+    ;
 
 SmlTypeParameterConstraint
-	: leftOperand=[SmlTypeParameter] operator=SmlTypeParameterConstraintOperator rightOperand=SmlType
-	;
+    : leftOperand=[SmlTypeParameter] operator=SmlTypeParameterConstraintOperator rightOperand=SmlType
+    ;
 
 SmlTypeParameterConstraintOperator
-	: 'sub'
-	| 'super'
-	;
+    : 'sub'
+    | 'super'
+    ;
 
 SmlTypeArgumentList
-	: {SmlTypeArgumentList} '<' (typeArguments+=SmlTypeArgument (',' typeArguments+=SmlTypeArgument)* ','?)? '>'
-	;
+    : {SmlTypeArgumentList} '<' (typeArguments+=SmlTypeArgument (',' typeArguments+=SmlTypeArgument)* ','?)? '>'
+    ;
 
 SmlTypeArgument
-	: (typeParameter=[SmlTypeParameter] '=')? value=SmlTypeArgumentValue
-	;
+    : (typeParameter=[SmlTypeParameter] '=')? value=SmlTypeArgumentValue
+    ;
 
 SmlTypeArgumentValue
-	: {SmlStarProjection} '*'
-	| {SmlTypeProjection} variance=SmlTypeParameterVariance? type=SmlType
-	;
+    : {SmlStarProjection} '*'
+    | {SmlTypeProjection} variance=SmlTypeParameterVariance? type=SmlType
+    ;
 
 
 
@@ -572,34 +591,76 @@ SmlTypeArgumentValue
  **********************************************************************************************************************/
 
 terminal FLOAT returns ecore::EDouble
-	: ('0'..'9')+ '.' ('0'..'9')+
-	;
+    : ('0'..'9')+ '.' ('0'..'9')+
+    ;
 
 terminal ID
-	: ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*
-	;
+    : ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*
+    ;
 
 terminal INT returns ecore::EInt
-	: ('0'..'9')+
-	;
+    : ('0'..'9')+
+    ;
 
 terminal ML_COMMENT
-	: '/*' -> '*/'
-	;
+    : '/*' -> '*/'
+    ;
 
 terminal SL_COMMENT
-	: '//' !('\n'|'\r')* ('\r'? '\n')?
-	;
+    : '//' !('\r'|'\n')* ('\r'? '\n')?
+    ;
 
 terminal STRING
-	: '"' ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|'"') )* '"'
-	;
+    : STRING_DELIMITER
+      STRING_TEXT*
+      STRING_DELIMITER
+    ;
+
+terminal fragment STRING_DELIMITER
+    : '"'
+    ;
+
+terminal fragment STRING_TEXT
+    : ESCAPE_SEQUENCE
+    | '{' !'{'
+    | !('\\'|STRING_DELIMITER|'{')
+    ;
+
+terminal fragment ESCAPE_SEQUENCE
+    : '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */
+    ;
+
+terminal fragment TEMPLATE_EXPRESSION_START
+    : '{{'
+    ;
+
+terminal fragment TEMPLATE_EXPRESSION_END
+    : '}}'
+    ;
+
+terminal TEMPLATE_STRING_START
+    : STRING_DELIMITER
+      STRING_TEXT*
+      TEMPLATE_EXPRESSION_START
+    ;
+
+terminal TEMPLATE_STRING_INBETWEEN
+    : TEMPLATE_EXPRESSION_END
+      STRING_TEXT*
+      TEMPLATE_EXPRESSION_START
+    ;
+
+terminal TEMPLATE_STRING_END
+    : TEMPLATE_EXPRESSION_END
+      STRING_TEXT*
+      STRING_DELIMITER
+    ;
 
 terminal TEST_MARKER
-	: '»'
-	| '«'
-	;
+    : '»'
+    | '«'
+    ;
 
 terminal WS
-	: (' '|'\t'|'\r'|'\n')+
-	;
+    : (' '|'\t'|'\r'|'\n')+
+    ;

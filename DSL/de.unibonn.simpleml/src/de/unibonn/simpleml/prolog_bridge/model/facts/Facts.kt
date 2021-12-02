@@ -37,6 +37,8 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStarProjection
 import de.unibonn.simpleml.simpleML.SmlStatement
 import de.unibonn.simpleml.simpleML.SmlString
+import de.unibonn.simpleml.simpleML.SmlTemplateString
+import de.unibonn.simpleml.simpleML.SmlTemplateStringPart
 import de.unibonn.simpleml.simpleML.SmlType
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentValue
@@ -1151,8 +1153,7 @@ data class ReferenceT(
     override val parent: Id<EObject>,
     override val enclosing: Id<EObject>,
     val symbol: Id<SmlDeclaration>
-) :
-    ExpressionT("referenceT", id, parent, enclosing, symbol) {
+) : ExpressionT("referenceT", id, parent, enclosing, symbol) {
     override fun toString() = super.toString()
 }
 
@@ -1176,8 +1177,55 @@ data class StringT(
     override val parent: Id<EObject>,
     override val enclosing: Id<EObject>,
     val value: String
-) :
-    ExpressionT("stringT", id, parent, enclosing, value) {
+) : ExpressionT("stringT", id, parent, enclosing, value) {
+    override fun toString() = super.toString()
+}
+
+/**
+ * This Prolog fact represents string literals.
+ *
+ * @param id
+ * The ID of this fact.
+ *
+ * @param parent
+ * The ID of the fact for the logical parent, e.g. a call.
+ *
+ * @param enclosing
+ * The ID of the fact for closest ancestor that is not an expression.
+ *
+ * @param expressions
+ * Template string parts and template expresions.
+ */
+data class TemplateStringT(
+    override val id: Id<SmlTemplateString>,
+    override val parent: Id<EObject>,
+    override val enclosing: Id<EObject>,
+    val expressions: List<Id<SmlExpression>>
+) : ExpressionT("templateStringT", id, parent, enclosing, expressions) {
+    override fun toString() = super.toString()
+}
+
+/**
+ * This Prolog fact represents string literals.
+ *
+ * @param id
+ * The ID of this fact.
+ *
+ * @param parent
+ * The ID of the fact for the logical parent, e.g. a call.
+ *
+ * @param enclosing
+ * The ID of the fact for closest ancestor that is not an expression.
+ *
+ * @param value
+ * The value of the template string part.
+ */
+data class TemplateStringPartT(
+    override val id: Id<SmlTemplateStringPart>,
+    override val parent: Id<EObject>,
+    override val enclosing: Id<EObject>,
+    val value: String
+) : ExpressionT("templateStringPartT", id, parent, enclosing, value) {
     override fun toString() = super.toString()
 }
 
@@ -1531,7 +1579,8 @@ data class ModifierT(override val target: Id<SmlDeclaration>, val modifier: Stri
  * @param uri
  * The resource URI of the compilation unit.
  */
-data class ResourceS(override val target: Id<SmlCompilationUnit>, val uri: String) : Relation("resourceS", target, uri) {
+data class ResourceS(override val target: Id<SmlCompilationUnit>, val uri: String) :
+    Relation("resourceS", target, uri) {
     override fun toString() = super.toString()
 }
 

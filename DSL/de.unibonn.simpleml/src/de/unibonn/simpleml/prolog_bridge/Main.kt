@@ -3,7 +3,7 @@ package de.unibonn.simpleml.prolog_bridge
 import com.google.inject.Inject
 import com.google.inject.Provider
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
-import de.unibonn.simpleml.prolog_bridge.converters.SimpleMLAstToPrologFactbase
+import de.unibonn.simpleml.prolog_bridge.converters.AstToPrologFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.utils.SimpleMLStdlib
@@ -18,10 +18,10 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 class Main @Inject constructor(
-        private val prologVisitor: SimpleMLAstToPrologFactbase,
-        private val resourceSetProvider: Provider<ResourceSet>,
-        private val stdlib: SimpleMLStdlib,
-        private val validator: IResourceValidator
+    private val prologVisitor: AstToPrologFactbase,
+    private val resourceSetProvider: Provider<ResourceSet>,
+    private val stdlib: SimpleMLStdlib,
+    private val validator: IResourceValidator
 ) {
 
     fun createFactbase(file: String): PlFactbase {
@@ -64,12 +64,12 @@ fun main() {
 
     Files.write(Paths.get("prolog_facts.pl"), factbase.toString().toByteArray())*/
 
-    //TESTING ALL ELEMENTS
+    // TESTING ALL ELEMENTS
     val injector = SimpleMLStandaloneSetup().createInjectorAndDoEMFRegistration()
     val main = injector.getInstance(Main::class.java)
 
     File("testPrologVisitor").walkTopDown().forEach {
-        if(it.isFile) {
+        if (it.isFile) {
             val factbase = main.createFactbase(it.absolutePath)
             val path = ("PrologFacts/" + it.path).replace(it.name, "")
             Files.createDirectories(Paths.get(path))
@@ -77,7 +77,6 @@ fun main() {
         }
     }
 
-
     val time1 = System.currentTimeMillis()
-    println((time1 - time0)/1000.0)
+    println((time1 - time0) / 1000.0)
 }

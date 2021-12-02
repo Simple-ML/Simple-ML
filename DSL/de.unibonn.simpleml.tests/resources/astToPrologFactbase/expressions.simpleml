@@ -68,6 +68,12 @@ workflow myWorkflowWithParenthesizedExpression {
 }
 
 
+// Template strings ----------------------------------------------------------------------------------------------------
+workflow myWorkflowWithTemplateString {
+    "prefix {{ 1 }} infix {{ 1 }} suffix";
+}
+
+
 // References ----------------------------------------------------------------------------------------------------------
 workflow myWorkflowWithResolvableReference {
     val a = 1;
