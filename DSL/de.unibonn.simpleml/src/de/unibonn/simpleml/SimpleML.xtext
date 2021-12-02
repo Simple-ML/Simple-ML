@@ -398,6 +398,15 @@ SmlLiteral returns SmlExpression
     | SmlString
     ;
 
+SmlSimpleLiteral returns SmlLiteral
+    : SmlBoolean
+    | SmlFloat
+    | SmlInt
+    | SmlNull
+    | SmlSimpleString
+    ;
+    
+
 SmlBoolean returns SmlExpression
     : true?='true'
     | {SmlBoolean} 'false'
@@ -416,46 +425,30 @@ SmlNull returns SmlExpression
     ;
 
 SmlString returns SmlExpression
-    : expressions+=SmlStringLiteral
+    : expressions+=SmlStringFull 
+    | expressions+=SmlStringStart expressions+=SmlExpression?
+      (expressions+=SmlStringInbetween expressions+=SmlExpression?)*
+      expressions+=SmlStringEnd
     ;
 
-SmlStringFull returns SmlExpression
+SmlStringFull returns SmlStringPart
     : value=STRING_FULL
     ;
 
-SmlStringStart returns SmlExpression
-    : value=_STRING_START
+SmlStringStart returns SmlStringPart
+    : value=STRING_START
     ;
 
-SmlStringInbetween returns SmlExpression
+SmlStringInbetween returns SmlStringPart
     : value=STRING_INBETWEEN
     ;
 
-SmlStringEnd returns SmlExpression
+SmlStringEnd returns SmlStringPart
     : value=STRING_END
     ;
 
-SmlMultilineString returns SmlExpression
-    : expressions+=SmlMultilineStringFull 
-    | expressions+=SmlMultilineStringLiteralStart expressions+=SmlExpression?
-      (expressions+=SmlMultilineStringLiteralInbetween expressions+=SmlExpression?)*
-      expressions+=SmlMultilineStringLiteralEnd
-    ;
-
-SmlMultilineStringFull returns SmlExpression
-    : value=MULTILINE_STRING_FULL
-    ;
-
-SmlMultilineStringStart returns SmlExpression
-    : value=MULTILINE_STRING_START
-    ;
-
-SmlMultilineStringInbetween returns SmlExpression
-    : value=MULTILINE_STRING_INBETWEEN
-    ;
-
-SmlMultilineStringEnd returns SmlExpression
-    : value=MULTILINE_STRING_END
+SmlSimpleString returns SmlString
+    : expressions+=SmlStringFull
     ;
 
 SmlReference returns SmlExpression
@@ -472,7 +465,7 @@ SmlParenthesizedExpression returns SmlExpression
  **********************************************************************************************************************/
 
 SmlConstantExpression returns SmlExpression
-    : SmlLiteral
+    : SmlSimpleLiteral
     ;
 
 
@@ -660,44 +653,7 @@ terminal fragment STRING_DELIMITER
 
 terminal fragment STRING_TEXT
     : ESCAPE_SEQUENCE
-    | !('\\'|'"'|TEMPLATE_EXPRESSION_START)
-    ;
-
-terminal MULTILINE_STRING_FULL
-    : MULTILINE_STRING_DELIMITER
-      MULTILINE_STRING_TEXT*
-      MULTILINE_STRING_DELIMITER
-    ;
-
-terminal MULTILINE_STRING_START
-    : MULTILINE_STRING_DELIMITER
-      MULTILINE_STRING_TEXT*
-      ('"' '"'?)?
-      TEMPLATE_EXPRESSION_START
-    ;
-
-terminal MULTILINE_STRING_INBETWEEN
-    : TEMPLATE_EXPRESSION_END
-      MULTILINE_STRING_TEXT*
-      ('"' '"'?)?
-      TEMPLATE_EXPRESSION_START
-    ;
-
-terminal MULTILINE_STRING_END
-    : TEMPLATE_EXPRESSION_END
-      MULTILINE_STRING_TEXT*
-      MULTILINE_STRING_DELIMITER
-    ;
-
-terminal fragment MULTILINE_STRING_DELIMITER
-    : '"""'
-    ;
-
-terminal fragment MULTILINE_STRING_TEXT
-    : ESCAPE_SEQUENCE
-    | '""' !('"'|TEMPLATE_EXPRESSION_START)
-    | '"'  !('"'|TEMPLATE_EXPRESSION_START)
-    | !('\\'|'"'|TEMPLATE_EXPRESSION_START)
+    | !('\\'|STRING_DELIMITER|TEMPLATE_EXPRESSION_START)
     ;
 
 terminal fragment ESCAPE_SEQUENCE
@@ -705,7 +661,7 @@ terminal fragment ESCAPE_SEQUENCE
     ;
 
 terminal fragment TEMPLATE_EXPRESSION_START
-    : '{'
+    : '${'
     ;
 
 terminal fragment TEMPLATE_EXPRESSION_END
