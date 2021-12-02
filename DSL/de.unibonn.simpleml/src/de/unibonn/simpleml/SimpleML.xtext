@@ -170,7 +170,7 @@ SmlParameter
       modifiers+=SmlModifier*
       vararg?='vararg'?
       name=ID (':' type=SmlType)?
-      ('or' defaultValue=SmlConstantExpression)?
+      ('or' defaultValue=SmlExpression)?
     ;
 
 SmlSimpleParameterList returns SmlParameterList
