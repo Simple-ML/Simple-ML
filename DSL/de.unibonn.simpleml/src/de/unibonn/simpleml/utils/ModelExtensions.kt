@@ -229,7 +229,7 @@ fun SmlDeclaration.isCompilationUnitMember(): Boolean {
                 this is SmlWorkflowStep
             )
 }
-fun SmlDeclaration?.annotationsOrEmpty() = this?.annotationList?.annotations.orEmpty()
+fun SmlDeclaration?.annotationsOrEmpty() = this?.annotationHolder?.annotations ?: this?.annotations.orEmpty()
 
 // Assignment ----------------------------------------------------------------------------------------------------------
 

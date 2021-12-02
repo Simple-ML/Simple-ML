@@ -1,0 +1,5 @@
+// syntax_error
+
+enum TestEnum {
+    TestEnumVariant<TYPE_PARAMETER_IN_SAME_ENUM_VARIANT>
+    where TYPE_PARAMETER_IN_SAME_ENUM_VARIANT sub Int

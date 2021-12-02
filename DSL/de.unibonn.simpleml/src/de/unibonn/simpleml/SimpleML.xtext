@@ -31,46 +31,43 @@ SmlImportAlias
     ;
 
 SmlCompilationUnitMember returns SmlDeclaration
-    : SmlAnnotationUseList
+    : {SmlDeclaration} annotations+=SmlAnnotationUse*
 
-    ( {SmlAnnotation.annotationList=current}
+    ( {SmlAnnotation.annotationHolder=current}
           modifiers+=SmlModifier*
           'annotation' name=ID
           parameterList=SmlParameterList?
 
-    | {SmlClass.annotationList=current}
+    | {SmlClass.annotationHolder=current}
           modifiers+=SmlModifier*
-          'class'
-          name=ID
+          'class' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
           parentTypeList=SmlParentTypeList?
           typeParameterConstraintList=SmlTypeParameterConstraintList?
           body=SmlClassBody?
 
-    | {SmlEnum.annotationList=current}
+    | {SmlEnum.annotationHolder=current}
           modifiers+=SmlModifier*
           'enum' name=ID
           body=SmlEnumBody?
 
-    | {SmlFunction.annotationList=current}
+    | {SmlFunction.annotationHolder=current}
           modifiers+=SmlModifier*
-          'fun'
-          name=ID
+          'fun' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList
           resultList=SmlResultList?
           typeParameterConstraintList=SmlTypeParameterConstraintList?
 
-    | {SmlWorkflow.annotationList=current}
+    | {SmlWorkflow.annotationHolder=current}
           modifiers+=SmlModifier*
           'workflow' name=ID
           body=SmlBlock
 
-    | {SmlWorkflowStep.annotationList=current}
+    | {SmlWorkflowStep.annotationHolder=current}
           modifiers+=SmlModifier*
-          'step'
-          name=ID
+          'step' name=ID
           parameterList=SmlParameterList
           resultList=SmlWorkflowStepResultList?
           body=SmlBlock
@@ -79,10 +76,6 @@ SmlCompilationUnitMember returns SmlDeclaration
 
 
 // Annotations ---------------------------------------------------------------------------------------------------------
-
-SmlAnnotationUseList
-    : {SmlAnnotationUseList} annotations+=SmlAnnotationUse*
-    ;
 
 SmlAnnotationUse
     : '@' annotation=[SmlAnnotation] argumentList=SmlAnnotationUseArgumentList?
@@ -121,31 +114,29 @@ SmlClassBody
     ;
 
 SmlClassMember returns SmlDeclaration
-    : SmlAnnotationUseList
+    : {SmlDeclaration} annotations+=SmlAnnotationUse*
 
-    ( {SmlAttribute.annotationList=current}
+    ( {SmlAttribute.annotationHolder=current}
           modifiers+=SmlModifier*
           'attr' name=ID (':' type=SmlType)?
 
-    | {SmlClass.annotationList=current}
+    | {SmlClass.annotationHolder=current}
           modifiers+=SmlModifier*
-          'class'
-          name=ID
+          'class' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
           parentTypeList=SmlParentTypeList?
           typeParameterConstraintList=SmlTypeParameterConstraintList?
           body=SmlClassBody?
 
-    | {SmlEnum.annotationList=current}
+    | {SmlEnum.annotationHolder=current}
           modifiers+=SmlModifier*
           'enum' name=ID
           body=SmlEnumBody?
 
-    | {SmlFunction.annotationList=current}
+    | {SmlFunction.annotationHolder=current}
           modifiers+=SmlModifier*
-          'fun'
-          name=ID
+          'fun' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList
           resultList=SmlResultList?
@@ -161,7 +152,7 @@ SmlEnumBody
     ;
 
 SmlEnumVariant
-    : annotationList=SmlAnnotationUseList
+    : annotations+=SmlAnnotationUse*
       modifiers+=SmlModifier*
       name=ID
       typeParameterList=SmlTypeParameterList?
@@ -177,7 +168,7 @@ SmlParameterList
     ;
 
 SmlParameter
-    : annotationList=SmlAnnotationUseList
+    : annotations+=SmlAnnotationUse*
       modifiers+=SmlModifier*
       vararg?='vararg'?
       name=ID (':' type=SmlType)?
@@ -201,7 +192,7 @@ SmlResultList
     ;
 
 SmlResult
-    : annotationList=SmlAnnotationUseList
+    : annotations+=SmlAnnotationUse*
       modifiers+=SmlModifier*
       name=ID (':' type=SmlType)?
     ;
@@ -526,7 +517,7 @@ SmlTypeParameterList
     ;
 
 SmlTypeParameter
-    : annotationList=SmlAnnotationUseList
+    : annotations+=SmlAnnotationUse*
       modifiers+=SmlModifier*
       variance=SmlTypeParameterVariance?
       name=ID
