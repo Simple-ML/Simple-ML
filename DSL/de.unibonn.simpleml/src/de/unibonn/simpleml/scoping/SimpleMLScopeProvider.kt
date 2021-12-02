@@ -9,6 +9,7 @@ import de.unibonn.simpleml.simpleML.SmlArgumentList
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlBlock
 import de.unibonn.simpleml.simpleML.SmlCall
+import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlLambda
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
@@ -33,6 +34,7 @@ import de.unibonn.simpleml.typing.TypeComputer
 import de.unibonn.simpleml.utils.ClassHierarchy
 import de.unibonn.simpleml.utils.closestAncestorOrNull
 import de.unibonn.simpleml.utils.compilationUnitOrNull
+import de.unibonn.simpleml.utils.containingClassOrNull
 import de.unibonn.simpleml.utils.isStatic
 import de.unibonn.simpleml.utils.membersOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
@@ -44,6 +46,7 @@ import de.unibonn.simpleml.utils.variantsOrEmpty
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.FilteringScope
@@ -56,7 +59,8 @@ import org.eclipse.xtext.scoping.impl.FilteringScope
  */
 class SimpleMLScopeProvider @Inject constructor(
     private val classHierarchy: ClassHierarchy,
-    private val typeComputer: TypeComputer
+    private val typeComputer: TypeComputer,
+    private val qualifiedNameProvider: IQualifiedNameProvider
 ) : AbstractSimpleMLScopeProvider() {
 
     override fun getScope(context: EObject, reference: EReference): IScope {
@@ -89,15 +93,24 @@ class SimpleMLScopeProvider @Inject constructor(
             else -> {
                 val resource = context.eResource()
 
-                val externalDeclarations = FilteringScope(
+                // Declarations in other files
+                var result: IScope = FilteringScope(
                     super.delegateGetScope(context, SimpleMLPackage.Literals.SML_REFERENCE__DECLARATION)
                 ) {
                     // Keep only external declarations, since this also includes all local declarations
                     it != null && it.eObjectOrProxy.eResource() != resource && it.eObjectOrProxy !is SmlAnnotation
                 }
-                val declarationsInThisFile = declarationsInThisFile(resource, externalDeclarations)
 
-                locals(context, declarationsInThisFile)
+                // Declarations in this file
+                result = declarationsInSameFile(resource, result)
+
+                // Declarations in containing classes
+                context.containingClassOrNull()?.let {
+                    result = classMembers(it, result)
+                }
+
+                // Declarations in containing blocks
+                localDeclarations(context, result)
             }
         }
     }
@@ -143,23 +156,7 @@ class SimpleMLScopeProvider @Inject constructor(
         }
     }
 
-    private fun locals(context: EObject, globalScope: IScope): IScope {
-        val containingStatement = context.closestAncestorOrNull<SmlStatement>()
-        val containingBlock = containingStatement?.closestAncestorOrNull<SmlBlock>() ?: return IScope.NULLSCOPE
-
-        val placeholders = containingBlock.placeholdersUpTo(containingStatement)
-
-        return when (val callable = containingBlock.eContainer()) {
-            is SmlLambda -> Scopes.scopeFor(
-                placeholders + callable.parametersOrEmpty(),
-                locals(callable, globalScope)
-            )
-            is SmlWorkflowStep -> Scopes.scopeFor(placeholders + callable.parametersOrEmpty(), globalScope)
-            else -> Scopes.scopeFor(placeholders, globalScope)
-        }
-    }
-
-    private fun declarationsInThisFile(resource: Resource, externalDeclarations: IScope): IScope {
+    private fun declarationsInSameFile(resource: Resource, parentScope: IScope): IScope {
         val members = resource.compilationUnitOrNull()
             ?.members
             ?.filter { it !is SmlAnnotation && it !is SmlWorkflow }
@@ -167,8 +164,31 @@ class SimpleMLScopeProvider @Inject constructor(
 
         return Scopes.scopeFor(
             members,
-            externalDeclarations
+            parentScope
         )
+    }
+
+    private fun classMembers(context: SmlClass, parentScope: IScope): IScope {
+        return when (val containingClassOrNull = context.containingClassOrNull()) {
+            is SmlClass -> Scopes.scopeFor(context.membersOrEmpty(), classMembers(containingClassOrNull, parentScope))
+            else -> Scopes.scopeFor(context.membersOrEmpty(), parentScope)
+        }
+    }
+
+    private fun localDeclarations(context: EObject, parentScope: IScope): IScope {
+        val containingStatement = context.closestAncestorOrNull<SmlStatement>()
+        val containingBlock = containingStatement?.closestAncestorOrNull<SmlBlock>() ?: return parentScope
+
+        val placeholders = containingBlock.placeholdersUpTo(containingStatement)
+
+        return when (val callable = containingBlock.eContainer()) {
+            is SmlLambda -> Scopes.scopeFor(
+                placeholders + callable.parametersOrEmpty(),
+                localDeclarations(callable, parentScope)
+            )
+            is SmlWorkflowStep -> Scopes.scopeFor(placeholders + callable.parametersOrEmpty(), parentScope)
+            else -> Scopes.scopeFor(placeholders, parentScope)
+        }
     }
 
     private fun SmlBlock.placeholdersUpTo(containingStatement: SmlStatement): List<SmlPlaceholder> {

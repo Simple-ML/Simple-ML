@@ -4,7 +4,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="SmlDeclaration" abstract="false">
     <eStructuralFeatures xsi:type="ecore:EReference" name="annotations" upperBound="-1"
         eType="#//SmlAnnotationUse" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="annotationHolder" eType="#//SmlAnnotationHolder"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="annotationHolder" eType="#//SmlAnnotationUseHolder"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="modifiers" unique="false"
         upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -13,11 +13,11 @@
   <eClassifiers xsi:type="ecore:EClass" name="SmlLocalVariable" abstract="true" eSuperTypes="#//SmlDeclaration"/>
   <eClassifiers xsi:type="ecore:EClass" name="SmlNamedTypeDeclaration" abstract="true"
       eSuperTypes="#//SmlDeclaration"/>
-  <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotationHolder" eSuperTypes="#//SmlDeclaration"/>
   <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotation" eSuperTypes="#//SmlDeclaration">
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotationUseHolder" eSuperTypes="#//SmlDeclaration"/>
   <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotationUse">
     <eStructuralFeatures xsi:type="ecore:EReference" name="annotation" eType="#//SmlAnnotation"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="argumentList" eType="#//SmlArgumentList"

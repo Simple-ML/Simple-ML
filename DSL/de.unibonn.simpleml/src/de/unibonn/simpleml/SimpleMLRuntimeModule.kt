@@ -1,12 +1,14 @@
 package de.unibonn.simpleml
 
 import com.google.inject.Binder
-import com.google.inject.binder.ScopedBindingBuilder
 import com.google.inject.name.Names
+import de.unibonn.simpleml.naming.SimpleMLQualifiedNameProvider
 import de.unibonn.simpleml.resource.SimpleMLResourceDescriptionStrategy
 import de.unibonn.simpleml.scoping.SimpleMLImportedNamespaceAwareLocalScopeProvider
 import de.unibonn.simpleml.serializer.SimpleMLCrossReferenceSerializer
 import de.unibonn.simpleml.serializer.SimpleMLHiddenTokenSequencer
+import org.eclipse.xtext.naming.DefaultDeclarativeQualifiedNameProvider
+import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.resource.IDefaultResourceDescriptionStrategy
 import org.eclipse.xtext.scoping.IScopeProvider
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
@@ -28,6 +30,10 @@ open class SimpleMLRuntimeModule : AbstractSimpleMLRuntimeModule() {
 
     fun bindIHiddenTokenSequencer(): Class<out IHiddenTokenSequencer> {
         return SimpleMLHiddenTokenSequencer::class.java
+    }
+
+    override fun bindIQualifiedNameProvider(): Class<out IQualifiedNameProvider?>? {
+        return SimpleMLQualifiedNameProvider::class.java
     }
 
     override fun configureIScopeProviderDelegate(binder: Binder) {

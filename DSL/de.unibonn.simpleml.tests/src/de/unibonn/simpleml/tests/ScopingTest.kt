@@ -1314,7 +1314,7 @@ class ScopingTest {
             fun `should resolve enum variants of nested enum from class annotation`() = withResource(REFERENCE) {
                 val parameter = findUniqueDeclarationOrFail<SmlClass>("ReferencesToEnumVariantsInnerClass")
                 val enumVariantInSameFile =
-                    findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameFile")
+                    findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameClass")
 
                 val annotations = parameter.annotationsOrEmpty()
                 annotations.shouldHaveSize(2)
@@ -1331,12 +1331,12 @@ class ScopingTest {
             fun `should resolve enum variants of global enum from class annotation`() = withResource(REFERENCE) {
                 val parameter = findUniqueDeclarationOrFail<SmlClass>("ReferencesToEnumVariantsInnerClass")
                 val enumVariantInSameClass =
-                    findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameClass")
+                    findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameFile")
 
                 val annotations = parameter.annotationsOrEmpty()
                 annotations.shouldHaveSize(2)
 
-                val references = annotations[0].descendants<SmlReference>().toList()
+                val references = annotations[1].descendants<SmlReference>().toList()
                 references.shouldHaveSize(2)
 
                 val declaration = references[1].declaration
