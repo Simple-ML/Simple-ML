@@ -386,76 +386,63 @@ SmlCallArgument returns SmlArgument
 SmlPrimaryExpression returns SmlExpression
     : SmlLambda
     | SmlLiteral
-    | SmlReference
     | SmlParenthesizedExpression
+    | SmlReference
+    | SmlTemplateString
     ;
 
-SmlLiteral returns SmlExpression
+SmlLiteral
     : SmlBoolean
     | SmlFloat
     | SmlInt
     | SmlNull
     | SmlString
-    ;
+    ;    
 
-SmlSimpleLiteral returns SmlLiteral
-    : SmlBoolean
-    | SmlFloat
-    | SmlInt
-    | SmlNull
-    | SmlSimpleString
-    ;
-    
-
-SmlBoolean returns SmlExpression
+SmlBoolean
     : true?='true'
     | {SmlBoolean} 'false'
     ;
 
-SmlFloat returns SmlExpression
+SmlFloat
     : value=FLOAT
     ;
 
-SmlInt returns SmlExpression
+SmlInt
     : value=INT
     ;
 
-SmlNull returns SmlExpression
+SmlNull
     : {SmlNull} 'null'
     ;
 
-SmlString returns SmlExpression
-    : expressions+=SmlStringFull 
-    | expressions+=SmlStringStart expressions+=SmlExpression?
-      (expressions+=SmlStringInbetween expressions+=SmlExpression?)*
-      expressions+=SmlStringEnd
+SmlString
+    : value=STRING
     ;
 
-SmlStringFull returns SmlStringPart
-    : value=STRING_FULL
+SmlTemplateString
+    : expressions+=SmlTemplateStringStart expressions+=SmlExpression?
+      (expressions+=SmlTemplateStringInbetween expressions+=SmlExpression?)*
+      expressions+=SmlTemplateStringEnd
     ;
 
-SmlStringStart returns SmlStringPart
-    : value=STRING_START
+SmlTemplateStringStart returns SmlTemplateStringPart
+    : value=TEMPLATE_STRING_START
     ;
 
-SmlStringInbetween returns SmlStringPart
-    : value=STRING_INBETWEEN
+SmlTemplateStringInbetween returns SmlTemplateStringPart
+    : value=TEMPLATE_STRING_INBETWEEN
     ;
 
-SmlStringEnd returns SmlStringPart
-    : value=STRING_END
+SmlTemplateStringEnd returns SmlTemplateStringPart
+    : value=TEMPLATE_STRING_END
     ;
 
-SmlSimpleString returns SmlString
-    : expressions+=SmlStringFull
-    ;
-
-SmlReference returns SmlExpression
+SmlReference
     : declaration=[SmlDeclaration]
     ;
 
-SmlParenthesizedExpression returns SmlExpression
+SmlParenthesizedExpression
     : '(' expression=SmlExpression ')'
     ;
 
@@ -465,7 +452,7 @@ SmlParenthesizedExpression returns SmlExpression
  **********************************************************************************************************************/
 
 SmlConstantExpression returns SmlExpression
-    : SmlSimpleLiteral
+    : SmlLiteral
     ;
 
 
@@ -623,26 +610,8 @@ terminal SL_COMMENT
     : '//' !('\r'|'\n')* ('\r'? '\n')?
     ;
 
-terminal STRING_FULL
+terminal STRING
     : STRING_DELIMITER
-      STRING_TEXT*
-      STRING_DELIMITER
-    ;
-
-terminal STRING_START
-    : STRING_DELIMITER
-      STRING_TEXT*
-      TEMPLATE_EXPRESSION_START
-    ;
-
-terminal STRING_INBETWEEN
-    : TEMPLATE_EXPRESSION_END
-      STRING_TEXT*
-      TEMPLATE_EXPRESSION_START
-    ;
-
-terminal STRING_END
-    : TEMPLATE_EXPRESSION_END
       STRING_TEXT*
       STRING_DELIMITER
     ;
@@ -661,11 +630,29 @@ terminal fragment ESCAPE_SEQUENCE
     ;
 
 terminal fragment TEMPLATE_EXPRESSION_START
-    : '${'
+    : '{'
     ;
 
 terminal fragment TEMPLATE_EXPRESSION_END
     : '}'
+    ;
+
+terminal TEMPLATE_STRING_START
+    : STRING_DELIMITER
+      STRING_TEXT*
+      TEMPLATE_EXPRESSION_START
+    ;
+
+terminal TEMPLATE_STRING_INBETWEEN
+    : TEMPLATE_EXPRESSION_END
+      STRING_TEXT*
+      TEMPLATE_EXPRESSION_START
+    ;
+
+terminal TEMPLATE_STRING_END
+    : TEMPLATE_EXPRESSION_END
+      STRING_TEXT*
+      STRING_DELIMITER
     ;
 
 terminal TEST_MARKER

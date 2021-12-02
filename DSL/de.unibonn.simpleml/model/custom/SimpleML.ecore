@@ -152,6 +152,13 @@
   <eClassifiers xsi:type="ecore:EClass" name="SmlString" eSuperTypes="#//SmlLiteral">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SmlTemplateString" eSuperTypes="#//SmlExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expressions" upperBound="-1"
+        eType="#//SmlExpression" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SmlTemplateStringPart" eSuperTypes="#//SmlLiteral">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlLambda" eSuperTypes="#//SmlExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlBlock"
         containment="true"/>
