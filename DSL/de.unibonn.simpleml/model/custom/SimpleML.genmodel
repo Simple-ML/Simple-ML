@@ -7,7 +7,7 @@
   <genPackages prefix="SimpleML" basePackage="de.unibonn.simpleml" disposableProviderFactory="true"
       fileExtensions="simpleml" ecorePackage="SimpleML.ecore#/">
     <genClasses ecoreClass="SimpleML.ecore#//SmlDeclaration">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlDeclaration/annotations"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlDeclaration/annotationList"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlDeclaration/modifiers"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlDeclaration/name"/>
     </genClasses>
@@ -15,6 +15,9 @@
     <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlNamedTypeDeclaration"/>
     <genClasses ecoreClass="SimpleML.ecore#//SmlAnnotation">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAnnotation/parameterList"/>
+    </genClasses>
+    <genClasses ecoreClass="SimpleML.ecore#//SmlAnnotationUseList">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAnnotationUseList/annotations"/>
     </genClasses>
     <genClasses ecoreClass="SimpleML.ecore#//SmlAnnotationUse">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAnnotationUse/annotation"/>
