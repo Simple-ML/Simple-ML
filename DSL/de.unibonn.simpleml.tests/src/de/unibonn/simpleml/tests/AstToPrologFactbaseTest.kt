@@ -42,6 +42,8 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StarProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
+import de.unibonn.simpleml.prolog_bridge.model.facts.TemplateStringPartT
+import de.unibonn.simpleml.prolog_bridge.model.facts.TemplateStringT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterConstraintT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterT
@@ -63,8 +65,10 @@ import de.unibonn.simpleml.tests.assertions.shouldHaveNAnnotationUses
 import de.unibonn.simpleml.tests.assertions.shouldHaveNModifiers
 import de.unibonn.simpleml.tests.util.getResourcePath
 import io.kotest.assertions.asClue
+import io.kotest.assertions.forEachAsClue
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldBeOneOf
+import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldEndWith
@@ -1167,6 +1171,72 @@ class AstToPrologFactbaseTest {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithLiterals" }
                 val stringT = findUniqueFactOrFail<StringT> { isContainedIn(it, workflowT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == stringT.id }
+            }
+        }
+
+        @Nested
+        inner class TemplateString {
+            @Test
+            fun `should store expressions`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithTemplateString" }
+                val templateStringT = findUniqueFactOrFail<TemplateStringT> { isContainedIn(it, workflowT) }
+                shouldBeNChildExpressionsOf<ExpressionT>(templateStringT.expressions, templateStringT, 5)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithTemplateString" }
+                val templateStringT = findUniqueFactOrFail<TemplateStringT> { isContainedIn(it, workflowT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == templateStringT.id }
+            }
+        }
+
+        @Nested
+        inner class TemplateStringPart {
+            @Test
+            fun `should store value for prefix`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithTemplateString" }
+                val templateStringParts = findFacts<TemplateStringPartT> { isContainedIn(it, workflowT) }
+                templateStringParts.shouldHaveSize(3)
+
+                val prefix = templateStringParts[0]
+                prefix.asClue {
+                    prefix.value shouldBe "prefix "
+                }
+            }
+
+            @Test
+            fun `should store value for infix`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithTemplateString" }
+                val templateStringParts = findFacts<TemplateStringPartT> { isContainedIn(it, workflowT) }
+                templateStringParts.shouldHaveSize(3)
+
+                val prefix = templateStringParts[1]
+                prefix.asClue {
+                    prefix.value shouldBe " infix "
+                }
+            }
+
+            @Test
+            fun `should store value for suffix`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithTemplateString" }
+                val templateStringParts = findFacts<TemplateStringPartT> { isContainedIn(it, workflowT) }
+                templateStringParts.shouldHaveSize(3)
+
+                val prefix = templateStringParts[2]
+                prefix.asClue {
+                    prefix.value shouldBe " suffix"
+                }
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("expressions.simpleml") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithTemplateString" }
+                val templateStringParts = findFacts<TemplateStringPartT> { isContainedIn(it, workflowT) }
+                templateStringParts.shouldHaveSize(3)
+                templateStringParts.forEachAsClue { templateStringPartT ->
+                    findUniqueFactOrFail<SourceLocationS> { it.target == templateStringPartT.id }
+                }
             }
         }
     }
