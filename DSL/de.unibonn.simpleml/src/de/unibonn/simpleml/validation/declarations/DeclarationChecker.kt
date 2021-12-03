@@ -1,6 +1,5 @@
 package de.unibonn.simpleml.validation.declarations
 
-import com.google.inject.Inject
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAttribute
@@ -24,7 +23,6 @@ import de.unibonn.simpleml.utils.isCompilationUnitMember
 import de.unibonn.simpleml.utils.isRequired
 import de.unibonn.simpleml.utils.smlDeprecated
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
-import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.validation.Check
 
 const val DUPLICATE_MODIFIER = "DUPLICATE_MODIFIER"
@@ -32,7 +30,7 @@ const val DEPRECATED_REQUIRED_PARAMETER = "DEPRECATED_REQUIRED_PARAMETER"
 const val INVALID_MODIFIER = "INVALID_MODIFIER"
 const val UNNECESSARY_MODIFIER = "UNNECESSARY_MODIFIER"
 
-class DeclarationChecker: AbstractSimpleMLChecker() {
+class DeclarationChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun annotationModifiers(smlAnnotation: SmlAnnotation) {
@@ -156,10 +154,10 @@ class DeclarationChecker: AbstractSimpleMLChecker() {
 
     private fun SmlDeclaration.shouldCheckDeclarationModifiers(): Boolean {
         return this !is SmlParameter &&
-                this !is SmlResult &&
-                this !is SmlTypeParameter &&
-                this !is SmlWorkflow &&
-                this !is SmlWorkflowStep
+            this !is SmlResult &&
+            this !is SmlTypeParameter &&
+            this !is SmlWorkflow &&
+            this !is SmlWorkflowStep
     }
 
     private fun SmlDeclaration.reportInvalidModifiers(message: String, isInvalid: (modifier: String) -> Boolean) {
