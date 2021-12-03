@@ -3,7 +3,7 @@ package simpleml.model.regression
 import simpleml.model.*
 import simpleml.dataset.Dataset
 
-open class Lasso constructor(regularizationStrength: Float or 0.5) sub Estimator {
+open class Lasso(regularizationStrength: Float or 0.5) sub Estimator {
     attr regularizationStrength: Float
 
     override fun fit(features: Dataset, target: Dataset) -> trainedModel: TrainedLasso
