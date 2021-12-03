@@ -113,9 +113,7 @@ class EmfServiceDispatcher @Inject constructor(
 
 		val frontendId = context.getParameter("frontendId")
 		val emfPath = context.getParameter("entityPath")
-		println(emfPath)
 		val emfEntity = getEmfEntityByPath(resourceDocument, emfPath)
-		println(emfEntity)
 
 		if (emfEntity !is SmlDeclaration?) {
 			// TODO: handle error in a better way
@@ -151,51 +149,58 @@ class EmfServiceDispatcher @Inject constructor(
 		val resourceStdLib = stdLibResourceSetProvider.get(createEntityDTO.referenceIfFunktion, context)
 		val functionRef = resourceStdLib.getEObject(URI.createURI(createEntityDTO.referenceIfFunktion), true)
 
-		if(createEntityDTO.associationTargetPath.isNullOrEmpty()) {
-			val assignment = SimpleMLFactory.eINSTANCE.createSmlAssignment()
-			val assigneeList = SimpleMLFactory.eINSTANCE.createSmlAssigneeList()
-			val placeholder = SimpleMLFactory.eINSTANCE.createSmlPlaceholder()
-			val call = SimpleMLFactory.eINSTANCE.createSmlCall()
-			val argumentList = SimpleMLFactory.eINSTANCE.createSmlArgumentList()
-			val reference = SimpleMLFactory.eINSTANCE.createSmlReference()
-			val import = SimpleMLFactory.eINSTANCE.createSmlImport()
-			var importExists = false
+		val assignment = SimpleMLFactory.eINSTANCE.createSmlAssignment()
+		val assigneeList = SimpleMLFactory.eINSTANCE.createSmlAssigneeList()
+		val placeholder = SimpleMLFactory.eINSTANCE.createSmlPlaceholder()
+		val call = SimpleMLFactory.eINSTANCE.createSmlCall()
+		val argumentList = SimpleMLFactory.eINSTANCE.createSmlArgumentList()
+		val argument = SimpleMLFactory.eINSTANCE.createSmlArgument()
+		val reference = SimpleMLFactory.eINSTANCE.createSmlReference()
+		val reference2 = SimpleMLFactory.eINSTANCE.createSmlReference()
+		val import = SimpleMLFactory.eINSTANCE.createSmlImport()
+		var importExists = false
 
-			when(functionRef) {
-				is SmlFunction -> {
-					reference.declaration = functionRef as SmlFunction
-				}
-				is SmlClass -> {
-					reference.declaration = functionRef as SmlClass
-				}
+		when(functionRef) {
+			is SmlFunction -> {
+				reference.declaration = functionRef as SmlFunction
 			}
-
-			// create entity
-			call.receiver = reference
-			call.argumentList = argumentList
-
-			placeholder.name = createEntityDTO.placeholderName
-			assigneeList.assignees.add(placeholder)
-
-			assignment.expression = call
-			assignment.assigneeList = assigneeList
-
-			(astRoot.members[0] as SmlWorkflow).body.statements.add(assignment)
-
-			// create import-statement if necessary
-			astRoot.imports.forEach {
-				if(it.importedNamespace == reference.declaration.containingCompilationUnitOrNull()?.name + "." + reference.declaration.name) {
-					importExists = true
-				}
+			is SmlClass -> {
+				reference.declaration = functionRef as SmlClass
 			}
-			if(!importExists) {
-				import.importedNamespace = reference.declaration.containingCompilationUnitOrNull()?.name + "." + reference.declaration.name
-				astRoot.imports.add(import)
-			}
-		} else {
-
 		}
 
+		// create entity
+		call.receiver = reference
+		call.argumentList = argumentList
+
+		placeholder.name = createEntityDTO.placeholderName
+		assigneeList.assignees.add(placeholder)
+
+		assignment.expression = call
+		assignment.assigneeList = assigneeList
+
+		// attach to root-node
+		(astRoot.members[0] as SmlWorkflow).body.statements.add(assignment)
+
+		if(!createEntityDTO.associationTargetPath.isNullOrEmpty()) {
+			val associationTarget = getEmfEntityByPath(resourceDocument, createEntityDTO.associationTargetPath)
+
+			reference2.declaration = associationTarget as SmlPlaceholder
+			argument.value = reference2 as SmlExpression
+			call.argumentList.arguments.add(argument)
+		}
+
+		// create import-statement if necessary
+		astRoot.imports.forEach {
+			if(it.importedNamespace == reference.declaration.containingCompilationUnitOrNull()?.name + "." + reference.declaration.name) {
+				importExists = true
+			}
+		}
+		if(!importExists) {
+			import.importedNamespace = reference.declaration.containingCompilationUnitOrNull()?.name + "." + reference.declaration.name
+			astRoot.imports.add(import)
+		}
+		
 		return context.createDefaultPostServiceResult("")
 	}
 

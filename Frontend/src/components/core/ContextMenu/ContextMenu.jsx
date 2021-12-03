@@ -37,7 +37,7 @@ class ContextMenu extends React.Component {
                             className: '',
                             referenceIfFunktion: item.emfPath, 
                             placeholderName: 'temp',
-                            associationTargetPath: ''
+                            associationTargetPath: context.associationTargetPath || ''
                         });
                     }
                 });
