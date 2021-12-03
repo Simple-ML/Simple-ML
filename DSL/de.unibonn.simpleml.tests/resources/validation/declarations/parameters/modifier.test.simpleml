@@ -1,62 +1,39 @@
 package tests.validation.declarations.parameters.modifiers
 
-// semantic_error "A parameter must not have this modifier."
-// semantic_error "A parameter must not have this modifier."
-// semantic_error "A parameter must not have this modifier."
-annotation MyAnnotation1(»open« »override« »static« a: Int)
+// semantic_error "A parameter must have no modifiers."
+// semantic_error "A parameter must have no modifiers."
+// semantic_error "A parameter must have no modifiers."
+annotation MyAnnotation(»open« »override« »static« a: Int)
 
-// no_semantic_error "A parameter must not have this modifier."
-annotation MyAnnotation2(»deprecated« a: Int)
+// semantic_error "A parameter must have no modifiers."
+// semantic_error "A parameter must have no modifiers."
+// semantic_error "A parameter must have no modifiers."
+class MyClass(»open« »override« »static« a: Int) {
 
-// semantic_error "A parameter must not have this modifier."
-// semantic_error "A parameter must not have this modifier."
-// semantic_error "A parameter must not have this modifier."
-class MyClass1(»open« »override« »static« a: Int) {
+    // semantic_error "A parameter must have no modifiers."
+    // semantic_error "A parameter must have no modifiers."
+    // semantic_error "A parameter must have no modifiers."
+    class MyClass(»open« »override« »static« a: Int)
 
-    // semantic_error "A parameter must not have this modifier."
-    // semantic_error "A parameter must not have this modifier."
-    // semantic_error "A parameter must not have this modifier."
-    class MyClass1(»open« »override« »static« a: Int)
-
-    // no_semantic_error "A parameter must not have this modifier."
-    class MyClass2(»deprecated« a: Int)
-
-    // semantic_error "A parameter must not have this modifier."
-    // semantic_error "A parameter must not have this modifier."
-    // semantic_error "A parameter must not have this modifier."
-    fun myFunction1(»open« »override« »static« a: Int)
-
-    // no_semantic_error "A parameter must not have this modifier."
-    fun myFunction2(»deprecated« a: Int)
+    // semantic_error "A parameter must have no modifiers."
+    // semantic_error "A parameter must have no modifiers."
+    // semantic_error "A parameter must have no modifiers."
+    fun myFunction(»open« »override« »static« a: Int)
 }
 
-// no_semantic_error "A parameter must not have this modifier."
-class MyClass2(»deprecated« a: Int)
+// semantic_error "A parameter must have no modifiers."
+// semantic_error "A parameter must have no modifiers."
+// semantic_error "A parameter must have no modifiers."
+fun myFunction(»open« »override« »static« a: Int)
 
-// semantic_error "A parameter must not have this modifier."
-// semantic_error "A parameter must not have this modifier."
-// semantic_error "A parameter must not have this modifier."
-fun myFunction1(»open« »override« »static« a: Int)
-
-// no_semantic_error "A parameter must not have this modifier."
-fun myFunction2(»deprecated« a: Int)
-
-// semantic_error "A parameter must not have this modifier."
-// semantic_error "A parameter must not have this modifier."
-// semantic_error "A parameter must not have this modifier."
+// semantic_error "A parameter must have no modifiers."
+// semantic_error "A parameter must have no modifiers."
+// semantic_error "A parameter must have no modifiers."
 step myStep1(»open« »override« »static« a: Int) {}
 
-// no_semantic_error "A parameter must not have this modifier."
-step myStep2(»deprecated« a: Int) {}
-
-// semantic_error "A parameter must not have this modifier."
-// semantic_error "A parameter must not have this modifier."
-// semantic_error "A parameter must not have this modifier."
-step myStep3(
+// semantic_error "A parameter must have no modifiers."
+// semantic_error "A parameter must have no modifiers."
+// semantic_error "A parameter must have no modifiers."
+step myStep2(
     f: callable (»open« »override« »static« a: Int) -> ()
-) {}
-
-// no_semantic_error "A parameter must not have this modifier."
-step myStep4(
-    f: callable (»deprecated« a: Int) -> ()
 ) {}

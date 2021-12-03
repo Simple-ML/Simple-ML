@@ -4,20 +4,20 @@ enum myEnum {
     @Annotation1     @Annotation2
          MyVariant2
 
-    open    deprecated
+    open    static
       MyVariant3
 
     @Annotation1       @Annotation2
        open
-   deprecated     MyVariant4     <
+   static     MyVariant4     <
    @AnnotationUse 
-             deprecated   
+             static   
        T1, in T2,    out 
        T3    >    
        (
          
          @AnnotationUse 
-deprecated      a : 
+static      a : 
    Int ,  vararg 
                
                b: 
@@ -36,9 +36,9 @@ enum myEnum {
     @Annotation2
     MyVariant2
 
-    open deprecated MyVariant3
+    open static MyVariant3
 
     @Annotation1
     @Annotation2
-    open deprecated MyVariant4<@AnnotationUse deprecated T1, in T2, out T3>(@AnnotationUse deprecated a: Int, vararg b: Int or 3) where T2 super Number, T3 sub Number
+    open static MyVariant4<@AnnotationUse static T1, in T2, out T3>(@AnnotationUse static a: Int, vararg b: Int or 3) where T2 super Number, T3 sub Number
 }

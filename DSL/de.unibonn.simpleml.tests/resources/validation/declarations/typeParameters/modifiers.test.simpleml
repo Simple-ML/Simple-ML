@@ -3,24 +3,20 @@ package tests.validation.declarations.typeParameters.modifiers
 // semantic_error "A type parameter must have no modifiers."
 // semantic_error "A type parameter must have no modifiers."
 // semantic_error "A type parameter must have no modifiers."
-// semantic_error "A type parameter must have no modifiers."
-class MyClass<»deprecated« »open« »override« »static« T> {
+class MyClass<»open« »override« »static« T> {
 
     // semantic_error "A type parameter must have no modifiers."
     // semantic_error "A type parameter must have no modifiers."
     // semantic_error "A type parameter must have no modifiers."
-    // semantic_error "A type parameter must have no modifiers."
-    class MyClass<»deprecated« »open« »override« »static« T>
+    class MyClass<»open« »override« »static« T>
 
     // semantic_error "A type parameter must have no modifiers."
     // semantic_error "A type parameter must have no modifiers."
     // semantic_error "A type parameter must have no modifiers."
-    // semantic_error "A type parameter must have no modifiers."
-    fun myFunction<»deprecated« »open« »override« »static« T>()
+    fun myFunction<»open« »override« »static« T>()
 }
 
 // semantic_error "A type parameter must have no modifiers."
 // semantic_error "A type parameter must have no modifiers."
 // semantic_error "A type parameter must have no modifiers."
-// semantic_error "A type parameter must have no modifiers."
-fun myFunction<»deprecated« »open« »override« »static« T>()
+fun myFunction<»open« »override« »static« T>()

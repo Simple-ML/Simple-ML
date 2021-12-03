@@ -5,8 +5,7 @@ package tests.validation.declarations.classes.modifiers
 »override« »static« class MyClass1
 
 // no_semantic_error "A top-level class must not have this modifier."
-// no_semantic_error "A top-level class must not have this modifier."
-»deprecated« »open« class MyClass2
+»open« class MyClass2
 
 class MyClass3 {
     // semantic_error "A nested class must not have this modifier."
@@ -14,8 +13,7 @@ class MyClass3 {
 
     // no_semantic_error "A nested class must not have this modifier."
     // no_semantic_error "A nested class must not have this modifier."
-    // no_semantic_error "A nested class must not have this modifier."
-    »deprecated« »open« »static« class MyClass2
+    »open« »static« class MyClass2
 
     // semantic_info "A nested class is always static."
     »static« class MyClass3
