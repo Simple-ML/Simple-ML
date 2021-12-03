@@ -40,6 +40,7 @@ import de.unibonn.simpleml.simpleML.SmlYield
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.naming.IQualifiedNameProvider
+import org.eclipse.xtext.naming.QualifiedName
 
 object InjectionTarget {
 
@@ -214,14 +215,16 @@ fun SmlCompilationUnit?.membersOrEmpty() = this?.members.orEmpty()
 
 // Declaration ---------------------------------------------------------------------------------------------------------
 
-fun SmlDeclaration.isDeprecated() = SML_DEPRECATED in this.modifiers
+fun SmlDeclaration.isDeprecated() = this.annotationsOrEmpty().any {
+    it.annotation.fullyQualifiedName() == smlDeprecated
+}
 fun SmlDeclaration.isOpen(): Boolean {
     return SML_OPEN in this.modifiers
 }
 
 fun SmlDeclaration.isOverride() = SML_OVERRIDE in this.modifiers
 fun SmlDeclaration.isPure() = this.annotationsOrEmpty().any {
-    InjectionTarget.qualifiedNameProvider.getFullyQualifiedName(it.annotation).toString() == "simpleml.lang.Pure"
+    it.annotation.fullyQualifiedName() == smlPure
 }
 
 fun SmlDeclaration.isStatic(): Boolean {
@@ -243,6 +246,9 @@ fun SmlDeclaration.isCompilationUnitMember(): Boolean {
 }
 
 fun SmlDeclaration?.annotationsOrEmpty() = this?.annotationHolder?.annotations ?: this?.annotations.orEmpty()
+fun SmlDeclaration.fullyQualifiedName(): QualifiedName {
+    return InjectionTarget.qualifiedNameProvider.getFullyQualifiedName(this)
+}
 
 // Assignment ----------------------------------------------------------------------------------------------------------
 
