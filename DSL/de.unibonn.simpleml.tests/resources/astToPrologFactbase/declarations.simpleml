@@ -9,7 +9,7 @@ import myPackage.*
 annotation MySimpleAnnotation
 
 @MySimpleAnnotation
-deprecated annotation MyComplexAnnotation(
+static annotation MyComplexAnnotation(
     a: Int,
     b: Int
 )
@@ -19,14 +19,14 @@ deprecated annotation MyComplexAnnotation(
 class MySimpleClass
 
 @MySimpleAnnotation
-deprecated class MyComplexClass
-    <MY_SIMPLE_TYPE_PARAMETER, @AnnotationUse deprecated out MY_COMPLEX_TYPE_PARAMETER>
+static class MyComplexClass
+    <MY_SIMPLE_TYPE_PARAMETER, @AnnotationUse static out MY_COMPLEX_TYPE_PARAMETER>
     (a, b)
     sub SuperClass1, SuperClass2
     where T1 super Number, T2 sub Number
 {
     attr mySimpleAttribute
-    @AnnotationUse deprecated attr myComplexAttribute: Int
+    @AnnotationUse static attr myComplexAttribute: Int
 
     class MyClass
     enum MyEnum
@@ -38,9 +38,9 @@ deprecated class MyComplexClass
 enum MySimpleEnum
 
 @MySimpleAnnotation
-deprecated enum MyComplexEnum {
+static enum MyComplexEnum {
     MySimpleVariant
-    @AnnotationUse deprecated MyComplexVariant<T1, T2>(a, b) where T1 super Number, T2 sub Number
+    @AnnotationUse static MyComplexVariant<T1, T2>(a, b) where T1 super Number, T2 sub Number
 }
 
 
@@ -48,10 +48,10 @@ deprecated enum MyComplexEnum {
 fun mySimpleFunction()
 
 @MySimpleAnnotation
-deprecated fun myComplexFunction
+static fun myComplexFunction
     <T1, T2>
-    (mySimpleParameter, @AnnotationUse deprecated vararg myComplexParameter: Int or 3)
-    -> (mySimpleResult, @AnnotationUse deprecated myComplexResult: Int)
+    (mySimpleParameter, @AnnotationUse static vararg myComplexParameter: Int or 3)
+    -> (mySimpleResult, @AnnotationUse static myComplexResult: Int)
     where T1 super Number, T2 sub Number
 
 
@@ -59,7 +59,7 @@ deprecated fun myComplexFunction
 workflow mySimpleWorkflow {}
 
 @MySimpleAnnotation
-deprecated workflow myComplexWorkflow {
+static workflow myComplexWorkflow {
     val a = 1;
 }
 
@@ -68,6 +68,6 @@ deprecated workflow myComplexWorkflow {
 step mySimpleStep() {}
 
 @MySimpleAnnotation
-deprecated step myComplexStep (a, b) -> (a, b) {
+static step myComplexStep (a, b) -> (a, b) {
     val a = 1;
 }

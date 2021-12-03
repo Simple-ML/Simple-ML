@@ -6,26 +6,26 @@ fun     myFunction1
   a
    :    Int
 
-deprecated
+static
   open
     fun      myFunction3  (
     )
 
-@Annotation1   @Annotation2  deprecated
+@Annotation1   @Annotation2  static
     open   fun
        myFunction
    <
      @AnnotationUse
-           deprecated
+           static
        T1  ,   in
        T2 ,     out  T3
     >(   @AnnotationUse
-       deprecated
+       static
     a  :  Int  ,   vararg
      b  :    Int   or
    3  )    ->
    (
-      @AnnotationUse    deprecated    a  :
+      @AnnotationUse    static    a  :
         Int ,  b  :   Int )     where
           T2   super    Number   ,   T3    sub    Number
 
@@ -37,8 +37,8 @@ fun myFunction1()
 @Annotation2
 fun myFunction2() -> a: Int
 
-deprecated open fun myFunction3()
+static open fun myFunction3()
 
 @Annotation1
 @Annotation2
-deprecated open fun myFunction<@AnnotationUse deprecated T1, in T2, out T3>(@AnnotationUse deprecated a: Int, vararg b: Int or 3) -> (@AnnotationUse deprecated a: Int, b: Int) where T2 super Number, T3 sub Number
+static open fun myFunction<@AnnotationUse static T1, in T2, out T3>(@AnnotationUse static a: Int, vararg b: Int or 3) -> (@AnnotationUse static a: Int, b: Int) where T2 super Number, T3 sub Number

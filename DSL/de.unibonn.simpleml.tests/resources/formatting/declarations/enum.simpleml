@@ -3,10 +3,10 @@ enum       myEnum1
  }
 
 @Annotation1    @Annotation2  enum      myEnum2   open
-   deprecated  enum     myEnum3
+   static  enum     myEnum3
 
 @Annotation1    @Annotation2  open
-       deprecated
+       static
         enum
     myEnum4 {   MY_INSTANCE_1
         MY_INSTANCE_2
@@ -20,11 +20,11 @@ enum myEnum1 {}
 @Annotation2
 enum myEnum2
 
-open deprecated enum myEnum3
+open static enum myEnum3
 
 @Annotation1
 @Annotation2
-open deprecated enum myEnum4 {
+open static enum myEnum4 {
     MY_INSTANCE_1
 
     MY_INSTANCE_2

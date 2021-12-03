@@ -2,13 +2,13 @@
 
          annotation   MyAnnotation2
 
-   open     deprecated   annotation
+   open     static   annotation
        MyAnnotation3
 
  @Annotation1 @Annotation2     open
-       deprecated
+       static
   annotation MyAnnotation4
-   (    @AnnotationUse    deprecated      a  :     Int
+   (    @AnnotationUse    static      a  :     Int
     ,   vararg   b    :  Int
      or  3     )
 
@@ -20,8 +20,8 @@ annotation MyAnnotation1
 @Annotation2
 annotation MyAnnotation2
 
-open deprecated annotation MyAnnotation3
+open static annotation MyAnnotation3
 
 @Annotation1
 @Annotation2
-open deprecated annotation MyAnnotation4(@AnnotationUse deprecated a: Int, vararg b: Int or 3)
+open static annotation MyAnnotation4(@AnnotationUse static a: Int, vararg b: Int or 3)
