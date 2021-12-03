@@ -1,7 +1,6 @@
 package de.unibonn.simpleml.utils
 
-import com.google.inject.Injector
-import de.unibonn.simpleml.SimpleMLStandaloneSetup
+import com.google.inject.Inject
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlArgument
@@ -42,10 +41,12 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 
-private val injector: Injector by lazy { SimpleMLStandaloneSetup().createInjector() }
-private val qualifiedNameProvider: IQualifiedNameProvider by lazy {
-    injector.getInstance(IQualifiedNameProvider::class.java)
+object InjectionTarget {
+
+    @Inject
+    lateinit var qualifiedNameProvider: IQualifiedNameProvider
 }
+
 
 // Annotation ----------------------------------------------------------------------------------------------------------
 
@@ -220,7 +221,7 @@ fun SmlDeclaration.isOpen(): Boolean {
 
 fun SmlDeclaration.isOverride() = SML_OVERRIDE in this.modifiers
 fun SmlDeclaration.isPure() = this.annotationsOrEmpty().any {
-    qualifiedNameProvider.getFullyQualifiedName(it.annotation).toString() == "simpleml.lang.Pure"
+    InjectionTarget.qualifiedNameProvider.getFullyQualifiedName(it.annotation).toString() == "simpleml.lang.Pure"
 }
 
 fun SmlDeclaration.isStatic(): Boolean {
