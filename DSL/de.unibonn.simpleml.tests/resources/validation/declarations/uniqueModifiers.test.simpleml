@@ -1,4 +1,4 @@
-package tests.uniqueModifiers
+package tests.validation.declarations.uniqueModifiers
 
 // no_semantic_error "Modifiers must be unique."
 »deprecated« annotation MyAnnotation1

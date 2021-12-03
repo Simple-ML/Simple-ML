@@ -1,12 +1,11 @@
-package tests.modifiers
+package tests.validation.declarations.results.modifiers
 
 class MyClass {
 
     // semantic_error "A result must not have this modifier."
     // semantic_error "A result must not have this modifier."
     // semantic_error "A result must not have this modifier."
-    // semantic_error "A result must not have this modifier."
-    fun myFunction1() -> (»open« »override« »pure« »static« a: Int)
+    fun myFunction1() -> (»open« »override« »static« a: Int)
 
     // no_semantic_error "A result must not have this modifier."
     fun myFunction2() -> (»deprecated« a: Int)
@@ -15,8 +14,7 @@ class MyClass {
 // semantic_error "A result must not have this modifier."
 // semantic_error "A result must not have this modifier."
 // semantic_error "A result must not have this modifier."
-// semantic_error "A result must not have this modifier."
-fun myFunction1() -> (»open« »override« »pure« »static« a: Int)
+fun myFunction1() -> (»open« »override« »static« a: Int)
 
 // no_semantic_error "A result must not have this modifier."
 fun myFunction2() -> (»deprecated« a: Int)
@@ -24,9 +22,8 @@ fun myFunction2() -> (»deprecated« a: Int)
 // semantic_error "A result must not have this modifier."
 // semantic_error "A result must not have this modifier."
 // semantic_error "A result must not have this modifier."
-// semantic_error "A result must not have this modifier."
 step myStep1(
-    f: callable () -> (»open« »override« »pure« »static« a: Int)
+    f: callable () -> (»open« »override« »static« a: Int)
 ) {}
 
 // no_semantic_error "A result must not have this modifier."
