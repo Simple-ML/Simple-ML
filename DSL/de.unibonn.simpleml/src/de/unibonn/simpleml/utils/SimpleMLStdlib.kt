@@ -6,7 +6,11 @@ import org.eclipse.core.runtime.FileLocator
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
-import java.nio.file.*
+import java.nio.file.FileSystem
+import java.nio.file.FileSystems
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 
 private const val LIB_PACKAGE = "simpleml.lang"
 const val LIB_ANY = "${LIB_PACKAGE}.Any"
