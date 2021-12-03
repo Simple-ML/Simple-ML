@@ -13,11 +13,11 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 private const val LIB_PACKAGE = "simpleml.lang"
-const val LIB_ANY = "${LIB_PACKAGE}.Any"
-const val LIB_BOOLEAN = "${LIB_PACKAGE}.Boolean"
-const val LIB_FLOAT = "${LIB_PACKAGE}.Float"
-const val LIB_INT = "${LIB_PACKAGE}.Int"
-const val LIB_STRING = "${LIB_PACKAGE}.String"
+const val LIB_ANY = "$LIB_PACKAGE.Any"
+const val LIB_BOOLEAN = "$LIB_PACKAGE.Boolean"
+const val LIB_FLOAT = "$LIB_PACKAGE.Float"
+const val LIB_INT = "$LIB_PACKAGE.Int"
+const val LIB_STRING = "$LIB_PACKAGE.String"
 
 class SimpleMLStdlib @Inject constructor(
     private val indexExtensions: SimpleMLIndexExtensions
