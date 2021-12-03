@@ -1,8 +1,8 @@
 package tests.validation.expressions.calls.enumVariantMustHaveConstructor
 
 enum E {
-    A,
-    B(),
+    A
+    B()
     C(c: Int)
 }
 

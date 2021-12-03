@@ -10,6 +10,7 @@ import de.unibonn.simpleml.tests.assertions.shouldHaveSemanticError
 import de.unibonn.simpleml.tests.assertions.shouldHaveSemanticInfo
 import de.unibonn.simpleml.tests.assertions.shouldHaveSemanticWarning
 import de.unibonn.simpleml.tests.assertions.shouldHaveSyntaxError
+import de.unibonn.simpleml.tests.assertions.stringify
 import de.unibonn.simpleml.tests.util.CategorizedTest
 import de.unibonn.simpleml.tests.util.ParseHelper
 import de.unibonn.simpleml.tests.util.createDynamicTestsFromResourceFolder
@@ -118,8 +119,9 @@ class GrammarAndValidationTest {
                 return "Cannot combine severity 'syntax_error' with check of semantic errors."
             }
 
-            if (actualIssues(program, filePath).any { it.isSyntaxError }) {
-                return "File has syntax errors but checks for semantic errors."
+            val syntaxErrors = actualIssues(program, filePath).filter { it.isSyntaxError }
+            if (syntaxErrors.isNotEmpty()) {
+                return "File checks for semantic issues but has syntax errors${syntaxErrors.stringify()}"
             }
         }
 

@@ -1,7 +1,8 @@
-package tests.staticPropagates
+package tests.validation.declarations.functions.staticPropagates
 
 open class MyOpenClass {
     static fun staticFunction1()
+    static fun staticFunction2()
     open fun nonStaticFunction1()
 }
 
@@ -13,6 +14,8 @@ class MyClass sub MyOpenClass {
 
     // semantic_error "One of the supertypes of this class declares a static function with this name, so this must be static as well."
     override fun »staticFunction1«()
+    // no_semantic_error "One of the supertypes of this class declares a static function with this name, so this must be static as well."
+    static fun »staticFunction2«()
     // no_semantic_error "One of the supertypes of this class declares a static function with this name, so this must be static as well."
     static fun »nonStaticFunction1«()
 }

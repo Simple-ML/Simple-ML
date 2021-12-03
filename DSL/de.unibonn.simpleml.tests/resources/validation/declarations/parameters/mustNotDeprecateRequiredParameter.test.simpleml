@@ -1,4 +1,4 @@
-package tests.mustNotDeprecateRequiredParameter
+package tests.validation.declarations.parameters.mustNotDeprecateRequiredParameter
 
 // semantic_error "A required parameter cannot be deprecated."
 // no_semantic_error "A required parameter cannot be deprecated."

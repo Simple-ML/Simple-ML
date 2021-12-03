@@ -1,4 +1,4 @@
-package tests.calledClassMustHaveConstructor
+package tests.validation.expressions.calls.calledClassMustHaveConstructor
 
 class A
 

@@ -1,3 +1,5 @@
+package tests.validation.declarations.placeholders.unused
+
 step myFunction() {
     call(unused);
 

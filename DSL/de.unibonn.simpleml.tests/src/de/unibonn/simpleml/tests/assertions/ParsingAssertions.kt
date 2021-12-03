@@ -66,7 +66,7 @@ fun List<Issue>.shouldHaveNoIssue(expected: ExpectedIssue) {
     }
 }
 
-private fun List<Issue>.stringify(): String {
+fun List<Issue>.stringify(): String {
     if (this.isEmpty()) {
         return " nothing."
     }
