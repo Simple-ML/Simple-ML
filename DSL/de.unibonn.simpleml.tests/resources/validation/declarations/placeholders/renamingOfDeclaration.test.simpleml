@@ -1,9 +1,9 @@
-package tests.renamingOfDeclaration
+package tests.validation.declarations.placeholders.renamingOfDeclaration
 
 annotation MyAnnotation
 
 class MyClass {
-    val myAttribute: Int
+    attr myAttribute: Int
 }
 
 enum MyEnum {

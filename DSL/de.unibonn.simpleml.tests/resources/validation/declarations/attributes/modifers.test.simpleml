@@ -1,0 +1,11 @@
+package tests.validation.declarations.attributes.modifiers
+
+class MyClass {
+    // semantic_error "An attribute must not have this modifier."
+    // semantic_error "An attribute must not have this modifier."
+    »open« »override« attr myAttribute1: Int
+
+    // no_semantic_error "An attribute must not have this modifier."
+    // no_semantic_error "An attribute must not have this modifier."
+   »deprecated« »static« attr myAttribute2: Int
+}

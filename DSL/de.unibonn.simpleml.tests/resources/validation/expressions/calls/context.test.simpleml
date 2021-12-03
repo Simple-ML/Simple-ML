@@ -1,4 +1,4 @@
-package tests.context
+package tests.validation.expressions.calls.context
 
 class MyClass() {
     fun noResults()
@@ -8,7 +8,7 @@ class MyClass() {
 class MyClassWithoutConstructor
 
 enum MyEnum {
-    MyVariant(),
+    MyVariant()
     MyVariantWithoutConstructor
 }
 

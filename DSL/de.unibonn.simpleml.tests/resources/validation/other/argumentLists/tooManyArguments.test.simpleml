@@ -1,3 +1,5 @@
+package tests.validation.other.argumentLists.tooManyArguments
+
 annotation MyAnnotation1(a: Int, b: Int or 0)
 annotation MyAnnotation2(a: Int)
 annotation MyAnnotation3(vararg a: Int)
@@ -78,6 +80,4 @@ workflow myWorkflow {
     lambda (a: Int) {}»(1, 2, 3)«;
     // no_semantic_error "Expected exactly 1 argument but got 0."
     lambda (a: Int) {}»(1)«;
-    // no_semantic_error "Expected exactly 1 argument but got 2."
-    lambda (vararg a: Int) {}»(1, 2)«;
 }

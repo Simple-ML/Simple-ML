@@ -36,7 +36,7 @@ class FormatterTest {
      * Checks if the given program is a valid test. If there are issues a description of the issue is returned, otherwise
      * this returns null.
      */
-    private fun validateTestFile(program: String): String? {
+    private fun validateTestFile(program: String, filePath: Path): String? {
         if (separator !in program) {
             return "Did not find a separator between the original and the formatted code."
         }

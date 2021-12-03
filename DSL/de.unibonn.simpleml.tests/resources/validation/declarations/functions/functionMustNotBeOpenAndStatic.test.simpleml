@@ -1,4 +1,4 @@
-package tests.functionMustNotBeOpenAndStatic
+package tests.validation.declarations.functions.functionMustNotBeOpenAndStatic
 
 class MyClass {
     // semantic_error "A function must not be static and open."
@@ -7,9 +7,4 @@ class MyClass {
     open fun »openFunction«()
     // no_semantic_error "A function must not be static and open."
     static fun »staticFunction«()
-}
-
-interface MyInterface {
-    // no_semantic_error "A function must not be static and open."
-    open static fun »openStaticFunction«()
 }

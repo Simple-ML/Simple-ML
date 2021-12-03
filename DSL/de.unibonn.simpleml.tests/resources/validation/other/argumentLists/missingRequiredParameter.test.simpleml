@@ -1,4 +1,4 @@
-package tests.missingRequiredParameter
+package tests.validation.other.argumentLists.missingRequiredParameter
 
 annotation A(a: Int, b: Int or 0)
 
