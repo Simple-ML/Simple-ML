@@ -30,9 +30,7 @@ jobs:
         id: ml
         uses: megalinter/megalinter@v5
         env:
-          DISABLE:
-            - COPYPASTE
-            - SPELL
+          DISABLE: COPYPASTE,SPELL
           FILTER_REGEX_EXCLUDE: (\.github/workflows/)
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_ALL_CODEBASE: false
