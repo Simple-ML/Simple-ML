@@ -4,6 +4,13 @@ import de.unibonn.simpleml.tests.ExpectedIssue
 import org.eclipse.xtext.diagnostics.Severity
 import org.eclipse.xtext.validation.Issue
 
+fun List<Issue>.shouldHaveNoErrorsOrWarnings() {
+    val errorsOrWarnings = this.filter { it.severity == Severity.ERROR || it.severity == Severity.WARNING }
+    if (errorsOrWarnings.isNotEmpty()) {
+        throw AssertionError("Expected no errors or warnings but got${errorsOrWarnings.stringify()}")
+    }
+}
+
 fun List<Issue>.shouldHaveSyntaxError(expected: ExpectedIssue) {
     val syntaxErrors = this.filter { it.isSyntaxError }
     if (syntaxErrors.none { expected.matches(it) }) {
