@@ -2,7 +2,7 @@
 
 annotation MySimpleAnnotation
 
-@AnnotationUse deprecated annotation MyComplexAnnotation(
-    @AnnotationUse deprecated a: Int,
+@AnnotationUse static annotation MyComplexAnnotation(
+    @AnnotationUse static a: Int,
     vararg b: Int or 3
 )

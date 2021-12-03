@@ -431,8 +431,7 @@ SmlParenthesizedExpression
  **********************************************************************************************************************/
 
 SmlModifier
-    : 'deprecated'
-    | 'open'
+    : 'open'
     | 'override'
     | 'static'
     ;

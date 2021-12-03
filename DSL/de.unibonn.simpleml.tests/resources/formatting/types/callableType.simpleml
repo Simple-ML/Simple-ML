@@ -5,10 +5,10 @@ step s2(f: callable   (   )   ->
 result  :   Int    ) {}
 
 step s3(f: callable
-    (  @AnnotationUse    deprecated   a
+    (  @AnnotationUse    static   a
     :   Int  ,   vararg   b  :
      Int  or   3 )    -> (
-     @AnnotationUse    deprecated   a
+     @AnnotationUse    static   a
      :  Int ,   b :   Int  )) {}
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -17,4 +17,4 @@ step s1(f: callable () -> ()) {}
 
 step s2(f: callable () -> result: Int) {}
 
-step s3(f: callable (@AnnotationUse deprecated a: Int, vararg b: Int or 3) -> (@AnnotationUse deprecated a: Int, b: Int)) {}
+step s3(f: callable (@AnnotationUse static a: Int, vararg b: Int or 3) -> (@AnnotationUse static a: Int, b: Int)) {}

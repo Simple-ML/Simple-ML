@@ -1,9 +1,6 @@
 package tests.validation.declarations.annotations.modifiers
 
-// semantic_error "An annotation must not have this modifier."
-// semantic_error "An annotation must not have this modifier."
-// semantic_error "An annotation must not have this modifier."
+// semantic_error "An annotation must have no modifiers."
+// semantic_error "An annotation must have no modifiers."
+// semantic_error "An annotation must have no modifiers."
 »open« »override« »static« annotation MyAnnotation1
-
-// no_semantic_error "An annotation must not have this modifier."
-»deprecated« annotation MyAnnotation2

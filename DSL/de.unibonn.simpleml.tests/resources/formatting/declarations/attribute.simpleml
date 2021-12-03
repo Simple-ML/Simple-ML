@@ -6,13 +6,13 @@ class MyClass {
        attr
      myAttribute1    :        Int
 
-    open       deprecated
+    open       static
         attr     myAttribute1   :      Int
 
     @Annotation1
           @Annotation2
     open
-     deprecated
+     static
         attr    myAttribute1     :  Int
 }
 
@@ -25,9 +25,9 @@ class MyClass {
     @Annotation2
     attr myAttribute1: Int
 
-    open deprecated attr myAttribute1: Int
+    open static attr myAttribute1: Int
 
     @Annotation1
     @Annotation2
-    open deprecated attr myAttribute1: Int
+    open static attr myAttribute1: Int
 }

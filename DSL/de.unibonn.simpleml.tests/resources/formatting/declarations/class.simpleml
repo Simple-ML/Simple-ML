@@ -2,17 +2,17 @@
    MyClass1
 
   @Annotation1  @Annotation2
-          class    MyClass2 {  } open     deprecated  class
+          class    MyClass2 {  } open     static  class
            MyClass3
 
    @Annotation1    @Annotation2   open
-    deprecated      class   MyClass4
+    static      class   MyClass4
       < @AnnotationUse
-      deprecated       T1 ,   in
+      static       T1 ,   in
       T2  ,   out  T3    >
          (
   @AnnotationUse
-      deprecated   a  :
+      static   a  :
        Int  ,   vararg     b :  Int
            or    3   )      sub    SuperClass   ,   SuperInterface
             where    T2   super   Number   ,   T3    sub
@@ -28,11 +28,11 @@ class MyClass1
 @Annotation2
 class MyClass2 {}
 
-open deprecated class MyClass3
+open static class MyClass3
 
 @Annotation1
 @Annotation2
-open deprecated class MyClass4<@AnnotationUse deprecated T1, in T2, out T3>(@AnnotationUse deprecated a: Int, vararg b: Int or 3) sub SuperClass, SuperInterface where T2 super Number, T3 sub Number {
+open static class MyClass4<@AnnotationUse static T1, in T2, out T3>(@AnnotationUse static a: Int, vararg b: Int or 3) sub SuperClass, SuperInterface where T2 super Number, T3 sub Number {
     attr myAttribute1
 
     attr myAttribute2

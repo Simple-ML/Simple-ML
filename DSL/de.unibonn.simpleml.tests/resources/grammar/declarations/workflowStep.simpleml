@@ -5,6 +5,6 @@ step mySimpleStep() {}
 step myStepWithOneResult() -> a: Int {}
 
 @AnnotationUse
-deprecated step myComplexStep(@AnnotationUsedeprecated a: Int, vararg b: Int or 3) -> (a: Int, b: Int) {
+static step myComplexStep(@AnnotationUse static a: Int, vararg b: Int or 3) -> (a: Int, b: Int) {
     val a = 1;
 }

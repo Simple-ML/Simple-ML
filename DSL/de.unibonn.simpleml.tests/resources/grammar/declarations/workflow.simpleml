@@ -2,6 +2,6 @@
 
 workflow mySimpleWorkflow {}
 
-@AnnotationUse deprecated workflow myComplexWorkflow {
+@AnnotationUse static workflow myComplexWorkflow {
     val a = 1;
 }
