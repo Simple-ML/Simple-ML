@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.tests
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.tests.assertions.shouldHaveNoError
+import de.unibonn.simpleml.tests.assertions.shouldHaveNoErrors
 import de.unibonn.simpleml.tests.util.ParseHelper
 import de.unibonn.simpleml.utils.OriginalFilePath
 import de.unibonn.simpleml.utils.SimpleMLStdlib
@@ -36,7 +36,7 @@ class StdlibTest {
             .map { (filePath, _) ->
                 val program = Files.readString(filePath)
                 DynamicTest.dynamicTest(filePath.toString(), filePath.toUri()) {
-                    actualIssues(filePath, program).shouldHaveNoError()
+                    actualIssues(filePath, program).shouldHaveNoErrors()
                 }
             }
             .toList()
