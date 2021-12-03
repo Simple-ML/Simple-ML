@@ -237,7 +237,8 @@ class GraphicalEditor extends React.Component {
         edgeStyle[mxConstants.STYLE_STROKEWIDTH] = "2";
         edgeStyle[mxConstants.STYLE_STROKECOLOR] = "#d8d8d8";
         edgeStyle[mxConstants.STYLE_ENDSIZE] = "3";
-        edgeStyle[mxConstants.STYLE_TARGET_PERIMETER_SPACING]="5";
+        edgeStyle[mxConstants.STYLE_SOURCE_PERIMETER_SPACING]="7"
+        edgeStyle[mxConstants.STYLE_TARGET_PERIMETER_SPACING]="0";
         graph.getStylesheet().putDefaultEdgeStyle(edgeStyle);
     }
 

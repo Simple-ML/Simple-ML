@@ -37,6 +37,16 @@ export default class GenericProcessCall extends MxGraphVertexComponent {
         };
     }
     
+    onStoreChange = (state) => {
+        const emfPath = this.getEmfRef(this.props.emfEntity)
+        return {
+            selected: state.graphicalEditor.entitySelected.id === this.props.emfEntity.id,
+            metadata: state.emfModel.processMetadata.find((element) => {
+                return element.emfPath === emfPath
+            })
+        };
+    }
+    
     entitySelect = (entity) => { 
         store.dispatch(entitySelect(entity)) ;
     }
@@ -53,16 +63,6 @@ export default class GenericProcessCall extends MxGraphVertexComponent {
         } else if(emfEntity.getChild('@declaration')){
             return emfEntity.getChild('@declaration').data['$ref']
         }
-    }
-
-    onStoreChange = (state) => {
-        const emfPath = this.getEmfRef(this.props.emfEntity)
-        return {
-            selected: state.graphicalEditor.entitySelected.id === this.props.emfEntity.id,
-            metadata: state.emfModel.processMetadata.find((element) => {
-                return element.emfPath === emfPath
-            })
-        };
     }
 
     filterComplexInputsOrOutputs = (inputsOrOutputs) => {
@@ -169,9 +169,12 @@ export default class GenericProcessCall extends MxGraphVertexComponent {
                                     this.props.emfEntity.id, 
                                     this.state.metadata.emfPath + '/@resultList/@results.' + index
                                 )
+                                let associationTargetPath = '//' + EmfModelHelper.getFullHierarchy2(this.props.emfEntity)
+                                associationTargetPath = associationTargetPath.substring(0, associationTargetPath.length - 1)
                                 this.openContextMenu({
                                     vertex: true,
-                                    emfReference: this.props.emfEntity
+                                    emfReference: this.props.emfEntity,
+                                    associationTargetPath: associationTargetPath
                                 }, mouseDataWrapper.data.x, mouseDataWrapper.data.y);
                             }}
                             >

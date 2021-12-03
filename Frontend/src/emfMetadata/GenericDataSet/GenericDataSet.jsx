@@ -1,7 +1,14 @@
 import React from 'react';
 import store from '../../reduxStore';
 
+import { entitySelect } from '../../reducers/graphicalEditor';
+import { openContextMenu } from '../../reducers/contextMenu';
+
 import MxGraphVertexComponent from '../../components/EditorView/GraphicalEditor/MxGraphVertexComponent';
+
+import mouseDataWrapper from '../../mouse'
+import XtextServices from '../../serverConnection/XtextServices'
+import EmfModelHelper from '../../helper/EmfModelHelper';
 
 import iconEmpty from '../../images/graph/File/empty.svg';
 import iconEmptyHover from '../../images/graph/File/emptyHover.svg';
@@ -36,6 +43,13 @@ export default class GenericDataSet extends MxGraphVertexComponent {
         };
     }
 
+    entitySelect = (entity) => { 
+        store.dispatch(entitySelect(entity)) ;
+    }
+
+    openContextMenu = (context, x, y) => {
+        store.dispatch(openContextMenu(context, x, y));
+    }
 
     setIcon = () => {
         if(this.state.empty) {
@@ -60,7 +74,23 @@ export default class GenericDataSet extends MxGraphVertexComponent {
     render() {
         return(
             <div className={genericDataSetStyle.IconContainer}>
-                <img src={this.setIcon()} alt={this.props.emfEntity.data.name}/>
+                <img src={this.setIcon()} alt={this.props.emfEntity.data.name}
+                onClick={() => {
+                    let associationTargetPath = '//' + EmfModelHelper.getFullHierarchy2(this.props.emfEntity)
+                    associationTargetPath = associationTargetPath.substring(0, associationTargetPath.length - 1)
+                    console.log(associationTargetPath)
+                    XtextServices.getProcessProposals(
+                        this.props.emfEntity.id, 
+                        associationTargetPath
+                    )
+                    
+                    this.openContextMenu({
+                        vertex: true,
+                        emfReference: this.props.emfEntity,
+                        associationTargetPath: associationTargetPath
+                    }, mouseDataWrapper.data.x, mouseDataWrapper.data.y);
+                }}
+                />
                 <div className={genericDataSetStyle.IconLabel}>
                     {this.props.emfEntity.data.name}
                 </div>
