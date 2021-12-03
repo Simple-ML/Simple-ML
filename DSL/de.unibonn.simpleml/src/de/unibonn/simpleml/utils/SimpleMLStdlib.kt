@@ -6,14 +6,18 @@ import org.eclipse.core.runtime.FileLocator
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
-import java.nio.file.*
+import java.nio.file.FileSystem
+import java.nio.file.FileSystems
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 
 private const val LIB_PACKAGE = "simpleml.lang"
-const val LIB_ANY = "${LIB_PACKAGE}.Any"
-const val LIB_BOOLEAN = "${LIB_PACKAGE}.Boolean"
-const val LIB_FLOAT = "${LIB_PACKAGE}.Float"
-const val LIB_INT = "${LIB_PACKAGE}.Int"
-const val LIB_STRING = "${LIB_PACKAGE}.String"
+const val LIB_ANY = "$LIB_PACKAGE.Any"
+const val LIB_BOOLEAN = "$LIB_PACKAGE.Boolean"
+const val LIB_FLOAT = "$LIB_PACKAGE.Float"
+const val LIB_INT = "$LIB_PACKAGE.Int"
+const val LIB_STRING = "$LIB_PACKAGE.String"
 
 class SimpleMLStdlib @Inject constructor(
     private val indexExtensions: SimpleMLIndexExtensions
@@ -53,7 +57,8 @@ class SimpleMLStdlib @Inject constructor(
 
                 // Without this code Maven tests fail with a FileSystemNotFoundException since stdlib resources are in a jar
                 "jar" -> {
-                    fileSystem = FileSystems.newFileSystem(resourcesUri, emptyMap<String, String>(), null)
+                    fileSystem =
+                        FileSystems.newFileSystem(resourcesUri, emptyMap<String, String>(), null)
                     fileSystem.getPath("stubs")
                 }
                 else -> Paths.get(resourcesUri)
