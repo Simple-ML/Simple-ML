@@ -37,7 +37,7 @@ private const val NO_SEMANTIC_WARNING = "no_semantic_warning"
 private const val SEMANTIC_INFO = "semantic_info"
 private const val NO_SEMANTIC_INFO = "no_semantic_info"
 private const val NO_ISSUE = "no_issue"
-private val validSeverities = listOf(
+private val validSeverities = setOf(
     SYNTAX_ERROR,
     NO_SYNTAX_ERROR,
     SEMANTIC_ERROR,
@@ -46,7 +46,15 @@ private val validSeverities = listOf(
     NO_SEMANTIC_WARNING,
     SEMANTIC_INFO,
     NO_SEMANTIC_INFO,
-    NO_ISSUE
+    NO_ISSUE,
+)
+private val semanticSeverities = setOf(
+    SEMANTIC_ERROR,
+    NO_SEMANTIC_ERROR,
+    SEMANTIC_WARNING,
+    NO_SEMANTIC_WARNING,
+    SEMANTIC_INFO,
+    NO_SEMANTIC_INFO,
 )
 
 @ExtendWith(InjectionExtension::class)
@@ -78,19 +86,19 @@ class GrammarAndValidationTest {
      * Checks if the given program is a valid test. If there are issues a description of the issue is returned, otherwise
      * this returns null.
      */
-    private fun validateTestFile(program: String): String? {
+    private fun validateTestFile(program: String, filePath: Path): String? {
         val severities = severities(program)
 
-        // Must contain exactly one severity (which can be repeated)
-        val numberOfUniqueSeverities = severities.toSet().size
-        if (numberOfUniqueSeverities == 0) {
+        // Must contain at least one severity
+        if (severities.isEmpty()) {
             return "No expected issue is specified."
         }
 
-        // Severity must be valid
-        val severity = severities.first()
-        if (severity !in validSeverities) {
-            return "Severity is invalid: \"$severity\"."
+        // Severities must be valid
+        severities.forEach {
+            if (it !in validSeverities) {
+                return "Severity '$it' is invalid."
+            }
         }
 
         // Must not contain more locations markers than severities
@@ -102,6 +110,17 @@ class GrammarAndValidationTest {
         // Must be able to parse the test file
         if (parseHelper.parseProgramTextWithStdlib(program) == null) {
             return "Could not parse test file."
+        }
+
+        // Must not combine syntax errors with checks of semantic errors
+        if (severities.intersect(semanticSeverities).isNotEmpty()) {
+            if (severities.contains(SYNTAX_ERROR)) {
+                return "Cannot combine severity 'syntax_error' with check of semantic errors."
+            }
+
+            if (actualIssues(program, filePath).any { it.isSyntaxError }) {
+                return "File has syntax errors but checks for semantic errors."
+            }
         }
 
         return null

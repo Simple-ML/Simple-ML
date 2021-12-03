@@ -17,7 +17,7 @@ fun ClassLoader.getResourcePath(fileOrFolder: String): Path? {
 }
 
 fun Path.createDynamicTestsFromResourceFolder(
-    validator: (program: String) -> String?,
+    validator: (program: String, filePath: Path) -> String?,
     categorizedTestCreator: (resourcePath: Path, filePath: Path, program: String) -> Sequence<CategorizedTest>
 ): Stream<out DynamicNode> {
     return Files.walk(this)
@@ -34,12 +34,12 @@ fun Path.createDynamicTestsFromResourceFolder(
 private fun createDynamicTestFromResource(
     resourcePath: Path,
     filePath: Path,
-    validator: (program: String) -> String?,
+    validator: (program: String, filePath: Path) -> String?,
     categorizedTestCreator: (resourcePath: Path, filePath: Path, program: String) -> Sequence<CategorizedTest>
 ) = sequence {
     val program = Files.readString(filePath)
 
-    val testFileError = validator(program)
+    val testFileError = validator(program, filePath)
     if (testFileError != null) {
         yield(
             CategorizedTest(
