@@ -53,7 +53,8 @@ class SimpleMLStdlib @Inject constructor(
 
                 // Without this code Maven tests fail with a FileSystemNotFoundException since stdlib resources are in a jar
                 "jar" -> {
-                    fileSystem = FileSystems.newFileSystem(resourcesUri, emptyMap<String, String>(), null)
+                    fileSystem =
+                        FileSystems.newFileSystem(resourcesUri, emptyMap<String, String>(), null)
                     fileSystem.getPath("stubs")
                 }
                 else -> Paths.get(resourcesUri)
