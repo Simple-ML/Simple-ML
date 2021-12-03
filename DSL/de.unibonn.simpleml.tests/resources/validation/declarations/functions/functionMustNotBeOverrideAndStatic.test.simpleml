@@ -1,4 +1,4 @@
-package tests.functionMustNotBeOverrideAndStatic
+package tests.validation.declarations.functions.functionMustNotBeOverrideAndStatic
 
 class MyClass {
     // semantic_error "A function must not be static and override."
@@ -7,9 +7,4 @@ class MyClass {
     override fun »overrideFunction«()
     // no_semantic_error "A function must not be static and override."
     static fun »staticFunction«()
-}
-
-interface MyInterface {
-    // no_semantic_error "A function must not be static and override."
-    override static fun »openStaticFunction«()
 }

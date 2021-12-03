@@ -1,4 +1,4 @@
-package tests.mustHaveType
+package tests.validation.declarations.parameters.mustHaveType
 
 // semantic_error "A parameter must have a type."
 // no_semantic_error "A parameter must have a type."
@@ -23,7 +23,7 @@ fun myFunction(»a«, »b«: Int)
 workflow myWorkflow {
     // semantic_error "A parameter must have a type."
     // no_semantic_error "A parameter must have a type."
-    lambda (»a«, »b«: Int);
+    lambda (»a«, »b«: Int) {};
 }
 
 // semantic_error "A parameter must have a type."

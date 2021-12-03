@@ -1,0 +1,12 @@
+package tests.validation.declarations.enumVariants.modifiers
+
+enum MyEnum {
+
+    // semantic_error "An enum variant must not have this modifier."
+    // semantic_error "An enum variant must not have this modifier."
+    // semantic_error "An enum variant must not have this modifier."
+    »open« »override« »static« MyEnumVariant1
+
+    // no_semantic_error "An enum variant must not have this modifier."
+    »deprecated« MyEnumVariant2
+}

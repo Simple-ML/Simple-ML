@@ -1,3 +1,5 @@
+package tests.validation.other.argumentLists.noPositionalArgumentsAfterFirstNamedArgument
+
 // no_semantic_error "After the first named argument all arguments must be named."
 // no_semantic_error "After the first named argument all arguments must be named."
 // semantic_error "After the first named argument all arguments must be named."

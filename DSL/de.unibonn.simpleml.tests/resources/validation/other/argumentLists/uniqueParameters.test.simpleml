@@ -1,4 +1,4 @@
-package tests.unique_parameters
+package tests.validation.other.argumentLists.unique_parameters
 
 annotation A(a: Int, b: Int or 0)
 

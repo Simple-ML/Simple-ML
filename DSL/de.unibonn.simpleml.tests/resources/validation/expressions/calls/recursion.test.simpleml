@@ -1,4 +1,4 @@
-package tests.recursion
+package tests.validation.expressions.calls.recursion
 
 
 workflow w {

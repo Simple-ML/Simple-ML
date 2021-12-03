@@ -1,4 +1,4 @@
-package tests.receiverMustBeCallable
+package tests.validation.expressions.calls.receiverMustBeCallable
 
 annotation MyAnnotation
 
@@ -10,7 +10,7 @@ class MyClass {
 }
 
 enum MyEnum {
-    MySimpleEnumInstance,
+    MySimpleEnumInstance
     MyComplexEnumInstance()
 }
 

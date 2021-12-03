@@ -6,6 +6,7 @@ import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlResult
@@ -96,6 +97,13 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
             smlEnum.reportInvalidModifiers("A top-level enum must not have this modifier.") {
                 it !in setOf(SML_DEPRECATED)
             }
+        }
+    }
+
+    @Check
+    fun enumVariantModifiers(smlEnumVariant: SmlEnumVariant) {
+        smlEnumVariant.reportInvalidModifiers("An enum variant must not have this modifier.") {
+            it !in setOf(SML_DEPRECATED)
         }
     }
 

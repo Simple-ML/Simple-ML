@@ -434,7 +434,6 @@ SmlModifier
     : 'deprecated'
     | 'open'
     | 'override'
-    | 'pure'
     | 'static'
     ;
 

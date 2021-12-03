@@ -1,4 +1,4 @@
-package tests.uniqueModifiers
+package tests.validation.declarations.uniqueModifiers
 
 // no_semantic_error "Modifiers must be unique."
 »deprecated« annotation MyAnnotation1
@@ -52,7 +52,7 @@ fun myFunction4<
 
 class MyClass4 {
     // no_semantic_error "Modifiers must be unique."
-    »deprecated« val myAttribute1: Int
+    »deprecated« attr myAttribute1: Int
     // semantic_error "Modifiers must be unique."
     // semantic_error "Modifiers must be unique."
     »deprecated« »deprecated« attr myAttribute2: Int
@@ -81,10 +81,10 @@ class MyClass4 {
 
 
 // no_semantic_error "Modifiers must be unique."
-»deprecated« step myStep1 {}
+»deprecated« step myStep1() {}
 // no_semantic_error "Modifiers must be unique."
 // no_semantic_error "Modifiers must be unique."
-»deprecated« »deprecated« step myStep2 {}
+»deprecated« »deprecated« step myStep2() {}
 
 // no_semantic_error "Modifiers must be unique."
 »deprecated« workflow myWorkflow1 {}
