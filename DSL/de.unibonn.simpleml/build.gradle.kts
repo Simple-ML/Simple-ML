@@ -35,6 +35,12 @@ dependencies {
     mwe2("org.eclipse.xtext:org.eclipse.xtext.common.types:$xtextVersion")
     mwe2("org.eclipse.xtext:org.eclipse.xtext.xtext.generator:$xtextVersion")
     mwe2("org.eclipse.xtext:xtext-antlr-generator")
+
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.eclipse.xtext:org.eclipse.xtext.testing:$xtextVersion")
+    testImplementation("org.eclipse.xtext:org.eclipse.xtext.xbase.testing:$xtextVersion")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:4.6.3")
 }
 
 // Source sets ---------------------------------------------------------------------------------------------------------
@@ -107,5 +113,9 @@ tasks {
 
     clean {
         dependsOn("cleanGenerateXtextLanguage")
+    }
+
+    test {
+        useJUnitPlatform()
     }
 }
