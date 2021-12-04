@@ -1,5 +1,6 @@
 package de.unibonn.simpleml.validation.statements
 
+import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlCall
@@ -8,7 +9,6 @@ import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.AssignedResult
-import de.unibonn.simpleml.utils.assigneesOrEmpty
 import de.unibonn.simpleml.utils.hasSideEffects
 import de.unibonn.simpleml.utils.maybeAssigned
 import de.unibonn.simpleml.utils.resultsOrNull

@@ -7,15 +7,15 @@ import kotlin.math.max
  */
 fun <I, K> Iterable<I>.duplicatesBy(labeler: (I) -> K): List<I> {
     return this
-            .groupBy(labeler)
-            .values
-            .filter { it.size > 1 }
-            .flatten()
+        .groupBy(labeler)
+        .values
+        .filter { it.size > 1 }
+        .flatten()
 }
 
 /**
- * Maps corresponding elements of the left and right list using the given mapper. The shorter list is padded with nulls
- * at the end. The resulting list has the same length as the longer list.
+ * Maps corresponding elements of the left and right list using the given zipper. The shorter list is padded with nulls
+ * at the end, so the resulting list has the same length as the longer list.
  */
 fun <L, R, O> outerZipBy(left: List<L>, right: List<R>, zipper: (L?, R?) -> O): List<O> {
     val maxSize = max(left.size, right.size)

@@ -1,5 +1,17 @@
 package de.unibonn.simpleml.prolog_bridge.converters
 
+import de.unibonn.simpleml.emf.annotationsOrEmpty
+import de.unibonn.simpleml.emf.argumentsOrEmpty
+import de.unibonn.simpleml.emf.assigneesOrEmpty
+import de.unibonn.simpleml.emf.membersOrEmpty
+import de.unibonn.simpleml.emf.parametersOrEmpty
+import de.unibonn.simpleml.emf.parentTypesOrEmpty
+import de.unibonn.simpleml.emf.resultsOrEmpty
+import de.unibonn.simpleml.emf.statementsOrEmpty
+import de.unibonn.simpleml.emf.typeArgumentsOrEmpty
+import de.unibonn.simpleml.emf.typeParameterConstraintsOrEmpty
+import de.unibonn.simpleml.emf.typeParametersOrEmpty
+import de.unibonn.simpleml.emf.variantsOrEmpty
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ArgumentT
@@ -103,19 +115,7 @@ import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.aliasName
-import de.unibonn.simpleml.utils.annotationsOrEmpty
-import de.unibonn.simpleml.utils.argumentsOrEmpty
-import de.unibonn.simpleml.utils.assigneesOrEmpty
-import de.unibonn.simpleml.utils.membersOrEmpty
-import de.unibonn.simpleml.utils.parametersOrEmpty
-import de.unibonn.simpleml.utils.parentTypesOrEmpty
 import de.unibonn.simpleml.utils.realValue
-import de.unibonn.simpleml.utils.resultsOrEmpty
-import de.unibonn.simpleml.utils.statementsOrEmpty
-import de.unibonn.simpleml.utils.typeArgumentsOrEmpty
-import de.unibonn.simpleml.utils.typeParameterConstraintsOrEmpty
-import de.unibonn.simpleml.utils.typeParametersOrEmpty
-import de.unibonn.simpleml.utils.variantsOrEmpty
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.EcoreUtil2

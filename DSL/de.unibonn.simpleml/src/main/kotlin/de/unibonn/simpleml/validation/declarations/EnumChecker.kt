@@ -1,8 +1,8 @@
 package de.unibonn.simpleml.validation.declarations
 
+import de.unibonn.simpleml.emf.variantsOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlEnum
-import de.unibonn.simpleml.utils.variantsOrEmpty
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import org.eclipse.xtext.validation.Check
 

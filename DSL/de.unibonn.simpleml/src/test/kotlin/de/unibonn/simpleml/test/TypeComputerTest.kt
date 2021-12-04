@@ -3,15 +3,11 @@ package de.unibonn.simpleml.test
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.stdlib.StdlibClasses
 import de.unibonn.simpleml.test.util.ParseHelper
 import de.unibonn.simpleml.test.util.getResourcePath
 import de.unibonn.simpleml.typing.Type
 import de.unibonn.simpleml.typing.TypeComputer
-import de.unibonn.simpleml.utils.LIB_ANY
-import de.unibonn.simpleml.utils.LIB_BOOLEAN
-import de.unibonn.simpleml.utils.LIB_FLOAT
-import de.unibonn.simpleml.utils.LIB_INT
-import de.unibonn.simpleml.utils.LIB_STRING
 import de.unibonn.simpleml.utils.assignedOrNull
 import io.kotest.matchers.shouldBe
 import org.eclipse.emf.ecore.EObject
@@ -197,9 +193,9 @@ class TypeComputerTest {
         compilationUnit.apply(lambda)
     }
 
-    private val SmlCompilationUnit.ANY get() = typeComputer.stdlibType(this, LIB_ANY)
-    private val SmlCompilationUnit.BOOLEAN get() = typeComputer.stdlibType(this, LIB_BOOLEAN)
-    private val SmlCompilationUnit.FLOAT get() = typeComputer.stdlibType(this, LIB_FLOAT)
-    private val SmlCompilationUnit.INT get() = typeComputer.stdlibType(this, LIB_INT)
-    private val SmlCompilationUnit.STRING get() = typeComputer.stdlibType(this, LIB_STRING)
+    private val SmlCompilationUnit.ANY get() = typeComputer.stdlibType(this, StdlibClasses.Any.toString())
+    private val SmlCompilationUnit.BOOLEAN get() = typeComputer.stdlibType(this, StdlibClasses.Boolean.toString())
+    private val SmlCompilationUnit.FLOAT get() = typeComputer.stdlibType(this, StdlibClasses.Float.toString())
+    private val SmlCompilationUnit.INT get() = typeComputer.stdlibType(this, StdlibClasses.Int.toString())
+    private val SmlCompilationUnit.STRING get() = typeComputer.stdlibType(this, StdlibClasses.String.toString())
 }

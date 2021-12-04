@@ -1,6 +1,8 @@
 package de.unibonn.simpleml.validation.declarations
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.constants.isInStubFile
+import de.unibonn.simpleml.constants.isInTestFile
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlDeclaration
@@ -10,8 +12,6 @@ import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.utils.SimpleMLIndexExtensions
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.importedNameOrNull
-import de.unibonn.simpleml.utils.isInStubFile
-import de.unibonn.simpleml.utils.isInTestFile
 import de.unibonn.simpleml.utils.isQualified
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.REDECLARATION

@@ -12,13 +12,6 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-private const val LIB_PACKAGE = "simpleml.lang"
-const val LIB_ANY = "$LIB_PACKAGE.Any"
-const val LIB_BOOLEAN = "$LIB_PACKAGE.Boolean"
-const val LIB_FLOAT = "$LIB_PACKAGE.Float"
-const val LIB_INT = "$LIB_PACKAGE.Int"
-const val LIB_STRING = "$LIB_PACKAGE.String"
-
 class SimpleMLStdlib @Inject constructor(
     private val indexExtensions: SimpleMLIndexExtensions
 ) {
@@ -48,7 +41,7 @@ class SimpleMLStdlib @Inject constructor(
     }
 
     fun listStdlibFiles(): Sequence<Pair<Path, URI>> {
-        val resourcesUrl = javaClass.classLoader.getResource("stubs") ?: return emptySequence()
+        val resourcesUrl = javaClass.classLoader.getResource("stdlib") ?: return emptySequence()
         val resourcesUri = FileLocator.resolve(resourcesUrl).toURI()
 
         return sequence {
@@ -59,7 +52,7 @@ class SimpleMLStdlib @Inject constructor(
                 "jar" -> {
                     fileSystem =
                         FileSystems.newFileSystem(resourcesUri, emptyMap<String, String>(), null)
-                    fileSystem.getPath("stubs")
+                    fileSystem.getPath("stdlib")
                 }
                 else -> Paths.get(resourcesUri)
             }

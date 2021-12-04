@@ -1,6 +1,14 @@
 package de.unibonn.simpleml.generator
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.constants.isWorkflowFile
+import de.unibonn.simpleml.emf.assigneesOrEmpty
+import de.unibonn.simpleml.emf.compilationUnitOrNull
+import de.unibonn.simpleml.emf.containingCompilationUnitOrNull
+import de.unibonn.simpleml.emf.parametersOrEmpty
+import de.unibonn.simpleml.emf.placeholdersOrEmpty
+import de.unibonn.simpleml.emf.resultsOrEmpty
+import de.unibonn.simpleml.emf.statementsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlBoolean
 import de.unibonn.simpleml.simpleML.SmlCall
@@ -20,16 +28,8 @@ import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
-import de.unibonn.simpleml.utils.assigneesOrEmpty
-import de.unibonn.simpleml.utils.compilationUnitOrNull
-import de.unibonn.simpleml.utils.containingCompilationUnitOrNull
 import de.unibonn.simpleml.utils.isCompilationUnitMember
 import de.unibonn.simpleml.utils.isNamed
-import de.unibonn.simpleml.utils.isWorkflowFile
-import de.unibonn.simpleml.utils.parametersOrEmpty
-import de.unibonn.simpleml.utils.placeholdersOrEmpty
-import de.unibonn.simpleml.utils.resultsOrEmpty
-import de.unibonn.simpleml.utils.statementsOrEmpty
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
