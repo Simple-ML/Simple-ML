@@ -40,7 +40,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.eclipse.xtext:org.eclipse.xtext.testing:$xtextVersion")
     testImplementation("org.eclipse.xtext:org.eclipse.xtext.xbase.testing:$xtextVersion")
-    testImplementation("io.kotest:kotest-assertions-core-jvm:4.6.3")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:5.0.1")
 }
 
 // Source sets ---------------------------------------------------------------------------------------------------------
