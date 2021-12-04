@@ -1,8 +1,8 @@
-package de.unibonn.simpleml.tests
+package de.unibonn.simpleml.test
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.tests.assertions.shouldHaveNoErrorsOrWarnings
-import de.unibonn.simpleml.tests.util.ParseHelper
+import de.unibonn.simpleml.test.assertions.shouldHaveNoErrorsOrWarnings
+import de.unibonn.simpleml.test.util.ParseHelper
 import de.unibonn.simpleml.utils.OriginalFilePath
 import de.unibonn.simpleml.utils.SimpleMLStdlib
 import org.eclipse.xtext.testing.InjectWith

@@ -1,10 +1,10 @@
-package de.unibonn.simpleml.tests
+package de.unibonn.simpleml.test
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.simpleML.SimpleMLFactory
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
-import de.unibonn.simpleml.tests.util.ParseHelper
+import de.unibonn.simpleml.test.util.ParseHelper
 import de.unibonn.simpleml.utils.Proposals
 import de.unibonn.simpleml.utils.membersOrEmpty
 import io.kotest.matchers.collections.shouldHaveSize

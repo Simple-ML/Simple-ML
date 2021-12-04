@@ -1,11 +1,13 @@
+package de.unibonn.simpleml.test
+
 import org.eclipse.xtext.testing.IInjectorProvider
 import org.eclipse.xtext.testing.IRegistryConfigurator
 import org.eclipse.xtext.testing.GlobalRegistries.GlobalStateMemento
 import com.google.inject.Injector
 import org.eclipse.xtext.testing.GlobalRegistries
-import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import com.google.inject.Guice
 import de.unibonn.simpleml.SimpleMLRuntimeModule
+import de.unibonn.simpleml.SimpleMLStandaloneSetup
 
 class SimpleMLInjectorProvider : IInjectorProvider, IRegistryConfigurator {
     private var stateBeforeInjectorCreation: GlobalStateMemento? = null

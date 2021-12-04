@@ -1,10 +1,10 @@
-package de.unibonn.simpleml.tests
+package de.unibonn.simpleml.test
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.tests.util.CategorizedTest
-import de.unibonn.simpleml.tests.util.createDynamicTestsFromResourceFolder
-import de.unibonn.simpleml.tests.util.getResourcePath
-import de.unibonn.simpleml.tests.util.testDisplayName
+import de.unibonn.simpleml.test.util.CategorizedTest
+import de.unibonn.simpleml.test.util.createDynamicTestsFromResourceFolder
+import de.unibonn.simpleml.test.util.getResourcePath
+import de.unibonn.simpleml.test.util.testDisplayName
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.eclipse.xtext.testing.formatter.FormatterTestHelper

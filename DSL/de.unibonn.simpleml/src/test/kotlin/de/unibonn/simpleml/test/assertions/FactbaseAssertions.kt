@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.tests.assertions
+package de.unibonn.simpleml.test.assertions
 
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
 import de.unibonn.simpleml.prolog_bridge.model.facts.DeclarationT

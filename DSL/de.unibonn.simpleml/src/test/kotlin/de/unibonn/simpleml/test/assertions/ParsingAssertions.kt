@@ -1,6 +1,6 @@
-package de.unibonn.simpleml.tests.assertions
+package de.unibonn.simpleml.test.assertions
 
-import de.unibonn.simpleml.tests.ExpectedIssue
+import de.unibonn.simpleml.test.ExpectedIssue
 import org.eclipse.xtext.diagnostics.Severity
 import org.eclipse.xtext.validation.Issue
 

@@ -1,10 +1,10 @@
-package de.unibonn.simpleml.tests
+package de.unibonn.simpleml.test
 
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
-import de.unibonn.simpleml.tests.util.ParseHelper
-import de.unibonn.simpleml.tests.util.getResourcePath
+import de.unibonn.simpleml.test.util.ParseHelper
+import de.unibonn.simpleml.test.util.getResourcePath
 import de.unibonn.simpleml.typing.Type
 import de.unibonn.simpleml.typing.TypeComputer
 import de.unibonn.simpleml.utils.LIB_ANY

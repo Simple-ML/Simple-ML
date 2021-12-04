@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.tests
+package de.unibonn.simpleml.test
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.simpleML.SmlAnnotation
@@ -22,11 +22,11 @@ import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
-import de.unibonn.simpleml.tests.assertions.findUniqueDeclarationOrFail
-import de.unibonn.simpleml.tests.assertions.shouldBeResolved
-import de.unibonn.simpleml.tests.assertions.shouldNotBeResolved
-import de.unibonn.simpleml.tests.util.ParseHelper
-import de.unibonn.simpleml.tests.util.ResourceName
+import de.unibonn.simpleml.test.assertions.findUniqueDeclarationOrFail
+import de.unibonn.simpleml.test.assertions.shouldBeResolved
+import de.unibonn.simpleml.test.assertions.shouldNotBeResolved
+import de.unibonn.simpleml.test.util.ParseHelper
+import de.unibonn.simpleml.test.util.ResourceName
 import de.unibonn.simpleml.utils.annotationsOrEmpty
 import de.unibonn.simpleml.utils.descendants
 import de.unibonn.simpleml.utils.parametersOrEmpty
