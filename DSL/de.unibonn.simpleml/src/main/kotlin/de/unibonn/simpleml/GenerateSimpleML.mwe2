@@ -3,7 +3,7 @@ module de.unibonn.simpleml.GenerateSimpleML
 import org.eclipse.xtext.xtext.generator.*
 import org.eclipse.xtext.xtext.generator.model.project.*
 
-var rootPath = ".."
+var rootPath = "../../.."
 
 Workflow {
 
@@ -33,7 +33,7 @@ Workflow {
 
     component = org.eclipse.emf.mwe2.ecore.EcoreGenerator {
         genModel = "platform:/resource/de.unibonn.simpleml/model/custom/SimpleML.genmodel"
-        srcPath = "platform:/resource/de.unibonn.simpleml/src"
+        srcPath = "platform:/resource/de.unibonn.simpleml/src/main/kotlin"
     }
 	
 	component = XtextGenerator {

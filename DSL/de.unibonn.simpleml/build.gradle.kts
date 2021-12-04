@@ -47,7 +47,7 @@ dependencies {
 
 sourceSets {
     main {
-        java.srcDirs("emf-gen", "src/de", "src-gen")
+        java.srcDirs("emf-gen", "src-gen")
         resources.srcDirs("src-gen")
         resources.include("**/*.simpleml", "**/*.tokens", "**/*.xtextbin")
     }
@@ -61,13 +61,13 @@ tasks.register<JavaExec>("generateXtextLanguage") {
 
     classpath = mwe2
     mainClass.set("org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher")
-    args = listOf("src/de/unibonn/simpleml/GenerateSimpleML.mwe2", "-p", "rootPath=/$projectDir/..")
+    args = listOf("src/main/kotlin/de/unibonn/simpleml/GenerateSimpleML.mwe2", "-p", "rootPath=/$projectDir/..")
 
     inputs.files(
         "model/custom/SimpleML.ecore",
         "model/custom/SimpleML.genmodel",
-        "src/de/unibonn/simpleml/GenerateSimpleML.mwe2",
-        "src/de/unibonn/simpleml/SimpleML.xtext"
+        "src/main/kotlin/de/unibonn/simpleml/GenerateSimpleML.mwe2",
+        "src/main/kotlin/de/unibonn/simpleml/SimpleML.xtext"
     )
     outputs.dirs(
         "META-INF",
