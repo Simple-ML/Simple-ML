@@ -22,11 +22,6 @@ Workflow {
         }
 
         projectMapping = {
-            projectName = "de.unibonn.simpleml.tests"
-            path = "${rootPath}/de.unibonn.simpleml.tests"
-        }
-
-        projectMapping = {
             projectName = "de.unibonn.simpleml.web"
             path = "${rootPath}/de.unibonn.simpleml.web"
         }
@@ -47,7 +42,7 @@ Workflow {
 				baseName = "de.unibonn.simpleml"
 				rootPath = rootPath
 				runtimeTest = {
-					enabled = true
+					enabled = false
 				}
 				web = {
 					enabled = true
