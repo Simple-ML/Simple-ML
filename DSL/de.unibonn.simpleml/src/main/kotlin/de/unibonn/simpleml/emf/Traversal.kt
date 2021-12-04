@@ -1,6 +1,10 @@
-package de.unibonn.simpleml.utils
+package de.unibonn.simpleml.emf
 
 import org.eclipse.emf.ecore.EObject
+
+inline fun <reified T : EObject> EObject.descendants(): Sequence<T> {
+    return this.eAllContents().asSequence().filterIsInstance<T>()
+}
 
 inline fun <reified T : EObject> EObject.closestAncestorOrNull(): T? {
     var current: EObject? = this.eContainer()
@@ -8,8 +12,4 @@ inline fun <reified T : EObject> EObject.closestAncestorOrNull(): T? {
         current = current.eContainer()
     }
     return current as T?
-}
-
-inline fun <reified T : EObject> EObject.descendants(): Sequence<T> {
-    return this.eAllContents().asSequence().filterIsInstance<T>()
 }

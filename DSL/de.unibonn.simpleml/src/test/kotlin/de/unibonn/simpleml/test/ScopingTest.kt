@@ -1,6 +1,9 @@
 package de.unibonn.simpleml.test
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.emf.annotationsOrEmpty
+import de.unibonn.simpleml.emf.descendants
+import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlArgument
@@ -27,9 +30,6 @@ import de.unibonn.simpleml.test.assertions.shouldBeResolved
 import de.unibonn.simpleml.test.assertions.shouldNotBeResolved
 import de.unibonn.simpleml.test.util.ParseHelper
 import de.unibonn.simpleml.test.util.ResourceName
-import de.unibonn.simpleml.utils.annotationsOrEmpty
-import de.unibonn.simpleml.utils.descendants
-import de.unibonn.simpleml.utils.parametersOrEmpty
 import io.kotest.assertions.forEachAsClue
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -1295,7 +1295,8 @@ class ScopingTest {
 
             @Test
             fun `should resolve enum variants from parameter annotation`() = withResource(REFERENCE) {
-                val parameter = findUniqueDeclarationOrFail<SmlParameter>("referenceToEnumVariantFromParameterAnnotation")
+                val parameter =
+                    findUniqueDeclarationOrFail<SmlParameter>("referenceToEnumVariantFromParameterAnnotation")
                 val enumVariantInSameFile =
                     findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameFile")
 

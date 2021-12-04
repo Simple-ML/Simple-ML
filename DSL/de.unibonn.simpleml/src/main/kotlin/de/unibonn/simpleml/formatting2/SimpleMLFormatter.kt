@@ -1,5 +1,6 @@
 package de.unibonn.simpleml.formatting2
 
+import de.unibonn.simpleml.emf.annotationsOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ANNOTATION_USE__ANNOTATION
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ARGUMENT__PARAMETER
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_COMPILATION_UNIT__NAME
@@ -67,7 +68,6 @@ import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
-import de.unibonn.simpleml.utils.annotationsOrEmpty
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.TerminalRule

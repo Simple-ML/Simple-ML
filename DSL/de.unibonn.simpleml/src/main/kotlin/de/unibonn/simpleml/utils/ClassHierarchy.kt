@@ -1,6 +1,8 @@
 package de.unibonn.simpleml.utils
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.emf.closestAncestorOrNull
+import de.unibonn.simpleml.emf.membersOrEmpty
 import de.unibonn.simpleml.names.StdlibClasses
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction

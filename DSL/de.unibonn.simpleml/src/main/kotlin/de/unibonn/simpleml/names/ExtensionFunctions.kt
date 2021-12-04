@@ -1,9 +1,9 @@
 package de.unibonn.simpleml.names
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.emf.annotationsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.utils.annotationsOrEmpty
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.naming.QualifiedName
 

@@ -1,16 +1,16 @@
 package de.unibonn.simpleml.validation.declarations
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.constants.hasOpenModifier
+import de.unibonn.simpleml.constants.hasOverrideModifier
+import de.unibonn.simpleml.emf.parametersOrEmpty
+import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.names.isPure
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.utils.ClassHierarchy
 import de.unibonn.simpleml.utils.isClassMember
-import de.unibonn.simpleml.utils.isOpen
-import de.unibonn.simpleml.utils.isOverride
 import de.unibonn.simpleml.utils.isStatic
-import de.unibonn.simpleml.utils.parametersOrEmpty
-import de.unibonn.simpleml.utils.resultsOrEmpty
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import org.eclipse.xtext.validation.Check
 
@@ -30,7 +30,7 @@ class FunctionChecker @Inject constructor(
 
     @Check
     fun mustNotBeOpenAndStatic(smlFunction: SmlFunction) {
-        if (smlFunction.isClassMember() && smlFunction.isOpen() && smlFunction.isStatic()) {
+        if (smlFunction.isClassMember() && smlFunction.hasOpenModifier() && smlFunction.isStatic()) {
             error(
                 "A function must not be static and open.",
                 Literals.SML_DECLARATION__NAME,
@@ -41,7 +41,7 @@ class FunctionChecker @Inject constructor(
 
     @Check
     fun mustNotBeOverrideAndStatic(smlFunction: SmlFunction) {
-        if (smlFunction.isClassMember() && smlFunction.isOverride() && smlFunction.isStatic()) {
+        if (smlFunction.isClassMember() && smlFunction.hasOverrideModifier() && smlFunction.isStatic()) {
             error(
                 "A function must not be static and override.",
                 Literals.SML_DECLARATION__NAME,
@@ -67,7 +67,7 @@ class FunctionChecker @Inject constructor(
     @Check
     fun overriddenFunctionMustBeOpen(smlFunction: SmlFunction) {
         val hiddenFunction = classHierarchy.hiddenFunction(smlFunction)
-        if (hiddenFunction != null && !hiddenFunction.isOpen() && !hiddenFunction.isStatic()) {
+        if (hiddenFunction != null && !hiddenFunction.hasOpenModifier() && !hiddenFunction.isStatic()) {
             error(
                 "The overridden function must be open.",
                 Literals.SML_DECLARATION__NAME,
@@ -78,7 +78,7 @@ class FunctionChecker @Inject constructor(
 
     @Check
     fun overridingFunctionMustHaveOverrideModifier(smlFunction: SmlFunction) {
-        if (!smlFunction.isOverride()) {
+        if (!smlFunction.hasOverrideModifier()) {
             val hiddenFunction = classHierarchy.hiddenFunction(smlFunction)
             if (hiddenFunction != null && !hiddenFunction.isStatic()) {
                 error(
@@ -92,7 +92,7 @@ class FunctionChecker @Inject constructor(
 
     @Check
     fun overriddenFunctionMustNotBeStatic(smlFunction: SmlFunction) {
-        if (smlFunction.isOverride()) {
+        if (smlFunction.hasOverrideModifier()) {
             val hiddenFunction = classHierarchy.hiddenFunction(smlFunction)
             if (hiddenFunction != null && hiddenFunction.isStatic()) {
                 error(
@@ -106,7 +106,7 @@ class FunctionChecker @Inject constructor(
 
     @Check
     fun overridingFunctionMustOverrideSomething(smlFunction: SmlFunction) {
-        if (smlFunction.isOverride() && classHierarchy.hiddenFunction(smlFunction) == null) {
+        if (smlFunction.hasOverrideModifier() && classHierarchy.hiddenFunction(smlFunction) == null) {
             error(
                 "This function does not override anything.",
                 Literals.SML_DECLARATION__NAME,

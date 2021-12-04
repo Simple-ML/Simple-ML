@@ -1,7 +1,18 @@
 package de.unibonn.simpleml.utils
 
-import de.unibonn.simpleml.names.StdlibAnnotations
-import de.unibonn.simpleml.names.fullyQualifiedName
+import de.unibonn.simpleml.constants.Modifiers
+import de.unibonn.simpleml.emf.closestAncestorOrNull
+import de.unibonn.simpleml.emf.containingClassOrNull
+import de.unibonn.simpleml.emf.containingLambdaOrNull
+import de.unibonn.simpleml.emf.containingWorkflowStepOrNull
+import de.unibonn.simpleml.emf.descendants
+import de.unibonn.simpleml.emf.lambdaYieldsOrEmpty
+import de.unibonn.simpleml.emf.parametersOrEmpty
+import de.unibonn.simpleml.emf.parentTypesOrEmpty
+import de.unibonn.simpleml.emf.placeholdersOrEmpty
+import de.unibonn.simpleml.emf.resultsOrEmpty
+import de.unibonn.simpleml.emf.typeParametersOrEmpty
+import de.unibonn.simpleml.emf.variantsOrEmpty
 import de.unibonn.simpleml.names.isPure
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
@@ -12,7 +23,6 @@ import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
@@ -20,7 +30,6 @@ import de.unibonn.simpleml.simpleML.SmlExpression
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlLambda
-import de.unibonn.simpleml.simpleML.SmlLambdaYield
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -38,17 +47,7 @@ import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraintList
 import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
-import de.unibonn.simpleml.simpleML.SmlYield
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.resource.Resource
-
-// Annotation ----------------------------------------------------------------------------------------------------------
-
-fun SmlAnnotation?.parametersOrEmpty() = this?.parameterList?.parameters.orEmpty()
-
-// Annotation Use ------------------------------------------------------------------------------------------------------
-
-fun SmlAnnotationUse?.argumentsOrEmpty() = this?.argumentList?.arguments.orEmpty()
 
 // Argument ------------------------------------------------------------------------------------------------------------
 
@@ -181,18 +180,8 @@ fun SmlCall.resultsOrNull(): List<SmlDeclaration>? {
     }
 }
 
-fun SmlCall?.argumentsOrEmpty() = this?.argumentList?.arguments.orEmpty()
-fun SmlCall?.typeArgumentsOrEmpty() = this?.typeArgumentList?.typeArguments.orEmpty()
-
 // Class ---------------------------------------------------------------------------------------------------------------
 
-fun SmlClass?.membersOrEmpty() = this?.body?.members.orEmpty()
-
-fun SmlClass?.parametersOrEmpty() = this?.parameterList?.parameters.orEmpty()
-fun SmlClass?.typeParametersOrEmpty() = this?.typeParameterList?.typeParameters.orEmpty()
-fun SmlClass?.typeParameterConstraintsOrEmpty() = this?.typeParameterConstraintList?.constraints.orEmpty()
-
-fun SmlClass?.parentTypesOrEmpty() = this?.parentTypeList?.parentTypes.orEmpty()
 fun SmlClass?.parentClassesOrEmpty() = this.parentTypesOrEmpty().mapNotNull { it.resolveToClassOrNull() }
 fun SmlClass?.parentClassOrNull(): SmlClass? {
     val resolvedParentClasses = this.parentClassesOrEmpty()
@@ -202,17 +191,7 @@ fun SmlClass?.parentClassOrNull(): SmlClass? {
     }
 }
 
-// Compilation Unit ----------------------------------------------------------------------------------------------------
-
-fun SmlCompilationUnit?.membersOrEmpty() = this?.members.orEmpty()
-
 // Declaration ---------------------------------------------------------------------------------------------------------
-
-fun SmlDeclaration.isOpen(): Boolean {
-    return Modifiers.OPEN in this.modifiers
-}
-
-fun SmlDeclaration.isOverride() = Modifiers.OVERRIDE in this.modifiers
 
 fun SmlDeclaration.isStatic(): Boolean {
     return Modifiers.STATIC in this.modifiers || !this.isCompilationUnitMember() &&
@@ -231,16 +210,6 @@ fun SmlDeclaration.isCompilationUnitMember(): Boolean {
                             this is SmlWorkflowStep
                     )
 }
-
-fun SmlDeclaration?.annotationsOrEmpty() = this?.annotationHolder?.annotations ?: this?.annotations.orEmpty()
-
-
-// Assignment ----------------------------------------------------------------------------------------------------------
-
-fun SmlAssignment.assigneesOrEmpty() = this.assigneeList?.assignees.orEmpty()
-fun SmlAssignment.lambdaYieldsOrEmpty() = this.assigneesOrEmpty().filterIsInstance<SmlLambdaYield>()
-fun SmlAssignment.placeholdersOrEmpty() = this.assigneesOrEmpty().filterIsInstance<SmlPlaceholder>()
-fun SmlAssignment.yieldsOrEmpty() = this.assigneesOrEmpty().filterIsInstance<SmlYield>()
 
 // Assignee ------------------------------------------------------------------------------------------------------------
 
@@ -277,14 +246,6 @@ fun SmlAssignee.maybeAssigned(): AssignedResult {
 
 // EObject -------------------------------------------------------------------------------------------------------------
 
-fun EObject?.containingClassOrNull() = this?.closestAncestorOrNull<SmlClass>()
-fun EObject?.containingEnumOrNull() = this?.closestAncestorOrNull<SmlEnum>()
-fun EObject?.containingCompilationUnitOrNull() = this?.closestAncestorOrNull<SmlCompilationUnit>()
-fun EObject?.containingFunctionOrNull() = this?.closestAncestorOrNull<SmlFunction>()
-fun EObject?.containingLambdaOrNull() = this?.closestAncestorOrNull<SmlLambda>()
-fun EObject?.containingWorkflowOrNull() = this?.closestAncestorOrNull<SmlWorkflow>()
-fun EObject?.containingWorkflowStepOrNull() = this?.closestAncestorOrNull<SmlWorkflowStep>()
-
 fun EObject?.isCallable() =
     this is SmlClass ||
             this is SmlEnumVariant ||
@@ -293,19 +254,9 @@ fun EObject?.isCallable() =
             this is SmlLambda ||
             this is SmlWorkflowStep
 
-fun EObject.isInStubFile() = this.eResource().isStubFile()
-fun EObject.isInTestFile() = this.eResource().isTestFile()
-
 // Enum ----------------------------------------------------------------------------------------------------------------
 
-fun SmlEnum?.variantsOrEmpty() = this?.body?.variants.orEmpty()
 fun SmlEnum?.isConstant() = this.variantsOrEmpty().all { it.parameterList == null }
-
-// Enum Variant --------------------------------------------------------------------------------------------------------
-
-fun SmlEnumVariant?.parametersOrEmpty() = this?.parameterList?.parameters.orEmpty()
-fun SmlEnumVariant?.typeParametersOrEmpty() = this?.typeParameterList?.typeParameters.orEmpty()
-fun SmlEnumVariant?.typeParameterConstraintsOrEmpty() = this?.typeParameterConstraintList?.constraints.orEmpty()
 
 // Expression ----------------------------------------------------------------------------------------------------------
 
@@ -328,16 +279,6 @@ fun SmlExpression.hasSideEffects(): Boolean {
 
 fun SmlFunction.isMethod() = this.containingClassOrNull() != null
 
-fun SmlFunction?.parametersOrEmpty() = this?.parameterList?.parameters.orEmpty()
-fun SmlFunction?.resultsOrEmpty() = this?.resultList?.results.orEmpty()
-fun SmlFunction?.typeParametersOrEmpty() = this?.typeParameterList?.typeParameters.orEmpty()
-fun SmlFunction?.typeParameterConstraintsOrEmpty() = this?.typeParameterConstraintList?.constraints.orEmpty()
-
-// Function Type -------------------------------------------------------------------------------------------------------
-
-fun SmlCallableType?.parametersOrEmpty() = this?.parameterList?.parameters.orEmpty()
-fun SmlCallableType?.resultsOrEmpty() = this?.resultList?.results.orEmpty()
-
 // Import --------------------------------------------------------------------------------------------------------------
 
 fun SmlImport.importedNameOrNull(): String? {
@@ -357,27 +298,7 @@ fun SmlImport.aliasName() = this.alias?.name
 
 // Lambda --------------------------------------------------------------------------------------------------------------
 
-fun SmlLambda?.lambdaYieldsOrEmpty(): List<SmlLambdaYield> {
-    return this.statementsOrEmpty()
-        .filterIsInstance<SmlAssignment>()
-        .flatMap { it.lambdaYieldsOrEmpty() }
-}
-
-fun SmlLambda?.localVariablesOrEmpty() = this.parametersOrEmpty() + this.placeholdersOrEmpty()
-fun SmlLambda?.parametersOrEmpty() = this?.parameterList?.parameters.orEmpty()
-fun SmlLambda?.placeholdersOrEmpty(): List<SmlPlaceholder> {
-    return this.statementsOrEmpty()
-        .filterIsInstance<SmlAssignment>()
-        .flatMap { it.placeholdersOrEmpty() }
-}
-
-fun SmlLambda?.statementsOrEmpty() = this?.body?.statements.orEmpty()
-
 fun SmlLambda.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }
-
-// Named Type ----------------------------------------------------------------------------------------------------------
-
-fun SmlNamedType?.typeArgumentsOrEmpty() = this?.typeArgumentList?.typeArguments.orEmpty()
 
 // Parameter -----------------------------------------------------------------------------------------------------------
 
@@ -396,25 +317,6 @@ fun SmlPlaceholder.usesIn(obj: EObject): Sequence<SmlReference> {
             statement.descendants<SmlReference>()
                 .filter { it.declaration == this }
         }
-}
-
-// Resource ------------------------------------------------------------------------------------------------------------
-
-fun Resource?.compilationUnitOrNull() = this?.allContents
-    ?.asSequence()
-    ?.filterIsInstance<SmlCompilationUnit>()
-    ?.firstOrNull()
-
-fun Resource.isStubFile() = this.nameEndsWith(FileExtensions.STUB)
-fun Resource.isTestFile() = this.nameEndsWith(FileExtensions.TEST)
-fun Resource.isWorkflowFile() = !this.isStubFile() && !this.isTestFile() && this.nameEndsWith(FileExtensions.WORKFLOW)
-
-private fun Resource.nameEndsWith(suffix: String): Boolean {
-    this.eAdapters().filterIsInstance<OriginalFilePath>().firstOrNull()?.let {
-        return it.path.endsWith(suffix)
-    }
-
-    return this.uri.toString().endsWith(suffix)
 }
 
 // Template string part ------------------------------------------------------------------------------------------------
@@ -486,42 +388,5 @@ fun SmlTypeArgumentList.typeParametersOrNull(): List<SmlTypeParameter>? {
     return null
 }
 
-// TypeParameterConstraintList -----------------------------------------------------------------------------------------
-
-fun SmlTypeParameterConstraintList.typeParametersOrNull(): List<SmlTypeParameter>? {
-    return when (val parent = this.eContainer()) {
-        is SmlClass -> parent.typeParametersOrEmpty()
-        is SmlEnumVariant -> return parent.typeParametersOrEmpty()
-        is SmlFunction -> parent.typeParametersOrEmpty()
-        else -> null
-    }
-}
-
-// UnionType -----------------------------------------------------------------------------------------------------------
-
-fun SmlUnionType?.typeArgumentsOrEmpty() = this?.typeArgumentList?.typeArguments.orEmpty()
-
-// Workflow ------------------------------------------------------------------------------------------------------------
-
-fun SmlWorkflow?.placeholdersOrEmpty(): List<SmlPlaceholder> {
-    return this.statementsOrEmpty()
-        .filterIsInstance<SmlAssignment>()
-        .flatMap { it.placeholdersOrEmpty() }
-}
-
-fun SmlWorkflow?.statementsOrEmpty() = this?.body?.statements.orEmpty()
-
-// Workflow Steps ------------------------------------------------------------------------------------------------------
-
-fun SmlWorkflowStep?.localVariablesOrEmpty() = this.parametersOrEmpty() + this.placeholdersOrEmpty()
-fun SmlWorkflowStep?.parametersOrEmpty() = this?.parameterList?.parameters.orEmpty()
-fun SmlWorkflowStep?.placeholdersOrEmpty(): List<SmlPlaceholder> {
-    return this.statementsOrEmpty()
-        .filterIsInstance<SmlAssignment>()
-        .flatMap { it.placeholdersOrEmpty() }
-}
-
-fun SmlWorkflowStep?.resultsOrEmpty() = this?.resultList?.results.orEmpty()
-fun SmlWorkflowStep?.statementsOrEmpty() = this?.body?.statements.orEmpty()
 
 fun SmlWorkflowStep.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }

@@ -1,6 +1,9 @@
 package de.unibonn.simpleml.typing
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.emf.lambdaYieldsOrEmpty
+import de.unibonn.simpleml.emf.parametersOrEmpty
+import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.names.StdlibClasses
 import de.unibonn.simpleml.names.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SmlAttribute
@@ -36,9 +39,6 @@ import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.SimpleMLStdlib
 import de.unibonn.simpleml.utils.assignedOrNull
 import de.unibonn.simpleml.utils.callableOrNull
-import de.unibonn.simpleml.utils.lambdaYieldsOrEmpty
-import de.unibonn.simpleml.utils.parametersOrEmpty
-import de.unibonn.simpleml.utils.resultsOrEmpty
 import org.eclipse.emf.ecore.EObject
 
 @Suppress("PrivatePropertyName")
