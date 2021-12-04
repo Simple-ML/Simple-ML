@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.utils
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.naming.CoreAnnotations
+import de.unibonn.simpleml.names.StdlibAnnotations
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlArgument
@@ -216,7 +216,7 @@ fun SmlCompilationUnit?.membersOrEmpty() = this?.members.orEmpty()
 // Declaration ---------------------------------------------------------------------------------------------------------
 
 fun SmlDeclaration.isDeprecated() = this.annotationsOrEmpty().any {
-    it.annotation.fullyQualifiedName() == CoreAnnotations.DEPRECATED
+    it.annotation.fullyQualifiedName() == StdlibAnnotations.Deprecated
 }
 fun SmlDeclaration.isOpen(): Boolean {
     return Modifiers.OPEN in this.modifiers
@@ -224,7 +224,7 @@ fun SmlDeclaration.isOpen(): Boolean {
 
 fun SmlDeclaration.isOverride() = Modifiers.OVERRIDE in this.modifiers
 fun SmlDeclaration.isPure() = this.annotationsOrEmpty().any {
-    it.annotation.fullyQualifiedName() == CoreAnnotations.PURE
+    it.annotation.fullyQualifiedName() == StdlibAnnotations.Pure
 }
 
 fun SmlDeclaration.isStatic(): Boolean {
@@ -420,9 +420,9 @@ fun Resource?.compilationUnitOrNull() = this?.allContents
     ?.filterIsInstance<SmlCompilationUnit>()
     ?.firstOrNull()
 
-fun Resource.isStubFile() = this.nameEndsWith(".stub.simpleml")
-fun Resource.isTestFile() = this.nameEndsWith(".test.simpleml")
-fun Resource.isWorkflowFile() = !this.isStubFile() && !this.isTestFile()
+fun Resource.isStubFile() = this.nameEndsWith(FileExtensions.STUB)
+fun Resource.isTestFile() = this.nameEndsWith(FileExtensions.TEST)
+fun Resource.isWorkflowFile() = !this.isStubFile() && !this.isTestFile() && this.nameEndsWith(FileExtensions.WORKFLOW)
 
 private fun Resource.nameEndsWith(suffix: String): Boolean {
     this.eAdapters().filterIsInstance<OriginalFilePath>().firstOrNull()?.let {

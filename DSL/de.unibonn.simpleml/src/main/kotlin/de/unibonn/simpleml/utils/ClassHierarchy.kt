@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.utils
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.names.StdlibClasses
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
 
@@ -23,7 +24,7 @@ class ClassHierarchy @Inject constructor(
             current = current.parentClassOrNull()
         }
 
-        val anyClass = stdlib.getClass(smlClass, LIB_ANY)
+        val anyClass = stdlib.getClass(smlClass, StdlibClasses.Any.toString())
         if (anyClass != null && smlClass != anyClass && visited.lastOrNull() != anyClass) {
             yield(anyClass)
         }

@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.typing
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.names.StdlibClasses
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlBoolean
 import de.unibonn.simpleml.simpleML.SmlCall
@@ -31,11 +32,6 @@ import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlType
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
-import de.unibonn.simpleml.utils.LIB_ANY
-import de.unibonn.simpleml.utils.LIB_BOOLEAN
-import de.unibonn.simpleml.utils.LIB_FLOAT
-import de.unibonn.simpleml.utils.LIB_INT
-import de.unibonn.simpleml.utils.LIB_STRING
 import de.unibonn.simpleml.utils.SimpleMLStdlib
 import de.unibonn.simpleml.utils.assignedOrNull
 import de.unibonn.simpleml.utils.callableOrNull
@@ -66,7 +62,7 @@ class TypeComputer @Inject constructor(
         }
 
         val qualifiedName = type.smlClass.fullyQualifiedName().toString()
-        return qualifiedName in setOf(LIB_BOOLEAN, LIB_FLOAT, LIB_INT, LIB_STRING)
+        return qualifiedName in setOf(StdlibClasses.Boolean.toString(), StdlibClasses.Float.toString(), StdlibClasses.Int.toString(), StdlibClasses.String.toString())
     }
 
     private fun EObject.inferType(isStatic: Boolean): Type {
@@ -175,7 +171,7 @@ class TypeComputer @Inject constructor(
                 val member = this.member ?: return ANY
                 member.inferType(isStatic = false)
             }
-            this is SmlNull -> stdlibType(context, LIB_ANY, isNullable = true)
+            this is SmlNull -> stdlibType(context, StdlibClasses.Any.toString(), isNullable = true)
             this is SmlParenthesizedExpression -> {
                 this.expression.inferType(isStatic)
             }
@@ -218,11 +214,11 @@ class TypeComputer @Inject constructor(
         }
     }
 
-    private val ANY get() = stdlibType(context, LIB_ANY)
-    private val BOOLEAN get() = stdlibType(context, LIB_BOOLEAN)
-    private val FLOAT get() = stdlibType(context, LIB_FLOAT)
-    private val INT get() = stdlibType(context, LIB_INT)
-    private val STRING get() = stdlibType(context, LIB_STRING)
+    private val ANY get() = stdlibType(context, StdlibClasses.Any.toString())
+    private val BOOLEAN get() = stdlibType(context, StdlibClasses.Boolean.toString())
+    private val FLOAT get() = stdlibType(context, StdlibClasses.Float.toString())
+    private val INT get() = stdlibType(context, StdlibClasses.Int.toString())
+    private val STRING get() = stdlibType(context, StdlibClasses.String.toString())
 
     fun stdlibType(context: EObject, qualifiedName: String, isNullable: Boolean = false): Type {
         return when (val smlClass = stdlib.getClass(context, qualifiedName)) {

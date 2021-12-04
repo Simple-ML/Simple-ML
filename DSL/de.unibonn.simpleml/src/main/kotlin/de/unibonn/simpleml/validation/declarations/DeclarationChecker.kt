@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.validation.declarations
 
-import de.unibonn.simpleml.naming.CoreAnnotations
+import de.unibonn.simpleml.names.StdlibAnnotations
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAttribute
@@ -117,7 +117,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
     fun mustNotDeprecateRequiredParameter(smlParameter: SmlParameter) {
         if (smlParameter.isRequired()) {
             val deprecatedAnnotationOrNull = smlParameter.annotationsOrEmpty().firstOrNull {
-                it.annotation.fullyQualifiedName() == CoreAnnotations.DEPRECATED
+                it.annotation.fullyQualifiedName() == StdlibAnnotations.Deprecated
             }
 
             if (deprecatedAnnotationOrNull != null) {
