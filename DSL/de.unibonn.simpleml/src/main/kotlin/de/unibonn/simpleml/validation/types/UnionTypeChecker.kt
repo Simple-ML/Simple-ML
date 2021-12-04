@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.validation.types
 
+import de.unibonn.simpleml.emf.typeArgumentsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlUnionType
-import de.unibonn.simpleml.utils.typeArgumentsOrEmpty
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import org.eclipse.xtext.validation.Check
 

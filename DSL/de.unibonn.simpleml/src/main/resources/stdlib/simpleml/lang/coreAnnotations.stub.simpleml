@@ -1,6 +1,6 @@
 package simpleml.lang
 
-@Description("Annotation can target these declaration types. If the @Target annotation is not used any declaration type can be targeted.")
+@Description("The Annotation can target these declaration types. If the @Target annotation is not used any declaration type can be targeted.")
 @Target(AnnotationTarget.Annotation)
 annotation Target(vararg targets: AnnotationTarget)
 
@@ -19,24 +19,24 @@ enum AnnotationTarget {
     TypeParameter
 }
 
-@Description("Annotation can only be used once per declaration (default if neither @SingleUse nor @MultiUse is used).")
+@Description("The annotation can only be used once per declaration (default if neither @SingleUse nor @MultiUse is used).")
 @Target(AnnotationTarget.Annotation)
 annotation SingleUse
 
-@Description("Annotation can be used multiple times on the same declaration.")
+@Description("The annotation can be used multiple times on the same declaration.")
 @Target(AnnotationTarget.Annotation)
 annotation MultiUse
 
-@Description("Declaration should no longer be used.")
+@Description("The declaration should no longer be used.")
 annotation Deprecated(
     @Description("Use this instead.")
     alternative: String
 )
 
-@Description("Function returns the same results for the same arguments and has no side-effects.")
+@Description("The function returns the same results for the same arguments and has no side effects.")
 @Target(AnnotationTarget.Function)
 annotation Pure
 
-@Description("Function can return different results for the same arguments or has side-effects (default assumption if neither @Pure nor @Impure is used.")
+@Description("The function can return different results for the same arguments or has side effects (default assumption if neither @Pure nor @Impure is used.")
 @Target(AnnotationTarget.Function)
 annotation Impure

@@ -1,14 +1,14 @@
 package de.unibonn.simpleml.validation.declarations
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.constants.hasOpenModifier
+import de.unibonn.simpleml.emf.membersOrEmpty
+import de.unibonn.simpleml.emf.parametersOrEmpty
+import de.unibonn.simpleml.emf.parentTypesOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.utils.ClassHierarchy
 import de.unibonn.simpleml.utils.duplicatesBy
-import de.unibonn.simpleml.utils.isOpen
-import de.unibonn.simpleml.utils.membersOrEmpty
-import de.unibonn.simpleml.utils.parametersOrEmpty
-import de.unibonn.simpleml.utils.parentTypesOrEmpty
 import de.unibonn.simpleml.utils.resolveToClassOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import org.eclipse.xtext.validation.Check
@@ -57,7 +57,7 @@ class ClassChecker @Inject constructor(
         smlClass.parentTypesOrEmpty()
             .filter {
                 val resolvedClass = it.resolveToClassOrNull()
-                resolvedClass != null && !resolvedClass.isOpen()
+                resolvedClass != null && !resolvedClass.hasOpenModifier()
             }
             .forEach {
                 error(

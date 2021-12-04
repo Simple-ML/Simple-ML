@@ -1,12 +1,12 @@
 package de.unibonn.simpleml.test
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.emf.membersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLFactory
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.test.util.ParseHelper
 import de.unibonn.simpleml.utils.Proposals
-import de.unibonn.simpleml.utils.membersOrEmpty
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.maps.shouldContainValue
 import io.kotest.matchers.maps.shouldContainValues

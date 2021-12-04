@@ -6,7 +6,6 @@ import de.unibonn.simpleml.resource.SimpleMLResourceDescriptionStrategy
 import de.unibonn.simpleml.scoping.SimpleMLImportedNamespaceAwareLocalScopeProvider
 import de.unibonn.simpleml.serializer.SimpleMLCrossReferenceSerializer
 import de.unibonn.simpleml.serializer.SimpleMLHiddenTokenSequencer
-import de.unibonn.simpleml.utils.InjectionTarget
 import org.eclipse.xtext.resource.IDefaultResourceDescriptionStrategy
 import org.eclipse.xtext.scoping.IScopeProvider
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
@@ -37,7 +36,7 @@ open class SimpleMLRuntimeModule : AbstractSimpleMLRuntimeModule() {
     }
 
     override fun configure(binder: Binder) {
-        binder.requestStaticInjection(InjectionTarget::class.java)
+        binder.requestStaticInjection(de.unibonn.simpleml.naming.InjectionTarget::class.java)
 
         super.configure(binder)
     }

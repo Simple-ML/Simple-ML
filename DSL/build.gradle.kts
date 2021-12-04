@@ -38,8 +38,4 @@ subprojects {
     repositories {
         mavenCentral()
     }
-
-    configurations.all {
-        exclude(group = "asm")
-    }
 }
