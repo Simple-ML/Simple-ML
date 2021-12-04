@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.typing
 
-import de.unibonn.simpleml.names.fullyQualifiedName
+import de.unibonn.simpleml.naming.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum

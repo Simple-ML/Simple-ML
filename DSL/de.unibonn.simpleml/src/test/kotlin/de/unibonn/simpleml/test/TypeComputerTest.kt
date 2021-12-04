@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.test
 
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
-import de.unibonn.simpleml.names.StdlibClasses
+import de.unibonn.simpleml.stdlib.StdlibClasses
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.test.util.ParseHelper

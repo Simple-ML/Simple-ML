@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.names
+package de.unibonn.simpleml.naming
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.simpleML.SmlDeclaration

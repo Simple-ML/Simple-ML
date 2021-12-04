@@ -2,8 +2,8 @@ package de.unibonn.simpleml.validation.declarations
 
 import de.unibonn.simpleml.constants.Modifiers
 import de.unibonn.simpleml.emf.annotationsOrEmpty
-import de.unibonn.simpleml.names.StdlibAnnotations
-import de.unibonn.simpleml.names.fullyQualifiedName
+import de.unibonn.simpleml.stdlib.StdlibAnnotations
+import de.unibonn.simpleml.naming.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAttribute

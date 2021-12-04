@@ -36,7 +36,7 @@ open class SimpleMLRuntimeModule : AbstractSimpleMLRuntimeModule() {
     }
 
     override fun configure(binder: Binder) {
-        binder.requestStaticInjection(de.unibonn.simpleml.names.InjectionTarget::class.java)
+        binder.requestStaticInjection(de.unibonn.simpleml.naming.InjectionTarget::class.java)
 
         super.configure(binder)
     }

@@ -1,6 +1,7 @@
-package de.unibonn.simpleml.names
+package de.unibonn.simpleml.stdlib
 
 import de.unibonn.simpleml.emf.annotationsOrEmpty
+import de.unibonn.simpleml.naming.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlFunction
 import org.eclipse.xtext.naming.QualifiedName
