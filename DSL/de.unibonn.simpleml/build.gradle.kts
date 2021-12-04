@@ -35,14 +35,20 @@ dependencies {
     mwe2("org.eclipse.xtext:org.eclipse.xtext.common.types:$xtextVersion")
     mwe2("org.eclipse.xtext:org.eclipse.xtext.xtext.generator:$xtextVersion")
     mwe2("org.eclipse.xtext:xtext-antlr-generator")
+
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.eclipse.xtext:org.eclipse.xtext.testing:$xtextVersion")
+    testImplementation("org.eclipse.xtext:org.eclipse.xtext.xbase.testing:$xtextVersion")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:4.6.3")
 }
 
 // Source sets ---------------------------------------------------------------------------------------------------------
 
 sourceSets {
     main {
-        java.srcDirs("emf-gen", "src", "src-gen")
-        resources.srcDirs("src-gen", "stdlib")
+        java.srcDirs("emf-gen", "src-gen")
+        resources.srcDirs("src-gen")
         resources.include("**/*.simpleml", "**/*.tokens", "**/*.xtextbin")
     }
 }
@@ -55,13 +61,13 @@ tasks.register<JavaExec>("generateXtextLanguage") {
 
     classpath = mwe2
     mainClass.set("org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher")
-    args = listOf("src/de/unibonn/simpleml/GenerateSimpleML.mwe2", "-p", "rootPath=/$projectDir/..")
+    args = listOf("src/main/kotlin/de/unibonn/simpleml/GenerateSimpleML.mwe2", "-p", "rootPath=/$projectDir/..")
 
     inputs.files(
         "model/custom/SimpleML.ecore",
         "model/custom/SimpleML.genmodel",
-        "src/de/unibonn/simpleml/GenerateSimpleML.mwe2",
-        "src/de/unibonn/simpleml/SimpleML.xtext"
+        "src/main/kotlin/de/unibonn/simpleml/GenerateSimpleML.mwe2",
+        "src/main/kotlin/de/unibonn/simpleml/SimpleML.xtext"
     )
     outputs.dirs(
         "META-INF",
@@ -84,6 +90,7 @@ tasks.register<JavaExec>("generateXtextLanguage") {
                 include("**/*.xtend")
             }
         )
+        delete(file("../de.unibonn.simpleml.tests"))
         delete(
             fileTree("../de.unibonn.simpleml.web/src/de/unibonn/simpleml/web") {
                 include("**/*.xtend")
@@ -110,6 +117,8 @@ tasks {
     }
 
     test {
+        useJUnitPlatform()
+
         extensions.configure(kotlinx.kover.api.KoverTaskExtension::class) {
             excludes = listOf(
 
@@ -123,7 +132,7 @@ tasks {
         rule {
             name = "Minimal line coverage rate in percents"
             bound {
-                minValue = 0
+                minValue = 67
             }
         }
     }
