@@ -42,7 +42,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.naming.QualifiedName
 
-object InjectionTarget {
+internal object InjectionTarget {
 
     @Inject
     lateinit var qualifiedNameProvider: IQualifiedNameProvider
