@@ -1,5 +1,8 @@
 package de.unibonn.simpleml.names
 
+import de.unibonn.simpleml.emf.annotationsOrEmpty
+import de.unibonn.simpleml.simpleML.SmlDeclaration
+import de.unibonn.simpleml.simpleML.SmlFunction
 import org.eclipse.xtext.naming.QualifiedName
 
 /**
@@ -42,4 +45,18 @@ object StdlibClasses {
     val Float: QualifiedName = StdlibPackages.lang.append("Float")
     val Int: QualifiedName = StdlibPackages.lang.append("Int")
     val String: QualifiedName = StdlibPackages.lang.append("String")
+}
+
+/**
+ * Checks if the declaration is annotated with the `simpleml.lang.Deprecated` annotation.
+ */
+fun SmlDeclaration.isDeprecated() = this.annotationsOrEmpty().any {
+    it.annotation.fullyQualifiedName() == StdlibAnnotations.Deprecated
+}
+
+/**
+ * Checks if the declaration is annotated with the `simpleml.lang.Pure` annotation.
+ */
+fun SmlFunction.isPure() = this.annotationsOrEmpty().any {
+    it.annotation.fullyQualifiedName() == StdlibAnnotations.Pure
 }

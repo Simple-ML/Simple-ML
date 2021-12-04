@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.emf
+package de.unibonn.simpleml.utils
 
 import org.eclipse.emf.ecore.EObject
 

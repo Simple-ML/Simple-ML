@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.test.assertions
 
 import de.unibonn.simpleml.simpleML.SmlDeclaration
-import de.unibonn.simpleml.emf.descendants
+import de.unibonn.simpleml.utils.descendants
 import org.eclipse.emf.ecore.EObject
 
 /**

@@ -1,11 +1,11 @@
+@file:Suppress("unused")
+
 package de.unibonn.simpleml.utils
 
 import de.unibonn.simpleml.constants.Modifiers
-import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.containingLambdaOrNull
 import de.unibonn.simpleml.emf.containingWorkflowStepOrNull
-import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.lambdaYieldsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
@@ -43,8 +43,6 @@ import de.unibonn.simpleml.simpleML.SmlType
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
-import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraintList
-import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import org.eclipse.emf.ecore.EObject

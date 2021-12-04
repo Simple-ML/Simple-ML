@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.scoping
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.emf.closestAncestorOrNull
+import de.unibonn.simpleml.utils.closestAncestorOrNull
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.membersOrEmpty
