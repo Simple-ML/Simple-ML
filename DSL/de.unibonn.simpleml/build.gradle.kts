@@ -108,4 +108,23 @@ tasks {
     clean {
         dependsOn("cleanGenerateXtextLanguage")
     }
+
+    test {
+        extensions.configure(kotlinx.kover.api.KoverTaskExtension::class) {
+            excludes = listOf(
+
+                // Classes in emf-gen
+                "de\\.unibonn\\.simpleml\\.simpleML\\..*",
+            )
+        }
+    }
+
+    koverVerify {
+        rule {
+            name = "Minimal line coverage rate in percents"
+            bound {
+                minValue = 0
+            }
+        }
+    }
 }
