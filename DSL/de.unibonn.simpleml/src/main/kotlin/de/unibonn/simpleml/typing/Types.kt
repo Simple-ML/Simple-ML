@@ -1,10 +1,10 @@
 package de.unibonn.simpleml.typing
 
+import de.unibonn.simpleml.names.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
-import de.unibonn.simpleml.utils.fullyQualifiedName
 import org.eclipse.xtext.naming.QualifiedName
 
 sealed class Type {

@@ -1,13 +1,13 @@
 package de.unibonn.simpleml.validation.declarations
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.names.isPure
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.utils.ClassHierarchy
 import de.unibonn.simpleml.utils.isClassMember
 import de.unibonn.simpleml.utils.isOpen
 import de.unibonn.simpleml.utils.isOverride
-import de.unibonn.simpleml.utils.isPure
 import de.unibonn.simpleml.utils.isStatic
 import de.unibonn.simpleml.utils.parametersOrEmpty
 import de.unibonn.simpleml.utils.resultsOrEmpty

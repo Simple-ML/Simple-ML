@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.validation.declarations
 
 import de.unibonn.simpleml.names.StdlibAnnotations
+import de.unibonn.simpleml.names.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAttribute
@@ -17,7 +18,6 @@ import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.utils.Modifiers
 import de.unibonn.simpleml.utils.annotationsOrEmpty
 import de.unibonn.simpleml.utils.duplicatesBy
-import de.unibonn.simpleml.utils.fullyQualifiedName
 import de.unibonn.simpleml.utils.isClassMember
 import de.unibonn.simpleml.utils.isCompilationUnitMember
 import de.unibonn.simpleml.utils.isRequired

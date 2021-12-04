@@ -2,6 +2,7 @@ package de.unibonn.simpleml.typing
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.names.StdlibClasses
+import de.unibonn.simpleml.names.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlBoolean
 import de.unibonn.simpleml.simpleML.SmlCall
@@ -35,7 +36,6 @@ import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.SimpleMLStdlib
 import de.unibonn.simpleml.utils.assignedOrNull
 import de.unibonn.simpleml.utils.callableOrNull
-import de.unibonn.simpleml.utils.fullyQualifiedName
 import de.unibonn.simpleml.utils.lambdaYieldsOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
 import de.unibonn.simpleml.utils.resultsOrEmpty
@@ -61,8 +61,13 @@ class TypeComputer @Inject constructor(
             return false
         }
 
-        val qualifiedName = type.smlClass.fullyQualifiedName().toString()
-        return qualifiedName in setOf(StdlibClasses.Boolean.toString(), StdlibClasses.Float.toString(), StdlibClasses.Int.toString(), StdlibClasses.String.toString())
+        val qualifiedName = type.smlClass.fullyQualifiedName()
+        return qualifiedName in setOf(
+            StdlibClasses.Boolean,
+            StdlibClasses.Float,
+            StdlibClasses.Int,
+            StdlibClasses.String
+        )
     }
 
     private fun EObject.inferType(isStatic: Boolean): Type {

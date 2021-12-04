@@ -28,6 +28,9 @@ object FileExtensions {
     const val WORKFLOW = ".simpleml"
 }
 
+/**
+ * Possible modifiers of declarations.
+ */
 object Modifiers {
 
     /**
@@ -38,7 +41,7 @@ object Modifiers {
     const val OPEN = "open"
 
     /**
-     * A method overrides a superclass method.
+     * The method overrides a superclass method.
      *
      * @see isOverride
      */

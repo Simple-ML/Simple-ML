@@ -1,7 +1,8 @@
 package de.unibonn.simpleml.utils
 
-import com.google.inject.Inject
 import de.unibonn.simpleml.names.StdlibAnnotations
+import de.unibonn.simpleml.names.fullyQualifiedName
+import de.unibonn.simpleml.names.isPure
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlArgument
@@ -40,14 +41,6 @@ import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.xtext.naming.IQualifiedNameProvider
-import org.eclipse.xtext.naming.QualifiedName
-
-internal object InjectionTarget {
-
-    @Inject
-    lateinit var qualifiedNameProvider: IQualifiedNameProvider
-}
 
 // Annotation ----------------------------------------------------------------------------------------------------------
 
@@ -215,40 +208,32 @@ fun SmlCompilationUnit?.membersOrEmpty() = this?.members.orEmpty()
 
 // Declaration ---------------------------------------------------------------------------------------------------------
 
-fun SmlDeclaration.isDeprecated() = this.annotationsOrEmpty().any {
-    it.annotation.fullyQualifiedName() == StdlibAnnotations.Deprecated
-}
 fun SmlDeclaration.isOpen(): Boolean {
     return Modifiers.OPEN in this.modifiers
 }
 
 fun SmlDeclaration.isOverride() = Modifiers.OVERRIDE in this.modifiers
-fun SmlDeclaration.isPure() = this.annotationsOrEmpty().any {
-    it.annotation.fullyQualifiedName() == StdlibAnnotations.Pure
-}
 
 fun SmlDeclaration.isStatic(): Boolean {
     return Modifiers.STATIC in this.modifiers || !this.isCompilationUnitMember() &&
-        (this is SmlClass || this is SmlEnum)
+            (this is SmlClass || this is SmlEnum)
 }
 
 fun SmlDeclaration.isClassMember() = this.containingClassOrNull() != null
 fun SmlDeclaration.isCompilationUnitMember(): Boolean {
     return !isClassMember() &&
-        (
-            this is SmlAnnotation ||
-                this is SmlClass ||
-                this is SmlEnum ||
-                this is SmlFunction ||
-                this is SmlWorkflow ||
-                this is SmlWorkflowStep
-            )
+            (
+                    this is SmlAnnotation ||
+                            this is SmlClass ||
+                            this is SmlEnum ||
+                            this is SmlFunction ||
+                            this is SmlWorkflow ||
+                            this is SmlWorkflowStep
+                    )
 }
 
 fun SmlDeclaration?.annotationsOrEmpty() = this?.annotationHolder?.annotations ?: this?.annotations.orEmpty()
-fun SmlDeclaration.fullyQualifiedName(): QualifiedName {
-    return InjectionTarget.qualifiedNameProvider.getFullyQualifiedName(this)
-}
+
 
 // Assignment ----------------------------------------------------------------------------------------------------------
 
@@ -302,11 +287,11 @@ fun EObject?.containingWorkflowStepOrNull() = this?.closestAncestorOrNull<SmlWor
 
 fun EObject?.isCallable() =
     this is SmlClass ||
-        this is SmlEnumVariant ||
-        this is SmlFunction ||
-        this is SmlCallableType ||
-        this is SmlLambda ||
-        this is SmlWorkflowStep
+            this is SmlEnumVariant ||
+            this is SmlFunction ||
+            this is SmlCallableType ||
+            this is SmlLambda ||
+            this is SmlWorkflowStep
 
 fun EObject.isInStubFile() = this.eResource().isStubFile()
 fun EObject.isInTestFile() = this.eResource().isTestFile()
@@ -332,8 +317,8 @@ fun SmlExpression.hasSideEffects(): Boolean {
 
         val callable = this.callableOrNull()
         return callable is SmlFunction && !callable.isPure() ||
-            callable is SmlWorkflowStep && !callable.isInferredPure() ||
-            callable is SmlLambda && !callable.isInferredPure()
+                callable is SmlWorkflowStep && !callable.isInferredPure() ||
+                callable is SmlLambda && !callable.isInferredPure()
     }
 
     return false
