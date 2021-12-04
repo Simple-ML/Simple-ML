@@ -1,5 +1,6 @@
 package de.unibonn.simpleml.validation.declarations
 
+import de.unibonn.simpleml.naming.CoreAnnotations
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAttribute
@@ -13,15 +14,13 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
-import de.unibonn.simpleml.utils.SML_OPEN
-import de.unibonn.simpleml.utils.SML_STATIC
+import de.unibonn.simpleml.utils.Modifiers
 import de.unibonn.simpleml.utils.annotationsOrEmpty
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.fullyQualifiedName
 import de.unibonn.simpleml.utils.isClassMember
 import de.unibonn.simpleml.utils.isCompilationUnitMember
 import de.unibonn.simpleml.utils.isRequired
-import de.unibonn.simpleml.utils.smlDeprecated
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import org.eclipse.xtext.validation.Check
 
@@ -41,7 +40,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
     fun attributeModifiers(smlAttribute: SmlAttribute) {
         if (smlAttribute.isClassMember()) {
             smlAttribute.reportInvalidModifiers("An attribute must not have this modifier.") {
-                it !in setOf(SML_STATIC)
+                it !in setOf(Modifiers.STATIC)
             }
         }
     }
@@ -50,15 +49,15 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
     fun classModifiers(smlClass: SmlClass) {
         if (smlClass.isClassMember()) {
             smlClass.reportInvalidModifiers("A nested class must not have this modifier.") {
-                it !in setOf(SML_OPEN, SML_STATIC)
+                it !in setOf(Modifiers.OPEN, Modifiers.STATIC)
             }
 
             smlClass.reportUnnecessaryModifiers("A nested class is always static.") {
-                it == SML_STATIC
+                it == Modifiers.STATIC
             }
         } else if (smlClass.isCompilationUnitMember()) {
             smlClass.reportInvalidModifiers("A top-level class must not have this modifier.") {
-                it !in setOf(SML_OPEN)
+                it !in setOf(Modifiers.OPEN)
             }
         }
     }
@@ -86,11 +85,11 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
     fun enumModifiers(smlEnum: SmlEnum) {
         if (smlEnum.isClassMember()) {
             smlEnum.reportInvalidModifiers("A nested enum must not have this modifier.") {
-                it !in setOf(SML_STATIC)
+                it !in setOf(Modifiers.STATIC)
             }
 
             smlEnum.reportUnnecessaryModifiers("A nested enum is always static.") {
-                it == SML_STATIC
+                it == Modifiers.STATIC
             }
         } else if (smlEnum.isCompilationUnitMember()) {
             smlEnum.reportInvalidModifiers("A top-level enum must have no modifiers.") { true }
@@ -118,7 +117,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
     fun mustNotDeprecateRequiredParameter(smlParameter: SmlParameter) {
         if (smlParameter.isRequired()) {
             val deprecatedAnnotationOrNull = smlParameter.annotationsOrEmpty().firstOrNull {
-                it.annotation.fullyQualifiedName() == smlDeprecated
+                it.annotation.fullyQualifiedName() == CoreAnnotations.DEPRECATED
             }
 
             if (deprecatedAnnotationOrNull != null) {

@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.utils
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.naming.CoreAnnotations
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlArgument
@@ -215,19 +216,19 @@ fun SmlCompilationUnit?.membersOrEmpty() = this?.members.orEmpty()
 // Declaration ---------------------------------------------------------------------------------------------------------
 
 fun SmlDeclaration.isDeprecated() = this.annotationsOrEmpty().any {
-    it.annotation.fullyQualifiedName() == smlDeprecated
+    it.annotation.fullyQualifiedName() == CoreAnnotations.DEPRECATED
 }
 fun SmlDeclaration.isOpen(): Boolean {
-    return SML_OPEN in this.modifiers
+    return Modifiers.OPEN in this.modifiers
 }
 
-fun SmlDeclaration.isOverride() = SML_OVERRIDE in this.modifiers
+fun SmlDeclaration.isOverride() = Modifiers.OVERRIDE in this.modifiers
 fun SmlDeclaration.isPure() = this.annotationsOrEmpty().any {
-    it.annotation.fullyQualifiedName() == smlPure
+    it.annotation.fullyQualifiedName() == CoreAnnotations.PURE
 }
 
 fun SmlDeclaration.isStatic(): Boolean {
-    return SML_STATIC in this.modifiers || !this.isCompilationUnitMember() &&
+    return Modifiers.STATIC in this.modifiers || !this.isCompilationUnitMember() &&
         (this is SmlClass || this is SmlEnum)
 }
 
