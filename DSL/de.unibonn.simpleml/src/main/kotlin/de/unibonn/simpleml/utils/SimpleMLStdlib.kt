@@ -41,7 +41,7 @@ class SimpleMLStdlib @Inject constructor(
     }
 
     fun listStdlibFiles(): Sequence<Pair<Path, URI>> {
-        val resourcesUrl = javaClass.classLoader.getResource("stubs") ?: return emptySequence()
+        val resourcesUrl = javaClass.classLoader.getResource("stdlib") ?: return emptySequence()
         val resourcesUri = FileLocator.resolve(resourcesUrl).toURI()
 
         return sequence {
@@ -52,7 +52,7 @@ class SimpleMLStdlib @Inject constructor(
                 "jar" -> {
                     fileSystem =
                         FileSystems.newFileSystem(resourcesUri, emptyMap<String, String>(), null)
-                    fileSystem.getPath("stubs")
+                    fileSystem.getPath("stdlib")
                 }
                 else -> Paths.get(resourcesUri)
             }
