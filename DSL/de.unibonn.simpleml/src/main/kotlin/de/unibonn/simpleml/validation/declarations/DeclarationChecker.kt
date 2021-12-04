@@ -2,7 +2,6 @@ package de.unibonn.simpleml.validation.declarations
 
 import de.unibonn.simpleml.constants.Modifiers
 import de.unibonn.simpleml.emf.annotationsOrEmpty
-import de.unibonn.simpleml.stdlib.StdlibAnnotations
 import de.unibonn.simpleml.naming.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
@@ -17,6 +16,7 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.stdlib.StdlibAnnotations
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.isClassMember
 import de.unibonn.simpleml.utils.isCompilationUnitMember
@@ -153,10 +153,10 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
 
     private fun SmlDeclaration.shouldCheckDeclarationModifiers(): Boolean {
         return this !is SmlParameter &&
-                this !is SmlResult &&
-                this !is SmlTypeParameter &&
-                this !is SmlWorkflow &&
-                this !is SmlWorkflowStep
+            this !is SmlResult &&
+            this !is SmlTypeParameter &&
+            this !is SmlWorkflow &&
+            this !is SmlWorkflowStep
     }
 
     private fun SmlDeclaration.reportInvalidModifiers(message: String, isInvalid: (modifier: String) -> Boolean) {

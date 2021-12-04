@@ -245,7 +245,6 @@ fun SmlWorkflowStep?.statementsOrEmpty(): List<SmlStatement> {
     return this?.body?.statements.orEmpty()
 }
 
-
 /* ********************************************************************************************************************
  * Accessing ancestors                                                                                                *
  * ********************************************************************************************************************/
@@ -257,7 +256,6 @@ fun EObject?.containingFunctionOrNull() = this?.closestAncestorOrNull<SmlFunctio
 fun EObject?.containingLambdaOrNull() = this?.closestAncestorOrNull<SmlLambda>()
 fun EObject?.containingWorkflowOrNull() = this?.closestAncestorOrNull<SmlWorkflow>()
 fun EObject?.containingWorkflowStepOrNull() = this?.closestAncestorOrNull<SmlWorkflowStep>()
-
 
 /* ********************************************************************************************************************
  * Accessing siblings                                                                                                 *

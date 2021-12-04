@@ -13,7 +13,6 @@ import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.emf.variantsOrEmpty
-import de.unibonn.simpleml.stdlib.isPure
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlArgument
@@ -45,6 +44,7 @@ import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.stdlib.isPure
 import org.eclipse.emf.ecore.EObject
 
 // Argument ------------------------------------------------------------------------------------------------------------
@@ -193,20 +193,20 @@ fun SmlClass?.parentClassOrNull(): SmlClass? {
 
 fun SmlDeclaration.isStatic(): Boolean {
     return Modifiers.STATIC in this.modifiers || !this.isCompilationUnitMember() &&
-            (this is SmlClass || this is SmlEnum)
+        (this is SmlClass || this is SmlEnum)
 }
 
 fun SmlDeclaration.isClassMember() = this.containingClassOrNull() != null
 fun SmlDeclaration.isCompilationUnitMember(): Boolean {
     return !isClassMember() &&
-            (
-                    this is SmlAnnotation ||
-                            this is SmlClass ||
-                            this is SmlEnum ||
-                            this is SmlFunction ||
-                            this is SmlWorkflow ||
-                            this is SmlWorkflowStep
-                    )
+        (
+            this is SmlAnnotation ||
+                this is SmlClass ||
+                this is SmlEnum ||
+                this is SmlFunction ||
+                this is SmlWorkflow ||
+                this is SmlWorkflowStep
+            )
 }
 
 // Assignee ------------------------------------------------------------------------------------------------------------
@@ -246,11 +246,11 @@ fun SmlAssignee.maybeAssigned(): AssignedResult {
 
 fun EObject?.isCallable() =
     this is SmlClass ||
-            this is SmlEnumVariant ||
-            this is SmlFunction ||
-            this is SmlCallableType ||
-            this is SmlLambda ||
-            this is SmlWorkflowStep
+        this is SmlEnumVariant ||
+        this is SmlFunction ||
+        this is SmlCallableType ||
+        this is SmlLambda ||
+        this is SmlWorkflowStep
 
 // Enum ----------------------------------------------------------------------------------------------------------------
 
@@ -266,8 +266,8 @@ fun SmlExpression.hasSideEffects(): Boolean {
 
         val callable = this.callableOrNull()
         return callable is SmlFunction && !callable.isPure() ||
-                callable is SmlWorkflowStep && !callable.isInferredPure() ||
-                callable is SmlLambda && !callable.isInferredPure()
+            callable is SmlWorkflowStep && !callable.isInferredPure() ||
+            callable is SmlLambda && !callable.isInferredPure()
     }
 
     return false
@@ -385,6 +385,5 @@ fun SmlTypeArgumentList.typeParametersOrNull(): List<SmlTypeParameter>? {
 
     return null
 }
-
 
 fun SmlWorkflowStep.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }

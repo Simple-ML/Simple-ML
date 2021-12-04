@@ -1,7 +1,6 @@
 package de.unibonn.simpleml.scoping
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.utils.closestAncestorOrNull
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.membersOrEmpty
@@ -40,6 +39,7 @@ import de.unibonn.simpleml.typing.EnumVariantType
 import de.unibonn.simpleml.typing.NamedType
 import de.unibonn.simpleml.typing.TypeComputer
 import de.unibonn.simpleml.utils.ClassHierarchy
+import de.unibonn.simpleml.utils.closestAncestorOrNull
 import de.unibonn.simpleml.utils.isStatic
 import de.unibonn.simpleml.utils.parametersOrNull
 import de.unibonn.simpleml.utils.resultsOrNull

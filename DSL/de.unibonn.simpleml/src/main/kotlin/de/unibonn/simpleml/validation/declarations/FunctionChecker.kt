@@ -5,9 +5,9 @@ import de.unibonn.simpleml.constants.hasOpenModifier
 import de.unibonn.simpleml.constants.hasOverrideModifier
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
-import de.unibonn.simpleml.stdlib.isPure
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.stdlib.isPure
 import de.unibonn.simpleml.utils.ClassHierarchy
 import de.unibonn.simpleml.utils.isClassMember
 import de.unibonn.simpleml.utils.isStatic

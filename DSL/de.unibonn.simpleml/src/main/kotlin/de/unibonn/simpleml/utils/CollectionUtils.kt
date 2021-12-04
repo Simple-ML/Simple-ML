@@ -7,10 +7,10 @@ import kotlin.math.max
  */
 fun <I, K> Iterable<I>.duplicatesBy(labeler: (I) -> K): List<I> {
     return this
-            .groupBy(labeler)
-            .values
-            .filter { it.size > 1 }
-            .flatten()
+        .groupBy(labeler)
+        .values
+        .filter { it.size > 1 }
+        .flatten()
 }
 
 /**

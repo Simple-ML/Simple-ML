@@ -4,7 +4,6 @@ import com.google.inject.Inject
 import de.unibonn.simpleml.emf.lambdaYieldsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
-import de.unibonn.simpleml.stdlib.StdlibClasses
 import de.unibonn.simpleml.naming.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlBoolean
@@ -36,6 +35,7 @@ import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlType
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.stdlib.StdlibClasses
 import de.unibonn.simpleml.utils.SimpleMLStdlib
 import de.unibonn.simpleml.utils.assignedOrNull
 import de.unibonn.simpleml.utils.callableOrNull

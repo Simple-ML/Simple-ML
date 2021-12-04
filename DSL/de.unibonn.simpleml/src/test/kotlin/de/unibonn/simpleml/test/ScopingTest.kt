@@ -2,7 +2,6 @@ package de.unibonn.simpleml.test
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.annotationsOrEmpty
-import de.unibonn.simpleml.utils.descendants
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
@@ -30,6 +29,7 @@ import de.unibonn.simpleml.test.assertions.shouldBeResolved
 import de.unibonn.simpleml.test.assertions.shouldNotBeResolved
 import de.unibonn.simpleml.test.util.ParseHelper
 import de.unibonn.simpleml.test.util.ResourceName
+import de.unibonn.simpleml.utils.descendants
 import io.kotest.assertions.forEachAsClue
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
