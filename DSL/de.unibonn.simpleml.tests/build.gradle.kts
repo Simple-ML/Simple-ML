@@ -24,7 +24,6 @@ dependencies {
     testImplementation("org.eclipse.xtext:org.eclipse.xtext.testing:$xtextVersion")
     testImplementation("org.eclipse.xtext:org.eclipse.xtext.xbase.testing:$xtextVersion")
     testImplementation("io.kotest:kotest-assertions-core-jvm:4.6.3")
-    testImplementation("io.mockk:mockk:1.12.0")
 }
 
 // Source sets ---------------------------------------------------------------------------------------------------------
