@@ -45,6 +45,16 @@ jobs:
           name: Test report
           path: de.unibonn.simpleml.tests/build/reports/tests/test
 
+      - name: Collect coverage reports
+        run: ./gradlew koverCollectReports
+
+      - name: Upload test coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: Test coverage
+          path: build/reports/kover/all/html
+
+
   # Build and test Frontend component
   build-frontend:
     runs-on: ubuntu-latest
