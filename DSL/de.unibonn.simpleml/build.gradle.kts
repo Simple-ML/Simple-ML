@@ -90,6 +90,7 @@ tasks.register<JavaExec>("generateXtextLanguage") {
                 include("**/*.xtend")
             }
         )
+        delete(file("../de.unibonn.simpleml.tests"))
         delete(
             fileTree("../de.unibonn.simpleml.web/src/de/unibonn/simpleml/web") {
                 include("**/*.xtend")
