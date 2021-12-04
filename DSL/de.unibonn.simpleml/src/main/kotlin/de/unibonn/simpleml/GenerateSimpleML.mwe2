@@ -3,7 +3,7 @@ module de.unibonn.simpleml.GenerateSimpleML
 import org.eclipse.xtext.xtext.generator.*
 import org.eclipse.xtext.xtext.generator.model.project.*
 
-var rootPath = "../../.."
+var rootPath = ".."
 
 Workflow {
 
@@ -41,6 +41,10 @@ Workflow {
 			project = StandardProjectConfig {
 				baseName = "de.unibonn.simpleml"
 				rootPath = rootPath
+
+				runtime = {
+				    src = "${rootPath}/de.unibonn.simpleml/src/main/kotlin"
+				}
 				runtimeTest = {
 					enabled = false
 				}
