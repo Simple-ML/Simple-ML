@@ -88,19 +88,22 @@ import org.eclipse.xtext.xbase.lib.Procedures
 import kotlin.reflect.KFunction1
 import org.eclipse.xtext.formatting2.IHiddenRegionFormatter as Format
 
-// We follow the rule here that an object never formats its preceding or following region. This is left to the parent.
-
-@Suppress("unused")
 class SimpleMLFormatter : AbstractFormatter2() {
 
     private val indent = Format::indent
     private val noSpace = Format::noSpace
     private val oneSpace = Format::oneSpace
     private val newLine = Format::newLine
+
+    @Suppress("SameParameterValue")
     private fun newLines(n: Int): Procedures.Procedure1<in Format> {
         return Procedures.Procedure1 { it.setNewLines(n) }
     }
 
+    /**
+     * We follow the rule here that an object never formats its preceding or following region. This is left to the
+     * parent.
+     */
     override fun format(obj: Any, doc: IFormattableDocument) {
         when (obj) {
             is XtextResource -> {

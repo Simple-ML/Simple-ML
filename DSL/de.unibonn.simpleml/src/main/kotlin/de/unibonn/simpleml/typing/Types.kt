@@ -4,12 +4,7 @@ import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
-
-// TODO this breaks in Eclipse; we get reference errors; always use injection via annotations!!!!!!!!!!
-// private val qualifiedNameProvider: IQualifiedNameProvider =
-//        SimpleMLStandaloneSetup()
-//                .createInjectorAndDoEMFRegistration()
-//                .getInstance(IQualifiedNameProvider::class.java)
+import de.unibonn.simpleml.utils.fullyQualifiedName
 
 sealed class Type {
     open fun toSimpleString() = toString()
@@ -45,8 +40,7 @@ class CallableType(val parameters: List<Type>, val results: List<Type>) : Type()
 
 sealed class NamedType(smlDeclaration: SmlDeclaration) : Type() {
     val simpleName: String = smlDeclaration.name
-    val qualifiedName: String =
-        simpleName // TODO qualifiedNameProvider.getFullyQualifiedName(smlDeclaration).toString()
+    val qualifiedName: String = smlDeclaration.fullyQualifiedName().toString()
 
     abstract val isNullable: Boolean
     abstract val isStatic: Boolean
