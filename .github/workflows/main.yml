@@ -37,7 +37,13 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Test report
-          path: de.unibonn.simpleml.tests/build/reports/tests/test
+          path: de.unibonn.simpleml/build/reports/tests/test
+
+      - name: Upload test coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: Test coverage
+          path: de.unibonn.simpleml/build/reports/kover/html
 
   # Build and test Frontend component
   build-frontend:
