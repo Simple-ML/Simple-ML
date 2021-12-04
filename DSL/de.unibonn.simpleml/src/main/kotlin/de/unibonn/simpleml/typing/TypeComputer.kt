@@ -36,10 +36,10 @@ import de.unibonn.simpleml.utils.LIB_BOOLEAN
 import de.unibonn.simpleml.utils.LIB_FLOAT
 import de.unibonn.simpleml.utils.LIB_INT
 import de.unibonn.simpleml.utils.LIB_STRING
-import de.unibonn.simpleml.utils.QualifiedNameProvider
 import de.unibonn.simpleml.utils.SimpleMLStdlib
 import de.unibonn.simpleml.utils.assignedOrNull
 import de.unibonn.simpleml.utils.callableOrNull
+import de.unibonn.simpleml.utils.fullyQualifiedName
 import de.unibonn.simpleml.utils.lambdaYieldsOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
 import de.unibonn.simpleml.utils.resultsOrEmpty
@@ -47,7 +47,6 @@ import org.eclipse.emf.ecore.EObject
 
 @Suppress("PrivatePropertyName")
 class TypeComputer @Inject constructor(
-    private val qualifiedNameProvider: QualifiedNameProvider,
     private val stdlib: SimpleMLStdlib
 ) {
 
@@ -66,7 +65,7 @@ class TypeComputer @Inject constructor(
             return false
         }
 
-        val qualifiedName = qualifiedNameProvider.qualifiedNameOrNull(type.smlClass)
+        val qualifiedName = type.smlClass.fullyQualifiedName().toString()
         return qualifiedName in setOf(LIB_BOOLEAN, LIB_FLOAT, LIB_INT, LIB_STRING)
     }
 

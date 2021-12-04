@@ -5,6 +5,7 @@ import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.utils.fullyQualifiedName
+import org.eclipse.xtext.naming.QualifiedName
 
 sealed class Type {
     open fun toSimpleString() = toString()
@@ -40,7 +41,7 @@ class CallableType(val parameters: List<Type>, val results: List<Type>) : Type()
 
 sealed class NamedType(smlDeclaration: SmlDeclaration) : Type() {
     val simpleName: String = smlDeclaration.name
-    val qualifiedName: String = smlDeclaration.fullyQualifiedName().toString()
+    val qualifiedName: QualifiedName = smlDeclaration.fullyQualifiedName()
 
     abstract val isNullable: Boolean
     abstract val isStatic: Boolean
