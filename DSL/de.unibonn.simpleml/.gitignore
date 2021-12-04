@@ -4,3 +4,4 @@
 build.properties
 plugin.properties
 plugin.xml
+*.xtend
