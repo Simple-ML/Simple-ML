@@ -29,21 +29,21 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
 
-      - name: Test with Gradle
-        run: ./gradlew check
-
       - name: Upload test report
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: Test report
-          path: de.unibonn.simpleml/build/reports/tests/test
+          # upload-artifact does not use working-directory
+          path: DSL/de.unibonn.simpleml/build/reports/tests/test/
 
       - name: Upload test coverage
+        if: ${{ github.actor != 'dependabot[bot]' }}
         uses: actions/upload-artifact@v2
         with:
           name: Test coverage
-          path: de.unibonn.simpleml/build/reports/kover/html
+          # upload-artifact does not use working-directory
+          path: DSL/de.unibonn.simpleml/build/reports/kover/html/
 
   # Build and test Frontend component
   build-frontend:
