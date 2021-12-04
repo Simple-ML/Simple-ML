@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.validation.types
 
-import de.unibonn.simpleml.simpleML.*
-import de.unibonn.simpleml.utils.*
+import de.unibonn.simpleml.simpleML.SmlUnionType
+import de.unibonn.simpleml.utils.typeArgumentsOrEmpty
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import org.eclipse.xtext.validation.Check
 
@@ -15,16 +15,16 @@ class UnionTypeChecker : AbstractSimpleMLChecker() {
         when (smlUnionType.typeArgumentsOrEmpty().size) {
             0 -> {
                 error(
-                        "A union type must have least one type argument.",
-                        null,
-                        UNION_TYPE_WITHOUT_TYPE_ARGUMENTS
+                    "A union type must have least one type argument.",
+                    null,
+                    UNION_TYPE_WITHOUT_TYPE_ARGUMENTS
                 )
             }
             1 -> {
                 warning(
-                        "A union type with one type argument is equivalent to the the type argument itself.",
-                        null,
-                        UNION_TYPE_WITH_ONE_TYPE_ARGUMENT
+                    "A union type with one type argument is equivalent to the the type argument itself.",
+                    null,
+                    UNION_TYPE_WITH_ONE_TYPE_ARGUMENT
                 )
             }
         }

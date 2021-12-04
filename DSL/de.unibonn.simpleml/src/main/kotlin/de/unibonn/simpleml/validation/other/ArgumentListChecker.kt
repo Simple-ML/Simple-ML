@@ -1,7 +1,12 @@
 package de.unibonn.simpleml.validation.other
 
 import de.unibonn.simpleml.simpleML.SmlArgumentList
-import de.unibonn.simpleml.utils.*
+import de.unibonn.simpleml.utils.duplicatesBy
+import de.unibonn.simpleml.utils.isNamed
+import de.unibonn.simpleml.utils.isPositional
+import de.unibonn.simpleml.utils.isRequired
+import de.unibonn.simpleml.utils.parameterOrNull
+import de.unibonn.simpleml.utils.parametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import org.eclipse.xtext.validation.Check
 
@@ -21,9 +26,9 @@ class ArgumentListChecker : AbstractSimpleMLChecker() {
 
         missingRequiredParameters.forEach {
             error(
-                    "The parameter '${it.name}' is required and must be set here.",
-                    null,
-                    MISSING_REQUIRED_PARAMETER
+                "The parameter '${it.name}' is required and must be set here.",
+                null,
+                MISSING_REQUIRED_PARAMETER
             )
         }
     }
@@ -36,16 +41,16 @@ class ArgumentListChecker : AbstractSimpleMLChecker() {
         }
 
         smlArgumentList.arguments
-                .drop(firstNamedArgumentIndex + 1)
-                .filter { it.isPositional() }
-                .forEach {
-                    error(
-                            "After the first named argument all arguments must be named.",
-                            it,
-                            null,
-                            NO_POSITIONAL_ARGUMENTS_AFTER_FIRST_NAMED_ARGUMENT
-                    )
-                }
+            .drop(firstNamedArgumentIndex + 1)
+            .filter { it.isPositional() }
+            .forEach {
+                error(
+                    "After the first named argument all arguments must be named.",
+                    it,
+                    null,
+                    NO_POSITIONAL_ARGUMENTS_AFTER_FIRST_NAMED_ARGUMENT
+                )
+            }
     }
 
     @Check
@@ -75,9 +80,9 @@ class ArgumentListChecker : AbstractSimpleMLChecker() {
             }
 
             error(
-                    message,
-                    null,
-                    TOO_MANY_ARGUMENTS
+                message,
+                null,
+                TOO_MANY_ARGUMENTS
             )
         }
     }
@@ -85,15 +90,15 @@ class ArgumentListChecker : AbstractSimpleMLChecker() {
     @Check
     fun uniqueParameters(smlArgumentList: SmlArgumentList) {
         smlArgumentList.arguments
-                .filter { it.parameterOrNull() != null }
-                .duplicatesBy { it.parameterOrNull()?.name }
-                .forEach {
-                    error(
-                            "The parameter '${it.parameterOrNull()?.name}' is already set.",
-                            it,
-                            null,
-                            UNIQUE_PARAMETERS
-                    )
-                }
+            .filter { it.parameterOrNull() != null }
+            .duplicatesBy { it.parameterOrNull()?.name }
+            .forEach {
+                error(
+                    "The parameter '${it.parameterOrNull()?.name}' is already set.",
+                    it,
+                    null,
+                    UNIQUE_PARAMETERS
+                )
+            }
     }
 }

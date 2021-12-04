@@ -1,7 +1,13 @@
 package de.unibonn.simpleml.validation.declarations
 
-import de.unibonn.simpleml.simpleML.*
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
+import de.unibonn.simpleml.simpleML.SmlBlock
+import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlEnum
+import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.utils.assignedOrNull
 import de.unibonn.simpleml.utils.closestAncestorOrNull
 import de.unibonn.simpleml.utils.usesIn
@@ -20,9 +26,9 @@ class PlaceholderChecker : AbstractSimpleMLChecker() {
             val declaration = assigned.declaration
             if (declaration is SmlClass || declaration is SmlEnum || declaration is SmlFunction || declaration is SmlParameter || declaration is SmlPlaceholder)
                 warning(
-                        "This placeholder only provides another name for a declaration.",
-                        Literals.SML_DECLARATION__NAME,
-                        PLACEHOLDER_IS_RENAMING_OF_DECLARATION
+                    "This placeholder only provides another name for a declaration.",
+                    Literals.SML_DECLARATION__NAME,
+                    PLACEHOLDER_IS_RENAMING_OF_DECLARATION
                 )
         }
     }
@@ -32,9 +38,9 @@ class PlaceholderChecker : AbstractSimpleMLChecker() {
         val block = smlPlaceholder.closestAncestorOrNull<SmlBlock>() ?: return
         if (smlPlaceholder.usesIn(block).none()) {
             warning(
-                    "This placeholder is unused.",
-                    Literals.SML_DECLARATION__NAME,
-                    PLACEHOLDER_IS_UNUSED
+                "This placeholder is unused.",
+                Literals.SML_DECLARATION__NAME,
+                PLACEHOLDER_IS_UNUSED
             )
         }
     }
