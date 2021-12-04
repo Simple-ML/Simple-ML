@@ -1,8 +1,0 @@
-// no_syntax_error
-
-enum MySimpleEnum
-
-@AnnotationUse deprecated enum MyComplexEnum {
-    @AnnotationUse deprecated MY_COMPLEX_INSTANCE,
-    MY_SIMPLE_INSTANCE
-}

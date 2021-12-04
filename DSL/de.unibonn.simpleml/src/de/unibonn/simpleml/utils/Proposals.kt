@@ -41,7 +41,7 @@ class Proposals @Inject constructor(
             .filterValues { obj ->
                 val res = when (obj) {
                     is SmlClass -> {
-                        obj.constructor != null && obj.parametersOrEmpty().all {
+                        obj.parameterList != null && obj.parametersOrEmpty().all {
                             typeComputer.hasPrimitiveType(it)
                         }
                     }
@@ -72,7 +72,7 @@ class Proposals @Inject constructor(
             .filterValues { obj ->
                 when (obj) {
                     is SmlClass -> {
-                        obj.constructor != null && obj.parametersOrEmpty().any {
+                        obj.parameterList != null && obj.parametersOrEmpty().any {
                             typeConformance.isSubstitutableFor(resultType, typeComputer.typeOf(it))
                         }
                     }
@@ -85,10 +85,9 @@ class Proposals @Inject constructor(
                             return@filterValues true
                         }
 
-                        val containingClassOrInterface =
-                            obj.containingClassOrInterfaceOrNull() ?: return@filterValues false
+                        val containingClass = obj.containingClassOrNull() ?: return@filterValues false
 
-                        return@filterValues typeConformance.isSubstitutableFor(resultType, containingClassOrInterface)
+                        return@filterValues typeConformance.isSubstitutableFor(resultType, containingClass)
                     }
                     is SmlWorkflowStep -> {
                         obj.parametersOrEmpty().any {

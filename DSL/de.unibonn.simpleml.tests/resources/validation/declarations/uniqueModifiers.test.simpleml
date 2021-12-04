@@ -1,0 +1,93 @@
+package tests.validation.declarations.uniqueModifiers
+
+// no_semantic_error "Modifiers must be unique."
+»static« annotation MyAnnotation1
+// semantic_error "Modifiers must be unique."
+// semantic_error "Modifiers must be unique."
+»static« »static« annotation MyAnnotation2
+
+
+// no_semantic_error "Modifiers must be unique."
+»static« class MyClass1
+// semantic_error "Modifiers must be unique."
+// semantic_error "Modifiers must be unique."
+»static« »static« class MyClass2
+
+
+// no_semantic_error "Modifiers must be unique."
+»static« enum MyEnum1
+// semantic_error "Modifiers must be unique."
+// semantic_error "Modifiers must be unique."
+»static« »static« enum MyEnum2
+
+
+// no_semantic_error "Modifiers must be unique."
+»static« fun myFunction1()
+// semantic_error "Modifiers must be unique."
+// semantic_error "Modifiers must be unique."
+»static« »static« fun myFunction2()
+
+
+fun myFunction4<
+    // no_semantic_error "Modifiers must be unique."
+    »static« T1,
+    // no_semantic_error "Modifiers must be unique."
+    // no_semantic_error "Modifiers must be unique."
+    »static« »static« T2,
+>
+(
+    // no_semantic_error "Modifiers must be unique."
+    »static« param1: Int,
+    // no_semantic_error "Modifiers must be unique."
+    // no_semantic_error "Modifiers must be unique."
+    »static« »static« param2: Int
+) -> (
+    // no_semantic_error "Modifiers must be unique."
+    »static« result1: Int,
+    // no_semantic_error "Modifiers must be unique."
+    // no_semantic_error "Modifiers must be unique."
+    »static« »static« result2: Int
+)
+
+
+class MyClass4 {
+    // no_semantic_error "Modifiers must be unique."
+    »static« attr myAttribute1: Int
+    // semantic_error "Modifiers must be unique."
+    // semantic_error "Modifiers must be unique."
+    »static« »static« attr myAttribute2: Int
+
+
+    // no_semantic_error "Modifiers must be unique."
+    »static« class MyClass1
+    // semantic_error "Modifiers must be unique."
+    // semantic_error "Modifiers must be unique."
+    »static« »static« class MyClass2
+
+
+    // no_semantic_error "Modifiers must be unique."
+    »static« enum MyEnum1
+    // semantic_error "Modifiers must be unique."
+    // semantic_error "Modifiers must be unique."
+    »static« »static« enum MyEnum2
+
+
+    // no_semantic_error "Modifiers must be unique."
+    »static« fun myFunction1()
+    // semantic_error "Modifiers must be unique."
+    // semantic_error "Modifiers must be unique."
+    »static« »static« fun myFunction2()
+}
+
+
+// no_semantic_error "Modifiers must be unique."
+»static« step myStep1() {}
+// no_semantic_error "Modifiers must be unique."
+// no_semantic_error "Modifiers must be unique."
+»static« »static« step myStep2() {}
+
+// no_semantic_error "Modifiers must be unique."
+»static« workflow myWorkflow1 {}
+// no_semantic_error "Modifiers must be unique."
+// no_semantic_error "Modifiers must be unique."
+»static« »static« workflow myWorkflow2 {}

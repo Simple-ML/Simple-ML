@@ -8,13 +8,12 @@ import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
-import de.unibonn.simpleml.simpleML.SmlEnumInstance
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpression
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
-import de.unibonn.simpleml.simpleML.SmlInterface
 import de.unibonn.simpleml.simpleML.SmlLambda
 import de.unibonn.simpleml.simpleML.SmlLambdaYield
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
@@ -22,12 +21,15 @@ import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlNull
 import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
+import de.unibonn.simpleml.simpleML.SmlParenthesizedType
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlType
+import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.LIB_ANY
 import de.unibonn.simpleml.utils.LIB_BOOLEAN
@@ -38,7 +40,6 @@ import de.unibonn.simpleml.utils.QualifiedNameProvider
 import de.unibonn.simpleml.utils.SimpleMLStdlib
 import de.unibonn.simpleml.utils.assignedOrNull
 import de.unibonn.simpleml.utils.callableOrNull
-import de.unibonn.simpleml.utils.containingEnumOrNull
 import de.unibonn.simpleml.utils.lambdaYieldsOrEmpty
 import de.unibonn.simpleml.utils.parametersOrEmpty
 import de.unibonn.simpleml.utils.resultsOrEmpty
@@ -70,11 +71,12 @@ class TypeComputer @Inject constructor(
     }
 
     private fun EObject.inferType(isStatic: Boolean): Type {
-        return when (this) {
-            is SmlDeclaration -> this.inferType(isStatic)
-            is SmlExpression -> this.inferType(isStatic)
-            is SmlType -> this.inferType(isStatic)
-            is SmlYield -> {
+        return when {
+            this.eIsProxy() -> ANY
+            this is SmlDeclaration -> this.inferType(isStatic)
+            this is SmlExpression -> this.inferType(isStatic)
+            this is SmlType -> this.inferType(isStatic)
+            this is SmlYield -> {
                 val assigned = assignedOrNull() ?: return ANY
                 assigned.inferType(isStatic)
             }
@@ -83,43 +85,66 @@ class TypeComputer @Inject constructor(
     }
 
     private fun SmlDeclaration.inferType(isStatic: Boolean): Type {
-        return when (this) {
-            is SmlAttribute -> type.inferType(isStatic = false)
-            is SmlClass -> ClassType(this, isNullable = false, isStatic = isStatic)
-            is SmlEnum -> EnumType(this, isNullable = false, isStatic = isStatic)
-            is SmlEnumInstance -> {
-                val enum = containingEnumOrNull() ?: return ANY
-                EnumType(enum, isNullable = false, isStatic = false)
-            }
-            is SmlFunction -> CallableType(
+        return when {
+            this.eIsProxy() -> ANY
+            this is SmlAttribute -> type.inferType(isStatic = false)
+            this is SmlClass -> ClassType(this, isNullable = false, isStatic = isStatic)
+            this is SmlEnum -> EnumType(this, isNullable = false, isStatic = isStatic)
+            this is SmlEnumVariant -> EnumVariantType(this, isNullable = false, isStatic = isStatic)
+            this is SmlFunction -> CallableType(
                 parametersOrEmpty().map { it.inferType(false) },
                 resultsOrEmpty().map { it.inferType(false) }
             )
-            is SmlInterface -> InterfaceType(this, isNullable = false, isStatic = isStatic)
-            is SmlLambdaYield -> {
+            this is SmlLambdaYield -> {
                 val assigned = assignedOrNull() ?: return ANY
                 assigned.inferType(isStatic = false)
             }
-            is SmlParameter -> type.inferType(isStatic = false)
-            is SmlPlaceholder -> {
+            this is SmlParameter -> type.inferType(isStatic = false)
+            this is SmlPlaceholder -> {
                 val assigned = assignedOrNull() ?: return ANY
                 assigned.inferType(isStatic = false)
             }
-            is SmlResult -> type.inferType(isStatic = false)
+            this is SmlResult -> type.inferType(isStatic = false)
+            this is SmlWorkflowStep -> CallableType(
+                parametersOrEmpty().map { it.inferType(false) },
+                resultsOrEmpty().map { it.inferType(false) }
+            )
             else -> ANY
         }
     }
 
     private fun SmlExpression.inferType(isStatic: Boolean): Type {
-        return when (this) {
-            is SmlBoolean -> BOOLEAN
-            is SmlFloat -> FLOAT
-            is SmlInt -> INT
-            is SmlString -> STRING
+        return when {
+            this.eIsProxy() -> ANY
+            this is SmlBoolean -> BOOLEAN
+            this is SmlFloat -> FLOAT
+            this is SmlInt -> INT
+            this is SmlString -> STRING
 
-            is SmlCall -> when (val callable = callableOrNull()) {
+            this is SmlCall -> when (val callable = callableOrNull()) {
                 is SmlClass -> ClassType(callable, isNullable = false, isStatic = false)
+                is SmlCallableType -> {
+                    val results = callable.resultsOrEmpty()
+                    when (results.size) {
+                        1 -> results.first().inferType(false)
+                        else -> TupleType(results.map { it.inferType(false) })
+                    }
+                }
                 is SmlFunction -> {
+                    val results = callable.resultsOrEmpty()
+                    when (results.size) {
+                        1 -> results.first().inferType(false)
+                        else -> TupleType(results.map { it.inferType(false) })
+                    }
+                }
+                is SmlLambda -> {
+                    val results = callable.lambdaYieldsOrEmpty()
+                    when (results.size) {
+                        1 -> results.first().inferType(false)
+                        else -> TupleType(results.map { it.inferType(false) })
+                    }
+                }
+                is SmlWorkflowStep -> {
                     val results = callable.resultsOrEmpty()
                     when (results.size) {
                         1 -> results.first().inferType(false)
@@ -128,7 +153,7 @@ class TypeComputer @Inject constructor(
                 }
                 else -> ANY
             }
-            is SmlInfixOperation -> when (operator) {
+            this is SmlInfixOperation -> when (operator) {
                 "<", "<=", ">=", ">" -> BOOLEAN
                 "==", "!=" -> BOOLEAN
                 "===", "!==" -> BOOLEAN
@@ -140,19 +165,22 @@ class TypeComputer @Inject constructor(
                 "?:" -> ANY // TODO
                 else -> NothingType
             }
-            is SmlLambda -> CallableType(
+            this is SmlLambda -> CallableType(
                 parametersOrEmpty().map { it.inferType(false) },
                 lambdaYieldsOrEmpty().map { it.inferType(false) }
             )
-            is SmlMemberAccess -> {
+            this is SmlMemberAccess -> {
 //            if (this.isNullable) {
 //                // TODO
 //            }
                 val member = this.member ?: return ANY
                 member.inferType(isStatic = false)
             }
-            is SmlNull -> stdlibType(context, LIB_ANY, isNullable = true)
-            is SmlPrefixOperation -> when (operator) {
+            this is SmlNull -> stdlibType(context, LIB_ANY, isNullable = true)
+            this is SmlParenthesizedExpression -> {
+                this.expression.inferType(isStatic)
+            }
+            this is SmlPrefixOperation -> when (operator) {
                 "not" -> BOOLEAN
                 "-" -> when (this.operand.inferType(false)) {
                     INT -> INT
@@ -160,7 +188,7 @@ class TypeComputer @Inject constructor(
                 }
                 else -> NothingType
             }
-            is SmlReference -> { // TODO
+            this is SmlReference -> { // TODO
                 val declaration = this.declaration ?: return ANY
                 declaration.inferType(isStatic = true)
             }
@@ -170,18 +198,22 @@ class TypeComputer @Inject constructor(
     }
 
     private fun SmlType.inferType(isStatic: Boolean): Type {
-        return when (this) {
-            is SmlCallableType -> CallableType(
+        return when {
+            this.eIsProxy() -> ANY
+            this is SmlCallableType -> CallableType(
                 parametersOrEmpty().map { it.inferType(false) },
                 resultsOrEmpty().map { it.inferType(false) }
             )
-            is SmlMemberType -> {
+            this is SmlMemberType -> {
                 val member = this.member ?: return ANY
                 member.inferType(isStatic = false)
             }
-            is SmlNamedType -> {
+            this is SmlNamedType -> {
                 val declaration = this.declaration ?: return ANY
                 declaration.inferType(isStatic = isStatic)
+            }
+            this is SmlParenthesizedType -> {
+                this.type.inferType(isStatic)
             }
             else -> ANY
         }

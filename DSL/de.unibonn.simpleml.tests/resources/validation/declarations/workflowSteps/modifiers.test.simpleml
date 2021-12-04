@@ -1,0 +1,6 @@
+package tests.validation.declarations.workflowSteps.modifiers
+
+// semantic_error "A workflow step must have no modifiers."
+// semantic_error "A workflow step must have no modifiers."
+// semantic_error "A workflow step must have no modifiers."
+»open« »override« »static« step myStep() {}

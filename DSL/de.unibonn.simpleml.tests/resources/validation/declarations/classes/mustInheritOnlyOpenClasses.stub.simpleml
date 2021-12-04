@@ -1,0 +1,10 @@
+package tests.mustInheritOnlyInterfaces
+
+class MyClass
+open class MyOpenClass
+
+
+// semantic_error "The parent class must be open."
+// no_semantic_error "The parent class must be open."
+class MyClass2 sub »MyClass«,
+                   »MyOpenClass«

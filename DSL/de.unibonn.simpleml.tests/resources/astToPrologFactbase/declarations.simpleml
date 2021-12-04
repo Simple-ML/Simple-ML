@@ -1,0 +1,73 @@
+package myPackage
+
+import myPackage.MyClass
+import myPackage.MyOtherClass as Class
+import myPackage.*
+
+
+// Annotations ---------------------------------------------------------------------------------------------------------
+annotation MySimpleAnnotation
+
+@MySimpleAnnotation
+static annotation MyComplexAnnotation(
+    a: Int,
+    b: Int
+)
+
+
+// Classes, Attributes & Type parameters -------------------------------------------------------------------------------
+class MySimpleClass
+
+@MySimpleAnnotation
+static class MyComplexClass
+    <MY_SIMPLE_TYPE_PARAMETER, @AnnotationUse static out MY_COMPLEX_TYPE_PARAMETER>
+    (a, b)
+    sub SuperClass1, SuperClass2
+    where T1 super Number, T2 sub Number
+{
+    attr mySimpleAttribute
+    @AnnotationUse static attr myComplexAttribute: Int
+
+    class MyClass
+    enum MyEnum
+    fun MyFunction()
+}
+
+
+// Enums & Enum variants -----------------------------------------------------------------------------------------------
+enum MySimpleEnum
+
+@MySimpleAnnotation
+static enum MyComplexEnum {
+    MySimpleVariant
+    @AnnotationUse static MyComplexVariant<T1, T2>(a, b) where T1 super Number, T2 sub Number
+}
+
+
+// Functions, Parameters & Results -------------------------------------------------------------------------------------
+fun mySimpleFunction()
+
+@MySimpleAnnotation
+static fun myComplexFunction
+    <T1, T2>
+    (mySimpleParameter, @AnnotationUse static vararg myComplexParameter: Int or 3)
+    -> (mySimpleResult, @AnnotationUse static myComplexResult: Int)
+    where T1 super Number, T2 sub Number
+
+
+// Workflows -----------------------------------------------------------------------------------------------------------
+workflow mySimpleWorkflow {}
+
+@MySimpleAnnotation
+static workflow myComplexWorkflow {
+    val a = 1;
+}
+
+
+// Workflow steps ------------------------------------------------------------------------------------------------------
+step mySimpleStep() {}
+
+@MySimpleAnnotation
+static step myComplexStep (a, b) -> (a, b) {
+    val a = 1;
+}

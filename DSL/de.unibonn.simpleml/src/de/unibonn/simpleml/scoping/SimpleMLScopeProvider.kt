@@ -1,13 +1,55 @@
 package de.unibonn.simpleml.scoping
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.simpleML.*
-import de.unibonn.simpleml.typing.*
-import de.unibonn.simpleml.utils.*
+import de.unibonn.simpleml.simpleML.SimpleMLPackage
+import de.unibonn.simpleml.simpleML.SmlAnnotation
+import de.unibonn.simpleml.simpleML.SmlAnnotationUse
+import de.unibonn.simpleml.simpleML.SmlArgument
+import de.unibonn.simpleml.simpleML.SmlArgumentList
+import de.unibonn.simpleml.simpleML.SmlAssignment
+import de.unibonn.simpleml.simpleML.SmlBlock
+import de.unibonn.simpleml.simpleML.SmlCall
+import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlDeclaration
+import de.unibonn.simpleml.simpleML.SmlLambda
+import de.unibonn.simpleml.simpleML.SmlMemberAccess
+import de.unibonn.simpleml.simpleML.SmlMemberType
+import de.unibonn.simpleml.simpleML.SmlNamedType
+import de.unibonn.simpleml.simpleML.SmlNamedTypeDeclaration
+import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.simpleML.SmlReference
+import de.unibonn.simpleml.simpleML.SmlStatement
+import de.unibonn.simpleml.simpleML.SmlTypeArgument
+import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
+import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
+import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraintList
+import de.unibonn.simpleml.simpleML.SmlWorkflow
+import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.typing.ClassType
+import de.unibonn.simpleml.typing.EnumType
+import de.unibonn.simpleml.typing.EnumVariantType
+import de.unibonn.simpleml.typing.NamedType
+import de.unibonn.simpleml.typing.TypeComputer
+import de.unibonn.simpleml.utils.ClassHierarchy
+import de.unibonn.simpleml.utils.closestAncestorOrNull
+import de.unibonn.simpleml.utils.compilationUnitOrNull
+import de.unibonn.simpleml.utils.containingClassOrNull
+import de.unibonn.simpleml.utils.isStatic
+import de.unibonn.simpleml.utils.membersOrEmpty
+import de.unibonn.simpleml.utils.parametersOrEmpty
+import de.unibonn.simpleml.utils.parametersOrNull
+import de.unibonn.simpleml.utils.placeholdersOrEmpty
+import de.unibonn.simpleml.utils.resultsOrNull
+import de.unibonn.simpleml.utils.typeParametersOrNull
+import de.unibonn.simpleml.utils.variantsOrEmpty
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
+import org.eclipse.xtext.scoping.impl.FilteringScope
 
 /**
  * This class contains custom scoping description.
@@ -16,29 +58,31 @@ import org.eclipse.xtext.scoping.Scopes
  * on how and when to use it.
  */
 class SimpleMLScopeProvider @Inject constructor(
-        private val classHierarchy: ClassHierarchy,
-        private val typeComputer: TypeComputer
+    private val classHierarchy: ClassHierarchy,
+    private val typeComputer: TypeComputer,
+    private val qualifiedNameProvider: IQualifiedNameProvider
 ) : AbstractSimpleMLScopeProvider() {
 
     override fun getScope(context: EObject, reference: EReference): IScope {
         return when (context) {
             is SmlArgument -> scopeForArgumentParameter(context)
+            is SmlNamedType -> scopeForNamedTypeDeclaration(context)
             is SmlReference -> scopeForReferenceDeclaration(context)
             is SmlTypeArgument -> scopeForTypeArgumentTypeParameter(context)
             is SmlTypeParameterConstraint -> scopeForTypeParameterConstraintLeftOperand(context)
-            is SmlAnnotationUse, is SmlNamedType, is SmlYield -> {
+            is SmlAnnotationUse, is SmlYield -> {
                 super.getScope(context, reference)
-			}
+            }
             else -> IScope.NULLSCOPE
         }
     }
 
     private fun scopeForArgumentParameter(smlArgument: SmlArgument): IScope {
         val parameters = smlArgument
-                .closestAncestorOrNull<SmlArgumentList>()
-                ?.parametersOrNull()
-                ?.filterNot { it.isVararg }
-                ?: emptyList()
+            .closestAncestorOrNull<SmlArgumentList>()
+            ?.parametersOrNull()
+            ?.filterNot { it.isVararg }
+            ?: emptyList()
         return Scopes.scopeFor(parameters)
     }
 
@@ -47,85 +91,155 @@ class SimpleMLScopeProvider @Inject constructor(
         return when {
             container is SmlMemberAccess && container.member == context -> scopeForMemberAccessDeclaration(container)
             else -> {
-//                super.getScope(context, SimpleMLPackage.Literals.SML_REFERENCE__DECLARATION)
-                // TODO
-                val locals = locals(context)
-                val globals = super.delegateGetScope(context, SimpleMLPackage.Literals.SML_REFERENCE__DECLARATION)
+                val resource = context.eResource()
 
-                Scopes.scopeFor(locals, globals)
-//                 Must also include functions defined in the same file (if we allow mixing workflows and functions)
+                // Declarations in other files
+                var result: IScope = FilteringScope(
+                    super.delegateGetScope(context, SimpleMLPackage.Literals.SML_REFERENCE__DECLARATION)
+                ) {
+                    // Keep only external declarations, since this also includes all local declarations
+                    it != null && it.eObjectOrProxy.eResource() != resource && it.eObjectOrProxy !is SmlAnnotation
+                }
+
+                // Declarations in this file
+                result = declarationsInSameFile(resource, result)
+
+                // Declarations in containing classes
+                context.containingClassOrNull()?.let {
+                    result = classMembers(it, result)
+                }
+
+                // Declarations in containing blocks
+                localDeclarations(context, result)
             }
         }
     }
 
     private fun scopeForMemberAccessDeclaration(context: SmlMemberAccess): IScope {
-        val type = (typeComputer.typeOf(context.receiver) as? NamedType) ?: return IScope.NULLSCOPE
+        val receiver = context.receiver
 
-        // TODO we also want to access results of a function by name call().result (maybe it does make sense to put the
-        //  names into the type???
+        // Call results
+        var resultScope = IScope.NULLSCOPE
+        if (receiver is SmlCall) {
+            val results = receiver.resultsOrNull()
+            when {
+                results == null -> return IScope.NULLSCOPE
+                results.size > 1 -> return Scopes.scopeFor(results)
+                results.size == 1 -> resultScope = Scopes.scopeFor(results)
+            }
+        }
+
+        // Members
+        val type = (typeComputer.typeOf(receiver) as? NamedType) ?: return resultScope
 
         return when {
-            type.isNullable && !context.isNullable -> IScope.NULLSCOPE // TODO: should be able to access extension methods that work on nullable types
+            type.isNullable && !context.isNullable -> resultScope
             type is ClassType -> {
                 val members = type.smlClass.membersOrEmpty().filter { it.isStatic() == type.isStatic }
                 val superTypeMembers = classHierarchy.superClassMembers(type.smlClass)
-                        .filter { it.isStatic() == type.isStatic }
-                        .toList()
+                    .filter { it.isStatic() == type.isStatic }
+                    .toList()
 
-                Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers))
+                Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers, resultScope))
             }
             type is EnumType -> {
                 val members = when {
-                    type.isStatic -> type.smlEnum.instancesOrEmpty()
+                    type.isStatic -> type.smlEnum.variantsOrEmpty()
                     else -> emptyList()
                 }
                 val superTypeMembers = emptyList<SmlDeclaration>()
 
-                Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers))
+                Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers, resultScope))
             }
-            type is InterfaceType -> {
-                val members = type.smlInterface.membersOrEmpty()
-                        .filterIsInstance<SmlFunction>()
-                        .filter { !it.isStatic() }
-                val superTypeMembers = classHierarchy.superInterfaceMembers(type.smlInterface)
-                        .filterIsInstance<SmlFunction>()
-                        .filter { !it.isStatic() }
-                        .toList()
+            type is EnumVariantType -> Scopes.scopeFor(type.smlEnumVariant.parametersOrEmpty())
+            else -> resultScope
+        }
+    }
+
+    private fun declarationsInSameFile(resource: Resource, parentScope: IScope): IScope {
+        val members = resource.compilationUnitOrNull()
+            ?.members
+            ?.filter { it !is SmlAnnotation && it !is SmlWorkflow }
+            ?: emptyList()
+
+        return Scopes.scopeFor(
+            members,
+            parentScope
+        )
+    }
+
+    private fun classMembers(context: SmlClass, parentScope: IScope): IScope {
+        return when (val containingClassOrNull = context.containingClassOrNull()) {
+            is SmlClass -> Scopes.scopeFor(context.membersOrEmpty(), classMembers(containingClassOrNull, parentScope))
+            else -> Scopes.scopeFor(context.membersOrEmpty(), parentScope)
+        }
+    }
+
+    private fun localDeclarations(context: EObject, parentScope: IScope): IScope {
+        val containingStatement = context.closestAncestorOrNull<SmlStatement>()
+        val containingBlock = containingStatement?.closestAncestorOrNull<SmlBlock>() ?: return parentScope
+
+        val placeholders = containingBlock.placeholdersUpTo(containingStatement)
+
+        return when (val callable = containingBlock.eContainer()) {
+            is SmlLambda -> Scopes.scopeFor(
+                placeholders + callable.parametersOrEmpty(),
+                localDeclarations(callable, parentScope)
+            )
+            is SmlWorkflowStep -> Scopes.scopeFor(placeholders + callable.parametersOrEmpty(), parentScope)
+            else -> Scopes.scopeFor(placeholders, parentScope)
+        }
+    }
+
+    private fun SmlBlock.placeholdersUpTo(containingStatement: SmlStatement): List<SmlPlaceholder> {
+        return this.statements
+            .takeWhile { it !== containingStatement }
+            .filterIsInstance<SmlAssignment>()
+            .flatMap { it.placeholdersOrEmpty() }
+    }
+
+    private fun scopeForNamedTypeDeclaration(context: SmlNamedType): IScope {
+        val container = context.eContainer()
+        return when {
+            container is SmlMemberType && container.member == context -> scopeForMemberTypeDeclaration(container)
+            else -> {
+                super.getScope(context, SimpleMLPackage.Literals.SML_NAMED_TYPE__DECLARATION)
+            }
+        }
+    }
+
+    private fun scopeForMemberTypeDeclaration(context: SmlMemberType): IScope {
+        val type = (typeComputer.typeOf(context.receiver) as? NamedType) ?: return IScope.NULLSCOPE
+
+        return when {
+            type.isNullable -> IScope.NULLSCOPE
+            type is ClassType -> {
+                val members = type.smlClass.membersOrEmpty().filterIsInstance<SmlNamedTypeDeclaration>()
+                val superTypeMembers = classHierarchy.superClassMembers(type.smlClass)
+                    .filterIsInstance<SmlNamedTypeDeclaration>()
+                    .toList()
 
                 Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers))
             }
+            type is EnumType -> Scopes.scopeFor(type.smlEnum.variantsOrEmpty())
             else -> IScope.NULLSCOPE
         }
     }
 
-    private fun locals(context: EObject): List<SmlDeclaration> {
-        return when (val container = context.eContainer()) {
-            is SmlBlock -> container.statements.placeholdersUpTo(context)
-            null -> emptyList()
-            else -> locals(container)
-        }
-    }
-
-    private fun List<SmlStatement>.placeholdersUpTo(context: EObject): List<SmlPlaceholder> {
-        return this.takeWhile { it !== context }
-                .filterIsInstance<SmlAssignment>()
-                .flatMap { it.placeholdersOrEmpty() }
-    }
-
     private fun scopeForTypeArgumentTypeParameter(smlTypeArgument: SmlTypeArgument): IScope {
         val typeParameters = smlTypeArgument
-                .closestAncestorOrNull<SmlTypeArgumentList>()
-                ?.typeParametersOrNull()
-                ?: emptyList()
+            .closestAncestorOrNull<SmlTypeArgumentList>()
+            ?.typeParametersOrNull()
+            ?: emptyList()
 
         return Scopes.scopeFor(typeParameters)
     }
 
     private fun scopeForTypeParameterConstraintLeftOperand(smlTypeParameterConstraint: SmlTypeParameterConstraint): IScope {
         val typeParameters = smlTypeParameterConstraint
-                .closestAncestorOrNull<SmlTypeParameterConstraintList>()
-                ?.typeParametersOrNull()
-                ?: emptyList()
+            .closestAncestorOrNull<SmlTypeParameterConstraintList>()
+            ?.typeParametersOrNull()
+            ?: emptyList()
 
         return Scopes.scopeFor(typeParameters)
     }

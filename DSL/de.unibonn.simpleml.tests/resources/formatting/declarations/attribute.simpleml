@@ -1,0 +1,33 @@
+class MyClass {
+    attr        myAttribute1
+
+    @Annotation1
+         @Annotation2
+       attr
+     myAttribute1    :        Int
+
+    open       static
+        attr     myAttribute1   :      Int
+
+    @Annotation1
+          @Annotation2
+    open
+     static
+        attr    myAttribute1     :  Int
+}
+
+------------------------------------------------------------------------------------------------------------------------
+
+class MyClass {
+    attr myAttribute1
+
+    @Annotation1
+    @Annotation2
+    attr myAttribute1: Int
+
+    open static attr myAttribute1: Int
+
+    @Annotation1
+    @Annotation2
+    open static attr myAttribute1: Int
+}

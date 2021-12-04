@@ -1,0 +1,69 @@
+package tests.validation.expressions.calls.recursion
+
+
+workflow w {
+    // no_semantic_error "Recursive calls are not allowed."
+    »a«();
+    // no_semantic_error "Recursive calls are not allowed."
+    »b«();
+    // no_semantic_error "Recursive calls are not allowed."
+    »c«();
+    // no_semantic_error "Recursive calls are not allowed."
+    »d«();
+    // no_semantic_error "Recursive calls are not allowed."
+    »f«();
+}
+
+step a() {
+    // semantic_error "Recursive calls are not allowed."
+    »a«();
+    // no_semantic_error "Recursive calls are not allowed."
+    »b«();
+    // no_semantic_error "Recursive calls are not allowed."
+    »c«();
+    // no_semantic_error "Recursive calls are not allowed."
+    »d«();
+    // no_semantic_error "Recursive calls are not allowed."
+    »f«();
+
+    /* For now we still want to treat this as an error even though the lambda is never run */
+    lambda {
+        // semantic_error "Recursive calls are not allowed."
+        »a«();
+        // no_semantic_error "Recursive calls are not allowed."
+        »b«();
+        // no_semantic_error "Recursive calls are not allowed."
+        »c«();
+        // no_semantic_error "Recursive calls are not allowed."
+        »d«();
+        // no_semantic_error "Recursive calls are not allowed."
+        »f«();
+    };
+
+    val lambda1 = lambda {
+        // no_semantic_error "Recursive calls are not allowed."
+        »lambda1«();
+    };
+
+    val lambda2 = lambda {
+        // no_semantic_error "Recursive calls are not allowed."
+        »lambda3«();
+    };
+
+    val lambda3 = lambda {
+        // no_semantic_error "Recursive calls are not allowed."
+        »lambda2«();
+    };
+}
+
+step b() {
+    // semantic_error "Recursive calls are not allowed."
+    »c«();
+}
+
+step c() {
+    // semantic_error "Recursive calls are not allowed."
+    »b«();
+}
+
+step d() {}

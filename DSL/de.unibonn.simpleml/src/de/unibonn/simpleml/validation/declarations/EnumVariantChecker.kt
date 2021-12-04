@@ -1,0 +1,42 @@
+package de.unibonn.simpleml.validation.declarations
+
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
+import de.unibonn.simpleml.utils.parametersOrEmpty
+import de.unibonn.simpleml.utils.typeParametersOrEmpty
+import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import org.eclipse.xtext.validation.Check
+
+const val UNNECESSARY_ENUM_VARIANT_TYPE_PARAMETER_LIST = "UNNECESSARY_ENUM_VARIANT_TYPE_PARAMETER_LIST"
+const val UNNECESSARY_ENUM_VARIANT_PARAMETER_LIST = "UNNECESSARY_ENUM_VARIANT_PARAMETER_LIST"
+
+class EnumVariantChecker : AbstractSimpleMLChecker() {
+
+    @Check
+    fun typeParameterList(smlEnumVariant: SmlEnumVariant) {
+        if (smlEnumVariant.typeParameterList != null && smlEnumVariant.typeParametersOrEmpty().isEmpty()) {
+            warning(
+                "Unnecessary type parameter list.",
+                Literals.SML_ENUM_VARIANT__TYPE_PARAMETER_LIST,
+                UNNECESSARY_ENUM_VARIANT_TYPE_PARAMETER_LIST
+            )
+        }
+    }
+
+    @Check
+    fun parameterList(smlEnumVariant: SmlEnumVariant) {
+        if (smlEnumVariant.parameterList != null && smlEnumVariant.parametersOrEmpty().isEmpty()) {
+            warning(
+                "Unnecessary parameter list.",
+                Literals.SML_ENUM_VARIANT__PARAMETER_LIST,
+                UNNECESSARY_ENUM_VARIANT_PARAMETER_LIST
+            )
+        }
+    }
+
+    @Check
+    fun uniqueNames(smlEnumVariant: SmlEnumVariant) {
+        smlEnumVariant.parametersOrEmpty()
+            .reportDuplicateNames { "A parameter with name '${it.name}' exists already in this enum variant." }
+    }
+}

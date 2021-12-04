@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="simpleML" nsURI="http://www.unibonn.de/simpleml/SimpleML" nsPrefix="simpleML">
-  <eClassifiers xsi:type="ecore:EClass" name="SmlDeclaration" abstract="true">
+  <eClassifiers xsi:type="ecore:EClass" name="SmlDeclaration" abstract="false">
     <eStructuralFeatures xsi:type="ecore:EReference" name="annotations" upperBound="-1"
         eType="#//SmlAnnotationUse" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="annotationHolder" eType="#//SmlAnnotationUseHolder"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="modifiers" unique="false"
         upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -15,6 +17,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotationUseHolder" eSuperTypes="#//SmlDeclaration"/>
   <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotationUse">
     <eStructuralFeatures xsi:type="ecore:EReference" name="annotation" eType="#//SmlAnnotation"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="argumentList" eType="#//SmlArgumentList"
@@ -24,25 +27,19 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//SmlType"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SmlClassOrInterface" abstract="true" eSuperTypes="#//SmlNamedTypeDeclaration">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlClassOrInterfaceBody"
+  <eClassifiers xsi:type="ecore:EClass" name="SmlClass" abstract="false" eSuperTypes="#//SmlNamedTypeDeclaration">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterList" eType="#//SmlTypeParameterList"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="constructor" eType="#//SmlConstructor"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parentTypeList" eType="#//SmlParentTypeList"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterConstraintList"
         eType="#//SmlTypeParameterConstraintList" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterList" eType="#//SmlTypeParameterList"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlClassBody"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SmlClass" eSuperTypes="#//SmlClassOrInterface"/>
-  <eClassifiers xsi:type="ecore:EClass" name="SmlInterface" eSuperTypes="#//SmlClassOrInterface"/>
-  <eClassifiers xsi:type="ecore:EClass" name="SmlConstructor">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SmlClassOrInterfaceBody">
+  <eClassifiers xsi:type="ecore:EClass" name="SmlClassBody">
     <eStructuralFeatures xsi:type="ecore:EReference" name="members" upperBound="-1"
         eType="#//SmlDeclaration" containment="true"/>
   </eClassifiers>
@@ -55,26 +52,36 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlImport">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="importedNamespace" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alias" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="alias" eType="#//SmlImportAlias" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SmlImportAlias">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlEnum" eSuperTypes="#//SmlNamedTypeDeclaration">
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlEnumBody"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlEnumBody">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="instances" upperBound="-1"
-        eType="#//SmlEnumInstance" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variants" upperBound="-1"
+        eType="#//SmlEnumVariant" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SmlEnumInstance" eSuperTypes="#//SmlDeclaration"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SmlEnumVariant" eSuperTypes="#//SmlNamedTypeDeclaration">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterList" eType="#//SmlTypeParameterList"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterConstraintList"
+        eType="#//SmlTypeParameterConstraintList" containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlFunction" eSuperTypes="#//SmlDeclaration">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterList" eType="#//SmlTypeParameterList"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="resultList" eType="#//SmlResultList"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterConstraintList"
         eType="#//SmlTypeParameterConstraintList" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterList" eType="#//SmlTypeParameterList"
-        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlParameterList">
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
@@ -100,11 +107,11 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlWorkflowStep" eSuperTypes="#//SmlDeclaration">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlBlock"
-        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="resultList" eType="#//SmlResultList"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlBlock"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlBlock">
@@ -148,6 +155,13 @@
   <eClassifiers xsi:type="ecore:EClass" name="SmlString" eSuperTypes="#//SmlLiteral">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SmlTemplateString" eSuperTypes="#//SmlExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expressions" upperBound="-1"
+        eType="#//SmlExpression" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SmlTemplateStringPart" eSuperTypes="#//SmlLiteral">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlLambda" eSuperTypes="#//SmlExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlBlock"
         containment="true"/>
@@ -169,6 +183,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlReference" eSuperTypes="#//SmlExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="declaration" eType="#//SmlDeclaration"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SmlParenthesizedExpression" eSuperTypes="#//SmlExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//SmlExpression"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlChainedExpression" abstract="true"
       eSuperTypes="#//SmlExpression">
@@ -214,7 +232,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="typeArgumentList" eType="#//SmlTypeArgumentList"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SmlThisType" eSuperTypes="#//SmlType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SmlParenthesizedType" eSuperTypes="#//SmlType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//SmlType"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SmlUnionType" eSuperTypes="#//SmlType">
     <eStructuralFeatures xsi:type="ecore:EReference" name="typeArgumentList" eType="#//SmlTypeArgumentList"
         containment="true"/>

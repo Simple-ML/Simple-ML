@@ -1,0 +1,44 @@
+fun     myFunction1
+ (  )
+
+@Annotation1  @Annotation2   fun
+     myFunction2      (  )   ->
+  a
+   :    Int
+
+static
+  open
+    fun      myFunction3  (
+    )
+
+@Annotation1   @Annotation2  static
+    open   fun
+       myFunction
+   <
+     @AnnotationUse
+           static
+       T1  ,   in
+       T2 ,     out  T3
+    >(   @AnnotationUse
+       static
+    a  :  Int  ,   vararg
+     b  :    Int   or
+   3  )    ->
+   (
+      @AnnotationUse    static    a  :
+        Int ,  b  :   Int )     where
+          T2   super    Number   ,   T3    sub    Number
+
+------------------------------------------------------------------------------------------------------------------------
+
+fun myFunction1()
+
+@Annotation1
+@Annotation2
+fun myFunction2() -> a: Int
+
+static open fun myFunction3()
+
+@Annotation1
+@Annotation2
+static open fun myFunction<@AnnotationUse static T1, in T2, out T3>(@AnnotationUse static a: Int, vararg b: Int or 3) -> (@AnnotationUse static a: Int, b: Int) where T2 super Number, T3 sub Number

@@ -1,0 +1,22 @@
+package tests.validation.declarations.typeParameters.modifiers
+
+// semantic_error "A type parameter must have no modifiers."
+// semantic_error "A type parameter must have no modifiers."
+// semantic_error "A type parameter must have no modifiers."
+class MyClass<»open« »override« »static« T> {
+
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    class MyClass<»open« »override« »static« T>
+
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    // semantic_error "A type parameter must have no modifiers."
+    fun myFunction<»open« »override« »static« T>()
+}
+
+// semantic_error "A type parameter must have no modifiers."
+// semantic_error "A type parameter must have no modifiers."
+// semantic_error "A type parameter must have no modifiers."
+fun myFunction<»open« »override« »static« T>()

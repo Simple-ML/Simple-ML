@@ -1,0 +1,11 @@
+package tests.onlyOneParentClass
+
+class MyClass1
+class MyClass2
+
+// semantic_error "A class must have only one parent class."
+// semantic_error "A class must have only one parent class."
+class MyClass3 sub »MyClass1«, »MyClass2«
+
+// no_semantic_error "A class must have only one parent class."
+class MyClass4 sub »MyClass1«

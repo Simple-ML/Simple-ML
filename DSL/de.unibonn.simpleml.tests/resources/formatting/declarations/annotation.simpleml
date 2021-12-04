@@ -1,0 +1,27 @@
+     annotation  MyAnnotation1   @Annotation1      @Annotation2
+
+         annotation   MyAnnotation2
+
+   open     static   annotation
+       MyAnnotation3
+
+ @Annotation1 @Annotation2     open
+       static
+  annotation MyAnnotation4
+   (    @AnnotationUse    static      a  :     Int
+    ,   vararg   b    :  Int
+     or  3     )
+
+------------------------------------------------------------------------------------------------------------------------
+
+annotation MyAnnotation1
+
+@Annotation1
+@Annotation2
+annotation MyAnnotation2
+
+open static annotation MyAnnotation3
+
+@Annotation1
+@Annotation2
+open static annotation MyAnnotation4(@AnnotationUse static a: Int, vararg b: Int or 3)

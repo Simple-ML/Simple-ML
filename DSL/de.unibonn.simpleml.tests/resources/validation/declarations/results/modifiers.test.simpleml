@@ -1,0 +1,21 @@
+package tests.validation.declarations.results.modifiers
+
+class MyClass {
+
+    // semantic_error "A result must have no modifiers."
+    // semantic_error "A result must have no modifiers."
+    // semantic_error "A result must have no modifiers."
+    fun myFunction() -> (»open« »override« »static« a: Int)
+}
+
+// semantic_error "A result must have no modifiers."
+// semantic_error "A result must have no modifiers."
+// semantic_error "A result must have no modifiers."
+fun myFunction() -> (»open« »override« »static« a: Int)
+
+// semantic_error "A result must have no modifiers."
+// semantic_error "A result must have no modifiers."
+// semantic_error "A result must have no modifiers."
+step myStep(
+    f: callable () -> (»open« »override« »static« a: Int)
+) {}

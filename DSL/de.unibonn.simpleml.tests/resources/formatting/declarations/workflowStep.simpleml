@@ -1,0 +1,39 @@
+step myStep1  (  )  {      }    @Annotation1
+ @Annotation2     step myStep2() ->
+ a   :  Int  {   }
+
+      open
+       static
+    step myStep3(    )  
+    
+    ->   a     :   Int  {
+    }
+
+@Annotation1
+ @Annotation2  open      static
+  step
+   myStep4
+   (   a  :   Int  ,  b :   Int
+   
+    )     
+     ->   (
+   a:
+   Int   ,    b  :   Int  )
+   {
+  val a = 1; }
+
+------------------------------------------------------------------------------------------------------------------------
+
+step myStep1() {}
+
+@Annotation1
+@Annotation2
+step myStep2() -> a: Int {}
+
+open static step myStep3() -> a: Int {}
+
+@Annotation1
+@Annotation2
+open static step myStep4(a: Int, b: Int) -> (a: Int, b: Int) {
+    val a = 1;
+}
