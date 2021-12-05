@@ -559,7 +559,16 @@ SmlTypeArgumentValue
  **********************************************************************************************************************/
 
 terminal FLOAT returns ecore::EDouble
-    : ('0'..'9')+ '.' ('0'..'9')+
+    : DECIMAL_DIGIT+ '.' DECIMAL_DIGIT+ FLOAT_EXPONENT?
+    | DECIMAL_DIGIT+ FLOAT_EXPONENT
+    ;
+
+terminal fragment DECIMAL_DIGIT
+    : '0'..'9'
+    ;
+
+terminal fragment FLOAT_EXPONENT
+    : ('e'|'E') ('+'|'-')? DECIMAL_DIGIT+
     ;
 
 terminal ID
@@ -567,7 +576,7 @@ terminal ID
     ;
 
 terminal INT returns ecore::EInt
-    : ('0'..'9')+
+    : DECIMAL_DIGIT+
     ;
 
 terminal ML_COMMENT
