@@ -61,7 +61,7 @@ class SimpleMLStdlib @Inject constructor(
                 .filter { it.toString().endsWith(".stub.simpleml") }
 
             for (path in stdlibFiles) {
-                val relativePath = path.toString().replace("stubs/", "")
+                val relativePath = path.toString().replace("stdlib/", "")
                 val uri = URI.createURI("$resourcesUri/$relativePath".replace("%3A", ":"))
                 yield(path to uri)
             }

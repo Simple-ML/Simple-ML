@@ -572,6 +572,11 @@ terminal fragment FLOAT_EXPONENT
     ;
 
 terminal ID
+    : IDENTIFIER
+    | '`' IDENTIFIER '`'
+    ;
+
+terminal fragment IDENTIFIER
     : ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*
     ;
 
