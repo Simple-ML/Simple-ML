@@ -6,10 +6,7 @@ import de.unibonn.simpleml.naming.fullyQualifiedName
 import de.unibonn.simpleml.naming.toQualifiedName
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
 import de.unibonn.simpleml.test.SimpleMLInjectorProvider
-import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
-import org.eclipse.xtext.naming.IQualifiedNameConverter
-import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.junit.jupiter.api.Nested

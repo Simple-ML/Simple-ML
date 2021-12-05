@@ -9,7 +9,7 @@ import org.eclipse.xtext.naming.QualifiedName
 internal object InjectionTarget {
 
     @Inject
-    lateinit var qualifiedNameConverter : IQualifiedNameConverter
+    lateinit var qualifiedNameConverter: IQualifiedNameConverter
 
     @Inject
     lateinit var qualifiedNameProvider: IQualifiedNameProvider
