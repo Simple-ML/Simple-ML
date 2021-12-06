@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.validation
 
 import de.unibonn.simpleml.validation.declarations.AnnotationChecker
-import de.unibonn.simpleml.validation.declarations.AnnotationUseChecker
+import de.unibonn.simpleml.validation.other.AnnotationUseChecker
 import de.unibonn.simpleml.validation.declarations.AttributeChecker
 import de.unibonn.simpleml.validation.declarations.ClassChecker
 import de.unibonn.simpleml.validation.declarations.CompilationUnitChecker

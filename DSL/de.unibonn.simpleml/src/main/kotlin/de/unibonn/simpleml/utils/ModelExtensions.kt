@@ -73,7 +73,13 @@ fun SmlArgument.parameterOrNull(): SmlParameter? {
 
 fun SmlArgumentList.parametersOrNull(): List<SmlParameter>? {
     when (val parent = this.eContainer()) {
-        is SmlAnnotationUse -> return parent.annotation.parametersOrEmpty()
+        is SmlAnnotationUse -> {
+            if (parent.annotation.eIsProxy()) {
+                return null
+            }
+
+            return parent.annotation.parametersOrEmpty()
+        }
         is SmlCall -> return parent.parametersOrNull()
     }
 
