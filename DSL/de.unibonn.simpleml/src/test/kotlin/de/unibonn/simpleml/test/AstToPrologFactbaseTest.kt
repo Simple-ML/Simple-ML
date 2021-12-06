@@ -439,7 +439,7 @@ class AstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should store source location in separate relation`() = withFactbaseFromFile("empty.simpleml") {
+            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
                 val packageT = findUniqueFactOrFail<PackageT>()
                 findUniqueFactOrFail<SourceLocationS> { it.target == packageT.id }
             }
@@ -1655,7 +1655,7 @@ class AstToPrologFactbaseTest {
                 val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyOtherClass" }
                 val sourceLocationS = findUniqueFactOrFail<SourceLocationS> { it.target == importT.id }
                 sourceLocationS.asClue {
-                    sourceLocationS.uriHash shouldBe "//@imports.1"
+                    sourceLocationS.uriHash shouldBe "//@members.0/@imports.1"
                 }
             }
 

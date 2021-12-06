@@ -45,7 +45,7 @@ class ProposalsTest {
 
     @Test
     fun `should contain workflow steps with primitive parameters when no result is passed`() {
-        val context = parseHelper.parseProgramTextWithStdlib(testProgram)
+        val context = parseHelper.parseProgramTextWithStdlib(testProgram)?.packageOrNull()
         context.shouldNotBeNull()
 
         val workflowSteps = context.members
