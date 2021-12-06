@@ -1,0 +1,19 @@
+package tests.validation.types.namedTypes.unnecessaryTypeArgumentList
+
+class ClassWithoutTypeParameters
+class ClassWithTypeParameters<T>
+
+fun myFunction(
+    // semantic_warning "Unnecessary type argument list."
+    a: ClassWithoutTypeParameters»<>«,
+    // semantic_warning "Unnecessary type argument list."
+    b: ClassWithoutTypeParameters»<Int>«,
+    // no_semantic_warning "Unnecessary type argument list."
+    c: ClassWithTypeParameters»<>«,
+    // no_semantic_warning "Unnecessary type argument list."
+    d: ClassWithTypeParameters»<Int>«,    
+    // no_semantic_warning "Unnecessary type argument list."
+    e: UnresolvedClass»<>«,
+    // no_semantic_warning "Unnecessary type argument list."
+    f: UnresolvedClass»<Int>«,
+)
