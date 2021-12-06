@@ -5,6 +5,7 @@ import de.unibonn.simpleml.constants.hasOpenModifier
 import de.unibonn.simpleml.emf.membersOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
+import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.utils.ClassHierarchy
@@ -19,6 +20,7 @@ const val CLASS_MUST_INHERIT_ONLY_ONE_OPEN_CLASS = "CLASS_MUST_INHERIT_ONLY_INTE
 const val CLASS_MUST_NOT_BE_SUBTYPE_OF_ITSELF = "CLASS_MUST_NOT_BE_SUBTYPE_OF_ITSELF"
 const val PARENT_CLASS_MUST_BE_OPEN = "PARENT_CLASS_MUST_BE_OPEN"
 const val UNNECESSARY_CLASS_BODY = "UNNECESSARY_CLASS_BODY"
+const val UNNECESSARY_TYPE_PARAMETER_LIST = "UNNECESSARY_TYPE_PARAMETER_LIST"
 
 class ClassChecker @Inject constructor(
     private val classHierarchy: ClassHierarchy
@@ -119,5 +121,16 @@ class ClassChecker @Inject constructor(
                     CLASS_MUST_HAVE_UNIQUE_PARENT_TYPES
                 )
             }
+    }
+
+    @Check
+    fun unnecessaryTypeParameterList(smlClass: SmlClass) {
+        if (smlClass.typeParameterList != null && smlClass.typeParametersOrEmpty().isEmpty()) {
+            warning(
+                "Unnecessary type parameter list.",
+                Literals.SML_CLASS__TYPE_PARAMETER_LIST,
+                UNNECESSARY_TYPE_PARAMETER_LIST
+            )
+        }
     }
 }

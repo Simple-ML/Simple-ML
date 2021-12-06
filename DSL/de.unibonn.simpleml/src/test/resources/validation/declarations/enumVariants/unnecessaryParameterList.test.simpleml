@@ -1,4 +1,4 @@
-package tests.validation.declarations.enumVariants.emptyParameterList
+package tests.validation.declarations.enumVariants.unnecessaryParameterList
 
 enum MyEnum {
     // semantic_warning "Unnecessary parameter list."

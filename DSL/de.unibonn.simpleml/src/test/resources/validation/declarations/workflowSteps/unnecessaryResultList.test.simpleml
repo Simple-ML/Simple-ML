@@ -1,0 +1,6 @@
+package tests.validation.declarations.workflowSteps.unnecessaryResultList
+
+// semantic_warning "Unnecessary result list."
+step myStep1() »-> ()« {}
+// no_semantic_warning "Unnecessary result list."
+step myStep2() »-> (r: Int)« {}

@@ -1,4 +1,5 @@
-package tests.emptyBody
+package tests.validation.declarations.classes.unnecessaryBody
+
 
 // semantic_warning "Unnecessary class body."
 class MyClass1 »{}«
