@@ -21,6 +21,7 @@ import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.stdlib.StdlibAnnotations
 import de.unibonn.simpleml.stdlib.StdlibEnums.AnnotationTargetVariants
 import de.unibonn.simpleml.stdlib.uniqueAnnotationUseOrNull
+import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.isResolved
 import de.unibonn.simpleml.utils.parametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
@@ -28,8 +29,31 @@ import org.eclipse.xtext.validation.Check
 
 const val UNNECESSARY_ARGUMENT_LIST = "UNNECESSARY_ARGUMENT_LIST"
 const val WRONG_TARGET = "WRONG_TARGET"
+const val DUPLICATE_TARGET = "DUPLICATE_TARGET"
 
 class AnnotationUseChecker : AbstractSimpleMLChecker() {
+
+    @Check
+    fun duplicateTargetInTargetAnnotation(smlAnnotationUse: SmlAnnotationUse) {
+        val annotation = smlAnnotationUse.annotation
+        if (!annotation.isResolved() || annotation.fullyQualifiedName() != StdlibAnnotations.Target) {
+            return
+        }
+
+        smlAnnotationUse
+            .argumentsOrEmpty()
+            .map { it.value }
+            .filterIsInstance<SmlMemberAccess>()
+            .duplicatesBy { it.member.declaration.fullyQualifiedName() }
+            .forEach {
+                warning(
+                    "This annotation target is used multiple times.",
+                    it,
+                    null,
+                    DUPLICATE_TARGET
+                )
+            }
+    }
 
     @Check
     fun target(smlAnnotationUse: SmlAnnotationUse) {
