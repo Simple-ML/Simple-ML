@@ -4,10 +4,10 @@ import com.google.inject.Inject
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.membersOrEmpty
-import de.unibonn.simpleml.emf.uniquePackageOrNull
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrNull
+import de.unibonn.simpleml.emf.uniquePackageOrNull
 import de.unibonn.simpleml.emf.variantsOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
 import de.unibonn.simpleml.simpleML.SmlAnnotation

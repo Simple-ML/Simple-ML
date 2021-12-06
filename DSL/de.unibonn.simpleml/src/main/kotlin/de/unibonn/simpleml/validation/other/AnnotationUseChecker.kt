@@ -120,7 +120,7 @@ class AnnotationUseChecker : AbstractSimpleMLChecker() {
         // Show error
         if (wrongTarget != null) {
             error(
-                "This annotation cannot be applied to ${wrongTarget}.",
+                "This annotation cannot be applied to $wrongTarget.",
                 null,
                 WRONG_TARGET
             )
