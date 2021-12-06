@@ -373,10 +373,12 @@ fun SmlTypeArgumentList.typeParametersOrNull(): List<SmlTypeParameter>? {
             }
         }
         is SmlNamedType -> {
-            when (val declaration = parent.declaration) {
-                is SmlClass -> return declaration.typeParametersOrEmpty()
-                is SmlEnumVariant -> return declaration.typeParametersOrEmpty()
-                is SmlFunction -> return declaration.typeParametersOrEmpty()
+            val declaration = parent.declaration
+            when {
+                declaration.eIsProxy() -> return null
+                declaration is SmlClass -> return declaration.typeParametersOrEmpty()
+                declaration is SmlEnumVariant -> return declaration.typeParametersOrEmpty()
+                declaration is SmlFunction -> return declaration.typeParametersOrEmpty()
             }
         }
 
