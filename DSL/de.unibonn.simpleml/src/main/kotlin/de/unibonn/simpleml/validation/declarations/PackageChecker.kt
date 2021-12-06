@@ -20,6 +20,7 @@ import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.validation.CheckType
 
 const val REDECLARATION_IN_OTHER_FILE = "REDECLARATION_IN_OTHER_FILE"
+const val NO_BACKTICKS_IN_PACKAGE_NAME = "NO_BACKTICKS_IN_PACKAGE_NAME"
 
 class PackageChecker @Inject constructor(
     private val indexExtensions: SimpleMLIndexExtensions,
@@ -50,6 +51,17 @@ class PackageChecker @Inject constructor(
                         WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_WORKFLOW_STEPS
                     )
                 }
+        }
+    }
+
+    @Check
+    fun name(smlPackage: SmlPackage) {
+        if (smlPackage.name.contains("`")) {
+            error(
+                "The package name must not contain backticks.",
+                Literals.SML_DECLARATION__NAME,
+                NO_BACKTICKS_IN_PACKAGE_NAME
+            )
         }
     }
 
