@@ -16,10 +16,57 @@ import 'http://www.unibonn.de/simpleml/SimpleML'
 // Compilations Units --------------------------------------------------------------------------------------------------
 
 SmlCompilationUnit
-    : {SmlCompilationUnit}
-      ('package' name=QualifiedName)?
-      imports+=SmlImport*
-      members+=SmlCompilationUnitMember*
+    : members+=SmlCompilationUnitMember*
+    ;
+
+SmlCompilationUnitMember returns SmlDeclaration
+    : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
+
+    ( {SmlPackage.annotationHolder=current}
+          ( 'package' name=QualifiedName imports+=SmlImport*
+          | imports+=SmlImport+
+          )
+          =>members+=SmlPackageMember*
+
+    | {SmlAnnotation.annotationHolder=current}
+          modifiers+=SmlModifier*
+          'annotation' name=ID
+          parameterList=SmlParameterList?
+
+    | {SmlClass.annotationHolder=current}
+          modifiers+=SmlModifier*
+          'class' name=ID
+          typeParameterList=SmlTypeParameterList?
+          parameterList=SmlParameterList?
+          parentTypeList=SmlParentTypeList?
+          typeParameterConstraintList=SmlTypeParameterConstraintList?
+          body=SmlClassBody?
+
+    | {SmlEnum.annotationHolder=current}
+          modifiers+=SmlModifier*
+          'enum' name=ID
+          body=SmlEnumBody?
+
+    | {SmlFunction.annotationHolder=current}
+          modifiers+=SmlModifier*
+          'fun' name=ID
+          typeParameterList=SmlTypeParameterList?
+          parameterList=SmlParameterList
+          resultList=SmlResultList?
+          typeParameterConstraintList=SmlTypeParameterConstraintList?
+
+    | {SmlWorkflow.annotationHolder=current}
+          modifiers+=SmlModifier*
+          'workflow' name=ID
+          body=SmlBlock
+
+    | {SmlWorkflowStep.annotationHolder=current}
+          modifiers+=SmlModifier*
+          'step' name=ID
+          parameterList=SmlParameterList
+          resultList=SmlWorkflowStepResultList?
+          body=SmlBlock
+    )
     ;
 
 SmlImport
@@ -30,7 +77,7 @@ SmlImportAlias
     : 'as' name=ID
     ;
 
-SmlCompilationUnitMember returns SmlDeclaration
+SmlPackageMember returns SmlDeclaration
     : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
 
     ( {SmlAnnotation.annotationHolder=current}
