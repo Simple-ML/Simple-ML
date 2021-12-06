@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package de.unibonn.simpleml.stdlib
 
 import de.unibonn.simpleml.emf.annotationUsesOrEmpty
@@ -6,17 +8,6 @@ import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlFunction
 import org.eclipse.xtext.naming.QualifiedName
-
-/**
- * Important packages in the standard library.
- */
-object StdlibPackages {
-
-    /**
-     * Core package that is implicitly imported into all Simple-ML programs.
-     */
-    val lang: QualifiedName = QualifiedName.create("simpleml", "lang")
-}
 
 /**
  * Important annotations in the standard library.
@@ -31,7 +22,7 @@ object StdlibAnnotations {
     val Deprecated: QualifiedName = StdlibPackages.lang.append("Deprecated")
 
     /**
-     * The annotation can be used multiple times on the same declaration.
+     * The annotation can be used multiple times for the same declaration.
      *
      * @see isMultiUse
      * @see SingleUse
@@ -45,27 +36,6 @@ object StdlibAnnotations {
      * @see isPure
      */
     val Pure: QualifiedName = StdlibPackages.lang.append("Pure")
-
-    /**
-     * The annotation can only be used once per declaration. This is also the default behavior unless the MultiUse
-     * annotation is set.
-     *
-     * @see isSingleUse
-     * @see MultiUse
-     * @see isMultiUse
-     */
-    val SingleUse: QualifiedName = StdlibPackages.lang.append("SingleUse")
-}
-
-/**
- * Important classes in the standard library.
- */
-object StdlibClasses {
-    val Any: QualifiedName = StdlibPackages.lang.append("Any")
-    val Boolean: QualifiedName = StdlibPackages.lang.append("Boolean")
-    val Float: QualifiedName = StdlibPackages.lang.append("Float")
-    val Int: QualifiedName = StdlibPackages.lang.append("Int")
-    val String: QualifiedName = StdlibPackages.lang.append("String")
 }
 
 /**
@@ -75,15 +45,21 @@ fun SmlDeclaration.isDeprecated() = this.annotationUsesOrEmpty().any {
     it.annotation.fullyQualifiedName() == StdlibAnnotations.Deprecated
 }
 
+/**
+ * Checks if the annotation is annotated with the `simpleml.lang.MultiUse` annotation.
+ */
 fun SmlAnnotation.isMultiUse() = this.annotationUsesOrEmpty().any {
     it.annotation.fullyQualifiedName() == StdlibAnnotations.MultiUse
 }
 
 /**
- * Checks if the declaration is annotated with the `simpleml.lang.Pure` annotation.
+ * Checks if the function is annotated with the `simpleml.lang.Pure` annotation.
  */
 fun SmlFunction.isPure() = this.annotationUsesOrEmpty().any {
     it.annotation.fullyQualifiedName() == StdlibAnnotations.Pure
 }
 
+/**
+ * Checks if the annotation is not annotated with the `simpleml.lang.MultiUse` annotation.
+ */
 fun SmlAnnotation.isSingleUse() = !this.isMultiUse()

@@ -4,6 +4,7 @@ package de.unibonn.simpleml.emf
 
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
+import de.unibonn.simpleml.simpleML.SmlAnnotationUseHolder
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlAssignee
 import de.unibonn.simpleml.simpleML.SmlAssignment
@@ -259,6 +260,7 @@ fun SmlWorkflowStep?.statementsOrEmpty(): List<SmlStatement> {
  * ********************************************************************************************************************/
 
 fun EObject?.containingClassOrNull() = this?.closestAncestorOrNull<SmlClass>()
+fun EObject?.containingDeclarationOrNull() = this?.closestAncestorOrNull<SmlDeclaration>()
 fun EObject?.containingEnumOrNull() = this?.closestAncestorOrNull<SmlEnum>()
 fun EObject?.containingCompilationUnitOrNull() = this?.closestAncestorOrNull<SmlCompilationUnit>()
 fun EObject?.containingFunctionOrNull() = this?.closestAncestorOrNull<SmlFunction>()
@@ -266,6 +268,13 @@ fun EObject?.containingLambdaOrNull() = this?.closestAncestorOrNull<SmlLambda>()
 fun EObject?.containingPackageOrNull() = this?.closestAncestorOrNull<SmlPackage>()
 fun EObject?.containingWorkflowOrNull() = this?.closestAncestorOrNull<SmlWorkflow>()
 fun EObject?.containingWorkflowStepOrNull() = this?.closestAncestorOrNull<SmlWorkflowStep>()
+
+fun SmlAnnotationUse?.targetOrNull(): SmlDeclaration? {
+    return when (val declaration = containingDeclarationOrNull() ?: return null) {
+        is SmlAnnotationUseHolder -> declaration.containingDeclarationOrNull()
+        else -> declaration
+    }
+}
 
 /* ********************************************************************************************************************
  * Accessing siblings                                                                                                 *
