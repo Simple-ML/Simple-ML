@@ -16,7 +16,7 @@ import 'http://www.unibonn.de/simpleml/SimpleML'
 // Compilations Units --------------------------------------------------------------------------------------------------
 
 SmlCompilationUnit
-    : members+=SmlCompilationUnitMember*
+    : {SmlCompilationUnit} members+=SmlCompilationUnitMember*
     ;
 
 SmlCompilationUnitMember returns SmlDeclaration

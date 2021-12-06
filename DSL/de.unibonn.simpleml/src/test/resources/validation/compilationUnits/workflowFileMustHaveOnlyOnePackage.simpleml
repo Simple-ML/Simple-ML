@@ -1,0 +1,4 @@
+package myPackage
+
+// semantic_error "A workflow file must have only one package."
+package »myPackage2«

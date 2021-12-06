@@ -131,6 +131,9 @@ class SimpleMLFormatter : AbstractFormatter2() {
 
             is SmlPackage -> {
 
+                // Features "annotations" and "modifiers"
+                doc.formatAnnotationsAndModifiers(obj)
+
                 // Keyword "package"
                 doc.formatKeyword(obj, "package", noSpace, oneSpace)
 

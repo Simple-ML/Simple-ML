@@ -50,7 +50,7 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
     @Check
     fun packageDeclaration(smlCompilationUnit: SmlCompilationUnit) {
         if (smlCompilationUnit.isInStubFile()) {
-            if (smlCompilationUnit.packageOrNull() == null) {
+            if (smlCompilationUnit.packageOrNull()?.name == null) {
                 error(
                     "A stub file must declare its package.",
                     Literals.SML_DECLARATION__NAME,
@@ -58,7 +58,7 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
                 )
             }
         } else if (!smlCompilationUnit.isInTestFile()) {
-            if (smlCompilationUnit.packageOrNull() == null) {
+            if (smlCompilationUnit.packageOrNull()?.name == null) {
                 error(
                     "A workflow file must declare its package.",
                     Literals.SML_DECLARATION__NAME,
