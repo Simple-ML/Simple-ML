@@ -1,7 +1,6 @@
 package de.unibonn.simpleml.validation
 
 import de.unibonn.simpleml.validation.declarations.AnnotationChecker
-import de.unibonn.simpleml.validation.other.AnnotationUseChecker
 import de.unibonn.simpleml.validation.declarations.AttributeChecker
 import de.unibonn.simpleml.validation.declarations.ClassChecker
 import de.unibonn.simpleml.validation.declarations.CompilationUnitChecker
@@ -20,6 +19,7 @@ import de.unibonn.simpleml.validation.declarations.WorkflowStepChecker
 import de.unibonn.simpleml.validation.expressions.CallChecker
 import de.unibonn.simpleml.validation.expressions.LambdaChecker
 import de.unibonn.simpleml.validation.expressions.MemberAccessChecker
+import de.unibonn.simpleml.validation.other.AnnotationUseChecker
 import de.unibonn.simpleml.validation.other.ArgumentListChecker
 import de.unibonn.simpleml.validation.other.TypeArgumentListChecker
 import de.unibonn.simpleml.validation.statements.AssignmentChecker

@@ -8,7 +8,6 @@ import de.unibonn.simpleml.emf.parentTypesOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.simpleML.SmlLambda
 import de.unibonn.simpleml.utils.ClassHierarchy
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.resolveToClassOrNull

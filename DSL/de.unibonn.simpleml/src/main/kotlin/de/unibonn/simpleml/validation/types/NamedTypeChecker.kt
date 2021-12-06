@@ -2,7 +2,6 @@ package de.unibonn.simpleml.validation.types
 
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
-import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.utils.typeParametersOrNull
