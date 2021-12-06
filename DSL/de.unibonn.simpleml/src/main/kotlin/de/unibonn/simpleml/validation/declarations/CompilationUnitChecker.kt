@@ -83,7 +83,6 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
                         FILE_MUST_HAVE_ONLY_ONE_PACKAGE
                     )
                 }
-
         } else if (smlCompilationUnit.packageOrNull()?.name == null) {
             error(
                 "A file must declare its package.",
@@ -104,7 +103,6 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
                     Literals.SML_DECLARATION__NAME,
                     REDECLARATION
                 )
-
             }
     }
 }

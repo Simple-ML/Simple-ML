@@ -478,7 +478,6 @@ class AstToPrologFactbaseTest {
             }
         }
 
-
         @Nested
         inner class Parameter {
             @Test
