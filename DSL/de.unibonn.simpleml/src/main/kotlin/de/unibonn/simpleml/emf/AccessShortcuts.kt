@@ -2,6 +2,7 @@
 
 package de.unibonn.simpleml.emf
 
+import de.unibonn.simpleml.naming.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlArgument
@@ -19,6 +20,7 @@ import de.unibonn.simpleml.simpleML.SmlLambda
 import de.unibonn.simpleml.simpleML.SmlLambdaYield
 import de.unibonn.simpleml.simpleML.SmlLocalVariable
 import de.unibonn.simpleml.simpleML.SmlNamedType
+import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlResult
@@ -35,6 +37,7 @@ import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.closestAncestorOrNull
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.xtext.naming.QualifiedName
 
 /* ********************************************************************************************************************
  * Accessing descendants                                                                                              *
@@ -125,6 +128,12 @@ fun SmlClass?.parentTypesOrEmpty(): List<SmlType> {
 
 fun SmlCompilationUnit?.membersOrEmpty(): List<SmlDeclaration> {
     return this?.members.orEmpty()
+}
+
+fun SmlCompilationUnit?.packageOrNull(): SmlPackage? {
+    return this?.members
+        ?.filterIsInstance<SmlPackage>()
+        ?.firstOrNull()
 }
 
 // SmlDeclaration ----------------------------------------------------------------------------------

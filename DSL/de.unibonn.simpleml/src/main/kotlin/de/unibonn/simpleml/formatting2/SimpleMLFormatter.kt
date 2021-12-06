@@ -3,7 +3,6 @@ package de.unibonn.simpleml.formatting2
 import de.unibonn.simpleml.emf.annotationsOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ANNOTATION_USE__ANNOTATION
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ARGUMENT__PARAMETER
-import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_COMPILATION_UNIT__NAME
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_DECLARATION__MODIFIERS
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_DECLARATION__NAME
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_IMPORT_ALIAS__NAME
@@ -46,6 +45,7 @@ import de.unibonn.simpleml.simpleML.SmlLambdaYield
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
+import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlParameterList
 import de.unibonn.simpleml.simpleML.SmlParentTypeList
@@ -111,17 +111,31 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 _format(obj, doc)
             }
 
+            is SmlCompilationUnit -> {
+
+                // Feature "members"
+                obj.members.forEach {
+                    doc.format(it)
+
+                    if (obj.members.last() != it) {
+                        doc.append(it, newLines(2))
+                    } else {
+                        doc.append(it, noSpace)
+                    }
+                }
+            }
+
             /**********************************************************************************************************
              * Declarations
              **********************************************************************************************************/
 
-            is SmlCompilationUnit -> {
+            is SmlPackage -> {
 
                 // Keyword "package"
                 doc.formatKeyword(obj, "package", noSpace, oneSpace)
 
                 // Feature "name"
-                val name = obj.regionForFeature(SML_COMPILATION_UNIT__NAME)
+                val name = obj.regionForFeature(SML_DECLARATION__NAME)
                 if (name != null) {
                     doc.addReplacer(WhitespaceCollapser(doc, name))
 

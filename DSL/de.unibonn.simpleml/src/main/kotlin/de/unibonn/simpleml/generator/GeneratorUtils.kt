@@ -2,6 +2,7 @@ package de.unibonn.simpleml.generator
 
 import de.unibonn.simpleml.constants.FileExtensions
 import de.unibonn.simpleml.emf.compilationUnitOrNull
+import de.unibonn.simpleml.emf.packageOrNull
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 
@@ -11,7 +12,7 @@ fun URI.toUNIXString(): String {
 }
 
 fun Resource.baseFileName(): String {
-    return uri.toUNIXString()
+    return this.uri.toUNIXString()
         .split("/")
         .last()
         .removeSuffix(FileExtensions.STUB)
@@ -23,7 +24,10 @@ fun Resource.baseGeneratedFilePath(): String {
     val compilationUnit = this.compilationUnitOrNull()
         ?: throw IllegalArgumentException("Resource does not contain a compilation unit.")
 
-    val packagePart = compilationUnit.name.replace(".", "/")
+    val packagePart = compilationUnit.packageOrNull()
+        ?.name
+        ?.replace(".", "/")
+        ?: "."
     val filePart = this.baseFileName()
     return "$packagePart/gen_$filePart"
 }
