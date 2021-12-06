@@ -2,7 +2,7 @@ package de.unibonn.simpleml.validation.declarations
 
 import de.unibonn.simpleml.constants.isInStubFile
 import de.unibonn.simpleml.constants.isInTestFile
-import de.unibonn.simpleml.emf.packageOrNull
+import de.unibonn.simpleml.emf.uniquePackageOrNull
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlPackage
@@ -83,7 +83,7 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
                         FILE_MUST_HAVE_ONLY_ONE_PACKAGE
                     )
                 }
-        } else if (smlCompilationUnit.packageOrNull()?.name == null) {
+        } else if (smlCompilationUnit.uniquePackageOrNull()?.name == null) {
             error(
                 "A file must declare its package.",
                 null,
