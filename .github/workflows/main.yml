@@ -126,16 +126,16 @@ jobs:
     #       name: pytest-results-${{ matrix.python-version }}
     #       path: junit/test-results-${{ matrix.python-version }}.xml
 
-  # Test interaction of Docker containers
-  docker-smoke-test:
-    runs-on: ubuntu-latest
+  # Test interaction of Docker containers (TODO: activate again once repo is public)
+  #   docker-smoke-test:
+  #     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+  #     steps:
+  #       - name: Checkout repository
+  #         uses: actions/checkout@v2
 
-      - name: Build the stack
-        run: docker-compose up -d
+  #       - name: Build the stack
+  #         run: docker-compose up -d
 
-      - name: Test
-        run: docker run --network container:simple-ml_frontend appropriate/curl -s --retry 10 --retry-connrefused http://localhost:4200/
+  #       - name: Test
+  #         run: docker run --network container:simple-ml_frontend appropriate/curl -s --retry 10 --retry-connrefused http://localhost:4200/
