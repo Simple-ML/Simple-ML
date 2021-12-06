@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.prolog_bridge.converters
 
-import de.unibonn.simpleml.emf.annotationsOrEmpty
+import de.unibonn.simpleml.emf.annotationUsesOrEmpty
 import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.emf.membersOrEmpty
@@ -186,7 +186,7 @@ class AstToPrologFactbase {
     }
 
     private fun PlFactbase.visitDeclaration(obj: SmlDeclaration, parentId: Id<EObject>) {
-        obj.annotationsOrEmpty().forEach { visitAnnotationUse(it, obj.id) }
+        obj.annotationUsesOrEmpty().forEach { visitAnnotationUse(it, obj.id) }
         obj.modifiers.forEach { visitModifier(it, obj.id) }
 
         when (obj) {

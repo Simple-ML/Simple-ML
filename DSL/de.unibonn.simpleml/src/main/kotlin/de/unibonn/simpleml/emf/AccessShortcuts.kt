@@ -138,7 +138,7 @@ fun SmlCompilationUnit?.packageOrNull(): SmlPackage? {
 
 // SmlDeclaration ----------------------------------------------------------------------------------
 
-fun SmlDeclaration?.annotationsOrEmpty(): List<SmlAnnotationUse> {
+fun SmlDeclaration?.annotationUsesOrEmpty(): List<SmlAnnotationUse> {
     return this?.annotationHolder?.annotations ?: this?.annotations.orEmpty()
 }
 
