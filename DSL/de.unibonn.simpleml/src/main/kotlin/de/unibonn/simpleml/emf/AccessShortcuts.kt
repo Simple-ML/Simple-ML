@@ -124,10 +124,6 @@ fun SmlClass?.parentTypesOrEmpty(): List<SmlType> {
 
 // SmlCompilationUnit ------------------------------------------------------------------------------
 
-fun SmlCompilationUnit?.membersOrEmpty(): List<SmlDeclaration> {
-    return this?.members.orEmpty()
-}
-
 fun SmlCompilationUnit?.packageOrNull(): SmlPackage? {
     val packages = this?.members?.filterIsInstance<SmlPackage>()
 

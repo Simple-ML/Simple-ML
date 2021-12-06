@@ -1,6 +1,5 @@
 package de.unibonn.simpleml.scoping
 
-import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.utils.aliasName
 import org.eclipse.emf.ecore.EObject
@@ -28,6 +27,7 @@ class SimpleMLImportedNamespaceAwareLocalScopeProvider : ImportedNamespaceAwareL
         context: EObject,
         ignoreCase: Boolean
     ): List<ImportNormalizer> {
+
         if (context !is SmlPackage) {
             return emptyList()
         }
