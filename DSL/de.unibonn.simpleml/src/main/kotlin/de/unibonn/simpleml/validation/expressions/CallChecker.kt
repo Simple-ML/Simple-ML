@@ -11,6 +11,7 @@ import de.unibonn.simpleml.utils.CallableResult
 import de.unibonn.simpleml.utils.isRecursive
 import de.unibonn.simpleml.utils.maybeCallable
 import de.unibonn.simpleml.utils.resultsOrNull
+import de.unibonn.simpleml.utils.typeParametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import org.eclipse.xtext.validation.Check
 
@@ -20,8 +21,25 @@ const val NO_RECURSION = "NO_RECURSION"
 const val RECEIVER_MUST_BE_CALLABLE = "RECEIVER_MUST_BE_CALLABLE"
 const val CALLED_CLASS_MUST_HAVE_CONSTRUCTOR = "CALLED_CLASS_MUST_HAVE_CONSTRUCTOR"
 const val CALLED_ENUM_VARIANT_MUST_HAVE_CONSTRUCTOR = "CALLED_ENUM_VARIANT_MUST_HAVE_CONSTRUCTOR"
+const val UNNECESSARY_TYPE_ARGUMENT_LIST = "UNNECESSARY_TYPE_ARGUMENT_LIST"
 
 class CallChecker : AbstractSimpleMLChecker() {
+
+    @Check
+    fun unnecessaryTypeArgumentList(smlCall: SmlCall) {
+        if (smlCall.typeArgumentList == null) {
+            return
+        }
+
+        val typeParametersOrNull = smlCall.typeArgumentList.typeParametersOrNull()
+        if (typeParametersOrNull != null && typeParametersOrNull.isEmpty()) {
+            warning(
+                "Unnecessary type argument list.",
+                Literals.SML_CALL__TYPE_ARGUMENT_LIST,
+                UNNECESSARY_TYPE_ARGUMENT_LIST
+            )
+        }
+    }
 
     @Check
     fun context(smlCall: SmlCall) {
