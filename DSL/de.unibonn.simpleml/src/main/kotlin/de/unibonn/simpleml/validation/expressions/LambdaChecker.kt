@@ -3,8 +3,10 @@ package de.unibonn.simpleml.validation.expressions
 import de.unibonn.simpleml.emf.lambdaYieldsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
+import de.unibonn.simpleml.simpleML.SimpleMLPackage
 import de.unibonn.simpleml.simpleML.SmlLambda
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.declarations.UNNECESSARY_PARAMETER_LIST
 import org.eclipse.xtext.validation.Check
 
 class LambdaChecker : AbstractSimpleMLChecker() {
@@ -15,6 +17,17 @@ class LambdaChecker : AbstractSimpleMLChecker() {
             smlLambda.parametersOrEmpty() + smlLambda.placeholdersOrEmpty() + smlLambda.lambdaYieldsOrEmpty()
         declarations.reportDuplicateNames {
             "A parameter, result or placeholder with name '${it.name}' exists already in this lambda."
+        }
+    }
+
+    @Check
+    fun unnecessaryParameterList(smlLambda: SmlLambda) {
+        if (smlLambda.parameterList != null && smlLambda.parametersOrEmpty().isEmpty()) {
+            warning(
+                "Unnecessary parameter list.",
+                SimpleMLPackage.Literals.SML_LAMBDA__PARAMETER_LIST,
+                UNNECESSARY_PARAMETER_LIST
+            )
         }
     }
 }

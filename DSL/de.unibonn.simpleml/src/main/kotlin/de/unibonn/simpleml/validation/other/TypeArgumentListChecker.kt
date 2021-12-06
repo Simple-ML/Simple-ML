@@ -18,7 +18,7 @@ class TypeArgumentListChecker : AbstractSimpleMLChecker() {
     fun missingRequiredTypeParameter(smlTypeArgumentList: SmlTypeArgumentList) {
         val requiredTypeParameters = smlTypeArgumentList.typeParametersOrNull() ?: return
         val givenTypeParameters = smlTypeArgumentList.typeArguments.mapNotNull { it.typeParameterOrNull() }
-        val missingRequiredTypeParameters = requiredTypeParameters - givenTypeParameters
+        val missingRequiredTypeParameters = requiredTypeParameters - givenTypeParameters.toSet()
 
         missingRequiredTypeParameters.forEach {
             error(

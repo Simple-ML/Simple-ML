@@ -73,7 +73,13 @@ fun SmlArgument.parameterOrNull(): SmlParameter? {
 
 fun SmlArgumentList.parametersOrNull(): List<SmlParameter>? {
     when (val parent = this.eContainer()) {
-        is SmlAnnotationUse -> return parent.annotation.parametersOrEmpty()
+        is SmlAnnotationUse -> {
+            if (parent.annotation.eIsProxy()) {
+                return null
+            }
+
+            return parent.annotation.parametersOrEmpty()
+        }
         is SmlCall -> return parent.parametersOrNull()
     }
 
@@ -373,10 +379,12 @@ fun SmlTypeArgumentList.typeParametersOrNull(): List<SmlTypeParameter>? {
             }
         }
         is SmlNamedType -> {
-            when (val declaration = parent.declaration) {
-                is SmlClass -> return declaration.typeParametersOrEmpty()
-                is SmlEnumVariant -> return declaration.typeParametersOrEmpty()
-                is SmlFunction -> return declaration.typeParametersOrEmpty()
+            val declaration = parent.declaration
+            when {
+                declaration.eIsProxy() -> return null
+                declaration is SmlClass -> return declaration.typeParametersOrEmpty()
+                declaration is SmlEnumVariant -> return declaration.typeParametersOrEmpty()
+                declaration is SmlFunction -> return declaration.typeParametersOrEmpty()
             }
         }
 
