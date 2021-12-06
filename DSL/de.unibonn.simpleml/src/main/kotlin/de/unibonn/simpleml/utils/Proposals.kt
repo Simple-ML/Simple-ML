@@ -4,8 +4,8 @@ import com.google.inject.Inject
 import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.typing.TypeComputer
 import de.unibonn.simpleml.typing.TypeConformance
@@ -23,18 +23,18 @@ class Proposals @Inject constructor(
      * Any EObject in the current file, e.g. the SmlCompilationUnit. This is used to determine which declarations are
      * visible from here.
      *
-     * @param result
-     * The SmlResult that corresponds to the result port the user clicked on or null if a new initial call should be
-     * added.
+     * @param declaration
+     * The SmlDeclaration that corresponds to the result port the user clicked on or null if a new initial call should
+     * be added. It should be either an SmlPlaceholder or an SmlResult.
      *
      * @return
      * A map of URIs to EObjects (SmlClass, SmlFunction, or SmlWorkflowStep).
      */
-    fun listCallables(context: EObject, result: SmlResult?): Map<URI, EObject> {
-        return if (result == null) {
+    fun listCallables(context: EObject, declaration: SmlDeclaration? = null): Map<URI, EObject> {
+        return if (declaration == null) {
             listCallablesWithOnlyPrimitiveParameters(context)
         } else {
-            listCallablesWithMatchingParameters(context, result)
+            listCallablesWithMatchingParameters(context, declaration)
         }
     }
 
@@ -66,34 +66,34 @@ class Proposals @Inject constructor(
 
     private fun listCallablesWithMatchingParameters(
         context: EObject,
-        result: SmlResult
+        declaration: SmlDeclaration
     ): Map<URI, EObject> {
-        val resultType = typeComputer.typeOf(result)
+        val declarationType = typeComputer.typeOf(declaration)
 
         return listAllReachableDeclarations(context)
             .filterValues { obj ->
                 when (obj) {
                     is SmlClass -> {
                         obj.parameterList != null && obj.parametersOrEmpty().any {
-                            typeConformance.isSubstitutableFor(resultType, typeComputer.typeOf(it))
+                            typeConformance.isSubstitutableFor(declarationType, typeComputer.typeOf(it))
                         }
                     }
                     is SmlFunction -> {
                         val hasMatchingParameter =
                             obj.parametersOrEmpty().any {
-                                typeConformance.isSubstitutableFor(resultType, typeComputer.typeOf(it))
+                                typeConformance.isSubstitutableFor(declarationType, typeComputer.typeOf(it))
                             }
                         if (hasMatchingParameter) {
                             return@filterValues true
                         }
 
+                        // Check receiver for methods
                         val containingClass = obj.containingClassOrNull() ?: return@filterValues false
-
-                        return@filterValues typeConformance.isSubstitutableFor(resultType, containingClass)
+                        return@filterValues typeConformance.isSubstitutableFor(declarationType, containingClass)
                     }
                     is SmlWorkflowStep -> {
                         obj.parametersOrEmpty().any {
-                            typeConformance.isSubstitutableFor(resultType, typeComputer.typeOf(it))
+                            typeConformance.isSubstitutableFor(declarationType, typeComputer.typeOf(it))
                         }
                     }
                     else -> false
