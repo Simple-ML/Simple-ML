@@ -1,6 +1,6 @@
 package simpleml.lang
 
-@Description("The Annotation can target these declaration types. If the @Target annotation is not used any declaration type can be targeted.")
+@Description("The annotation can target these declaration types. If the @Target annotation is not used any declaration type can be targeted.")
 @Target(AnnotationTarget.Annotation)
 annotation Target(vararg targets: AnnotationTarget)
 

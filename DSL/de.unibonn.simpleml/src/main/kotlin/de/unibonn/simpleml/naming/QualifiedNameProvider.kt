@@ -18,7 +18,7 @@ internal object InjectionTarget {
 /**
  * Returns the fully qualified name of the declaration.
  */
-fun SmlDeclaration.fullyQualifiedName(): QualifiedName {
+fun SmlDeclaration.fullyQualifiedName(): QualifiedName? {
     return InjectionTarget.qualifiedNameProvider.getFullyQualifiedName(this)
 }
 

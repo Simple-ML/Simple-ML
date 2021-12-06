@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.test
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.emf.packageOrNull
+import de.unibonn.simpleml.emf.uniquePackageOrNull
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
@@ -49,7 +49,7 @@ class ProposalsTest {
 
     @Test
     fun `should contain workflow steps with primitive parameters when no result is passed`() {
-        val context = parseHelper.parseProgramTextWithStdlib(testProgram)?.packageOrNull()
+        val context = parseHelper.parseProgramTextWithStdlib(testProgram)?.uniquePackageOrNull()
         context.shouldNotBeNull()
 
         val workflowSteps = context.members
@@ -65,7 +65,7 @@ class ProposalsTest {
 
     @Test
     fun `should contain workflow steps with only matching parameters when a placeholder is passed`() {
-        val context = parseHelper.parseProgramTextWithStdlib(testProgram)?.packageOrNull()
+        val context = parseHelper.parseProgramTextWithStdlib(testProgram)?.uniquePackageOrNull()
         context.shouldNotBeNull()
 
         val placeholder = context.eAllContents()
@@ -96,7 +96,7 @@ class ProposalsTest {
 
     @Test
     fun `should contain workflow steps with only matching parameters when a result is passed`() {
-        val context = parseHelper.parseProgramTextWithStdlib(testProgram)?.packageOrNull()
+        val context = parseHelper.parseProgramTextWithStdlib(testProgram)?.uniquePackageOrNull()
         context.shouldNotBeNull()
 
         val result = context.eAllContents()

@@ -1,31 +1,13 @@
-// semantic_error "This annotation cannot be applied to an SmlCompilationUnit."
-»@AnnotationForAnnotations«
-// semantic_error "This annotation cannot be applied to an SmlCompilationUnit."
-»@AnnotationForAttributes«
-// semantic_error "This annotation cannot be applied to an SmlCompilationUnit."
-»@AnnotationForClasses«
-// no_semantic_error "This annotation cannot be applied to an SmlCompilationUnit."
-»@AnnotationForCompilationUnits«
-// semantic_error "This annotation cannot be applied to an SmlCompilationUnit."
+// semantic_error "This annotation cannot be applied to a compilation unit."
 »@AnnotationForEnums«
-// semantic_error "This annotation cannot be applied to an SmlCompilationUnit."
-»@AnnotationForEnumVariants«
-// semantic_error "This annotation cannot be applied to an SmlCompilationUnit."
-»@AnnotationForFunctions«
-// semantic_error "This annotation cannot be applied to an SmlCompilationUnit."
-»@AnnotationForParameters«
-// semantic_error "This annotation cannot be applied to an SmlCompilationUnit."
-»@AnnotationForResults«
-// semantic_error "This annotation cannot be applied to an SmlCompilationUnit."
-»@AnnotationForTypeParameters«
-// semantic_error "This annotation cannot be applied to an SmlCompilationUnit."
-»@AnnotationForWorkflows«
-// semantic_error "This annotation cannot be applied to an SmlCompilationUnit."
-»@AnnotationForWorkflowSteps«
-// no_semantic_error "This annotation cannot be applied to an SmlCompilationUnit."
+// no_semantic_error "This annotation cannot be applied to a compilation unit."
+»@AnnotationForCompilationUnits«
+// no_semantic_error "This annotation cannot be applied to a compilation unit."
 »@AnotationForMultipleTargets«
-// no_semantic_error "This annotation cannot be applied to an SmlCompilationUnit."
+// no_semantic_error "This annotation cannot be applied to a compilation unit."
 »@AnnotationForAnything«
+// no_semantic_error "This annotation cannot be applied to a compilation unit."
+»@UnresolvedAnnotation«
 
 package tests.validation.other.annotationUses.target
 
@@ -72,97 +54,97 @@ annotation AnnotationForAnything
 
 /* Test declarations -------------------------------------------------------- */
 
-// no_semantic_error "This annotation cannot be applied to an SmlAnnotation."
-»@AnnotationForAnnotations«
-// semantic_error "This annotation cannot be applied to an SmlAnnotation."
+// semantic_error "This annotation cannot be applied to an annotation."
 »@AnnotationForAttributes«
-// no_semantic_error "This annotation cannot be applied to an SmlAnnotation."
+// no_semantic_error "This annotation cannot be applied to an annotation."
+»@AnnotationForAnnotations«
+// no_semantic_error "This annotation cannot be applied to an annotation."
 »@AnnotationForAnything«
 annotation TestAnnotation
 
-// no_semantic_error "This annotation cannot be applied to an SmlClass."
-»@AnnotationForClasses«
-// semantic_error "This annotation cannot be applied to an SmlClass."
+// semantic_error "This annotation cannot be applied to a class."
 »@AnnotationForCompilationUnits«
-// no_semantic_error "This annotation cannot be applied to an SmlClass."
+// no_semantic_error "This annotation cannot be applied to a class."
+»@AnnotationForClasses«
+// no_semantic_error "This annotation cannot be applied to a class."
 »@AnotationForMultipleTargets«
-// no_semantic_error "This annotation cannot be applied to an SmlClass."
+// no_semantic_error "This annotation cannot be applied to a class."
 »@AnnotationForAnything«
 class TestClass<
 
-    // semantic_error "This annotation cannot be applied to an SmlTypeParameter."
+    // semantic_error "This annotation cannot be applied to a type parameter."
     »@AnnotationForWorkflows«
-    // no_semantic_error "This annotation cannot be applied to an SmlTypeParameter."
+    // no_semantic_error "This annotation cannot be applied to a type parameter."
     »@AnnotationForTypeParameters«
-    // no_semantic_error "This annotation cannot be applied to an SmlTypeParameter."
+    // no_semantic_error "This annotation cannot be applied to a type parameter."
     »@AnnotationForAnything«
     TEST_TYPE_PARAMETER
 > {
 
-    // semantic_error "This annotation cannot be applied to an SmlAttribute."
+    // semantic_error "This annotation cannot be applied to an attribute."
     »@AnnotationForClasses«
-    // no_semantic_error "This annotation cannot be applied to an SmlAttribute."
+    // no_semantic_error "This annotation cannot be applied to an attribute."
     »@AnnotationForAttributes«
-    // no_semantic_error "This annotation cannot be applied to an SmlAttribute."
+    // no_semantic_error "This annotation cannot be applied to an attribute."
     »@AnnotationForAnything«
     attr testAttribute: Int
 }
 
-// semantic_error "This annotation cannot be applied to an SmlEnum."
+// semantic_error "This annotation cannot be applied to an enum."
 »@AnnotationForEnumVariants«
-// no_semantic_error "This annotation cannot be applied to an SmlEnum."
+// no_semantic_error "This annotation cannot be applied to an enum."
 »@AnnotationForEnums«
-// no_semantic_error "This annotation cannot be applied to an SmlEnum."
+// no_semantic_error "This annotation cannot be applied to an enum."
 »@AnnotationForAnything«
 enum TestEnum {
 
-    // semantic_error "This annotation cannot be applied to an SmlEnumVariant."
+    // semantic_error "This annotation cannot be applied to an enum variant."
     »@AnnotationForFunctions«
-    // no_semantic_error "This annotation cannot be applied to an SmlEnumVariant."
+    // no_semantic_error "This annotation cannot be applied to an enum variant."
     »@AnnotationForEnumVariants«
-    // no_semantic_error "This annotation cannot be applied to an SmlEnumVariant."
+    // no_semantic_error "This annotation cannot be applied to an enum variant."
     »@AnnotationForAnything«
     TestEnumVariant
 }
 
-// semantic_error "This annotation cannot be applied to an SmlFunction."
+// semantic_error "This annotation cannot be applied to a function."
 »@AnnotationForParameters«
-// no_semantic_error "This annotation cannot be applied to an SmlFunction."
+// no_semantic_error "This annotation cannot be applied to a function."
 »@AnnotationForFunctions«
-// no_semantic_error "This annotation cannot be applied to an SmlFunction."
+// no_semantic_error "This annotation cannot be applied to a function."
 »@AnnotationForAnything«
 fun testFunction(
 
-    // semantic_error "This annotation cannot be applied to an SmlParameter."
+    // semantic_error "This annotation cannot be applied to a parameter."
     »@AnnotationForResults«
-    // no_semantic_error "This annotation cannot be applied to an SmlParameter."
+    // no_semantic_error "This annotation cannot be applied to a parameter."
     »@AnnotationForParameters«
-    // no_semantic_error "This annotation cannot be applied to an SmlParameter."
+    // no_semantic_error "This annotation cannot be applied to a parameter."
     »@AnnotationForAnything«
     testParameter: Int
 ) -> (
 
-    // semantic_error "This annotation cannot be applied to an SmlResult."
+    // semantic_error "This annotation cannot be applied to a result."
     »@AnnotationForTypeParameters«
-    // no_semantic_error "This annotation cannot be applied to an SmlResult."
+    // no_semantic_error "This annotation cannot be applied to a result."
     »@AnnotationForResults«
-    // no_semantic_error "This annotation cannot be applied to an SmlResult."
+    // no_semantic_error "This annotation cannot be applied to a result."
     »@AnnotationForAnything«
     testResult: Int
 )
 
-// semantic_error "This annotation cannot be applied to an SmlWorkflow."
+// semantic_error "This annotation cannot be applied to a workflow."
 »@AnnotationForWorkflowSteps«
-// no_semantic_error "This annotation cannot be applied to an SmlWorkflow."
+// no_semantic_error "This annotation cannot be applied to a workflow."
 »@AnnotationForWorkflows«
-// no_semantic_error "This annotation cannot be applied to an SmlWorkflow."
+// no_semantic_error "This annotation cannot be applied to a workflow."
 »@AnnotationForAnything«
 workflow testWorkflow {}
 
-// semantic_error "This annotation cannot be applied to an SmlWorkflowStep."
+// semantic_error "This annotation cannot be applied to a workflow step."
 »@AnnotationForAnnotations«
-// no_semantic_error "This annotation cannot be applied to an SmlWorkflowStep."
+// no_semantic_error "This annotation cannot be applied to a workflow step."
 »@AnnotationForWorkflowSteps«
-// no_semantic_error "This annotation cannot be applied to an SmlWorkflowStep."
+// no_semantic_error "This annotation cannot be applied to a workflow step."
 »@AnnotationForAnything«
 step testStep() {}

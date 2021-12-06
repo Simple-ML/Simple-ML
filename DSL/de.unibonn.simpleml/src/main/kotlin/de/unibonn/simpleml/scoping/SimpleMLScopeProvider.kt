@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.membersOrEmpty
-import de.unibonn.simpleml.emf.packageOrNull
+import de.unibonn.simpleml.emf.uniquePackageOrNull
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrNull
@@ -160,7 +160,7 @@ class SimpleMLScopeProvider @Inject constructor(
     }
 
     private fun declarationsInSameFile(resource: Resource, parentScope: IScope): IScope {
-        if (resource.compilationUnitOrNull()?.packageOrNull() != null) {
+        if (resource.compilationUnitOrNull()?.uniquePackageOrNull() != null) {
             return Scopes.scopeFor(
                 emptyList(),
                 parentScope
@@ -180,7 +180,7 @@ class SimpleMLScopeProvider @Inject constructor(
 
     private fun declarationsInSamePackageDeclaration(resource: Resource, parentScope: IScope): IScope {
         val members = resource.compilationUnitOrNull()
-            ?.packageOrNull()
+            ?.uniquePackageOrNull()
             ?.members
             ?.filter { it !is SmlAnnotation && it !is SmlWorkflow }
             ?: emptyList()

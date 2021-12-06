@@ -41,7 +41,7 @@ class CallableType(val parameters: List<Type>, val results: List<Type>) : Type()
 
 sealed class NamedType(smlDeclaration: SmlDeclaration) : Type() {
     val simpleName: String = smlDeclaration.name
-    val qualifiedName: QualifiedName = smlDeclaration.fullyQualifiedName()
+    val qualifiedName: QualifiedName = smlDeclaration.fullyQualifiedName()!!
 
     abstract val isNullable: Boolean
     abstract val isStatic: Boolean

@@ -35,6 +35,7 @@ import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.closestAncestorOrNull
+import de.unibonn.simpleml.utils.uniqueOrNull
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 
@@ -126,15 +127,10 @@ fun SmlClass?.parentTypesOrEmpty(): List<SmlType> {
 // SmlCompilationUnit ------------------------------------------------------------------------------
 
 /**
- * Returns the unique package declaration contained in the compilation unit or null if none or multiple exist.
+ * Returns the unique package declaration contained in the compilation unit or `null` if none or multiple exist.
  */
-fun SmlCompilationUnit?.packageOrNull(): SmlPackage? {
-    val packages = this?.members?.filterIsInstance<SmlPackage>()
-
-    return when (packages?.size) {
-        1 -> packages[0]
-        else -> null
-    }
+fun SmlCompilationUnit?.uniquePackageOrNull(): SmlPackage? {
+    return this?.members?.filterIsInstance<SmlPackage>()?.uniqueOrNull()
 }
 
 // SmlDeclaration ----------------------------------------------------------------------------------
@@ -270,7 +266,7 @@ fun EObject?.containingWorkflowOrNull() = this?.closestAncestorOrNull<SmlWorkflo
 fun EObject?.containingWorkflowStepOrNull() = this?.closestAncestorOrNull<SmlWorkflowStep>()
 
 fun SmlAnnotationUse?.targetOrNull(): SmlDeclaration? {
-    return when (val declaration = containingDeclarationOrNull() ?: return null) {
+    return when (val declaration = this.containingDeclarationOrNull() ?: return null) {
         is SmlAnnotationUseHolder -> declaration.containingDeclarationOrNull()
         else -> declaration
     }
