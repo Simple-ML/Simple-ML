@@ -29,8 +29,10 @@ class QualifiedNameProviderTest {
             }
 
             factory.createSmlCompilationUnit().apply {
-                name = "tests"
-                members += myClass
+                members += factory.createSmlPackage().apply {
+                    name = "tests"
+                    members += myClass
+                }
             }
 
             myClass.fullyQualifiedName() shouldBe "tests.MyClass".toQualifiedName()
@@ -43,8 +45,10 @@ class QualifiedNameProviderTest {
             }
 
             factory.createSmlCompilationUnit().apply {
-                name = "`tests`"
-                members += myClass
+                members += factory.createSmlPackage().apply {
+                    name = "`tests`"
+                    members += myClass
+                }
             }
 
             myClass.fullyQualifiedName() shouldBe "`tests`.`MyClass`".toQualifiedName()

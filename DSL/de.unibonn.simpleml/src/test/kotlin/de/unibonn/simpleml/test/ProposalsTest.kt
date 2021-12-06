@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.test
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.emf.membersOrEmpty
+import de.unibonn.simpleml.emf.packageOrNull
 import de.unibonn.simpleml.simpleML.SimpleMLFactory
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
@@ -45,10 +45,10 @@ class ProposalsTest {
 
     @Test
     fun `should contain workflow steps with primitive parameters when no result is passed`() {
-        val context = parseHelper.parseProgramTextWithStdlib(testProgram)
+        val context = parseHelper.parseProgramTextWithStdlib(testProgram)?.packageOrNull()
         context.shouldNotBeNull()
 
-        val workflowSteps = context.membersOrEmpty()
+        val workflowSteps = context.members
             .asSequence()
             .filterIsInstance<SmlWorkflowStep>()
             .filter { it.name.startsWith("primitive") }
@@ -61,10 +61,10 @@ class ProposalsTest {
 
     @Test
     fun `should contain workflow steps with only matching parameters when a result is passed`() {
-        val context = parseHelper.parseProgramTextWithStdlib(testProgram)
+        val context = parseHelper.parseProgramTextWithStdlib(testProgram)?.packageOrNull()
         context.shouldNotBeNull()
 
-        val classA = context.membersOrEmpty()
+        val classA = context.members
             .asSequence()
             .filterIsInstance<SmlClass>()
             .filter { it.name == "A" }
@@ -79,14 +79,14 @@ class ProposalsTest {
             }
         }
 
-        val workflowStepA = context.membersOrEmpty()
+        val workflowStepA = context.members
             .asSequence()
             .filterIsInstance<SmlWorkflowStep>()
             .filter { it.name == "matching_a" }
             .firstOrNull()
         workflowStepA.shouldNotBeNull()
 
-        val workflowStepB = context.membersOrEmpty()
+        val workflowStepB = context.members
             .asSequence()
             .filterIsInstance<SmlWorkflowStep>()
             .filter { it.name == "matching_b" }

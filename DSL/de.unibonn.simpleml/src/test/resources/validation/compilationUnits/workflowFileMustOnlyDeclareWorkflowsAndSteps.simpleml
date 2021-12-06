@@ -1,0 +1,11 @@
+// semantic_error "A workflow file must only declare workflows and workflow steps."
+annotation »MyAnnotation«
+// semantic_error "A workflow file must only declare workflows and workflow steps."
+class »MyClass«
+// semantic_error "A workflow file must only declare workflows and workflow steps."
+enum »MyEnum«
+
+// no_semantic_error "A workflow file must only declare workflows and workflow steps."
+step »myStep«() {}
+// no_semantic_error "A workflow file must only declare workflows and workflow steps."
+workflow »myWorkflow« {}

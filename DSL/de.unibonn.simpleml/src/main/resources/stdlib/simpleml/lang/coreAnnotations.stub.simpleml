@@ -9,6 +9,7 @@ enum AnnotationTarget {
     Annotation
     Attribute
     Class
+    CompilationUnit
     Enum
     EnumVariant
     Function

@@ -1,3 +1,9 @@
+     
+      @AnnotationUse1
+ 
+ 
+      @AnnotationUse2
+ 
    package   tests   .   formatting
 
 
@@ -13,6 +19,9 @@ workflow w3 {
 }
 
 ------------------------------------------------------------------------------------------------------------------------
+
+@AnnotationUse1
+@AnnotationUse2
 
 package tests.formatting
 
