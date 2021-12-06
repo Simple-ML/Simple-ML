@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.validation.declarations
 
 import de.unibonn.simpleml.constants.Modifiers
-import de.unibonn.simpleml.emf.annotationsOrEmpty
+import de.unibonn.simpleml.emf.annotationUsesOrEmpty
 import de.unibonn.simpleml.naming.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
@@ -17,6 +17,7 @@ import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.stdlib.StdlibAnnotations
+import de.unibonn.simpleml.stdlib.isMultiUse
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.isClassMember
 import de.unibonn.simpleml.utils.isCompilationUnitMember
@@ -24,12 +25,28 @@ import de.unibonn.simpleml.utils.isRequired
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import org.eclipse.xtext.validation.Check
 
+const val ANNOTATION_IS_SINGLE_USE = "ANNOTATION_IS_SINGLE_USE"
 const val DUPLICATE_MODIFIER = "DUPLICATE_MODIFIER"
 const val DEPRECATED_REQUIRED_PARAMETER = "DEPRECATED_REQUIRED_PARAMETER"
 const val INVALID_MODIFIER = "INVALID_MODIFIER"
 const val UNNECESSARY_MODIFIER = "UNNECESSARY_MODIFIER"
 
 class DeclarationChecker : AbstractSimpleMLChecker() {
+
+    @Check
+    fun annotationCardinality(smlDeclaration: SmlDeclaration) {
+        smlDeclaration.annotationUsesOrEmpty()
+            .filter { it.annotation != null && !it.annotation.eIsProxy() && !it.annotation.isMultiUse() }
+            .duplicatesBy { it.annotation.fullyQualifiedName() }
+            .forEach {
+                error(
+                    "This annotation can only be used once.",
+                    it,
+                    null,
+                    ANNOTATION_IS_SINGLE_USE
+                )
+            }
+    }
 
     @Check
     fun annotationModifiers(smlAnnotation: SmlAnnotation) {
@@ -116,7 +133,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
     @Check
     fun mustNotDeprecateRequiredParameter(smlParameter: SmlParameter) {
         if (smlParameter.isRequired()) {
-            val deprecatedAnnotationOrNull = smlParameter.annotationsOrEmpty().firstOrNull {
+            val deprecatedAnnotationOrNull = smlParameter.annotationUsesOrEmpty().firstOrNull {
                 it.annotation.fullyQualifiedName() == StdlibAnnotations.Deprecated
             }
 
@@ -153,10 +170,10 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
 
     private fun SmlDeclaration.shouldCheckDeclarationModifiers(): Boolean {
         return this !is SmlParameter &&
-            this !is SmlResult &&
-            this !is SmlTypeParameter &&
-            this !is SmlWorkflow &&
-            this !is SmlWorkflowStep
+                this !is SmlResult &&
+                this !is SmlTypeParameter &&
+                this !is SmlWorkflow &&
+                this !is SmlWorkflowStep
     }
 
     private fun SmlDeclaration.reportInvalidModifiers(message: String, isInvalid: (modifier: String) -> Boolean) {

@@ -16,6 +16,10 @@ annotation ExplicitlyMultiUse
 »@ExplicitlyMultiUse«
 // no_semantic_error "This annotation can only be used once."
 »@ExplicitlyMultiUse«
+// no_semantic_error "This annotation can only be used once."
+»@UnresolvedAnnotation«
+// no_semantic_error "This annotation can only be used once."
+»@UnresolvedAnnotation«
 class CorrectUse
 
 // semantic_error "This annotation can only be used once."
