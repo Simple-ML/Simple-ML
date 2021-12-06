@@ -123,6 +123,8 @@ class SimpleMLFormatter : AbstractFormatter2() {
                         doc.append(it, noSpace)
                     }
                 }
+
+                doc.append(obj, newLine)
             }
 
             /**********************************************************************************************************
@@ -131,8 +133,16 @@ class SimpleMLFormatter : AbstractFormatter2() {
 
             is SmlPackage -> {
 
-                // Features "annotations" and "modifiers"
-                doc.formatAnnotationsAndModifiers(obj)
+                // Feature "annotations"
+                obj.annotationsOrEmpty().forEach {
+                    doc.format(it)
+
+                    if (obj.annotationsOrEmpty().last() == it) {
+                        doc.append(it, newLines(2))
+                    } else {
+                        doc.append(it, newLine)
+                    }
+                }
 
                 // Keyword "package"
                 doc.formatKeyword(obj, "package", noSpace, oneSpace)
@@ -172,8 +182,6 @@ class SimpleMLFormatter : AbstractFormatter2() {
                         doc.append(it, noSpace)
                     }
                 }
-
-                doc.append(obj, newLine)
             }
             is SmlImport -> {
 
