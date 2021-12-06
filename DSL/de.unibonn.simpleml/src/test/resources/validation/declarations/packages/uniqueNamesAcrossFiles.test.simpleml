@@ -13,4 +13,7 @@ enum »Any«
 fun »Any«()
 
 // semantic_error "A declaration with qualified name 'simpleml.lang.Any' exists already."
-interface »Any«
+step »Any«() {}
+
+// semantic_error "A declaration with qualified name 'simpleml.lang.Any' exists already."
+workflow »Any« {}

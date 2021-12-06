@@ -37,6 +37,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.MemberTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NamedTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NullT
+import de.unibonn.simpleml.prolog_bridge.model.facts.PackageT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParenthesizedExpressionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParenthesizedTypeT
@@ -91,6 +92,7 @@ import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlNull
+import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlParenthesizedType
@@ -176,16 +178,10 @@ class AstToPrologFactbase {
     // ****************************************************************************************************************/
 
     private fun PlFactbase.visitCompilationUnit(obj: SmlCompilationUnit) {
-        obj.imports.forEach { this.visitImport(it, obj.id) }
         obj.members.forEach { this.visitDeclaration(it, obj.id) }
 
-        +CompilationUnitT(obj.id, obj.name, obj.imports.map { it.id }, obj.members.map { it.id })
+        +CompilationUnitT(obj.id, obj.members.map { it.id })
         +ResourceS(obj.id, obj.eResource().uri.toString())
-        visitSourceLocation(obj)
-    }
-
-    private fun PlFactbase.visitImport(obj: SmlImport, parentId: Id<SmlCompilationUnit>) {
-        +ImportT(obj.id, parentId, obj.importedNamespace, obj.aliasName())
         visitSourceLocation(obj)
     }
 
@@ -257,6 +253,12 @@ class AstToPrologFactbase {
                     obj.typeParameterConstraintList?.constraints?.map { it.id },
                 )
             }
+            is SmlPackage -> {
+                obj.imports.forEach { this.visitImport(it, obj.id) }
+                obj.members.forEach { this.visitDeclaration(it, obj.id) }
+
+                +PackageT(obj.id, parentId, obj.name, obj.imports.map { it.id }, obj.members.map { it.id })
+            }
             is SmlParameter -> {
                 obj.type?.let { visitType(it, obj.id) }
                 obj.defaultValue?.let { visitExpression(it, obj.id, obj.id) }
@@ -305,6 +307,11 @@ class AstToPrologFactbase {
 
     private fun PlFactbase.visitModifier(modifier: String, target: Id<SmlDeclaration>) {
         +ModifierT(target, modifier)
+    }
+
+    private fun PlFactbase.visitImport(obj: SmlImport, parentId: Id<SmlPackage>) {
+        +ImportT(obj.id, parentId, obj.importedNamespace, obj.aliasName())
+        visitSourceLocation(obj)
     }
 
     // *****************************************************************************************************************

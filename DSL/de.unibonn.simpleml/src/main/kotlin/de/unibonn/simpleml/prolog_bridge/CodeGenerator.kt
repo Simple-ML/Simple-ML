@@ -195,8 +195,8 @@ class CodeGenerator {
                 val e = SimpleMLFactory.eINSTANCE.createSmlCompilationUnit()
                 eob[key] = e
 
-                e.name = handleStringAsString(f.plArguments[2])
-                addList(e.imports as EList<EObject>, handleList(f.plArguments[3]) as List<EObject>)
+//                e.name = handleStringAsString(f.plArguments[2])
+//                addList(e.imports as EList<EObject>, handleList(f.plArguments[3]) as List<EObject>)
                 addList(e.members as EList<EObject>, handleList(f.plArguments[4]) as List<EObject>)
 
                 return e

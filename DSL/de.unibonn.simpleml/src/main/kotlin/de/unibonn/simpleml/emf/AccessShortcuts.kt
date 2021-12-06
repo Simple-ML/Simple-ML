@@ -19,6 +19,7 @@ import de.unibonn.simpleml.simpleML.SmlLambda
 import de.unibonn.simpleml.simpleML.SmlLambdaYield
 import de.unibonn.simpleml.simpleML.SmlLocalVariable
 import de.unibonn.simpleml.simpleML.SmlNamedType
+import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlResult
@@ -123,8 +124,16 @@ fun SmlClass?.parentTypesOrEmpty(): List<SmlType> {
 
 // SmlCompilationUnit ------------------------------------------------------------------------------
 
-fun SmlCompilationUnit?.membersOrEmpty(): List<SmlDeclaration> {
-    return this?.members.orEmpty()
+/**
+ * Returns the unique package declaration contained in the compilation unit or null if none or multiple exist.
+ */
+fun SmlCompilationUnit?.packageOrNull(): SmlPackage? {
+    val packages = this?.members?.filterIsInstance<SmlPackage>()
+
+    return when (packages?.size) {
+        1 -> packages[0]
+        else -> null
+    }
 }
 
 // SmlDeclaration ----------------------------------------------------------------------------------
@@ -254,6 +263,7 @@ fun EObject?.containingEnumOrNull() = this?.closestAncestorOrNull<SmlEnum>()
 fun EObject?.containingCompilationUnitOrNull() = this?.closestAncestorOrNull<SmlCompilationUnit>()
 fun EObject?.containingFunctionOrNull() = this?.closestAncestorOrNull<SmlFunction>()
 fun EObject?.containingLambdaOrNull() = this?.closestAncestorOrNull<SmlLambda>()
+fun EObject?.containingPackageOrNull() = this?.closestAncestorOrNull<SmlPackage>()
 fun EObject?.containingWorkflowOrNull() = this?.closestAncestorOrNull<SmlWorkflow>()
 fun EObject?.containingWorkflowStepOrNull() = this?.closestAncestorOrNull<SmlWorkflowStep>()
 

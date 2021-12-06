@@ -29,6 +29,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.MemberTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NamedTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NodeWithParent
 import de.unibonn.simpleml.prolog_bridge.model.facts.NullT
+import de.unibonn.simpleml.prolog_bridge.model.facts.PackageT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParameterT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParenthesizedExpressionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ParenthesizedTypeT
@@ -102,30 +103,14 @@ class AstToPrologFactbaseTest {
             fun `should handle empty compilation units`() = withFactbaseFromFile("empty.simpleml") {
                 val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
                 compilationUnitT.asClue {
-                    it.`package`.shouldBeNull()
-                    it.imports.shouldBeEmpty()
                     it.members.shouldBeEmpty()
                 }
             }
 
             @Test
-            fun `should store package`() = withFactbaseFromFile("declarations.simpleml") {
-                val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
-                compilationUnitT.asClue {
-                    compilationUnitT.`package` shouldBe "myPackage"
-                }
-            }
-
-            @Test
-            fun `should reference imports`() = withFactbaseFromFile("declarations.simpleml") {
-                val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
-                shouldBeNChildrenOf<ImportT>(compilationUnitT.imports, compilationUnitT, 3)
-            }
-
-            @Test
             fun `should reference members`() = withFactbaseFromFile("declarations.simpleml") {
                 val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
-                shouldBeNChildrenOf<DeclarationT>(compilationUnitT.members, compilationUnitT, 12)
+                shouldBeNChildrenOf<DeclarationT>(compilationUnitT.members, compilationUnitT, 1)
             }
 
             @Test
@@ -142,39 +127,6 @@ class AstToPrologFactbaseTest {
             fun `should store source location in separate relation`() = withFactbaseFromFile("empty.simpleml") {
                 val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
                 findUniqueFactOrFail<SourceLocationS> { it.target == compilationUnitT.id }
-            }
-        }
-
-        @Nested
-        inner class Import {
-            @Test
-            fun `should handle normal imports`() = withFactbaseFromFile("declarations.simpleml") {
-                val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyClass" }
-                importT.asClue {
-                    importT.alias.shouldBeNull()
-                }
-            }
-
-            @Test
-            fun `should handle imports with alias`() = withFactbaseFromFile("declarations.simpleml") {
-                val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyOtherClass" }
-                importT.asClue {
-                    importT.alias shouldBe "Class"
-                }
-            }
-
-            @Test
-            fun `should handle imports with wildcard`() = withFactbaseFromFile("declarations.simpleml") {
-                val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.*" }
-                importT.asClue {
-                    importT.alias.shouldBeNull()
-                }
-            }
-
-            @Test
-            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
-                val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyClass" }
-                findUniqueFactOrFail<SourceLocationS> { it.target == importT.id }
             }
         }
 
@@ -460,6 +412,69 @@ class AstToPrologFactbaseTest {
             fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
                 val functionT = findUniqueFactOrFail<FunctionT> { it.name == "mySimpleFunction" }
                 findUniqueFactOrFail<SourceLocationS> { it.target == functionT.id }
+            }
+        }
+
+        @Nested
+        inner class Package {
+
+            @Test
+            fun `should store package`() = withFactbaseFromFile("declarations.simpleml") {
+                val packageT = findUniqueFactOrFail<PackageT>()
+                packageT.asClue {
+                    packageT.name shouldBe "myPackage"
+                }
+            }
+
+            @Test
+            fun `should reference imports`() = withFactbaseFromFile("declarations.simpleml") {
+                val packageT = findUniqueFactOrFail<PackageT>()
+                shouldBeNChildrenOf<ImportT>(packageT.imports, packageT, 3)
+            }
+
+            @Test
+            fun `should reference members`() = withFactbaseFromFile("declarations.simpleml") {
+                val packageT = findUniqueFactOrFail<PackageT>()
+                shouldBeNChildrenOf<DeclarationT>(packageT.members, packageT, 12)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
+                val packageT = findUniqueFactOrFail<PackageT>()
+                findUniqueFactOrFail<SourceLocationS> { it.target == packageT.id }
+            }
+        }
+
+        @Nested
+        inner class Import {
+            @Test
+            fun `should handle normal imports`() = withFactbaseFromFile("declarations.simpleml") {
+                val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyClass" }
+                importT.asClue {
+                    importT.alias.shouldBeNull()
+                }
+            }
+
+            @Test
+            fun `should handle imports with alias`() = withFactbaseFromFile("declarations.simpleml") {
+                val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyOtherClass" }
+                importT.asClue {
+                    importT.alias shouldBe "Class"
+                }
+            }
+
+            @Test
+            fun `should handle imports with wildcard`() = withFactbaseFromFile("declarations.simpleml") {
+                val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.*" }
+                importT.asClue {
+                    importT.alias.shouldBeNull()
+                }
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations.simpleml") {
+                val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyClass" }
+                findUniqueFactOrFail<SourceLocationS> { it.target == importT.id }
             }
         }
 
@@ -1639,7 +1654,7 @@ class AstToPrologFactbaseTest {
                 val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyOtherClass" }
                 val sourceLocationS = findUniqueFactOrFail<SourceLocationS> { it.target == importT.id }
                 sourceLocationS.asClue {
-                    sourceLocationS.uriHash shouldBe "//@imports.1"
+                    sourceLocationS.uriHash shouldBe "//@members.0/@imports.1"
                 }
             }
 

@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.membersOrEmpty
+import de.unibonn.simpleml.emf.packageOrNull
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrNull
@@ -47,7 +48,6 @@ import de.unibonn.simpleml.utils.typeParametersOrNull
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.FilteringScope
@@ -60,8 +60,7 @@ import org.eclipse.xtext.scoping.impl.FilteringScope
  */
 class SimpleMLScopeProvider @Inject constructor(
     private val classHierarchy: ClassHierarchy,
-    private val typeComputer: TypeComputer,
-    private val qualifiedNameProvider: IQualifiedNameProvider
+    private val typeComputer: TypeComputer
 ) : AbstractSimpleMLScopeProvider() {
 
     override fun getScope(context: EObject, reference: EReference): IScope {
@@ -104,6 +103,9 @@ class SimpleMLScopeProvider @Inject constructor(
 
                 // Declarations in this file
                 result = declarationsInSameFile(resource, result)
+
+                // Declarations in this package
+                result = declarationsInSamePackageDeclaration(resource, result)
 
                 // Declarations in containing classes
                 context.containingClassOrNull()?.let {
@@ -158,7 +160,27 @@ class SimpleMLScopeProvider @Inject constructor(
     }
 
     private fun declarationsInSameFile(resource: Resource, parentScope: IScope): IScope {
+        if (resource.compilationUnitOrNull()?.packageOrNull() != null) {
+            return Scopes.scopeFor(
+                emptyList(),
+                parentScope
+            )
+        }
+
         val members = resource.compilationUnitOrNull()
+            ?.members
+            ?.filter { it !is SmlAnnotation && it !is SmlWorkflow }
+            ?: emptyList()
+
+        return Scopes.scopeFor(
+            members,
+            parentScope
+        )
+    }
+
+    private fun declarationsInSamePackageDeclaration(resource: Resource, parentScope: IScope): IScope {
+        val members = resource.compilationUnitOrNull()
+            ?.packageOrNull()
             ?.members
             ?.filter { it !is SmlAnnotation && it !is SmlWorkflow }
             ?: emptyList()

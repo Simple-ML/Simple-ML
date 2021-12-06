@@ -29,6 +29,7 @@ import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlNull
+import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
@@ -143,46 +144,13 @@ sealed class NodeWithParent(factName: String, id: Id<EObject>, parent: Id<EObjec
  * @param id
  * The ID of this fact.
  *
- * @param package
- * The package of this compilation unit or null if it does not declare a package.
- *
- * @param imports
- * The IDs of the importT facts for the imports.
- *
  * @param members
  * The IDs of the facts for the members.
  */
 data class CompilationUnitT(
     override val id: Id<SmlCompilationUnit>,
-    val `package`: String?,
-    val imports: List<Id<SmlImport>>,
     val members: List<Id<SmlDeclaration>>
-) : Node("compilationUnitT", id, `package`, imports, members) {
-    override fun toString() = super.toString()
-}
-
-/**
- * This Prolog fact represents imports.
- *
- * @param id
- * The ID of this fact.
- *
- * @param parent
- * The ID of the compilationUnitT fact for the containing compilation unit.
- *
- * @param importedNamespace
- * The qualified name of the imported namespace.
- *
- * @param alias
- * The alias the namespace should be imported under or null if no alias is specified.
- */
-data class ImportT(
-    override val id: Id<SmlImport>,
-    override val parent: Id<SmlCompilationUnit>,
-    val importedNamespace: String,
-    val alias: String?
-) :
-    NodeWithParent("importT", id, parent, importedNamespace, alias) {
+) : Node("compilationUnitT", id, members) {
     override fun toString() = super.toString()
 }
 
@@ -436,6 +404,59 @@ data class FunctionT(
     results,
     typeParameterConstraints
 ) {
+    override fun toString() = super.toString()
+}
+
+/**
+ * This Prolog fact represents packages.
+ *
+ * @param id
+ * The ID of this fact.
+ *
+ * @param parent
+ * The ID of the compilationUnitT fact for the containing compilation unit.
+ *
+ * @param name
+ * The name of this package.
+ *
+ * @param imports
+ * The IDs of the importT facts for the imports.
+ *
+ * @param members
+ * The IDs of the facts for the members.
+ */
+data class PackageT(
+    override val id: Id<SmlPackage>,
+    override val parent: Id<EObject>, // Actually just SmlCompilationUnit but this allows a handleDeclaration function
+    override val name: String,
+    val imports: List<Id<SmlImport>>,
+    val members: List<Id<SmlDeclaration>>
+) : DeclarationT("packageT", id, parent, name, imports, members) {
+    override fun toString() = super.toString()
+}
+
+/**
+ * This Prolog fact represents imports.
+ *
+ * @param id
+ * The ID of this fact.
+ *
+ * @param parent
+ * The ID of the packageT fact for the containing package.
+ *
+ * @param importedNamespace
+ * The qualified name of the imported namespace.
+ *
+ * @param alias
+ * The alias the namespace should be imported under or null if no alias is specified.
+ */
+data class ImportT(
+    override val id: Id<SmlImport>,
+    override val parent: Id<SmlPackage>,
+    val importedNamespace: String,
+    val alias: String?
+) :
+    NodeWithParent("importT", id, parent, importedNamespace, alias) {
     override fun toString() = super.toString()
 }
 
