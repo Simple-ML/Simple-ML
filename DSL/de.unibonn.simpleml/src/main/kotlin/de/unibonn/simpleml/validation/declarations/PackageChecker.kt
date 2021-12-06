@@ -3,9 +3,7 @@ package de.unibonn.simpleml.validation.declarations
 import com.google.inject.Inject
 import de.unibonn.simpleml.constants.isInStubFile
 import de.unibonn.simpleml.constants.isInTestFile
-import de.unibonn.simpleml.emf.packageOrNull
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
-import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlPackage
@@ -98,14 +96,15 @@ class PackageChecker @Inject constructor(
     @Check(CheckType.NORMAL)
     fun uniqueNamesAcrossFiles(smlPackage: SmlPackage) {
 
-        // Since the stdlib is automatically loaded into a workspace every declaration would be marked as a duplicate
+        // Since the stdlib is automatically loaded into a workspace, every declaration would be marked as a duplicate
         // when editing the stdlib
-        if (smlPackage.name.startsWith("simpleml")) {
+        if (smlPackage.isInStubFile() && smlPackage.name.startsWith("simpleml")) {
             return
         }
 
         val externalGlobalDeclarations =
             indexExtensions.visibleExternalGlobalDeclarationDescriptions(smlPackage)
+
         smlPackage.members.forEach {
             val qualifiedName = qualifiedNameProvider.getFullyQualifiedName(it)
             if (qualifiedName in externalGlobalDeclarations) {

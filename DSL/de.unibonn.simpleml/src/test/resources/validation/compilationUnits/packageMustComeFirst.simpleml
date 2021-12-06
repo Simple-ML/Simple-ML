@@ -1,4 +1,0 @@
-class MyClass
-
-// semantic_error "The package declaration must come first in a compilation unit."
-»package myPackage«

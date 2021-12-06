@@ -124,6 +124,9 @@ fun SmlClass?.parentTypesOrEmpty(): List<SmlType> {
 
 // SmlCompilationUnit ------------------------------------------------------------------------------
 
+/**
+ * Returns the unique package declaration contained in the compilation unit or null if none or multiple exist.
+ */
 fun SmlCompilationUnit?.packageOrNull(): SmlPackage? {
     val packages = this?.members?.filterIsInstance<SmlPackage>()
 
