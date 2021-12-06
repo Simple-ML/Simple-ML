@@ -2,8 +2,8 @@ package de.unibonn.simpleml.test
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.packageOrNull
-import de.unibonn.simpleml.simpleML.SimpleMLFactory
-import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.test.util.ParseHelper
 import de.unibonn.simpleml.utils.Proposals
@@ -41,6 +41,10 @@ class ProposalsTest {
         |
         |step matching_a(a: A) {}
         |step matching_b(b: B) {}
+        |
+        |step test_callee() -> (test_result: A) {
+        |    val test_placeholder = A();
+        |}
     """.trimMargin()
 
     @Test
@@ -60,24 +64,47 @@ class ProposalsTest {
     }
 
     @Test
+    fun `should contain workflow steps with only matching parameters when a placeholder is passed`() {
+        val context = parseHelper.parseProgramTextWithStdlib(testProgram)?.packageOrNull()
+        context.shouldNotBeNull()
+
+        val placeholder = context.eAllContents()
+            .asSequence()
+            .filterIsInstance<SmlPlaceholder>()
+            .filter { it.name == "test_placeholder" }
+            .firstOrNull()
+        placeholder.shouldNotBeNull()
+
+        val workflowStepA = context.members
+            .asSequence()
+            .filterIsInstance<SmlWorkflowStep>()
+            .filter { it.name == "matching_a" }
+            .firstOrNull()
+        workflowStepA.shouldNotBeNull()
+
+        val workflowStepB = context.members
+            .asSequence()
+            .filterIsInstance<SmlWorkflowStep>()
+            .filter { it.name == "matching_b" }
+            .firstOrNull()
+        workflowStepB.shouldNotBeNull()
+
+        val descriptions = proposals.listCallables(context, placeholder)
+        descriptions.shouldContainValue(workflowStepA)
+        descriptions.shouldNotContainValue(workflowStepB)
+    }
+
+    @Test
     fun `should contain workflow steps with only matching parameters when a result is passed`() {
         val context = parseHelper.parseProgramTextWithStdlib(testProgram)?.packageOrNull()
         context.shouldNotBeNull()
 
-        val classA = context.members
+        val result = context.eAllContents()
             .asSequence()
-            .filterIsInstance<SmlClass>()
-            .filter { it.name == "A" }
+            .filterIsInstance<SmlResult>()
+            .filter { it.name == "test_result" }
             .firstOrNull()
-        classA.shouldNotBeNull()
-
-        val result = SimpleMLFactory.eINSTANCE.createSmlResult().apply {
-            name = "r"
-            type = SimpleMLFactory.eINSTANCE.createSmlNamedType().apply {
-                isNullable = false
-                declaration = classA
-            }
-        }
+        result.shouldNotBeNull()
 
         val workflowStepA = context.members
             .asSequence()
