@@ -2,7 +2,6 @@
 
 package de.unibonn.simpleml.emf
 
-import de.unibonn.simpleml.naming.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlArgument
@@ -37,7 +36,6 @@ import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.closestAncestorOrNull
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.xtext.naming.QualifiedName
 
 /* ********************************************************************************************************************
  * Accessing descendants                                                                                              *
@@ -131,9 +129,12 @@ fun SmlCompilationUnit?.membersOrEmpty(): List<SmlDeclaration> {
 }
 
 fun SmlCompilationUnit?.packageOrNull(): SmlPackage? {
-    return this?.members
-        ?.filterIsInstance<SmlPackage>()
-        ?.firstOrNull()
+    val packages = this?.members?.filterIsInstance<SmlPackage>()
+
+    return when (packages?.size) {
+        1 -> packages[0]
+        else -> null
+    }
 }
 
 // SmlDeclaration ----------------------------------------------------------------------------------
@@ -263,6 +264,7 @@ fun EObject?.containingEnumOrNull() = this?.closestAncestorOrNull<SmlEnum>()
 fun EObject?.containingCompilationUnitOrNull() = this?.closestAncestorOrNull<SmlCompilationUnit>()
 fun EObject?.containingFunctionOrNull() = this?.closestAncestorOrNull<SmlFunction>()
 fun EObject?.containingLambdaOrNull() = this?.closestAncestorOrNull<SmlLambda>()
+fun EObject?.containingPackageOrNull() = this?.closestAncestorOrNull<SmlPackage>()
 fun EObject?.containingWorkflowOrNull() = this?.closestAncestorOrNull<SmlWorkflow>()
 fun EObject?.containingWorkflowStepOrNull() = this?.closestAncestorOrNull<SmlWorkflowStep>()
 

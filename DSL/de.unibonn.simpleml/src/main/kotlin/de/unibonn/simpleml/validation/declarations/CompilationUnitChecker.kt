@@ -53,7 +53,7 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
             if (smlCompilationUnit.packageOrNull()?.name == null) {
                 error(
                     "A stub file must declare its package.",
-                    Literals.SML_DECLARATION__NAME,
+                    null,
                     STUB_FILE_MUST_DECLARE_PACKAGE
                 )
             }
@@ -61,7 +61,7 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
             if (smlCompilationUnit.packageOrNull()?.name == null) {
                 error(
                     "A workflow file must declare its package.",
-                    Literals.SML_DECLARATION__NAME,
+                    null,
                     WORKFLOW_FILE_MUST_DECLARE_PACKAGE
                 )
             }

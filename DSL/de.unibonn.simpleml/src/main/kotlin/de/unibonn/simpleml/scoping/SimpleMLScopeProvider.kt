@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.membersOrEmpty
+import de.unibonn.simpleml.emf.packageOrNull
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrNull
@@ -60,8 +61,7 @@ import org.eclipse.xtext.scoping.impl.FilteringScope
  */
 class SimpleMLScopeProvider @Inject constructor(
     private val classHierarchy: ClassHierarchy,
-    private val typeComputer: TypeComputer,
-    private val qualifiedNameProvider: IQualifiedNameProvider
+    private val typeComputer: TypeComputer
 ) : AbstractSimpleMLScopeProvider() {
 
     override fun getScope(context: EObject, reference: EReference): IScope {
@@ -104,6 +104,9 @@ class SimpleMLScopeProvider @Inject constructor(
 
                 // Declarations in this file
                 result = declarationsInSameFile(resource, result)
+
+                // Declarations in this package
+                result = declarationsInSamePackage(resource, result)
 
                 // Declarations in containing classes
                 context.containingClassOrNull()?.let {
@@ -162,6 +165,20 @@ class SimpleMLScopeProvider @Inject constructor(
             ?.members
             ?.filter { it !is SmlAnnotation && it !is SmlWorkflow }
             ?: emptyList()
+
+        return Scopes.scopeFor(
+            members,
+            parentScope
+        )
+    }
+
+    private fun declarationsInSamePackage(resource: Resource, parentScope: IScope): IScope {
+        val members = resource.compilationUnitOrNull()
+            ?.packageOrNull()
+            ?.members
+            ?.filter { it !is SmlAnnotation && it !is SmlWorkflow }
+            ?: emptyList()
+
 
         return Scopes.scopeFor(
             members,
