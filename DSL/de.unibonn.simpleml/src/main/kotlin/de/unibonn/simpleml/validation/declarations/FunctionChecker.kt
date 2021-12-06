@@ -5,7 +5,9 @@ import de.unibonn.simpleml.constants.hasOpenModifier
 import de.unibonn.simpleml.constants.hasOverrideModifier
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
+import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
+import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.stdlib.isPure
 import de.unibonn.simpleml.utils.ClassHierarchy
@@ -148,6 +150,28 @@ class FunctionChecker @Inject constructor(
         val declarations = smlFunction.parametersOrEmpty() + smlFunction.resultsOrEmpty()
         declarations.reportDuplicateNames {
             "A parameter or result with name '${it.name}' exists already in this function."
+        }
+    }
+
+    @Check
+    fun unnecessaryResultList(smlFunction: SmlFunction) {
+        if (smlFunction.resultList != null && smlFunction.resultsOrEmpty().isEmpty()) {
+            warning(
+                "Unnecessary result list.",
+                Literals.SML_FUNCTION__RESULT_LIST,
+                UNNECESSARY_RESULT_LIST
+            )
+        }
+    }
+
+    @Check
+    fun unnecessaryTypeParameterList(smlFunction: SmlFunction) {
+        if (smlFunction.typeParameterList != null && smlFunction.typeParametersOrEmpty().isEmpty()) {
+            warning(
+                "Unnecessary type parameter list.",
+                Literals.SML_FUNCTION__TYPE_PARAMETER_LIST,
+                UNNECESSARY_TYPE_PARAMETER_LIST
+            )
         }
     }
 }
