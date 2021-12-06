@@ -1,6 +1,6 @@
 package simpleml.lang
 
-@Description("The Annotation can target these declaration types. If the @Target annotation is not used any declaration type can be targeted.")
+@Description("The annotation can target these declaration types. If the @Target annotation is not used any declaration type can be targeted.")
 @Target(AnnotationTarget.Annotation)
 annotation Target(vararg targets: AnnotationTarget)
 
@@ -15,16 +15,16 @@ enum AnnotationTarget {
     Function
     Parameter
     Result
+    TypeParameter
     Workflow
     WorkflowStep
-    TypeParameter
 }
 
 @Description("The annotation can only be used once per declaration (default if neither @SingleUse nor @MultiUse is used).")
 @Target(AnnotationTarget.Annotation)
 annotation SingleUse
 
-@Description("The annotation can be used multiple times on the same declaration.")
+@Description("The annotation can be used multiple times for the same declaration.")
 @Target(AnnotationTarget.Annotation)
 annotation MultiUse
 

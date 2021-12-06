@@ -46,6 +46,8 @@ import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.stdlib.isPure
 import org.eclipse.emf.ecore.EObject
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 // Argument ------------------------------------------------------------------------------------------------------------
 
@@ -213,6 +215,15 @@ fun SmlDeclaration.isCompilationUnitMember(): Boolean {
                 this is SmlWorkflow ||
                 this is SmlWorkflowStep
             )
+}
+
+@OptIn(ExperimentalContracts::class)
+fun SmlDeclaration?.isResolved(): Boolean {
+    contract {
+        returns(true) implies (this@isResolved != null)
+    }
+
+    return (this != null) && !this.eIsProxy()
 }
 
 // Assignee ------------------------------------------------------------------------------------------------------------

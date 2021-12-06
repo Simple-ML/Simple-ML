@@ -16,6 +16,17 @@ fun <I, K> Iterable<I>.duplicatesBy(labeler: (I) -> K): List<I> {
 }
 
 /**
+ * Returns the unique element in the iterable that matches the filter or `null` if none or multiple exist.
+ */
+fun <I> Iterable<I>.uniqueOrNull(filter: (I) -> Boolean = { true }): I? {
+    val candidates = this.filter(filter)
+    return when (candidates.size) {
+        1 -> candidates[0]
+        else -> null
+    }
+}
+
+/**
  * Maps corresponding elements of the left and right list using the given zipper. The shorter list is padded with nulls
  * at the end, so the resulting list has the same length as the longer list.
  */
