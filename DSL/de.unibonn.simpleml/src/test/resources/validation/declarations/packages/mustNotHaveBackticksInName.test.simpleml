@@ -1,0 +1,5 @@
+// semantic_error "The package name must not contain backticks."
+package »`backticks`.noBackticks«
+
+// no_semantic_error "The package name must not contain backticks."
+package »noBackticks«
