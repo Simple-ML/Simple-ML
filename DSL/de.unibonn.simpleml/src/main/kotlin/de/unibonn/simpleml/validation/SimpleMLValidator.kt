@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.validation
 
 import de.unibonn.simpleml.validation.declarations.AnnotationChecker
+import de.unibonn.simpleml.validation.declarations.AnnotationUseChecker
 import de.unibonn.simpleml.validation.declarations.AttributeChecker
 import de.unibonn.simpleml.validation.declarations.ClassChecker
 import de.unibonn.simpleml.validation.declarations.CompilationUnitChecker
@@ -52,7 +53,6 @@ import org.eclipse.xtext.validation.ComposedChecks
         ParameterListChecker::class,
         PlaceholderChecker::class,
         ResultChecker::class,
-        TypeArgumentListChecker::class,
         WorkflowChecker::class,
         WorkflowStepChecker::class,
 
@@ -71,7 +71,9 @@ import org.eclipse.xtext.validation.ComposedChecks
         UnionTypeChecker::class,
 
         // Other
-        ArgumentListChecker::class
+        AnnotationUseChecker::class,
+        ArgumentListChecker::class,
+        TypeArgumentListChecker::class,
     ]
 )
 class SimpleMLValidator : AbstractSimpleMLValidator()

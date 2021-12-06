@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.test
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.emf.annotationsOrEmpty
+import de.unibonn.simpleml.emf.annotationUsesOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
@@ -1282,7 +1282,7 @@ class ScopingTest {
                 val enumVariantInSameFile =
                     findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameFile")
 
-                val annotations = step.annotationsOrEmpty()
+                val annotations = step.annotationUsesOrEmpty()
                 annotations.shouldHaveSize(1)
 
                 val references = annotations[0].descendants<SmlReference>().toList()
@@ -1300,7 +1300,7 @@ class ScopingTest {
                 val enumVariantInSameFile =
                     findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameFile")
 
-                val annotations = parameter.annotationsOrEmpty()
+                val annotations = parameter.annotationUsesOrEmpty()
                 annotations.shouldHaveSize(1)
 
                 val references = annotations[0].descendants<SmlReference>().toList()
@@ -1317,7 +1317,7 @@ class ScopingTest {
                 val enumVariantInSameFile =
                     findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameClass")
 
-                val annotations = parameter.annotationsOrEmpty()
+                val annotations = parameter.annotationUsesOrEmpty()
                 annotations.shouldHaveSize(2)
 
                 val references = annotations[0].descendants<SmlReference>().toList()
@@ -1334,7 +1334,7 @@ class ScopingTest {
                 val enumVariantInSameClass =
                     findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameFile")
 
-                val annotations = parameter.annotationsOrEmpty()
+                val annotations = parameter.annotationUsesOrEmpty()
                 annotations.shouldHaveSize(2)
 
                 val references = annotations[1].descendants<SmlReference>().toList()

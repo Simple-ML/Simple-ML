@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.formatting2
 
-import de.unibonn.simpleml.emf.annotationsOrEmpty
+import de.unibonn.simpleml.emf.annotationUsesOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ANNOTATION_USE__ANNOTATION
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ARGUMENT__PARAMETER
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_DECLARATION__MODIFIERS
@@ -134,10 +134,10 @@ class SimpleMLFormatter : AbstractFormatter2() {
             is SmlPackage -> {
 
                 // Feature "annotations"
-                obj.annotationsOrEmpty().forEach {
+                obj.annotationUsesOrEmpty().forEach {
                     doc.format(it)
 
-                    if (obj.annotationsOrEmpty().last() == it) {
+                    if (obj.annotationUsesOrEmpty().last() == it) {
                         doc.append(it, newLines(2))
                     } else {
                         doc.append(it, newLine)
@@ -211,7 +211,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatAnnotationsAndModifiers(obj)
 
                 // Keyword "annotation"
-                if (obj.annotationsOrEmpty().isNotEmpty() || obj.modifiers.isNotEmpty()) {
+                if (obj.annotationUsesOrEmpty().isNotEmpty() || obj.modifiers.isNotEmpty()) {
                     doc.formatKeyword(obj, "annotation", oneSpace, oneSpace)
                 } else {
                     doc.formatKeyword(obj, "annotation", null, oneSpace)
@@ -240,7 +240,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatAnnotationsAndModifiers(obj)
 
                 // Keyword "attr"
-                if (obj.annotationsOrEmpty().isNotEmpty() || obj.modifiers.isNotEmpty()) {
+                if (obj.annotationUsesOrEmpty().isNotEmpty() || obj.modifiers.isNotEmpty()) {
                     doc.formatKeyword(obj, "attr", oneSpace, oneSpace)
                 } else {
                     doc.formatKeyword(obj, "attr", null, oneSpace)
@@ -261,7 +261,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatAnnotationsAndModifiers(obj)
 
                 // Keyword "class"
-                if (obj.annotationsOrEmpty().isNotEmpty() || obj.modifiers.isNotEmpty()) {
+                if (obj.annotationUsesOrEmpty().isNotEmpty() || obj.modifiers.isNotEmpty()) {
                     doc.formatKeyword(obj, "class", oneSpace, oneSpace)
                 } else {
                     doc.formatKeyword(obj, "class", null, oneSpace)
@@ -330,7 +330,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatAnnotationsAndModifiers(obj)
 
                 // Keyword "enum"
-                if (obj.annotationsOrEmpty().isNotEmpty() || obj.modifiers.isNotEmpty()) {
+                if (obj.annotationUsesOrEmpty().isNotEmpty() || obj.modifiers.isNotEmpty()) {
                     doc.formatKeyword(obj, "enum", oneSpace, oneSpace)
                 } else {
                     doc.formatKeyword(obj, "enum", null, oneSpace)
@@ -381,7 +381,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatAnnotationsAndModifiers(obj)
 
                 // Feature "name"
-                if (obj.annotationsOrEmpty().isNotEmpty() || obj.modifiers.isNotEmpty()) {
+                if (obj.annotationUsesOrEmpty().isNotEmpty() || obj.modifiers.isNotEmpty()) {
                     doc.formatFeature(obj, SML_DECLARATION__NAME, oneSpace, null)
                 } else {
                     doc.formatFeature(obj, SML_DECLARATION__NAME)
@@ -402,7 +402,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatAnnotationsAndModifiers(obj)
 
                 // Keyword "fun"
-                if (obj.annotationsOrEmpty().isNotEmpty() || obj.modifiers.isNotEmpty()) {
+                if (obj.annotationUsesOrEmpty().isNotEmpty() || obj.modifiers.isNotEmpty()) {
                     doc.formatKeyword(obj, "fun", oneSpace, oneSpace)
                 } else {
                     doc.formatKeyword(obj, "fun", null, oneSpace)
@@ -429,7 +429,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatAnnotationsAndModifiers(obj)
 
                 // Keyword "workflow"
-                if (obj.annotationsOrEmpty().isEmpty() && obj.modifiers.isEmpty()) {
+                if (obj.annotationUsesOrEmpty().isEmpty() && obj.modifiers.isEmpty()) {
                     doc.formatKeyword(obj, "workflow", noSpace, oneSpace)
                 } else {
                     doc.formatKeyword(obj, "workflow", oneSpace, oneSpace)
@@ -447,7 +447,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatAnnotationsAndModifiers(obj)
 
                 // Keyword "workflow"
-                if (obj.annotationsOrEmpty().isEmpty() && obj.modifiers.isEmpty()) {
+                if (obj.annotationUsesOrEmpty().isEmpty() && obj.modifiers.isEmpty()) {
                     doc.formatKeyword(obj, "step", noSpace, oneSpace)
                 } else {
                     doc.formatKeyword(obj, "step", oneSpace, oneSpace)
@@ -514,13 +514,13 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatAnnotationsAndModifiers(obj, inlineAnnotations = true)
 
                 // Keyword "vararg"
-                if (!obj.annotationsOrEmpty().isEmpty() || !obj.modifiers.isEmpty()) {
+                if (!obj.annotationUsesOrEmpty().isEmpty() || !obj.modifiers.isEmpty()) {
                     doc.formatKeyword(obj, "vararg", oneSpace, null)
                 }
 
                 // Feature "name"
                 val name = obj.regionForFeature(SML_DECLARATION__NAME)
-                if (!obj.annotationsOrEmpty().isEmpty() || !obj.modifiers.isEmpty() || obj.isVararg) {
+                if (!obj.annotationUsesOrEmpty().isEmpty() || !obj.modifiers.isEmpty() || obj.isVararg) {
                     doc.prepend(name, oneSpace)
                 }
 
@@ -562,7 +562,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
 
                 // Feature "name"
                 val name = obj.regionForFeature(SML_DECLARATION__NAME)
-                if (!obj.annotationsOrEmpty().isEmpty() || !obj.modifiers.isEmpty()) {
+                if (!obj.annotationUsesOrEmpty().isEmpty() || !obj.modifiers.isEmpty()) {
                     doc.prepend(name, oneSpace)
                 }
 
@@ -859,7 +859,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatAnnotationsAndModifiers(obj, inlineAnnotations = true)
 
                 // Feature "variance"
-                if (obj.annotationsOrEmpty().isNotEmpty() || obj.modifiers.isNotEmpty()) {
+                if (obj.annotationUsesOrEmpty().isNotEmpty() || obj.modifiers.isNotEmpty()) {
                     doc.formatFeature(obj, SML_TYPE_PARAMETER__VARIANCE, oneSpace, oneSpace)
                 } else {
                     doc.formatFeature(obj, SML_TYPE_PARAMETER__VARIANCE, null, oneSpace)
@@ -990,7 +990,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
     ) {
 
         // Feature "annotations"
-        obj.annotationsOrEmpty().forEach {
+        obj.annotationUsesOrEmpty().forEach {
             format(it)
 
             if (inlineAnnotations) {
