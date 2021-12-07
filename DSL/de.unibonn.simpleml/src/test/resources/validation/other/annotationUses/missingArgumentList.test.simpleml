@@ -1,0 +1,21 @@
+package tests.validation.other.annotationUses.missingArgumentList
+
+@MultiUse
+annotation AnnotationWithoutParameters
+
+@MultiUse
+annotation AnnotationWithParameters(a: Int)
+
+// no_semantic_error "Missing argument list."
+@»AnnotationWithoutParameters«
+// no_semantic_error "Missing argument list."
+@»AnnotationWithoutParameters«
+// semantic_error "Missing argument list."
+@»AnnotationWithParameters«
+// semantic_error "Missing argument list."
+@»AnnotationWithParameters«
+// no_semantic_error "Missing argument list."
+@»UnresolvedAnnotation«
+// no_semantic_error "Missing argument list."
+@»UnresolvedAnnotation«
+class MyClass
