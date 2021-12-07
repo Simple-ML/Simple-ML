@@ -22,7 +22,7 @@ class FormatterTest {
     @Inject
     lateinit var formatter: FormatterTestHelper
 
-    private val separator = "-".repeat(120)
+    private val separator = Regex("// -*")
 
     @TestFactory
     fun `should be formatted properly`(): Stream<out DynamicNode> {
