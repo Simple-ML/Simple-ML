@@ -18,9 +18,6 @@ import de.unibonn.simpleml.validation.codes.InfoCode
 import de.unibonn.simpleml.validation.codes.WarningCode
 import org.eclipse.xtext.validation.Check
 
-
-
-
 class AssignmentChecker : AbstractSimpleMLChecker() {
 
     @Check

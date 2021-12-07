@@ -6,7 +6,6 @@ import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.validation.Check
 
-
 class AttributeChecker : AbstractSimpleMLChecker() {
 
     @Check

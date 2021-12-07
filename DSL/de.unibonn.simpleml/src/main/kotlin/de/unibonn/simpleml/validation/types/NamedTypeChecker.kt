@@ -10,7 +10,6 @@ import de.unibonn.simpleml.utils.typeParametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode
-import de.unibonn.simpleml.validation.codes.WarningCode
 import org.eclipse.xtext.validation.Check
 
 class NamedTypeChecker : AbstractSimpleMLChecker() {

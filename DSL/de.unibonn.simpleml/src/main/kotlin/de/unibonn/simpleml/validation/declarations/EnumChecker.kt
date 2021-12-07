@@ -5,7 +5,6 @@ import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.InfoCode
-import de.unibonn.simpleml.validation.codes.WarningCode
 import org.eclipse.xtext.validation.Check
 
 class EnumChecker : AbstractSimpleMLChecker() {

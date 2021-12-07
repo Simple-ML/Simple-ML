@@ -5,7 +5,6 @@ import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode
-import de.unibonn.simpleml.validation.codes.WarningCode
 import org.eclipse.xtext.validation.Check
 
 class UnionTypeChecker : AbstractSimpleMLChecker() {

@@ -14,7 +14,6 @@ import de.unibonn.simpleml.utils.isClassMember
 import de.unibonn.simpleml.utils.isStatic
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.InfoCode
-import de.unibonn.simpleml.validation.codes.WarningCode
 import org.eclipse.xtext.validation.Check
 
 const val FUNCTION_MUST_NOT_BE_OPEN_AND_STATIC = "FUNCTION_MUST_NOT_BE_OPEN_AND_STATIC"

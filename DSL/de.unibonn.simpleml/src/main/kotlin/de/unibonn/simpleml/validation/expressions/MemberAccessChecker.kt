@@ -16,9 +16,9 @@ class MemberAccessChecker : AbstractSimpleMLChecker() {
         val member = smlMemberAccess.member.declaration
         if (member is SmlFunction && !member.isStatic() && smlMemberAccess.eContainer() !is SmlCall) {
             error(
-                    "An instance method must be called.",
-                    Literals.SML_MEMBER_ACCESS__MEMBER,
-                    ErrorCode.INSTANCE_METHOD_MUST_BE_CALLED
+                "An instance method must be called.",
+                Literals.SML_MEMBER_ACCESS__MEMBER,
+                ErrorCode.INSTANCE_METHOD_MUST_BE_CALLED
             )
         }
     }

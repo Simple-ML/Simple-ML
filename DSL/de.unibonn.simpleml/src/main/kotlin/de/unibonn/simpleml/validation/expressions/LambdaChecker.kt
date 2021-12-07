@@ -3,12 +3,10 @@ package de.unibonn.simpleml.validation.expressions
 import de.unibonn.simpleml.emf.lambdaYieldsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
-import de.unibonn.simpleml.simpleML.SimpleMLPackage
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlLambda
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.InfoCode
-import de.unibonn.simpleml.validation.codes.WarningCode
 import org.eclipse.xtext.validation.Check
 
 class LambdaChecker : AbstractSimpleMLChecker() {
