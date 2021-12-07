@@ -2063,10 +2063,10 @@ class ScopingTest {
 
         val compilationUnit =
             parseHelper.parseResourceWithContext(
-                "scoping/$resourceName/main.test.simpleml",
+                "scoping/$resourceName/main.smltest",
                 listOf(
-                    "scoping/$resourceName/externalsInOtherPackage.test.simpleml",
-                    "scoping/$resourceName/externalsInSamePackage.test.simpleml",
+                    "scoping/$resourceName/externalsInOtherPackage.smltest",
+                    "scoping/$resourceName/externalsInSamePackage.smltest",
                 )
             ) ?: throw IllegalArgumentException("File is not a compilation unit.")
 

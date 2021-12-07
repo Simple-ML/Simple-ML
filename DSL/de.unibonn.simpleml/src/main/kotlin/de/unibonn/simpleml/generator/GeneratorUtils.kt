@@ -17,7 +17,7 @@ fun Resource.baseFileName(): String {
         .last()
         .removeSuffix(FileExtensions.STUB)
         .removeSuffix(FileExtensions.TEST)
-        .removeSuffix(FileExtensions.WORKFLOW)
+        .removeSuffix(FileExtensions.FLOW)
 }
 
 fun Resource.baseGeneratedFilePath(): String {
