@@ -1,3 +1,6 @@
+// no_semantic_error "A stub file must only declare workflows and workflow steps."
+package »tests.validation.compilationUnits.stubFileMustNotDeclareWorkflowsOrSteps«
+
 // semantic_error "A stub file must not declare workflows or workflow steps."
 step »myStep«() {}
 // semantic_error "A stub file must not declare workflows or workflow steps."

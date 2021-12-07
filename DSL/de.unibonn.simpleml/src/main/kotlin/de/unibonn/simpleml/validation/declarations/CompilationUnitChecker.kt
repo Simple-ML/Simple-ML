@@ -26,7 +26,7 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
     @Check
     fun members(smlCompilationUnit: SmlCompilationUnit) {
         if (smlCompilationUnit.isInStubFile()) {
-            smlCompilationUnit.members
+            smlCompilationUnit.memberDeclarationsOrEmpty()
                 .filter { it is SmlWorkflow || it is SmlWorkflowStep }
                 .forEach {
                     error(
@@ -37,8 +37,8 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
                     )
                 }
         } else if (!smlCompilationUnit.isInTestFile()) {
-            smlCompilationUnit.members
-                .filter { it !is SmlWorkflow && it !is SmlWorkflowStep }
+            smlCompilationUnit.memberDeclarationsOrEmpty()
+                .filter { it !is SmlPackage && it !is SmlWorkflow && it !is SmlWorkflowStep }
                 .forEach {
                     error(
                         "A workflow file must only declare workflows and workflow steps.",
