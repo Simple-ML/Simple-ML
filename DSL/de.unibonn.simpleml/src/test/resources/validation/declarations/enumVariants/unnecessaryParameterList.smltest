@@ -1,8 +1,0 @@
-package tests.validation.declarations.enumVariants.unnecessaryParameterList
-
-enum MyEnum {
-    // semantic_warning "Unnecessary parameter list."
-    MyVariant1»()«
-    // no_semantic_warning "Unnecessary parameter list."
-    MyVariant2»(a: Int)«
-}

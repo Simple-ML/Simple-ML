@@ -14,7 +14,7 @@ import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.importedNameOrNull
 import de.unibonn.simpleml.utils.isQualified
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
-import de.unibonn.simpleml.validation.REDECLARATION
+import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.validation.CheckType
@@ -37,7 +37,7 @@ class PackageChecker @Inject constructor(
                         "A stub file must not declare workflows or workflow steps.",
                         it,
                         Literals.SML_ABSTRACT_DECLARATION__NAME,
-                        STUB_FILE_MUST_NOT_DECLARE_WORKFLOWS
+                        ErrorCode.STUB_FILE_MUST_NOT_DECLARE_WORKFLOWS
                     )
                 }
         } else if (!smlPackage.isInTestFile()) {
@@ -48,7 +48,7 @@ class PackageChecker @Inject constructor(
                         "A workflow file must only declare workflows and workflow steps.",
                         it,
                         Literals.SML_ABSTRACT_DECLARATION__NAME,
-                        WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_WORKFLOW_STEPS
+                        ErrorCode.WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_WORKFLOW_STEPS
                     )
                 }
         }
@@ -82,7 +82,7 @@ class PackageChecker @Inject constructor(
                         "A declaration with name '${it.importedNameOrNull()}' exists already in this file.",
                         it,
                         Literals.SML_IMPORT__IMPORTED_NAMESPACE,
-                        REDECLARATION
+                        ErrorCode.REDECLARATION
                     )
                 }
                 it is SmlImport && it.alias != null -> {
@@ -90,7 +90,7 @@ class PackageChecker @Inject constructor(
                         "A declaration with name '${it.importedNameOrNull()}' exists already in this file.",
                         it.alias,
                         Literals.SML_IMPORT_ALIAS__NAME,
-                        REDECLARATION
+                        ErrorCode.REDECLARATION
                     )
                 }
                 it is SmlAbstractDeclaration -> {
@@ -98,7 +98,7 @@ class PackageChecker @Inject constructor(
                         "A declaration with name '${it.name}' exists already in this file.",
                         it,
                         Literals.SML_ABSTRACT_DECLARATION__NAME,
-                        REDECLARATION
+                        ErrorCode.REDECLARATION
                     )
                 }
             }

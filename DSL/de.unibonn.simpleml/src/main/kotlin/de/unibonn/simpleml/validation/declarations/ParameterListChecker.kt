@@ -6,9 +6,8 @@ import de.unibonn.simpleml.simpleML.SmlParameterList
 import de.unibonn.simpleml.utils.isOptional
 import de.unibonn.simpleml.utils.isRequired
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.validation.Check
-
-const val NO_REQUIRED_PARAMETERS_AFTER_FIRST_OPTIONAL_PARAMETER = "NO_REQUIRED_PARAMETERS_AFTER_FIRST_OPTIONAL_PARAMETER"
 
 class ParameterListChecker : AbstractSimpleMLChecker() {
 
@@ -31,7 +30,7 @@ class ParameterListChecker : AbstractSimpleMLChecker() {
                     "After the first optional parameter all parameters must be optional.",
                     it,
                     Literals.SML_ABSTRACT_DECLARATION__NAME,
-                    NO_REQUIRED_PARAMETERS_AFTER_FIRST_OPTIONAL_PARAMETER
+                    ErrorCode.NO_REQUIRED_PARAMETERS_AFTER_FIRST_OPTIONAL_PARAMETER
                 )
             }
     }
