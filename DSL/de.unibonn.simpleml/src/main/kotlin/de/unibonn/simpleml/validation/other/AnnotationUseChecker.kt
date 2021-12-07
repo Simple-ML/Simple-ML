@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.validation.other
 
 import de.unibonn.simpleml.emf.argumentsOrEmpty
+import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.targetOrNull
 import de.unibonn.simpleml.naming.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
@@ -27,6 +28,7 @@ import de.unibonn.simpleml.utils.parametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import org.eclipse.xtext.validation.Check
 
+const val MISSING_ARGUMENT_LIST = "MISSING_ARGUMENT_LIST"
 const val UNNECESSARY_ARGUMENT_LIST = "UNNECESSARY_ARGUMENT_LIST"
 const val WRONG_TARGET = "WRONG_TARGET"
 const val DUPLICATE_TARGET = "DUPLICATE_TARGET"
@@ -53,6 +55,27 @@ class AnnotationUseChecker : AbstractSimpleMLChecker() {
                     DUPLICATE_TARGET
                 )
             }
+    }
+
+    @Check
+    fun missingArgumentList(smlAnnotationUse: SmlAnnotationUse) {
+        if (smlAnnotationUse.argumentList != null) {
+            return
+        }
+
+        val annotation = smlAnnotationUse.annotation
+        if (!annotation.isResolved()) {
+            return
+        }
+
+        val parameters = smlAnnotationUse.annotation.parametersOrEmpty()
+        if (parameters.isNotEmpty()) {
+            error(
+                "Missing argument list.",
+                SimpleMLPackage.Literals.SML_ANNOTATION_USE__ANNOTATION,
+                MISSING_ARGUMENT_LIST
+            )
+        }
     }
 
     @Check

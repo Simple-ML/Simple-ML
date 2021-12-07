@@ -1,18 +1,22 @@
 package de.unibonn.simpleml.validation.expressions
 
+import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
+import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.utils.CallableResult
+import de.unibonn.simpleml.utils.callableOrNull
 import de.unibonn.simpleml.utils.isRecursive
 import de.unibonn.simpleml.utils.maybeCallable
 import de.unibonn.simpleml.utils.resultsOrNull
 import de.unibonn.simpleml.utils.typeParametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.types.MISSING_TYPE_ARGUMENT_LIST
 import org.eclipse.xtext.validation.Check
 
 const val CONTEXT_OF_CALL_WITHOUT_RESULTS = "CONTEXT_OF_CALL_WITHOUT_RESULTS"
@@ -24,6 +28,28 @@ const val CALLED_ENUM_VARIANT_MUST_HAVE_CONSTRUCTOR = "CALLED_ENUM_VARIANT_MUST_
 const val UNNECESSARY_TYPE_ARGUMENT_LIST = "UNNECESSARY_TYPE_ARGUMENT_LIST"
 
 class CallChecker : AbstractSimpleMLChecker() {
+
+    @Check
+    fun missingTypeArgumentList(smlCall: SmlCall) {
+        if (smlCall.typeArgumentList != null) {
+            return
+        }
+
+        val typeParameters = when (val callable = smlCall.callableOrNull()) {
+            is SmlClass -> callable.typeParametersOrEmpty()
+            is SmlEnumVariant -> callable.typeParametersOrEmpty()
+            is SmlFunction -> callable.typeParametersOrEmpty()
+            else -> return
+        }
+
+        if (typeParameters.isNotEmpty()) {
+            error(
+                "Missing type argument list.",
+                Literals.SML_CHAINED_EXPRESSION__RECEIVER,
+                MISSING_TYPE_ARGUMENT_LIST
+            )
+        }
+    }
 
     @Check
     fun unnecessaryTypeArgumentList(smlCall: SmlCall) {
