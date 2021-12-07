@@ -23,8 +23,8 @@ SmlCompilationUnitMember returns SmlDeclaration
     : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
 
     ( {SmlPackage.annotationHolder=current}
-          ( 'package' name=QualifiedName imports+=SmlImport*
-          | imports+=SmlImport+
+          ( ('package' name=QualifiedName =>imports+=SmlImport*)
+          | (imports+=SmlImport =>imports+=SmlImport*)
           )
           =>members+=SmlPackageMember*
 
