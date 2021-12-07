@@ -10,30 +10,35 @@ import org.eclipse.emf.ecore.resource.Resource
 object FileExtensions {
 
     /**
+     * Marks the file as a workflow file, which can be executed by our runtime component.
+     *
+     * @see isInFlowFile
+     * @see isFlowFile
+     */
+    const val FLOW = ".smlflow"
+
+    /**
      * Marks the file as a stub file, which describes an external API.
      *
      * @see isInStubFile
      * @see isStubFile
      */
-    const val STUB = ".stub.simpleml"
+    const val STUB = ".smlstub"
 
     /**
-     * Marks the file as a test file, which disables some checks to simplify its use as input of test cases.
+     * Marks the file as a test file, which disables some checks to simplify its use as input of test cases. This file
+     * type is only used by language developers.
      *
      * @see isInTestFile
      * @see isTestFile
      */
-    const val TEST = ".test.simpleml"
-
-    /**
-     * Marks the file as a workflow file, which can be executed by our runtime component. Note: The extension is a
-     * substring of the extensions for stubs and tests.
-     *
-     * @see isInWorkflowFile
-     * @see isWorkflowFile
-     */
-    const val WORKFLOW = ".simpleml"
+    const val TEST = ".smltest"
 }
+
+/**
+ * Returns whether the object is contained in flow file.
+ */
+fun EObject.isInFlowFile() = this.eResource().isFlowFile()
 
 /**
  * Returns whether the object is contained in stub file.
@@ -46,9 +51,9 @@ fun EObject.isInStubFile() = this.eResource().isStubFile()
 fun EObject.isInTestFile() = this.eResource().isTestFile()
 
 /**
- * Returns whether the object is contained in workflow file.
+ * Returns whether the resource represents a flow file.
  */
-fun EObject.isInWorkflowFile() = this.eResource().isWorkflowFile()
+fun Resource.isFlowFile() = this.hasExtension(FileExtensions.FLOW)
 
 /**
  * Returns whether the resource represents a stub file.
@@ -59,11 +64,6 @@ fun Resource.isStubFile() = this.hasExtension(FileExtensions.STUB)
  * Returns whether the resource represents a test file.
  */
 fun Resource.isTestFile() = this.hasExtension(FileExtensions.TEST)
-
-/**
- * Returns whether the resource represents a workflow file.
- */
-fun Resource.isWorkflowFile() = this.hasExtension(FileExtensions.WORKFLOW) && !this.isStubFile() && !this.isTestFile()
 
 /**
  * Returns whether the resource represents a file with the given extension.
