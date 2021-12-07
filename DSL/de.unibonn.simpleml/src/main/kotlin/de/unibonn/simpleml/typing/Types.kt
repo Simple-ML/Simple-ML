@@ -2,7 +2,7 @@ package de.unibonn.simpleml.typing
 
 import de.unibonn.simpleml.naming.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.simpleML.SmlDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import org.eclipse.xtext.naming.QualifiedName
@@ -39,7 +39,7 @@ class CallableType(val parameters: List<Type>, val results: List<Type>) : Type()
     }
 }
 
-sealed class NamedType(smlDeclaration: SmlDeclaration) : Type() {
+sealed class NamedType(smlDeclaration: SmlAbstractDeclaration) : Type() {
     val simpleName: String = smlDeclaration.name
     val qualifiedName: QualifiedName = smlDeclaration.fullyQualifiedName()!!
 

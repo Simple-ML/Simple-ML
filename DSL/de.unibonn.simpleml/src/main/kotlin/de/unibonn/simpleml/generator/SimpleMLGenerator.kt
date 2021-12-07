@@ -9,11 +9,12 @@ import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.statementsOrEmpty
+import de.unibonn.simpleml.simpleML.SmlAbstractExpression
+import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlBoolean
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
-import de.unibonn.simpleml.simpleML.SmlExpression
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
@@ -23,7 +24,6 @@ import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlReference
-import de.unibonn.simpleml.simpleML.SmlStatement
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
@@ -203,7 +203,7 @@ class SimpleMLGenerator @Inject constructor(
         }
     }
 
-    private fun compileStatement(stmt: SmlStatement, shouldSavePlaceholders: Boolean = false) = buildString {
+    private fun compileStatement(stmt: SmlAbstractStatement, shouldSavePlaceholders: Boolean = false) = buildString {
         when (stmt) {
             is SmlAssignment -> {
                 if (stmt.assigneesOrEmpty().isNotEmpty()) {
@@ -235,7 +235,7 @@ class SimpleMLGenerator @Inject constructor(
         }
     }
 
-    private fun compileExpression(expr: SmlExpression): String {
+    private fun compileExpression(expr: SmlAbstractExpression): String {
         return when (expr) {
             is SmlBoolean -> {
                 if (expr.isTrue) {

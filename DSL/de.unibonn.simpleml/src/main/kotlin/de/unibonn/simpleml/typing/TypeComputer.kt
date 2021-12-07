@@ -10,10 +10,10 @@ import de.unibonn.simpleml.simpleML.SmlBoolean
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.simpleML.SmlDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
-import de.unibonn.simpleml.simpleML.SmlExpression
+import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
@@ -32,7 +32,7 @@ import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlString
-import de.unibonn.simpleml.simpleML.SmlType
+import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.stdlib.StdlibClasses
@@ -73,9 +73,9 @@ class TypeComputer @Inject constructor(
     private fun EObject.inferType(isStatic: Boolean): Type {
         return when {
             this.eIsProxy() -> ANY
-            this is SmlDeclaration -> this.inferType(isStatic)
-            this is SmlExpression -> this.inferType(isStatic)
-            this is SmlType -> this.inferType(isStatic)
+            this is SmlAbstractDeclaration -> this.inferType(isStatic)
+            this is SmlAbstractExpression -> this.inferType(isStatic)
+            this is SmlAbstractType -> this.inferType(isStatic)
             this is SmlYield -> {
                 val assigned = assignedOrNull() ?: return ANY
                 assigned.inferType(isStatic)
@@ -84,7 +84,7 @@ class TypeComputer @Inject constructor(
         }
     }
 
-    private fun SmlDeclaration.inferType(isStatic: Boolean): Type {
+    private fun SmlAbstractDeclaration.inferType(isStatic: Boolean): Type {
         return when {
             this.eIsProxy() -> ANY
             this is SmlAttribute -> type.inferType(isStatic = false)
@@ -113,7 +113,7 @@ class TypeComputer @Inject constructor(
         }
     }
 
-    private fun SmlExpression.inferType(isStatic: Boolean): Type {
+    private fun SmlAbstractExpression.inferType(isStatic: Boolean): Type {
         return when {
             this.eIsProxy() -> ANY
             this is SmlBoolean -> BOOLEAN
@@ -197,7 +197,7 @@ class TypeComputer @Inject constructor(
         }
     }
 
-    private fun SmlType.inferType(isStatic: Boolean): Type {
+    private fun SmlAbstractType.inferType(isStatic: Boolean): Type {
         return when {
             this.eIsProxy() -> ANY
             this is SmlCallableType -> CallableType(

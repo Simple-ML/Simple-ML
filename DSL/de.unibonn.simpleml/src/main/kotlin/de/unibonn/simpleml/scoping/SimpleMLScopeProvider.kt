@@ -3,7 +3,7 @@ package de.unibonn.simpleml.scoping
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingClassOrNull
-import de.unibonn.simpleml.emf.membersOrEmpty
+import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrNull
@@ -18,15 +18,15 @@ import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlBlock
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.simpleML.SmlDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlLambda
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
-import de.unibonn.simpleml.simpleML.SmlNamedTypeDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractNamedTypeDeclaration
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlReference
-import de.unibonn.simpleml.simpleML.SmlStatement
+import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
@@ -138,7 +138,7 @@ class SimpleMLScopeProvider @Inject constructor(
         return when {
             type.isNullable && !context.isNullable -> resultScope
             type is ClassType -> {
-                val members = type.smlClass.membersOrEmpty().filter { it.isStatic() == type.isStatic }
+                val members = type.smlClass.memberDeclarationsOrEmpty().filter { it.isStatic() == type.isStatic }
                 val superTypeMembers = classHierarchy.superClassMembers(type.smlClass)
                     .filter { it.isStatic() == type.isStatic }
                     .toList()
@@ -150,7 +150,7 @@ class SimpleMLScopeProvider @Inject constructor(
                     type.isStatic -> type.smlEnum.variantsOrEmpty()
                     else -> emptyList()
                 }
-                val superTypeMembers = emptyList<SmlDeclaration>()
+                val superTypeMembers = emptyList<SmlAbstractDeclaration>()
 
                 Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers, resultScope))
             }
@@ -193,13 +193,13 @@ class SimpleMLScopeProvider @Inject constructor(
 
     private fun classMembers(context: SmlClass, parentScope: IScope): IScope {
         return when (val containingClassOrNull = context.containingClassOrNull()) {
-            is SmlClass -> Scopes.scopeFor(context.membersOrEmpty(), classMembers(containingClassOrNull, parentScope))
-            else -> Scopes.scopeFor(context.membersOrEmpty(), parentScope)
+            is SmlClass -> Scopes.scopeFor(context.memberDeclarationsOrEmpty(), classMembers(containingClassOrNull, parentScope))
+            else -> Scopes.scopeFor(context.memberDeclarationsOrEmpty(), parentScope)
         }
     }
 
     private fun localDeclarations(context: EObject, parentScope: IScope): IScope {
-        val containingStatement = context.closestAncestorOrNull<SmlStatement>()
+        val containingStatement = context.closestAncestorOrNull<SmlAbstractStatement>()
         val containingBlock = containingStatement?.closestAncestorOrNull<SmlBlock>() ?: return parentScope
 
         val placeholders = containingBlock.placeholdersUpTo(containingStatement)
@@ -214,7 +214,7 @@ class SimpleMLScopeProvider @Inject constructor(
         }
     }
 
-    private fun SmlBlock.placeholdersUpTo(containingStatement: SmlStatement): List<SmlPlaceholder> {
+    private fun SmlBlock.placeholdersUpTo(containingStatement: SmlAbstractStatement): List<SmlPlaceholder> {
         return this.statements
             .takeWhile { it !== containingStatement }
             .filterIsInstance<SmlAssignment>()
@@ -237,9 +237,9 @@ class SimpleMLScopeProvider @Inject constructor(
         return when {
             type.isNullable -> IScope.NULLSCOPE
             type is ClassType -> {
-                val members = type.smlClass.membersOrEmpty().filterIsInstance<SmlNamedTypeDeclaration>()
+                val members = type.smlClass.memberDeclarationsOrEmpty().filterIsInstance<SmlAbstractNamedTypeDeclaration>()
                 val superTypeMembers = classHierarchy.superClassMembers(type.smlClass)
-                    .filterIsInstance<SmlNamedTypeDeclaration>()
+                    .filterIsInstance<SmlAbstractNamedTypeDeclaration>()
                     .toList()
 
                 Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers))

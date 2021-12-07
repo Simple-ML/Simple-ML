@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.constants
 
-import de.unibonn.simpleml.simpleML.SmlDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 
 /**
  * Possible modifiers of declarations.
@@ -32,14 +32,14 @@ object Modifiers {
 /**
  * The declaration is explicitly marked with the `open` modifier.
  */
-fun SmlDeclaration.hasOpenModifier() = Modifiers.OPEN in this.modifiers
+fun SmlAbstractDeclaration.hasOpenModifier() = Modifiers.OPEN in this.modifiers
 
 /**
  * The declaration is explicitly marked with the `override` modifier.
  */
-fun SmlDeclaration.hasOverrideModifier() = Modifiers.OVERRIDE in this.modifiers
+fun SmlAbstractDeclaration.hasOverrideModifier() = Modifiers.OVERRIDE in this.modifiers
 
 /**
  * The declaration is explicitly marked with the `static` modifier.
  */
-fun SmlDeclaration.hasStaticModifier() = Modifiers.STATIC in this.modifiers
+fun SmlAbstractDeclaration.hasStaticModifier() = Modifiers.STATIC in this.modifiers

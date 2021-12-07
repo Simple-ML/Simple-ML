@@ -14,7 +14,7 @@ class ResultChecker : AbstractSimpleMLChecker() {
         if (smlResult.type == null) {
             error(
                     "A result must have a type.",
-                    Literals.SML_DECLARATION__NAME,
+                    Literals.SML_ABSTRACT_DECLARATION__NAME,
                     RESULT_MUST_HAVE_TYPE
             )
         }

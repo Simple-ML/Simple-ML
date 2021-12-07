@@ -17,15 +17,15 @@ import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlArgumentList
-import de.unibonn.simpleml.simpleML.SmlAssignee
+import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.simpleML.SmlDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
-import de.unibonn.simpleml.simpleML.SmlExpression
+import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlLambda
@@ -36,9 +36,9 @@ import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
-import de.unibonn.simpleml.simpleML.SmlStatement
+import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlTemplateStringPart
-import de.unibonn.simpleml.simpleML.SmlType
+import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
@@ -120,7 +120,7 @@ fun SmlCall.maybeCallable(): CallableResult {
 
                 results.first()
             }
-            current is SmlAssignee -> current.assignedOrNull()
+            current is SmlAbstractAssignee -> current.assignedOrNull()
             current is SmlMemberAccess -> current.member.declaration
             current is SmlParameter -> return when (val typeOrNull = current.type) {
                 null -> CallableResult.Unresolvable
@@ -174,7 +174,7 @@ fun SmlCall.parametersOrNull(): List<SmlParameter>? {
     }
 }
 
-fun SmlCall.resultsOrNull(): List<SmlDeclaration>? {
+fun SmlCall.resultsOrNull(): List<SmlAbstractDeclaration>? {
     return when (val callable = this.callableOrNull()) {
         is SmlClass -> listOf(callable)
         is SmlEnumVariant -> listOf(callable)
@@ -199,13 +199,13 @@ fun SmlClass?.parentClassOrNull(): SmlClass? {
 
 // Declaration ---------------------------------------------------------------------------------------------------------
 
-fun SmlDeclaration.isStatic(): Boolean {
+fun SmlAbstractDeclaration.isStatic(): Boolean {
     return Modifiers.STATIC in this.modifiers || !this.isCompilationUnitMember() &&
             (this is SmlClass || this is SmlEnum)
 }
 
-fun SmlDeclaration.isClassMember() = this.containingClassOrNull() != null
-fun SmlDeclaration.isCompilationUnitMember(): Boolean {
+fun SmlAbstractDeclaration.isClassMember() = this.containingClassOrNull() != null
+fun SmlAbstractDeclaration.isCompilationUnitMember(): Boolean {
     return !isClassMember() &&
             (
                     this is SmlAnnotation ||
@@ -218,7 +218,7 @@ fun SmlDeclaration.isCompilationUnitMember(): Boolean {
 }
 
 @OptIn(ExperimentalContracts::class)
-fun SmlDeclaration?.isResolved(): Boolean {
+fun SmlAbstractDeclaration?.isResolved(): Boolean {
     contract {
         returns(true) implies (this@isResolved != null)
     }
@@ -228,7 +228,7 @@ fun SmlDeclaration?.isResolved(): Boolean {
 
 // Assignee ------------------------------------------------------------------------------------------------------------
 
-fun SmlAssignee.assignedOrNull(): EObject? {
+fun SmlAbstractAssignee.assignedOrNull(): EObject? {
     return when (val maybeAssigned = this.maybeAssigned()) {
         is AssignedResult.Assigned -> maybeAssigned.assigned
         else -> null
@@ -241,7 +241,7 @@ sealed class AssignedResult {
     class Assigned(val assigned: EObject) : AssignedResult()
 }
 
-fun SmlAssignee.maybeAssigned(): AssignedResult {
+fun SmlAbstractAssignee.maybeAssigned(): AssignedResult {
     val assignment = this.closestAncestorOrNull<SmlAssignment>() ?: return AssignedResult.Unresolved
     val expression = assignment.expression ?: return AssignedResult.NotAssigned
 
@@ -275,7 +275,7 @@ fun SmlEnum?.isConstant() = this.variantsOrEmpty().all { it.parameterList == nul
 
 // Expression ----------------------------------------------------------------------------------------------------------
 
-fun SmlExpression.hasSideEffects(): Boolean {
+fun SmlAbstractExpression.hasSideEffects(): Boolean {
     if (this is SmlCall) {
         if (this.isRecursive()) {
             return true
@@ -325,7 +325,7 @@ fun SmlParameter.usesIn(obj: EObject) = obj.descendants<SmlReference>().filter {
 // Placeholder ---------------------------------------------------------------------------------------------------------
 
 fun SmlPlaceholder.usesIn(obj: EObject): Sequence<SmlReference> {
-    return obj.descendants<SmlStatement>()
+    return obj.descendants<SmlAbstractStatement>()
         .dropWhile { it !is SmlAssignment || this !in it.placeholdersOrEmpty() }
         .drop(1)
         .flatMap { statement ->
@@ -352,7 +352,7 @@ sealed class ClassResult {
     class Class(val `class`: SmlClass) : ClassResult()
 }
 
-fun SmlType?.maybeClass(): ClassResult {
+fun SmlAbstractType?.maybeClass(): ClassResult {
     return when (this) {
         is SmlNamedType -> {
             val declaration = this.declaration
@@ -371,14 +371,14 @@ fun SmlType?.maybeClass(): ClassResult {
     }
 }
 
-fun SmlType?.classOrNull(): SmlClass? {
+fun SmlAbstractType?.classOrNull(): SmlClass? {
     return when (val result = this.maybeClass()) {
         is ClassResult.Class -> result.`class`
         else -> null
     }
 }
 
-fun SmlType?.resolveToFunctionTypeOrNull() = this as? SmlCallableType
+fun SmlAbstractType?.resolveToFunctionTypeOrNull() = this as? SmlCallableType
 
 // TypeArgument --------------------------------------------------------------------------------------------------------
 

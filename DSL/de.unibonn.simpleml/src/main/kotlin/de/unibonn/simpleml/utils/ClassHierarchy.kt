@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.utils
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.emf.membersOrEmpty
+import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.stdlib.StdlibClasses
@@ -32,7 +32,7 @@ class ClassHierarchy @Inject constructor(
     }
 
     fun superClassMembers(smlClass: SmlClass) =
-        superClasses(smlClass).flatMap { it.membersOrEmpty().asSequence() }
+        superClasses(smlClass).flatMap { it.memberDeclarationsOrEmpty().asSequence() }
 
     // Function --------------------------------------------------------------------------------------------------------
 

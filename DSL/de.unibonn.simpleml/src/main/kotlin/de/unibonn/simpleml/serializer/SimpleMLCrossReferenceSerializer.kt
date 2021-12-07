@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.serializer
 
-import de.unibonn.simpleml.simpleML.SmlDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.CrossReference
 import org.eclipse.xtext.nodemodel.INode
@@ -18,7 +18,7 @@ class SimpleMLCrossReferenceSerializer : CrossReferenceSerializer() {
             errors: ISerializationDiagnostic.Acceptor
     ): String {
         return when (target) {
-            is SmlDeclaration -> target.name
+            is SmlAbstractDeclaration -> target.name
             else -> super.getCrossReferenceNameFromScope(semanticObject, crossref, target, scope, errors)
         }
     }
@@ -30,6 +30,6 @@ class SimpleMLCrossReferenceSerializer : CrossReferenceSerializer() {
             node: INode,
             errors: ISerializationDiagnostic.Acceptor
     ): Boolean {
-        return target is SmlDeclaration
+        return target is SmlAbstractDeclaration
     }
 }

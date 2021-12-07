@@ -27,7 +27,7 @@ class PlaceholderChecker : AbstractSimpleMLChecker() {
             if (declaration is SmlClass || declaration is SmlEnum || declaration is SmlFunction || declaration is SmlParameter || declaration is SmlPlaceholder)
                 warning(
                     "This placeholder only provides another name for a declaration.",
-                    Literals.SML_DECLARATION__NAME,
+                    Literals.SML_ABSTRACT_DECLARATION__NAME,
                     PLACEHOLDER_IS_RENAMING_OF_DECLARATION
                 )
         }
@@ -39,7 +39,7 @@ class PlaceholderChecker : AbstractSimpleMLChecker() {
         if (smlPlaceholder.usesIn(block).none()) {
             warning(
                 "This placeholder is unused.",
-                Literals.SML_DECLARATION__NAME,
+                Literals.SML_ABSTRACT_DECLARATION__NAME,
                 PLACEHOLDER_IS_UNUSED
             )
         }

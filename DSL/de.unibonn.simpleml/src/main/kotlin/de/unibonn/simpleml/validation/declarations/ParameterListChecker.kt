@@ -30,7 +30,7 @@ class ParameterListChecker : AbstractSimpleMLChecker() {
                     error(
                             "After the first optional parameter all parameters must be optional.",
                             it,
-                            Literals.SML_DECLARATION__NAME,
+                            Literals.SML_ABSTRACT_DECLARATION__NAME,
                             NO_REQUIRED_PARAMETERS_AFTER_FIRST_OPTIONAL_PARAMETER
                     )
                 }
