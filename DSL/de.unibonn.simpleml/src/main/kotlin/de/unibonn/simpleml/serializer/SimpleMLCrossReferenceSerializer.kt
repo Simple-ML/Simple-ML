@@ -11,11 +11,11 @@ import org.eclipse.xtext.serializer.tokens.CrossReferenceSerializer
 class SimpleMLCrossReferenceSerializer : CrossReferenceSerializer() {
 
     override fun getCrossReferenceNameFromScope(
-            semanticObject: EObject,
-            crossref: CrossReference,
-            target: EObject,
-            scope: IScope,
-            errors: ISerializationDiagnostic.Acceptor
+        semanticObject: EObject,
+        crossref: CrossReference,
+        target: EObject,
+        scope: IScope,
+        errors: ISerializationDiagnostic.Acceptor
     ): String {
         return when (target) {
             is SmlAbstractDeclaration -> target.name
@@ -24,11 +24,11 @@ class SimpleMLCrossReferenceSerializer : CrossReferenceSerializer() {
     }
 
     override fun isValid(
-            semanticObject: EObject,
-            crossref: CrossReference,
-            target: EObject,
-            node: INode,
-            errors: ISerializationDiagnostic.Acceptor
+        semanticObject: EObject,
+        crossref: CrossReference,
+        target: EObject,
+        node: INode,
+        errors: ISerializationDiagnostic.Acceptor
     ): Boolean {
         return target is SmlAbstractDeclaration
     }

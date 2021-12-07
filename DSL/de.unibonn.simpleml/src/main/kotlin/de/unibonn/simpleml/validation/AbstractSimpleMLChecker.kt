@@ -14,6 +14,6 @@ abstract class AbstractSimpleMLChecker : AbstractSimpleMLValidator() {
 
     protected fun List<SmlAbstractDeclaration>.reportDuplicateNames(message: (SmlAbstractDeclaration) -> String) {
         this.duplicatesBy { it.name }
-                .forEach { error(message(it), it, SimpleMLPackage.Literals.SML_ABSTRACT_DECLARATION__NAME, REDECLARATION) }
+            .forEach { error(message(it), it, SimpleMLPackage.Literals.SML_ABSTRACT_DECLARATION__NAME, REDECLARATION) }
     }
 }

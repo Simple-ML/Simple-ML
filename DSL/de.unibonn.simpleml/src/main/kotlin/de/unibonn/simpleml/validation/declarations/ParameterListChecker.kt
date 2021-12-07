@@ -24,15 +24,15 @@ class ParameterListChecker : AbstractSimpleMLChecker() {
         }
 
         smlParameterList.parameters
-                .drop(firstOptionalParameterIndex + 1)
-                .filter { it.isRequired() }
-                .forEach {
-                    error(
-                            "After the first optional parameter all parameters must be optional.",
-                            it,
-                            Literals.SML_ABSTRACT_DECLARATION__NAME,
-                            NO_REQUIRED_PARAMETERS_AFTER_FIRST_OPTIONAL_PARAMETER
-                    )
-                }
+            .drop(firstOptionalParameterIndex + 1)
+            .filter { it.isRequired() }
+            .forEach {
+                error(
+                    "After the first optional parameter all parameters must be optional.",
+                    it,
+                    Literals.SML_ABSTRACT_DECLARATION__NAME,
+                    NO_REQUIRED_PARAMETERS_AFTER_FIRST_OPTIONAL_PARAMETER
+                )
+            }
     }
 }

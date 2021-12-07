@@ -4,9 +4,9 @@ package de.unibonn.simpleml.stdlib
 
 import de.unibonn.simpleml.emf.annotationUsesOrEmpty
 import de.unibonn.simpleml.naming.fullyQualifiedName
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
-import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.utils.uniqueOrNull
 import org.eclipse.xtext.naming.QualifiedName

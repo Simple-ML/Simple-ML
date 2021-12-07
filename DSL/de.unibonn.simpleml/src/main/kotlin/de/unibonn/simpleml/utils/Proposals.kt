@@ -3,8 +3,8 @@ package de.unibonn.simpleml.utils
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.parametersOrEmpty
-import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
+import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.typing.TypeComputer

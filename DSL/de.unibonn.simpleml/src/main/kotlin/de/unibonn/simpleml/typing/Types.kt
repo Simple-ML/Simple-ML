@@ -1,8 +1,8 @@
 package de.unibonn.simpleml.typing
 
 import de.unibonn.simpleml.naming.fullyQualifiedName
-import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
+import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import org.eclipse.xtext.naming.QualifiedName

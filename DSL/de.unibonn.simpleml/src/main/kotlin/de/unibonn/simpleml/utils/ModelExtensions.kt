@@ -13,19 +13,21 @@ import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.emf.variantsOrEmpty
+import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractExpression
+import de.unibonn.simpleml.simpleML.SmlAbstractStatement
+import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlArgumentList
-import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
-import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlLambda
@@ -36,9 +38,7 @@ import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
-import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlTemplateStringPart
-import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
@@ -201,20 +201,20 @@ fun SmlClass?.parentClassOrNull(): SmlClass? {
 
 fun SmlAbstractDeclaration.isStatic(): Boolean {
     return Modifiers.STATIC in this.modifiers || !this.isCompilationUnitMember() &&
-            (this is SmlClass || this is SmlEnum)
+        (this is SmlClass || this is SmlEnum)
 }
 
 fun SmlAbstractDeclaration.isClassMember() = this.containingClassOrNull() != null
 fun SmlAbstractDeclaration.isCompilationUnitMember(): Boolean {
     return !isClassMember() &&
-            (
-                    this is SmlAnnotation ||
-                            this is SmlClass ||
-                            this is SmlEnum ||
-                            this is SmlFunction ||
-                            this is SmlWorkflow ||
-                            this is SmlWorkflowStep
-                    )
+        (
+            this is SmlAnnotation ||
+                this is SmlClass ||
+                this is SmlEnum ||
+                this is SmlFunction ||
+                this is SmlWorkflow ||
+                this is SmlWorkflowStep
+            )
 }
 
 @OptIn(ExperimentalContracts::class)
@@ -263,11 +263,11 @@ fun SmlAbstractAssignee.maybeAssigned(): AssignedResult {
 
 fun EObject?.isCallable() =
     this is SmlClass ||
-            this is SmlEnumVariant ||
-            this is SmlFunction ||
-            this is SmlCallableType ||
-            this is SmlLambda ||
-            this is SmlWorkflowStep
+        this is SmlEnumVariant ||
+        this is SmlFunction ||
+        this is SmlCallableType ||
+        this is SmlLambda ||
+        this is SmlWorkflowStep
 
 // Enum ----------------------------------------------------------------------------------------------------------------
 
@@ -283,8 +283,8 @@ fun SmlAbstractExpression.hasSideEffects(): Boolean {
 
         val callable = this.callableOrNull()
         return callable is SmlFunction && !callable.isPure() ||
-                callable is SmlWorkflowStep && !callable.isInferredPure() ||
-                callable is SmlLambda && !callable.isInferredPure()
+            callable is SmlWorkflowStep && !callable.isInferredPure() ||
+            callable is SmlLambda && !callable.isInferredPure()
     }
 
     return false
