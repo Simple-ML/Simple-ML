@@ -137,7 +137,7 @@ tasks {
         rule {
             name = "Minimal line coverage rate in percents"
             bound {
-                minValue = 67
+                minValue = 75
             }
         }
     }
