@@ -6,9 +6,8 @@ import de.unibonn.simpleml.emf.yieldsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.validation.Check
-
-const val NO_YIELD_IN_WORKFLOW = "NO_YIELD_IN_WORKFLOW"
 
 class WorkflowChecker : AbstractSimpleMLChecker() {
 
@@ -22,7 +21,7 @@ class WorkflowChecker : AbstractSimpleMLChecker() {
                     "Yield must not be used in a workflow.",
                     it,
                     null,
-                    NO_YIELD_IN_WORKFLOW
+                    ErrorCode.NO_YIELD_IN_WORKFLOW
                 )
             }
     }

@@ -12,10 +12,8 @@ import de.unibonn.simpleml.utils.assignedOrNull
 import de.unibonn.simpleml.utils.closestAncestorOrNull
 import de.unibonn.simpleml.utils.usesIn
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.codes.WarningCode
 import org.eclipse.xtext.validation.Check
-
-const val PLACEHOLDER_IS_RENAMING_OF_DECLARATION = "PLACEHOLDER_IS_RENAMING_OF_DECLARATION"
-const val PLACEHOLDER_IS_UNUSED = "PLACEHOLDER_IS_UNUSED"
 
 class PlaceholderChecker : AbstractSimpleMLChecker() {
 
@@ -28,7 +26,7 @@ class PlaceholderChecker : AbstractSimpleMLChecker() {
                 warning(
                     "This placeholder only provides another name for a declaration.",
                     Literals.SML_ABSTRACT_DECLARATION__NAME,
-                    PLACEHOLDER_IS_RENAMING_OF_DECLARATION
+                    WarningCode.PlaceholderIsRenamingOfDeclaration
                 )
         }
     }
@@ -40,7 +38,7 @@ class PlaceholderChecker : AbstractSimpleMLChecker() {
             warning(
                 "This placeholder is unused.",
                 Literals.SML_ABSTRACT_DECLARATION__NAME,
-                PLACEHOLDER_IS_UNUSED
+                WarningCode.UnusedPlaceholder
             )
         }
     }

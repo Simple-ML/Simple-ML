@@ -1,0 +1,8 @@
+package tests.validation.declarations.enumVariants.emptyParameterList
+
+enum MyEnum {
+    // semantic_warning "An enum variant with an empty parameter list must be instantiated by users. Consider removing the parameter list."
+    MyVariant1»()«
+    // no_semantic_warning "An enum variant with an empty parameter list must be instantiated by users. Consider removing the parameter list."
+    MyVariant2»(a: Int)«
+}

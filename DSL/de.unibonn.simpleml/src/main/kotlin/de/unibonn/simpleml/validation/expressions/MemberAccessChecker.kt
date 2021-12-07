@@ -6,9 +6,8 @@ import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.utils.isStatic
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.validation.Check
-
-const val INSTANCE_METHOD_MUST_BE_CALLED = "INSTANCE_METHOD_MUST_BE_CALLED"
 
 class MemberAccessChecker : AbstractSimpleMLChecker() {
 
@@ -19,7 +18,7 @@ class MemberAccessChecker : AbstractSimpleMLChecker() {
             error(
                     "An instance method must be called.",
                     Literals.SML_MEMBER_ACCESS__MEMBER,
-                    INSTANCE_METHOD_MUST_BE_CALLED
+                    ErrorCode.INSTANCE_METHOD_MUST_BE_CALLED
             )
         }
     }

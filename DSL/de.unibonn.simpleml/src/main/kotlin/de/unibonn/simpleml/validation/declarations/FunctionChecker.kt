@@ -13,6 +13,8 @@ import de.unibonn.simpleml.utils.ClassHierarchy
 import de.unibonn.simpleml.utils.isClassMember
 import de.unibonn.simpleml.utils.isStatic
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.codes.InfoCode
+import de.unibonn.simpleml.validation.codes.WarningCode
 import org.eclipse.xtext.validation.Check
 
 const val FUNCTION_MUST_NOT_BE_OPEN_AND_STATIC = "FUNCTION_MUST_NOT_BE_OPEN_AND_STATIC"
@@ -155,10 +157,10 @@ class FunctionChecker @Inject constructor(
     @Check
     fun unnecessaryResultList(smlFunction: SmlFunction) {
         if (smlFunction.resultList != null && smlFunction.resultsOrEmpty().isEmpty()) {
-            warning(
+            info(
                 "Unnecessary result list.",
                 Literals.SML_FUNCTION__RESULT_LIST,
-                UNNECESSARY_RESULT_LIST
+                InfoCode.UnnecessaryResultList
             )
         }
     }
@@ -166,10 +168,10 @@ class FunctionChecker @Inject constructor(
     @Check
     fun unnecessaryTypeParameterList(smlFunction: SmlFunction) {
         if (smlFunction.typeParameterList != null && smlFunction.typeParametersOrEmpty().isEmpty()) {
-            warning(
+            info(
                 "Unnecessary type parameter list.",
                 Literals.SML_FUNCTION__TYPE_PARAMETER_LIST,
-                UNNECESSARY_TYPE_PARAMETER_LIST
+                InfoCode.UnnecessaryTypeParameterList
             )
         }
     }

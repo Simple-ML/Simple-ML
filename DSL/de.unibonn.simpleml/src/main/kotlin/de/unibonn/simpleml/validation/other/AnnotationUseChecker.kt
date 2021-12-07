@@ -5,6 +5,7 @@ import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.targetOrNull
 import de.unibonn.simpleml.naming.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlAttribute
@@ -72,7 +73,7 @@ class AnnotationUseChecker : AbstractSimpleMLChecker() {
         if (parameters.isNotEmpty()) {
             error(
                 "Missing argument list.",
-                SimpleMLPackage.Literals.SML_ANNOTATION_USE__ANNOTATION,
+                Literals.SML_ANNOTATION_USE__ANNOTATION,
                 MISSING_ARGUMENT_LIST
             )
         }
@@ -160,7 +161,7 @@ class AnnotationUseChecker : AbstractSimpleMLChecker() {
         if (parametersOrNull != null && parametersOrNull.isEmpty()) {
             warning(
                 "Unnecessary argument list.",
-                SimpleMLPackage.Literals.SML_ANNOTATION_USE__ARGUMENT_LIST,
+                Literals.SML_ANNOTATION_USE__ARGUMENT_LIST,
                 UNNECESSARY_ARGUMENT_LIST
             )
         }
