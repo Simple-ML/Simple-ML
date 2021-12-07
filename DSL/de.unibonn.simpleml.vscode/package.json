@@ -30,7 +30,9 @@
                     "simpleml"
                 ],
                 "extensions": [
-                    ".simpleml"
+                    ".smlflow",
+                    ".smlstub",
+                    ".smltest"
                 ],
                 "configuration": "./language-configuration.json"
             }

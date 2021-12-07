@@ -61,7 +61,7 @@ Workflow {
 		}
 		language = StandardLanguage {
 			name = "de.unibonn.simpleml.SimpleML"
-			fileExtensions = "simpleml"
+			fileExtensions = "smlflow,smlstub,smltest"
 			referencedResource = "platform:/resource/de.unibonn.simpleml/model/custom/SimpleML.genmodel"
 
             formatter = {
