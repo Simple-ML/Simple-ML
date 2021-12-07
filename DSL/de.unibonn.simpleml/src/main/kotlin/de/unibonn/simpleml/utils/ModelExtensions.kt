@@ -188,7 +188,7 @@ fun SmlCall.resultsOrNull(): List<SmlDeclaration>? {
 
 // Class ---------------------------------------------------------------------------------------------------------------
 
-fun SmlClass?.parentClassesOrEmpty() = this.parentTypesOrEmpty().mapNotNull { it.resolveToClassOrNull() }
+fun SmlClass?.parentClassesOrEmpty() = this.parentTypesOrEmpty().mapNotNull { it.classOrNull() }
 fun SmlClass?.parentClassOrNull(): SmlClass? {
     val resolvedParentClasses = this.parentClassesOrEmpty()
     return when (resolvedParentClasses.size) {
@@ -201,20 +201,20 @@ fun SmlClass?.parentClassOrNull(): SmlClass? {
 
 fun SmlDeclaration.isStatic(): Boolean {
     return Modifiers.STATIC in this.modifiers || !this.isCompilationUnitMember() &&
-        (this is SmlClass || this is SmlEnum)
+            (this is SmlClass || this is SmlEnum)
 }
 
 fun SmlDeclaration.isClassMember() = this.containingClassOrNull() != null
 fun SmlDeclaration.isCompilationUnitMember(): Boolean {
     return !isClassMember() &&
-        (
-            this is SmlAnnotation ||
-                this is SmlClass ||
-                this is SmlEnum ||
-                this is SmlFunction ||
-                this is SmlWorkflow ||
-                this is SmlWorkflowStep
-            )
+            (
+                    this is SmlAnnotation ||
+                            this is SmlClass ||
+                            this is SmlEnum ||
+                            this is SmlFunction ||
+                            this is SmlWorkflow ||
+                            this is SmlWorkflowStep
+                    )
 }
 
 @OptIn(ExperimentalContracts::class)
@@ -263,11 +263,11 @@ fun SmlAssignee.maybeAssigned(): AssignedResult {
 
 fun EObject?.isCallable() =
     this is SmlClass ||
-        this is SmlEnumVariant ||
-        this is SmlFunction ||
-        this is SmlCallableType ||
-        this is SmlLambda ||
-        this is SmlWorkflowStep
+            this is SmlEnumVariant ||
+            this is SmlFunction ||
+            this is SmlCallableType ||
+            this is SmlLambda ||
+            this is SmlWorkflowStep
 
 // Enum ----------------------------------------------------------------------------------------------------------------
 
@@ -283,8 +283,8 @@ fun SmlExpression.hasSideEffects(): Boolean {
 
         val callable = this.callableOrNull()
         return callable is SmlFunction && !callable.isPure() ||
-            callable is SmlWorkflowStep && !callable.isInferredPure() ||
-            callable is SmlLambda && !callable.isInferredPure()
+                callable is SmlWorkflowStep && !callable.isInferredPure() ||
+                callable is SmlLambda && !callable.isInferredPure()
     }
 
     return false
@@ -346,10 +346,34 @@ fun SmlTemplateStringPart.realValue(): String {
 
 // Type ----------------------------------------------------------------------------------------------------------------
 
-fun SmlType?.resolveToClassOrNull(): SmlClass? {
+sealed class ClassResult {
+    object Unresolvable : ClassResult()
+    object NotAClass : ClassResult()
+    class Class(val `class`: SmlClass) : ClassResult()
+}
+
+fun SmlType?.maybeClass(): ClassResult {
     return when (this) {
-        is SmlNamedType -> this.declaration as? SmlClass
-        is SmlMemberType -> this.member.resolveToClassOrNull()
+        is SmlNamedType -> {
+            val declaration = this.declaration
+            if (declaration.isResolved()) {
+                if (declaration is SmlClass) {
+                    ClassResult.Class(declaration)
+                } else {
+                    ClassResult.NotAClass
+                }
+            } else {
+                ClassResult.Unresolvable
+            }
+        }
+        is SmlMemberType -> this.member.maybeClass()
+        else -> ClassResult.Unresolvable
+    }
+}
+
+fun SmlType?.classOrNull(): SmlClass? {
+    return when (val result = this.maybeClass()) {
+        is ClassResult.Class -> result.`class`
         else -> null
     }
 }
