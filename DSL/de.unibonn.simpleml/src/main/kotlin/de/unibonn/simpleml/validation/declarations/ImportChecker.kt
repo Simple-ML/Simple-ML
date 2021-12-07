@@ -7,12 +7,10 @@ import de.unibonn.simpleml.utils.SimpleMLIndexExtensions
 import de.unibonn.simpleml.utils.aliasName
 import de.unibonn.simpleml.utils.isQualified
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.validation.CheckType
-
-const val UNRESOLVED_IMPORTED_NAMESPACE = "UNRESOLVED_IMPORTED_NAMESPACE"
-const val WILDCARD_IMPORT_WITH_ALIAS = "WILDCARD_IMPORT_WITH_ALIAS"
 
 class ImportChecker @Inject constructor(
     private val indexExtensions: SimpleMLIndexExtensions
@@ -31,7 +29,7 @@ class ImportChecker @Inject constructor(
                 error(
                     "No declaration with qualified name '$importedNamespace' exists.",
                     Literals.SML_IMPORT__IMPORTED_NAMESPACE,
-                    UNRESOLVED_IMPORTED_NAMESPACE
+                    ErrorCode.UNRESOLVED_IMPORTED_NAMESPACE
                 )
             }
         } else {
@@ -42,7 +40,7 @@ class ImportChecker @Inject constructor(
                 error(
                     "No package with qualified name '$importedNamespace' exists.",
                     Literals.SML_IMPORT__IMPORTED_NAMESPACE,
-                    UNRESOLVED_IMPORTED_NAMESPACE
+                    ErrorCode.UNRESOLVED_IMPORTED_NAMESPACE
                 )
             }
         }
@@ -54,7 +52,7 @@ class ImportChecker @Inject constructor(
             error(
                 "A wildcard import must not have an alias.",
                 Literals.SML_IMPORT__ALIAS,
-                WILDCARD_IMPORT_WITH_ALIAS
+                ErrorCode.WILDCARD_IMPORT_WITH_ALIAS
             )
         }
     }

@@ -7,10 +7,9 @@ import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.utils.usesIn
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.codes.InfoCode
+import de.unibonn.simpleml.validation.codes.WarningCode
 import org.eclipse.xtext.validation.Check
-
-const val PARAMETER_IS_UNUSED = "PARAMETER_IS_UNUSED"
-const val UNNECESSARY_RESULT_LIST = "UNNECESSARY_RESULT_LIST"
 
 class WorkflowStepChecker : AbstractSimpleMLChecker() {
 
@@ -23,7 +22,7 @@ class WorkflowStepChecker : AbstractSimpleMLChecker() {
                     "This parameter is unused.",
                     it,
                     Literals.SML_ABSTRACT_DECLARATION__NAME,
-                    PARAMETER_IS_UNUSED
+                    WarningCode.UnusedParameter
                 )
             }
     }
@@ -40,10 +39,10 @@ class WorkflowStepChecker : AbstractSimpleMLChecker() {
     @Check
     fun unnecessaryResultList(smlWorkflowStep: SmlWorkflowStep) {
         if (smlWorkflowStep.resultList != null && smlWorkflowStep.resultsOrEmpty().isEmpty()) {
-            warning(
+            info(
                 "Unnecessary result list.",
                 Literals.SML_WORKFLOW_STEP__RESULT_LIST,
-                UNNECESSARY_RESULT_LIST
+                InfoCode.UnnecessaryResultList
             )
         }
     }

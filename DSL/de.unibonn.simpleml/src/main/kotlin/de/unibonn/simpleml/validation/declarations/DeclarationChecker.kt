@@ -23,13 +23,9 @@ import de.unibonn.simpleml.utils.isClassMember
 import de.unibonn.simpleml.utils.isCompilationUnitMember
 import de.unibonn.simpleml.utils.isRequired
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.codes.ErrorCode
+import de.unibonn.simpleml.validation.codes.InfoCode
 import org.eclipse.xtext.validation.Check
-
-const val ANNOTATION_IS_SINGLE_USE = "ANNOTATION_IS_SINGLE_USE"
-const val DUPLICATE_MODIFIER = "DUPLICATE_MODIFIER"
-const val DEPRECATED_REQUIRED_PARAMETER = "DEPRECATED_REQUIRED_PARAMETER"
-const val INVALID_MODIFIER = "INVALID_MODIFIER"
-const val UNNECESSARY_MODIFIER = "UNNECESSARY_MODIFIER"
 
 class DeclarationChecker : AbstractSimpleMLChecker() {
 
@@ -43,7 +39,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
                     "This annotation can only be used once.",
                     it,
                     null,
-                    ANNOTATION_IS_SINGLE_USE
+                    ErrorCode.ANNOTATION_IS_SINGLE_USE
                 )
             }
     }
@@ -90,7 +86,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
                             "Modifiers must be unique.",
                             Literals.SML_ABSTRACT_DECLARATION__MODIFIERS,
                             index,
-                            DUPLICATE_MODIFIER,
+                            ErrorCode.DUPLICATE_MODIFIER,
                             modifier
                         )
                     }
@@ -142,7 +138,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
                     "A required parameter cannot be deprecated.",
                     deprecatedAnnotationOrNull,
                     null,
-                    DEPRECATED_REQUIRED_PARAMETER
+                    ErrorCode.DEPRECATED_REQUIRED_PARAMETER
                 )
             }
         }
@@ -183,7 +179,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
                     message,
                     Literals.SML_ABSTRACT_DECLARATION__MODIFIERS,
                     index,
-                    INVALID_MODIFIER,
+                    ErrorCode.INVALID_MODIFIER,
                     modifier
                 )
             }
@@ -200,7 +196,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
                     message,
                     Literals.SML_ABSTRACT_DECLARATION__MODIFIERS,
                     index,
-                    UNNECESSARY_MODIFIER,
+                    InfoCode.UnnecessaryModifier,
                     modifier
                 )
             }

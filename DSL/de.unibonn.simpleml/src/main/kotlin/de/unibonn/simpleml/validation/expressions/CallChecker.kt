@@ -16,16 +16,9 @@ import de.unibonn.simpleml.utils.maybeCallable
 import de.unibonn.simpleml.utils.resultsOrNull
 import de.unibonn.simpleml.utils.typeParametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
-import de.unibonn.simpleml.validation.types.MISSING_TYPE_ARGUMENT_LIST
+import de.unibonn.simpleml.validation.codes.ErrorCode
+import de.unibonn.simpleml.validation.codes.InfoCode
 import org.eclipse.xtext.validation.Check
-
-const val CONTEXT_OF_CALL_WITHOUT_RESULTS = "CONTEXT_OF_CALL_WITHOUT_RESULTS"
-const val CONTEXT_OF_CALL_WITH_MANY_RESULTS = "CONTEXT_OF_CALL_WITH_MANY_RESULTS"
-const val NO_RECURSION = "NO_RECURSION"
-const val RECEIVER_MUST_BE_CALLABLE = "RECEIVER_MUST_BE_CALLABLE"
-const val CALLED_CLASS_MUST_HAVE_CONSTRUCTOR = "CALLED_CLASS_MUST_HAVE_CONSTRUCTOR"
-const val CALLED_ENUM_VARIANT_MUST_HAVE_CONSTRUCTOR = "CALLED_ENUM_VARIANT_MUST_HAVE_CONSTRUCTOR"
-const val UNNECESSARY_TYPE_ARGUMENT_LIST = "UNNECESSARY_TYPE_ARGUMENT_LIST"
 
 class CallChecker : AbstractSimpleMLChecker() {
 
@@ -46,7 +39,7 @@ class CallChecker : AbstractSimpleMLChecker() {
             error(
                 "Missing type argument list.",
                 Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
-                MISSING_TYPE_ARGUMENT_LIST
+                ErrorCode.MISSING_TYPE_ARGUMENT_LIST
             )
         }
     }
@@ -59,10 +52,10 @@ class CallChecker : AbstractSimpleMLChecker() {
 
         val typeParametersOrNull = smlCall.typeArgumentList.typeParametersOrNull()
         if (typeParametersOrNull != null && typeParametersOrNull.isEmpty()) {
-            warning(
+            info(
                 "Unnecessary type argument list.",
                 Literals.SML_CALL__TYPE_ARGUMENT_LIST,
-                UNNECESSARY_TYPE_ARGUMENT_LIST
+                InfoCode.UnnecessaryTypeArgumentList
             )
         }
     }
@@ -84,14 +77,14 @@ class CallChecker : AbstractSimpleMLChecker() {
                 "A call that produces no results is not allowed in this context.",
                 source,
                 feature,
-                CONTEXT_OF_CALL_WITHOUT_RESULTS
+                ErrorCode.CONTEXT_OF_CALL_WITHOUT_RESULTS
             )
         } else if (results.size > 1 && !smlCall.hasValidContextForCallWithMultipleResults()) {
             error(
                 "A call that produces multiple results is not allowed in this context.",
                 source,
                 feature,
-                CONTEXT_OF_CALL_WITH_MANY_RESULTS
+                ErrorCode.CONTEXT_OF_CALL_WITH_MANY_RESULTS
             )
         }
     }
@@ -112,7 +105,7 @@ class CallChecker : AbstractSimpleMLChecker() {
             error(
                 "Recursive calls are not allowed.",
                 Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
-                NO_RECURSION
+                ErrorCode.NO_RECURSION
             )
         }
     }
@@ -124,7 +117,7 @@ class CallChecker : AbstractSimpleMLChecker() {
                 error(
                     "This expression must not be called.",
                     Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
-                    RECEIVER_MUST_BE_CALLABLE
+                    ErrorCode.RECEIVER_MUST_BE_CALLABLE
                 )
             }
             is CallableResult.Callable -> {
@@ -133,13 +126,13 @@ class CallChecker : AbstractSimpleMLChecker() {
                     error(
                         "Cannot create an instance of a class that has no constructor.",
                         Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
-                        CALLED_CLASS_MUST_HAVE_CONSTRUCTOR
+                        ErrorCode.CALLED_CLASS_MUST_HAVE_CONSTRUCTOR
                     )
                 } else if (callable is SmlEnumVariant && callable.parameterList == null) {
                     error(
                         "Cannot create an instance of an enum variant that has no constructor.",
                         Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
-                        CALLED_ENUM_VARIANT_MUST_HAVE_CONSTRUCTOR
+                        ErrorCode.CALLED_ENUM_VARIANT_MUST_HAVE_CONSTRUCTOR
                     )
                 }
             }

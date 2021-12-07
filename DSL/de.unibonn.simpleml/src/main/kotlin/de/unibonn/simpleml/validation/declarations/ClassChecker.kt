@@ -14,15 +14,9 @@ import de.unibonn.simpleml.utils.classOrNull
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.maybeClass
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.codes.ErrorCode
+import de.unibonn.simpleml.validation.codes.InfoCode
 import org.eclipse.xtext.validation.Check
-
-const val CLASS_MUST_HAVE_ONLY_ONE_PARENT_CLASS = "CLASS_MUST_HAVE_ONLY_ONE_PARENT_CLASS"
-const val CLASS_MUST_HAVE_UNIQUE_PARENT_TYPES = "CLASS_MUST_HAVE_UNIQUE_PARENT_TYPES"
-const val CLASS_MUST_INHERIT_ONLY_CLASSES = "CLASS_MUST_INHERIT_ONLY_CLASSES"
-const val CLASS_MUST_NOT_BE_SUBTYPE_OF_ITSELF = "CLASS_MUST_NOT_BE_SUBTYPE_OF_ITSELF"
-const val PARENT_CLASS_MUST_BE_OPEN = "PARENT_CLASS_MUST_BE_OPEN"
-const val UNNECESSARY_CLASS_BODY = "UNNECESSARY_CLASS_BODY"
-const val UNNECESSARY_TYPE_PARAMETER_LIST = "UNNECESSARY_TYPE_PARAMETER_LIST"
 
 class ClassChecker @Inject constructor(
     private val classHierarchy: ClassHierarchy
@@ -40,7 +34,7 @@ class ClassChecker @Inject constructor(
                     "A class must not directly or indirectly be a subtype of itself.",
                     it,
                     null,
-                    CLASS_MUST_NOT_BE_SUBTYPE_OF_ITSELF
+                    ErrorCode.CLASS_MUST_NOT_BE_SUBTYPE_OF_ITSELF
                 )
             }
     }
@@ -48,10 +42,10 @@ class ClassChecker @Inject constructor(
     @Check
     fun body(smlClass: SmlClass) {
         if (smlClass.body != null && smlClass.memberDeclarationsOrEmpty().isEmpty()) {
-            warning(
+            info(
                 "Unnecessary class body.",
                 Literals.SML_CLASS__BODY,
-                UNNECESSARY_CLASS_BODY
+                InfoCode.UnnecessaryBody
             )
         }
     }
@@ -68,7 +62,7 @@ class ClassChecker @Inject constructor(
                     "The parent class must be open.",
                     it,
                     null,
-                    PARENT_CLASS_MUST_BE_OPEN
+                    ErrorCode.PARENT_CLASS_MUST_BE_OPEN
                 )
             }
 
@@ -79,7 +73,7 @@ class ClassChecker @Inject constructor(
                     "A class must only inherit classes.",
                     it,
                     null,
-                    CLASS_MUST_INHERIT_ONLY_CLASSES
+                    ErrorCode.CLASS_MUST_INHERIT_ONLY_CLASSES
                 )
             }
     }
@@ -95,7 +89,7 @@ class ClassChecker @Inject constructor(
                     "A class must have only one parent class.",
                     it,
                     null,
-                    CLASS_MUST_HAVE_ONLY_ONE_PARENT_CLASS
+                    ErrorCode.CLASS_MUST_HAVE_ONLY_ONE_PARENT_CLASS
                 )
             }
         }
@@ -120,7 +114,7 @@ class ClassChecker @Inject constructor(
                     "Parent types must be unique.",
                     it,
                     null,
-                    CLASS_MUST_HAVE_UNIQUE_PARENT_TYPES
+                    ErrorCode.CLASS_MUST_HAVE_UNIQUE_PARENT_TYPES
                 )
             }
     }
@@ -128,10 +122,10 @@ class ClassChecker @Inject constructor(
     @Check
     fun unnecessaryTypeParameterList(smlClass: SmlClass) {
         if (smlClass.typeParameterList != null && smlClass.typeParametersOrEmpty().isEmpty()) {
-            warning(
+            info(
                 "Unnecessary type parameter list.",
                 Literals.SML_CLASS__TYPE_PARAMETER_LIST,
-                UNNECESSARY_TYPE_PARAMETER_LIST
+                InfoCode.UnnecessaryTypeParameterList
             )
         }
     }

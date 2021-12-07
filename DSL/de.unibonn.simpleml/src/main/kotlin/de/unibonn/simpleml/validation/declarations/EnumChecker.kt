@@ -4,19 +4,18 @@ import de.unibonn.simpleml.emf.variantsOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.codes.InfoCode
 import org.eclipse.xtext.validation.Check
-
-const val UNNECESSARY_ENUM_BODY = "UNNECESSARY_ENUM_BODY"
 
 class EnumChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun body(smlEnum: SmlEnum) {
         if (smlEnum.body != null && smlEnum.variantsOrEmpty().isEmpty()) {
-            warning(
+            info(
                 "Unnecessary enum body.",
                 Literals.SML_ENUM__BODY,
-                UNNECESSARY_ENUM_BODY
+                InfoCode.UnnecessaryBody
             )
         }
     }

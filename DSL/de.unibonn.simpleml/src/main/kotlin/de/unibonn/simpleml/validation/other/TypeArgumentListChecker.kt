@@ -6,11 +6,8 @@ import de.unibonn.simpleml.utils.isPositional
 import de.unibonn.simpleml.utils.typeParameterOrNull
 import de.unibonn.simpleml.utils.typeParametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.validation.Check
-
-const val MISSING_REQUIRED_TYPE_PARAMETER = "MISSING_REQUIRED_TYPE_PARAMETER"
-const val NO_POSITIONAL_TYPE_ARGUMENTS_AFTER_FIRST_NAMED_TYPE_ARGUMENT =
-    "NO_POSITIONAL_TYPE_ARGUMENTS_AFTER_FIRST_NAMED_TYPE_ARGUMENT"
 
 class TypeArgumentListChecker : AbstractSimpleMLChecker() {
 
@@ -24,7 +21,7 @@ class TypeArgumentListChecker : AbstractSimpleMLChecker() {
             error(
                 "The type parameter '${it.name}' is required and must be set here.",
                 null,
-                MISSING_REQUIRED_TYPE_PARAMETER
+                ErrorCode.MISSING_REQUIRED_TYPE_PARAMETER
             )
         }
     }
@@ -44,7 +41,7 @@ class TypeArgumentListChecker : AbstractSimpleMLChecker() {
                     "After the first named type argument all type arguments must be named.",
                     it,
                     null,
-                    NO_POSITIONAL_TYPE_ARGUMENTS_AFTER_FIRST_NAMED_TYPE_ARGUMENT
+                    ErrorCode.NO_POSITIONAL_TYPE_ARGUMENTS_AFTER_FIRST_NAMED_TYPE_ARGUMENT
                 )
             }
     }
