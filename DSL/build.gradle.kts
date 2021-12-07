@@ -1,7 +1,7 @@
 // Plugins -------------------------------------------------------------------------------------------------------------
 
 plugins {
-    kotlin("jvm") version "1.5.31" apply false
+    kotlin("jvm") version "1.6.0" apply false
     id("org.xtext.xtend") version "2.1.0" apply false
     id("com.github.node-gradle.node") version "3.1.1" apply false
 
