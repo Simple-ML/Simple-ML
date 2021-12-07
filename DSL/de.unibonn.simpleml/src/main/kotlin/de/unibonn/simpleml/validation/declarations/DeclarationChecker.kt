@@ -36,10 +36,6 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun annotationCardinality(smlDeclaration: SmlAbstractDeclaration) {
-        if (smlDeclaration is SmlAnnotationUseHolder) {
-            return
-        }
-
         smlDeclaration.annotationUsesOrEmpty()
             .filter { it.annotation != null && !it.annotation.eIsProxy() && !it.annotation.isMultiUse() }
             .duplicatesBy { it.annotation.fullyQualifiedName() }
@@ -86,10 +82,6 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun declarationModifiers(smlDeclaration: SmlAbstractDeclaration) {
-        if (smlDeclaration is SmlAnnotationUseHolder) {
-            return
-        }
-
         if (smlDeclaration.shouldCheckDeclarationModifiers()) {
             val duplicateModifiers = smlDeclaration.modifiers.duplicatesBy { it }
             smlDeclaration.modifiers
