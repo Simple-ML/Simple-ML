@@ -2,10 +2,15 @@ package de.unibonn.simpleml.prolog_bridge.model.facts
 
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlTerm.Companion.fromJavaRepresentation
 import de.unibonn.simpleml.prolog_bridge.utils.Id
+import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractExpression
+import de.unibonn.simpleml.simpleML.SmlAbstractStatement
+import de.unibonn.simpleml.simpleML.SmlAbstractType
+import de.unibonn.simpleml.simpleML.SmlAbstractTypeArgumentValue
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlArgument
-import de.unibonn.simpleml.simpleML.SmlAssignee
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlBoolean
@@ -13,10 +18,8 @@ import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
-import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
-import de.unibonn.simpleml.simpleML.SmlExpression
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlFunction
@@ -36,13 +39,10 @@ import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStarProjection
-import de.unibonn.simpleml.simpleML.SmlStatement
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTemplateStringPart
-import de.unibonn.simpleml.simpleML.SmlType
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
-import de.unibonn.simpleml.simpleML.SmlTypeArgumentValue
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
 import de.unibonn.simpleml.simpleML.SmlTypeProjection
@@ -149,7 +149,7 @@ sealed class NodeWithParent(factName: String, id: Id<EObject>, parent: Id<EObjec
  */
 data class CompilationUnitT(
     override val id: Id<SmlCompilationUnit>,
-    val members: List<Id<SmlDeclaration>>
+    val members: List<Id<SmlAbstractDeclaration>>
 ) : Node("compilationUnitT", id, members) {
     override fun toString() = super.toString()
 }
@@ -180,7 +180,7 @@ data class CompilationUnitT(
  */
 sealed class DeclarationT(
     factName: String,
-    id: Id<SmlDeclaration>,
+    id: Id<SmlAbstractDeclaration>,
     parent: Id<EObject>, // SmlClassOrInterface | SmlCompilationUnit
     name: String,
     vararg otherArguments: Any?
@@ -238,7 +238,7 @@ data class AttributeT(
     override val id: Id<SmlAttribute>,
     override val parent: Id<EObject>, // Actually just SmlClassOrInterface but this allows a handleDeclaration function
     override val name: String,
-    val type: Id<SmlType>?
+    val type: Id<SmlAbstractType>?
 ) :
     DeclarationT("attributeT", id, parent, name, type) {
     override fun toString() = super.toString()
@@ -287,9 +287,9 @@ data class ClassT(
     override val name: String,
     val typeParameters: List<Id<SmlTypeParameter>>?,
     val parameters: List<Id<SmlParameter>>?,
-    val parentTypes: List<Id<SmlType>>?,
+    val parentTypes: List<Id<SmlAbstractType>>?,
     val typeParameterConstraints: List<Id<SmlTypeParameterConstraint>>?,
-    val members: List<Id<SmlDeclaration>>?
+    val members: List<Id<SmlAbstractDeclaration>>?
 ) : DeclarationT(
     "classT",
     id,
@@ -430,7 +430,7 @@ data class PackageT(
     override val parent: Id<EObject>, // Actually just SmlCompilationUnit but this allows a handleDeclaration function
     override val name: String,
     val imports: List<Id<SmlImport>>,
-    val members: List<Id<SmlDeclaration>>
+    val members: List<Id<SmlAbstractDeclaration>>
 ) : DeclarationT("packageT", id, parent, name, imports, members) {
     override fun toString() = super.toString()
 }
@@ -486,8 +486,8 @@ data class ParameterT(
     override val parent: Id<EObject>, // Actually just SmlDeclaration but this allows a handleDeclaration function
     override val name: String,
     val isVariadic: Boolean,
-    val type: Id<SmlType>?,
-    val defaultValue: Id<SmlExpression>?
+    val type: Id<SmlAbstractType>?,
+    val defaultValue: Id<SmlAbstractExpression>?
 ) : DeclarationT(
     "parameterT",
     id,
@@ -519,7 +519,7 @@ data class ResultT(
     override val id: Id<SmlResult>,
     override val parent: Id<EObject>,
     override val name: String,
-    val type: Id<SmlType>?
+    val type: Id<SmlAbstractType>?
 ) :
     DeclarationT("resultT", id, parent, name, type) {
     override fun toString() = super.toString()
@@ -569,7 +569,7 @@ data class WorkflowT(
     override val id: Id<SmlWorkflow>,
     override val parent: Id<EObject>, // Actually just SmlCompilationUnit but this allows a handleDeclaration function
     override val name: String,
-    val statements: List<Id<SmlStatement>>
+    val statements: List<Id<SmlAbstractStatement>>
 ) : DeclarationT("workflowT", id, parent, name, statements) {
     override fun toString() = super.toString()
 }
@@ -605,7 +605,7 @@ data class WorkflowStepT(
     override val name: String,
     val parameters: List<Id<SmlParameter>>,
     val results: List<Id<SmlResult>>?,
-    val statements: List<Id<SmlStatement>>
+    val statements: List<Id<SmlAbstractStatement>>
 ) : DeclarationT(
     "workflowStepT",
     id,
@@ -639,7 +639,7 @@ data class WorkflowStepT(
  */
 sealed class StatementT(
     factName: String,
-    id: Id<SmlStatement>,
+    id: Id<SmlAbstractStatement>,
     parent: Id<EObject>, // SmlLambda | SmlWorkflow | SmlWorkflowStep
     vararg otherArguments: Any?
 ) :
@@ -663,8 +663,8 @@ sealed class StatementT(
 data class AssignmentT(
     override val id: Id<SmlAssignment>,
     override val parent: Id<EObject>,
-    val assignees: List<Id<SmlAssignee>>,
-    val expression: Id<SmlExpression>
+    val assignees: List<Id<SmlAbstractAssignee>>,
+    val expression: Id<SmlAbstractExpression>
 ) :
     StatementT("assignmentT", id, parent, assignees, expression) {
     override fun toString() = super.toString()
@@ -768,7 +768,7 @@ data class YieldT(
 data class ExpressionStatementT(
     override val id: Id<SmlExpressionStatement>,
     override val parent: Id<EObject>,
-    val expression: Id<SmlExpression>
+    val expression: Id<SmlAbstractExpression>
 ) :
     StatementT("expressionStatementT", id, parent, expression) {
     override fun toString() = super.toString()
@@ -799,7 +799,7 @@ data class ExpressionStatementT(
  */
 sealed class ExpressionT(
     factName: String,
-    id: Id<SmlExpression>,
+    id: Id<SmlAbstractExpression>,
     parent: Id<EObject>,
     enclosing: Id<EObject>,
     vararg otherArguments: Any?
@@ -837,7 +837,7 @@ data class ArgumentT(
     override val parent: Id<EObject>,
     override val enclosing: Id<EObject>,
     val parameter: Id<SmlParameter>?,
-    val value: Id<SmlExpression>
+    val value: Id<SmlAbstractExpression>
 ) : ExpressionT("argumentT", id, parent, enclosing, parameter, value) {
     override fun toString() = super.toString()
 }
@@ -895,7 +895,7 @@ data class CallT(
     override val id: Id<SmlCall>,
     override val parent: Id<EObject>,
     override val enclosing: Id<EObject>,
-    val receiver: Id<SmlExpression>,
+    val receiver: Id<SmlAbstractExpression>,
     val typeArguments: List<Id<SmlTypeArgument>>?,
     val arguments: List<Id<SmlArgument>>
 ) : ExpressionT(
@@ -960,9 +960,9 @@ data class InfixOperationT(
     override val id: Id<SmlInfixOperation>,
     override val parent: Id<EObject>,
     override val enclosing: Id<EObject>,
-    val leftOperand: Id<SmlExpression>,
+    val leftOperand: Id<SmlAbstractExpression>,
     val operator: String,
-    val rightOperand: Id<SmlExpression>
+    val rightOperand: Id<SmlAbstractExpression>
 ) : ExpressionT(
     "infixOperationT",
     id,
@@ -1026,7 +1026,7 @@ data class LambdaT(
     override val parent: Id<EObject>,
     override val enclosing: Id<EObject>,
     val parameters: List<Id<SmlParameter>>?,
-    val statements: List<Id<SmlStatement>>
+    val statements: List<Id<SmlAbstractStatement>>
 ) : ExpressionT(
     "lambdaT",
     id,
@@ -1063,7 +1063,7 @@ data class MemberAccessT(
     override val id: Id<SmlMemberAccess>,
     override val parent: Id<EObject>,
     override val enclosing: Id<EObject>,
-    val receiver: Id<SmlExpression>,
+    val receiver: Id<SmlAbstractExpression>,
     val isNullSafe: Boolean,
     val member: Id<SmlReference>
 ) : ExpressionT(
@@ -1111,10 +1111,10 @@ data class NullT(override val id: Id<SmlNull>, override val parent: Id<EObject>,
  * The ID of the fact for the expression inside the parentheses.
  */
 data class ParenthesizedExpressionT(
-    override val id: Id<SmlExpression>,
+    override val id: Id<SmlAbstractExpression>,
     override val parent: Id<EObject>,
     override val enclosing: Id<EObject>,
-    val expression: Id<SmlExpression>
+    val expression: Id<SmlAbstractExpression>
 ) : ExpressionT("parenthesizedExpressionT", id, parent, enclosing, expression) {
     override fun toString() = super.toString()
 }
@@ -1142,7 +1142,7 @@ data class PrefixOperationT(
     override val parent: Id<EObject>,
     override val enclosing: Id<EObject>,
     val operator: String,
-    val operand: Id<SmlExpression>
+    val operand: Id<SmlAbstractExpression>
 ) : ExpressionT(
     "prefixOperationT",
     id,
@@ -1173,7 +1173,7 @@ data class ReferenceT(
     override val id: Id<SmlReference>,
     override val parent: Id<EObject>,
     override val enclosing: Id<EObject>,
-    val symbol: Id<SmlDeclaration>
+    val symbol: Id<SmlAbstractDeclaration>
 ) : ExpressionT("referenceT", id, parent, enclosing, symbol) {
     override fun toString() = super.toString()
 }
@@ -1221,7 +1221,7 @@ data class TemplateStringT(
     override val id: Id<SmlTemplateString>,
     override val parent: Id<EObject>,
     override val enclosing: Id<EObject>,
-    val expressions: List<Id<SmlExpression>>
+    val expressions: List<Id<SmlAbstractExpression>>
 ) : ExpressionT("templateStringT", id, parent, enclosing, expressions) {
     override fun toString() = super.toString()
 }
@@ -1269,7 +1269,7 @@ data class TemplateStringPartT(
  * @param otherArguments
  * Arguments of this fact beyond ID and parent. Arguments can either be `null`, booleans, IDs, number, strings or lists.
  */
-sealed class TypeT(factName: String, id: Id<SmlType>, parent: Id<EObject>, vararg otherArguments: Any?) :
+sealed class TypeT(factName: String, id: Id<SmlAbstractType>, parent: Id<EObject>, vararg otherArguments: Any?) :
     NodeWithParent(factName, id, parent, *otherArguments)
 
 /**
@@ -1316,7 +1316,7 @@ data class CallableTypeT(
 data class MemberTypeT(
     override val id: Id<SmlMemberType>,
     override val parent: Id<EObject>,
-    val receiver: Id<SmlType>,
+    val receiver: Id<SmlAbstractType>,
     val member: Id<SmlNamedType>
 ) :
     TypeT("memberTypeT", id, parent, receiver, member) {
@@ -1347,7 +1347,7 @@ data class MemberTypeT(
 data class NamedTypeT(
     override val id: Id<SmlNamedType>,
     override val parent: Id<EObject>,
-    val declaration: Id<SmlDeclaration>,
+    val declaration: Id<SmlAbstractDeclaration>,
     val typeArguments: List<Id<SmlTypeArgument>>?,
     val isNullable: Boolean
 ) : TypeT(
@@ -1373,7 +1373,7 @@ data class NamedTypeT(
  * @param type
  * The ID of the fact for the type inside the parentheses.
  */
-data class ParenthesizedTypeT(override val id: Id<SmlType>, override val parent: Id<EObject>, val type: Id<SmlType>) :
+data class ParenthesizedTypeT(override val id: Id<SmlAbstractType>, override val parent: Id<EObject>, val type: Id<SmlAbstractType>) :
     TypeT("parenthesizedTypeT", id, parent, type) {
     override fun toString() = super.toString()
 }
@@ -1420,7 +1420,7 @@ data class TypeArgumentT(
     override val id: Id<SmlTypeArgument>,
     override val parent: Id<EObject>,
     val typeParameter: Id<SmlTypeParameter>?,
-    val value: Id<SmlTypeArgumentValue>
+    val value: Id<SmlAbstractTypeArgumentValue>
 ) :
     NodeWithParent("typeArgumentT", id, parent, typeParameter, value) {
     override fun toString() = super.toString()
@@ -1464,7 +1464,7 @@ data class TypeProjectionT(
     override val id: Id<SmlTypeProjection>,
     override val parent: Id<SmlTypeArgument>,
     val variance: String?,
-    val type: Id<SmlType>
+    val type: Id<SmlAbstractType>
 ) :
     NodeWithParent("typeProjectionT", id, parent, variance, type), TypeArgumentValueT {
     override fun toString() = super.toString()
@@ -1494,7 +1494,7 @@ data class TypeParameterConstraintT(
     override val parent: Id<EObject>,
     val leftOperand: Id<SmlTypeParameter>,
     val operator: String,
-    val rightOperand: Id<SmlType>
+    val rightOperand: Id<SmlAbstractType>
 ) : NodeWithParent(
     "typeParameterConstraintT",
     id,
@@ -1530,7 +1530,7 @@ data class TypeParameterConstraintT(
  */
 data class AnnotationUseT(
     override val id: Id<SmlAnnotationUse>,
-    override val parent: Id<SmlDeclaration>,
+    override val parent: Id<SmlAbstractDeclaration>,
     val annotation: Id<SmlAnnotation>,
     val arguments: List<Id<SmlArgument>>?
 ) :
@@ -1586,7 +1586,7 @@ sealed class Relation(factName: String, target: Id<EObject>, vararg otherArgumen
  * @param modifier
  * The modifier, for example "deprecated" or "open".
  */
-data class ModifierT(override val target: Id<SmlDeclaration>, val modifier: String) :
+data class ModifierT(override val target: Id<SmlAbstractDeclaration>, val modifier: String) :
     Relation("modifierT", target, modifier) {
     override fun toString() = super.toString()
 }

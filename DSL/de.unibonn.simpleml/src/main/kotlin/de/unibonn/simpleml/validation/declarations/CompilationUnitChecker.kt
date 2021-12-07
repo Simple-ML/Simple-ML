@@ -2,6 +2,7 @@ package de.unibonn.simpleml.validation.declarations
 
 import de.unibonn.simpleml.constants.isInStubFile
 import de.unibonn.simpleml.constants.isInTestFile
+import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
 import de.unibonn.simpleml.emf.uniquePackageOrNull
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
@@ -31,7 +32,7 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
                     error(
                         "A stub file must not declare workflows or workflow steps.",
                         it,
-                        Literals.SML_DECLARATION__NAME,
+                        Literals.SML_ABSTRACT_DECLARATION__NAME,
                         STUB_FILE_MUST_NOT_DECLARE_WORKFLOWS
                     )
                 }
@@ -42,7 +43,7 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
                     error(
                         "A workflow file must only declare workflows and workflow steps.",
                         it,
-                        Literals.SML_DECLARATION__NAME,
+                        Literals.SML_ABSTRACT_DECLARATION__NAME,
                         WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_WORKFLOW_STEPS
                     )
                 }
@@ -79,7 +80,7 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
                     error(
                         "A file must have only one package.",
                         it,
-                        Literals.SML_DECLARATION__NAME,
+                        Literals.SML_ABSTRACT_DECLARATION__NAME,
                         FILE_MUST_HAVE_ONLY_ONE_PACKAGE
                     )
                 }
@@ -94,13 +95,13 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun uniqueNames(smlCompilationUnit: SmlCompilationUnit) {
-        smlCompilationUnit.members
+        smlCompilationUnit.memberDeclarationsOrEmpty()
             .duplicatesBy { it.name }
             .forEach {
                 error(
                     "A declaration with name '${it.name}' exists already in this file.",
                     it,
-                    Literals.SML_DECLARATION__NAME,
+                    Literals.SML_ABSTRACT_DECLARATION__NAME,
                     REDECLARATION
                 )
             }

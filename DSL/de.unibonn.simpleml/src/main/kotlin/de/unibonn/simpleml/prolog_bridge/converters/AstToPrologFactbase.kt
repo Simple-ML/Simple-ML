@@ -3,7 +3,7 @@ package de.unibonn.simpleml.prolog_bridge.converters
 import de.unibonn.simpleml.emf.annotationUsesOrEmpty
 import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.assigneesOrEmpty
-import de.unibonn.simpleml.emf.membersOrEmpty
+import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
@@ -65,10 +65,15 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.YieldT
 import de.unibonn.simpleml.prolog_bridge.utils.Id
 import de.unibonn.simpleml.prolog_bridge.utils.IdManager
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
+import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractExpression
+import de.unibonn.simpleml.simpleML.SmlAbstractStatement
+import de.unibonn.simpleml.simpleML.SmlAbstractType
+import de.unibonn.simpleml.simpleML.SmlAbstractTypeArgumentValue
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlArgument
-import de.unibonn.simpleml.simpleML.SmlAssignee
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlBoolean
@@ -76,10 +81,8 @@ import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
-import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
-import de.unibonn.simpleml.simpleML.SmlExpression
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlFunction
@@ -101,13 +104,10 @@ import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStarProjection
-import de.unibonn.simpleml.simpleML.SmlStatement
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTemplateStringPart
-import de.unibonn.simpleml.simpleML.SmlType
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
-import de.unibonn.simpleml.simpleML.SmlTypeArgumentValue
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
 import de.unibonn.simpleml.simpleML.SmlTypeProjection
@@ -178,14 +178,17 @@ class AstToPrologFactbase {
     // ****************************************************************************************************************/
 
     private fun PlFactbase.visitCompilationUnit(obj: SmlCompilationUnit) {
-        obj.members.forEach { this.visitDeclaration(it, obj.id) }
+        obj.memberDeclarationsOrEmpty().forEach { this.visitDeclaration(it, obj.id) }
 
-        +CompilationUnitT(obj.id, obj.members.map { it.id })
+        +CompilationUnitT(
+            obj.id,
+            obj.memberDeclarationsOrEmpty().map { it.id }
+        )
         +ResourceS(obj.id, obj.eResource().uri.toString())
         visitSourceLocation(obj)
     }
 
-    private fun PlFactbase.visitDeclaration(obj: SmlDeclaration, parentId: Id<EObject>) {
+    private fun PlFactbase.visitDeclaration(obj: SmlAbstractDeclaration, parentId: Id<EObject>) {
         obj.annotationUsesOrEmpty().forEach { visitAnnotationUse(it, obj.id) }
         obj.modifiers.forEach { visitModifier(it, obj.id) }
 
@@ -205,7 +208,12 @@ class AstToPrologFactbase {
                 obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
                 obj.parentTypesOrEmpty().forEach { visitType(it, obj.id) }
                 obj.typeParameterConstraintsOrEmpty().forEach { visitTypeParameterConstraint(it, obj.id) }
-                obj.membersOrEmpty().forEach { visitDeclaration(it, obj.id) }
+                obj.memberDeclarationsOrEmpty().forEach { visitDeclaration(it, obj.id) }
+
+                val body = when (obj.body) {
+                    null -> null
+                    else -> obj.memberDeclarationsOrEmpty().map { it.id }
+                }
 
                 +ClassT(
                     obj.id,
@@ -215,7 +223,7 @@ class AstToPrologFactbase {
                     obj.parameterList?.parameters?.map { it.id },
                     obj.parentTypeList?.parentTypes?.map { it.id },
                     obj.typeParameterConstraintList?.constraints?.map { it.id },
-                    obj.body?.members?.map { it.id }
+                    body
                 )
             }
             is SmlEnum -> {
@@ -255,9 +263,15 @@ class AstToPrologFactbase {
             }
             is SmlPackage -> {
                 obj.imports.forEach { this.visitImport(it, obj.id) }
-                obj.members.forEach { this.visitDeclaration(it, obj.id) }
+                obj.memberDeclarationsOrEmpty().forEach { this.visitDeclaration(it, obj.id) }
 
-                +PackageT(obj.id, parentId, obj.name, obj.imports.map { it.id }, obj.members.map { it.id })
+                +PackageT(
+                    obj.id,
+                    parentId,
+                    obj.name,
+                    obj.imports.map { it.id },
+                    obj.memberDeclarationsOrEmpty().map { it.id }
+                )
             }
             is SmlParameter -> {
                 obj.type?.let { visitType(it, obj.id) }
@@ -297,7 +311,7 @@ class AstToPrologFactbase {
         visitSourceLocation(obj)
     }
 
-    private fun PlFactbase.visitAnnotationUse(obj: SmlAnnotationUse, parentId: Id<SmlDeclaration>) {
+    private fun PlFactbase.visitAnnotationUse(obj: SmlAnnotationUse, parentId: Id<SmlAbstractDeclaration>) {
         visitCrossReference(obj, SimpleMLPackage.Literals.SML_ANNOTATION_USE__ANNOTATION, obj.annotation)
         obj.argumentsOrEmpty().forEach { visitExpression(it, obj.id, obj.id) }
 
@@ -305,7 +319,7 @@ class AstToPrologFactbase {
         visitSourceLocation(obj)
     }
 
-    private fun PlFactbase.visitModifier(modifier: String, target: Id<SmlDeclaration>) {
+    private fun PlFactbase.visitModifier(modifier: String, target: Id<SmlAbstractDeclaration>) {
         +ModifierT(target, modifier)
     }
 
@@ -318,7 +332,7 @@ class AstToPrologFactbase {
     // Statements
     // ****************************************************************************************************************/
 
-    private fun PlFactbase.visitStatement(obj: SmlStatement, parentId: Id<EObject>) {
+    private fun PlFactbase.visitStatement(obj: SmlAbstractStatement, parentId: Id<EObject>) {
         when (obj) {
             is SmlAssignment -> {
                 obj.assigneesOrEmpty().forEach { this.visitAssignee(it, obj.id) }
@@ -336,7 +350,7 @@ class AstToPrologFactbase {
         visitSourceLocation(obj)
     }
 
-    private fun PlFactbase.visitAssignee(obj: SmlAssignee, parentId: Id<SmlAssignment>) {
+    private fun PlFactbase.visitAssignee(obj: SmlAbstractAssignee, parentId: Id<SmlAssignment>) {
         when (obj) {
             is SmlLambdaYield -> {
                 +LambdaYieldT(obj.id, parentId, obj.name)
@@ -361,7 +375,11 @@ class AstToPrologFactbase {
     // Expressions
     // ****************************************************************************************************************/
 
-    private fun PlFactbase.visitExpression(obj: SmlExpression, parentId: Id<EObject>, enclosingId: Id<EObject>) {
+    private fun PlFactbase.visitExpression(
+        obj: SmlAbstractExpression,
+        parentId: Id<EObject>,
+        enclosingId: Id<EObject>
+    ) {
         when (obj) {
             is SmlArgument -> {
                 obj.parameter?.let { visitCrossReference(obj, SimpleMLPackage.Literals.SML_ARGUMENT__PARAMETER, it) }
@@ -454,7 +472,7 @@ class AstToPrologFactbase {
     // Types
     // ****************************************************************************************************************/
 
-    private fun PlFactbase.visitType(obj: SmlType, parentId: Id<EObject>) {
+    private fun PlFactbase.visitType(obj: SmlAbstractType, parentId: Id<EObject>) {
         when (obj) {
             is SmlCallableType -> {
                 obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
@@ -514,7 +532,7 @@ class AstToPrologFactbase {
         visitSourceLocation(obj)
     }
 
-    private fun PlFactbase.visitTypeArgumentValue(obj: SmlTypeArgumentValue, parentId: Id<SmlTypeArgument>) {
+    private fun PlFactbase.visitTypeArgumentValue(obj: SmlAbstractTypeArgumentValue, parentId: Id<SmlTypeArgument>) {
         when (obj) {
             is SmlStarProjection -> {
                 +StarProjectionT(obj.id, parentId)

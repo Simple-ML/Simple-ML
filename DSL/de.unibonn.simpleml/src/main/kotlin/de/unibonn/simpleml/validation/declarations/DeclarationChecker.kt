@@ -4,11 +4,10 @@ import de.unibonn.simpleml.constants.Modifiers
 import de.unibonn.simpleml.emf.annotationUsesOrEmpty
 import de.unibonn.simpleml.naming.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAnnotation
-import de.unibonn.simpleml.simpleML.SmlAnnotationUseHolder
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
@@ -35,11 +34,7 @@ const val UNNECESSARY_MODIFIER = "UNNECESSARY_MODIFIER"
 class DeclarationChecker : AbstractSimpleMLChecker() {
 
     @Check
-    fun annotationCardinality(smlDeclaration: SmlDeclaration) {
-        if (smlDeclaration is SmlAnnotationUseHolder) {
-            return
-        }
-
+    fun annotationCardinality(smlDeclaration: SmlAbstractDeclaration) {
         smlDeclaration.annotationUsesOrEmpty()
             .filter { it.annotation != null && !it.annotation.eIsProxy() && !it.annotation.isMultiUse() }
             .duplicatesBy { it.annotation.fullyQualifiedName() }
@@ -85,11 +80,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
     }
 
     @Check
-    fun declarationModifiers(smlDeclaration: SmlDeclaration) {
-        if (smlDeclaration is SmlAnnotationUseHolder) {
-            return
-        }
-
+    fun declarationModifiers(smlDeclaration: SmlAbstractDeclaration) {
         if (smlDeclaration.shouldCheckDeclarationModifiers()) {
             val duplicateModifiers = smlDeclaration.modifiers.duplicatesBy { it }
             smlDeclaration.modifiers
@@ -97,7 +88,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
                     if (modifier in duplicateModifiers) {
                         error(
                             "Modifiers must be unique.",
-                            Literals.SML_DECLARATION__MODIFIERS,
+                            Literals.SML_ABSTRACT_DECLARATION__MODIFIERS,
                             index,
                             DUPLICATE_MODIFIER,
                             modifier
@@ -177,7 +168,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
         smlWorkflowStep.reportInvalidModifiers("A workflow step must have no modifiers.") { true }
     }
 
-    private fun SmlDeclaration.shouldCheckDeclarationModifiers(): Boolean {
+    private fun SmlAbstractDeclaration.shouldCheckDeclarationModifiers(): Boolean {
         return this !is SmlParameter &&
             this !is SmlResult &&
             this !is SmlTypeParameter &&
@@ -185,12 +176,12 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
             this !is SmlWorkflowStep
     }
 
-    private fun SmlDeclaration.reportInvalidModifiers(message: String, isInvalid: (modifier: String) -> Boolean) {
+    private fun SmlAbstractDeclaration.reportInvalidModifiers(message: String, isInvalid: (modifier: String) -> Boolean) {
         this.modifiers.forEachIndexed { index, modifier ->
             if (isInvalid(modifier)) {
                 error(
                     message,
-                    Literals.SML_DECLARATION__MODIFIERS,
+                    Literals.SML_ABSTRACT_DECLARATION__MODIFIERS,
                     index,
                     INVALID_MODIFIER,
                     modifier
@@ -199,7 +190,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
         }
     }
 
-    private fun SmlDeclaration.reportUnnecessaryModifiers(
+    private fun SmlAbstractDeclaration.reportUnnecessaryModifiers(
         message: String,
         isUnnecessary: (modifier: String) -> Boolean
     ) {
@@ -207,7 +198,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
             if (isUnnecessary(modifier)) {
                 info(
                     message,
-                    Literals.SML_DECLARATION__MODIFIERS,
+                    Literals.SML_ABSTRACT_DECLARATION__MODIFIERS,
                     index,
                     UNNECESSARY_MODIFIER,
                     modifier

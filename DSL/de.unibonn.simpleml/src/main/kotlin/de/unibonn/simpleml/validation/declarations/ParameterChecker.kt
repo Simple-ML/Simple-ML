@@ -14,7 +14,7 @@ class ParameterChecker : AbstractSimpleMLChecker() {
         if (smlParameter.type == null) {
             error(
                 "A parameter must have a type.",
-                Literals.SML_DECLARATION__NAME,
+                Literals.SML_ABSTRACT_DECLARATION__NAME,
                 PARAMETER_MUST_HAVE_TYPE
             )
         }

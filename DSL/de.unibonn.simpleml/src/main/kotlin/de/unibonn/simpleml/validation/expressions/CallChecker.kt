@@ -45,7 +45,7 @@ class CallChecker : AbstractSimpleMLChecker() {
         if (typeParameters.isNotEmpty()) {
             error(
                 "Missing type argument list.",
-                Literals.SML_CHAINED_EXPRESSION__RECEIVER,
+                Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
                 MISSING_TYPE_ARGUMENT_LIST
             )
         }
@@ -76,7 +76,7 @@ class CallChecker : AbstractSimpleMLChecker() {
         }
         val feature = when (smlCall.receiver) {
             is SmlMemberAccess -> Literals.SML_MEMBER_ACCESS__MEMBER
-            else -> Literals.SML_CHAINED_EXPRESSION__RECEIVER
+            else -> Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER
         }
 
         if (results.isEmpty() && !smlCall.hasValidContextForCallWithoutResults()) {
@@ -111,7 +111,7 @@ class CallChecker : AbstractSimpleMLChecker() {
         if (smlCall.isRecursive()) {
             error(
                 "Recursive calls are not allowed.",
-                Literals.SML_CHAINED_EXPRESSION__RECEIVER,
+                Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
                 NO_RECURSION
             )
         }
@@ -123,7 +123,7 @@ class CallChecker : AbstractSimpleMLChecker() {
             CallableResult.NotCallable -> {
                 error(
                     "This expression must not be called.",
-                    Literals.SML_CHAINED_EXPRESSION__RECEIVER,
+                    Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
                     RECEIVER_MUST_BE_CALLABLE
                 )
             }
@@ -132,17 +132,18 @@ class CallChecker : AbstractSimpleMLChecker() {
                 if (callable is SmlClass && callable.parameterList == null) {
                     error(
                         "Cannot create an instance of a class that has no constructor.",
-                        Literals.SML_CHAINED_EXPRESSION__RECEIVER,
+                        Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
                         CALLED_CLASS_MUST_HAVE_CONSTRUCTOR
                     )
                 } else if (callable is SmlEnumVariant && callable.parameterList == null) {
                     error(
                         "Cannot create an instance of an enum variant that has no constructor.",
-                        Literals.SML_CHAINED_EXPRESSION__RECEIVER,
+                        Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
                         CALLED_ENUM_VARIANT_MUST_HAVE_CONSTRUCTOR
                     )
                 }
             }
+            else -> {}
         }
     }
 }

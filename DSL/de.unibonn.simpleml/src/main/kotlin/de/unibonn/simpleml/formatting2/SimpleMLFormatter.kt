@@ -1,10 +1,10 @@
 package de.unibonn.simpleml.formatting2
 
 import de.unibonn.simpleml.emf.annotationUsesOrEmpty
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ABSTRACT_DECLARATION__MODIFIERS
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ABSTRACT_DECLARATION__NAME
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ANNOTATION_USE__ANNOTATION
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ARGUMENT__PARAMETER
-import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_DECLARATION__MODIFIERS
-import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_DECLARATION__NAME
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_IMPORT_ALIAS__NAME
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_IMPORT__IMPORTED_NAMESPACE
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_INFIX_OPERATION__OPERATOR
@@ -18,6 +18,7 @@ import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_PARAMETER_
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_PARAMETER__VARIANCE
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_PROJECTION__VARIANCE
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_YIELD__RESULT
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlArgument
@@ -31,7 +32,6 @@ import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlClassBody
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
-import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumBody
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
@@ -148,7 +148,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatKeyword(obj, "package", noSpace, oneSpace)
 
                 // Feature "name"
-                val name = obj.regionForFeature(SML_DECLARATION__NAME)
+                val name = obj.regionForFeature(SML_ABSTRACT_DECLARATION__NAME)
                 if (name != null) {
                     doc.addReplacer(WhitespaceCollapser(doc, name))
 
@@ -218,7 +218,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 }
 
                 // Feature "name"
-                doc.formatFeature(obj, SML_DECLARATION__NAME, oneSpace, null)
+                doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME, oneSpace, null)
 
                 // EObject "parameterList"
                 doc.formatObject(obj.parameterList, noSpace, null)
@@ -247,7 +247,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 }
 
                 // Feature "name"
-                doc.formatFeature(obj, SML_DECLARATION__NAME, oneSpace, noSpace)
+                doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME, oneSpace, noSpace)
 
                 // Keyword ":"
                 doc.formatKeyword(obj, ":", noSpace, oneSpace)
@@ -268,7 +268,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 }
 
                 // Feature "name"
-                doc.formatFeature(obj, SML_DECLARATION__NAME, oneSpace, null)
+                doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME, oneSpace, null)
 
                 // EObject "typeParameterList"
                 doc.formatObject(obj.typeParameterList, noSpace, null)
@@ -337,7 +337,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 }
 
                 // Feature "name"
-                doc.formatFeature(obj, SML_DECLARATION__NAME, oneSpace, null)
+                doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME, oneSpace, null)
 
                 // EObject "body"
                 doc.formatObject(obj.body, oneSpace, null)
@@ -382,9 +382,9 @@ class SimpleMLFormatter : AbstractFormatter2() {
 
                 // Feature "name"
                 if (obj.annotationUsesOrEmpty().isNotEmpty() || obj.modifiers.isNotEmpty()) {
-                    doc.formatFeature(obj, SML_DECLARATION__NAME, oneSpace, null)
+                    doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME, oneSpace, null)
                 } else {
-                    doc.formatFeature(obj, SML_DECLARATION__NAME)
+                    doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME)
                 }
 
                 // EObject "typeParameterList"
@@ -409,7 +409,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 }
 
                 // Feature "name"
-                doc.formatFeature(obj, SML_DECLARATION__NAME, oneSpace, null)
+                doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME, oneSpace, null)
 
                 // EObject "typeParameterList"
                 doc.formatObject(obj.typeParameterList, noSpace, null)
@@ -436,7 +436,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 }
 
                 // Feature "name"
-                doc.formatFeature(obj, SML_DECLARATION__NAME, null, oneSpace)
+                doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME, null, oneSpace)
 
                 // EObject "body"
                 doc.formatObject(obj.body)
@@ -454,7 +454,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 }
 
                 // Feature "name"
-                doc.formatFeature(obj, SML_DECLARATION__NAME, null, noSpace)
+                doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME, null, noSpace)
 
                 // EObject "parameterList"
                 doc.formatObject(obj.parameterList)
@@ -519,7 +519,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 }
 
                 // Feature "name"
-                val name = obj.regionForFeature(SML_DECLARATION__NAME)
+                val name = obj.regionForFeature(SML_ABSTRACT_DECLARATION__NAME)
                 if (!obj.annotationUsesOrEmpty().isEmpty() || !obj.modifiers.isEmpty() || obj.isVararg) {
                     doc.prepend(name, oneSpace)
                 }
@@ -561,7 +561,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatAnnotationsAndModifiers(obj, inlineAnnotations = true)
 
                 // Feature "name"
-                val name = obj.regionForFeature(SML_DECLARATION__NAME)
+                val name = obj.regionForFeature(SML_ABSTRACT_DECLARATION__NAME)
                 if (!obj.annotationUsesOrEmpty().isEmpty() || !obj.modifiers.isEmpty()) {
                     doc.prepend(name, oneSpace)
                 }
@@ -634,7 +634,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatKeyword(obj, "yield", null, oneSpace)
 
                 // Feature "name"
-                doc.formatFeature(obj, SML_DECLARATION__NAME, oneSpace, null)
+                doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME, oneSpace, null)
             }
             is SmlPlaceholder -> {
 
@@ -642,7 +642,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatKeyword(obj, "val", null, oneSpace)
 
                 // Feature "name"
-                doc.formatFeature(obj, SML_DECLARATION__NAME, oneSpace, null)
+                doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME, oneSpace, null)
             }
             is SmlYield -> {
 
@@ -866,7 +866,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 }
 
                 // Feature "name"
-                doc.formatFeature(obj, SML_DECLARATION__NAME)
+                doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME)
             }
             is SmlTypeParameterConstraintList -> {
 
@@ -985,7 +985,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
     }
 
     private fun IFormattableDocument.formatAnnotationsAndModifiers(
-        obj: SmlDeclaration,
+        obj: SmlAbstractDeclaration,
         inlineAnnotations: Boolean = false
     ) {
 
@@ -1001,7 +1001,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
         }
 
         // Feature "modifiers"
-        val modifiers = textRegionExtensions.allRegionsFor(obj).features(SML_DECLARATION__MODIFIERS)
+        val modifiers = textRegionExtensions.allRegionsFor(obj).features(SML_ABSTRACT_DECLARATION__MODIFIERS)
         modifiers.forEach {
             if (modifiers.last() != it) {
                 append(it, oneSpace)

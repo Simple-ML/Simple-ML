@@ -19,7 +19,7 @@ SmlCompilationUnit
     : {SmlCompilationUnit} members+=SmlCompilationUnitMember*
     ;
 
-SmlCompilationUnitMember returns SmlDeclaration
+SmlCompilationUnitMember returns SmlAbstractElement
     : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
 
     ( {SmlPackage.annotationHolder=current}
@@ -77,7 +77,7 @@ SmlImportAlias
     : 'as' name=ID
     ;
 
-SmlPackageMember returns SmlDeclaration
+SmlPackageMember returns SmlAbstractElement
     : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
 
     ( {SmlAnnotation.annotationHolder=current}
@@ -143,11 +143,11 @@ SmlParentTypeList
     : 'sub' parentTypes+=SmlParentType (',' parentTypes+=SmlParentType)* ','?
     ;
 
-SmlParentType returns SmlType
+SmlParentType returns SmlAbstractType
     : SmlParentPrimaryType =>({SmlMemberType.receiver=current} '.' member=SmlNamedType)*
     ;
 
-SmlParentPrimaryType returns SmlType
+SmlParentPrimaryType returns SmlAbstractType
     : SmlNamedType
     | SmlParentParenthesizedType
     ;
@@ -160,7 +160,7 @@ SmlClassBody
     : {SmlClassBody} '{' members+=SmlClassMember* '}'
     ;
 
-SmlClassMember returns SmlDeclaration
+SmlClassMember returns SmlAbstractElement
     : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
 
     ( {SmlAttribute.annotationHolder=current}
@@ -265,7 +265,7 @@ SmlBlock
     : {SmlBlock} '{' statements+=SmlStatement* '}'
     ;
 
-SmlStatement
+SmlStatement returns SmlAbstractStatement
     : SmlAssignment
     | SmlExpressionStatement
     ;
@@ -279,7 +279,7 @@ SmlAssigneeList
     | {SmlAssigneeList} '(' (assignees+=SmlAssignee (',' assignees+=SmlAssignee)* ','?)? ')'
     ;
 
-SmlAssignee
+SmlAssignee returns SmlAbstractAssignee
     : {SmlPlaceholder} 'val' name=ID
     | {SmlWildcard}    '_'
     | {SmlYield}       'yield' result=[SmlResult]
@@ -302,7 +302,7 @@ SmlLambdaBlock returns SmlBlock
     : {SmlBlock} '{' statements+=SmlLambdaStatement* '}'
     ;
 
-SmlLambdaStatement returns SmlStatement
+SmlLambdaStatement returns SmlAbstractStatement
     : SmlLambdaAssignment
     | SmlExpressionStatement
     ;
@@ -316,7 +316,7 @@ SmlLambdaAssigneeList returns SmlAssigneeList
     | {SmlAssigneeList} '(' (assignees+=SmlLambdaAssignee (',' assignees+=SmlLambdaAssignee)* ','?)? ')'
     ;
 
-SmlLambdaAssignee returns SmlAssignee
+SmlLambdaAssignee returns SmlAbstractAssignee
     : {SmlPlaceholder} 'val' name=ID
     | {SmlWildcard}    '_'
     | {SmlLambdaYield} 'yield' name=ID
@@ -327,24 +327,24 @@ SmlLambdaAssignee returns SmlAssignee
  * Expressions
  **********************************************************************************************************************/
 
-SmlExpression
+SmlExpression returns SmlAbstractExpression
     : SmlOrExpression
     ;
 
-SmlOrExpression returns SmlExpression
+SmlOrExpression returns SmlAbstractExpression
     : SmlAndExpression ({SmlInfixOperation.leftOperand=current} operator='or' rightOperand=SmlAndExpression)*
     ;
 
-SmlAndExpression returns SmlExpression
+SmlAndExpression returns SmlAbstractExpression
     : SmlNotExpression ({SmlInfixOperation.leftOperand=current} operator='and' rightOperand=SmlNotExpression)*
     ;
 
-SmlNotExpression returns SmlExpression
+SmlNotExpression returns SmlAbstractExpression
     : {SmlPrefixOperation} operator='not' operand=SmlNotExpression
     | SmlEqualityExpression
     ;
 
-SmlEqualityExpression returns SmlExpression
+SmlEqualityExpression returns SmlAbstractExpression
     : SmlComparisonExpression ({SmlInfixOperation.leftOperand=current} operator=SmlEqualityOperator rightOperand=SmlComparisonExpression)?
     ;
 
@@ -355,7 +355,7 @@ SmlEqualityOperator
     | '!=='
     ;
 
-SmlComparisonExpression returns SmlExpression
+SmlComparisonExpression returns SmlAbstractExpression
     : SmlAdditiveExpression ({SmlInfixOperation.leftOperand=current} operator=SmlComparisonOperator rightOperand=SmlAdditiveExpression)?
     ;
 
@@ -366,7 +366,7 @@ SmlComparisonOperator
     | '>'
     ;
 
-SmlAdditiveExpression returns SmlExpression
+SmlAdditiveExpression returns SmlAbstractExpression
     : SmlMultiplicativeExpression ({SmlInfixOperation.leftOperand=current} operator=SmlAdditiveOperator rightOperand=SmlMultiplicativeExpression)*
     ;
 
@@ -375,7 +375,7 @@ SmlAdditiveOperator
     | '-'
     ;
 
-SmlMultiplicativeExpression returns SmlExpression
+SmlMultiplicativeExpression returns SmlAbstractExpression
     : SmlElvisExpression ({SmlInfixOperation.leftOperand=current} operator=SmlMultiplicativeOperator rightOperand=SmlElvisExpression)*
     ;
 
@@ -384,16 +384,16 @@ SmlMultiplicativeOperator
     | '/'
     ;
 
-SmlElvisExpression returns SmlExpression
+SmlElvisExpression returns SmlAbstractExpression
     : SmlUnaryOperation ({SmlInfixOperation.leftOperand=current} operator='?:' rightOperand=SmlUnaryOperation)*
     ;
 
-SmlUnaryOperation returns SmlExpression
+SmlUnaryOperation returns SmlAbstractExpression
     : {SmlPrefixOperation} operator='-' operand=SmlUnaryOperation
     | SmlChainedExpression
     ;
 
-SmlChainedExpression returns SmlExpression
+SmlChainedExpression returns SmlAbstractExpression
     : SmlPrimaryExpression =>(
           {SmlCall.receiver=current}          typeArgumentList=SmlTypeArgumentList? argumentList=SmlCallArgumentList
         | {SmlMemberAccess.receiver=current}  (nullable?='?')? '.' member=SmlReference
@@ -408,7 +408,7 @@ SmlCallArgument returns SmlArgument
     : (parameter=[SmlParameter] '=')? value=SmlExpression
     ;
 
-SmlPrimaryExpression returns SmlExpression
+SmlPrimaryExpression returns SmlAbstractExpression
     : SmlLambda
     | SmlLiteral
     | SmlParenthesizedExpression
@@ -416,7 +416,7 @@ SmlPrimaryExpression returns SmlExpression
     | SmlTemplateString
     ;
 
-SmlLiteral
+SmlLiteral returns SmlAbstractLiteral
     : SmlBoolean
     | SmlFloat
     | SmlInt
@@ -464,7 +464,7 @@ SmlTemplateStringEnd returns SmlTemplateStringPart
     ;
 
 SmlReference
-    : declaration=[SmlDeclaration]
+    : declaration=[SmlAbstractDeclaration]
     ;
 
 SmlParenthesizedExpression
@@ -503,11 +503,11 @@ QualifiedNameWithWildcard
  * Types
  **********************************************************************************************************************/
 
-SmlType
+SmlType returns SmlAbstractType
     : SmlPrimaryType =>({SmlMemberType.receiver=current} '.' member=SmlNamedType)*
     ;
 
-SmlPrimaryType returns SmlType
+SmlPrimaryType returns SmlAbstractType
     : SmlCallableType
     | SmlNamedType
     | SmlUnionType
@@ -530,7 +530,7 @@ SmlCallableType
 // Named Types ---------------------------------------------------------------------------------------------------------
 
 SmlNamedType
-    : declaration=[SmlNamedTypeDeclaration]
+    : declaration=[SmlAbstractNamedTypeDeclaration]
       typeArgumentList=SmlTypeArgumentList?
       (nullable?='?')?
     ;
@@ -550,7 +550,7 @@ SmlUnionTypeArgument returns SmlTypeArgument
     : value=SmlUnionTypeArgumentValue
     ;
 
-SmlUnionTypeArgumentValue returns SmlTypeArgumentValue
+SmlUnionTypeArgumentValue returns SmlAbstractTypeArgumentValue
     : {SmlTypeProjection} type=SmlType
     ;
 
@@ -594,7 +594,7 @@ SmlTypeArgument
     : (typeParameter=[SmlTypeParameter] '=')? value=SmlTypeArgumentValue
     ;
 
-SmlTypeArgumentValue
+SmlTypeArgumentValue returns SmlAbstractTypeArgumentValue
     : {SmlStarProjection} '*'
     | {SmlTypeProjection} variance=SmlTypeParameterVariance? type=SmlType
     ;
