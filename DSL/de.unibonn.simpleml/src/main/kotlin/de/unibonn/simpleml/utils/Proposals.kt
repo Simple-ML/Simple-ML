@@ -3,8 +3,8 @@ package de.unibonn.simpleml.utils
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.parametersOrEmpty
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.simpleML.SmlDeclaration
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.typing.TypeComputer
@@ -30,7 +30,7 @@ class Proposals @Inject constructor(
      * @return
      * A map of URIs to EObjects (SmlClass, SmlFunction, or SmlWorkflowStep).
      */
-    fun listCallables(context: EObject, declaration: SmlDeclaration? = null): Map<URI, EObject> {
+    fun listCallables(context: EObject, declaration: SmlAbstractDeclaration? = null): Map<URI, EObject> {
         return if (declaration == null) {
             listCallablesWithOnlyPrimitiveParameters(context)
         } else {
@@ -66,7 +66,7 @@ class Proposals @Inject constructor(
 
     private fun listCallablesWithMatchingParameters(
         context: EObject,
-        declaration: SmlDeclaration
+        declaration: SmlAbstractDeclaration
     ): Map<URI, EObject> {
         val declarationType = typeComputer.typeOf(declaration)
 

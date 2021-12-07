@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.naming
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.simpleML.SmlDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import org.eclipse.xtext.naming.IQualifiedNameConverter
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.naming.QualifiedName
@@ -18,7 +18,7 @@ internal object InjectionTarget {
 /**
  * Returns the fully qualified name of the declaration.
  */
-fun SmlDeclaration.fullyQualifiedName(): QualifiedName? {
+fun SmlAbstractDeclaration.fullyQualifiedName(): QualifiedName? {
     return InjectionTarget.qualifiedNameProvider.getFullyQualifiedName(this)
 }
 

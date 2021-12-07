@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import de.unibonn.simpleml.constants.isInStubFile
 import de.unibonn.simpleml.constants.isInTestFile
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
-import de.unibonn.simpleml.simpleML.SmlDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlWorkflow
@@ -36,7 +36,7 @@ class PackageChecker @Inject constructor(
                     error(
                         "A stub file must not declare workflows or workflow steps.",
                         it,
-                        Literals.SML_DECLARATION__NAME,
+                        Literals.SML_ABSTRACT_DECLARATION__NAME,
                         STUB_FILE_MUST_NOT_DECLARE_WORKFLOWS
                     )
                 }
@@ -47,7 +47,7 @@ class PackageChecker @Inject constructor(
                     error(
                         "A workflow file must only declare workflows and workflow steps.",
                         it,
-                        Literals.SML_DECLARATION__NAME,
+                        Literals.SML_ABSTRACT_DECLARATION__NAME,
                         WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_WORKFLOW_STEPS
                     )
                 }
@@ -59,7 +59,7 @@ class PackageChecker @Inject constructor(
         if (smlPackage.name.contains("`")) {
             error(
                 "The package name must not contain backticks.",
-                Literals.SML_DECLARATION__NAME,
+                Literals.SML_ABSTRACT_DECLARATION__NAME,
                 NO_BACKTICKS_IN_PACKAGE_NAME
             )
         }
@@ -72,7 +72,7 @@ class PackageChecker @Inject constructor(
         namedEObjects.duplicatesBy {
             when (it) {
                 is SmlImport -> it.importedNameOrNull()
-                is SmlDeclaration -> it.name
+                is SmlAbstractDeclaration -> it.name
                 else -> throw AssertionError("$it is neither an import nor a declaration.")
             }
         }.forEach {
@@ -93,11 +93,11 @@ class PackageChecker @Inject constructor(
                         REDECLARATION
                     )
                 }
-                it is SmlDeclaration -> {
+                it is SmlAbstractDeclaration -> {
                     error(
                         "A declaration with name '${it.name}' exists already in this file.",
                         it,
-                        Literals.SML_DECLARATION__NAME,
+                        Literals.SML_ABSTRACT_DECLARATION__NAME,
                         REDECLARATION
                     )
                 }
@@ -123,7 +123,7 @@ class PackageChecker @Inject constructor(
                 error(
                     "A declaration with qualified name '$qualifiedName' exists already.",
                     it,
-                    Literals.SML_DECLARATION__NAME,
+                    Literals.SML_ABSTRACT_DECLARATION__NAME,
                     REDECLARATION_IN_OTHER_FILE
                 )
             }

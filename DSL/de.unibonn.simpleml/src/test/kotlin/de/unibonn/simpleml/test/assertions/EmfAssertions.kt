@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.test.assertions
 
-import de.unibonn.simpleml.simpleML.SmlDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.utils.descendants
 import org.eclipse.emf.ecore.EObject
 
@@ -12,7 +12,7 @@ import org.eclipse.emf.ecore.EObject
  * @return The unique declaration if it exists.
  * @throws AssertionError If no unique declaration exists.
  */
-inline fun <reified T : SmlDeclaration> EObject.findUniqueDeclarationOrFail(name: String): T {
+inline fun <reified T : SmlAbstractDeclaration> EObject.findUniqueDeclarationOrFail(name: String): T {
     shouldHaveUniqueDeclaration<T>(name)
     return this.descendants<T>().find { it.name == name }!!
 }
@@ -23,7 +23,7 @@ inline fun <reified T : SmlDeclaration> EObject.findUniqueDeclarationOrFail(name
  * @receiver Root of the subtree within the EMF model that should be searched.
  * @param name The name the declaration needs to have.
  */
-inline fun <reified T : SmlDeclaration> EObject.shouldHaveUniqueDeclaration(name: String) {
+inline fun <reified T : SmlAbstractDeclaration> EObject.shouldHaveUniqueDeclaration(name: String) {
     val candidates = this.descendants<T>().filter { it.name == name }.toList()
 
     if (candidates.isEmpty()) {
@@ -33,13 +33,13 @@ inline fun <reified T : SmlDeclaration> EObject.shouldHaveUniqueDeclaration(name
     }
 }
 
-fun SmlDeclaration.shouldBeResolved() {
+fun SmlAbstractDeclaration.shouldBeResolved() {
     if (this.eIsProxy()) {
         throw AssertionError("Expected cross-reference to be resolved but it wasn't.")
     }
 }
 
-fun SmlDeclaration.shouldNotBeResolved() {
+fun SmlAbstractDeclaration.shouldNotBeResolved() {
     if (!this.eIsProxy()) {
         throw AssertionError("Expected cross-reference to be unresolved but it wasn't.")
     }

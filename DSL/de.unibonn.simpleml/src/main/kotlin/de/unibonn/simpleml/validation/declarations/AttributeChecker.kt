@@ -14,7 +14,7 @@ class AttributeChecker : AbstractSimpleMLChecker() {
         if (smlAttribute.type == null) {
             error(
                 "An attribute must have a type.",
-                Literals.SML_DECLARATION__NAME,
+                Literals.SML_ABSTRACT_DECLARATION__NAME,
                 ATTRIBUTE_MUST_HAVE_TYPE
             )
         }

@@ -2,7 +2,7 @@ package de.unibonn.simpleml.validation.declarations
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.constants.hasOpenModifier
-import de.unibonn.simpleml.emf.membersOrEmpty
+import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
@@ -47,7 +47,7 @@ class ClassChecker @Inject constructor(
 
     @Check
     fun body(smlClass: SmlClass) {
-        if (smlClass.body != null && smlClass.membersOrEmpty().isEmpty()) {
+        if (smlClass.body != null && smlClass.memberDeclarationsOrEmpty().isEmpty()) {
             warning(
                 "Unnecessary class body.",
                 Literals.SML_CLASS__BODY,
@@ -106,7 +106,7 @@ class ClassChecker @Inject constructor(
         smlClass.parametersOrEmpty()
             .reportDuplicateNames { "A parameter with name '${it.name}' exists already in this class." }
 
-        smlClass.membersOrEmpty()
+        smlClass.memberDeclarationsOrEmpty()
             .reportDuplicateNames { "A declaration with name '${it.name}' exists already in this class." }
     }
 

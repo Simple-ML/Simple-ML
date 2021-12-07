@@ -34,7 +34,7 @@ class FunctionChecker @Inject constructor(
         if (smlFunction.isClassMember() && smlFunction.hasOpenModifier() && smlFunction.isStatic()) {
             error(
                 "A function must not be static and open.",
-                Literals.SML_DECLARATION__NAME,
+                Literals.SML_ABSTRACT_DECLARATION__NAME,
                 FUNCTION_MUST_NOT_BE_OPEN_AND_STATIC
             )
         }
@@ -45,7 +45,7 @@ class FunctionChecker @Inject constructor(
         if (smlFunction.isClassMember() && smlFunction.hasOverrideModifier() && smlFunction.isStatic()) {
             error(
                 "A function must not be static and override.",
-                Literals.SML_DECLARATION__NAME,
+                Literals.SML_ABSTRACT_DECLARATION__NAME,
                 FUNCTION_MUST_NOT_BE_OVERRIDE_AND_STATIC
             )
         }
@@ -58,7 +58,7 @@ class FunctionChecker @Inject constructor(
             if (hiddenFunction != null && !hiddenFunction.isStatic()) {
                 error(
                     "One of the supertypes of this class declares a non-static function with this name, so this must be non-static as well.",
-                    Literals.SML_DECLARATION__NAME,
+                    Literals.SML_ABSTRACT_DECLARATION__NAME,
                     NON_STATIC_PROPAGATES
                 )
             }
@@ -71,7 +71,7 @@ class FunctionChecker @Inject constructor(
         if (hiddenFunction != null && !hiddenFunction.hasOpenModifier() && !hiddenFunction.isStatic()) {
             error(
                 "The overridden function must be open.",
-                Literals.SML_DECLARATION__NAME,
+                Literals.SML_ABSTRACT_DECLARATION__NAME,
                 OVERRIDDEN_FUNCTION_MUST_BE_OPEN
             )
         }
@@ -84,7 +84,7 @@ class FunctionChecker @Inject constructor(
             if (hiddenFunction != null && !hiddenFunction.isStatic()) {
                 error(
                     "An overriding function must have the override modifier.",
-                    Literals.SML_DECLARATION__NAME,
+                    Literals.SML_ABSTRACT_DECLARATION__NAME,
                     OVERRIDING_FUNCTION_MUST_HAVE_OVERRIDE_MODIFIER
                 )
             }
@@ -98,7 +98,7 @@ class FunctionChecker @Inject constructor(
             if (hiddenFunction != null && hiddenFunction.isStatic()) {
                 error(
                     "The overridden function must not be static.",
-                    Literals.SML_DECLARATION__NAME,
+                    Literals.SML_ABSTRACT_DECLARATION__NAME,
                     OVERRIDING_FUNCTION_MUST_NOT_BE_STATIC
                 )
             }
@@ -110,7 +110,7 @@ class FunctionChecker @Inject constructor(
         if (smlFunction.hasOverrideModifier() && classHierarchy.hiddenFunction(smlFunction) == null) {
             error(
                 "This function does not override anything.",
-                Literals.SML_DECLARATION__NAME,
+                Literals.SML_ABSTRACT_DECLARATION__NAME,
                 OVERRIDING_FUNCTION_MUST_OVERRIDE_SOMETHING
             )
         }
@@ -123,7 +123,7 @@ class FunctionChecker @Inject constructor(
             if (hiddenFunction != null && hiddenFunction.isPure()) {
                 error(
                     "One of the supertypes of this class declares a pure function with this name, so this must be pure as well.",
-                    Literals.SML_DECLARATION__NAME,
+                    Literals.SML_ABSTRACT_DECLARATION__NAME,
                     PURE_PROPAGATES
                 )
             }
@@ -137,7 +137,7 @@ class FunctionChecker @Inject constructor(
             if (hiddenFunction != null && hiddenFunction.isStatic()) {
                 error(
                     "One of the supertypes of this class declares a static function with this name, so this must be static as well.",
-                    Literals.SML_DECLARATION__NAME,
+                    Literals.SML_ABSTRACT_DECLARATION__NAME,
                     STATIC_PROPAGATES
                 )
             }

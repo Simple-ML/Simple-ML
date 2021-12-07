@@ -22,7 +22,7 @@ class WorkflowStepChecker : AbstractSimpleMLChecker() {
                 warning(
                     "This parameter is unused.",
                     it,
-                    Literals.SML_DECLARATION__NAME,
+                    Literals.SML_ABSTRACT_DECLARATION__NAME,
                     PARAMETER_IS_UNUSED
                 )
             }

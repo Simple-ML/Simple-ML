@@ -9,7 +9,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.NodeWithParent
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFact
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.utils.Id
-import de.unibonn.simpleml.simpleML.SmlExpression
+import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.ints.shouldBeGreaterThan
@@ -53,7 +53,10 @@ inline fun <reified T : NodeWithParent> PlFactbase.shouldBeNChildrenOf(
     }
 }
 
-inline fun <reified T : ExpressionT> PlFactbase.shouldBeChildExpressionOf(childId: Id<SmlExpression>?, parent: Node) {
+inline fun <reified T : ExpressionT> PlFactbase.shouldBeChildExpressionOf(
+    childId: Id<SmlAbstractExpression>?,
+    parent: Node
+) {
     childId.shouldNotBeNull()
 
     val child = findUniqueFactOrFail<T> { it.id == childId }
@@ -70,7 +73,7 @@ inline fun <reified T : ExpressionT> PlFactbase.shouldBeChildExpressionOf(childI
 }
 
 inline fun <reified T : ExpressionT> PlFactbase.shouldBeNChildExpressionsOf(
-    childIds: List<Id<SmlExpression>>?,
+    childIds: List<Id<SmlAbstractExpression>>?,
     parent: Node,
     n: Int
 ) {
