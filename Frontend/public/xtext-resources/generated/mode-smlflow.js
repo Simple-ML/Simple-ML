@@ -1,6 +1,6 @@
 define(["ace/lib/oop", "ace/mode/text", "ace/mode/text_highlight_rules"], function(oop, mText, mTextHighlightRules) {
 	var HighlightRules = function() {
-		var keywords = "_|and|annotation|as|class|constructor|deprecated|enum|false|fun|import|in|interface|not|null|open|or|out|override|package|private|protected|public|pure|static|sub|super|this|true|typealias|union|val|vararg|where|workflow|yield";
+		var keywords = "_|and|annotation|as|attr|callable|class|enum|false|fun|import|in|lambda|not|null|open|or|out|override|package|static|step|sub|super|true|union|val|vararg|where|workflow|yield";
 		this.$rules = {
 			"start": [
 				{token: "comment", regex: "\\/\\/.*$"},
@@ -18,16 +18,16 @@ define(["ace/lib/oop", "ace/mode/text", "ace/mode/text_highlight_rules"], functi
 		};
 	};
 	oop.inherits(HighlightRules, mTextHighlightRules.TextHighlightRules);
-	
+
 	var Mode = function() {
 		this.HighlightRules = HighlightRules;
 	};
 	oop.inherits(Mode, mText.Mode);
-	Mode.prototype.$id = "xtext/simpleml";
+	Mode.prototype.$id = "xtext/smlflow";
 	Mode.prototype.getCompletions = function(state, session, pos, prefix) {
 		return [];
 	}
-	
+
 	return {
 		Mode: Mode
 	};
