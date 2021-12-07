@@ -1,1 +1,1 @@
-from ._tree import DecisionTreeClassifierModel, DecisionTreeClassifier
+from ._tree import DecisionTreeClassifierModel, DecisionTreeClassifier, RandomForestClassifier, RandomForestClassifierModel
