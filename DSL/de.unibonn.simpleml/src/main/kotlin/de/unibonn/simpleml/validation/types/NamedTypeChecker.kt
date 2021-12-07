@@ -3,13 +3,15 @@ package de.unibonn.simpleml.validation.types
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
 import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
+import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.utils.typeParametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.expressions.UNNECESSARY_TYPE_ARGUMENT_LIST
 import org.eclipse.xtext.validation.Check
 
-const val NAMED_TYPE_MISSING_TYPE_ARGUMENT_LIST = "NAMED_TYPE_MISSING_TYPE_ARGUMENT_LIST"
+const val MISSING_TYPE_ARGUMENT_LIST = "MISSING_TYPE_ARGUMENT_LIST"
 
 class NamedTypeChecker : AbstractSimpleMLChecker() {
 
@@ -19,16 +21,20 @@ class NamedTypeChecker : AbstractSimpleMLChecker() {
             return
         }
 
-        val typeParameters = when (val declaration = smlNamedType.declaration) {
-            is SmlClass -> declaration.typeParametersOrEmpty()
+        val declaration = smlNamedType.declaration
+        val typeParameters = when {
+            declaration.eIsProxy() -> return
+            declaration is SmlClass -> declaration.typeParametersOrEmpty()
+            declaration is SmlEnumVariant -> declaration.typeParametersOrEmpty()
+            declaration is SmlFunction -> declaration.typeParametersOrEmpty()
             else -> return
         }
 
         if (typeParameters.isNotEmpty()) {
             error(
-                "This type is generic and, therefore, requires a list of type arguments.",
+                "Missing type argument list.",
                 SimpleMLPackage.Literals.SML_NAMED_TYPE__DECLARATION,
-                NAMED_TYPE_MISSING_TYPE_ARGUMENT_LIST
+                MISSING_TYPE_ARGUMENT_LIST
             )
         }
     }

@@ -398,8 +398,6 @@ fun SmlTypeArgumentList.typeParametersOrNull(): List<SmlTypeParameter>? {
                 declaration is SmlFunction -> return declaration.typeParametersOrEmpty()
             }
         }
-
-        else -> return null
     }
 
     return null

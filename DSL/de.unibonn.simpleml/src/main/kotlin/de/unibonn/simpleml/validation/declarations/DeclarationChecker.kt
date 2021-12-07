@@ -5,6 +5,7 @@ import de.unibonn.simpleml.emf.annotationUsesOrEmpty
 import de.unibonn.simpleml.naming.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
+import de.unibonn.simpleml.simpleML.SmlAnnotationUseHolder
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlDeclaration
@@ -35,6 +36,10 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun annotationCardinality(smlDeclaration: SmlDeclaration) {
+        if (smlDeclaration is SmlAnnotationUseHolder) {
+            return
+        }
+
         smlDeclaration.annotationUsesOrEmpty()
             .filter { it.annotation != null && !it.annotation.eIsProxy() && !it.annotation.isMultiUse() }
             .duplicatesBy { it.annotation.fullyQualifiedName() }
@@ -81,6 +86,10 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun declarationModifiers(smlDeclaration: SmlDeclaration) {
+        if (smlDeclaration is SmlAnnotationUseHolder) {
+            return
+        }
+
         if (smlDeclaration.shouldCheckDeclarationModifiers()) {
             val duplicateModifiers = smlDeclaration.modifiers.duplicatesBy { it }
             smlDeclaration.modifiers
