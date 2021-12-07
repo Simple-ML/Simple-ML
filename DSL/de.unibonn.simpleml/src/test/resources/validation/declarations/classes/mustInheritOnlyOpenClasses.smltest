@@ -1,10 +1,15 @@
-package tests.mustInheritOnlyInterfaces
+package tests.validation.declarations.classes.mustInheritOnlyOpenClasses
 
 class MyClass
 open class MyOpenClass
+enum MyEnum
 
 
 // semantic_error "The parent class must be open."
 // no_semantic_error "The parent class must be open."
-class MyClass2 sub »MyClass«,
-                   »MyOpenClass«
+// no_semantic_error "The parent class must be open."
+// no_semantic_error "The parent class must be open."
+class TestClass sub »MyClass«,
+                   »MyOpenClass«,
+                   »MyEnum«,
+                   »UnresolvedClass«

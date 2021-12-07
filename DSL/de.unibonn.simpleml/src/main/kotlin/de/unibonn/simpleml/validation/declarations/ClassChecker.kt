@@ -9,14 +9,16 @@ import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.utils.ClassHierarchy
+import de.unibonn.simpleml.utils.ClassResult
+import de.unibonn.simpleml.utils.classOrNull
 import de.unibonn.simpleml.utils.duplicatesBy
-import de.unibonn.simpleml.utils.resolveToClassOrNull
+import de.unibonn.simpleml.utils.maybeClass
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import org.eclipse.xtext.validation.Check
 
 const val CLASS_MUST_HAVE_ONLY_ONE_PARENT_CLASS = "CLASS_MUST_HAVE_ONLY_ONE_PARENT_CLASS"
 const val CLASS_MUST_HAVE_UNIQUE_PARENT_TYPES = "CLASS_MUST_HAVE_UNIQUE_PARENT_TYPES"
-const val CLASS_MUST_INHERIT_ONLY_ONE_OPEN_CLASS = "CLASS_MUST_INHERIT_ONLY_INTERFACES_AND_ONE_OPEN_CLASS"
+const val CLASS_MUST_INHERIT_ONLY_CLASSES = "CLASS_MUST_INHERIT_ONLY_CLASSES"
 const val CLASS_MUST_NOT_BE_SUBTYPE_OF_ITSELF = "CLASS_MUST_NOT_BE_SUBTYPE_OF_ITSELF"
 const val PARENT_CLASS_MUST_BE_OPEN = "PARENT_CLASS_MUST_BE_OPEN"
 const val UNNECESSARY_CLASS_BODY = "UNNECESSARY_CLASS_BODY"
@@ -30,7 +32,7 @@ class ClassChecker @Inject constructor(
     fun acyclicSuperTypes(smlClass: SmlClass) {
         smlClass.parentTypesOrEmpty()
             .filter {
-                val resolvedClass = it.resolveToClassOrNull()
+                val resolvedClass = it.classOrNull()
                 resolvedClass != null && classHierarchy.isSubtypeOf(resolvedClass, smlClass)
             }
             .forEach {
@@ -58,7 +60,7 @@ class ClassChecker @Inject constructor(
     fun mustInheritOnlyOpenClasses(smlClass: SmlClass) {
         smlClass.parentTypesOrEmpty()
             .filter {
-                val resolvedClass = it.resolveToClassOrNull()
+                val resolvedClass = it.classOrNull()
                 resolvedClass != null && !resolvedClass.hasOpenModifier()
             }
             .forEach {
@@ -71,13 +73,13 @@ class ClassChecker @Inject constructor(
             }
 
         smlClass.parentTypesOrEmpty()
-            .filter { it.resolveToClassOrNull() == null }
+            .filter { it.maybeClass() is ClassResult.NotAClass }
             .forEach {
                 error(
                     "A class must only inherit classes.",
                     it,
                     null,
-                    CLASS_MUST_INHERIT_ONLY_ONE_OPEN_CLASS
+                    CLASS_MUST_INHERIT_ONLY_CLASSES
                 )
             }
     }
@@ -85,7 +87,7 @@ class ClassChecker @Inject constructor(
     @Check
     fun onlyOneParentClass(smlClass: SmlClass) {
         val parentClasses = smlClass.parentTypesOrEmpty()
-            .filter { it.resolveToClassOrNull() != null }
+            .filter { it.classOrNull() != null }
 
         if (parentClasses.size > 1) {
             parentClasses.forEach {
@@ -111,8 +113,8 @@ class ClassChecker @Inject constructor(
     @Check
     fun uniqueParentTypes(smlClass: SmlClass) {
         smlClass.parentTypesOrEmpty()
-            .filter { it.resolveToClassOrNull() != null }
-            .duplicatesBy { it.resolveToClassOrNull()?.name }
+            .filter { it.classOrNull() != null }
+            .duplicatesBy { it.classOrNull()?.name }
             .forEach {
                 error(
                     "Parent types must be unique.",
