@@ -4,12 +4,19 @@ package tests.validation.other.annotationUses.missingArgumentList
 annotation AnnotationWithoutParameters
 
 @MultiUse
+annotation AnnotationWithoutRequiredParameters(a: Int or 0)
+
+@MultiUse
 annotation AnnotationWithParameters(a: Int)
 
 // no_semantic_error "Missing argument list."
 @»AnnotationWithoutParameters«
 // no_semantic_error "Missing argument list."
 @»AnnotationWithoutParameters«
+// semantic_error "Missing argument list."
+@»AnnotationWithoutRequiredParameters«
+// semantic_error "Missing argument list."
+@»AnnotationWithoutRequiredParameters«
 // semantic_error "Missing argument list."
 @»AnnotationWithParameters«
 // semantic_error "Missing argument list."
