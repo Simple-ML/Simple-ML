@@ -67,7 +67,7 @@ sealed class PlFact(factName: String, vararg arguments: Any?) {
     /**
      * The name of this fact as a Prolog atom.
      */
-    val factName: PlAtom = PlAtom(factName)
+    private val factName: PlAtom = PlAtom(factName)
 
     /**
      * The arguments of this fact as a list of Prolog terms.
