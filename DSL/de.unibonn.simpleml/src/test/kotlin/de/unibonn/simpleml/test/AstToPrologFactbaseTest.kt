@@ -23,8 +23,8 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InfixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.IntT
+import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaT
-import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberAccessT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NamedTypeT
@@ -398,7 +398,7 @@ class AstToPrologFactbaseTest {
             fun `should store package`() = withFactbaseFromFile("declarations") {
                 val packageT = findUniqueFactOrFail<PackageT>()
                 packageT.asClue {
-                    packageT.name shouldBe "myPackage"
+                    packageT.name shouldBe "tests.astToPrologFactbase.declarations"
                 }
             }
 
@@ -655,7 +655,7 @@ class AstToPrologFactbaseTest {
             fun `should reference assignees`() = withFactbaseFromFile("statements") {
                 val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
                 val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
-                shouldBeNChildrenOf<NodeWithParent>(assignmentT.assignees, assignmentT, 3)
+                shouldBeNChildrenOf<NodeWithParent>(assignmentT.assignees, assignmentT, 4)
             }
 
             @Test
@@ -674,16 +674,22 @@ class AstToPrologFactbaseTest {
         }
 
         @Nested
-        inner class LambdaYield {
+        inner class LambdaResult {
             @Test
-            fun `should handle lambda yields`() = withFactbaseFromFile("statements") {
-                findUniqueFactOrFail<LambdaYieldT> { it.name == "myLambdaYield" }
+            fun `should handle lambda results`() = withFactbaseFromFile("statements") {
+                findUniqueFactOrFail<LambdaResultT> { it.name == "mySimpleLambdaResult" }
+            }
+
+            @Test
+            fun `should store annotation uses`() = withFactbaseFromFile("statements") {
+                val lambdaResultT = findUniqueFactOrFail<LambdaResultT> { it.name == "myComplexLambdaResult" }
+                shouldHaveNAnnotationUses(lambdaResultT, 1)
             }
 
             @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("statements") {
-                val lambdaYieldT = findUniqueFactOrFail<LambdaYieldT> { it.name == "myLambdaYield" }
-                findUniqueFactOrFail<SourceLocationS> { it.target == lambdaYieldT.id }
+                val lambdaResultT = findUniqueFactOrFail<LambdaResultT> { it.name == "mySimpleLambdaResult" }
+                findUniqueFactOrFail<SourceLocationS> { it.target == lambdaResultT.id }
             }
         }
 
@@ -691,12 +697,18 @@ class AstToPrologFactbaseTest {
         inner class Placeholder {
             @Test
             fun `should handle placeholders`() = withFactbaseFromFile("statements") {
-                findUniqueFactOrFail<PlaceholderT> { it.name == "myPlaceholder" }
+                findUniqueFactOrFail<PlaceholderT> { it.name == "mySimplePlaceholder" }
+            }
+
+            @Test
+            fun `should store annotation uses`() = withFactbaseFromFile("statements") {
+                val placeholderT = findUniqueFactOrFail<PlaceholderT> { it.name == "myComplexPlaceholder" }
+                shouldHaveNAnnotationUses(placeholderT, 1)
             }
 
             @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("statements") {
-                val placeholderT = findUniqueFactOrFail<PlaceholderT> { it.name == "myPlaceholder" }
+                val placeholderT = findUniqueFactOrFail<PlaceholderT> { it.name == "mySimplePlaceholder" }
                 findUniqueFactOrFail<SourceLocationS> { it.target == placeholderT.id }
             }
         }
@@ -1604,8 +1616,8 @@ class AstToPrologFactbaseTest {
                 val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyClass" }
                 val sourceLocationS = findUniqueFactOrFail<SourceLocationS> { it.target == importT.id }
                 sourceLocationS.asClue {
-                    // Actual offset depends on the new line characters (19 for just \n or \r and 21 for \r\n)
-                    sourceLocationS.offset shouldBeOneOf listOf(19, 21)
+                    // Actual offset depends on the new line characters (48 for just \n or \r and 50 for \r\n)
+                    sourceLocationS.offset shouldBeOneOf listOf(48, 50)
                 }
             }
 

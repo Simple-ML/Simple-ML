@@ -1,4 +1,4 @@
-package myPackage
+package tests.astToPrologFactbase.annotationUses
 
 annotation MyAnnotation
 

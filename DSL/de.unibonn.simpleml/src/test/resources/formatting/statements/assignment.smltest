@@ -1,11 +1,14 @@
 workflow myWorkflow {
           val
      a     =      0      ;
-    (  val    a   ,    _ ,       yield   b   )  =    call()        ;
+    (  @AnnotationUse  val    a   ,    _ ,         yield   b   )  =    call()        ;
     lambda () {
         val         a
         =   0 ;
-        (val      a,       _   ,    yield    b   )   =
+        (
+            
+    @AnnotationUse
+    val      a,       _   , @AnnotationUse   yield    b   )   =
          call()    ;
     };
 }
@@ -14,9 +17,9 @@ workflow myWorkflow {
 
 workflow myWorkflow {
     val a = 0;
-    (val a, _, yield b) = call();
+    (@AnnotationUse val a, _, yield b) = call();
     lambda () {
         val a = 0;
-        (val a, _, yield b) = call();
+        (@AnnotationUse val a, _, @AnnotationUse yield b) = call();
     };
 }

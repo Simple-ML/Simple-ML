@@ -32,8 +32,14 @@ annotation AnnotationForEnumVariants
 @Target(AnnotationTarget.Function)
 annotation AnnotationForFunctions
 
+@Target(AnnotationTarget.LambdaResult)
+annotation AnnotationForLambdaResults
+
 @Target(AnnotationTarget.Parameter)
 annotation AnnotationForParameters
+
+@Target(AnnotationTarget.Placeholder)
+annotation AnnotationForPlaceholders
 
 @Target(AnnotationTarget.Result)
 annotation AnnotationForResults
@@ -108,7 +114,7 @@ enum TestEnum {
 }
 
 // semantic_error "This annotation cannot be applied to a function."
-»@AnnotationForParameters«
+»@AnnotationForLambdaResults«
 // no_semantic_error "This annotation cannot be applied to a function."
 »@AnnotationForFunctions«
 // no_semantic_error "This annotation cannot be applied to a function."
@@ -116,7 +122,7 @@ enum TestEnum {
 fun testFunction(
 
     // semantic_error "This annotation cannot be applied to a parameter."
-    »@AnnotationForResults«
+    »@AnnotationForPlaceholders«
     // no_semantic_error "This annotation cannot be applied to a parameter."
     »@AnnotationForParameters«
     // no_semantic_error "This annotation cannot be applied to a parameter."
@@ -139,7 +145,28 @@ fun testFunction(
 »@AnnotationForWorkflows«
 // no_semantic_error "This annotation cannot be applied to a workflow."
 »@AnnotationForAnything«
-workflow testWorkflow {}
+workflow testWorkflow {
+    lambda {
+        (
+
+            // semantic_error "This annotation cannot be applied to a lambda result."
+            »@AnnotationForParameters«
+            // no_semantic_error "This annotation cannot be applied to a lambda result."
+            »@AnnotationForLambdaResults«
+            // no_semantic_error "This annotation cannot be applied to a lambda result."
+            »@AnnotationForAnything«
+            yield a,
+
+            // semantic_error "This annotation cannot be applied to a placeholder."
+            »@AnnotationForResults«
+            // no_semantic_error "This annotation cannot be applied to a placeholder."
+            »@AnnotationForPlaceholders«
+            // no_semantic_error "This annotation cannot be applied to a placeholder."
+            »@AnnotationForAnything«
+            val b
+        ) = someCall();
+    };
+}
 
 // semantic_error "This annotation cannot be applied to a workflow step."
 »@AnnotationForAnnotations«

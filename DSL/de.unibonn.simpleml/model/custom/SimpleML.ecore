@@ -14,7 +14,7 @@
 
     <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractDeclaration" abstract="true"
                   eSuperTypes="#//SmlAbstractElement">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="annotationHolder" eType="#//SmlAnnotationUseHolder"
+        <eStructuralFeatures xsi:type="ecore:EReference" name="annotationUseHolder" eType="#//SmlAnnotationUseHolder"
                              containment="true"/>
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="name"
                              eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -186,10 +186,10 @@
 
     <eClassifiers xsi:type="ecore:EClass" name="SmlAssigneeList">
         <eStructuralFeatures xsi:type="ecore:EReference" name="assignees" upperBound="-1"
-                             eType="#//SmlAbstractAssignee" containment="true"/>
+                             eType="#//SmlAbstractElement" containment="true"/>
     </eClassifiers>
 
-    <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractAssignee" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractAssignee" abstract="true" eSuperTypes="#//SmlAbstractElement"/>
 
     <eClassifiers xsi:type="ecore:EClass" name="SmlPlaceholder"
                   eSuperTypes="#//SmlAbstractAssignee #//SmlAbstractLocalVariable"/>
@@ -200,7 +200,7 @@
         <eStructuralFeatures xsi:type="ecore:EReference" name="result" eType="#//SmlResult"/>
     </eClassifiers>
 
-    <eClassifiers xsi:type="ecore:EClass" name="SmlLambdaYield"
+    <eClassifiers xsi:type="ecore:EClass" name="SmlLambdaResult"
                   eSuperTypes="#//SmlAbstractDeclaration #//SmlAbstractAssignee"/>
 
     <eClassifiers xsi:type="ecore:EClass" name="SmlExpressionStatement" eSuperTypes="#//SmlAbstractStatement">
