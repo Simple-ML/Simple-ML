@@ -29,12 +29,10 @@ SmlCompilationUnitMember returns SmlAbstractElement
           =>members+=SmlPackageMember*
 
     | {SmlAnnotation.annotationHolder=current}
-          modifiers+=SmlModifier*
           'annotation' name=ID
           parameterList=SmlParameterList?
 
     | {SmlClass.annotationHolder=current}
-          modifiers+=SmlModifier*
           'class' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
@@ -43,12 +41,10 @@ SmlCompilationUnitMember returns SmlAbstractElement
           body=SmlClassBody?
 
     | {SmlEnum.annotationHolder=current}
-          modifiers+=SmlModifier*
           'enum' name=ID
           body=SmlEnumBody?
 
     | {SmlFunction.annotationHolder=current}
-          modifiers+=SmlModifier*
           'fun' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList
@@ -56,12 +52,10 @@ SmlCompilationUnitMember returns SmlAbstractElement
           typeParameterConstraintList=SmlTypeParameterConstraintList?
 
     | {SmlWorkflow.annotationHolder=current}
-          modifiers+=SmlModifier*
           'workflow' name=ID
           body=SmlBlock
 
     | {SmlWorkflowStep.annotationHolder=current}
-          modifiers+=SmlModifier*
           'step' name=ID
           parameterList=SmlParameterList
           resultList=SmlWorkflowStepResultList?
@@ -81,12 +75,10 @@ SmlPackageMember returns SmlAbstractElement
     : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
 
     ( {SmlAnnotation.annotationHolder=current}
-          modifiers+=SmlModifier*
           'annotation' name=ID
           parameterList=SmlParameterList?
 
     | {SmlClass.annotationHolder=current}
-          modifiers+=SmlModifier*
           'class' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
@@ -95,12 +87,10 @@ SmlPackageMember returns SmlAbstractElement
           body=SmlClassBody?
 
     | {SmlEnum.annotationHolder=current}
-          modifiers+=SmlModifier*
           'enum' name=ID
           body=SmlEnumBody?
 
     | {SmlFunction.annotationHolder=current}
-          modifiers+=SmlModifier*
           'fun' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList
@@ -108,12 +98,10 @@ SmlPackageMember returns SmlAbstractElement
           typeParameterConstraintList=SmlTypeParameterConstraintList?
 
     | {SmlWorkflow.annotationHolder=current}
-          modifiers+=SmlModifier*
           'workflow' name=ID
           body=SmlBlock
 
     | {SmlWorkflowStep.annotationHolder=current}
-          modifiers+=SmlModifier*
           'step' name=ID
           parameterList=SmlParameterList
           resultList=SmlWorkflowStepResultList?
@@ -164,11 +152,10 @@ SmlClassMember returns SmlAbstractElement
     : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
 
     ( {SmlAttribute.annotationHolder=current}
-          modifiers+=SmlModifier*
+          static?='static'?
           'attr' name=ID (':' type=SmlType)?
 
     | {SmlClass.annotationHolder=current}
-          modifiers+=SmlModifier*
           'class' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
@@ -177,12 +164,11 @@ SmlClassMember returns SmlAbstractElement
           body=SmlClassBody?
 
     | {SmlEnum.annotationHolder=current}
-          modifiers+=SmlModifier*
           'enum' name=ID
           body=SmlEnumBody?
 
     | {SmlFunction.annotationHolder=current}
-          modifiers+=SmlModifier*
+          static?='static'?
           'fun' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList
@@ -200,7 +186,6 @@ SmlEnumBody
 
 SmlEnumVariant
     : annotations+=SmlAnnotationUse*
-      modifiers+=SmlModifier*
       name=ID
       typeParameterList=SmlTypeParameterList?
       parameterList=SmlParameterList?
@@ -216,8 +201,7 @@ SmlParameterList
 
 SmlParameter
     : annotations+=SmlAnnotationUse*
-      modifiers+=SmlModifier*
-      vararg?='vararg'?
+      variadic?='vararg'?
       name=ID (':' type=SmlType)?
       ('or' defaultValue=SmlExpression)?
     ;
@@ -240,7 +224,6 @@ SmlResultList
 
 SmlResult
     : annotations+=SmlAnnotationUse*
-      modifiers+=SmlModifier*
       name=ID (':' type=SmlType)?
     ;
 
@@ -396,7 +379,7 @@ SmlUnaryOperation returns SmlAbstractExpression
 SmlChainedExpression returns SmlAbstractExpression
     : SmlPrimaryExpression =>(
           {SmlCall.receiver=current}          typeArgumentList=SmlTypeArgumentList? argumentList=SmlCallArgumentList
-        | {SmlMemberAccess.receiver=current}  (nullable?='?')? '.' member=SmlReference
+        | {SmlMemberAccess.receiver=current}  (nullSafe?='?')? '.' member=SmlReference
     )*
     ;
 
@@ -469,18 +452,6 @@ SmlReference
 
 SmlParenthesizedExpression
     : '(' expression=SmlExpression ')'
-    ;
-
-
-
-/**********************************************************************************************************************
- * Modifiers
- **********************************************************************************************************************/
-
-SmlModifier
-    : 'open'
-    | 'override'
-    | 'static'
     ;
 
 
@@ -563,7 +534,6 @@ SmlTypeParameterList
 
 SmlTypeParameter
     : annotations+=SmlAnnotationUse*
-      modifiers+=SmlModifier*
       variance=SmlTypeParameterVariance?
       name=ID
     ;
