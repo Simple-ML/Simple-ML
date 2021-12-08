@@ -41,7 +41,7 @@ import de.unibonn.simpleml.typing.NamedType
 import de.unibonn.simpleml.typing.TypeComputer
 import de.unibonn.simpleml.utils.ClassHierarchy
 import de.unibonn.simpleml.utils.closestAncestorOrNull
-import de.unibonn.simpleml.utils.isStatic
+import de.unibonn.simpleml.utils.isInferredStatic
 import de.unibonn.simpleml.utils.parametersOrNull
 import de.unibonn.simpleml.utils.resultsOrNull
 import de.unibonn.simpleml.utils.typeParametersOrNull
@@ -81,7 +81,7 @@ class SimpleMLScopeProvider @Inject constructor(
         val parameters = smlArgument
             .closestAncestorOrNull<SmlArgumentList>()
             ?.parametersOrNull()
-            ?.filterNot { it.isVararg }
+            ?.filterNot { it.isVariadic }
             ?: emptyList()
         return Scopes.scopeFor(parameters)
     }
@@ -136,11 +136,11 @@ class SimpleMLScopeProvider @Inject constructor(
         val type = (typeComputer.typeOf(receiver) as? NamedType) ?: return resultScope
 
         return when {
-            type.isNullable && !context.isNullable -> resultScope
+            type.isNullable && !context.isNullSafe -> resultScope
             type is ClassType -> {
-                val members = type.smlClass.memberDeclarationsOrEmpty().filter { it.isStatic() == type.isStatic }
+                val members = type.smlClass.memberDeclarationsOrEmpty().filter { it.isInferredStatic() == type.isStatic }
                 val superTypeMembers = classHierarchy.superClassMembers(type.smlClass)
-                    .filter { it.isStatic() == type.isStatic }
+                    .filter { it.isInferredStatic() == type.isStatic }
                     .toList()
 
                 Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers, resultScope))

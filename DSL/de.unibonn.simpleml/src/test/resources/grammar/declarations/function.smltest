@@ -5,8 +5,8 @@ fun mySimpleFunction()
 fun myFunctionWithOneResult() -> a : Int
 
 @MyAnnotation
-static fun myComplexFunction
-    <@AnnotationUse static T1, in T2, out T3>
-    (@AnnotationUse static a: Int, vararg b: Int or 3)
-    -> (@AnnotationUse static a: Int, b: Int)
+fun myComplexFunction
+    <@AnnotationUse T1, in T2, out T3>
+    (@AnnotationUse a: Int, vararg b: Int or 3)
+    -> (@AnnotationUse a: Int, b: Int)
     where T2 super Number, T3 sub Number

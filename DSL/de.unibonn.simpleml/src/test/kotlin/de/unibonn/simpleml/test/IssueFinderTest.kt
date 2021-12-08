@@ -60,7 +60,7 @@ private val semanticSeverities = setOf(
 
 @ExtendWith(InjectionExtension::class)
 @InjectWith(SimpleMLInjectorProvider::class)
-class GrammarAndValidationTest {
+class IssueFinderTest {
 
     @Inject
     private lateinit var parseHelper: ParseHelper
@@ -69,18 +69,19 @@ class GrammarAndValidationTest {
     private lateinit var validationHelper: ValidationTestHelper
 
     @TestFactory
-    fun `should parse and validate`(): Stream<out DynamicNode> {
-        val grammarTests = javaClass.classLoader
+    fun `should parse test files correctly`(): Stream<out DynamicNode> {
+        return javaClass.classLoader
             .getResourcePath("grammar")
             ?.createDynamicTestsFromResourceFolder(::validateTestFile, ::createTest)
             ?: Stream.empty()
+    }
 
-        val validationTests = javaClass.classLoader
+    @TestFactory
+    fun `should validate test files correctly`(): Stream<out DynamicNode> {
+        return javaClass.classLoader
             .getResourcePath("validation")
             ?.createDynamicTestsFromResourceFolder(::validateTestFile, ::createTest)
             ?: Stream.empty()
-
-        return Stream.concat(grammarTests, validationTests)
     }
 
     /**

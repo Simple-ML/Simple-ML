@@ -1,8 +1,8 @@
 package tests.staticPropagates
 
-open class MyOpenClass {
+class MyOpenClass {
     static fun staticFunction1()
-    open fun nonStaticFunction1()
+    fun nonStaticFunction1()
 }
 
 class MyClass sub MyOpenClass {

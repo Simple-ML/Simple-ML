@@ -3,7 +3,6 @@ package de.unibonn.simpleml.test.assertions
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
 import de.unibonn.simpleml.prolog_bridge.model.facts.DeclarationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionT
-import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
 import de.unibonn.simpleml.prolog_bridge.model.facts.Node
 import de.unibonn.simpleml.prolog_bridge.model.facts.NodeWithParent
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFact
@@ -91,12 +90,4 @@ fun PlFactbase.shouldHaveNAnnotationUses(
     val annotationUses = findFacts<AnnotationUseT> { it.parent == declaration.id }
     annotationUses shouldHaveSize n
     annotationUses.forEach { shouldBeChildOf<AnnotationUseT>(it.id, declaration) }
-}
-
-fun PlFactbase.shouldHaveNModifiers(
-    declaration: DeclarationT,
-    n: Int
-) {
-    val modifiers = findFacts<ModifierT> { it.target == declaration.id }
-    modifiers shouldHaveSize n
 }

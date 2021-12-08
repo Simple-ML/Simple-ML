@@ -9,5 +9,5 @@ step s2(
 ) {}
 
 step s3(
-    f: callable (@AnnotationUse static a: Int, vararg b: Int or 3) -> (@AnnotationUse static a: Int, b: Int)
+    f: callable (@AnnotationUse a: Int, vararg b: Int or 3) -> (@AnnotationUse a: Int, b: Int)
 ) {}
