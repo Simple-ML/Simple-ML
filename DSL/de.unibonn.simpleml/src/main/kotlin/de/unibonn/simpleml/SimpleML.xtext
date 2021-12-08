@@ -22,17 +22,17 @@ SmlCompilationUnit
 SmlCompilationUnitMember returns SmlAbstractElement
     : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
 
-    ( {SmlPackage.annotationHolder=current}
+    ( {SmlPackage.annotationUseHolder=current}
           ( ('package' name=QualifiedName =>imports+=SmlImport*)
           | (imports+=SmlImport =>imports+=SmlImport*)
           )
           =>members+=SmlPackageMember*
 
-    | {SmlAnnotation.annotationHolder=current}
+    | {SmlAnnotation.annotationUseHolder=current}
           'annotation' name=ID
           parameterList=SmlParameterList?
 
-    | {SmlClass.annotationHolder=current}
+    | {SmlClass.annotationUseHolder=current}
           'class' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
@@ -40,22 +40,22 @@ SmlCompilationUnitMember returns SmlAbstractElement
           typeParameterConstraintList=SmlTypeParameterConstraintList?
           body=SmlClassBody?
 
-    | {SmlEnum.annotationHolder=current}
+    | {SmlEnum.annotationUseHolder=current}
           'enum' name=ID
           body=SmlEnumBody?
 
-    | {SmlFunction.annotationHolder=current}
+    | {SmlFunction.annotationUseHolder=current}
           'fun' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList
           resultList=SmlResultList?
           typeParameterConstraintList=SmlTypeParameterConstraintList?
 
-    | {SmlWorkflow.annotationHolder=current}
+    | {SmlWorkflow.annotationUseHolder=current}
           'workflow' name=ID
           body=SmlBlock
 
-    | {SmlWorkflowStep.annotationHolder=current}
+    | {SmlWorkflowStep.annotationUseHolder=current}
           'step' name=ID
           parameterList=SmlParameterList
           resultList=SmlWorkflowStepResultList?
@@ -74,11 +74,11 @@ SmlImportAlias
 SmlPackageMember returns SmlAbstractElement
     : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
 
-    ( {SmlAnnotation.annotationHolder=current}
+    ( {SmlAnnotation.annotationUseHolder=current}
           'annotation' name=ID
           parameterList=SmlParameterList?
 
-    | {SmlClass.annotationHolder=current}
+    | {SmlClass.annotationUseHolder=current}
           'class' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
@@ -86,22 +86,22 @@ SmlPackageMember returns SmlAbstractElement
           typeParameterConstraintList=SmlTypeParameterConstraintList?
           body=SmlClassBody?
 
-    | {SmlEnum.annotationHolder=current}
+    | {SmlEnum.annotationUseHolder=current}
           'enum' name=ID
           body=SmlEnumBody?
 
-    | {SmlFunction.annotationHolder=current}
+    | {SmlFunction.annotationUseHolder=current}
           'fun' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList
           resultList=SmlResultList?
           typeParameterConstraintList=SmlTypeParameterConstraintList?
 
-    | {SmlWorkflow.annotationHolder=current}
+    | {SmlWorkflow.annotationUseHolder=current}
           'workflow' name=ID
           body=SmlBlock
 
-    | {SmlWorkflowStep.annotationHolder=current}
+    | {SmlWorkflowStep.annotationUseHolder=current}
           'step' name=ID
           parameterList=SmlParameterList
           resultList=SmlWorkflowStepResultList?
@@ -151,11 +151,11 @@ SmlClassBody
 SmlClassMember returns SmlAbstractElement
     : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
 
-    ( {SmlAttribute.annotationHolder=current}
+    ( {SmlAttribute.annotationUseHolder=current}
           static?='static'?
           'attr' name=ID (':' type=SmlType)?
 
-    | {SmlClass.annotationHolder=current}
+    | {SmlClass.annotationUseHolder=current}
           'class' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
@@ -163,11 +163,11 @@ SmlClassMember returns SmlAbstractElement
           typeParameterConstraintList=SmlTypeParameterConstraintList?
           body=SmlClassBody?
 
-    | {SmlEnum.annotationHolder=current}
+    | {SmlEnum.annotationUseHolder=current}
           'enum' name=ID
           body=SmlEnumBody?
 
-    | {SmlFunction.annotationHolder=current}
+    | {SmlFunction.annotationUseHolder=current}
           static?='static'?
           'fun' name=ID
           typeParameterList=SmlTypeParameterList?
@@ -263,7 +263,7 @@ SmlAssigneeList
     ;
 
 SmlAssignee returns SmlAbstractAssignee
-    : {SmlPlaceholder} 'val' name=ID
+    : {SmlPlaceholder} annotations+=SmlAnnotationUse* 'val' name=ID
     | {SmlWildcard}    '_'
     | {SmlYield}       'yield' result=[SmlResult]
     ;
@@ -299,10 +299,14 @@ SmlLambdaAssigneeList returns SmlAssigneeList
     | {SmlAssigneeList} '(' (assignees+=SmlLambdaAssignee (',' assignees+=SmlLambdaAssignee)* ','?)? ')'
     ;
 
-SmlLambdaAssignee returns SmlAbstractAssignee
-    : {SmlPlaceholder} 'val' name=ID
-    | {SmlWildcard}    '_'
-    | {SmlLambdaResult} 'yield' name=ID
+SmlLambdaAssignee returns SmlAbstractElement
+    : {SmlWildcard} '_'
+    |
+    ( {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
+        ( {SmlPlaceholder.annotationUseHolder=current} 'val' name=ID
+        | {SmlLambdaResult.annotationUseHolder=current} 'yield' name=ID
+        )
+    )
     ;
 
 

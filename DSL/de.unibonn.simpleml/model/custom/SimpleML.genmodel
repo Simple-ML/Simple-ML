@@ -14,7 +14,7 @@
         </genClasses>
         <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractDeclaration">
             <genFeatures property="None" children="true" createChild="true"
-                         ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAbstractElement/annotationHolder"/>
+                         ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAbstractElement/annotationUseHolder"/>
             <genFeatures createChild="false"
                          ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlAbstractDeclaration/name"/>
         </genClasses>

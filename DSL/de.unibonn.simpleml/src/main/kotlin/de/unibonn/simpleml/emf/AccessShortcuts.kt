@@ -55,7 +55,7 @@ fun Resource?.compilationUnitOrNull(): SmlCompilationUnit? {
 // SmlAbstractDeclaration --------------------------------------------------------------------------
 
 fun SmlAbstractDeclaration?.annotationUsesOrEmpty(): List<SmlAnnotationUse> {
-    return this?.annotationHolder?.annotations ?: this?.annotations.orEmpty()
+    return this?.annotationUseHolder?.annotations ?: this?.annotations.orEmpty()
 }
 
 // SmlAnnotation -----------------------------------------------------------------------------------
@@ -73,7 +73,9 @@ fun SmlAnnotationUse?.argumentsOrEmpty(): List<SmlArgument> {
 // SmlAssignment -----------------------------------------------------------------------------------
 
 fun SmlAssignment?.assigneesOrEmpty(): List<SmlAbstractAssignee> {
-    return this?.assigneeList?.assignees.orEmpty()
+    return this?.assigneeList?.assignees
+        ?.filterIsInstance<SmlAbstractAssignee>()
+        .orEmpty()
 }
 
 fun SmlAssignment?.lambdaResultsOrEmpty(): List<SmlLambdaResult> {
