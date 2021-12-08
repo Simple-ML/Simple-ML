@@ -3,10 +3,10 @@ package simpleml.model.regression
 import simpleml.model.*
 import simpleml.dataset.Dataset
 
-open class DecisionTree(maxDepth: Int) sub Estimator {
+class DecisionTree(maxDepth: Int) sub Estimator {
     attr maxDepth: Int?
 
-    override fun fit(features: Dataset, target: Dataset) -> trainedModel: TrainedDecisionTree
+    fun fit(features: Dataset, target: Dataset) -> trainedModel: TrainedDecisionTree
 }
 
 class TrainedDecisionTree sub DecisionTree {

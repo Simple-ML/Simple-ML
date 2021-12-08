@@ -2,10 +2,10 @@ package simpleml.model
 
 import simpleml.dataset.Dataset
 
-open class Estimator {
-    open fun fit(features: Dataset, target: Dataset) -> trainedModel: Model
+class Estimator {
+    fun fit(features: Dataset, target: Dataset) -> trainedModel: Model
 }
 
-open class Model {
-    open fun predict(features: Dataset) -> results: Any
+class Model {
+    fun predict(features: Dataset) -> results: Any
 }
