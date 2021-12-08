@@ -52,7 +52,7 @@ class ArgumentListChecker : AbstractSimpleMLChecker() {
     @Check
     fun tooManyArguments(smlArgumentList: SmlArgumentList) {
         val parameters = smlArgumentList.parametersOrNull()
-        if (parameters == null || parameters.any { it.isVararg }) {
+        if (parameters == null || parameters.any { it.isVariadic }) {
             return
         }
 

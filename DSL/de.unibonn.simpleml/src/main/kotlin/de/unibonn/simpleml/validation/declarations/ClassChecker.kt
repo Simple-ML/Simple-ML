@@ -1,7 +1,6 @@
 package de.unibonn.simpleml.validation.declarations
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.constants.hasOpenModifier
 import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
@@ -51,21 +50,7 @@ class ClassChecker @Inject constructor(
     }
 
     @Check
-    fun mustInheritOnlyOpenClasses(smlClass: SmlClass) {
-        smlClass.parentTypesOrEmpty()
-            .filter {
-                val resolvedClass = it.classOrNull()
-                resolvedClass != null && !resolvedClass.hasOpenModifier()
-            }
-            .forEach {
-                error(
-                    "The parent class must be open.",
-                    it,
-                    null,
-                    ErrorCode.PARENT_CLASS_MUST_BE_OPEN
-                )
-            }
-
+    fun mustInheritOnlyClasses(smlClass: SmlClass) {
         smlClass.parentTypesOrEmpty()
             .filter { it.maybeClass() is ClassResult.NotAClass }
             .forEach {

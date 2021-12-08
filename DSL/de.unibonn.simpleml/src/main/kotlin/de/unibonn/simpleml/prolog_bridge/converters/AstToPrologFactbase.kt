@@ -34,7 +34,6 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberAccessT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberTypeT
-import de.unibonn.simpleml.prolog_bridge.model.facts.ModifierT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NamedTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NullT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PackageT
@@ -190,7 +189,6 @@ class AstToPrologFactbase {
 
     private fun PlFactbase.visitDeclaration(obj: SmlAbstractDeclaration, parentId: Id<EObject>) {
         obj.annotationUsesOrEmpty().forEach { visitAnnotationUse(it, obj.id) }
-        obj.modifiers.forEach { visitModifier(it, obj.id) }
 
         when (obj) {
             is SmlAnnotation -> {
@@ -201,7 +199,7 @@ class AstToPrologFactbase {
             is SmlAttribute -> {
                 obj.type?.let { visitType(it, obj.id) }
 
-                +AttributeT(obj.id, parentId, obj.name, obj.type?.id)
+                +AttributeT(obj.id, parentId, obj.name, obj.isStatic, obj.type?.id)
             }
             is SmlClass -> {
                 obj.typeParametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
@@ -255,6 +253,7 @@ class AstToPrologFactbase {
                     obj.id,
                     parentId,
                     obj.name,
+                    obj.isStatic,
                     obj.typeParameterList?.typeParameters?.map { it.id },
                     obj.parametersOrEmpty().map { it.id },
                     obj.resultList?.results?.map { it.id },
@@ -277,7 +276,7 @@ class AstToPrologFactbase {
                 obj.type?.let { visitType(it, obj.id) }
                 obj.defaultValue?.let { visitExpression(it, obj.id, obj.id) }
 
-                +ParameterT(obj.id, parentId, obj.name, obj.isVararg, obj.type?.id, obj.defaultValue?.id)
+                +ParameterT(obj.id, parentId, obj.name, obj.isVariadic, obj.type?.id, obj.defaultValue?.id)
             }
             is SmlResult -> {
                 obj.type?.let { visitType(it, obj.id) }
@@ -317,10 +316,6 @@ class AstToPrologFactbase {
 
         +AnnotationUseT(obj.id, parentId, obj.annotation.id, obj.argumentList?.arguments?.map { it.id })
         visitSourceLocation(obj)
-    }
-
-    private fun PlFactbase.visitModifier(modifier: String, target: Id<SmlAbstractDeclaration>) {
-        +ModifierT(target, modifier)
     }
 
     private fun PlFactbase.visitImport(obj: SmlImport, parentId: Id<SmlPackage>) {
@@ -432,7 +427,7 @@ class AstToPrologFactbase {
                 visitExpression(obj.receiver, obj.id, enclosingId)
                 visitExpression(obj.member, obj.id, enclosingId)
 
-                +MemberAccessT(obj.id, parentId, enclosingId, obj.receiver.id, obj.isNullable, obj.member.id)
+                +MemberAccessT(obj.id, parentId, enclosingId, obj.receiver.id, obj.isNullSafe, obj.member.id)
             }
             is SmlNull -> {
                 +NullT(obj.id, parentId, enclosingId)

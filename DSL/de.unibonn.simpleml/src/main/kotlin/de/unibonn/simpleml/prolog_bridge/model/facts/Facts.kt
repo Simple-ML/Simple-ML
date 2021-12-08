@@ -231,6 +231,9 @@ data class AnnotationT(
  * @param name
  * The name of the attribute.
  *
+ * @param isStatic
+ * Whether this attribute is static.
+ *
  * @param type
  * The ID of the fact for the type of the attribute or null if no type was specified.
  */
@@ -238,9 +241,10 @@ data class AttributeT(
     override val id: Id<SmlAttribute>,
     override val parent: Id<EObject>, // Actually just SmlClassOrInterface but this allows a handleDeclaration function
     override val name: String,
+    val isStatic: Boolean,
     val type: Id<SmlAbstractType>?
 ) :
-    DeclarationT("attributeT", id, parent, name, type) {
+    DeclarationT("attributeT", id, parent, name, isStatic, type) {
     override fun toString() = super.toString()
 }
 
@@ -367,6 +371,9 @@ data class EnumVariantT(
  * @param name
  * The name of the function.
  *
+ * @param isStatic
+ * Whether this function is static.
+ *
  * @param typeParameters
  * The list of type parameters or null. Each element in the list is the ID of a typeParameterT fact for the respective
  * type parameter. Note that an empty list is used for a function with an empty type parameter list, e.g. `fun a<>()`,
@@ -390,6 +397,7 @@ data class FunctionT(
     override val id: Id<SmlFunction>,
     override val parent: Id<EObject>, // SmlClassOrInterface | SmlCompilationUnit
     override val name: String,
+    val isStatic: Boolean,
     val typeParameters: List<Id<SmlTypeParameter>>?,
     val parameters: List<Id<SmlParameter>>,
     val results: List<Id<SmlResult>>?,
@@ -399,6 +407,7 @@ data class FunctionT(
     id,
     parent,
     name,
+    isStatic,
     typeParameters,
     parameters,
     results,
@@ -1575,20 +1584,6 @@ sealed class Relation(factName: String, target: Id<EObject>, vararg otherArgumen
      * The ID of the node that should be enhanced.
      */
     abstract val target: Id<EObject>
-}
-
-/**
- * This Prolog fact represents modifiers.
- *
- * @param target
- * The ID of the fact for the modified declaration.
- *
- * @param modifier
- * The modifier, for example "deprecated" or "open".
- */
-data class ModifierT(override val target: Id<SmlAbstractDeclaration>, val modifier: String) :
-    Relation("modifierT", target, modifier) {
-    override fun toString() = super.toString()
 }
 
 /**

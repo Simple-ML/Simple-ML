@@ -2,7 +2,6 @@
 
 package de.unibonn.simpleml.utils
 
-import de.unibonn.simpleml.constants.Modifiers
 import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.containingLambdaOrNull
 import de.unibonn.simpleml.emf.containingWorkflowStepOrNull
@@ -23,6 +22,7 @@ import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlArgumentList
 import de.unibonn.simpleml.simpleML.SmlAssignment
+import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
@@ -199,9 +199,14 @@ fun SmlClass?.parentClassOrNull(): SmlClass? {
 
 // Declaration ---------------------------------------------------------------------------------------------------------
 
-fun SmlAbstractDeclaration.isStatic(): Boolean {
-    return Modifiers.STATIC in this.modifiers || !this.isCompilationUnitMember() &&
-        (this is SmlClass || this is SmlEnum)
+fun SmlAbstractDeclaration.isInferredStatic(): Boolean {
+    return when {
+        !this.isClassMember() -> false
+        this is SmlClass || this is SmlEnum -> true
+        this is SmlAttribute && this.isStatic -> true
+        this is SmlFunction && this.isStatic -> true
+        else -> false
+    }
 }
 
 fun SmlAbstractDeclaration.isClassMember() = this.containingClassOrNull() != null

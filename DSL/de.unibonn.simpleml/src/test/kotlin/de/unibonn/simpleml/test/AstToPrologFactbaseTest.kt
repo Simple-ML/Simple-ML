@@ -64,7 +64,6 @@ import de.unibonn.simpleml.test.assertions.shouldBeCloseTo
 import de.unibonn.simpleml.test.assertions.shouldBeNChildExpressionsOf
 import de.unibonn.simpleml.test.assertions.shouldBeNChildrenOf
 import de.unibonn.simpleml.test.assertions.shouldHaveNAnnotationUses
-import de.unibonn.simpleml.test.assertions.shouldHaveNModifiers
 import de.unibonn.simpleml.test.util.getResourcePath
 import io.kotest.assertions.asClue
 import io.kotest.assertions.forEachAsClue
@@ -141,7 +140,6 @@ class AstToPrologFactbaseTest {
                 }
 
                 shouldHaveNAnnotationUses(annotationT, 0)
-                shouldHaveNModifiers(annotationT, 0)
             }
 
             @Test
@@ -154,12 +152,6 @@ class AstToPrologFactbaseTest {
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val annotationT = findUniqueFactOrFail<AnnotationT> { it.name == "MyComplexAnnotation" }
                 shouldHaveNAnnotationUses(annotationT, 1)
-            }
-
-            @Test
-            fun `should store modifiers`() = withFactbaseFromFile("declarations") {
-                val annotationT = findUniqueFactOrFail<AnnotationT> { it.name == "MyComplexAnnotation" }
-                shouldHaveNModifiers(annotationT, 1)
             }
 
             @Test
@@ -179,7 +171,14 @@ class AstToPrologFactbaseTest {
                 }
 
                 shouldHaveNAnnotationUses(attributeT, 0)
-                shouldHaveNModifiers(attributeT, 0)
+            }
+
+            @Test
+            fun `should store isStatic`() = withFactbaseFromFile("declarations") {
+                val attributeT = findUniqueFactOrFail<AttributeT> { it.name == "myComplexAttribute" }
+                attributeT.asClue {
+                    attributeT.isStatic shouldBe true
+                }
             }
 
             @Test
@@ -192,12 +191,6 @@ class AstToPrologFactbaseTest {
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val attributeT = findUniqueFactOrFail<AttributeT> { it.name == "myComplexAttribute" }
                 shouldHaveNAnnotationUses(attributeT, 1)
-            }
-
-            @Test
-            fun `should store modifiers`() = withFactbaseFromFile("declarations") {
-                val attributeT = findUniqueFactOrFail<AttributeT> { it.name == "myComplexAttribute" }
-                shouldHaveNModifiers(attributeT, 1)
             }
 
             @Test
@@ -221,7 +214,6 @@ class AstToPrologFactbaseTest {
                 }
 
                 shouldHaveNAnnotationUses(classT, 0)
-                shouldHaveNModifiers(classT, 0)
             }
 
             @Test
@@ -261,12 +253,6 @@ class AstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should store modifiers`() = withFactbaseFromFile("declarations") {
-                val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
-                shouldHaveNModifiers(classT, 1)
-            }
-
-            @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("declarations") {
                 val classT = findUniqueFactOrFail<ClassT> { it.name == "MySimpleClass" }
                 findUniqueFactOrFail<SourceLocationS> { it.target == classT.id }
@@ -283,7 +269,6 @@ class AstToPrologFactbaseTest {
                 }
 
                 shouldHaveNAnnotationUses(enumT, 0)
-                shouldHaveNModifiers(enumT, 0)
             }
 
             @Test
@@ -299,12 +284,6 @@ class AstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should store modifiers`() = withFactbaseFromFile("declarations") {
-                val enumT = findUniqueFactOrFail<EnumT> { it.name == "MyComplexEnum" }
-                shouldHaveNModifiers(enumT, 1)
-            }
-
-            @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("declarations") {
                 val enumT = findUniqueFactOrFail<EnumT> { it.name == "MySimpleEnum" }
                 findUniqueFactOrFail<SourceLocationS> { it.target == enumT.id }
@@ -317,19 +296,12 @@ class AstToPrologFactbaseTest {
             fun `should handle simple enum instances`() = withFactbaseFromFile("declarations") {
                 val enumVariantT = findUniqueFactOrFail<EnumVariantT> { it.name == "MySimpleVariant" }
                 shouldHaveNAnnotationUses(enumVariantT, 0)
-                shouldHaveNModifiers(enumVariantT, 0)
             }
 
             @Test
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val enumVariantT = findUniqueFactOrFail<EnumVariantT> { it.name == "MyComplexVariant" }
                 shouldHaveNAnnotationUses(enumVariantT, 1)
-            }
-
-            @Test
-            fun `should store modifiers`() = withFactbaseFromFile("declarations") {
-                val enumVariantT = findUniqueFactOrFail<EnumVariantT> { it.name == "MyComplexVariant" }
-                shouldHaveNModifiers(enumVariantT, 1)
             }
 
             @Test
@@ -370,7 +342,14 @@ class AstToPrologFactbaseTest {
                 }
 
                 shouldHaveNAnnotationUses(functionT, 0)
-                shouldHaveNModifiers(functionT, 0)
+            }
+
+            @Test
+            fun `should store isStatic`() = withFactbaseFromFile("declarations") {
+                val functionT = findUniqueFactOrFail<FunctionT> { it.name == "myComplexFunction" }
+                functionT.asClue {
+                    functionT.isStatic shouldBe true
+                }
             }
 
             @Test
@@ -401,12 +380,6 @@ class AstToPrologFactbaseTest {
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val functionT = findUniqueFactOrFail<FunctionT> { it.name == "myComplexFunction" }
                 shouldHaveNAnnotationUses(functionT, 1)
-            }
-
-            @Test
-            fun `should store modifiers`() = withFactbaseFromFile("declarations") {
-                val functionT = findUniqueFactOrFail<FunctionT> { it.name == "myComplexFunction" }
-                shouldHaveNModifiers(functionT, 1)
             }
 
             @Test
@@ -491,7 +464,6 @@ class AstToPrologFactbaseTest {
                 }
 
                 shouldHaveNAnnotationUses(parameterT, 0)
-                shouldHaveNModifiers(parameterT, 0)
             }
 
             @Test
@@ -521,12 +493,6 @@ class AstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should store modifiers`() = withFactbaseFromFile("declarations") {
-                val parameterT = findUniqueFactOrFail<ParameterT> { it.name == "myComplexParameter" }
-                shouldHaveNModifiers(parameterT, 1)
-            }
-
-            @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("declarations") {
                 val parameterT = findUniqueFactOrFail<ParameterT> { it.name == "mySimpleParameter" }
                 findUniqueFactOrFail<SourceLocationS> { it.target == parameterT.id }
@@ -543,7 +509,6 @@ class AstToPrologFactbaseTest {
                 }
 
                 shouldHaveNAnnotationUses(resultT, 0)
-                shouldHaveNModifiers(resultT, 0)
             }
 
             @Test
@@ -556,12 +521,6 @@ class AstToPrologFactbaseTest {
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val resultT = findUniqueFactOrFail<ResultT> { it.name == "myComplexResult" }
                 shouldHaveNAnnotationUses(resultT, 1)
-            }
-
-            @Test
-            fun `should store modifiers`() = withFactbaseFromFile("declarations") {
-                val resultT = findUniqueFactOrFail<ResultT> { it.name == "myComplexResult" }
-                shouldHaveNModifiers(resultT, 1)
             }
 
             @Test
@@ -581,7 +540,6 @@ class AstToPrologFactbaseTest {
                 }
 
                 shouldHaveNAnnotationUses(typeParameterT, 0)
-                shouldHaveNModifiers(typeParameterT, 0)
             }
 
             @Test
@@ -596,12 +554,6 @@ class AstToPrologFactbaseTest {
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val typeParameterT = findUniqueFactOrFail<TypeParameterT> { it.name == "MY_COMPLEX_TYPE_PARAMETER" }
                 shouldHaveNAnnotationUses(typeParameterT, 1)
-            }
-
-            @Test
-            fun `should store modifiers`() = withFactbaseFromFile("declarations") {
-                val typeParameterT = findUniqueFactOrFail<TypeParameterT> { it.name == "MY_COMPLEX_TYPE_PARAMETER" }
-                shouldHaveNModifiers(typeParameterT, 1)
             }
 
             @Test
@@ -621,7 +573,6 @@ class AstToPrologFactbaseTest {
                 }
 
                 shouldHaveNAnnotationUses(workflowT, 0)
-                shouldHaveNModifiers(workflowT, 0)
             }
 
             @Test
@@ -634,12 +585,6 @@ class AstToPrologFactbaseTest {
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myComplexWorkflow" }
                 shouldHaveNAnnotationUses(workflowT, 1)
-            }
-
-            @Test
-            fun `should store modifiers`() = withFactbaseFromFile("declarations") {
-                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myComplexWorkflow" }
-                shouldHaveNModifiers(workflowT, 1)
             }
 
             @Test
@@ -661,7 +606,6 @@ class AstToPrologFactbaseTest {
                 }
 
                 shouldHaveNAnnotationUses(workflowStepT, 0)
-                shouldHaveNModifiers(workflowStepT, 0)
             }
 
             @Test
@@ -686,12 +630,6 @@ class AstToPrologFactbaseTest {
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myComplexStep" }
                 shouldHaveNAnnotationUses(workflowStepT, 1)
-            }
-
-            @Test
-            fun `should store modifiers`() = withFactbaseFromFile("declarations") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myComplexStep" }
-                shouldHaveNModifiers(workflowStepT, 1)
             }
 
             @Test
