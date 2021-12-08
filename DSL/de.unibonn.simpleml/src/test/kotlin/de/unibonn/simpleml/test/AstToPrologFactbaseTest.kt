@@ -167,6 +167,7 @@ class AstToPrologFactbaseTest {
             fun `should handle simple attributes`() = withFactbaseFromFile("declarations") {
                 val attributeT = findUniqueFactOrFail<AttributeT> { it.name == "mySimpleAttribute" }
                 attributeT.asClue {
+                    attributeT.isStatic shouldBe false
                     attributeT.type.shouldBeNull()
                 }
 
@@ -335,6 +336,7 @@ class AstToPrologFactbaseTest {
             fun `should handle simple functions`() = withFactbaseFromFile("declarations") {
                 val functionT = findUniqueFactOrFail<FunctionT> { it.name == "mySimpleFunction" }
                 functionT.asClue {
+                    functionT.isStatic shouldBe false
                     functionT.typeParameters.shouldBeNull()
                     functionT.parameters.shouldBeEmpty()
                     functionT.results.shouldBeNull()
@@ -346,7 +348,7 @@ class AstToPrologFactbaseTest {
 
             @Test
             fun `should store isStatic`() = withFactbaseFromFile("declarations") {
-                val functionT = findUniqueFactOrFail<FunctionT> { it.name == "myComplexFunction" }
+                val functionT = findUniqueFactOrFail<FunctionT> { it.name == "myStaticMethod" }
                 functionT.asClue {
                     functionT.isStatic shouldBe true
                 }
