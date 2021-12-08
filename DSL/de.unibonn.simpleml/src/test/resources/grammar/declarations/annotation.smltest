@@ -2,7 +2,7 @@
 
 annotation MySimpleAnnotation
 
-@AnnotationUse static annotation MyComplexAnnotation(
-    @AnnotationUse static a: Int,
+@AnnotationUse annotation MyComplexAnnotation(
+    @AnnotationUse a: Int,
     vararg b: Int or 3
 )
