@@ -302,7 +302,7 @@ SmlLambdaAssigneeList returns SmlAssigneeList
 SmlLambdaAssignee returns SmlAbstractAssignee
     : {SmlPlaceholder} 'val' name=ID
     | {SmlWildcard}    '_'
-    | {SmlLambdaYield} 'yield' name=ID
+    | {SmlLambdaResult} 'yield' name=ID
     ;
 
 

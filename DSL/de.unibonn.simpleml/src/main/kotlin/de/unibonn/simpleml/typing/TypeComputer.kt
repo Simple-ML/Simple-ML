@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.typing
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.emf.lambdaYieldsOrEmpty
+import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.naming.fullyQualifiedName
@@ -20,7 +20,7 @@ import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlLambda
-import de.unibonn.simpleml.simpleML.SmlLambdaYield
+import de.unibonn.simpleml.simpleML.SmlLambdaResult
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -95,7 +95,7 @@ class TypeComputer @Inject constructor(
                 parametersOrEmpty().map { it.inferType(false) },
                 resultsOrEmpty().map { it.inferType(false) }
             )
-            this is SmlLambdaYield -> {
+            this is SmlLambdaResult -> {
                 val assigned = assignedOrNull() ?: return ANY
                 assigned.inferType(isStatic = false)
             }
@@ -138,7 +138,7 @@ class TypeComputer @Inject constructor(
                     }
                 }
                 is SmlLambda -> {
-                    val results = callable.lambdaYieldsOrEmpty()
+                    val results = callable.lambdaResultsOrEmpty()
                     when (results.size) {
                         1 -> results.first().inferType(false)
                         else -> TupleType(results.map { it.inferType(false) })
@@ -167,7 +167,7 @@ class TypeComputer @Inject constructor(
             }
             this is SmlLambda -> CallableType(
                 parametersOrEmpty().map { it.inferType(false) },
-                lambdaYieldsOrEmpty().map { it.inferType(false) }
+                lambdaResultsOrEmpty().map { it.inferType(false) }
             )
             this is SmlMemberAccess -> {
 //            if (this.isNullable) {

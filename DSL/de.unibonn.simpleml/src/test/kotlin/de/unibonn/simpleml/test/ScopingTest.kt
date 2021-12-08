@@ -12,7 +12,7 @@ import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.simpleML.SmlLambdaYield
+import de.unibonn.simpleml.simpleML.SmlLambdaResult
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlParameter
@@ -808,8 +808,8 @@ class ScopingTest {
         }
 
         @Test
-        fun `should not resolve lambda yields`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToLambdaYields")
+        fun `should not resolve lambda result`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToLambdaResults")
 
             val reference = step.descendants<SmlReference>().firstOrNull()
             reference.shouldNotBeNull()
@@ -1699,7 +1699,7 @@ class ScopingTest {
             @Test
             fun `should resolve result of lambda with one result without matching member`() = withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToLambdaResults")
-                val singleResult = step.findUniqueDeclarationOrFail<SmlLambdaYield>("singleResult")
+                val singleResult = step.findUniqueDeclarationOrFail<SmlLambdaResult>("singleResult")
 
                 val references = step.descendants<SmlReference>().toList()
                 references.shouldHaveSize(7)
@@ -1727,7 +1727,7 @@ class ScopingTest {
             @Test
             fun `should resolve result of lambda with multiple results`() = withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToLambdaResults")
-                val result1 = step.findUniqueDeclarationOrFail<SmlLambdaYield>("result1")
+                val result1 = step.findUniqueDeclarationOrFail<SmlLambdaResult>("result1")
 
                 val references = step.descendants<SmlReference>().toList()
                 references.shouldHaveSize(7)

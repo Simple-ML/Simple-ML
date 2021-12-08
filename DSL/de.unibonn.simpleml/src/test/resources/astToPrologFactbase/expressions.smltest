@@ -1,4 +1,4 @@
-package myPackage
+package tests.astToPrologFactbase.expressions
 
 // Arguments -----------------------------------------------------------------------------------------------------------
 fun f(a: Int)

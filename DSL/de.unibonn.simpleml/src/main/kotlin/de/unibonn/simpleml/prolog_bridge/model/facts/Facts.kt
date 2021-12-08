@@ -27,7 +27,7 @@ import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlLambda
-import de.unibonn.simpleml.simpleML.SmlLambdaYield
+import de.unibonn.simpleml.simpleML.SmlLambdaResult
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -685,7 +685,7 @@ data class AssignmentT(
 interface AssigneeT
 
 /**
- * This Prolog fact represents yields in a lambda.
+ * This Prolog fact represents results of a lambda.
  *
  * @param id
  * The ID of this fact.
@@ -694,14 +694,14 @@ interface AssigneeT
  * The ID of the assignmentT fact for the containing assignment.
  *
  * @param name
- * The name of the yielded result.
+ * The name of the result.
  */
-data class LambdaYieldT(
-    override val id: Id<SmlLambdaYield>,
+data class LambdaResultT(
+    override val id: Id<SmlLambdaResult>,
     override val parent: Id<SmlAssignment>,
     override val name: String
 ) :
-    DeclarationT("lambdaYieldT", id, parent, name), AssigneeT {
+    DeclarationT("lambdaResultT", id, parent, name), AssigneeT {
     override fun toString() = super.toString()
 }
 
@@ -1382,7 +1382,11 @@ data class NamedTypeT(
  * @param type
  * The ID of the fact for the type inside the parentheses.
  */
-data class ParenthesizedTypeT(override val id: Id<SmlAbstractType>, override val parent: Id<EObject>, val type: Id<SmlAbstractType>) :
+data class ParenthesizedTypeT(
+    override val id: Id<SmlAbstractType>,
+    override val parent: Id<EObject>,
+    val type: Id<SmlAbstractType>
+) :
     TypeT("parenthesizedTypeT", id, parent, type) {
     override fun toString() = super.toString()
 }

@@ -40,7 +40,7 @@ import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlImportAlias
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlLambda
-import de.unibonn.simpleml.simpleML.SmlLambdaYield
+import de.unibonn.simpleml.simpleML.SmlLambdaResult
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -637,7 +637,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // Keyword ")"
                 doc.formatKeyword(obj, ")", noSpace, null)
             }
-            is SmlLambdaYield -> {
+            is SmlLambdaResult -> {
 
                 // Keyword "yield"
                 doc.formatKeyword(obj, "yield", null, oneSpace)

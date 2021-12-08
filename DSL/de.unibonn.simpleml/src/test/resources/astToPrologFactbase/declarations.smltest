@@ -1,4 +1,4 @@
-package myPackage
+package tests.astToPrologFactbase.declarations
 
 import myPackage.MyClass
 import myPackage.MyOtherClass as Class

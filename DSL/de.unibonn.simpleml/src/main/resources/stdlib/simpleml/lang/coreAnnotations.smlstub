@@ -13,7 +13,9 @@ enum AnnotationTarget {
     Enum
     EnumVariant
     Function
+    LambdaResult
     Parameter
+    Placeholder
     Result
     TypeParameter
     Workflow

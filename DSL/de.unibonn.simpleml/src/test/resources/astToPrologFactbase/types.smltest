@@ -1,4 +1,4 @@
-package myPackage
+package tests.astToPrologFactbase.types
 
 // Callable types ------------------------------------------------------------------------------------------------------
 step myWorkflowStepWithSimpleCallableType(a: callable () -> ()) {}

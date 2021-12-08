@@ -200,7 +200,7 @@
         <eStructuralFeatures xsi:type="ecore:EReference" name="result" eType="#//SmlResult"/>
     </eClassifiers>
 
-    <eClassifiers xsi:type="ecore:EClass" name="SmlLambdaYield"
+    <eClassifiers xsi:type="ecore:EClass" name="SmlLambdaResult"
                   eSuperTypes="#//SmlAbstractDeclaration #//SmlAbstractAssignee"/>
 
     <eClassifiers xsi:type="ecore:EClass" name="SmlExpressionStatement" eSuperTypes="#//SmlAbstractStatement">
