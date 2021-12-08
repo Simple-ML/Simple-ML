@@ -11,6 +11,7 @@ import de.unibonn.simpleml.utils.ClassHierarchy
 import de.unibonn.simpleml.utils.ClassResult
 import de.unibonn.simpleml.utils.classOrNull
 import de.unibonn.simpleml.utils.duplicatesBy
+import de.unibonn.simpleml.utils.inheritedNonStaticMembersOrEmpty
 import de.unibonn.simpleml.utils.maybeClass
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
@@ -64,20 +65,18 @@ class ClassChecker @Inject constructor(
     }
 
     @Check
-    fun onlyOneParentClass(smlClass: SmlClass) {
-        val parentClasses = smlClass.parentTypesOrEmpty()
-            .filter { it.classOrNull() != null }
-
-        if (parentClasses.size > 1) {
-            parentClasses.forEach {
-                error(
-                    "A class must have only one parent class.",
-                    it,
-                    null,
-                    ErrorCode.CLASS_MUST_HAVE_ONLY_ONE_PARENT_CLASS
-                )
+    fun mustHaveUniqueInheritedMembers(smlClass: SmlClass) {
+        smlClass.inheritedNonStaticMembersOrEmpty()
+            .groupBy { it.name }
+            .forEach { (name, declarationsWithName) ->
+                if (declarationsWithName.size > 1) {
+                    error(
+                        "Inherits multiple members called '$name'.",
+                        Literals.SML_ABSTRACT_DECLARATION__NAME,
+                        ErrorCode.CLASS_MUST_HAVE_UNIQUE_INHERITED_MEMBERS
+                    )
+                }
             }
-        }
     }
 
     @Check

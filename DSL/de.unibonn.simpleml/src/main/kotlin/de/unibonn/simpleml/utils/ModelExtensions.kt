@@ -6,6 +6,7 @@ import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.containingLambdaOrNull
 import de.unibonn.simpleml.emf.containingWorkflowStepOrNull
 import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
+import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
@@ -187,6 +188,18 @@ fun SmlCall.resultsOrNull(): List<SmlAbstractDeclaration>? {
 }
 
 // Class ---------------------------------------------------------------------------------------------------------------
+
+fun SmlClass?.inheritedNonStaticMembersOrEmpty(): Set<SmlAbstractDeclaration> {
+    return this?.parentTypesOrEmpty()
+        ?.mapNotNull { it.classOrNull() }
+        ?.flatMap { it.memberDeclarationsOrEmpty() }
+        ?.filter {
+            it is SmlAttribute && !it.isStatic ||
+                it is SmlFunction && !it.isStatic
+        }
+        ?.toSet()
+        .orEmpty()
+}
 
 fun SmlClass?.parentClassesOrEmpty() = this.parentTypesOrEmpty().mapNotNull { it.classOrNull() }
 fun SmlClass?.parentClassOrNull(): SmlClass? {
