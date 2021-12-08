@@ -23,8 +23,8 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InfixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.IntT
-import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaResultT
+import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberAccessT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NamedTypeT
