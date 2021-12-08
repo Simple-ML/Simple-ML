@@ -639,16 +639,30 @@ class SimpleMLFormatter : AbstractFormatter2() {
             }
             is SmlLambdaResult -> {
 
+                // Features "annotations"
+                doc.formatAnnotations(obj, inlineAnnotations = true)
+
                 // Keyword "yield"
-                doc.formatKeyword(obj, "yield", null, oneSpace)
+                if (obj.annotationUsesOrEmpty().isEmpty()) {
+                    doc.formatKeyword(obj, "yield", null, oneSpace)
+                } else {
+                    doc.formatKeyword(obj, "yield", oneSpace, oneSpace)
+                }
 
                 // Feature "name"
                 doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME, oneSpace, null)
             }
             is SmlPlaceholder -> {
 
+                // Features "annotations"
+                doc.formatAnnotations(obj, inlineAnnotations = true)
+
                 // Keyword "val"
-                doc.formatKeyword(obj, "val", null, oneSpace)
+                if (obj.annotationUsesOrEmpty().isEmpty()) {
+                    doc.formatKeyword(obj, "val", null, oneSpace)
+                } else {
+                    doc.formatKeyword(obj, "val", oneSpace, oneSpace)
+                }
 
                 // Feature "name"
                 doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME, oneSpace, null)

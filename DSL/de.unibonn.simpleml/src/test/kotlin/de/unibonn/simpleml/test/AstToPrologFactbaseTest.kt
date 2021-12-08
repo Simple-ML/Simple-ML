@@ -655,7 +655,7 @@ class AstToPrologFactbaseTest {
             fun `should reference assignees`() = withFactbaseFromFile("statements") {
                 val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
                 val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
-                shouldBeNChildrenOf<NodeWithParent>(assignmentT.assignees, assignmentT, 3)
+                shouldBeNChildrenOf<NodeWithParent>(assignmentT.assignees, assignmentT, 4)
             }
 
             @Test
@@ -681,7 +681,7 @@ class AstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
+            fun `should store annotation uses`() = withFactbaseFromFile("statements") {
                 val lambdaResultT = findUniqueFactOrFail<LambdaResultT> { it.name == "myComplexLambdaResult" }
                 shouldHaveNAnnotationUses(lambdaResultT, 1)
             }
@@ -701,14 +701,14 @@ class AstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
+            fun `should store annotation uses`() = withFactbaseFromFile("statements") {
                 val placeholderT = findUniqueFactOrFail<PlaceholderT> { it.name == "myComplexPlaceholder" }
                 shouldHaveNAnnotationUses(placeholderT, 1)
             }
 
             @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("statements") {
-                val placeholderT = findUniqueFactOrFail<PlaceholderT> { it.name == "myPlaceholder" }
+                val placeholderT = findUniqueFactOrFail<PlaceholderT> { it.name == "mySimplePlaceholder" }
                 findUniqueFactOrFail<SourceLocationS> { it.target == placeholderT.id }
             }
         }

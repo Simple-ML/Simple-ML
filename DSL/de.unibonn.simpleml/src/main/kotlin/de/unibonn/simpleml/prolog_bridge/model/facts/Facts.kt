@@ -1224,7 +1224,7 @@ data class StringT(
  * The ID of the fact for closest ancestor that is not an expression.
  *
  * @param expressions
- * Template string parts and template expresions.
+ * Template string parts and template expressions.
  */
 data class TemplateStringT(
     override val id: Id<SmlTemplateString>,

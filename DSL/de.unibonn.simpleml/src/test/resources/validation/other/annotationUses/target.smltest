@@ -114,7 +114,7 @@ enum TestEnum {
 }
 
 // semantic_error "This annotation cannot be applied to a function."
-»@AnnotationForLambdaYields«
+»@AnnotationForLambdaResults«
 // no_semantic_error "This annotation cannot be applied to a function."
 »@AnnotationForFunctions«
 // no_semantic_error "This annotation cannot be applied to a function."
@@ -164,7 +164,7 @@ workflow testWorkflow {
             // no_semantic_error "This annotation cannot be applied to a placeholder."
             »@AnnotationForAnything«
             val b
-        ) = someCall()
+        ) = someCall();
     };
 }
 
