@@ -9,7 +9,7 @@ import tests.languageTests.scoping.reference2.workflowInOtherPackage1
 
 annotation AnnotationInSameFile
 
-open class SuperClass {
+class SuperClass {
     static attr superClassStaticAttribute: Int
     attr superClassInstanceAttribute: Int
 
@@ -49,17 +49,17 @@ step stepWithTwoResults() -> (result1: Int, result2: Int) {}
 
 workflow workflowInSameFile {}
 
-open class SuperClassForOverriding() {
+class SuperClassForOverriding() {
     attr instanceAttributeForOverriding: Int
-    open override fun instanceMethodForOverriding()
+    fun instanceMethodForOverriding()
 }
 class SubClassForOverriding()
 sub SuperClassForOverriding {
     attr instanceAttributeForOverriding: Int
-    override fun instanceMethodForOverriding()
+    fun instanceMethodForOverriding()
 }
 
-open class SuperClassForHiding {
+class SuperClassForHiding {
     static attr staticAttributeForHiding: Int
     class NestedClassForHiding
     enum NestedEnumForHiding
