@@ -4,16 +4,15 @@ class MyClass {
     @Annotation1
          @Annotation2
        attr
-     myAttribute1    :        Int
+     myAttribute2    :        Int
 
-    open       static
-        attr     myAttribute1   :      Int
+          static
+        attr     myAttribute3   :      Int
 
     @Annotation1
           @Annotation2
-    open
-     static
-        attr    myAttribute1     :  Int
+         static
+        attr    myAttribute4     :  Int
 }
 
 // -----------------------------------------------------------------------------
@@ -23,11 +22,11 @@ class MyClass {
 
     @Annotation1
     @Annotation2
-    attr myAttribute1: Int
+    attr myAttribute2: Int
 
-    open static attr myAttribute1: Int
+    static attr myAttribute3: Int
 
     @Annotation1
     @Annotation2
-    open static attr myAttribute1: Int
+    static attr myAttribute4: Int
 }

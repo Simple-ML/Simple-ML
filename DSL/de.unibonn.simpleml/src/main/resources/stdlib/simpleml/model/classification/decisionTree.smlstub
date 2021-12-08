@@ -3,12 +3,12 @@ package simpleml.model.classification
 import simpleml.model.*
 import simpleml.dataset.Dataset
 
-open class DecisionTreeClassifier() sub Estimator {
+class DecisionTreeClassifier() sub Estimator {
     attr maxDepth: Int?
 
-    override fun fit(features: Dataset, target: Dataset) -> trainedModel: DecisionTreeModel
+    fun fit(features: Dataset, target: Dataset) -> trainedModel: DecisionTreeModel
 }
 
 class DecisionTreeModel sub Model {
-    override fun predict(features: Dataset) -> results: Any
+    fun predict(features: Dataset) -> results: Any
 }

@@ -2,6 +2,6 @@
 
 workflow mySimpleWorkflow {}
 
-@AnnotationUse static workflow myComplexWorkflow {
+@AnnotationUse workflow myComplexWorkflow {
     val a = 1;
 }

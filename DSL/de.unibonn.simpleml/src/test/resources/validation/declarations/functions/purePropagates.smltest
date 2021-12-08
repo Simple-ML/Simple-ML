@@ -1,9 +1,9 @@
 package tests.validation.declarations.functions.purePropagates
 
-open class MyOpenClass {
-    @Pure open fun pureFunction1()
-    @Pure open fun pureFunction2()
-    open fun impureFunction1()
+class MyOpenClass {
+    @Pure fun pureFunction1()
+    @Pure fun pureFunction2()
+    fun impureFunction1()
 }
 
 class MyClass sub MyOpenClass {
@@ -13,9 +13,9 @@ class MyClass sub MyOpenClass {
     fun »ownImpureFunction«()
 
     // semantic_error "One of the supertypes of this class declares a pure function with this name, so this must be pure as well."
-    override fun »pureFunction1«()
+    fun »pureFunction1«()
     // no_semantic_error "One of the supertypes of this class declares a pure function with this name, so this must be pure as well."
-    @Pure override fun »pureFunction2«()
+    @Pure fun »pureFunction2«()
     // no_semantic_error "One of the supertypes of this class declares a pure function with this name, so this must be pure as well."
-    @Pure override fun »impureFunction1«()
+    @Pure fun »impureFunction1«()
 }

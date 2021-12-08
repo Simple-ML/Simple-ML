@@ -1,10 +1,10 @@
 package simpleml.lang
 
-open class Any
+class Any
 
 class Boolean
 
-open class Number
+class Number
 
 class Int sub Number
 

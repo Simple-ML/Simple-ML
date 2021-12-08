@@ -3,8 +3,8 @@ package tests.uniqueParentTypes
 class MyClass1
 class MyClass2
 
-open class MyOpenClass1
-open class MyOpenClass2
+class MyOpenClass1
+class MyOpenClass2
 
 // semantic_error "Parent types must be unique."
 // semantic_error "Parent types must be unique."
