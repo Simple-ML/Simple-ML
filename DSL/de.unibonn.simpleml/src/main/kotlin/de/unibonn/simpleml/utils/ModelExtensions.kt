@@ -5,7 +5,7 @@ package de.unibonn.simpleml.utils
 import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.containingLambdaOrNull
 import de.unibonn.simpleml.emf.containingWorkflowStepOrNull
-import de.unibonn.simpleml.emf.lambdaYieldsOrEmpty
+import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
@@ -180,7 +180,7 @@ fun SmlCall.resultsOrNull(): List<SmlAbstractDeclaration>? {
         is SmlEnumVariant -> listOf(callable)
         is SmlFunction -> callable.resultsOrEmpty()
         is SmlCallableType -> callable.resultsOrEmpty()
-        is SmlLambda -> callable.lambdaYieldsOrEmpty()
+        is SmlLambda -> callable.lambdaResultsOrEmpty()
         is SmlWorkflowStep -> callable.resultsOrEmpty()
         else -> null
     }

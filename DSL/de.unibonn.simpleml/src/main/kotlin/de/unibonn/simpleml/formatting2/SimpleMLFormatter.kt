@@ -40,7 +40,7 @@ import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlImportAlias
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlLambda
-import de.unibonn.simpleml.simpleML.SmlLambdaYield
+import de.unibonn.simpleml.simpleML.SmlLambdaResult
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -637,18 +637,32 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // Keyword ")"
                 doc.formatKeyword(obj, ")", noSpace, null)
             }
-            is SmlLambdaYield -> {
+            is SmlLambdaResult -> {
+
+                // Features "annotations"
+                doc.formatAnnotations(obj, inlineAnnotations = true)
 
                 // Keyword "yield"
-                doc.formatKeyword(obj, "yield", null, oneSpace)
+                if (obj.annotationUsesOrEmpty().isEmpty()) {
+                    doc.formatKeyword(obj, "yield", null, oneSpace)
+                } else {
+                    doc.formatKeyword(obj, "yield", oneSpace, oneSpace)
+                }
 
                 // Feature "name"
                 doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME, oneSpace, null)
             }
             is SmlPlaceholder -> {
 
+                // Features "annotations"
+                doc.formatAnnotations(obj, inlineAnnotations = true)
+
                 // Keyword "val"
-                doc.formatKeyword(obj, "val", null, oneSpace)
+                if (obj.annotationUsesOrEmpty().isEmpty()) {
+                    doc.formatKeyword(obj, "val", null, oneSpace)
+                } else {
+                    doc.formatKeyword(obj, "val", oneSpace, oneSpace)
+                }
 
                 // Feature "name"
                 doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME, oneSpace, null)

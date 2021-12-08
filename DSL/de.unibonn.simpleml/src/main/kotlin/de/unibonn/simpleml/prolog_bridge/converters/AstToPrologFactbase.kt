@@ -30,8 +30,8 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InfixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.IntT
+import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaT
-import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaYieldT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberAccessT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NamedTypeT
@@ -89,7 +89,7 @@ import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlLambda
-import de.unibonn.simpleml.simpleML.SmlLambdaYield
+import de.unibonn.simpleml.simpleML.SmlLambdaResult
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -347,10 +347,14 @@ class AstToPrologFactbase {
 
     private fun PlFactbase.visitAssignee(obj: SmlAbstractAssignee, parentId: Id<SmlAssignment>) {
         when (obj) {
-            is SmlLambdaYield -> {
-                +LambdaYieldT(obj.id, parentId, obj.name)
+            is SmlLambdaResult -> {
+                obj.annotationUsesOrEmpty().forEach { visitAnnotationUse(it, obj.id) }
+
+                +LambdaResultT(obj.id, parentId, obj.name)
             }
             is SmlPlaceholder -> {
+                obj.annotationUsesOrEmpty().forEach { visitAnnotationUse(it, obj.id) }
+
                 +PlaceholderT(obj.id, parentId, obj.name)
             }
             is SmlWildcard -> {

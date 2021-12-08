@@ -110,10 +110,10 @@ step directReferencesToGlobalFunctions() {
     globalFunctionInOtherPackage2;
 }
 
-step directReferencesToLambdaYields() {
+step directReferencesToLambdaResults() {
     val f = lambda {
-        yield lambdaYield = 1;
-        lambdaYield;
+        yield lambdaResult = 1;
+        lambdaResult;
     };
 }
 

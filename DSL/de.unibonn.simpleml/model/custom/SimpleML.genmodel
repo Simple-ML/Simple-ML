@@ -14,7 +14,7 @@
         </genClasses>
         <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractDeclaration">
             <genFeatures property="None" children="true" createChild="true"
-                         ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAbstractElement/annotationHolder"/>
+                         ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAbstractElement/annotationUseHolder"/>
             <genFeatures createChild="false"
                          ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlAbstractDeclaration/name"/>
         </genClasses>
@@ -152,7 +152,7 @@
             <genFeatures notify="false" createChild="false" propertySortChoices="true"
                          ecoreFeature="ecore:EReference SimpleML.ecore#//SmlYield/result"/>
         </genClasses>
-        <genClasses ecoreClass="SimpleML.ecore#//SmlLambdaYield"/>
+        <genClasses ecoreClass="SimpleML.ecore#//SmlLambdaResult"/>
         <genClasses ecoreClass="SimpleML.ecore#//SmlExpressionStatement">
             <genFeatures property="None" children="true" createChild="true"
                          ecoreFeature="ecore:EReference SimpleML.ecore#//SmlExpressionStatement/expression"/>

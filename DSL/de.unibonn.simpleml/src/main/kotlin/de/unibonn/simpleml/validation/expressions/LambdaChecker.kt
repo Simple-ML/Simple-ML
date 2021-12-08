@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.validation.expressions
 
-import de.unibonn.simpleml.emf.lambdaYieldsOrEmpty
+import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
@@ -14,7 +14,7 @@ class LambdaChecker : AbstractSimpleMLChecker() {
     @Check
     fun uniqueNames(smlLambda: SmlLambda) {
         val declarations =
-            smlLambda.parametersOrEmpty() + smlLambda.placeholdersOrEmpty() + smlLambda.lambdaYieldsOrEmpty()
+            smlLambda.parametersOrEmpty() + smlLambda.placeholdersOrEmpty() + smlLambda.lambdaResultsOrEmpty()
         declarations.reportDuplicateNames {
             "A parameter, result or placeholder with name '${it.name}' exists already in this lambda."
         }

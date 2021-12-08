@@ -20,7 +20,7 @@ import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlLambda
-import de.unibonn.simpleml.simpleML.SmlLambdaYield
+import de.unibonn.simpleml.simpleML.SmlLambdaResult
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
@@ -55,7 +55,7 @@ fun Resource?.compilationUnitOrNull(): SmlCompilationUnit? {
 // SmlAbstractDeclaration --------------------------------------------------------------------------
 
 fun SmlAbstractDeclaration?.annotationUsesOrEmpty(): List<SmlAnnotationUse> {
-    return this?.annotationHolder?.annotations ?: this?.annotations.orEmpty()
+    return this?.annotationUseHolder?.annotations ?: this?.annotations.orEmpty()
 }
 
 // SmlAnnotation -----------------------------------------------------------------------------------
@@ -73,11 +73,13 @@ fun SmlAnnotationUse?.argumentsOrEmpty(): List<SmlArgument> {
 // SmlAssignment -----------------------------------------------------------------------------------
 
 fun SmlAssignment?.assigneesOrEmpty(): List<SmlAbstractAssignee> {
-    return this?.assigneeList?.assignees.orEmpty()
+    return this?.assigneeList?.assignees
+        ?.filterIsInstance<SmlAbstractAssignee>()
+        .orEmpty()
 }
 
-fun SmlAssignment?.lambdaYieldsOrEmpty(): List<SmlLambdaYield> {
-    return this.assigneesOrEmpty().filterIsInstance<SmlLambdaYield>()
+fun SmlAssignment?.lambdaResultsOrEmpty(): List<SmlLambdaResult> {
+    return this.assigneesOrEmpty().filterIsInstance<SmlLambdaResult>()
 }
 
 fun SmlAssignment?.placeholdersOrEmpty(): List<SmlPlaceholder> {
@@ -187,10 +189,10 @@ fun SmlFunction?.typeParameterConstraintsOrEmpty(): List<SmlTypeParameterConstra
 
 // SmlLambda ---------------------------------------------------------------------------------------
 
-fun SmlLambda?.lambdaYieldsOrEmpty(): List<SmlLambdaYield> {
+fun SmlLambda?.lambdaResultsOrEmpty(): List<SmlLambdaResult> {
     return this.statementsOrEmpty()
         .filterIsInstance<SmlAssignment>()
-        .flatMap { it.lambdaYieldsOrEmpty() }
+        .flatMap { it.lambdaResultsOrEmpty() }
 }
 
 fun SmlLambda?.localVariablesOrEmpty(): List<SmlAbstractLocalVariable> {
