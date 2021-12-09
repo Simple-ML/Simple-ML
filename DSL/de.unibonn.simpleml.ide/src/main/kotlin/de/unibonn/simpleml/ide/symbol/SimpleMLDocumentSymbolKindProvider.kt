@@ -31,6 +31,7 @@ class SimpleMLDocumentSymbolKindProvider : DocumentSymbolMapper.DocumentSymbolKi
             Literals.SML_ENUM -> SymbolKind.Enum
             Literals.SML_ENUM_VARIANT -> SymbolKind.EnumMember
             Literals.SML_FUNCTION -> SymbolKind.Function
+            Literals.SML_PACKAGE -> SymbolKind.Package
             Literals.SML_WORKFLOW -> SymbolKind.Function
             Literals.SML_WORKFLOW_STEP -> SymbolKind.Function
             else -> null
