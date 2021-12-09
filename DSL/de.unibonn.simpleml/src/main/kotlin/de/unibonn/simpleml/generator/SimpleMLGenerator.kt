@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.generator
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.constants.isFlowFile
+import de.unibonn.simpleml.constant.isFlowFile
 import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingCompilationUnitOrNull

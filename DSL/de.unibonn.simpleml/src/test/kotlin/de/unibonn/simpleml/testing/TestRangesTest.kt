@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.testing
 
-import de.unibonn.simpleml.locations.ProgramPosition
-import de.unibonn.simpleml.locations.ProgramRange
+import de.unibonn.simpleml.location.XtextPosition
+import de.unibonn.simpleml.location.XtextRange
 import de.unibonn.simpleml.testing.FindTestRangesResult.CloseWithoutOpenError
 import de.unibonn.simpleml.testing.FindTestRangesResult.OpenWithoutCloseError
 import de.unibonn.simpleml.testing.FindTestRangesResult.Success
@@ -20,7 +20,7 @@ class TestRangesTest {
         result.shouldBeInstanceOf<Success>()
         result.ranges.shouldHaveSize(2)
 
-        result.ranges[0] shouldBe ProgramRange.fromInts(
+        result.ranges[0] shouldBe XtextRange.fromInts(
             startLine = 1,
             startColumn = 6,
             endLine = 1,
@@ -28,7 +28,7 @@ class TestRangesTest {
             length = 4
         )
 
-        result.ranges[1] shouldBe ProgramRange.fromInts(
+        result.ranges[1] shouldBe XtextRange.fromInts(
             startLine = 2,
             startColumn = 2,
             endLine = 2,
@@ -43,7 +43,7 @@ class TestRangesTest {
         result.shouldBeInstanceOf<Success>()
         result.ranges.shouldHaveSize(2)
 
-        result.ranges[0] shouldBe ProgramRange.fromInts(
+        result.ranges[0] shouldBe XtextRange.fromInts(
             startLine = 1,
             startColumn = 2,
             endLine = 3,
@@ -51,7 +51,7 @@ class TestRangesTest {
             length = 8
         )
 
-        result.ranges[1] shouldBe ProgramRange.fromInts(
+        result.ranges[1] shouldBe XtextRange.fromInts(
             startLine = 2,
             startColumn = 6,
             endLine = 2,
@@ -66,7 +66,7 @@ class TestRangesTest {
         result.shouldBeInstanceOf<Success>()
         result.ranges.shouldHaveSize(1)
 
-        result.ranges[0] shouldBe ProgramRange.fromInts(
+        result.ranges[0] shouldBe XtextRange.fromInts(
             startLine = 2,
             startColumn = 2,
             endLine = 3,
@@ -81,7 +81,7 @@ class TestRangesTest {
         result.shouldBeInstanceOf<Success>()
         result.ranges.shouldHaveSize(1)
 
-        result.ranges[0] shouldBe ProgramRange.fromInts(
+        result.ranges[0] shouldBe XtextRange.fromInts(
             startLine = 2,
             startColumn = 2,
             endLine = 3,
@@ -96,7 +96,7 @@ class TestRangesTest {
         result.shouldBeInstanceOf<Success>()
         result.ranges.shouldHaveSize(1)
 
-        result.ranges[0] shouldBe ProgramRange.fromInts(
+        result.ranges[0] shouldBe XtextRange.fromInts(
             startLine = 2,
             startColumn = 2,
             endLine = 3,
@@ -109,7 +109,7 @@ class TestRangesTest {
     fun `should report closing test markers without matching opening test marker`() {
         val result = findTestRanges("$OPEN\n$CLOSE$CLOSE")
         result.shouldBeInstanceOf<CloseWithoutOpenError>()
-        result.position shouldBe ProgramPosition.fromInts(line = 2, column = 2)
+        result.position shouldBe XtextPosition.fromInts(line = 2, column = 2)
         result.message() shouldBe "Found '$CLOSE' without previous '$OPEN' at 2:2."
     }
 
@@ -119,8 +119,8 @@ class TestRangesTest {
         result.shouldBeInstanceOf<OpenWithoutCloseError>()
 
         result.positions.shouldHaveSize(2)
-        result.positions[0] shouldBe ProgramPosition.fromInts(line = 1, column = 1)
-        result.positions[1] shouldBe ProgramPosition.fromInts(line = 2, column = 1)
+        result.positions[0] shouldBe XtextPosition.fromInts(line = 1, column = 1)
+        result.positions[1] shouldBe XtextPosition.fromInts(line = 2, column = 1)
 
         result.message() shouldBe "Found '$OPEN' without following '$CLOSE' at 1:1, 2:1."
     }

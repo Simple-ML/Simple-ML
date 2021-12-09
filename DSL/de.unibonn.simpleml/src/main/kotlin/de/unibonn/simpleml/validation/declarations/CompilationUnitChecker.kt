@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.validation.declarations
 
-import de.unibonn.simpleml.constants.isInStubFile
-import de.unibonn.simpleml.constants.isInTestFile
+import de.unibonn.simpleml.constant.isInStubFile
+import de.unibonn.simpleml.constant.isInTestFile
 import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
 import de.unibonn.simpleml.emf.uniquePackageOrNull
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals

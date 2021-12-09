@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.assertions
+package de.unibonn.simpleml.testing.assertions
 
 import io.kotest.matchers.doubles.plusOrMinus
 import io.kotest.matchers.shouldBe

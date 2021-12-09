@@ -1,24 +1,25 @@
 package de.unibonn.simpleml
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.assertions.shouldHaveNoIssue
-import de.unibonn.simpleml.assertions.shouldHaveNoSemanticError
-import de.unibonn.simpleml.assertions.shouldHaveNoSemanticInfo
-import de.unibonn.simpleml.assertions.shouldHaveNoSemanticWarning
-import de.unibonn.simpleml.assertions.shouldHaveNoSyntaxError
-import de.unibonn.simpleml.assertions.shouldHaveSemanticError
-import de.unibonn.simpleml.assertions.shouldHaveSemanticInfo
-import de.unibonn.simpleml.assertions.shouldHaveSemanticWarning
-import de.unibonn.simpleml.assertions.shouldHaveSyntaxError
-import de.unibonn.simpleml.assertions.stringify
-import de.unibonn.simpleml.locations.ProgramRange
+import de.unibonn.simpleml.testing.CategorizedTest
 import de.unibonn.simpleml.testing.FindTestRangesResult
+import de.unibonn.simpleml.testing.ParseHelper
+import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
+import de.unibonn.simpleml.testing.assertions.ExpectedIssue
+import de.unibonn.simpleml.testing.assertions.shouldHaveNoIssue
+import de.unibonn.simpleml.testing.assertions.shouldHaveNoSemanticError
+import de.unibonn.simpleml.testing.assertions.shouldHaveNoSemanticInfo
+import de.unibonn.simpleml.testing.assertions.shouldHaveNoSemanticWarning
+import de.unibonn.simpleml.testing.assertions.shouldHaveNoSyntaxError
+import de.unibonn.simpleml.testing.assertions.shouldHaveSemanticError
+import de.unibonn.simpleml.testing.assertions.shouldHaveSemanticInfo
+import de.unibonn.simpleml.testing.assertions.shouldHaveSemanticWarning
+import de.unibonn.simpleml.testing.assertions.shouldHaveSyntaxError
+import de.unibonn.simpleml.testing.assertions.stringify
+import de.unibonn.simpleml.testing.createDynamicTestsFromResourceFolder
 import de.unibonn.simpleml.testing.findTestRanges
-import de.unibonn.simpleml.util.CategorizedTest
-import de.unibonn.simpleml.util.ParseHelper
-import de.unibonn.simpleml.util.createDynamicTestsFromResourceFolder
-import de.unibonn.simpleml.util.getResourcePath
-import de.unibonn.simpleml.util.testDisplayName
+import de.unibonn.simpleml.testing.getResourcePath
+import de.unibonn.simpleml.testing.testDisplayName
 import de.unibonn.simpleml.utils.OriginalFilePath
 import de.unibonn.simpleml.utils.outerZipBy
 import org.eclipse.xtext.testing.InjectWith
@@ -188,7 +189,7 @@ class IssueFinderTest {
     }
 
     private fun severitiesAndMessages(program: String): List<ExpectedIssue> {
-        return """//\s*(?<severity>[^\s]*)\s*(?:"(?<message>[^"]*)")?"""
+        return """//\s*(?<severity>\S+)\s*(?:"(?<message>[^"]*)")?"""
             .toRegex()
             .findAll(program)
             .map { ExpectedIssue(it.groupValues[1], it.groupValues[2], null) }
@@ -199,48 +200,5 @@ class IssueFinderTest {
         val parsingResult = parseHelper.parseProgramTextWithStdlib(program) ?: return emptyList()
         parsingResult.eResource().eAdapters().add(OriginalFilePath(filePath.toString()))
         return validationHelper.validate(parsingResult)
-    }
-}
-
-class ExpectedIssue(
-    val severity: String,
-    val message: String,
-    private val range: ProgramRange?
-) {
-
-    fun matches(issue: Issue): Boolean {
-        return locationMatches(issue) && messageMatches(issue)
-    }
-
-    private fun locationMatches(issue: Issue): Boolean {
-        return range == null || range == issue.range
-    }
-
-    private fun messageMatches(issue: Issue): Boolean {
-        return when {
-            message.isBlank() -> true
-            "???" !in message -> message == issue.message
-            else -> {
-                val regex = Regex(message.replace("???", "\\w*"))
-                regex.matches(issue.message)
-            }
-        }
-    }
-
-    private val Issue.range: ProgramRange
-        get() = ProgramRange.fromInts(
-            this.lineNumber,
-            this.column,
-            this.lineNumberEnd,
-            this.columnEnd,
-            this.length
-        )
-
-    override fun toString() = buildString {
-        append(severity)
-        if (message.isNotBlank()) {
-            append(" \"$message\"")
-        }
-        range?.let { append(" at $range") }
     }
 }
