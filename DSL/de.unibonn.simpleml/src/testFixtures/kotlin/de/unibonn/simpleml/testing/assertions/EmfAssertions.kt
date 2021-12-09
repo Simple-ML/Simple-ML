@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.assertions
+package de.unibonn.simpleml.testing.assertions
 
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.utils.descendants

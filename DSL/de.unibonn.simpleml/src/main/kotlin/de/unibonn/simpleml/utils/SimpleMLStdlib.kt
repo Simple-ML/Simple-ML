@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.utils
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.constants.FileExtension
+import de.unibonn.simpleml.constant.FileExtension
 import de.unibonn.simpleml.simpleML.SmlClass
 import org.eclipse.core.runtime.FileLocator
 import org.eclipse.emf.common.util.URI

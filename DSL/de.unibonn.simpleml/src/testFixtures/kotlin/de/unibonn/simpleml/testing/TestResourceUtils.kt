@@ -1,6 +1,6 @@
-package de.unibonn.simpleml.util
+package de.unibonn.simpleml.testing
 
-import de.unibonn.simpleml.constants.FileExtension
+import de.unibonn.simpleml.constant.FileExtension
 import org.eclipse.core.runtime.FileLocator
 import org.junit.jupiter.api.DynamicContainer
 import org.junit.jupiter.api.DynamicNode
@@ -68,7 +68,7 @@ private fun isTestFile(filePath: Path): Boolean {
 fun testDisplayName(resourcePath: Path, filePath: Path, message: String = "") = buildString {
     append("[")
     val relativePath = resourcePath.relativize(filePath)
-    append(relativePath.subpath(1, relativePath.count()).toString().replace("\\", "/"))
+    append(relativePath.toString().replace("\\", "/"))
     append("]")
 
     if (message.isNotBlank()) {

@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- [Custom outline and breadcrumbs](https://github.com/Simple-ML/Simple-ML/pull/114)
 ### Changed
 ### Deprecated
 ### Removed
@@ -10,7 +11,7 @@
 
 ## [0.0.12] - 2021-12-07
 ### Changed
-- Update to the new version of the Simple-ML DSL
+- Upgrade to the new version of the Simple-ML DSL
 
 ## [0.0.11] - 2021-11-16
 ### Fixed

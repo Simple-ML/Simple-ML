@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.generator
 
-import de.unibonn.simpleml.constants.FileExtension
+import de.unibonn.simpleml.constant.FileExtension
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.uniquePackageOrNull
 import org.eclipse.emf.common.util.URI

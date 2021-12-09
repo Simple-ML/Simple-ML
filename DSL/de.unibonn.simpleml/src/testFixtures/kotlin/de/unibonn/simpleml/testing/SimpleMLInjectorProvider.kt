@@ -1,9 +1,12 @@
-package de.unibonn.simpleml
+package de.unibonn.simpleml.testing
 
 import com.google.inject.Guice
 import com.google.inject.Injector
-import org.eclipse.xtext.testing.GlobalRegistries
+import de.unibonn.simpleml.SimpleMLRuntimeModule
+import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import org.eclipse.xtext.testing.GlobalRegistries.GlobalStateMemento
+import org.eclipse.xtext.testing.GlobalRegistries.initializeDefaults
+import org.eclipse.xtext.testing.GlobalRegistries.makeCopyOfGlobalState
 import org.eclipse.xtext.testing.IInjectorProvider
 import org.eclipse.xtext.testing.IRegistryConfigurator
 
@@ -11,10 +14,11 @@ class SimpleMLInjectorProvider : IInjectorProvider, IRegistryConfigurator {
     private var stateBeforeInjectorCreation: GlobalStateMemento? = null
     private var stateAfterInjectorCreation: GlobalStateMemento? = null
     private var injector: Injector? = null
+
     override fun getInjector(): Injector {
         if (injector == null) {
             injector = internalCreateInjector()
-            stateAfterInjectorCreation = GlobalRegistries.makeCopyOfGlobalState()
+            stateAfterInjectorCreation = makeCopyOfGlobalState()
         }
         return injector!!
     }
@@ -32,8 +36,7 @@ class SimpleMLInjectorProvider : IInjectorProvider, IRegistryConfigurator {
         // see https://bugs.eclipse.org/bugs/show_bug.cgi?id=493672
         return object : SimpleMLRuntimeModule() {
             override fun bindClassLoaderToInstance(): ClassLoader {
-                return SimpleMLInjectorProvider::class.java
-                    .classLoader
+                return SimpleMLInjectorProvider::class.java.classLoader
             }
         }
     }
@@ -44,7 +47,7 @@ class SimpleMLInjectorProvider : IInjectorProvider, IRegistryConfigurator {
     }
 
     override fun setupRegistry() {
-        stateBeforeInjectorCreation = GlobalRegistries.makeCopyOfGlobalState()
+        stateBeforeInjectorCreation = makeCopyOfGlobalState()
         if (injector == null) {
             getInjector()
         }
@@ -53,7 +56,7 @@ class SimpleMLInjectorProvider : IInjectorProvider, IRegistryConfigurator {
 
     companion object {
         init {
-            GlobalRegistries.initializeDefaults()
+            initializeDefaults()
         }
     }
 }

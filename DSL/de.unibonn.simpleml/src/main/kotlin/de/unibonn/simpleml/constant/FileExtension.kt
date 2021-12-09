@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.constants
+package de.unibonn.simpleml.constant
 
 import de.unibonn.simpleml.utils.OriginalFilePath
 import org.eclipse.emf.ecore.EObject
