@@ -1,7 +1,7 @@
-package de.unibonn.simpleml.ide.symbols
+package de.unibonn.simpleml.ide.symbol
 
 import de.unibonn.simpleml.ide.AbstractSimpleMLLanguageServerTest
-import de.unibonn.simpleml.locations.LspRange
+import de.unibonn.simpleml.location.LspRange
 import de.unibonn.simpleml.testing.CategorizedTest
 import de.unibonn.simpleml.testing.FindTestRangesResult
 import de.unibonn.simpleml.testing.createDynamicTestsFromResourceFolder
@@ -10,7 +10,6 @@ import de.unibonn.simpleml.testing.getResourcePath
 import de.unibonn.simpleml.testing.testDisplayName
 import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import java.nio.file.Path
 import java.util.stream.Stream

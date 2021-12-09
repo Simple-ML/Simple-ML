@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.locations
+package de.unibonn.simpleml.location
 
 /**
  * The number of characters in a program range (Xtext/LSP). This value must be non-negative.

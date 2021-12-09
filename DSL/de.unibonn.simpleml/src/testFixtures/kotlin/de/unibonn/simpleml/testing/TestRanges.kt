@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.testing
 
-import de.unibonn.simpleml.locations.XtextPosition
-import de.unibonn.simpleml.locations.XtextRange
+import de.unibonn.simpleml.location.XtextPosition
+import de.unibonn.simpleml.location.XtextRange
 import de.unibonn.simpleml.testing.FindTestRangesResult.CloseWithoutOpenError
 import de.unibonn.simpleml.testing.FindTestRangesResult.OpenWithoutCloseError
 import de.unibonn.simpleml.testing.FindTestRangesResult.Success

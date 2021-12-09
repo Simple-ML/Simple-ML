@@ -1,6 +1,6 @@
 package de.unibonn.simpleml
 
-import de.unibonn.simpleml.constants.FileExtension
+import de.unibonn.simpleml.constant.FileExtension
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.stdlib.StdlibClasses

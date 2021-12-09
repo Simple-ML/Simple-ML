@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.locations
+package de.unibonn.simpleml.location
 
 /**
  * A range in a program from a start to an end position with some length using the one-based indexing of Xtext.

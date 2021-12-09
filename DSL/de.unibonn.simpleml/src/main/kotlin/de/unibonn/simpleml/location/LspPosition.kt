@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.locations
+package de.unibonn.simpleml.location
 
 /**
  * A specific position in a program using the zero-based indexing of LSP.

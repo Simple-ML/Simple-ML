@@ -1,8 +1,8 @@
 package de.unibonn.simpleml.validation.declarations
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.constants.isInStubFile
-import de.unibonn.simpleml.constants.isInTestFile
+import de.unibonn.simpleml.constant.isInStubFile
+import de.unibonn.simpleml.constant.isInTestFile
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlImport

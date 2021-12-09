@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.testing
 
-import de.unibonn.simpleml.constants.FileExtension
+import de.unibonn.simpleml.constant.FileExtension
 import org.eclipse.core.runtime.FileLocator
 import org.junit.jupiter.api.DynamicContainer
 import org.junit.jupiter.api.DynamicNode

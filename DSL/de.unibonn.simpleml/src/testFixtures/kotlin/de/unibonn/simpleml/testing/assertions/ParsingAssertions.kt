@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.testing.assertions
 
-import de.unibonn.simpleml.locations.XtextRange
+import de.unibonn.simpleml.location.XtextRange
 import org.eclipse.xtext.diagnostics.Severity
 import org.eclipse.xtext.validation.Issue
 
