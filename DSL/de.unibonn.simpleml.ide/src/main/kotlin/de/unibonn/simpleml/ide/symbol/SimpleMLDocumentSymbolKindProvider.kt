@@ -9,6 +9,7 @@ class SimpleMLDocumentSymbolKindProvider : DocumentSymbolMapper.DocumentSymbolKi
     override fun getSymbolKind(clazz: EClass): SymbolKind {
         return when (clazz) {
             Literals.SML_ANNOTATION -> SymbolKind.Interface // Not ideal but matches @interface in Java
+            Literals.SML_ATTRIBUTE-> SymbolKind.Field
             Literals.SML_CLASS -> SymbolKind.Class
             Literals.SML_COMPILATION_UNIT -> SymbolKind.File
             Literals.SML_ENUM -> SymbolKind.Enum
