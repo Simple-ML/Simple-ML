@@ -11,13 +11,17 @@ import de.unibonn.simpleml.testing.testDisplayName
 import org.eclipse.lsp4j.SymbolKind
 import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
+import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.TestFactory
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.TestMethodOrder
 import java.nio.file.Path
 import java.util.stream.Stream
 
 class DocumentSymbolTest : AbstractSimpleMLLanguageServerTest() {
 
     @TestFactory
+
     fun `should provide correct symbols`(): Stream<out DynamicNode> {
         return javaClass.classLoader
             .getResourcePath("symbols")

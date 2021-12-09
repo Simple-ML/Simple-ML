@@ -10,6 +10,7 @@ class SimpleMLDocumentSymbolKindProvider : DocumentSymbolMapper.DocumentSymbolKi
         return when (clazz) {
             Literals.SML_ENUM -> SymbolKind.Enum
             Literals.SML_ENUM_VARIANT -> SymbolKind.EnumMember
+            Literals.SML_WORKFLOW -> SymbolKind.Function
             else -> super.getSymbolKind(clazz)
         }
     }
