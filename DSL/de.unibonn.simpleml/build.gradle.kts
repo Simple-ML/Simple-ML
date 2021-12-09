@@ -5,6 +5,7 @@ val xtextVersion: String by rootProject.extra
 
 plugins {
     `java-library`
+    `java-test-fixtures`
     kotlin("jvm")
     idea
 }

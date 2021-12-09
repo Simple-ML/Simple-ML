@@ -25,6 +25,13 @@ application {
 dependencies {
     implementation(project(":de.unibonn.simpleml"))
     implementation("org.eclipse.xtext:org.eclipse.xtext.ide:${xtextVersion}")
+
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation(testFixtures(project(":de.unibonn.simpleml")))
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.eclipse.xtext:org.eclipse.xtext.testing:$xtextVersion")
+    testImplementation("org.eclipse.xtext:org.eclipse.xtext.xbase.testing:$xtextVersion")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:5.0.1")
 }
 
 
@@ -45,5 +52,26 @@ tasks {
     processResources {
         val generateXtextLanguage = project(":de.unibonn.simpleml").tasks.named("generateXtextLanguage")
         dependsOn(generateXtextLanguage)
+    }
+
+    test {
+        useJUnitPlatform()
+
+        extensions.configure(kotlinx.kover.api.KoverTaskExtension::class) {
+            excludes = listOf(
+
+                // Some classes in src-gen
+                "de\\.unibonn\\.simpleml\\.simpleML\\.ide\\.contentassist\\.antlr\\..*",
+            )
+        }
+    }
+
+    koverVerify {
+        rule {
+            name = "Minimal line coverage rate in percents"
+            bound {
+                minValue = 75
+            }
+        }
     }
 }
