@@ -45,6 +45,9 @@ Workflow {
 				runtime = {
 				    src = "${rootPath}/de.unibonn.simpleml/src/main/kotlin"
 				}
+				genericIde = {
+				    src = "${rootPath}/de.unibonn.simpleml.ide/src/main/kotlin"
+				}
 				runtimeTest = {
 					enabled = false
 				}

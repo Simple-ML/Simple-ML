@@ -36,7 +36,7 @@ step myStep() {
     // no_semantic_warning "This statement does nothing."
     »impureFunction();«
     // no_semantic_warning "This statement does nothing."
-    explicitlyImpureFunction();«
+    »explicitlyImpureFunction();«
     // no_semantic_warning "This statement does nothing."
     »MyClass().impureFunction();«
 
