@@ -1,6 +1,11 @@
 package de.unibonn.simpleml
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.testing.CategorizedTest
+import de.unibonn.simpleml.testing.FindTestRangesResult
+import de.unibonn.simpleml.testing.ParseHelper
+import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
+import de.unibonn.simpleml.testing.assertions.ExpectedIssue
 import de.unibonn.simpleml.testing.assertions.shouldHaveNoIssue
 import de.unibonn.simpleml.testing.assertions.shouldHaveNoSemanticError
 import de.unibonn.simpleml.testing.assertions.shouldHaveNoSemanticInfo
@@ -11,11 +16,6 @@ import de.unibonn.simpleml.testing.assertions.shouldHaveSemanticInfo
 import de.unibonn.simpleml.testing.assertions.shouldHaveSemanticWarning
 import de.unibonn.simpleml.testing.assertions.shouldHaveSyntaxError
 import de.unibonn.simpleml.testing.assertions.stringify
-import de.unibonn.simpleml.testing.CategorizedTest
-import de.unibonn.simpleml.testing.FindTestRangesResult
-import de.unibonn.simpleml.testing.ParseHelper
-import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
-import de.unibonn.simpleml.testing.assertions.ExpectedIssue
 import de.unibonn.simpleml.testing.createDynamicTestsFromResourceFolder
 import de.unibonn.simpleml.testing.findTestRanges
 import de.unibonn.simpleml.testing.getResourcePath

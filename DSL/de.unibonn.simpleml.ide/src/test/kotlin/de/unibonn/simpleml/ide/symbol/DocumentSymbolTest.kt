@@ -11,10 +11,7 @@ import de.unibonn.simpleml.testing.testDisplayName
 import org.eclipse.lsp4j.SymbolKind
 import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
-import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.TestFactory
-import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.TestMethodOrder
 import java.nio.file.Path
 import java.util.stream.Stream
 
@@ -34,7 +31,7 @@ class DocumentSymbolTest : AbstractSimpleMLLanguageServerTest() {
      */
     private fun validateTestFile(program: String, filePath: Path): String? {
         val symbolComments = try {
-             symbolComments(program)
+            symbolComments(program)
         } catch (e: IllegalArgumentException) {
             return e.message
         }
@@ -85,7 +82,6 @@ class DocumentSymbolTest : AbstractSimpleMLLanguageServerTest() {
                 }
             )
         )
-
     }
 
     private fun symbolComments(program: String): List<SymbolComment> {
@@ -96,7 +92,8 @@ class DocumentSymbolTest : AbstractSimpleMLLanguageServerTest() {
                 SymbolComment(
                     enumValueOf(it.groupValues[1]),
                     it.groupValues[2],
-                    it.groupValues[3])
+                    it.groupValues[3]
+                )
             }
             .toList()
     }

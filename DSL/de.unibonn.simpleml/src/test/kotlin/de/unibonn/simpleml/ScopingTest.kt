@@ -1,9 +1,6 @@
 package de.unibonn.simpleml
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
-import de.unibonn.simpleml.testing.assertions.shouldBeResolved
-import de.unibonn.simpleml.testing.assertions.shouldNotBeResolved
 import de.unibonn.simpleml.emf.annotationUsesOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAnnotation
@@ -30,6 +27,9 @@ import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.ResourceName
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
+import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
+import de.unibonn.simpleml.testing.assertions.shouldBeResolved
+import de.unibonn.simpleml.testing.assertions.shouldNotBeResolved
 import de.unibonn.simpleml.utils.descendants
 import io.kotest.assertions.forEachAsClue
 import io.kotest.matchers.collections.shouldHaveSize

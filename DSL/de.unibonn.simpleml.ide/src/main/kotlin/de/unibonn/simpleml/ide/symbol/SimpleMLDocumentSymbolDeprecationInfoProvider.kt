@@ -6,7 +6,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.ide.server.symbol.DocumentSymbolMapper
 import org.eclipse.xtext.resource.IEObjectDescription
 
-class SimpleMLDocumentSymbolDeprecationInfoProvider: DocumentSymbolMapper.DocumentSymbolDeprecationInfoProvider() {
+class SimpleMLDocumentSymbolDeprecationInfoProvider : DocumentSymbolMapper.DocumentSymbolDeprecationInfoProvider() {
 
     override fun isDeprecated(obj: EObject): Boolean {
         if (obj !is SmlAbstractDeclaration) {

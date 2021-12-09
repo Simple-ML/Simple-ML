@@ -2,8 +2,8 @@
 
 package de.unibonn.simpleml.naming
 
-import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
+import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import io.kotest.matchers.shouldBe
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
