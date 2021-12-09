@@ -1,0 +1,5 @@
+// "MyEnum"
+enum »MyEnum« {
+    // "EnumVariant" in "MyEnum"
+    »EnumVariant«
+}

@@ -49,7 +49,7 @@ class FormatterTest {
     private fun createTest(resourcePath: Path, filePath: Path, program: String) = sequence {
         yield(
             CategorizedTest(
-                "correctly_formatted",
+                "formatter tests",
                 DynamicTest.dynamicTest(testDisplayName(resourcePath, filePath), filePath.toUri()) {
                     assertFormatted(toBeFormatted(program), expectedResult(program))
                 }
