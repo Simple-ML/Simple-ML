@@ -1,12 +1,12 @@
 package de.unibonn.simpleml.testing
 
+import de.unibonn.simpleml.locations.ProgramPosition
+import de.unibonn.simpleml.locations.ProgramRange
+import de.unibonn.simpleml.testing.FindTestRangesResult.CloseWithoutOpenError
 import de.unibonn.simpleml.testing.FindTestRangesResult.OpenWithoutCloseError
 import de.unibonn.simpleml.testing.FindTestRangesResult.Success
 import de.unibonn.simpleml.testing.TestMarker.CLOSE
 import de.unibonn.simpleml.testing.TestMarker.OPEN
-import de.unibonn.simpleml.locations.ProgramPosition
-import de.unibonn.simpleml.locations.ProgramRange
-import de.unibonn.simpleml.testing.FindTestRangesResult.CloseWithoutOpenError
 
 /**
  * Finds test ranges, i.e. parts of the program delimited by opening and closing test markers. They are sorted by the
@@ -39,10 +39,12 @@ fun findTestRanges(program: String): FindTestRangesResult {
                 currentColumn++
 
                 if (testRangeStarts.isEmpty()) {
-                    return CloseWithoutOpenError(ProgramPosition.fromInts(
-                        line = currentLine,
-                        column = currentColumn - 1
-                    ))
+                    return CloseWithoutOpenError(
+                        ProgramPosition.fromInts(
+                            line = currentLine,
+                            column = currentColumn - 1
+                        )
+                    )
                 }
 
                 finishedLocations += testRangeStarts.removeLast().toProgramRange(
@@ -92,7 +94,7 @@ sealed class FindTestRangesResult {
     /**
      * Something went wrong when creating program ranges.
      */
-    sealed class Error: FindTestRangesResult() {
+    sealed class Error : FindTestRangesResult() {
 
         /**
          * A human-readable description of what went wrong.

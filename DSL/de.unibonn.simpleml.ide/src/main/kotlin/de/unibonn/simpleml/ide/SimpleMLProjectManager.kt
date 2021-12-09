@@ -2,12 +2,9 @@ package de.unibonn.simpleml.ide
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.utils.SimpleMLStdlib
-import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.build.IncrementalBuilder
 import org.eclipse.xtext.ide.server.ProjectManager
 import org.eclipse.xtext.util.CancelIndicator
-import java.nio.file.Files
-import java.nio.file.Path
 
 class SimpleMLProjectManager @Inject constructor(
     private val stdlib: SimpleMLStdlib
