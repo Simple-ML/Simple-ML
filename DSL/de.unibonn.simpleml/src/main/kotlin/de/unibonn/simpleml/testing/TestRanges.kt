@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.testing
 
-import de.unibonn.simpleml.locations.ProgramPosition
-import de.unibonn.simpleml.locations.ProgramRange
+import de.unibonn.simpleml.locations.XtextPosition
+import de.unibonn.simpleml.locations.XtextRange
 import de.unibonn.simpleml.testing.FindTestRangesResult.CloseWithoutOpenError
 import de.unibonn.simpleml.testing.FindTestRangesResult.OpenWithoutCloseError
 import de.unibonn.simpleml.testing.FindTestRangesResult.Success
@@ -24,7 +24,7 @@ fun findTestRanges(program: String): FindTestRangesResult {
     var previousChar: Char? = null
 
     val testRangeStarts = ArrayDeque<TestRangeStart>()
-    val finishedLocations = mutableListOf<ProgramRange>()
+    val finishedLocations = mutableListOf<XtextRange>()
 
     program.toCharArray().forEachIndexed { currentIndex, currentChar ->
         when (currentChar) {
@@ -40,7 +40,7 @@ fun findTestRanges(program: String): FindTestRangesResult {
 
                 if (testRangeStarts.isEmpty()) {
                     return CloseWithoutOpenError(
-                        ProgramPosition.fromInts(
+                        XtextPosition.fromInts(
                             line = currentLine,
                             column = currentColumn - 1
                         )
@@ -75,7 +75,7 @@ fun findTestRanges(program: String): FindTestRangesResult {
         testRangeStarts.isEmpty() -> Success(finishedLocations.sortedBy { it.start })
         else -> OpenWithoutCloseError(
             testRangeStarts.map {
-                ProgramPosition.fromInts(it.startLine, it.startColumn - 1)
+                XtextPosition.fromInts(it.startLine, it.startColumn - 1)
             }
         )
     }
@@ -89,7 +89,7 @@ sealed class FindTestRangesResult {
     /**
      * Opening and closing test markers matched and program ranges were successfully created.
      */
-    class Success(val ranges: List<ProgramRange>) : FindTestRangesResult()
+    class Success(val ranges: List<XtextRange>) : FindTestRangesResult()
 
     /**
      * Something went wrong when creating program ranges.
@@ -106,7 +106,7 @@ sealed class FindTestRangesResult {
      * Found a closing test marker without a previous opening test marker.
      */
     @Suppress("MemberVisibilityCanBePrivate")
-    class CloseWithoutOpenError(val position: ProgramPosition) : Error() {
+    class CloseWithoutOpenError(val position: XtextPosition) : Error() {
         override fun message(): String {
             return "Found '$CLOSE' without previous '$OPEN' at $position."
         }
@@ -116,7 +116,7 @@ sealed class FindTestRangesResult {
      * Reached the end of the program but there were still unclosed opening test markers.
      */
     @Suppress("MemberVisibilityCanBePrivate")
-    class OpenWithoutCloseError(val positions: List<ProgramPosition>) : Error() {
+    class OpenWithoutCloseError(val positions: List<XtextPosition>) : Error() {
         override fun message(): String {
             return "Found '$OPEN' without following '$CLOSE' at ${positions.joinToString()}."
         }
@@ -127,8 +127,8 @@ sealed class FindTestRangesResult {
  * Stores where a test range starts.
  */
 private class TestRangeStart(val startLine: Int, val startColumn: Int, val startIndex: Int) {
-    fun toProgramRange(endLine: Int, endColumn: Int, endIndex: Int): ProgramRange {
-        return ProgramRange.fromInts(
+    fun toProgramRange(endLine: Int, endColumn: Int, endIndex: Int): XtextRange {
+        return XtextRange.fromInts(
             startLine,
             startColumn,
             endLine,

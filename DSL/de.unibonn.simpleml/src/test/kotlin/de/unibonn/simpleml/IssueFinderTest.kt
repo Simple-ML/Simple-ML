@@ -11,7 +11,7 @@ import de.unibonn.simpleml.assertions.shouldHaveSemanticInfo
 import de.unibonn.simpleml.assertions.shouldHaveSemanticWarning
 import de.unibonn.simpleml.assertions.shouldHaveSyntaxError
 import de.unibonn.simpleml.assertions.stringify
-import de.unibonn.simpleml.locations.ProgramRange
+import de.unibonn.simpleml.locations.XtextRange
 import de.unibonn.simpleml.testing.FindTestRangesResult
 import de.unibonn.simpleml.testing.findTestRanges
 import de.unibonn.simpleml.util.CategorizedTest
@@ -205,7 +205,7 @@ class IssueFinderTest {
 class ExpectedIssue(
     val severity: String,
     val message: String,
-    private val range: ProgramRange?
+    private val range: XtextRange?
 ) {
 
     fun matches(issue: Issue): Boolean {
@@ -227,8 +227,8 @@ class ExpectedIssue(
         }
     }
 
-    private val Issue.range: ProgramRange
-        get() = ProgramRange.fromInts(
+    private val Issue.range: XtextRange
+        get() = XtextRange.fromInts(
             this.lineNumber,
             this.column,
             this.lineNumberEnd,

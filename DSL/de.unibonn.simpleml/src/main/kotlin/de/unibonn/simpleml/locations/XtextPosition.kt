@@ -1,25 +1,32 @@
 package de.unibonn.simpleml.locations
 
 /**
- * A specific position in a program.
+ * A specific position in a program using the one-based indexing of Xtext.
  */
-data class ProgramPosition(val line: ProgramLine, val column: ProgramColumn) : Comparable<ProgramPosition> {
+data class XtextPosition(val line: XtextLine, val column: XtextColumn) : Comparable<XtextPosition> {
     companion object {
 
         @JvmStatic
-        fun fromInts(line: Int, column: Int): ProgramPosition {
-            return ProgramPosition(
-                ProgramLine(line),
-                ProgramColumn(column)
+        fun fromInts(line: Int, column: Int): XtextPosition {
+            return XtextPosition(
+                XtextLine(line),
+                XtextColumn(column)
             )
         }
+    }
+
+    fun toLspPosition(): LspPosition {
+        return LspPosition(
+            line.toLspLine(),
+            column.toLspColumn()
+        )
     }
 
     override fun toString(): String {
         return "$line:$column"
     }
 
-    override operator fun compareTo(other: ProgramPosition): Int {
+    override operator fun compareTo(other: XtextPosition): Int {
         val lineComparison = this.line.compareTo(other.line)
         if (lineComparison != 0) {
             return lineComparison
@@ -35,16 +42,20 @@ data class ProgramPosition(val line: ProgramLine, val column: ProgramColumn) : C
  * @throws IllegalArgumentException If value is less than 1.
  */
 @JvmInline
-value class ProgramLine(val value: Int) : Comparable<ProgramLine> {
+value class XtextLine(val value: Int) : Comparable<XtextLine> {
     init {
         require(value >= 1) { "Line must be at least 1." }
+    }
+
+    fun toLspLine(): LspLine {
+        return LspLine(value - 1)
     }
 
     override fun toString(): String {
         return value.toString()
     }
 
-    override operator fun compareTo(other: ProgramLine): Int {
+    override operator fun compareTo(other: XtextLine): Int {
         return this.value.compareTo(other.value)
     }
 }
@@ -55,16 +66,20 @@ value class ProgramLine(val value: Int) : Comparable<ProgramLine> {
  * @throws IllegalArgumentException If value is less than 1.
  */
 @JvmInline
-value class ProgramColumn(val value: Int) : Comparable<ProgramColumn> {
+value class XtextColumn(val value: Int) : Comparable<XtextColumn> {
     init {
         require(value >= 1) { "Column must be at least 1." }
+    }
+
+    fun toLspColumn(): LspColumn {
+        return LspColumn(value - 1)
     }
 
     override fun toString(): String {
         return value.toString()
     }
 
-    override operator fun compareTo(other: ProgramColumn): Int {
+    override operator fun compareTo(other: XtextColumn): Int {
         return this.value.compareTo(other.value)
     }
 }
