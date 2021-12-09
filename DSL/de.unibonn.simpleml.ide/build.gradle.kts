@@ -32,7 +32,7 @@ dependencies {
 
 sourceSets {
     main {
-        java.srcDirs("src", "src-gen")
+        java.srcDirs("src-gen")
         resources.srcDirs("src-gen")
         resources.include("**/*.ISetup")
     }
