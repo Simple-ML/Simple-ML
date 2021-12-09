@@ -21,7 +21,6 @@ import java.util.stream.Stream
 class DocumentSymbolTest : AbstractSimpleMLLanguageServerTest() {
 
     @TestFactory
-
     fun `should provide correct symbols`(): Stream<out DynamicNode> {
         return javaClass.classLoader
             .getResourcePath("symbols")
