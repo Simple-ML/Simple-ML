@@ -8,6 +8,7 @@ import de.unibonn.simpleml.testing.createDynamicTestsFromResourceFolder
 import de.unibonn.simpleml.testing.findTestRanges
 import de.unibonn.simpleml.testing.getResourcePath
 import de.unibonn.simpleml.testing.testDisplayName
+import org.eclipse.lsp4j.SymbolKind
 import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
@@ -29,7 +30,11 @@ class DocumentSymbolTest : AbstractSimpleMLLanguageServerTest() {
      * this returns null.
      */
     private fun validateTestFile(program: String, filePath: Path): String? {
-        val symbolComments = symbolComments(program)
+        val symbolComments = try {
+             symbolComments(program)
+        } catch (e: IllegalArgumentException) {
+            return e.message
+        }
 
         // Must contain at least one comment
         if (symbolComments.isEmpty()) {
@@ -81,10 +86,15 @@ class DocumentSymbolTest : AbstractSimpleMLLanguageServerTest() {
     }
 
     private fun symbolComments(program: String): List<SymbolComment> {
-        return """//\s*"(?<name>[^"]*)"\s*(?:in\s*"(?<containerName>[^"]*)")?"""
+        return """//\s*(?<kind>\S+)\s*"(?<name>[^"]*)"\s*(?:in\s*"(?<containerName>[^"]*)")?"""
             .toRegex()
             .findAll(program)
-            .map { SymbolComment(it.groupValues[1], it.groupValues[2]) }
+            .map {
+                SymbolComment(
+                    enumValueOf(it.groupValues[1]),
+                    it.groupValues[2],
+                    it.groupValues[3])
+            }
             .toList()
     }
 
@@ -93,19 +103,24 @@ class DocumentSymbolTest : AbstractSimpleMLLanguageServerTest() {
         val symbolComments = symbolComments(program)
 
         return ranges.ranges.zip(symbolComments) { range, comment ->
-            ExpectedSymbol(comment.name, range.toLspRange(), comment.containerName)
+            ExpectedSymbol(comment.kind, comment.name, range.toLspRange(), comment.containerName)
         }
     }
 }
 
-private data class SymbolComment(val name: String, val containerName: String?)
+private data class SymbolComment(val kind: SymbolKind, val name: String, val containerName: String?)
 
-private data class ExpectedSymbol(val name: String, val range: LspRange, val containerName: String?) {
+private data class ExpectedSymbol(
+    val kind: SymbolKind,
+    val name: String,
+    val range: LspRange,
+    val containerName: String?
+) {
     private val indent = "    "
 
     override fun toString() = buildString {
         appendLine("symbol \"$name\" {")
-        appendLine("${indent}kind: 7")
+        appendLine("${indent}kind: ${kind.value}")
         appendLine("${indent}location: MyModel.smltest $range")
 
         if (!containerName.isNullOrEmpty()) {

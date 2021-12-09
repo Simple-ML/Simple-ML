@@ -1,5 +1,5 @@
-// "MyEnum"
+// Enum "MyEnum"
 enum »MyEnum« {
-    // "EnumVariant" in "MyEnum"
+    // EnumMember "EnumVariant" in "MyEnum"
     »EnumVariant«
 }

@@ -189,7 +189,7 @@ class IssueFinderTest {
     }
 
     private fun severitiesAndMessages(program: String): List<ExpectedIssue> {
-        return """//\s*(?<severity>[^\s]*)\s*(?:"(?<message>[^"]*)")?"""
+        return """//\s*(?<severity>\S+)\s*(?:"(?<message>[^"]*)")?"""
             .toRegex()
             .findAll(program)
             .map { ExpectedIssue(it.groupValues[1], it.groupValues[2], null) }

@@ -2,6 +2,8 @@ package de.unibonn.simpleml.ide
 
 import de.unibonn.simpleml.ide.contentassist.SimpleMLIdeContentProposalProvider
 import de.unibonn.simpleml.ide.symbol.SimpleMLDocumentSymbolDeprecationInfoProvider
+import de.unibonn.simpleml.ide.symbol.SimpleMLDocumentSymbolKindProvider
+import de.unibonn.simpleml.ide.symbol.SimpleMLDocumentSymbolNameProvider
 import org.eclipse.xtext.ide.editor.contentassist.IdeContentProposalProvider
 import org.eclipse.xtext.ide.server.hover.HoverService
 import org.eclipse.xtext.ide.server.symbol.DocumentSymbolMapper
@@ -12,6 +14,14 @@ import org.eclipse.xtext.ide.server.symbol.DocumentSymbolMapper
 class SimpleMLIdeModule : AbstractSimpleMLIdeModule() {
     fun bindDocumentSymbolDeprecationInfoProvider(): Class<out DocumentSymbolMapper.DocumentSymbolDeprecationInfoProvider> {
         return SimpleMLDocumentSymbolDeprecationInfoProvider::class.java
+    }
+
+    fun bindDocumentSymbolKindProvider(): Class<out DocumentSymbolMapper.DocumentSymbolKindProvider> {
+        return SimpleMLDocumentSymbolKindProvider::class.java
+    }
+
+    fun bindDocumentSymbolNameProvider(): Class<out DocumentSymbolMapper.DocumentSymbolNameProvider> {
+        return SimpleMLDocumentSymbolNameProvider::class.java
     }
 
     fun bindIdeContentProposalProvider(): Class<out IdeContentProposalProvider> {
