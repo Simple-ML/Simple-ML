@@ -29,6 +29,6 @@ data class LspRange(val start: LspPosition, val end: LspPosition, val length: Pr
     }
 
     override fun toString(): String {
-        return "$start .. $end ($length)"
+        return "[$start .. $end]"
     }
 }

@@ -23,7 +23,7 @@ data class LspPosition(val line: LspLine, val column: LspColumn) : Comparable<Ls
     }
 
     override fun toString(): String {
-        return "$line:$column"
+        return "[$line, $column]"
     }
 
     override operator fun compareTo(other: LspPosition): Int {
@@ -44,7 +44,7 @@ data class LspPosition(val line: LspLine, val column: LspColumn) : Comparable<Ls
 @JvmInline
 value class LspLine(val value: Int) : Comparable<LspLine> {
     init {
-        require(value >= 1) { "Line must be at least 0." }
+        require(value >= 0) { "Line must be at least 0." }
     }
 
     fun toXtextLine(): XtextLine {
@@ -68,7 +68,7 @@ value class LspLine(val value: Int) : Comparable<LspLine> {
 @JvmInline
 value class LspColumn(val value: Int) : Comparable<LspColumn> {
     init {
-        require(value >= 1) { "Column must be at least 0." }
+        require(value >= 0) { "Column must be at least 0." }
     }
 
     fun toXtextColumn(): XtextColumn {
