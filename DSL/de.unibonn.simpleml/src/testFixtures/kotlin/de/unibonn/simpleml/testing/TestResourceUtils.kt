@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.util
+package de.unibonn.simpleml.testing
 
 import de.unibonn.simpleml.constants.FileExtension
 import org.eclipse.core.runtime.FileLocator

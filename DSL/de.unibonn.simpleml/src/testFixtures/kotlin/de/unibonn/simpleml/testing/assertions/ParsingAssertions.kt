@@ -1,6 +1,6 @@
-package de.unibonn.simpleml.assertions
+package de.unibonn.simpleml.testing.assertions
 
-import de.unibonn.simpleml.ExpectedIssue
+import de.unibonn.simpleml.locations.XtextRange
 import org.eclipse.xtext.diagnostics.Severity
 import org.eclipse.xtext.validation.Issue
 
@@ -79,4 +79,47 @@ fun List<Issue>.stringify(): String {
     }
 
     return this.joinToString(prefix = ":\n", separator = "\n") { "    * $it" }
+}
+
+class ExpectedIssue(
+    val severity: String,
+    val message: String,
+    private val range: XtextRange?
+) {
+
+    fun matches(issue: Issue): Boolean {
+        return locationMatches(issue) && messageMatches(issue)
+    }
+
+    private fun locationMatches(issue: Issue): Boolean {
+        return range == null || range == issue.range
+    }
+
+    private fun messageMatches(issue: Issue): Boolean {
+        return when {
+            message.isBlank() -> true
+            "???" !in message -> message == issue.message
+            else -> {
+                val regex = Regex(message.replace("???", "\\w*"))
+                regex.matches(issue.message)
+            }
+        }
+    }
+
+    private val Issue.range: XtextRange
+        get() = XtextRange.fromInts(
+            this.lineNumber,
+            this.column,
+            this.lineNumberEnd,
+            this.columnEnd,
+            this.length
+        )
+
+    override fun toString() = buildString {
+        append(severity)
+        if (message.isNotBlank()) {
+            append(" \"$message\"")
+        }
+        range?.let { append(" at $range") }
+    }
 }

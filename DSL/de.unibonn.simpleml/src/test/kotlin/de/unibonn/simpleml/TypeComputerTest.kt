@@ -4,10 +4,10 @@ import de.unibonn.simpleml.constants.FileExtension
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.stdlib.StdlibClasses
+import de.unibonn.simpleml.testing.ParseHelper
+import de.unibonn.simpleml.testing.getResourcePath
 import de.unibonn.simpleml.typing.Type
 import de.unibonn.simpleml.typing.TypeComputer
-import de.unibonn.simpleml.util.ParseHelper
-import de.unibonn.simpleml.util.getResourcePath
 import de.unibonn.simpleml.utils.assignedOrNull
 import io.kotest.matchers.shouldBe
 import org.eclipse.emf.ecore.EObject

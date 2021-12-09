@@ -4,8 +4,8 @@ import de.unibonn.simpleml.ide.AbstractSimpleMLLanguageServerTest
 import de.unibonn.simpleml.locations.LspRange
 import org.junit.jupiter.api.Test
 
-
 class DocumentSymbolTest : AbstractSimpleMLLanguageServerTest() {
+
     @Test
     fun testDocumentSymbol_01() {
         testDocumentSymbol {

@@ -5,7 +5,8 @@ import de.unibonn.simpleml.emf.uniquePackageOrNull
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
-import de.unibonn.simpleml.util.ParseHelper
+import de.unibonn.simpleml.testing.ParseHelper
+import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.utils.Proposals
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.maps.shouldContainValue

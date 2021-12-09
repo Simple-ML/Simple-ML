@@ -1,12 +1,5 @@
 package de.unibonn.simpleml
 
-import de.unibonn.simpleml.assertions.findUniqueFactOrFail
-import de.unibonn.simpleml.assertions.shouldBeChildExpressionOf
-import de.unibonn.simpleml.assertions.shouldBeChildOf
-import de.unibonn.simpleml.assertions.shouldBeCloseTo
-import de.unibonn.simpleml.assertions.shouldBeNChildExpressionsOf
-import de.unibonn.simpleml.assertions.shouldBeNChildrenOf
-import de.unibonn.simpleml.assertions.shouldHaveNAnnotationUses
 import de.unibonn.simpleml.constants.FileExtension
 import de.unibonn.simpleml.prolog_bridge.Main
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
@@ -63,7 +56,14 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.WildcardT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowStepT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowT
 import de.unibonn.simpleml.prolog_bridge.model.facts.YieldT
-import de.unibonn.simpleml.util.getResourcePath
+import de.unibonn.simpleml.testing.assertions.findUniqueFactOrFail
+import de.unibonn.simpleml.testing.assertions.shouldBeChildExpressionOf
+import de.unibonn.simpleml.testing.assertions.shouldBeChildOf
+import de.unibonn.simpleml.testing.assertions.shouldBeCloseTo
+import de.unibonn.simpleml.testing.assertions.shouldBeNChildExpressionsOf
+import de.unibonn.simpleml.testing.assertions.shouldBeNChildrenOf
+import de.unibonn.simpleml.testing.assertions.shouldHaveNAnnotationUses
+import de.unibonn.simpleml.testing.getResourcePath
 import io.kotest.assertions.asClue
 import io.kotest.assertions.forEachAsClue
 import io.kotest.matchers.collections.shouldBeEmpty
