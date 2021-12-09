@@ -1,12 +1,12 @@
-package de.unibonn.simpleml.test
+package de.unibonn.simpleml
 
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
-import de.unibonn.simpleml.constants.FileExtensions
+import de.unibonn.simpleml.constants.FileExtension
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.stdlib.StdlibClasses
-import de.unibonn.simpleml.test.util.ParseHelper
-import de.unibonn.simpleml.test.util.getResourcePath
+import de.unibonn.simpleml.util.ParseHelper
+import de.unibonn.simpleml.util.getResourcePath
 import de.unibonn.simpleml.typing.Type
 import de.unibonn.simpleml.typing.TypeComputer
 import de.unibonn.simpleml.utils.assignedOrNull
@@ -188,7 +188,7 @@ class TypeComputerTest {
     }
 
     private fun withCompilationUnitFromFile(file: String, lambda: SmlCompilationUnit.() -> Unit) {
-        val program = Files.readString(Path.of(testRoot, "$file${FileExtensions.TEST}"))
+        val program = Files.readString(Path.of(testRoot, "$file${FileExtension.TEST}"))
         val compilationUnit = parseHelper.parseProgramTextWithStdlib(program)
             ?: throw IllegalArgumentException("File is not a compilation unit.")
         compilationUnit.apply(lambda)

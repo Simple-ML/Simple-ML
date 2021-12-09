@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.test
+package de.unibonn.simpleml
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.annotationUsesOrEmpty
@@ -24,11 +24,11 @@ import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
-import de.unibonn.simpleml.test.assertions.findUniqueDeclarationOrFail
-import de.unibonn.simpleml.test.assertions.shouldBeResolved
-import de.unibonn.simpleml.test.assertions.shouldNotBeResolved
-import de.unibonn.simpleml.test.util.ParseHelper
-import de.unibonn.simpleml.test.util.ResourceName
+import de.unibonn.simpleml.assertions.findUniqueDeclarationOrFail
+import de.unibonn.simpleml.assertions.shouldBeResolved
+import de.unibonn.simpleml.assertions.shouldNotBeResolved
+import de.unibonn.simpleml.util.ParseHelper
+import de.unibonn.simpleml.util.ResourceName
 import de.unibonn.simpleml.utils.descendants
 import io.kotest.assertions.forEachAsClue
 import io.kotest.matchers.collections.shouldHaveSize

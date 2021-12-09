@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.resource.Resource
 /**
  * Different file extensions associated with Simple-ML programs.
  */
-object FileExtensions {
+object FileExtension {
 
     /**
      * Marks the file as a workflow file, which can be executed by our runtime component.
@@ -53,17 +53,17 @@ fun EObject.isInTestFile() = this.eResource().isTestFile()
 /**
  * Returns whether the resource represents a flow file.
  */
-fun Resource.isFlowFile() = this.hasExtension(FileExtensions.FLOW)
+fun Resource.isFlowFile() = this.hasExtension(FileExtension.FLOW)
 
 /**
  * Returns whether the resource represents a stub file.
  */
-fun Resource.isStubFile() = this.hasExtension(FileExtensions.STUB)
+fun Resource.isStubFile() = this.hasExtension(FileExtension.STUB)
 
 /**
  * Returns whether the resource represents a test file.
  */
-fun Resource.isTestFile() = this.hasExtension(FileExtensions.TEST)
+fun Resource.isTestFile() = this.hasExtension(FileExtension.TEST)
 
 /**
  * Returns whether the resource represents a file with the given extension.

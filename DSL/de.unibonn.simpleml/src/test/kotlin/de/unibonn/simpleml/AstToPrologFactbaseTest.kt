@@ -1,7 +1,7 @@
-package de.unibonn.simpleml.test
+package de.unibonn.simpleml
 
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
-import de.unibonn.simpleml.constants.FileExtensions
+import de.unibonn.simpleml.constants.FileExtension
 import de.unibonn.simpleml.prolog_bridge.Main
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
@@ -57,14 +57,14 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.WildcardT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowStepT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowT
 import de.unibonn.simpleml.prolog_bridge.model.facts.YieldT
-import de.unibonn.simpleml.test.assertions.findUniqueFactOrFail
-import de.unibonn.simpleml.test.assertions.shouldBeChildExpressionOf
-import de.unibonn.simpleml.test.assertions.shouldBeChildOf
-import de.unibonn.simpleml.test.assertions.shouldBeCloseTo
-import de.unibonn.simpleml.test.assertions.shouldBeNChildExpressionsOf
-import de.unibonn.simpleml.test.assertions.shouldBeNChildrenOf
-import de.unibonn.simpleml.test.assertions.shouldHaveNAnnotationUses
-import de.unibonn.simpleml.test.util.getResourcePath
+import de.unibonn.simpleml.assertions.findUniqueFactOrFail
+import de.unibonn.simpleml.assertions.shouldBeChildExpressionOf
+import de.unibonn.simpleml.assertions.shouldBeChildOf
+import de.unibonn.simpleml.assertions.shouldBeCloseTo
+import de.unibonn.simpleml.assertions.shouldBeNChildExpressionsOf
+import de.unibonn.simpleml.assertions.shouldBeNChildrenOf
+import de.unibonn.simpleml.assertions.shouldHaveNAnnotationUses
+import de.unibonn.simpleml.util.getResourcePath
 import io.kotest.assertions.asClue
 import io.kotest.assertions.forEachAsClue
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -119,7 +119,7 @@ class AstToPrologFactbaseTest {
                 val resourceS = findUniqueFactOrFail<ResourceS>()
                 resourceS.asClue {
                     resourceS.target shouldBe compilationUnitT.id
-                    resourceS.uri shouldEndWith "astToPrologFactbase/empty${FileExtensions.TEST}"
+                    resourceS.uri shouldEndWith "astToPrologFactbase/empty${FileExtension.TEST}"
                 }
             }
 
@@ -1655,6 +1655,6 @@ class AstToPrologFactbaseTest {
     // ****************************************************************************************************************/
 
     private fun withFactbaseFromFile(file: String, lambda: PlFactbase.() -> Unit) {
-        main.createFactbase("$testRoot/$file${FileExtensions.TEST}").apply(lambda)
+        main.createFactbase("$testRoot/$file${FileExtension.TEST}").apply(lambda)
     }
 }

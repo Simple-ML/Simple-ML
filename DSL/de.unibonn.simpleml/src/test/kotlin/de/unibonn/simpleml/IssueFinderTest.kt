@@ -1,21 +1,24 @@
-package de.unibonn.simpleml.test
+package de.unibonn.simpleml
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.test.assertions.shouldHaveNoIssue
-import de.unibonn.simpleml.test.assertions.shouldHaveNoSemanticError
-import de.unibonn.simpleml.test.assertions.shouldHaveNoSemanticInfo
-import de.unibonn.simpleml.test.assertions.shouldHaveNoSemanticWarning
-import de.unibonn.simpleml.test.assertions.shouldHaveNoSyntaxError
-import de.unibonn.simpleml.test.assertions.shouldHaveSemanticError
-import de.unibonn.simpleml.test.assertions.shouldHaveSemanticInfo
-import de.unibonn.simpleml.test.assertions.shouldHaveSemanticWarning
-import de.unibonn.simpleml.test.assertions.shouldHaveSyntaxError
-import de.unibonn.simpleml.test.assertions.stringify
-import de.unibonn.simpleml.test.util.CategorizedTest
-import de.unibonn.simpleml.test.util.ParseHelper
-import de.unibonn.simpleml.test.util.createDynamicTestsFromResourceFolder
-import de.unibonn.simpleml.test.util.getResourcePath
-import de.unibonn.simpleml.test.util.testDisplayName
+import de.unibonn.simpleml.assertions.shouldHaveNoIssue
+import de.unibonn.simpleml.assertions.shouldHaveNoSemanticError
+import de.unibonn.simpleml.assertions.shouldHaveNoSemanticInfo
+import de.unibonn.simpleml.assertions.shouldHaveNoSemanticWarning
+import de.unibonn.simpleml.assertions.shouldHaveNoSyntaxError
+import de.unibonn.simpleml.assertions.shouldHaveSemanticError
+import de.unibonn.simpleml.assertions.shouldHaveSemanticInfo
+import de.unibonn.simpleml.assertions.shouldHaveSemanticWarning
+import de.unibonn.simpleml.assertions.shouldHaveSyntaxError
+import de.unibonn.simpleml.assertions.stringify
+import de.unibonn.simpleml.locations.ProgramRange
+import de.unibonn.simpleml.testing.FindTestRangesResult
+import de.unibonn.simpleml.testing.findTestRanges
+import de.unibonn.simpleml.util.CategorizedTest
+import de.unibonn.simpleml.util.ParseHelper
+import de.unibonn.simpleml.util.createDynamicTestsFromResourceFolder
+import de.unibonn.simpleml.util.getResourcePath
+import de.unibonn.simpleml.util.testDisplayName
 import de.unibonn.simpleml.utils.OriginalFilePath
 import de.unibonn.simpleml.utils.outerZipBy
 import org.eclipse.xtext.testing.InjectWith
@@ -103,8 +106,13 @@ class IssueFinderTest {
             }
         }
 
+        // Opening and closing test markers must match
+        val locations = when (val locationsResult = findTestRanges(program)) {
+            is FindTestRangesResult.Success -> locationsResult.ranges
+            is FindTestRangesResult.Error -> return locationsResult.message()
+        }
+
         // Must not contain more locations markers than severities
-        val locations = locations(program)
         if (severities.size < locations.size) {
             return "Test file contains more locations (»«) than severities."
         }
@@ -165,7 +173,12 @@ class IssueFinderTest {
     }
 
     private fun expectedIssues(program: String): List<ExpectedIssue> {
-        return outerZipBy(severitiesAndMessages(program), locations(program)) { severityAndMessage, location ->
+        val locations = when (val locationsResult = findTestRanges(program)) {
+            is FindTestRangesResult.Success -> locationsResult.ranges
+            else -> return emptyList()
+        }
+
+        return outerZipBy(severitiesAndMessages(program), locations) { severityAndMessage, location ->
             ExpectedIssue(severityAndMessage!!.severity, severityAndMessage.message, location)
         }
     }
@@ -182,43 +195,6 @@ class IssueFinderTest {
             .toList()
     }
 
-    private fun locations(program: String): List<Location> {
-        var currentLine = 1
-        var currentColumn = 1
-
-        var matchLine = 1
-        var matchColumn = 1
-        var matchLength = 0
-
-        val result = mutableListOf<Location>()
-
-        for (c in program.toCharArray()) {
-            when (c) {
-                '\u00BB' -> { // »
-                    currentColumn++
-                    matchLine = currentLine
-                    matchColumn = currentColumn
-                    matchLength = 0
-                }
-                '\u00AB' -> { // «
-                    currentColumn++
-                    result += Location(matchLine, matchColumn, matchLength)
-                }
-                '\n' -> {
-                    currentLine++
-                    currentColumn = 1
-                    matchLength++
-                }
-                else -> {
-                    currentColumn++
-                    matchLength++
-                }
-            }
-        }
-
-        return result
-    }
-
     private fun actualIssues(program: String, filePath: Path): List<Issue> {
         val parsingResult = parseHelper.parseProgramTextWithStdlib(program) ?: return emptyList()
         parsingResult.eResource().eAdapters().add(OriginalFilePath(filePath.toString()))
@@ -229,7 +205,7 @@ class IssueFinderTest {
 class ExpectedIssue(
     val severity: String,
     val message: String,
-    private val location: Location?
+    private val range: ProgramRange?
 ) {
 
     fun matches(issue: Issue): Boolean {
@@ -237,7 +213,7 @@ class ExpectedIssue(
     }
 
     private fun locationMatches(issue: Issue): Boolean {
-        return location == null || location == issue.location
+        return range == null || range == issue.range
     }
 
     private fun messageMatches(issue: Issue): Boolean {
@@ -251,21 +227,20 @@ class ExpectedIssue(
         }
     }
 
-    private val Issue.location: Location
-        get() = Location(lineNumber, column, length)
+    private val Issue.range: ProgramRange
+        get() = ProgramRange.fromInts(
+            this.lineNumber,
+            this.column,
+            this.lineNumberEnd,
+            this.columnEnd,
+            this.length
+        )
 
     override fun toString() = buildString {
         append(severity)
         if (message.isNotBlank()) {
             append(" \"$message\"")
         }
-        location?.let { append(" at $location") }
-    }
-}
-
-data class Location(val line: Int, val column: Int, val length: Int) {
-    override fun toString(): String {
-        val chars = if (length == 1) "char" else "chars"
-        return "$line:$column ($length $chars)"
+        range?.let { append(" at $range") }
     }
 }
