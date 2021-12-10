@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.ide
+package de.unibonn.simpleml.ide.hover
 
 import com.google.inject.Inject
 import org.eclipse.emf.ecore.EObject
