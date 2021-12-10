@@ -9,7 +9,6 @@ import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
 import de.unibonn.simpleml.utils.Proposals
-import de.unibonn.simpleml.utils.descendants
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.maps.shouldContainValue
 import io.kotest.matchers.maps.shouldContainValues
