@@ -1,5 +1,6 @@
 package de.unibonn.simpleml.ide
 
+import de.unibonn.simpleml.ide.project.SimpleMLProjectManager
 import org.eclipse.xtext.ide.server.ProjectManager
 import org.eclipse.xtext.ide.server.ServerModule
 
