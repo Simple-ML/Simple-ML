@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.ide.project
+package de.unibonn.simpleml.ide.server.project
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.utils.SimpleMLStdlib

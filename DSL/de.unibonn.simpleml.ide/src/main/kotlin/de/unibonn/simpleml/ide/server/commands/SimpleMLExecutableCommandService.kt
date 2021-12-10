@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.ide.command
+package de.unibonn.simpleml.ide.server.commands
 
 import com.google.inject.Inject
 import org.eclipse.lsp4j.ExecuteCommandParams

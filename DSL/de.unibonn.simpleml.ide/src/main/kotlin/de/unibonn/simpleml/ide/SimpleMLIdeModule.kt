@@ -1,13 +1,13 @@
 package de.unibonn.simpleml.ide
 
-import de.unibonn.simpleml.ide.codelens.SimpleMLCodeLensProvider
-import de.unibonn.simpleml.ide.command.SimpleMLExecutableCommandService
-import de.unibonn.simpleml.ide.contentassist.SimpleMLIdeContentProposalProvider
-import de.unibonn.simpleml.ide.hover.SimpleMLHoverService
-import de.unibonn.simpleml.ide.symbol.SimpleMLDocumentSymbolDeprecationInfoProvider
-import de.unibonn.simpleml.ide.symbol.SimpleMLDocumentSymbolDetailsProvider
-import de.unibonn.simpleml.ide.symbol.SimpleMLDocumentSymbolKindProvider
-import de.unibonn.simpleml.ide.symbol.SimpleMLDocumentSymbolNameProvider
+import de.unibonn.simpleml.ide.editor.contentassist.SimpleMLIdeContentProposalProvider
+import de.unibonn.simpleml.ide.server.codelens.SimpleMLCodeLensProvider
+import de.unibonn.simpleml.ide.server.commands.SimpleMLExecutableCommandService
+import de.unibonn.simpleml.ide.server.hover.SimpleMLHoverService
+import de.unibonn.simpleml.ide.server.symbol.SimpleMLDocumentSymbolDeprecationInfoProvider
+import de.unibonn.simpleml.ide.server.symbol.SimpleMLDocumentSymbolDetailsProvider
+import de.unibonn.simpleml.ide.server.symbol.SimpleMLDocumentSymbolKindProvider
+import de.unibonn.simpleml.ide.server.symbol.SimpleMLDocumentSymbolNameProvider
 import org.eclipse.xtext.ide.editor.contentassist.IdeContentProposalProvider
 import org.eclipse.xtext.ide.server.codelens.ICodeLensResolver
 import org.eclipse.xtext.ide.server.codelens.ICodeLensService

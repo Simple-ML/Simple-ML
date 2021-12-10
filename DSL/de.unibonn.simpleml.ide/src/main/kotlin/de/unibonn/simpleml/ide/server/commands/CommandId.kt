@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.ide.command
+package de.unibonn.simpleml.ide.server.commands
 
 enum class CommandId {
     RemoveOnceOtherCommandsAreAdded;
