@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.ide.symbol
+package de.unibonn.simpleml.ide.server.symbol
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.ide.server.symbol.DocumentSymbolMapper

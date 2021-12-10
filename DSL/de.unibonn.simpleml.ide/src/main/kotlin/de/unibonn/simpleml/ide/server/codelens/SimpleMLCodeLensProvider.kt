@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.ide.codelens
+package de.unibonn.simpleml.ide.server.codelens
 
 import com.google.inject.Inject
 import org.eclipse.lsp4j.CodeLens

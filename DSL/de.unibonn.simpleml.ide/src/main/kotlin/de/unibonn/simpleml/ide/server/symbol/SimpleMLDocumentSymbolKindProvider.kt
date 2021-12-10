@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.ide.symbol
+package de.unibonn.simpleml.ide.server.symbol
 
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlFunction

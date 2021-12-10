@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.ide.symbol
+package de.unibonn.simpleml.ide.server.symbol
 
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import org.eclipse.emf.ecore.EObject
