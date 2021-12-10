@@ -1,11 +1,8 @@
 package de.unibonn.simpleml.ide.codelens
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.ide.command.CommandId
-import de.unibonn.simpleml.simpleML.SmlArgumentList
 import org.eclipse.lsp4j.CodeLens
 import org.eclipse.lsp4j.CodeLensParams
-import org.eclipse.lsp4j.Command
 import org.eclipse.xtext.ide.server.Document
 import org.eclipse.xtext.ide.server.codelens.ICodeLensResolver
 import org.eclipse.xtext.ide.server.codelens.ICodeLensService
@@ -29,28 +26,7 @@ class SimpleMLCodeLensProvider : ICodeLensResolver, ICodeLensService {
         params: CodeLensParams,
         indicator: CancelIndicator
     ): List<CodeLens> {
-        return markArgumentLists(resource, indicator)
-    }
-
-    private fun markArgumentLists(
-        resource: XtextResource,
-        indicator: CancelIndicator
-    ): MutableList<CodeLens> {
-
-        val result = mutableListOf<CodeLens>()
-        for (obj in resource.allContents) {
-            operationCanceledManager.checkCanceled(indicator)
-
-            if (obj is SmlArgumentList) {
-                result += CodeLens(
-                    rangeProvider.getRange(obj),
-                    Command("...", CommandId.MoreParameters.toString()),
-                    null
-                )
-            }
-        }
-
-        return result
+        return emptyList()
     }
 
     override fun resolveCodeLens(

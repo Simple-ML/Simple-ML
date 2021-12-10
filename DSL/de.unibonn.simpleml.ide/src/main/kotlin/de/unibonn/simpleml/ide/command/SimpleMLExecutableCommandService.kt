@@ -12,10 +12,8 @@ class SimpleMLExecutableCommandService : IExecutableCommandService {
     @Inject
     private lateinit var operationCanceledManager: OperationCanceledManager
 
-    override fun initialize(): MutableList<String> {
-        println("initialized")
-
-        return mutableListOf(CommandId.MoreParameters.toString())
+    override fun initialize(): List<String> {
+        return emptyList()
     }
 
     override fun execute(
@@ -24,12 +22,8 @@ class SimpleMLExecutableCommandService : IExecutableCommandService {
         cancelIndicator: CancelIndicator
     ): Any {
 
-        println(params)
-
         return when (params.command) {
-            CommandId.MoreParameters.toString() -> {
-                "a"
-            }
+            CommandId.RemoveOnceOtherCommandsAreAdded.toString() -> {}
             else -> {
                 throw IllegalArgumentException("Unknown command '${params.command}'.")
             }

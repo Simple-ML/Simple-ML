@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.ide.command
 
 enum class CommandId {
-    MoreParameters;
+    RemoveOnceOtherCommandsAreAdded;
 
     override fun toString(): String {
         return "simple-ml." + this.name
