@@ -11,7 +11,6 @@ import org.eclipse.xtext.resource.XtextResource
 import org.eclipse.xtext.service.OperationCanceledManager
 import org.eclipse.xtext.util.CancelIndicator
 
-
 class SimpleMLCodeLensProvider : ICodeLensResolver, ICodeLensService {
 
     @Inject
