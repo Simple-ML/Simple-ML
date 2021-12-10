@@ -1,18 +1,36 @@
 package de.unibonn.simpleml.ide
 
+import de.unibonn.simpleml.ide.codelens.SimpleMLCodeLensProvider
+import de.unibonn.simpleml.ide.command.SimpleMLExecutableCommandService
 import de.unibonn.simpleml.ide.contentassist.SimpleMLIdeContentProposalProvider
+import de.unibonn.simpleml.ide.hover.SimpleMLHoverService
 import de.unibonn.simpleml.ide.symbol.SimpleMLDocumentSymbolDeprecationInfoProvider
 import de.unibonn.simpleml.ide.symbol.SimpleMLDocumentSymbolDetailsProvider
 import de.unibonn.simpleml.ide.symbol.SimpleMLDocumentSymbolKindProvider
 import de.unibonn.simpleml.ide.symbol.SimpleMLDocumentSymbolNameProvider
 import org.eclipse.xtext.ide.editor.contentassist.IdeContentProposalProvider
+import org.eclipse.xtext.ide.server.codelens.ICodeLensResolver
+import org.eclipse.xtext.ide.server.codelens.ICodeLensService
+import org.eclipse.xtext.ide.server.commands.IExecutableCommandService
 import org.eclipse.xtext.ide.server.hover.HoverService
 import org.eclipse.xtext.ide.server.symbol.DocumentSymbolMapper
 
 /**
- * Use this class to register ide components.
+ * Use this class to register IDE components.
  */
 class SimpleMLIdeModule : AbstractSimpleMLIdeModule() {
+    fun bindICodeLensResolver(): Class<out ICodeLensResolver> {
+        return SimpleMLCodeLensProvider::class.java
+    }
+
+    fun bindICodeLensService(): Class<out ICodeLensService> {
+        return SimpleMLCodeLensProvider::class.java
+    }
+
+    fun bindIExecutableCommandService(): Class<out IExecutableCommandService> {
+        return SimpleMLExecutableCommandService::class.java
+    }
+
     fun bindDocumentSymbolDeprecationInfoProvider(): Class<out DocumentSymbolMapper.DocumentSymbolDeprecationInfoProvider> {
         return SimpleMLDocumentSymbolDeprecationInfoProvider::class.java
     }
