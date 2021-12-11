@@ -1,6 +1,6 @@
 @file:Suppress("ClassName")
 
-package de.unibonn.simpleml.emf
+package de.unibonn.simpleml.serializer
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.serializer.SerializationResult
