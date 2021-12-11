@@ -2,8 +2,8 @@ package de.unibonn.simpleml.testing
 
 import de.unibonn.simpleml.location.XtextPosition
 import de.unibonn.simpleml.location.XtextRange
-import de.unibonn.simpleml.testing.FindTestRangesResult.CloseWithoutOpenError
-import de.unibonn.simpleml.testing.FindTestRangesResult.OpenWithoutCloseError
+import de.unibonn.simpleml.testing.FindTestRangesResult.CloseWithoutOpenFailure
+import de.unibonn.simpleml.testing.FindTestRangesResult.OpenWithoutCloseFailure
 import de.unibonn.simpleml.testing.FindTestRangesResult.Success
 import de.unibonn.simpleml.testing.TestMarker.CLOSE
 import de.unibonn.simpleml.testing.TestMarker.OPEN
@@ -39,7 +39,7 @@ fun findTestRanges(program: String): FindTestRangesResult {
                 currentColumn++
 
                 if (testRangeStarts.isEmpty()) {
-                    return CloseWithoutOpenError(
+                    return CloseWithoutOpenFailure(
                         XtextPosition.fromInts(
                             line = currentLine,
                             column = currentColumn - 1
@@ -73,7 +73,7 @@ fun findTestRanges(program: String): FindTestRangesResult {
 
     return when {
         testRangeStarts.isEmpty() -> Success(finishedLocations.sortedBy { it.start })
-        else -> OpenWithoutCloseError(
+        else -> OpenWithoutCloseFailure(
             testRangeStarts.map {
                 XtextPosition.fromInts(it.startLine, it.startColumn - 1)
             }
@@ -84,42 +84,43 @@ fun findTestRanges(program: String): FindTestRangesResult {
 /**
  * A wrapper that indicates success of failure of the `findTestRanges` method.
  */
-sealed class FindTestRangesResult {
+@Suppress("MemberVisibilityCanBePrivate")
+sealed interface FindTestRangesResult {
 
     /**
      * Opening and closing test markers matched and program ranges were successfully created.
      */
-    class Success(val ranges: List<XtextRange>) : FindTestRangesResult()
+    class Success(val ranges: List<XtextRange>) : FindTestRangesResult
 
     /**
      * Something went wrong when creating program ranges.
      */
-    sealed class Error : FindTestRangesResult() {
+    sealed interface Failure : FindTestRangesResult {
 
         /**
          * A human-readable description of what went wrong.
          */
-        abstract fun message(): String
+        val message: String
     }
 
     /**
      * Found a closing test marker without a previous opening test marker.
      */
-    @Suppress("MemberVisibilityCanBePrivate")
-    class CloseWithoutOpenError(val position: XtextPosition) : Error() {
-        override fun message(): String {
-            return "Found '$CLOSE' without previous '$OPEN' at $position."
-        }
+    class CloseWithoutOpenFailure(val position: XtextPosition) : Failure {
+        override val message: String
+            get() {
+                return "Found '$CLOSE' without previous '$OPEN' at $position."
+            }
     }
 
     /**
      * Reached the end of the program but there were still unclosed opening test markers.
      */
-    @Suppress("MemberVisibilityCanBePrivate")
-    class OpenWithoutCloseError(val positions: List<XtextPosition>) : Error() {
-        override fun message(): String {
-            return "Found '$OPEN' without following '$CLOSE' at ${positions.joinToString()}."
-        }
+    class OpenWithoutCloseFailure(val positions: List<XtextPosition>) : Failure {
+        override val message: String
+            get() {
+                return "Found '$OPEN' without following '$CLOSE' at ${positions.joinToString()}."
+            }
     }
 }
 

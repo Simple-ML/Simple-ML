@@ -6,7 +6,7 @@ import org.eclipse.xtext.naming.IQualifiedNameConverter
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.naming.QualifiedName
 
-internal object InjectionTarget {
+internal object QualifiedNameProviderInjectionTarget {
 
     @Inject
     lateinit var qualifiedNameConverter: IQualifiedNameConverter
@@ -19,12 +19,12 @@ internal object InjectionTarget {
  * Returns the fully qualified name of the declaration.
  */
 fun SmlAbstractDeclaration.fullyQualifiedName(): QualifiedName? {
-    return InjectionTarget.qualifiedNameProvider.getFullyQualifiedName(this)
+    return QualifiedNameProviderInjectionTarget.qualifiedNameProvider.getFullyQualifiedName(this)
 }
 
 /**
  * Converts a string to a qualified name.
  */
 fun String.toQualifiedName(): QualifiedName {
-    return InjectionTarget.qualifiedNameConverter.toQualifiedName(this)
+    return QualifiedNameProviderInjectionTarget.qualifiedNameConverter.toQualifiedName(this)
 }
