@@ -103,7 +103,11 @@ class SimpleMLFormatter : AbstractFormatter2() {
      * We follow the rule here that an object never formats its preceding or following region. This is left to the
      * parent.
      */
-    override fun format(obj: Any, doc: IFormattableDocument) {
+    override fun format(obj: Any?, doc: IFormattableDocument) {
+        if (obj == null) {
+            return
+        }
+
         when (obj) {
             is XtextResource -> {
                 useSpacesForIndentation()

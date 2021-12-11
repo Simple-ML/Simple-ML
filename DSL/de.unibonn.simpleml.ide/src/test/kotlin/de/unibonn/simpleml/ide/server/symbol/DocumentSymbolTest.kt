@@ -44,7 +44,7 @@ class DocumentSymbolTest : AbstractSimpleMLLanguageServerTest() {
         // Opening and closing test markers must match
         val locations = when (val locationsResult = findTestRanges(program)) {
             is FindTestRangesResult.Success -> locationsResult.ranges
-            is FindTestRangesResult.Error -> return locationsResult.message()
+            is FindTestRangesResult.Failure -> return locationsResult.message
         }
 
         // Must contain the same amount of test markers and symbols

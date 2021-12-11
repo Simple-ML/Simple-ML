@@ -2,8 +2,8 @@ package de.unibonn.simpleml.testing
 
 import de.unibonn.simpleml.location.XtextPosition
 import de.unibonn.simpleml.location.XtextRange
-import de.unibonn.simpleml.testing.FindTestRangesResult.CloseWithoutOpenError
-import de.unibonn.simpleml.testing.FindTestRangesResult.OpenWithoutCloseError
+import de.unibonn.simpleml.testing.FindTestRangesResult.CloseWithoutOpenFailure
+import de.unibonn.simpleml.testing.FindTestRangesResult.OpenWithoutCloseFailure
 import de.unibonn.simpleml.testing.FindTestRangesResult.Success
 import de.unibonn.simpleml.testing.TestMarker.CLOSE
 import de.unibonn.simpleml.testing.TestMarker.OPEN
@@ -108,20 +108,20 @@ class TestRangesTest {
     @Test
     fun `should report closing test markers without matching opening test marker`() {
         val result = findTestRanges("$OPEN\n$CLOSE$CLOSE")
-        result.shouldBeInstanceOf<CloseWithoutOpenError>()
+        result.shouldBeInstanceOf<CloseWithoutOpenFailure>()
         result.position shouldBe XtextPosition.fromInts(line = 2, column = 2)
-        result.message() shouldBe "Found '$CLOSE' without previous '$OPEN' at 2:2."
+        result.message shouldBe "Found '$CLOSE' without previous '$OPEN' at 2:2."
     }
 
     @Test
     fun `should report opening test markers without matching closing test marker`() {
         val result = findTestRanges("$OPEN\n$OPEN$OPEN$CLOSE")
-        result.shouldBeInstanceOf<OpenWithoutCloseError>()
+        result.shouldBeInstanceOf<OpenWithoutCloseFailure>()
 
         result.positions.shouldHaveSize(2)
         result.positions[0] shouldBe XtextPosition.fromInts(line = 1, column = 1)
         result.positions[1] shouldBe XtextPosition.fromInts(line = 2, column = 1)
 
-        result.message() shouldBe "Found '$OPEN' without following '$CLOSE' at 1:1, 2:1."
+        result.message shouldBe "Found '$OPEN' without following '$CLOSE' at 1:1, 2:1."
     }
 }

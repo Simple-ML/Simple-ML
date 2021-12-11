@@ -98,10 +98,10 @@ fun SmlCall.callableOrNull(): EObject? {
     }
 }
 
-sealed class CallableResult {
-    object Unresolvable : CallableResult()
-    object NotCallable : CallableResult()
-    class Callable(val callable: EObject) : CallableResult()
+sealed interface CallableResult {
+    object Unresolvable : CallableResult
+    object NotCallable : CallableResult
+    class Callable(val callable: EObject) : CallableResult
 }
 
 fun SmlCall.maybeCallable(): CallableResult {
@@ -253,10 +253,10 @@ fun SmlAbstractAssignee.assignedOrNull(): EObject? {
     }
 }
 
-sealed class AssignedResult {
-    object Unresolved : AssignedResult()
-    object NotAssigned : AssignedResult()
-    class Assigned(val assigned: EObject) : AssignedResult()
+sealed interface AssignedResult {
+    object Unresolved : AssignedResult
+    object NotAssigned : AssignedResult
+    class Assigned(val assigned: EObject) : AssignedResult
 }
 
 fun SmlAbstractAssignee.maybeAssigned(): AssignedResult {
@@ -364,10 +364,10 @@ fun SmlTemplateStringPart.realValue(): String {
 
 // Type ----------------------------------------------------------------------------------------------------------------
 
-sealed class ClassResult {
-    object Unresolvable : ClassResult()
-    object NotAClass : ClassResult()
-    class Class(val `class`: SmlClass) : ClassResult()
+sealed interface ClassResult {
+    object Unresolvable : ClassResult
+    object NotAClass : ClassResult
+    class Class(val `class`: SmlClass) : ClassResult
 }
 
 fun SmlAbstractType?.maybeClass(): ClassResult {

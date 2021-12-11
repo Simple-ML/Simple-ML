@@ -6,6 +6,7 @@ import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.createDynamicTestsFromResourceFolder
 import de.unibonn.simpleml.testing.getResourcePath
 import de.unibonn.simpleml.testing.testDisplayName
+import de.unibonn.simpleml.testing.withSystemLineBreaks
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.eclipse.xtext.testing.formatter.FormatterTestHelper
@@ -65,8 +66,7 @@ class FormatterTest {
         return program
             .split(separator)[1]
             .trim()
-            .replace(Regex("\r\n?"), "\n")
-            .replace("\n", System.lineSeparator())
+            .withSystemLineBreaks()
     }
 
     private fun assertFormatted(toBeFormatted: String, expectedResult: String) {
