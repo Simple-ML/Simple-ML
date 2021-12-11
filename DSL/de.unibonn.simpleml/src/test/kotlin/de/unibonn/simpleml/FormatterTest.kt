@@ -6,6 +6,7 @@ import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.createDynamicTestsFromResourceFolder
 import de.unibonn.simpleml.testing.getResourcePath
 import de.unibonn.simpleml.testing.testDisplayName
+import de.unibonn.simpleml.testing.withSystemLineBreaks
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.eclipse.xtext.testing.formatter.FormatterTestHelper
@@ -13,7 +14,6 @@ import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.extension.ExtendWith
-import de.unibonn.simpleml.testing.withSystemLineBreaks
 import java.nio.file.Path
 import java.util.stream.Stream
 

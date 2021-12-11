@@ -39,13 +39,14 @@ class SerializerExtensionsTest {
 
             val result = compilationUnit.serializeToString()
             result.shouldBeInstanceOf<SerializeToStringResult.Formatted>()
-            result.code shouldBe ("""
+            result.code shouldBe (
+                """
                 |package tests
                 |
                 |class MyClass
                 |
-            """.trimMargin().withSystemLineBreaks())
-
+            """.trimMargin().withSystemLineBreaks()
+                )
         }
 
         @Test
