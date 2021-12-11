@@ -13,6 +13,7 @@ import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.extension.ExtendWith
+import de.unibonn.simpleml.testing.withSystemLineBreaks
 import java.nio.file.Path
 import java.util.stream.Stream
 
@@ -65,8 +66,7 @@ class FormatterTest {
         return program
             .split(separator)[1]
             .trim()
-            .replace(Regex("\r\n?"), "\n")
-            .replace("\n", System.lineSeparator())
+            .withSystemLineBreaks()
     }
 
     private fun assertFormatted(toBeFormatted: String, expectedResult: String) {

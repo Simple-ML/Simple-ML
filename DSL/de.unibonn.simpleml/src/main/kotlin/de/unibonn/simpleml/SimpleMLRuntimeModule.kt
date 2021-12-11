@@ -2,8 +2,10 @@ package de.unibonn.simpleml
 
 import com.google.inject.Binder
 import com.google.inject.name.Names
+import de.unibonn.simpleml.naming.QualifiedNameProviderInjectionTarget
 import de.unibonn.simpleml.resource.SimpleMLResourceDescriptionStrategy
 import de.unibonn.simpleml.scoping.SimpleMLImportedNamespaceAwareLocalScopeProvider
+import de.unibonn.simpleml.serializer.SerializerExtensionsInjectionTarget
 import de.unibonn.simpleml.serializer.SimpleMLCrossReferenceSerializer
 import de.unibonn.simpleml.serializer.SimpleMLHiddenTokenSequencer
 import org.eclipse.xtext.resource.IDefaultResourceDescriptionStrategy
@@ -36,7 +38,8 @@ open class SimpleMLRuntimeModule : AbstractSimpleMLRuntimeModule() {
     }
 
     override fun configure(binder: Binder) {
-        binder.requestStaticInjection(de.unibonn.simpleml.naming.InjectionTarget::class.java)
+        binder.requestStaticInjection(SerializerExtensionsInjectionTarget::class.java)
+        binder.requestStaticInjection(QualifiedNameProviderInjectionTarget::class.java)
 
         super.configure(binder)
     }
