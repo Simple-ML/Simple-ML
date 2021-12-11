@@ -1,9 +1,9 @@
 package de.unibonn.simpleml.serializer
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtext.resource.XtextResource
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.xtext.resource.SaveOptions
 import org.eclipse.xtext.serializer.impl.Serializer
 
 internal object SerializerExtensionsInjectionTarget {
@@ -13,57 +13,62 @@ internal object SerializerExtensionsInjectionTarget {
 }
 
 /**
- * Serializes a subtree of the EMF model. Formatting only works if a compilation unit is passed as the receiver.
+ * Serializes a subtree of the EMF model while keeping the original formatting intact. This only works if the [EObject]
+ * is part of a [Resource].
  *
  * @receiver The root of the subtree.
- * @return A result object indicating success (formatted/unformatted) or failure.
+ * @return A result object indicating success or failure.
  */
-fun EObject.serializeToString(): SerializeToStringResult {
-    if (this is SmlCompilationUnit && this.eResource() == null) {
-        XtextResource().contents += this
+fun EObject.serializeToString(): SerializationResult {
+    return serializeToStringWithSaveOptions(WithoutFormatting)
+}
+
+/**
+ * Serializes a subtree of the EMF model and applies the formatter to it. This only works if the [EObject] is part of a
+ * [Resource].
+ *
+ * @receiver The root of the subtree.
+ * @return A result object indicating success or failure.
+ */
+fun EObject.serializeToFormattedString(): SerializationResult {
+    return serializeToStringWithSaveOptions(WithFormatting)
+}
+
+private val WithoutFormatting = SaveOptions.defaultOptions()
+private val WithFormatting = SaveOptions.newBuilder().format().options
+
+private fun EObject.serializeToStringWithSaveOptions(options: SaveOptions): SerializationResult {
+    if (this.eResource() == null) {
+        return SerializationResult.NotInResourceFailure
     }
 
     return try {
-        val string = SerializerExtensionsInjectionTarget.serializer.serialize(this)
-        when (this) {
-            is SmlCompilationUnit -> SerializeToStringResult.Formatted(string)
-            else -> SerializeToStringResult.Unformatted(string)
-        }
+        val code = SerializerExtensionsInjectionTarget.serializer
+            .serialize(this, options)
+            .trim()
+
+        SerializationResult.Success(code)
     } catch (e: RuntimeException) {
-        SerializeToStringResult.WrongEmfModelFailure(e.message ?: "")
+        SerializationResult.WrongEmfModelStructureFailure(e.message ?: "")
     }
 }
 
 /**
- * Result of calling [serializeToString].
+ * Result of calling [serializeToString] or [serializeToFormattedString].
  */
-sealed interface SerializeToStringResult {
+sealed interface SerializationResult {
 
     /**
      * Serialization was successful.
+     *
+     * @param code The created DSL code.
      */
-    sealed interface Success : SerializeToStringResult {
-
-        /**
-         * The DSL program code.
-         */
-        val code: String
-    }
+    class Success(val code: String) : SerializationResult
 
     /**
-     * Serialization was successful and the result could be formatted.
+     * Something went wrong while serializing the [EObject].
      */
-    class Formatted(override val code: String) : Success
-
-    /**
-     * Serialization was successful but the result could not be formatted.
-     */
-    class Unformatted(override val code: String) : Success
-
-    /**
-     * Something went wrong while serializing the object.
-     */
-    sealed interface Failure : SerializeToStringResult {
+    sealed interface Failure : SerializationResult {
 
         /**
          * A message that describes the failure.
@@ -72,7 +77,15 @@ sealed interface SerializeToStringResult {
     }
 
     /**
+     * The [EObject] is not part of a [Resource] and cannot be serialized.
+     */
+    object NotInResourceFailure : Failure {
+        override val message: String
+            get() = "The EObject is not part of a Resource and cannot be serialized."
+    }
+
+    /**
      * The EMF model is not configured correctly.
      */
-    class WrongEmfModelFailure(override val message: String) : Failure
+    class WrongEmfModelStructureFailure(override val message: String) : Failure
 }
