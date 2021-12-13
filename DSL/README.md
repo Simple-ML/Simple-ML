@@ -51,7 +51,7 @@ Note: This solution requires that Git itself can clone this private repository f
 
 1. Build the image:
     ```shell
-    docker build -t simpleml-dsl .
+    docker build -t simpleml-dsl
     ```
 1. Run a container:
     ```shell

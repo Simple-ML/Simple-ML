@@ -224,7 +224,7 @@ class CodeWorker(threading.Thread):
         # sys.stdout = log
         import subprocess
 
-        result = subprocess.check_output('python3.8 runtime/' + main_file, shell=True)
+        result = subprocess.check_output('python3 runtime/' + main_file, shell=True)
         print("Excuting file: " + main_file)
         # print(result)
 
