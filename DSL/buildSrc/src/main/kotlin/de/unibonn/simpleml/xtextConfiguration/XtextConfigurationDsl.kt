@@ -23,24 +23,30 @@ fun Workflow.standaloneSetup(lambda: StandaloneSetup.() -> Unit) {
 }
 
 fun StandaloneSetup.projectMapping(projectName: String, path: String) {
-    addProjectMapping(ProjectMapping().apply {
-        this.projectName = projectName
-        this.path = path
-    })
+    addProjectMapping(
+        ProjectMapping().apply {
+            this.projectName = projectName
+            this.path = path
+        }
+    )
 }
 
 fun Workflow.directoryCleaner(directory: String) {
-    addComponent(DirectoryCleaner().apply {
-        setDirectory(directory)
-    })
+    addComponent(
+        DirectoryCleaner().apply {
+            setDirectory(directory)
+        }
+    )
 }
 
 fun Workflow.ecoreGenerator(genModel: String, srcPaths: List<String>, lambda: EcoreGenerator.() -> Unit = {}) {
-    addComponent(EcoreGenerator().apply {
-        setGenModel(genModel)
-        srcPaths.forEach { addSrcPath(it) }
-        lambda()
-    })
+    addComponent(
+        EcoreGenerator().apply {
+            setGenModel(genModel)
+            srcPaths.forEach { addSrcPath(it) }
+            lambda()
+        }
+    )
 }
 
 fun Workflow.xtextGenerator(lambda: XtextGenerator.() -> Unit) {

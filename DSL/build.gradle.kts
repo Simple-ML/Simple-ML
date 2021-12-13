@@ -72,22 +72,22 @@ tasks.register("generateXtextLanguage") {
     outputs.cacheIf { true }
 
     inputs.files(
-        "${rootPath}/de.unibonn.simpleml/model/SimpleML.ecore",
-        "${rootPath}/de.unibonn.simpleml/model/SimpleML.genmodel",
-        "${rootPath}/de.unibonn.simpleml/src/main/resources/SimpleML.xtext"
+        "$rootPath/de.unibonn.simpleml/model/SimpleML.ecore",
+        "$rootPath/de.unibonn.simpleml/model/SimpleML.genmodel",
+        "$rootPath/de.unibonn.simpleml/src/main/resources/SimpleML.xtext"
     )
     outputs.dirs(
-        "${rootPath}/de.unibonn.simpleml/META-INF",
-        "${rootPath}/de.unibonn.simpleml/emf-gen",
-        "${rootPath}/de.unibonn.simpleml/src-gen",
-        "${rootPath}/de.unibonn.simpleml.ide/src-gen",
-        "${rootPath}/de.unibonn.simpleml.tests",
-        "${rootPath}/de.unibonn.simpleml.web/src-gen"
+        "$rootPath/de.unibonn.simpleml/META-INF",
+        "$rootPath/de.unibonn.simpleml/emf-gen",
+        "$rootPath/de.unibonn.simpleml/src-gen",
+        "$rootPath/de.unibonn.simpleml.ide/src-gen",
+        "$rootPath/de.unibonn.simpleml.tests",
+        "$rootPath/de.unibonn.simpleml.web/src-gen"
     )
     outputs.files(
-        "${rootPath}/de.unibonn.simpleml/build.properties",
-        "${rootPath}/de.unibonn.simpleml/plugin.properties",
-        "${rootPath}/de.unibonn.simpleml/plugin.xml"
+        "$rootPath/de.unibonn.simpleml/build.properties",
+        "$rootPath/de.unibonn.simpleml/plugin.properties",
+        "$rootPath/de.unibonn.simpleml/plugin.xml"
     )
 
     doFirst {
@@ -99,21 +99,21 @@ tasks.register("generateXtextLanguage") {
 
                 projectMapping(
                     projectName = "de.unibonn.simpleml",
-                    path = "${rootPath}/de.unibonn.simpleml"
+                    path = "$rootPath/de.unibonn.simpleml"
                 )
 
                 projectMapping(
                     projectName = "de.unibonn.simpleml.ide",
-                    path = "${rootPath}/de.unibonn.simpleml.ide"
+                    path = "$rootPath/de.unibonn.simpleml.ide"
                 )
 
                 projectMapping(
                     projectName = "de.unibonn.simpleml.web",
-                    path = "${rootPath}/de.unibonn.simpleml.web"
+                    path = "$rootPath/de.unibonn.simpleml.web"
                 )
             }
 
-            directoryCleaner("${rootPath}/de.unibonn.simpleml/emf-gen")
+            directoryCleaner("$rootPath/de.unibonn.simpleml/emf-gen")
 
             ecoreGenerator(
                 genModel = "platform:/resource/de.unibonn.simpleml/model/SimpleML.genmodel",
@@ -127,11 +127,11 @@ tasks.register("generateXtextLanguage") {
                         this.rootPath = rootPath
 
                         runtime = RuntimeProjectConfig().apply {
-                            setSrc("${rootPath}/de.unibonn.simpleml/src/main/kotlin")
+                            setSrc("$rootPath/de.unibonn.simpleml/src/main/kotlin")
                         }
 
                         genericIde = BundleProjectConfig().apply {
-                            setSrc("${rootPath}/de.unibonn.simpleml.ide/src/main/kotlin")
+                            setSrc("$rootPath/de.unibonn.simpleml.ide/src/main/kotlin")
                         }
 
                         runtimeTest = BundleProjectConfig().apply {
@@ -156,26 +156,36 @@ tasks.register("generateXtextLanguage") {
                     setFileExtensions("smlflow,smlstub,smltest")
                     addReferencedResource("platform:/resource/de.unibonn.simpleml/model/SimpleML.genmodel")
 
-                    setFormatter(Formatter2Fragment2().apply {
-                        isGenerateStub = true
-                    })
+                    setFormatter(
+                        Formatter2Fragment2().apply {
+                            isGenerateStub = true
+                        }
+                    )
 
-                    setGenerator(GeneratorFragment2().apply {
-                        isGenerateXtendMain = false
-                    })
+                    setGenerator(
+                        GeneratorFragment2().apply {
+                            isGenerateXtendMain = false
+                        }
+                    )
 
-                    setSerializer(SerializerFragment2().apply {
-                        isGenerateStub = true
-                    })
+                    setSerializer(
+                        SerializerFragment2().apply {
+                            isGenerateStub = true
+                        }
+                    )
 
-                    setValidator(ValidatorFragment2().apply {
-                        isGenerateDeprecationValidation = true
-                    })
+                    setValidator(
+                        ValidatorFragment2().apply {
+                            isGenerateDeprecationValidation = true
+                        }
+                    )
 
-                    setJunitSupport(JUnitFragment().apply {
-                        setJunitVersion("5")
-                        isGenerateStub = false
-                    })
+                    setJunitSupport(
+                        JUnitFragment().apply {
+                            setJunitVersion("5")
+                            isGenerateStub = false
+                        }
+                    )
                 }
             }
         }.execute()
@@ -183,18 +193,18 @@ tasks.register("generateXtextLanguage") {
 
     doLast {
         delete(
-            fileTree("${rootPath}/de.unibonn.simpleml/src") {
+            fileTree("$rootPath/de.unibonn.simpleml/src") {
                 include("**/*.xtend")
             }
         )
         delete(
-            fileTree("${rootPath}/de.unibonn.simpleml.ide/src") {
+            fileTree("$rootPath/de.unibonn.simpleml.ide/src") {
                 include("**/*.xtend")
             }
         )
-        delete(file("${rootPath}/de.unibonn.simpleml.tests"))
+        delete(file("$rootPath/de.unibonn.simpleml.tests"))
         delete(
-            fileTree("${rootPath}/de.unibonn.simpleml.web/src/de/unibonn/simpleml/web") {
+            fileTree("$rootPath/de.unibonn.simpleml.web/src/de/unibonn/simpleml/web") {
                 include("**/*.xtend")
             }
         )
