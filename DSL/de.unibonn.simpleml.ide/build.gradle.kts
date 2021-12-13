@@ -47,7 +47,7 @@ sourceSets {
 
 tasks {
     processResources {
-        val generateXtextLanguage = project(":de.unibonn.simpleml").tasks.named("generateXtextLanguage")
+        val generateXtextLanguage = rootProject.tasks.named("generateXtextLanguage")
         dependsOn(generateXtextLanguage)
     }
 
