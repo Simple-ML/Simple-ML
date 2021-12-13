@@ -24,18 +24,9 @@ idea {
 
 // Dependencies --------------------------------------------------------------------------------------------------------
 
-val mwe2: Configuration by configurations.creating {
-    extendsFrom(configurations.implementation.get())
-}
-
 dependencies {
     api(platform("org.eclipse.xtext:xtext-dev-bom:$xtextVersion"))
     implementation("org.eclipse.xtext:org.eclipse.xtext:$xtextVersion")
-
-    mwe2("org.eclipse.emf:org.eclipse.emf.mwe2.launch:2.12.2.M1")
-    mwe2("org.eclipse.xtext:org.eclipse.xtext.common.types:$xtextVersion")
-    mwe2("org.eclipse.xtext:org.eclipse.xtext.xtext.generator:$xtextVersion")
-    mwe2("org.eclipse.xtext:xtext-antlr-generator:2.1.1")
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
@@ -62,9 +53,6 @@ sourceSets {
             "**/*.tokens",
             "**/*.xtextbin"
         )
-    }
-    create("mwe2") {
-        compileClasspath = mwe2
     }
 }
 

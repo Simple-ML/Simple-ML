@@ -5,7 +5,6 @@ val xtextVersion by extra("2.26.0.M2")
 
 plugins {
     kotlin("jvm") version "1.6.0"
-    `java-gradle-plugin`
     idea
 }
 
