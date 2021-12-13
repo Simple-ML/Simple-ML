@@ -26,6 +26,7 @@ class Sidebar extends React.Component {
     }
 
     onStoreChange = (state) => {
+        console.log(state);
 
       return {
           selectedEntityType: this.getEntityType(state.graphicalEditor.entitySelected?.data?.className),
