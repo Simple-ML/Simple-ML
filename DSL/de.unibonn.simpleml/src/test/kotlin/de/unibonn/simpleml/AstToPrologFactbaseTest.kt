@@ -118,7 +118,7 @@ class AstToPrologFactbaseTest {
                 val resourceS = findUniqueFactOrFail<ResourceS>()
                 resourceS.asClue {
                     resourceS.target shouldBe compilationUnitT.id
-                    resourceS.uri shouldEndWith "astToPrologFactbase/empty${FileExtension.TEST}"
+                    resourceS.uri shouldEndWith "astToPrologFactbase/empty.${FileExtension.TEST.extension}"
                 }
             }
 
@@ -1654,6 +1654,6 @@ class AstToPrologFactbaseTest {
     // ****************************************************************************************************************/
 
     private fun withFactbaseFromFile(file: String, lambda: PlFactbase.() -> Unit) {
-        main.createFactbase("$testRoot/$file${FileExtension.TEST}").apply(lambda)
+        main.createFactbase("$testRoot/$file.${FileExtension.TEST.extension}").apply(lambda)
     }
 }

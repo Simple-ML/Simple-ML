@@ -58,9 +58,9 @@ private fun createDynamicTestFromResource(
 private fun isTestFile(filePath: Path): Boolean {
     return Files.isRegularFile(filePath) &&
         (
-            filePath.fileName.toString().endsWith(FileExtension.FLOW) ||
-                filePath.fileName.toString().endsWith(FileExtension.STUB) ||
-                filePath.fileName.toString().endsWith(FileExtension.TEST)
+            filePath.fileName.toString().endsWith(".${FileExtension.FLOW.extension}") ||
+                filePath.fileName.toString().endsWith(".${FileExtension.STUB.extension}") ||
+                filePath.fileName.toString().endsWith(".${FileExtension.TEST.extension}")
             ) &&
         !filePath.fileName.toString().startsWith("_skip_")
 }

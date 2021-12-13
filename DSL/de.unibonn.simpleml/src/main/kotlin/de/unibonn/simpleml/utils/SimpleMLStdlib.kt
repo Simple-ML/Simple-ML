@@ -59,7 +59,7 @@ class SimpleMLStdlib @Inject constructor(
             }
 
             val stdlibFiles = Files.walk(stdlibBase)
-                .filter { it.toString().endsWith(FileExtension.STUB) }
+                .filter { it.toString().endsWith(".${FileExtension.STUB.extension}") }
 
             for (path in stdlibFiles) {
                 val relativePath = path.toString().replace("stdlib/", "")
