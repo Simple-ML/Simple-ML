@@ -19,7 +19,7 @@ SmlCompilationUnit
     : {SmlCompilationUnit} members+=SmlCompilationUnitMember*
     ;
 
-SmlCompilationUnitMember returns SmlAbstractElement
+SmlCompilationUnitMember returns SmlAbstractAnnotatedObject
     : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
 
     ( {SmlPackage.annotationUseHolder=current}
@@ -71,7 +71,7 @@ SmlImportAlias
     : 'as' name=ID
     ;
 
-SmlPackageMember returns SmlAbstractElement
+SmlPackageMember returns SmlAbstractAnnotatedObject
     : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
 
     ( {SmlAnnotation.annotationUseHolder=current}
@@ -148,7 +148,7 @@ SmlClassBody
     : {SmlClassBody} '{' members+=SmlClassMember* '}'
     ;
 
-SmlClassMember returns SmlAbstractElement
+SmlClassMember returns SmlAbstractAnnotatedObject
     : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
 
     ( {SmlAttribute.annotationUseHolder=current}
@@ -299,7 +299,7 @@ SmlLambdaAssigneeList returns SmlAssigneeList
     | {SmlAssigneeList} '(' (assignees+=SmlLambdaAssignee (',' assignees+=SmlLambdaAssignee)* ','?)? ')'
     ;
 
-SmlLambdaAssignee returns SmlAbstractElement
+SmlLambdaAssignee returns SmlAbstractAnnotatedObject
     : {SmlWildcard} '_'
     |
     ( {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*

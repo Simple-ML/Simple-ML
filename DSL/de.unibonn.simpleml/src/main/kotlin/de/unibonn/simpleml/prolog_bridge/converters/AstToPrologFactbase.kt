@@ -67,6 +67,7 @@ import de.unibonn.simpleml.simpleML.SimpleMLPackage
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
+import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAbstractTypeArgumentValue
@@ -145,33 +146,6 @@ class AstToPrologFactbase {
         }
     }
 
-//    fun createFactbase(obj: SmlCompilationUnit): PlFactbase {
-//        reset()
-//
-//        return PlFactbase().apply {
-//            visitCompilationUnit(obj)
-//
-//            val node = NodeModelUtils.getNode(obj)
-//
-//            node.asTreeIterable.forEach {
-//                println(it)
-//                if (it is HiddenLeafNode) {
-//                    val grammarElement = it.grammarElement
-//                    if (grammarElement is TerminalRule && (grammarElement.name == "SL_COMMENT")) {
-//                        println(grammarElement)
-//                        println(it.text.replace("^//\\s*".toRegex(), ""))
-//                        println(NodeModelUtils.getLineAndColumn(it, it.offset))
-//                        println(it.offset)
-//                    }
-//                    if (grammarElement is TerminalRule && (grammarElement.name == "ML_COMMENT")) {
-//                        println(grammarElement)
-//                        println(it.text)
-//                    }
-//                }
-//            }
-//        }
-//    }
-
     // *****************************************************************************************************************
     // Declarations
     // ****************************************************************************************************************/
@@ -187,7 +161,7 @@ class AstToPrologFactbase {
         visitSourceLocation(obj)
     }
 
-    private fun PlFactbase.visitDeclaration(obj: SmlAbstractDeclaration, parentId: Id<EObject>) {
+    private fun PlFactbase.visitDeclaration(obj: SmlAbstractDeclaration, parentId: Id<SmlAbstractObject>) {
         obj.annotationUsesOrEmpty().forEach { visitAnnotationUse(it, obj.id) }
 
         when (obj) {
@@ -327,7 +301,7 @@ class AstToPrologFactbase {
     // Statements
     // ****************************************************************************************************************/
 
-    private fun PlFactbase.visitStatement(obj: SmlAbstractStatement, parentId: Id<EObject>) {
+    private fun PlFactbase.visitStatement(obj: SmlAbstractStatement, parentId: Id<SmlAbstractObject>) {
         when (obj) {
             is SmlAssignment -> {
                 obj.assigneesOrEmpty().forEach { this.visitAssignee(it, obj.id) }
@@ -376,8 +350,8 @@ class AstToPrologFactbase {
 
     private fun PlFactbase.visitExpression(
         obj: SmlAbstractExpression,
-        parentId: Id<EObject>,
-        enclosingId: Id<EObject>
+        parentId: Id<SmlAbstractObject>,
+        enclosingId: Id<SmlAbstractObject>
     ) {
         when (obj) {
             is SmlArgument -> {
@@ -471,7 +445,7 @@ class AstToPrologFactbase {
     // Types
     // ****************************************************************************************************************/
 
-    private fun PlFactbase.visitType(obj: SmlAbstractType, parentId: Id<EObject>) {
+    private fun PlFactbase.visitType(obj: SmlAbstractType, parentId: Id<SmlAbstractObject>) {
         when (obj) {
             is SmlCallableType -> {
                 obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
@@ -517,7 +491,7 @@ class AstToPrologFactbase {
         visitSourceLocation(obj)
     }
 
-    private fun PlFactbase.visitTypeArgument(obj: SmlTypeArgument, parentId: Id<EObject>) {
+    private fun PlFactbase.visitTypeArgument(obj: SmlTypeArgument, parentId: Id<SmlAbstractObject>) {
         obj.typeParameter?.let {
             visitCrossReference(
                 obj,
@@ -546,7 +520,7 @@ class AstToPrologFactbase {
         visitSourceLocation(obj)
     }
 
-    private fun PlFactbase.visitTypeParameterConstraint(obj: SmlTypeParameterConstraint, parentId: Id<EObject>) {
+    private fun PlFactbase.visitTypeParameterConstraint(obj: SmlTypeParameterConstraint, parentId: Id<SmlAbstractObject>) {
         visitCrossReference(obj, SimpleMLPackage.Literals.SML_TYPE_PARAMETER_CONSTRAINT__LEFT_OPERAND, obj.leftOperand)
         visitType(obj.rightOperand, obj.id)
 
@@ -558,7 +532,7 @@ class AstToPrologFactbase {
     // Other
     // ****************************************************************************************************************/
 
-    private fun PlFactbase.visitSourceLocation(obj: EObject) {
+    private fun PlFactbase.visitSourceLocation(obj: SmlAbstractObject) {
         val uriHash = EcoreUtil2.getURI(obj).toString().split("#").last()
         val node = NodeModelUtils.getNode(obj)
         val location = NodeModelUtils.getLineAndColumn(node, node.offset)
@@ -573,16 +547,16 @@ class AstToPrologFactbase {
         )
     }
 
-    private fun PlFactbase.visitCrossReference(source: EObject, edge: EReference, target: EObject) {
+    private fun PlFactbase.visitCrossReference(source: SmlAbstractObject, edge: EReference, target: SmlAbstractObject) {
         if (!idManager.knowsObject(target)) {
             val name = getReferencedName(source, edge)
             +UnresolvedT(target.id, name)
         }
     }
 
-    private fun getReferencedName(eObject: EObject, eReference: EReference): String {
+    private fun getReferencedName(obj: SmlAbstractObject, eReference: EReference): String {
         return NodeModelUtils
-            .findNodesForFeature(eObject, eReference)
+            .findNodesForFeature(obj, eReference)
             .joinToString("") { it.text }
     }
 
