@@ -14,12 +14,12 @@ import org.eclipse.xtext.xtext.generator.StandardLanguage
 import org.eclipse.xtext.xtext.generator.XtextGenerator
 import org.eclipse.xtext.xtext.generator.model.project.StandardProjectConfig
 
-fun workflow(lambda: Workflow.() -> Unit): Workflow {
-    return Workflow().apply(lambda)
+fun workflow(init: Workflow.() -> Unit): Workflow {
+    return Workflow().apply(init)
 }
 
-fun Workflow.standaloneSetup(lambda: StandaloneSetup.() -> Unit) {
-    addBean(StandaloneSetup().apply(lambda))
+fun Workflow.standaloneSetup(init: StandaloneSetup.() -> Unit) {
+    addBean(StandaloneSetup().apply(init))
 }
 
 fun StandaloneSetup.projectMapping(projectName: String, path: String) {
@@ -39,34 +39,34 @@ fun Workflow.directoryCleaner(directory: String) {
     )
 }
 
-fun Workflow.ecoreGenerator(genModel: String, srcPaths: List<String>, lambda: EcoreGenerator.() -> Unit = {}) {
+fun Workflow.ecoreGenerator(genModel: String, srcPaths: List<String>, init: EcoreGenerator.() -> Unit = {}) {
     addComponent(
         EcoreGenerator().apply {
             setGenModel(genModel)
             srcPaths.forEach { addSrcPath(it) }
-            lambda()
+            init()
         }
     )
 }
 
-fun Workflow.xtextGenerator(lambda: XtextGenerator.() -> Unit) {
-    addComponent(XtextGenerator().apply(lambda))
+fun Workflow.xtextGenerator(init: XtextGenerator.() -> Unit) {
+    addComponent(XtextGenerator().apply(init))
 }
 
-fun XtextGenerator.configuration(lambda: DefaultGeneratorModule.() -> Unit) {
-    configuration = DefaultGeneratorModule().apply(lambda)
+fun XtextGenerator.configuration(init: DefaultGeneratorModule.() -> Unit) {
+    configuration = DefaultGeneratorModule().apply(init)
 }
 
-fun DefaultGeneratorModule.project(lambda: StandardProjectConfig.() -> Unit) {
-    project = StandardProjectConfig().apply(lambda)
+fun DefaultGeneratorModule.project(init: StandardProjectConfig.() -> Unit) {
+    project = StandardProjectConfig().apply(init)
 }
 
-fun DefaultGeneratorModule.code(lambda: CodeConfig.() -> Unit) {
-    code = CodeConfig().apply(lambda)
+fun DefaultGeneratorModule.code(init: CodeConfig.() -> Unit) {
+    code = CodeConfig().apply(init)
 }
 
-fun XtextGenerator.standardLanguage(lambda: StandardLanguage.() -> Unit) {
-    addLanguage(StandardLanguage().apply(lambda))
+fun XtextGenerator.standardLanguage(init: StandardLanguage.() -> Unit) {
+    addLanguage(StandardLanguage().apply(init))
 }
 
 fun Workflow.execute() {

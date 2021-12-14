@@ -118,7 +118,7 @@ class AstToPrologFactbaseTest {
                 val resourceS = findUniqueFactOrFail<ResourceS>()
                 resourceS.asClue {
                     resourceS.target shouldBe compilationUnitT.id
-                    resourceS.uri shouldEndWith "astToPrologFactbase/empty${FileExtension.TEST}"
+                    resourceS.uri shouldEndWith "astToPrologFactbase/empty.${FileExtension.TEST}"
                 }
             }
 
@@ -1098,7 +1098,7 @@ class AstToPrologFactbaseTest {
             fun `should reference declaration if possible`() = withFactbaseFromFile("expressions") {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithResolvableReference" }
                 val referenceT = findUniqueFactOrFail<ReferenceT> { isContainedIn(it, workflowT) }
-                val placeholderT = findUniqueFactOrFail<PlaceholderT> { it.id == referenceT.symbol }
+                val placeholderT = findUniqueFactOrFail<PlaceholderT> { it.id == referenceT.declaration }
                 placeholderT.asClue {
                     placeholderT.name shouldBe "a"
                 }
@@ -1108,7 +1108,7 @@ class AstToPrologFactbaseTest {
             fun `should store name for unresolvable references`() = withFactbaseFromFile("expressions") {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithUnresolvableReference" }
                 val referenceT = findUniqueFactOrFail<ReferenceT> { isContainedIn(it, workflowT) }
-                val unresolvedT = findUniqueFactOrFail<UnresolvedT> { it.id == referenceT.symbol }
+                val unresolvedT = findUniqueFactOrFail<UnresolvedT> { it.id == referenceT.declaration }
                 unresolvedT.asClue {
                     unresolvedT.name shouldBe "myUnresolvedDeclaration"
                 }
@@ -1654,6 +1654,6 @@ class AstToPrologFactbaseTest {
     // ****************************************************************************************************************/
 
     private fun withFactbaseFromFile(file: String, lambda: PlFactbase.() -> Unit) {
-        main.createFactbase("$testRoot/$file${FileExtension.TEST}").apply(lambda)
+        main.createFactbase("$testRoot/$file.${FileExtension.TEST}").apply(lambda)
     }
 }

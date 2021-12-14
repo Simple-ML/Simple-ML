@@ -5,9 +5,10 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 
 /**
- * Different file extensions associated with Simple-ML programs.
+ * Different file extensions associated with Simple-ML programs. The dot that separates file name and file extension is
+ * not included.
  */
-object FileExtension {
+enum class FileExtension(val extension: String) {
 
     /**
      * Marks the file as a workflow file, which can be executed by our runtime component.
@@ -15,7 +16,7 @@ object FileExtension {
      * @see isInFlowFile
      * @see isFlowFile
      */
-    const val FLOW = ".smlflow"
+    FLOW("smlflow"),
 
     /**
      * Marks the file as a stub file, which describes an external API.
@@ -23,7 +24,7 @@ object FileExtension {
      * @see isInStubFile
      * @see isStubFile
      */
-    const val STUB = ".smlstub"
+    STUB("smlstub"),
 
     /**
      * Marks the file as a test file, which disables some checks to simplify its use as input of test cases. This file
@@ -32,7 +33,11 @@ object FileExtension {
      * @see isInTestFile
      * @see isTestFile
      */
-    const val TEST = ".smltest"
+    TEST("smltest");
+
+    override fun toString(): String {
+        return this.extension
+    }
 }
 
 /**
@@ -68,12 +73,12 @@ fun Resource.isTestFile() = this.hasExtension(FileExtension.TEST)
 /**
  * Returns whether the resource represents a file with the given extension.
  */
-private fun Resource.hasExtension(extension: String): Boolean {
+private fun Resource.hasExtension(fileExtension: FileExtension): Boolean {
 
     // The original file path is normally lost for dynamic tests, so they attach it as an EMF adapter
     this.eAdapters().filterIsInstance<OriginalFilePath>().firstOrNull()?.let {
-        return it.path.endsWith(extension)
+        return it.path.endsWith(".$fileExtension")
     }
 
-    return this.uri.toString().endsWith(extension)
+    return this.uri.toString().endsWith(".$fileExtension")
 }
