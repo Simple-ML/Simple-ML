@@ -15,9 +15,9 @@ fun Resource.baseFileName(): String {
     return this.uri.toUNIXString()
         .split("/")
         .last()
-        .removeSuffix(".${FileExtension.STUB.extension}")
-        .removeSuffix(".${FileExtension.TEST.extension}")
-        .removeSuffix(".${FileExtension.FLOW.extension}")
+        .removeSuffix(".${FileExtension.STUB}")
+        .removeSuffix(".${FileExtension.TEST}")
+        .removeSuffix(".${FileExtension.FLOW}")
 }
 
 fun Resource.baseGeneratedFilePath(): String {

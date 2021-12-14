@@ -187,7 +187,7 @@ class TypeComputerTest {
     }
 
     private fun withCompilationUnitFromFile(file: String, lambda: SmlCompilationUnit.() -> Unit) {
-        val program = Files.readString(Path.of(testRoot, "$file.${FileExtension.TEST.extension}"))
+        val program = Files.readString(Path.of(testRoot, "$file.${FileExtension.TEST}"))
         val compilationUnit = parseHelper.parseProgramTextWithStdlib(program)
             ?: throw IllegalArgumentException("File is not a compilation unit.")
         compilationUnit.apply(lambda)

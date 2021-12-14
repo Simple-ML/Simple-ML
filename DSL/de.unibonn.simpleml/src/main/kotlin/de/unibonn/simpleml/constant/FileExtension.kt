@@ -33,7 +33,11 @@ enum class FileExtension(val extension: String) {
      * @see isInTestFile
      * @see isTestFile
      */
-    TEST("smltest")
+    TEST("smltest");
+
+    override fun toString(): String {
+        return this.extension
+    }
 }
 
 /**
@@ -73,8 +77,8 @@ private fun Resource.hasExtension(fileExtension: FileExtension): Boolean {
 
     // The original file path is normally lost for dynamic tests, so they attach it as an EMF adapter
     this.eAdapters().filterIsInstance<OriginalFilePath>().firstOrNull()?.let {
-        return it.path.endsWith(".${fileExtension.extension}")
+        return it.path.endsWith(".${fileExtension}")
     }
 
-    return this.uri.toString().endsWith(".${fileExtension.extension}")
+    return this.uri.toString().endsWith(".${fileExtension}")
 }
