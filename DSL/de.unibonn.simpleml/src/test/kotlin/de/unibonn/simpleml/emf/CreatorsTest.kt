@@ -3,7 +3,11 @@ package de.unibonn.simpleml.emf
 import de.unibonn.simpleml.constant.FileExtension
 import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToString
+import de.unibonn.simpleml.simpleML.SmlInt
+import de.unibonn.simpleml.simpleML.SmlTemplateStringPart
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
+import io.kotest.assertions.asClue
+import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -18,10 +22,14 @@ import org.junit.jupiter.api.extension.ExtendWith
  * Includes tests for the (extension) functions in Creators.kt. Since most of the functions are straightforward, not
  * everything is being tested. These are the guidelines of what should be tested:
  *
- * - Dummy resource should be serializable
  * - Handling of annotations (features annotationUseHolder vs. annotations)
  * - Extension functions should add created element to receiver
  * - Creators for objects with cross-references that take a name instead of the referenced object
+ *
+ * There are also some special tests:
+ * - Dummy resource should be serializable
+ * - Template string creator should check structure of template string
+ * - Union type requires at least one type argument
  */
 @ExtendWith(InjectionExtension::class)
 @InjectWith(SimpleMLInjectorProvider::class)
@@ -85,6 +93,35 @@ class CreatorsTest {
         val parameter = argument.parameter
         parameter.shouldNotBeNull()
         parameter.name shouldBe "Test"
+    }
+
+    @Test
+    fun `smlAssignment should add the created assignment to the receiving lambda`() {
+        val lambda = createSmlLambda {
+            smlAssignment("Test")
+        }
+
+        val body = lambda.body
+        body.shouldNotBeNull()
+        body.statements.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `smlAssignment should add the created assignment to the receiving workflow`() {
+        val compilationUnit = createSmlCompilationUnit {
+            smlAssignment("Test")
+        }
+
+        compilationUnit.members.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `smlAssignment should add the created assignment to the receiving workflow step`() {
+        val compilationUnit = createSmlCompilationUnit {
+            smlAssignment("Test")
+        }
+
+        compilationUnit.members.shouldHaveSize(1)
     }
 
     @Test
@@ -221,6 +258,33 @@ class CreatorsTest {
     }
 
     @Test
+    fun `smlExpressionStatement should add the created expression statement to the receiving lambda`() {
+        val compilationUnit = createSmlCompilationUnit {
+            smlExpressionStatement("Test")
+        }
+
+        compilationUnit.members.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `smlExpressionStatement should add the created expression statement to the receiving workflow`() {
+        val compilationUnit = createSmlCompilationUnit {
+            smlExpressionStatement("Test")
+        }
+
+        compilationUnit.members.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `smlExpressionStatement should add the created expression statement to the receiving workflow step`() {
+        val compilationUnit = createSmlCompilationUnit {
+            smlExpressionStatement("Test")
+        }
+
+        compilationUnit.members.shouldHaveSize(1)
+    }
+
+    @Test
     fun `createSmlFunction should store annotation uses in annotationUseHolder`() {
         val function = createSmlFunction(
             "Test",
@@ -289,5 +353,247 @@ class CreatorsTest {
         val annotationUseHolder = `package`.annotationUseHolder
         annotationUseHolder.shouldNotBeNull()
         annotationUseHolder.annotations.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `createSmlParameter should store annotation uses in annotations`() {
+        val parameter = createSmlParameter(
+            "Test",
+            listOf(createSmlAnnotationUse("Test"))
+        )
+
+        parameter.annotations.shouldHaveSize(1)
+        parameter.annotationUseHolder.shouldBeNull()
+    }
+
+    @Test
+    fun `createSmlPlaceholder should store annotation uses in annotationUseHolder`() {
+        val placeholder = createSmlPlaceholder(
+            "Test",
+            listOf(createSmlAnnotationUse("Test"))
+        )
+
+        placeholder.annotations.shouldHaveSize(0)
+
+        val annotationUseHolder = placeholder.annotationUseHolder
+        annotationUseHolder.shouldNotBeNull()
+        annotationUseHolder.annotations.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `createSmlResult should store annotation uses in annotations`() {
+        val result = createSmlResult(
+            "Test",
+            listOf(createSmlAnnotationUse("Test"))
+        )
+
+        result.annotations.shouldHaveSize(1)
+        result.annotationUseHolder.shouldBeNull()
+    }
+
+    @Test
+    fun `createSmlTemplate should throw if there are fewer than 2 string parts`() {
+        shouldThrowExactly<IllegalArgumentException> {
+            createSmlTemplateString(
+                listOf("Test"),
+                listOf(createSmlInt(1))
+            )
+        }
+    }
+
+    @Test
+    fun `createSmlTemplate should throw if there is no template expression`() {
+        shouldThrowExactly<IllegalArgumentException> {
+            createSmlTemplateString(
+                listOf("Test", "Test"),
+                listOf()
+            )
+        }
+    }
+
+    @Test
+    fun `createSmlTemplate should throw if numbers of string parts and template expressions don't match`() {
+        shouldThrowExactly<IllegalArgumentException> {
+            createSmlTemplateString(
+                listOf("Test", "Test", "Test"),
+                listOf(createSmlInt(1))
+            )
+        }
+    }
+
+    @Test
+    fun `createSmlTemplate should interleave string parts and template expressions`() {
+        val templateString = createSmlTemplateString(
+            listOf("Start", "Inner", "End"),
+            listOf(createSmlInt(1), createSmlInt(1))
+        )
+
+        templateString.expressions.asClue {
+            it.shouldHaveSize(5)
+            it[0].shouldBeInstanceOf<SmlTemplateStringPart>()
+            it[1].shouldBeInstanceOf<SmlInt>()
+            it[2].shouldBeInstanceOf<SmlTemplateStringPart>()
+            it[3].shouldBeInstanceOf<SmlInt>()
+            it[4].shouldBeInstanceOf<SmlTemplateStringPart>()
+        }
+    }
+
+    @Test
+    fun `createSmlTemplate should add delimiters to string parts when they don't exist already`() {
+        val templateString = createSmlTemplateString(
+            listOf("Start ", " Inner ", " End"),
+            listOf(createSmlInt(1), createSmlInt(1))
+        )
+
+        val expressions = templateString.expressions
+        expressions.shouldHaveSize(5)
+
+        val start = expressions[0]
+        start.shouldBeInstanceOf<SmlTemplateStringPart>()
+        start.value shouldBe "\"Start {{"
+
+        val inner = expressions[2]
+        inner.shouldBeInstanceOf<SmlTemplateStringPart>()
+        inner.value shouldBe "}} Inner {{"
+
+        val end = expressions[4]
+        end.shouldBeInstanceOf<SmlTemplateStringPart>()
+        end.value shouldBe "}} End\""
+    }
+
+    @Test
+    fun `createSmlTemplate should not add delimiters to string parts when they do exist already`() {
+        val templateString = createSmlTemplateString(
+            listOf("\"Start {{", "}} Inner {{", "}} End\""),
+            listOf(createSmlInt(1), createSmlInt(1))
+        )
+
+        val expressions = templateString.expressions
+        expressions.shouldHaveSize(5)
+
+        val start = expressions[0]
+        start.shouldBeInstanceOf<SmlTemplateStringPart>()
+        start.value shouldBe "\"Start {{"
+
+        val inner = expressions[2]
+        inner.shouldBeInstanceOf<SmlTemplateStringPart>()
+        inner.value shouldBe "}} Inner {{"
+
+        val end = expressions[4]
+        end.shouldBeInstanceOf<SmlTemplateStringPart>()
+        end.value shouldBe "}} End\""
+    }
+
+    @Test
+    fun `createSmlTypeArgument should create an SmlTypeParameter when only a name is passed`() {
+        val typeArgument = createSmlTypeArgument(
+            createSmlStarProjection(),
+            "Test"
+        )
+        val typeParameter = typeArgument.typeParameter
+        typeParameter.shouldNotBeNull()
+        typeParameter.name shouldBe "Test"
+    }
+
+    @Test
+    fun `createSmlTypeParameter should store annotation uses in annotations`() {
+        val result = createSmlTypeParameter(
+            "Test",
+            listOf(createSmlAnnotationUse("Test"))
+        )
+
+        result.annotations.shouldHaveSize(1)
+        result.annotationUseHolder.shouldBeNull()
+    }
+
+    @Test
+    fun `createTypeParameterConstraint should create an SmlTypeParameter when only a name is passed`() {
+        val constraint = createSmlTypeParameterConstraint(
+            "Test",
+            "sub",
+            createSmlNamedType(createSmlClass("Test"))
+        )
+        val leftOperand = constraint.leftOperand
+        leftOperand.shouldNotBeNull()
+        leftOperand.name shouldBe "Test"
+    }
+
+    @Test
+    fun `createUnionType should throw if no type arguments are passed`() {
+        shouldThrowExactly<IllegalArgumentException> {
+            createSmlUnionType(listOf())
+        }
+    }
+
+    @Test
+    fun `createSmlYield should create an SmlResult when only a name is passed`() {
+        val constraint = createSmlYield("Test")
+        val result = constraint.result
+        result.shouldNotBeNull()
+        result.name shouldBe "Test"
+    }
+
+    @Test
+    fun `createSmlWorkflow should store annotation uses in annotationUseHolder`() {
+        val workflow = createSmlWorkflow(
+            "Test",
+            listOf(createSmlAnnotationUse("Test"))
+        )
+
+        workflow.annotations.shouldHaveSize(0)
+
+        val annotationUseHolder = workflow.annotationUseHolder
+        annotationUseHolder.shouldNotBeNull()
+        annotationUseHolder.annotations.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `smlWorkflow should add the created workflow to the receiving compilation unit`() {
+        val compilationUnit = createSmlCompilationUnit {
+            smlWorkflow("Test")
+        }
+
+        compilationUnit.members.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `smlWorkflow should add the created workflow to the receiving package`() {
+        val `package` = createSmlPackage("Test") {
+            smlWorkflow("Test")
+        }
+
+        `package`.members.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `createSmlWorkflowStep should store annotation uses in annotationUseHolder`() {
+        val workflowStep = createSmlWorkflowStep(
+            "Test",
+            listOf(createSmlAnnotationUse("Test"))
+        )
+
+        workflowStep.annotations.shouldHaveSize(0)
+
+        val annotationUseHolder = workflowStep.annotationUseHolder
+        annotationUseHolder.shouldNotBeNull()
+        annotationUseHolder.annotations.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `smlWorkflowStep should add the created workflow step to the receiving compilation unit`() {
+        val compilationUnit = createSmlCompilationUnit {
+            smlWorkflowStep("Test")
+        }
+
+        compilationUnit.members.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `smlWorkflowStep should add the created workflow step to the receiving package`() {
+        val `package` = createSmlPackage("Test") {
+            smlWorkflowStep("Test")
+        }
+
+        `package`.members.shouldHaveSize(1)
     }
 }

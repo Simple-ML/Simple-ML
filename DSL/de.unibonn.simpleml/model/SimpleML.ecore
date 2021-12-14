@@ -81,10 +81,10 @@
     <eClassifiers xsi:type="ecore:EClass" name="SmlResult" eSuperTypes="#//SmlAbstractDeclaration">
         <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//SmlAbstractType" containment="true" />
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SmlWorkflow" eSuperTypes="#//SmlAbstractDeclaration #//SmlAbstractCompilationUnitMember #//SmlAbstractPackageMember">
+    <eClassifiers xsi:type="ecore:EClass" name="SmlWorkflow" eSuperTypes="#//SmlAbstractCompilationUnitMember #//SmlAbstractPackageMember">
         <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlBlock" containment="true" />
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SmlWorkflowStep" eSuperTypes="#//SmlAbstractDeclaration #//SmlAbstractCompilationUnitMember #//SmlAbstractPackageMember">
+    <eClassifiers xsi:type="ecore:EClass" name="SmlWorkflowStep" eSuperTypes="#//SmlAbstractCompilationUnitMember #//SmlAbstractPackageMember">
         <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="resultList" eType="#//SmlResultList" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlBlock" containment="true" />

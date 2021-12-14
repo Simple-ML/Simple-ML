@@ -7,11 +7,13 @@ import de.unibonn.simpleml.simpleML.SimpleMLFactory
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractClassMember
 import de.unibonn.simpleml.simpleML.SmlAbstractCompilationUnitMember
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractNamedTypeDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractPackageMember
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
+import de.unibonn.simpleml.simpleML.SmlAbstractTypeArgumentValue
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlAnnotationUseHolder
@@ -20,8 +22,9 @@ import de.unibonn.simpleml.simpleML.SmlArgumentList
 import de.unibonn.simpleml.simpleML.SmlAssigneeList
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlAttribute
-import de.unibonn.simpleml.simpleML.SmlBlock
 import de.unibonn.simpleml.simpleML.SmlBoolean
+import de.unibonn.simpleml.simpleML.SmlCall
+import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlEnum
@@ -45,19 +48,26 @@ import de.unibonn.simpleml.simpleML.SmlParameterList
 import de.unibonn.simpleml.simpleML.SmlParentTypeList
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlParenthesizedType
+import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlResultList
 import de.unibonn.simpleml.simpleML.SmlStarProjection
 import de.unibonn.simpleml.simpleML.SmlString
+import de.unibonn.simpleml.simpleML.SmlTemplateString
+import de.unibonn.simpleml.simpleML.SmlTemplateStringPart
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraintList
 import de.unibonn.simpleml.simpleML.SmlTypeParameterList
+import de.unibonn.simpleml.simpleML.SmlTypeProjection
 import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWildcard
+import de.unibonn.simpleml.simpleML.SmlWorkflow
+import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
@@ -201,6 +211,27 @@ fun createSmlAssignment(assignees: List<SmlAbstractAssignee>, expression: SmlAbs
 }
 
 /**
+ * Adds a new object of class [SmlAssignment] to the receiver.
+ */
+fun SmlLambda.smlAssignment(assignees: List<SmlAbstractAssignee>, expression: SmlAbstractExpression) {
+    this.addStatement(createSmlAssignment(assignees, expression))
+}
+
+/**
+ * Adds a new object of class [SmlAssignment] to the receiver.
+ */
+fun SmlWorkflow.smlAssignment(assignees: List<SmlAbstractAssignee>, expression: SmlAbstractExpression) {
+    this.addStatement(createSmlAssignment(assignees, expression))
+}
+
+/**
+ * Adds a new object of class [SmlAssignment] to the receiver.
+ */
+fun SmlWorkflowStep.smlAssignment(assignees: List<SmlAbstractAssignee>, expression: SmlAbstractExpression) {
+    this.addStatement(createSmlAssignment(assignees, expression))
+}
+
+/**
  * Returns a new object of class [SmlAttribute].
  */
 fun createSmlAttribute(
@@ -230,15 +261,6 @@ fun SmlClass.smlAttribute(
 }
 
 /**
- * Returns a new object of class [SmlBlock].
- */
-private fun createSmlBlock(statements: List<SmlAbstractStatement>): SmlBlock {
-    return factory.createSmlBlock().apply {
-        this.statements += statements
-    }
-}
-
-/**
  * Returns a new object of class [SmlBoolean].
  */
 fun createSmlBoolean(value: Boolean): SmlBoolean {
@@ -247,15 +269,30 @@ fun createSmlBoolean(value: Boolean): SmlBoolean {
     }
 }
 
-///**
-// * Returns a new object of class [SmlCall].
-// */
-//fun createSmlCall(): SmlCall
-//
-///**
-// * Returns a new object of class [SmlCallableType].
-// */
-//fun createSmlCallableType(): SmlCallableType
+/**
+ * Returns a new object of class [SmlCall].
+ */
+fun createSmlCall(
+    receiver: SmlAbstractExpression,
+    typeArguments: List<SmlTypeArgument>? = null,
+    arguments: List<SmlArgument> = emptyList()
+): SmlCall {
+    return factory.createSmlCall().apply {
+        this.receiver = receiver
+        this.typeArgumentList = createSmlTypeArgumentList(typeArguments)
+        this.argumentList = createSmlArgumentList(arguments)
+    }
+}
+
+/**
+ * Returns a new object of class [SmlCallableType].
+ */
+fun createSmlCallableType(parameters: List<SmlParameter>, results: List<SmlResult>): SmlCallableType {
+    return factory.createSmlCallableType().apply {
+        this.parameterList = createSmlParameterList(parameters)
+        this.resultList = createSmlResultList(results)
+    }
+}
 
 /**
  * Returns a new object of class [SmlClass].
@@ -478,6 +515,27 @@ fun createSmlExpressionStatement(expression: SmlAbstractExpression): SmlExpressi
     return factory.createSmlExpressionStatement().apply {
         this.expression = expression
     }
+}
+
+/**
+ * Adds a new object of class [SmlExpressionStatement] to the receiver.
+ */
+fun SmlLambda.smlExpressionStatement(expression: SmlAbstractExpression) {
+    this.addStatement(createSmlExpressionStatement(expression))
+}
+
+/**
+ * Adds a new object of class [SmlExpressionStatement] to the receiver.
+ */
+fun SmlWorkflow.smlExpressionStatement(expression: SmlAbstractExpression) {
+    this.addStatement(createSmlExpressionStatement(expression))
+}
+
+/**
+ * Adds a new object of class [SmlExpressionStatement] to the receiver.
+ */
+fun SmlWorkflowStep.smlExpressionStatement(expression: SmlAbstractExpression) {
+    this.addStatement(createSmlExpressionStatement(expression))
 }
 
 /**
@@ -731,7 +789,7 @@ fun createSmlPackage(
 }
 
 /**
- * Returns a new object of class [SmlPackage].
+ * Adds a new object of class [SmlPackage] to the receiver.
  */
 fun SmlCompilationUnit.smlPackage(
     name: String,
@@ -812,20 +870,34 @@ private fun createSmlParentTypeList(parentTypes: List<SmlAbstractType>?): SmlPar
     }
 }
 
-///**
-// * Returns a new object of class [SmlPlaceholder].
-// */
-//fun createSmlPlaceholder(): SmlPlaceholder
-//
-///**
-// * Returns a new object of class [SmlPrefixOperation].
-// */
-//fun createSmlPrefixOperation(): SmlPrefixOperation
-//
-///**
-// * Returns a new object of class [SmlReference].
-// */
-//fun createSmlReference(): SmlReference
+/**
+ * Returns a new object of class [SmlPlaceholder].
+ */
+fun createSmlPlaceholder(name: String, annotations: List<SmlAnnotationUse>): SmlPlaceholder {
+    return factory.createSmlPlaceholder().apply {
+        this.name = name
+        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
+    }
+}
+
+/**
+ * Returns a new object of class [SmlPrefixOperation].
+ */
+fun createSmlPrefixOperation(operator: String, operand: SmlAbstractExpression): SmlPrefixOperation {
+    return factory.createSmlPrefixOperation().apply {
+        this.operator = operator
+        this.operand = operand
+    }
+}
+
+/**
+ * Returns a new object of class [SmlReference].
+ */
+fun createSmlReference(declaration: SmlAbstractDeclaration): SmlReference {
+    return factory.createSmlReference().apply {
+        this.declaration = declaration
+    }
+}
 
 /**
  * Returns a new object of class [SmlResult].
@@ -871,20 +943,137 @@ fun createSmlString(value: String): SmlString {
     }
 }
 
-///**
-// * Returns a new object of class [SmlTemplateString].
-// */
-//fun createSmlTemplateString(): SmlTemplateString
-//
-///**
-// * Returns a new object of class [SmlTemplateStringPart].
-// */
-//fun createSmlTemplateStringPart(): SmlTemplateStringPart
-//
-///**
-// * Returns a new object of class [SmlTypeArgument].
-// */
-//fun createSmlTypeArgument(): SmlTypeArgument
+/**
+ * Returns a new object of class [SmlTemplateString]. String parts don't need to include delimiters (`"`, `{{`, `}}`).
+ * Template expressions are inserted between the string parts.
+ *
+ * @throws IllegalArgumentException If `stringParts.size < 2`.
+ * @throws IllegalArgumentException If `templateExpressions` is empty.
+ * @throws IllegalArgumentException If `stringsParts.size` != `templateExpressions.size + 1`.
+ */
+fun createSmlTemplateString(
+    stringParts: List<String>,
+    templateExpressions: List<SmlAbstractExpression>
+): SmlTemplateString {
+
+    // One of the first two checks is sufficient but this allows better error messages.
+    if (stringParts.size < 2) {
+        throw IllegalArgumentException("Must have at least two string parts.")
+    } else if (templateExpressions.isEmpty()) {
+        throw IllegalArgumentException("Must have at least one template expression.")
+    } else if (stringParts.size != templateExpressions.size + 1) {
+        throw IllegalArgumentException("Must have exactly one more string part than there are template expressions.")
+    }
+
+    return factory.createSmlTemplateString().apply {
+        stringParts.forEachIndexed { index, value ->
+            when (index) {
+                // Start
+                0 -> {
+                    this.expressions += createSmlTemplateStringStart(value)
+                    this.expressions += templateExpressions[index]
+                }
+                // End
+                stringParts.size - 1 -> {
+                    this.expressions += createSmlTemplateStringEnd(value)
+                }
+                // Inner
+                else -> {
+                    this.expressions += createSmlTemplateStringInner(value)
+                    this.expressions += templateExpressions[index]
+                }
+            }
+        }
+
+        this.expressions += expressions
+    }
+}
+
+/**
+ * Returns a new object of class [SmlTemplateStringPart]. Adds `"` to the value at the start and `{{` at the end as
+ * needed.
+ */
+private fun createSmlTemplateStringStart(value: String): SmlTemplateStringPart {
+    return factory.createSmlTemplateStringPart().apply {
+        val prefix = when {
+            value.startsWith("\"") -> ""
+            else -> "\""
+        }
+
+        val suffix = when {
+            value.endsWith("{{") -> ""
+            else -> "{{"
+        }
+
+        this.value = "$prefix$value$suffix"
+    }
+}
+
+/**
+ * Returns a new object of class [SmlTemplateStringPart]. Adds `}}` to the value at the start and `{{` at the end as
+ * needed.
+ */
+private fun createSmlTemplateStringInner(value: String): SmlTemplateStringPart {
+    return factory.createSmlTemplateStringPart().apply {
+        val prefix = when {
+            value.startsWith("}}") -> ""
+            else -> "}}"
+        }
+
+        val suffix = when {
+            value.endsWith("{{") -> ""
+            else -> "{{"
+        }
+
+        this.value = "$prefix$value$suffix"
+    }
+}
+
+/**
+ * Returns a new object of class [SmlTemplateStringPart]. Adds `}}` to the value at the start and `"` at the end as
+ * needed.
+ */
+private fun createSmlTemplateStringEnd(value: String): SmlTemplateStringPart {
+    return factory.createSmlTemplateStringPart().apply {
+        val prefix = when {
+            value.startsWith("}}") -> ""
+            else -> "}}"
+        }
+
+        val suffix = when {
+            value.endsWith("\"") -> ""
+            else -> "\""
+        }
+
+        this.value = "$prefix$value$suffix"
+    }
+}
+
+/**
+ * Returns a new object of class [SmlTypeArgument].
+ */
+fun createSmlTypeArgument(
+    value: SmlAbstractTypeArgumentValue,
+    typeParameter: SmlTypeParameter? = null
+): SmlTypeArgument {
+    return factory.createSmlTypeArgument().apply {
+        this.value = value
+        this.typeParameter = typeParameter
+    }
+}
+
+/**
+ * Returns a new object of class [SmlTypeArgument] that points to a type parameter with the given name.
+ */
+fun createSmlTypeArgument(
+    value: SmlAbstractTypeArgumentValue,
+    typeParameterName: String
+): SmlTypeArgument {
+    return createSmlTypeArgument(
+        value,
+        createSmlTypeParameter(typeParameterName)
+    )
+}
 
 /**
  * Returns a new object of class [SmlTypeArgumentList] or `null` if the parameter is `null`.
@@ -899,10 +1088,20 @@ private fun createSmlTypeArgumentList(typeArguments: List<SmlTypeArgument>?): Sm
     }
 }
 
-///**
-// * Returns a new object of class [SmlTypeParameter].
-// */
-//fun createSmlTypeParameter(): SmlTypeParameter
+/**
+ * Returns a new object of class [SmlTypeParameter].
+ */
+fun createSmlTypeParameter(
+    name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
+    variance: String? = null
+): SmlTypeParameter {
+    return factory.createSmlTypeParameter().apply {
+        this.name = name
+        this.annotations += annotations
+        this.variance = variance
+    }
+}
 
 /**
  * Returns a new object of class [SmlTypeParameterList] or `null` if the parameter is `null`.
@@ -917,10 +1116,35 @@ private fun createSmlTypeParameterList(typeParameters: List<SmlTypeParameter>?):
     }
 }
 
-///**
-// * Returns a new object of class [SmlTypeParameterConstraint].
-// */
-//fun createSmlTypeParameterConstraint(): SmlTypeParameterConstraint
+/**
+ * Returns a new object of class [SmlTypeParameterConstraint].
+ */
+fun createSmlTypeParameterConstraint(
+    leftOperand: SmlTypeParameter,
+    operator: String,
+    rightOperand: SmlAbstractType
+): SmlTypeParameterConstraint {
+    return factory.createSmlTypeParameterConstraint().apply {
+        this.leftOperand = leftOperand
+        this.operator = operator
+        this.rightOperand = rightOperand
+    }
+}
+
+/**
+ * Returns a new object of class [SmlTypeParameterConstraint] that points to a type parameter with the given name.
+ */
+fun createSmlTypeParameterConstraint(
+    leftOperandName: String,
+    operator: String,
+    rightOperand: SmlAbstractType
+): SmlTypeParameterConstraint {
+    return createSmlTypeParameterConstraint(
+        createSmlTypeParameter(leftOperandName),
+        operator,
+        rightOperand
+    )
+}
 
 /**
  * Returns a new object of class [SmlTypeParameterConstraintList] or `null` if the parameter is `null`.
@@ -935,15 +1159,26 @@ private fun createSmlTypeParameterConstraintList(typeParameterConstraints: List<
     }
 }
 
-///**
-// * Returns a new object of class [SmlTypeProjection].
-// */
-//fun createSmlTypeProjection(): SmlTypeProjection
+/**
+ * Returns a new object of class [SmlTypeProjection].
+ */
+fun createSmlTypeProjection(type: SmlAbstractType, variance: String? = null): SmlTypeProjection {
+    return factory.createSmlTypeProjection().apply {
+        this.type = type
+        this.variance = variance
+    }
+}
 
 /**
  * Returns a new object of class [SmlUnionType].
+ *
+ * @throws IllegalArgumentException If no type arguments are passed.
  */
 fun createSmlUnionType(typeArguments: List<SmlTypeArgument>): SmlUnionType {
+    if (typeArguments.isEmpty()) {
+        throw IllegalArgumentException("Must have at least one type argument.")
+    }
+
     return factory.createSmlUnionType().apply {
         this.typeArgumentList = createSmlTypeArgumentList(typeArguments)
     }
@@ -956,15 +1191,111 @@ fun createSmlWildcard(): SmlWildcard {
     return factory.createSmlWildcard()
 }
 
-///**
-// * Returns a new object of class [SmlWorkflow].
-// */
-//fun createSmlWorkflow(): SmlWorkflow
-//
-///**
-// * Returns a new object of class [SmlWorkflowStep].
-// */
-//fun createSmlWorkflowStep(): SmlWorkflowStep
+/**
+ * Returns a new object of class [SmlWorkflow].
+ */
+fun createSmlWorkflow(
+    name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
+    init: SmlWorkflow.() -> Unit = {}
+): SmlWorkflow {
+    return factory.createSmlWorkflow().apply {
+        this.name = name
+        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
+        this.body = factory.createSmlBlock()
+        this.init()
+    }
+}
+
+/**
+ * Adds a new object of class [SmlWorkflow] to the receiver.
+ */
+fun SmlCompilationUnit.smlWorkflow(
+    name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
+    init: SmlWorkflow.() -> Unit = {}
+) {
+    this.addMember(createSmlWorkflow(name, annotations, init))
+}
+
+/**
+ * Adds a new object of class [SmlWorkflow] to the receiver.
+ */
+fun SmlPackage.smlWorkflow(
+    name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
+    init: SmlWorkflow.() -> Unit = {}
+) {
+    this.addMember(createSmlWorkflow(name, annotations, init))
+}
+
+/**
+ * Adds a new statement to the receiver.
+ */
+fun SmlWorkflow.addStatement(statement: SmlAbstractStatement) {
+    if (this.body == null) {
+        this.body = factory.createSmlBlock()
+    }
+
+    this.body.statements += statement
+}
+
+/**
+ * Returns a new object of class [SmlWorkflowStep].
+ */
+fun createSmlWorkflowStep(
+    name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
+    parameters: List<SmlParameter> = emptyList(),
+    results: List<SmlResult>? = null,
+    init: SmlWorkflowStep.() -> Unit = {}
+): SmlWorkflowStep {
+    return factory.createSmlWorkflowStep().apply {
+        this.name = name
+        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
+        this.parameterList = createSmlParameterList(parameters)
+        this.resultList = createSmlResultList(results)
+        this.body = factory.createSmlBlock()
+        this.init()
+    }
+}
+
+/**
+ * Adds a new object of class [SmlWorkflow] to the receiver.
+ */
+fun SmlCompilationUnit.smlWorkflowStep(
+    name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
+    parameters: List<SmlParameter> = emptyList(),
+    results: List<SmlResult>? = null,
+    init: SmlWorkflowStep.() -> Unit = {}
+) {
+    this.addMember(createSmlWorkflowStep(name, annotations, parameters, results, init))
+}
+
+/**
+ * Adds a new object of class [SmlWorkflow] to the receiver.
+ */
+fun SmlPackage.smlWorkflowStep(
+    name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
+    parameters: List<SmlParameter> = emptyList(),
+    results: List<SmlResult>? = null,
+    init: SmlWorkflowStep.() -> Unit = {}
+) {
+    this.addMember(createSmlWorkflowStep(name, annotations, parameters, results, init))
+}
+
+/**
+ * Adds a new statement to the receiver.
+ */
+fun SmlWorkflowStep.addStatement(statement: SmlAbstractStatement) {
+    if (this.body == null) {
+        this.body = factory.createSmlBlock()
+    }
+
+    this.body.statements += statement
+}
 
 /**
  * Returns a new object of class [SmlYield].
