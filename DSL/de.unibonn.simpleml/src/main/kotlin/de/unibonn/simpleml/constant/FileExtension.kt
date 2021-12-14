@@ -77,8 +77,8 @@ private fun Resource.hasExtension(fileExtension: FileExtension): Boolean {
 
     // The original file path is normally lost for dynamic tests, so they attach it as an EMF adapter
     this.eAdapters().filterIsInstance<OriginalFilePath>().firstOrNull()?.let {
-        return it.path.endsWith(".${fileExtension}")
+        return it.path.endsWith(".$fileExtension")
     }
 
-    return this.uri.toString().endsWith(".${fileExtension}")
+    return this.uri.toString().endsWith(".$fileExtension")
 }
