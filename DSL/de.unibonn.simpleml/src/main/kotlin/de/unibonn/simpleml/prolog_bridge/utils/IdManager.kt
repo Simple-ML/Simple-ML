@@ -8,7 +8,7 @@ package de.unibonn.simpleml.prolog_bridge.utils
 value class Id<out T : Any>(val value: Int)
 
 /**
- * Handles the mapping of objects, usually EObjects in the Simple-ML AST, to the IDs of Prolog facts.
+ * Handles the mapping of objects, usually SmlAbstractObjects in the Simple-ML AST, to the IDs of Prolog facts.
  */
 class IdManager<UPPER : Any> {
 
