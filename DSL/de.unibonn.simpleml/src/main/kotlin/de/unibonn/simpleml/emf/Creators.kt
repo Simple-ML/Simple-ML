@@ -8,6 +8,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractClassMember
 import de.unibonn.simpleml.simpleML.SmlAbstractCompilationUnitMember
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
+import de.unibonn.simpleml.simpleML.SmlAbstractNamedTypeDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractPackageMember
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
@@ -27,9 +28,16 @@ import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlFloat
+import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlImportAlias
+import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
+import de.unibonn.simpleml.simpleML.SmlLambda
+import de.unibonn.simpleml.simpleML.SmlLambdaResult
+import de.unibonn.simpleml.simpleML.SmlMemberAccess
+import de.unibonn.simpleml.simpleML.SmlMemberType
+import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlNull
 import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
@@ -37,6 +45,7 @@ import de.unibonn.simpleml.simpleML.SmlParameterList
 import de.unibonn.simpleml.simpleML.SmlParentTypeList
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlParenthesizedType
+import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlResultList
 import de.unibonn.simpleml.simpleML.SmlStarProjection
@@ -92,6 +101,17 @@ fun createSmlAnnotation(
  * Adds a new object of class [SmlAnnotation] to the receiver.
  */
 fun SmlCompilationUnit.smlAnnotation(
+    name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
+    parameters: List<SmlParameter>? = null
+) {
+    this.addMember(createSmlAnnotation(name, annotations, parameters))
+}
+
+/**
+ * Adds a new object of class [SmlAnnotation] to the receiver.
+ */
+fun SmlPackage.smlAnnotation(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
     parameters: List<SmlParameter>? = null
@@ -375,7 +395,38 @@ fun createSmlEnum(
     }
 }
 
-// TODO add to package, compilation unit
+/**
+ * Adds a new object of class [SmlEnum] to the receiver.
+ */
+fun SmlClass.smlEnum(
+    name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
+    init: SmlEnum.() -> Unit = {}
+) {
+    this.addMember(createSmlEnum(name, annotations, init))
+}
+
+/**
+ * Adds a new object of class [SmlEnum] to the receiver.
+ */
+fun SmlCompilationUnit.smlEnum(
+    name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
+    init: SmlEnum.() -> Unit = {}
+) {
+    this.addMember(createSmlEnum(name, annotations, init))
+}
+
+/**
+ * Adds a new object of class [SmlEnum] to the receiver.
+ */
+fun SmlPackage.smlEnum(
+    name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
+    init: SmlEnum.() -> Unit = {}
+) {
+    this.addMember(createSmlEnum(name, annotations, init))
+}
 
 /**
  * Adds a new variant to the receiver.
@@ -438,10 +489,103 @@ fun createSmlFloat(value: Double): SmlFloat {
     }
 }
 
-///**
-// * Returns a new object of class [SmlFunction].
-// */
-//fun createSmlFunction(): SmlFunction
+/**
+ * Returns a new object of class [SmlFunction].
+ */
+fun createSmlFunction(
+    name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
+    isStatic: Boolean = false,
+    typeParameters: List<SmlTypeParameter>? = null,
+    parameters: List<SmlParameter> = emptyList(),
+    results: List<SmlResult>? = null,
+    typeParameterConstraints: List<SmlTypeParameterConstraint>? = null
+): SmlFunction {
+    return factory.createSmlFunction().apply {
+        this.name = name
+        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
+        this.isStatic = isStatic
+        this.typeParameterList = createSmlTypeParameterList(typeParameters)
+        this.parameterList = createSmlParameterList(parameters)
+        this.resultList = createSmlResultList(results)
+        this.typeParameterConstraintList = createSmlTypeParameterConstraintList(typeParameterConstraints)
+    }
+}
+
+/**
+ * Adds a new object of class [SmlFunction] to the receiver.
+ */
+fun SmlClass.smlFunction(
+    name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
+    isStatic: Boolean = false,
+    typeParameters: List<SmlTypeParameter>? = null,
+    parameters: List<SmlParameter> = emptyList(),
+    results: List<SmlResult>? = null,
+    typeParameterConstraints: List<SmlTypeParameterConstraint>? = null
+) {
+    this.addMember(
+        createSmlFunction(
+            name,
+            annotations,
+            isStatic,
+            typeParameters,
+            parameters,
+            results,
+            typeParameterConstraints
+        )
+    )
+}
+
+/**
+ * Adds a new object of class [SmlFunction] to the receiver.
+ */
+fun SmlCompilationUnit.smlFunction(
+    name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
+    isStatic: Boolean = false,
+    typeParameters: List<SmlTypeParameter>? = null,
+    parameters: List<SmlParameter> = emptyList(),
+    results: List<SmlResult>? = null,
+    typeParameterConstraints: List<SmlTypeParameterConstraint>? = null
+) {
+    this.addMember(
+        createSmlFunction(
+            name,
+            annotations,
+            isStatic,
+            typeParameters,
+            parameters,
+            results,
+            typeParameterConstraints
+        )
+    )
+}
+
+/**
+ * Adds a new object of class [SmlFunction] to the receiver.
+ */
+fun SmlPackage.smlFunction(
+    name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
+    isStatic: Boolean = false,
+    typeParameters: List<SmlTypeParameter>? = null,
+    parameters: List<SmlParameter> = emptyList(),
+    results: List<SmlResult>? = null,
+    typeParameterConstraints: List<SmlTypeParameterConstraint>? = null
+) {
+    this.addMember(
+        createSmlFunction(
+            name,
+            annotations,
+            isStatic,
+            typeParameters,
+            parameters,
+            results,
+            typeParameterConstraints
+        )
+    )
+}
 
 /**
  * Returns a new object of class [SmlImport].
@@ -466,10 +610,20 @@ private fun createSmlImportAlias(name: String?): SmlImportAlias? {
     }
 }
 
-///**
-// * Returns a new object of class [SmlInfixOperation].
-// */
-//fun createSmlInfixOperation(): SmlInfixOperation
+/**
+ * Returns a new object of class [SmlInfixOperation].
+ */
+fun createSmlInfixOperation(
+    leftOperand: SmlAbstractExpression,
+    operator: String,
+    rightOperand: SmlAbstractExpression
+): SmlInfixOperation {
+    return factory.createSmlInfixOperation().apply {
+        this.leftOperand = leftOperand
+        this.operator = operator
+        this.rightOperand = rightOperand
+    }
+}
 
 /**
  * Returns a new object of class [SmlInt].
@@ -480,30 +634,77 @@ fun createSmlInt(value: Int): SmlInt {
     }
 }
 
-///**
-// * Returns a new object of class [SmlLambda].
-// */
-//fun createSmlLambda(): SmlLambda
-//
-///**
-// * Returns a new object of class [SmlLambdaResult].
-// */
-//fun createSmlLambdaResult(): SmlLambdaResult
-//
-///**
-// * Returns a new object of class [SmlMemberAccess].
-// */
-//fun createSmlMemberAccess(): SmlMemberAccess
-//
-///**
-// * Returns a new object of class [SmlMemberType].
-// */
-//fun createSmlMemberType(): SmlMemberType
-//
-///**
-// * Returns a new object of class [SmlNamedType].
-// */
-//fun createSmlNamedType(): SmlNamedType
+/**
+ * Returns a new object of class [SmlLambda].
+ */
+fun createSmlLambda(parameters: List<SmlParameter>? = null, init: SmlLambda.() -> Unit = {}): SmlLambda {
+    return factory.createSmlLambda().apply {
+        this.parameterList = createSmlParameterList(parameters)
+        this.body = factory.createSmlBlock()
+        this.init()
+    }
+}
+
+/**
+ * Adds a new statement to the receiver.
+ */
+fun SmlLambda.addStatement(statement: SmlAbstractStatement) {
+    if (this.body == null) {
+        this.body = factory.createSmlBlock()
+    }
+
+    this.body.statements += statement
+}
+
+/**
+ * Returns a new object of class [SmlLambdaResult].
+ */
+fun createSmlLambdaResult(name: String, annotations: List<SmlAnnotationUse> = emptyList()): SmlLambdaResult {
+    return factory.createSmlLambdaResult().apply {
+        this.name = name
+        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
+    }
+}
+
+/**
+ * Returns a new object of class [SmlMemberAccess].
+ */
+fun createSmlMemberAccess(
+    receiver: SmlAbstractExpression,
+    member: SmlReference,
+    isNullSafe: Boolean = false
+): SmlMemberAccess {
+    return factory.createSmlMemberAccess().apply {
+        this.receiver = receiver
+        this.member = member
+        this.isNullSafe = isNullSafe
+    }
+}
+
+/**
+ * Returns a new object of class [SmlMemberType].
+ */
+fun createSmlMemberType(receiver: SmlAbstractType, member: SmlNamedType): SmlMemberType {
+    return factory.createSmlMemberType().apply {
+        this.receiver = receiver
+        this.member = member
+    }
+}
+
+/**
+ * Returns a new object of class [SmlNamedType].
+ */
+fun createSmlNamedType(
+    declaration: SmlAbstractNamedTypeDeclaration,
+    typeArguments: List<SmlTypeArgument>? = null,
+    isNullable: Boolean = false
+): SmlNamedType {
+    return factory.createSmlNamedType().apply {
+        this.declaration = declaration
+        this.typeArgumentList = createSmlTypeArgumentList(typeArguments)
+        this.isNullable = isNullable
+    }
+}
 
 /**
  * Returns a new object of class [SmlNull].
@@ -517,11 +718,13 @@ fun createSmlNull(): SmlNull {
  */
 fun createSmlPackage(
     name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
     imports: List<SmlImport> = emptyList(),
     init: SmlPackage.() -> Unit = {}
 ): SmlPackage {
     return factory.createSmlPackage().apply {
         this.name = name
+        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
         this.imports += imports
         this.init()
     }
@@ -532,10 +735,11 @@ fun createSmlPackage(
  */
 fun SmlCompilationUnit.smlPackage(
     name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
     imports: List<SmlImport> = emptyList(),
     init: SmlPackage.() -> Unit = {}
 ) {
-    this.addMember(createSmlPackage(name, imports, init))
+    this.addMember(createSmlPackage(name, annotations, imports, init))
 }
 
 /**
@@ -639,9 +843,13 @@ fun createSmlResult(
 }
 
 /**
- * Returns a new object of class [SmlResultList].
+ * Returns a new object of class [SmlResultList] or `null` if the parameter is `null`.
  */
-private fun createSmlResultList(results: List<SmlResult>): SmlResultList {
+private fun createSmlResultList(results: List<SmlResult>?): SmlResultList? {
+    if (results == null) {
+        return null
+    }
+
     return factory.createSmlResultList().apply {
         this.results += results
     }
@@ -679,9 +887,13 @@ fun createSmlString(value: String): SmlString {
 //fun createSmlTypeArgument(): SmlTypeArgument
 
 /**
- * Returns a new object of class [SmlTypeArgumentList].
+ * Returns a new object of class [SmlTypeArgumentList] or `null` if the parameter is `null`.
  */
-private fun createSmlTypeArgumentList(typeArguments: List<SmlTypeArgument>): SmlTypeArgumentList {
+private fun createSmlTypeArgumentList(typeArguments: List<SmlTypeArgument>?): SmlTypeArgumentList? {
+    if (typeArguments == null) {
+        return null
+    }
+
     return factory.createSmlTypeArgumentList().apply {
         this.typeArguments += typeArguments
     }
