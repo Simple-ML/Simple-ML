@@ -20,14 +20,15 @@ import org.junit.jupiter.api.extension.ExtendWith
 
 /**
  * Includes tests for the (extension) functions in Creators.kt. Since most of the functions are straightforward, not
- * everything is being tested. These are the guidelines of what should be tested:
+ * everything is being tested. These are the guidelines for what should be tested:
  *
  * - Handling of annotations (features annotationUseHolder vs. annotations)
- * - Extension functions should add created element to receiver
+ * - Extension functions should add created object to receiver
  * - Creators for objects with cross-references that take a name instead of the referenced object
  *
  * There are also some special tests:
  * - Dummy resource should be serializable
+ * - Assignments requires at least one assignee
  * - Template string creator should check structure of template string
  * - Union type requires at least one type argument
  */
@@ -96,9 +97,19 @@ class CreatorsTest {
     }
 
     @Test
+    fun `smlAssignment should throw if no type arguments are passed`() {
+        shouldThrowExactly<IllegalArgumentException> {
+            createSmlAssignment(listOf(), createSmlInt(1))
+        }
+    }
+
+    @Test
     fun `smlAssignment should add the created assignment to the receiving lambda`() {
         val lambda = createSmlLambda {
-            smlAssignment("Test")
+            smlAssignment(
+                listOf(createSmlWildcard()),
+                createSmlInt(1)
+            )
         }
 
         val body = lambda.body
@@ -108,20 +119,30 @@ class CreatorsTest {
 
     @Test
     fun `smlAssignment should add the created assignment to the receiving workflow`() {
-        val compilationUnit = createSmlCompilationUnit {
-            smlAssignment("Test")
+        val workflow = createSmlWorkflow("Test") {
+            smlAssignment(
+                listOf(createSmlWildcard()),
+                createSmlInt(1)
+            )
         }
 
-        compilationUnit.members.shouldHaveSize(1)
+        val body = workflow.body
+        body.shouldNotBeNull()
+        body.statements.shouldHaveSize(1)
     }
 
     @Test
     fun `smlAssignment should add the created assignment to the receiving workflow step`() {
-        val compilationUnit = createSmlCompilationUnit {
-            smlAssignment("Test")
+        val step = createSmlWorkflowStep("Test") {
+            smlAssignment(
+                listOf(createSmlWildcard()),
+                createSmlInt(1)
+            )
         }
 
-        compilationUnit.members.shouldHaveSize(1)
+        val body = step.body
+        body.shouldNotBeNull()
+        body.statements.shouldHaveSize(1)
     }
 
     @Test
@@ -259,29 +280,35 @@ class CreatorsTest {
 
     @Test
     fun `smlExpressionStatement should add the created expression statement to the receiving lambda`() {
-        val compilationUnit = createSmlCompilationUnit {
-            smlExpressionStatement("Test")
+        val lambda = createSmlLambda {
+            smlExpressionStatement(createSmlInt(1))
         }
 
-        compilationUnit.members.shouldHaveSize(1)
+        val body = lambda.body
+        body.shouldNotBeNull()
+        body.statements.shouldHaveSize(1)
     }
 
     @Test
     fun `smlExpressionStatement should add the created expression statement to the receiving workflow`() {
-        val compilationUnit = createSmlCompilationUnit {
-            smlExpressionStatement("Test")
+        val workflow = createSmlWorkflow("Test") {
+            smlExpressionStatement(createSmlInt(1))
         }
 
-        compilationUnit.members.shouldHaveSize(1)
+        val body = workflow.body
+        body.shouldNotBeNull()
+        body.statements.shouldHaveSize(1)
     }
 
     @Test
     fun `smlExpressionStatement should add the created expression statement to the receiving workflow step`() {
-        val compilationUnit = createSmlCompilationUnit {
-            smlExpressionStatement("Test")
+        val step = createSmlWorkflowStep("Test") {
+            smlExpressionStatement(createSmlInt(1))
         }
 
-        compilationUnit.members.shouldHaveSize(1)
+        val body = step.body
+        body.shouldNotBeNull()
+        body.statements.shouldHaveSize(1)
     }
 
     @Test
@@ -519,7 +546,7 @@ class CreatorsTest {
     }
 
     @Test
-    fun `createUnionType should throw if no type arguments are passed`() {
+    fun `createSmlUnionType should throw if no type arguments are passed`() {
         shouldThrowExactly<IllegalArgumentException> {
             createSmlUnionType(listOf())
         }

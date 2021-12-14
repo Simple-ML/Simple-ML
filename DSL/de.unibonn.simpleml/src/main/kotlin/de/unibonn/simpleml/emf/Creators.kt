@@ -202,8 +202,14 @@ private fun createSmlAssigneeList(assignees: List<SmlAbstractAssignee>): SmlAssi
 
 /**
  * Returns a new object of class [SmlAssignment].
+ *
+ * @throws IllegalArgumentException If no assignees are passed.
  */
 fun createSmlAssignment(assignees: List<SmlAbstractAssignee>, expression: SmlAbstractExpression): SmlAssignment {
+    if (assignees.isEmpty()) {
+        throw IllegalArgumentException("Must have at least one assignee.")
+    }
+
     return factory.createSmlAssignment().apply {
         this.assigneeList = createSmlAssigneeList(assignees)
         this.expression = expression
