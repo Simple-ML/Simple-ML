@@ -9,7 +9,10 @@
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAbstractAnnotatedObject/annotationUseHolder" />
             <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlAbstractDeclaration/name" />
         </genClasses>
+        <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractClassMember" />
+        <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractCompilationUnitMember" />
         <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractLocalVariable" />
+        <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractPackageMember" />
         <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractNamedTypeDeclaration" />
         <genClasses ecoreClass="SimpleML.ecore#//SmlAnnotation">
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAnnotation/parameterList" />

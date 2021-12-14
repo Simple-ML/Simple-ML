@@ -1175,15 +1175,15 @@ data class PrefixOperationT(
  * @param enclosing
  * The ID of the fact for closest ancestor that is not an expression.
  *
- * @param symbol
- * The ID of the fact for the referenced symbol or an unresolvedT fact if the reference could not be resolved.
+ * @param declaration
+ * The ID of the fact for the referenced declaration or an unresolvedT fact if the reference could not be resolved.
  */
 data class ReferenceT(
     override val id: Id<SmlReference>,
     override val parent: Id<SmlAbstractObject>,
     override val enclosing: Id<SmlAbstractObject>,
-    val symbol: Id<SmlAbstractDeclaration>
-) : ExpressionT("referenceT", id, parent, enclosing, symbol) {
+    val declaration: Id<SmlAbstractDeclaration>
+) : ExpressionT("referenceT", id, parent, enclosing, declaration) {
     override fun toString() = super.toString()
 }
 

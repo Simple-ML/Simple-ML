@@ -434,7 +434,7 @@ SmlString
 
 SmlTemplateString
     : expressions+=SmlTemplateStringStart expressions+=SmlExpression?
-      (expressions+=SmlTemplateStringInbetween expressions+=SmlExpression?)*
+      (expressions+=SmlTemplateStringInner expressions+=SmlExpression?)*
       expressions+=SmlTemplateStringEnd
     ;
 
@@ -442,8 +442,8 @@ SmlTemplateStringStart returns SmlTemplateStringPart
     : value=TEMPLATE_STRING_START
     ;
 
-SmlTemplateStringInbetween returns SmlTemplateStringPart
-    : value=TEMPLATE_STRING_INBETWEEN
+SmlTemplateStringInner returns SmlTemplateStringPart
+    : value=TEMPLATE_STRING_INNER
     ;
 
 SmlTemplateStringEnd returns SmlTemplateStringPart
@@ -613,7 +613,7 @@ terminal SL_COMMENT
     : '//' !('\r'|'\n')* ('\r'? '\n')?
     ;
 
-terminal STRING
+terminal STRING returns ecore::EString
     : STRING_DELIMITER
       STRING_TEXT*
       STRING_DELIMITER
@@ -647,7 +647,7 @@ terminal TEMPLATE_STRING_START
       TEMPLATE_EXPRESSION_START
     ;
 
-terminal TEMPLATE_STRING_INBETWEEN
+terminal TEMPLATE_STRING_INNER
     : TEMPLATE_EXPRESSION_END
       STRING_TEXT*
       TEMPLATE_EXPRESSION_START
