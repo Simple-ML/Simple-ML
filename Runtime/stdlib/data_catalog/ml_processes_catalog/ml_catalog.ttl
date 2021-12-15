@@ -1,0 +1,2347 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix mex-algo: <http://mex.aksw.org/mex-algo#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sml: <http://simple-ml.de/rdf#> .
+
+sml:ANOVA a owl:Class ;
+    rdfs:label "Varianzanalyse"@de,
+        "analysis of variance"@en ;
+    dcterms:description "Gruppe von datenanalytischen und strukturprüfenden statistischen Verfahren"@de,
+        "collection of statistical models used to analyze the differences between group means and their associated procedures"@en ;
+    sml:abbreviation "ANOVA"@de,
+        "ANOVA"@en ;
+    sml:prefAbbreviation "ANOVA"@de,
+        "ANOVA"@en ;
+    sml:prefDescription "Gruppe von datenanalytischen und strukturprüfenden statistischen Verfahren"@de,
+        "collection of statistical models used to analyze the differences between group means and their associated procedures"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/ANOVA>,
+        <http://de.dbpedia.org/resource/Varianzanalyse>,
+        <http://www.wikidata.org/entity/Q42297> ;
+    skos:prefLabel "Varianzanalyse"@de,
+        "ANOVA"@en .
+
+sml:AODE a owl:Class ;
+    sml:abbreviation "AODE"@en ;
+    sml:prefAbbreviation "AODE"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/AODE>,
+        <http://www.wikidata.org/entity/Q4828284> ;
+    skos:prefLabel "AODE"@en .
+
+sml:Active_learning__machine_learning_ a owl:Class ;
+    rdfs:label "Active learning (machine learning)"@en,
+        "active learning"@en ;
+    dcterms:alternative "active learning algorithm"@en ;
+    dcterms:description "machine learning strategy in which a learning algorithm interactively queries for new labels"@en ;
+    sml:prefDescription "machine learning strategy in which a learning algorithm interactively queries for new labels"@en ;
+    rdfs:subClassOf sml:Semi-supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Active_learning_(machine_learning)>,
+        <http://www.wikidata.org/entity/Q4677561> ;
+    skos:prefLabel "Active learning (machine learning)"@en .
+
+sml:AdaBoost a owl:Class ;
+    rdfs:label "AdaBoost"@en ;
+    dcterms:description "boosting algorithm"@en ;
+    sml:prefDescription "boosting algorithm"@en ;
+    rdfs:subClassOf sml:Ensemble_learning ;
+    owl:sameAs <http://dbpedia.org/resource/AdaBoost>,
+        <http://www.wikidata.org/entity/Q2823869> ;
+    skos:prefLabel "AdaBoost"@en .
+
+sml:Analogical_modeling a owl:Class ;
+    rdfs:label "Analogical modeling"@en ;
+    rdfs:subClassOf sml:Minimum_message_length ;
+    owl:sameAs <http://dbpedia.org/resource/Analogical_modeling>,
+        <http://www.wikidata.org/entity/Q4751070> ;
+    skos:prefLabel "Analogical modeling"@en .
+
+sml:Apriori_algorithm a owl:Class ;
+    rdfs:label "Apriori-Algorithmus"@de,
+        "Apriori algorithm"@en ;
+    dcterms:description "Verfahren zur Assoziationsanalyse, einem Bereich des Data-Mining"@de,
+        "algorithm for frequent item set mining and association rule learning over transactional databases"@en ;
+    sml:prefDescription "Verfahren zur Assoziationsanalyse, einem Bereich des Data-Mining"@de,
+        "algorithm for frequent item set mining and association rule learning over transactional databases"@en ;
+    rdfs:subClassOf sml:Association_rule_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Apriori_algorithm>,
+        <http://de.dbpedia.org/resource/Apriori-Algorithmus>,
+        <http://www.wikidata.org/entity/Q513511> ;
+    skos:prefLabel "Apriori-Algorithmus"@de,
+        "Apriori algorithm"@en .
+
+<http://simple-ml.de/rdf#Association_rule_learning#FP-growth_algorithm> a owl:Class ;
+    rdfs:label "Association rule learning#FP-growth algorithm"@en ;
+    rdfs:subClassOf sml:Association_rule_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Association_rule_learning#FP-growth_algorithm> ;
+    skos:prefLabel "Association rule learning#FP-growth algorithm"@en .
+
+sml:Autoencoder a owl:Class ;
+    rdfs:label "Autoencoder"@de,
+        "Autoencoder"@en,
+        "autoencoder"@en ;
+    dcterms:alternative "autoencoders"@en ;
+    dcterms:description "neural network that learns efficient data encoding in an unsupervised manner"@en ;
+    sml:abbreviation "VAE"@en ;
+    sml:prefAbbreviation "VAE"@en ;
+    sml:prefDescription "neural network that learns efficient data encoding in an unsupervised manner"@en ;
+    rdfs:subClassOf sml:Artificial_neural_network ;
+    owl:sameAs <http://dbpedia.org/resource/Autoencoder>,
+        <http://de.dbpedia.org/resource/Autoencoder>,
+        <http://www.wikidata.org/entity/Q786435> ;
+    skos:prefLabel "Autoencoder"@de,
+        "Autoencoder"@en .
+
+sml:Averaged_One-Dependence_Estimators a owl:Class ;
+    rdfs:label "Averaged One-Dependence Estimators"@en,
+        "Averaged one-dependence estimators"@en ;
+    rdfs:subClassOf sml:Bayesian_statistics ;
+    owl:sameAs <http://dbpedia.org/resource/Averaged_One-Dependence_Estimators>,
+        <http://www.wikidata.org/entity/Q4828284> ;
+    skos:prefLabel "Averaged One-Dependence Estimators"@en .
+
+sml:BIRCH a owl:Class ;
+    dcterms:description "clustering algorithm"@en ;
+    sml:abbreviation "BIRCH"@de,
+        "BIRCH"@en ;
+    sml:prefAbbreviation "BIRCH"@de,
+        "BIRCH"@en ;
+    sml:prefDescription "clustering algorithm"@en ;
+    rdfs:subClassOf sml:Cluster_analysis ;
+    owl:sameAs <http://dbpedia.org/resource/BIRCH>,
+        <http://de.dbpedia.org/resource/BIRCH>,
+        <http://www.wikidata.org/entity/Q4835721> ;
+    skos:prefLabel "BIRCH"@de,
+        "BIRCH"@en .
+
+sml:Bayesian_Belief_Network a owl:Class ;
+    rdfs:label "Bayessches Netz"@de,
+        "Bayesian Belief Network"@en ;
+    rdfs:subClassOf sml:Bayesian_statistics ;
+    owl:sameAs <http://dbpedia.org/resource/Bayesian_Belief_Network>,
+        <http://de.dbpedia.org/resource/Bayessches_Netz>,
+        <http://www.wikidata.org/entity/Q812540> ;
+    skos:prefLabel "Bayessches Netz"@de,
+        "Bayesian Belief Network"@en .
+
+sml:Bayesian_Network a owl:Class ;
+    rdfs:label "Bayessches Netz"@de,
+        "Bayesian Network"@en ;
+    rdfs:subClassOf sml:Bayesian_statistics ;
+    owl:sameAs <http://dbpedia.org/resource/Bayesian_Network>,
+        <http://de.dbpedia.org/resource/Bayessches_Netz>,
+        <http://www.wikidata.org/entity/Q812540> ;
+    skos:prefLabel "Bayessches Netz"@de,
+        "Bayesian Network"@en .
+
+sml:Bayesian_knowledge_base a owl:Class ;
+    rdfs:label "Bayesian knowledge base"@en ;
+    rdfs:subClassOf sml:Bayesian_statistics ;
+    owl:sameAs <http://dbpedia.org/resource/Bayesian_knowledge_base> ;
+    skos:prefLabel "Bayesian knowledge base"@en .
+
+sml:Bias-variance_dilemma a owl:Class ;
+    rdfs:label "Verzerrung-Varianz-Dilemma"@de,
+        "Bias-variance dilemma"@en,
+        "bias–variance dilemma"@en ;
+    dcterms:alternative "bias-variance dilemma"@en,
+        "bias-variance problem"@en,
+        "bias-variance tradeoff"@en,
+        "bias–variance problem"@en,
+        "bias–variance tradeoff"@en ;
+    dcterms:description "property of a set of predictive models whereby models with a lower bias in parameter estimation have a higher variance of the parameter estimates across samples, and vice versa"@en ;
+    sml:prefDescription "property of a set of predictive models whereby models with a lower bias in parameter estimation have a higher variance of the parameter estimates across samples, and vice versa"@en ;
+    rdfs:subClassOf sml:Other_machine_learning_methods_and_problems ;
+    owl:sameAs <http://dbpedia.org/resource/Bias-variance_dilemma>,
+        <http://de.dbpedia.org/resource/Verzerrung-Varianz-Dilemma>,
+        <http://www.wikidata.org/entity/Q17003119> ;
+    skos:prefLabel "Verzerrung-Varianz-Dilemma"@de,
+        "Bias-variance dilemma"@en .
+
+sml:Binary_classifier a owl:Class ;
+    rdfs:label "binäre Klassifikation"@de,
+        "Binary classifier"@en,
+        "binary classification"@en ;
+    dcterms:description "the task of classifying the elements of a given set into two groups (predicting which group each one belongs to) on the basis of a classification rule"@en ;
+    sml:prefDescription "the task of classifying the elements of a given set into two groups (predicting which group each one belongs to) on the basis of a classification rule"@en ;
+    rdfs:subClassOf sml:Statistical_classification ;
+    owl:sameAs <http://dbpedia.org/resource/Binary_classifier>,
+        <http://www.wikidata.org/entity/Q17005494> ;
+    skos:prefLabel "Binary classifier"@en .
+
+sml:Boltzmann_machine a owl:Class ;
+    rdfs:label "Boltzmann-Maschine"@de,
+        "Boltzmann machine"@en ;
+    dcterms:alternative "stochastic Hopfield network with hidden units"@en ;
+    dcterms:description "stochastisches künstliches neuronales Netz"@de,
+        "type of stochastic recurrent neural network"@en ;
+    sml:prefDescription "stochastisches künstliches neuronales Netz"@de,
+        "type of stochastic recurrent neural network"@en ;
+    rdfs:subClassOf sml:Deep_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Boltzmann_machine>,
+        <http://de.dbpedia.org/resource/Boltzmann-Maschine>,
+        <http://www.wikidata.org/entity/Q194706> ;
+    skos:prefLabel "Boltzmann-Maschine"@de,
+        "Boltzmann machine"@en .
+
+sml:Boosting__meta-algorithm_ a owl:Class ;
+    rdfs:label "Boosting"@de,
+        "Boosting (meta-algorithm)"@en ;
+    rdfs:subClassOf sml:Ensembles_of_classifiers ;
+    owl:sameAs <http://dbpedia.org/resource/Boosting_(meta-algorithm)>,
+        <http://de.dbpedia.org/resource/Boosting>,
+        <http://www.wikidata.org/entity/Q466303> ;
+    skos:prefLabel "Boosting"@de,
+        "Boosting (meta-algorithm)"@en .
+
+sml:Bootstrap_aggregating a owl:Class ;
+    rdfs:label "Bagging"@de,
+        "Bootstrap aggregating"@en,
+        "bootstrap aggregating"@en ;
+    dcterms:alternative "Bootstrap aggregating"@de,
+        "Bagging"@en ;
+    dcterms:description "machine learning algorithm"@en ;
+    sml:prefDescription "machine learning algorithm"@en ;
+    rdfs:subClassOf sml:Ensemble_learning,
+        sml:Ensembles_of_classifiers ;
+    owl:sameAs <http://dbpedia.org/resource/Bootstrap_aggregating>,
+        <http://de.dbpedia.org/resource/Bagging>,
+        <http://www.wikidata.org/entity/Q799897> ;
+    skos:prefLabel "Bagging"@de,
+        "Bootstrap aggregating"@en .
+
+sml:C4.5_algorithm a owl:Class ;
+    rdfs:label "C4.5 algorithm"@en ;
+    sml:abbreviation "C4.5"@de ;
+    sml:prefAbbreviation "C4.5"@de ;
+    rdfs:subClassOf sml:Decision_tree_algorithms ;
+    owl:sameAs <http://dbpedia.org/resource/C4.5_algorithm>,
+        <http://de.dbpedia.org/resource/C4.5>,
+        <http://www.wikidata.org/entity/Q1022655> ;
+    skos:prefLabel "C4.5"@de,
+        "C4.5 algorithm"@en .
+
+sml:C5.0_algorithm a owl:Class ;
+    rdfs:label "C4.5 algorithm"@en,
+        "C5.0 algorithm"@en ;
+    dcterms:description "Algorithmus zur Konstruktion von Entscheidungsbäumen"@de,
+        "decision trees algorithm"@en ;
+    sml:abbreviation "C4.5"@de ;
+    sml:prefAbbreviation "C4.5"@de ;
+    sml:prefDescription "Algorithmus zur Konstruktion von Entscheidungsbäumen"@de,
+        "decision trees algorithm"@en ;
+    rdfs:subClassOf sml:Decision_tree_algorithms ;
+    owl:sameAs <http://dbpedia.org/resource/C5.0_algorithm>,
+        <http://de.dbpedia.org/resource/C4.5>,
+        <http://www.wikidata.org/entity/Q1022655> ;
+    skos:prefLabel "C4.5"@de,
+        "C5.0 algorithm"@en .
+
+sml:CURE_algorithm a owl:Class ;
+    rdfs:label "CURE algorithm"@en,
+        "CURE data clustering algorithm"@en ;
+    dcterms:description "data clustering algorithm"@en ;
+    sml:prefDescription "data clustering algorithm"@en ;
+    rdfs:subClassOf sml:Cluster_analysis ;
+    owl:sameAs <http://dbpedia.org/resource/CURE_algorithm>,
+        <http://www.wikidata.org/entity/Q5014717> ;
+    skos:prefLabel "CURE algorithm"@en .
+
+sml:Canonical_correlation a owl:Class ;
+    rdfs:label "Kanonische Korrelation"@de,
+        "Canonical correlation"@en,
+        "canonical correlation analysis"@en ;
+    dcterms:alternative "Kanonische Korrelationsanalyse"@de,
+        "canonical correlation"@en,
+        "canonical-correlation analysis"@en ;
+    dcterms:description "way of inferring information from cross-covariance matrices"@en ;
+    sml:abbreviation "CCA"@en ;
+    sml:prefAbbreviation "CCA"@en ;
+    sml:prefDescription "way of inferring information from cross-covariance matrices"@en ;
+    rdfs:subClassOf sml:Dimensionality_reduction ;
+    owl:sameAs <http://dbpedia.org/resource/Canonical_correlation>,
+        <http://de.dbpedia.org/resource/Kanonische_Korrelation>,
+        <http://www.wikidata.org/entity/Q115542> ;
+    skos:prefLabel "Kanonische Korrelation"@de,
+        "Canonical correlation"@en .
+
+sml:Canonical_correlation_analysis a owl:Class ;
+    rdfs:label "Kanonische Korrelation"@de,
+        "Canonical correlation analysis"@en ;
+    rdfs:subClassOf sml:Dimensionality_reduction ;
+    owl:sameAs <http://dbpedia.org/resource/Canonical_correlation_analysis>,
+        <http://de.dbpedia.org/resource/Kanonische_Korrelation>,
+        <http://www.wikidata.org/entity/Q115542> ;
+    skos:prefLabel "Kanonische Korrelation"@de,
+        "Canonical correlation analysis"@en .
+
+sml:Case-based_reasoning a owl:Class ;
+    rdfs:label "Fallbasiertes Schließen"@de,
+        "Case-based reasoning"@en,
+        "case-based reasoning"@en ;
+    dcterms:alternative "Case-Based Reasoning"@de,
+        "Case-Based-Reasoning"@de,
+        "Fallbasiert"@de,
+        "Maschinelles Schließen"@de,
+        "Raisonnement par cas"@de,
+        "Razonamiento basado en casos"@de,
+        "Case-based reasoning、CBR"@en ;
+    dcterms:description "approach to solve new case on solution of similar previous case"@en ;
+    sml:abbreviation "CBR"@en ;
+    sml:prefAbbreviation "CBR"@en ;
+    sml:prefDescription "approach to solve new case on solution of similar previous case"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Case-based_reasoning>,
+        <http://de.dbpedia.org/resource/Fallbasiertes_Schließen>,
+        <http://www.wikidata.org/entity/Q1151406> ;
+    skos:prefLabel "Fallbasiertes Schließen"@de,
+        "Case-based reasoning"@en .
+
+sml:Chi-squared_Automatic_Interaction_Detection a owl:Class ;
+    rdfs:label "Chi-squared Automatic Interaction Detection"@en ;
+    dcterms:description "Algorithmus zur Konstruktion von Entscheidungsbäumen"@de ;
+    sml:abbreviation "CHAID"@de,
+        "CHAID"@en ;
+    sml:prefAbbreviation "CHAID"@de,
+        "CHAID"@en ;
+    sml:prefDescription "Algorithmus zur Konstruktion von Entscheidungsbäumen"@de ;
+    rdfs:subClassOf sml:Decision_tree_algorithms ;
+    owl:sameAs <http://dbpedia.org/resource/Chi-squared_Automatic_Interaction_Detection>,
+        <http://de.dbpedia.org/resource/CHAID>,
+        <http://www.wikidata.org/entity/Q1023599> ;
+    skos:prefLabel "CHAID"@de,
+        "Chi-squared Automatic Interaction Detection"@en .
+
+sml:Classification_and_regression_tree a owl:Class ;
+    rdfs:label "Klassifikations- und Regressionsbaum"@de,
+        "Classification and regression tree"@en ;
+    dcterms:alternative "Classification And Regression Tree"@en ;
+    dcterms:description "statistische Methode"@de,
+        "decision tree learning technique"@en ;
+    sml:abbreviation "CART"@en ;
+    sml:prefAbbreviation "CART"@en ;
+    sml:prefDescription "statistische Methode"@de,
+        "decision tree learning technique"@en ;
+    rdfs:subClassOf sml:Decision_tree_algorithms ;
+    owl:sameAs <http://dbpedia.org/resource/Classification_and_regression_tree>,
+        <http://www.wikidata.org/entity/Q16526073> ;
+    skos:prefLabel "Classification and regression tree"@en .
+
+sml:Co-training a owl:Class ;
+    rdfs:label "Co-training"@en ;
+    dcterms:description "Machine learning algorithm"@en ;
+    sml:prefDescription "Machine learning algorithm"@en ;
+    rdfs:subClassOf sml:Semi-supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Co-training>,
+        <http://www.wikidata.org/entity/Q17005296> ;
+    skos:prefLabel "Co-training"@en .
+
+sml:Cognitive_computing a owl:Class ;
+    rdfs:label "Cognitive computing"@en,
+        "cognitive computing"@en ;
+    dcterms:description "concept of \"brainlike\" computing"@en ;
+    sml:prefDescription "concept of \"brainlike\" computing"@en ;
+    rdfs:subClassOf sml:Artificial_neural_network ;
+    owl:sameAs <http://dbpedia.org/resource/Cognitive_computing>,
+        <http://www.wikidata.org/entity/Q17008161> ;
+    skos:prefLabel "Cognitive computing"@en .
+
+sml:Conceptual_clustering a owl:Class ;
+    rdfs:label "Conceptual clustering"@en ;
+    dcterms:description "machine learning paradigm"@en ;
+    sml:prefDescription "machine learning paradigm"@en ;
+    rdfs:subClassOf sml:Hierarchical_clustering ;
+    owl:sameAs <http://dbpedia.org/resource/Conceptual_clustering>,
+        <http://www.wikidata.org/entity/Q5158434> ;
+    skos:prefLabel "Conceptual clustering"@en .
+
+sml:Conditional_Random_Field a owl:Class ;
+    rdfs:label "Conditional Random Field"@de,
+        "Conditional Random Field"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Conditional_Random_Field>,
+        <http://de.dbpedia.org/resource/Conditional_Random_Field>,
+        <http://www.wikidata.org/entity/Q1124538> ;
+    skos:prefLabel "Conditional Random Field"@de,
+        "Conditional Random Field"@en .
+
+sml:Conditional_decision_tree a owl:Class ;
+    rdfs:label "Conditional decision tree"@en ;
+    rdfs:subClassOf sml:Decision_tree_algorithms ;
+    owl:sameAs <http://dbpedia.org/resource/Conditional_decision_tree> ;
+    skos:prefLabel "Conditional decision tree"@en .
+
+sml:Conditional_random_field a owl:Class ;
+    rdfs:label "Conditional Random Field"@de,
+        "Conditional random field"@en,
+        "conditional random field"@en ;
+    dcterms:description "class of statistical modeling method applied in pattern recognition and machine learning and used for structured prediction"@en ;
+    sml:abbreviation "CRF"@en ;
+    sml:prefAbbreviation "CRF"@en ;
+    sml:prefDescription "class of statistical modeling method applied in pattern recognition and machine learning and used for structured prediction"@en ;
+    rdfs:subClassOf sml:Graphical_model ;
+    owl:sameAs <http://dbpedia.org/resource/Conditional_random_field>,
+        <http://de.dbpedia.org/resource/Conditional_Random_Field>,
+        <http://www.wikidata.org/entity/Q1124538> ;
+    skos:prefLabel "Conditional Random Field"@de,
+        "Conditional random field"@en .
+
+sml:DBSCAN a owl:Class ;
+    dcterms:alternative "Dichtebasierte räumliche Clusteranalyse mit Rauschen"@de,
+        "Density-based spatial clustering of applications with noise"@en ;
+    dcterms:description "ein Data-Mining-Algorithmus zur Clusteranalyse"@de,
+        "data clustering algorithm"@en ;
+    sml:abbreviation "DBSCAN"@de,
+        "DBSCAN"@en ;
+    sml:prefAbbreviation "DBSCAN"@de,
+        "DBSCAN"@en ;
+    sml:prefDescription "ein Data-Mining-Algorithmus zur Clusteranalyse"@de,
+        "data clustering algorithm"@en ;
+    rdfs:subClassOf sml:Cluster_analysis ;
+    owl:sameAs <http://dbpedia.org/resource/DBSCAN>,
+        <http://de.dbpedia.org/resource/DBSCAN>,
+        <http://www.wikidata.org/entity/Q1114630> ;
+    skos:prefLabel "DBSCAN"@de,
+        "DBSCAN"@en .
+
+sml:Data_Pre-processing a owl:Class ;
+    rdfs:label "Data Pre-processing"@en,
+        "data pre-processing"@en ;
+    rdfs:subClassOf sml:Other_machine_learning_methods_and_problems ;
+    owl:sameAs <http://dbpedia.org/resource/Data_Pre-processing>,
+        <http://www.wikidata.org/entity/Q5227332> ;
+    skos:prefLabel "Data Pre-processing"@en .
+
+sml:Decision_stump a owl:Class ;
+    rdfs:label "Decision stump"@en,
+        "decision stump"@en ;
+    dcterms:description "one-level decision tree"@en ;
+    sml:prefDescription "one-level decision tree"@en ;
+    rdfs:subClassOf sml:Decision_tree_algorithms ;
+    owl:sameAs <http://dbpedia.org/resource/Decision_stump>,
+        <http://www.wikidata.org/entity/Q5249244> ;
+    skos:prefLabel "Decision stump"@en .
+
+sml:Decision_tree a owl:Class ;
+    rdfs:label "Entscheidungsbaum"@de,
+        "Decision tree"@en,
+        "decision tree"@en ;
+    dcterms:alternative "Entscheidungsmodell"@de,
+        "Klassifikationsbaum"@de,
+        "Regression Tree"@de,
+        "Wahrscheinlichkeitsbaum"@de ;
+    dcterms:description "Graph zur Darstellung von Entscheidungsregeln"@de,
+        "decision support tool that uses a tree-like model of decisions and their possible consequences, including chance event outcomes, resource costs, and utility"@en ;
+    sml:prefDescription "Graph zur Darstellung von Entscheidungsregeln"@de,
+        "decision support tool that uses a tree-like model of decisions and their possible consequences, including chance event outcomes, resource costs, and utility"@en ;
+    rdfs:subClassOf sml:Decision_tree_algorithms ;
+    owl:sameAs <http://dbpedia.org/resource/Decision_tree>,
+        <http://de.dbpedia.org/resource/Entscheidungsbaum>,
+        <http://www.wikidata.org/entity/Q831366> ;
+    skos:prefLabel "Entscheidungsbaum"@de,
+        "Decision tree"@en .
+
+sml:Decision_tree_learning a owl:Class ;
+    rdfs:label "Decision tree learning"@en,
+        "decision tree learning"@en ;
+    dcterms:description "machine learning algorithm"@en ;
+    sml:prefDescription "machine learning algorithm"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Decision_tree_learning>,
+        <http://www.wikidata.org/entity/Q16766476> ;
+    skos:prefLabel "Decision tree learning"@en .
+
+sml:DeepDream a owl:Class ;
+    rdfs:label "DeepDream"@de,
+        "DeepDream"@en ;
+    dcterms:alternative "Deep DreamForge"@en ;
+    dcterms:description "Software"@de,
+        "software program"@en ;
+    sml:prefDescription "Software"@de,
+        "software program"@en ;
+    rdfs:subClassOf sml:Artificial_neural_network ;
+    owl:sameAs <http://dbpedia.org/resource/DeepDream>,
+        <http://de.dbpedia.org/resource/DeepDream>,
+        <http://www.wikidata.org/entity/Q20856875> ;
+    skos:prefLabel "DeepDream"@de,
+        "DeepDream"@en .
+
+sml:Deep_Boltzmann_Machine a owl:Class ;
+    rdfs:label "Deep Learning"@de,
+        "Deep Boltzmann Machine"@en ;
+    rdfs:subClassOf sml:Deep_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Deep_Boltzmann_Machine>,
+        <http://de.dbpedia.org/resource/Deep_Learning>,
+        <http://www.wikidata.org/entity/Q197536> ;
+    skos:prefLabel "Deep Learning"@de,
+        "Deep Boltzmann Machine"@en .
+
+sml:Deep_belief_network a owl:Class ;
+    rdfs:label "Deep belief network"@en,
+        "deep belief network"@en ;
+    dcterms:description "type of artificial neural network"@en ;
+    sml:abbreviation "DBN"@en ;
+    sml:prefAbbreviation "DBN"@en ;
+    sml:prefDescription "type of artificial neural network"@en ;
+    rdfs:subClassOf sml:Deep_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Deep_belief_network>,
+        <http://www.wikidata.org/entity/Q16954980> ;
+    skos:prefLabel "Deep belief network"@en .
+
+sml:Echo_state_network a owl:Class ;
+    rdfs:label "Echo state network"@en,
+        "echo state network"@en ;
+    dcterms:description "Art eines künstlichen neuronalen Nettwerks"@de,
+        "recurrent neural network with a sparsely connected hidden layer"@en ;
+    sml:abbreviation "ESN"@en ;
+    sml:prefAbbreviation "ESN"@en ;
+    sml:prefDescription "Art eines künstlichen neuronalen Nettwerks"@de,
+        "recurrent neural network with a sparsely connected hidden layer"@en ;
+    rdfs:subClassOf sml:Recurrent_neural_network ;
+    owl:sameAs <http://dbpedia.org/resource/Echo_state_network>,
+        <http://www.wikidata.org/entity/Q5332763> ;
+    skos:prefLabel "Echo state network"@en .
+
+sml:Eclat_algorithm a owl:Class ;
+    rdfs:label "Assoziationsanalyse"@de,
+        "Eclat algorithm"@en ;
+    rdfs:subClassOf sml:Association_rule_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Eclat_algorithm>,
+        <http://de.dbpedia.org/resource/Assoziationsanalyse>,
+        <http://www.wikidata.org/entity/Q386780> ;
+    skos:prefLabel "Assoziationsanalyse"@de,
+        "Eclat algorithm"@en .
+
+sml:Elastic_net a owl:Class ;
+    rdfs:label "Elastic map"@en,
+        "Elastic net"@en ;
+    rdfs:subClassOf sml:Regularization_algorithm ;
+    owl:sameAs <http://dbpedia.org/resource/Elastic_net>,
+        <http://www.wikidata.org/entity/Q4476452> ;
+    skos:prefLabel "Elastic net"@en .
+
+sml:Empirical_risk_minimization a owl:Class ;
+    rdfs:label "Empirical risk minimization"@en,
+        "empirical risk minimization"@en ;
+    rdfs:subClassOf sml:Other_machine_learning_methods_and_problems ;
+    owl:sameAs <http://dbpedia.org/resource/Empirical_risk_minimization>,
+        <http://www.wikidata.org/entity/Q5374254> ;
+    skos:prefLabel "Empirical risk minimization"@en .
+
+sml:Ensemble_averaging__machine_learning_ a owl:Class ;
+    rdfs:label "Ensemble averaging"@en,
+        "Ensemble averaging (machine learning)"@en ;
+    rdfs:subClassOf sml:Ensemble_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Ensemble_averaging_(machine_learning)>,
+        <http://www.wikidata.org/entity/Q5379963> ;
+    skos:prefLabel "Ensemble averaging (machine learning)"@en .
+
+sml:Expectation-maximization_algorithm a owl:Class ;
+    rdfs:label "EM-Algorithmus"@de,
+        "Expectation-maximization algorithm"@en ;
+    rdfs:subClassOf sml:Cluster_analysis,
+        sml:Unsupervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Expectation-maximization_algorithm>,
+        <http://de.dbpedia.org/resource/EM-Algorithmus>,
+        <http://www.wikidata.org/entity/Q1275153> ;
+    skos:prefLabel "EM-Algorithmus"@de,
+        "Expectation-maximization algorithm"@en .
+
+<http://simple-ml.de/rdf#Expectation–maximization_algorithm> a owl:Class ;
+    rdfs:label "EM-Algorithmus"@de,
+        "Expectation–maximization algorithm"@en,
+        "expectation–maximization algorithm"@en ;
+    dcterms:alternative "Expectation-Maximization-Algorithmus"@de,
+        "EM algorithm"@en,
+        "Expectation Maximization"@en ;
+    dcterms:description "Algorithmus der mathematischen Statistik"@de,
+        "iterative method for finding maximum likelihood estimates in statistical models"@en ;
+    sml:prefDescription "Algorithmus der mathematischen Statistik"@de,
+        "iterative method for finding maximum likelihood estimates in statistical models"@en ;
+    rdfs:subClassOf sml:Cluster_analysis ;
+    owl:sameAs <http://dbpedia.org/resource/Expectation–maximization_algorithm>,
+        <http://de.dbpedia.org/resource/EM-Algorithmus>,
+        <http://www.wikidata.org/entity/Q1275153> ;
+    skos:prefLabel "EM-Algorithmus"@de,
+        "Expectation–maximization algorithm"@en .
+
+sml:Extreme_learning_machine a owl:Class ;
+    rdfs:label "Extreme learning machine"@en,
+        "extreme learning machine"@en ;
+    dcterms:description "type of artificial neural network"@en ;
+    sml:abbreviation "ELM"@en ;
+    sml:prefAbbreviation "ELM"@en ;
+    sml:prefDescription "type of artificial neural network"@en ;
+    rdfs:subClassOf sml:Feedforward_neural_network ;
+    owl:sameAs <http://dbpedia.org/resource/Extreme_learning_machine>,
+        <http://www.wikidata.org/entity/Q21948731> ;
+    skos:prefLabel "Extreme learning machine"@en .
+
+sml:Factor_analysis a owl:Class ;
+    rdfs:label "Faktorenanalyse"@de,
+        "Factor analysis"@en,
+        "factor analysis"@en ;
+    dcterms:alternative "Faktoranalyse"@de,
+        "Faktorladung"@de,
+        "Hauptfaktorenanalyse"@de,
+        "Zentroidmethode"@de,
+        "Factor Analysis, Statistical"@en,
+        "Statistical Factor Analysis"@en ;
+    dcterms:description "statistical method used to describe correlation through fewer possibly latent variables"@en ;
+    sml:prefDescription "statistical method used to describe correlation through fewer possibly latent variables"@en ;
+    rdfs:subClassOf sml:Dimensionality_reduction ;
+    owl:sameAs <http://dbpedia.org/resource/Factor_analysis>,
+        <http://de.dbpedia.org/resource/Faktorenanalyse>,
+        <http://www.wikidata.org/entity/Q726474> ;
+    skos:prefLabel "Faktorenanalyse"@de,
+        "Factor analysis"@en .
+
+sml:Feature_engineering a owl:Class ;
+    rdfs:label "Feature engineering"@en,
+        "feature engineering"@en ;
+    dcterms:alternative "feature creation"@en ;
+    dcterms:description "process that creates features for machine learning by transforming or combining existing features"@en ;
+    sml:prefDescription "process that creates features for machine learning by transforming or combining existing features"@en ;
+    rdfs:subClassOf sml:Other_machine_learning_methods_and_problems ;
+    owl:sameAs <http://dbpedia.org/resource/Feature_engineering>,
+        <http://www.wikidata.org/entity/Q22245680> ;
+    skos:prefLabel "Feature engineering"@en .
+
+sml:Feature_extraction a owl:Class ;
+    rdfs:label "Feature extraction"@en,
+        "feature extraction"@en ;
+    rdfs:subClassOf sml:Dimensionality_reduction ;
+    owl:sameAs <http://dbpedia.org/resource/Feature_extraction>,
+        <http://www.wikidata.org/entity/Q1026626> ;
+    skos:prefLabel "Feature extraction"@en .
+
+sml:Feature_learning a owl:Class ;
+    rdfs:label "Feature learning"@en,
+        "feature learning"@en ;
+    dcterms:alternative "representation learning"@en ;
+    dcterms:description "a set of techniques that learn a feature: a transformation of raw data input to a representation that can be effectively exploited in machine learning tasks"@en ;
+    sml:prefDescription "a set of techniques that learn a feature: a transformation of raw data input to a representation that can be effectively exploited in machine learning tasks"@en ;
+    rdfs:subClassOf sml:Other_machine_learning_methods_and_problems ;
+    owl:sameAs <http://dbpedia.org/resource/Feature_learning>,
+        <http://www.wikidata.org/entity/Q17013334> ;
+    skos:prefLabel "Feature learning"@en .
+
+sml:Feature_selection a owl:Class ;
+    rdfs:label "Feature Subset Selection"@de,
+        "Feature selection"@en,
+        "feature selection"@en ;
+    dcterms:description "procedure in machine learning and statistics"@en ;
+    sml:prefDescription "procedure in machine learning and statistics"@en ;
+    rdfs:subClassOf sml:Dimensionality_reduction ;
+    owl:sameAs <http://dbpedia.org/resource/Feature_selection>,
+        <http://de.dbpedia.org/resource/Feature_Subset_Selection>,
+        <http://www.wikidata.org/entity/Q446488> ;
+    skos:prefLabel "Feature Subset Selection"@de,
+        "Feature selection"@en .
+
+sml:Fishers_linear_discriminant a owl:Class ;
+    rdfs:label "Diskriminanzfunktion"@de,
+        "Fisher's linear discriminant"@en ;
+    rdfs:subClassOf sml:Linear_classifier ;
+    owl:sameAs <http://dbpedia.org/resource/Fisher's_linear_discriminant>,
+        <http://de.dbpedia.org/resource/Diskriminanzfunktion>,
+        <http://www.wikidata.org/entity/Q1228929> ;
+    skos:prefLabel "Diskriminanzfunktion"@de,
+        "Fisher's linear discriminant"@en .
+
+sml:Fuzzy_clustering a owl:Class ;
+    rdfs:label "Fuzzy C-Means"@de,
+        "Fuzzy-c-Means-Algorithmus"@de,
+        "Fuzzy clustering"@en,
+        "fuzzy clustering"@en ;
+    dcterms:description "Clustering-Algorithmus aus der Informatik"@de,
+        "cluster analysis where membership of a data point in a cluster is fuzzy"@en ;
+    sml:prefDescription "Clustering-Algorithmus aus der Informatik"@de,
+        "cluster analysis where membership of a data point in a cluster is fuzzy"@en ;
+    rdfs:subClassOf sml:Cluster_analysis ;
+    owl:sameAs <http://dbpedia.org/resource/Fuzzy_clustering>,
+        <http://de.dbpedia.org/resource/Fuzzy-c-Means-Algorithmus>,
+        <http://www.wikidata.org/entity/Q5511111> ;
+    skos:prefLabel "Fuzzy-c-Means-Algorithmus"@de,
+        "Fuzzy clustering"@en .
+
+sml:Gated_recurrent_unit a owl:Class ;
+    rdfs:label "Gated recurrent unit"@en,
+        "gated recurrent unit"@en ;
+    sml:abbreviation "GRU"@en ;
+    sml:prefAbbreviation "GRU"@en ;
+    rdfs:subClassOf sml:Recurrent_neural_network ;
+    owl:sameAs <http://dbpedia.org/resource/Gated_recurrent_unit>,
+        <http://www.wikidata.org/entity/Q25325415> ;
+    skos:prefLabel "Gated recurrent unit"@en .
+
+sml:Gaussian_Naive_Bayes a owl:Class ;
+    rdfs:label "Gaussian Naive Bayes"@en ;
+    rdfs:subClassOf sml:Bayesian_statistics ;
+    owl:sameAs <http://dbpedia.org/resource/Gaussian_Naive_Bayes>,
+        <http://www.wikidata.org/entity/Q812530> ;
+    skos:prefLabel "Gaussian Naive Bayes"@en .
+
+sml:Gaussian_process_regression a owl:Class ;
+    rdfs:label "Kriging"@de,
+        "Gaussian process regression"@en,
+        "kriging"@en ;
+    dcterms:alternative "Gaussian process regression"@en ;
+    dcterms:description "method of interpolation"@en ;
+    sml:prefDescription "method of interpolation"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Gaussian_process_regression>,
+        <http://de.dbpedia.org/resource/Kriging>,
+        <http://www.wikidata.org/entity/Q225926> ;
+    skos:prefLabel "Kriging"@de,
+        "Gaussian process regression"@en .
+
+sml:Gene_expression_programming a owl:Class ;
+    rdfs:label "Gene expression programming"@en ;
+    dcterms:description "evolutionary algorithm"@en ;
+    sml:prefDescription "evolutionary algorithm"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Gene_expression_programming>,
+        <http://www.wikidata.org/entity/Q5531551> ;
+    skos:prefLabel "Gene expression programming"@en .
+
+sml:Generative_adversarial_network a owl:Class ;
+    rdfs:label "Generative Adversarial Networks"@de,
+        "Generative adversarial network"@en,
+        "generative adversarial network"@en ;
+    dcterms:description "Algorithmen zu unüberwachtem Lernen"@de,
+        "deep learning method"@en ;
+    sml:abbreviation "GAB"@en,
+        "GAN"@en ;
+    sml:prefAbbreviation "GAB"@en ;
+    sml:prefDescription "Algorithmen zu unüberwachtem Lernen"@de,
+        "deep learning method"@en ;
+    rdfs:subClassOf sml:Artificial_neural_network,
+        sml:Deep_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Generative_adversarial_network>,
+        <http://de.dbpedia.org/resource/Generative_Adversarial_Networks>,
+        <http://www.wikidata.org/entity/Q25104379> ;
+    skos:prefLabel "Generative Adversarial Networks"@de,
+        "Generative adversarial network"@en .
+
+sml:Generative_topographic_map a owl:Class ;
+    rdfs:label "Generative topographic map"@en ;
+    rdfs:subClassOf sml:Unsupervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Generative_topographic_map>,
+        <http://www.wikidata.org/entity/Q5532636> ;
+    skos:prefLabel "Generative topographic map"@en .
+
+sml:Gradient_boosted_decision_tree a owl:Class ;
+    rdfs:label "Gradient boosted decision tree"@en ;
+    rdfs:subClassOf sml:Ensemble_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Gradient_boosted_decision_tree>,
+        <http://www.wikidata.org/entity/Q5591907> ;
+    skos:prefLabel "Gradient boosted decision tree"@en .
+
+sml:Gradient_boosting a owl:Class ;
+    rdfs:label "Gradient boosting"@en,
+        "gradient boosting"@en ;
+    dcterms:description "machine learning technique"@en ;
+    sml:prefDescription "machine learning technique"@en ;
+    rdfs:subClassOf sml:Ensemble_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Gradient_boosting>,
+        <http://www.wikidata.org/entity/Q5591907> ;
+    skos:prefLabel "Gradient boosting"@en .
+
+sml:Group_method_of_data_handling a owl:Class ;
+    rdfs:label "Group method of data handling"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Group_method_of_data_handling>,
+        <http://www.wikidata.org/entity/Q3507155> ;
+    skos:prefLabel "Group method of data handling"@en .
+
+sml:Hidden_Markov_model a owl:Class ;
+    rdfs:label "Hidden Markov Model"@de,
+        "Hidden Markov model"@en,
+        "hidden Markov model"@en ;
+    dcterms:alternative "Hidden-Markov-Modell"@de,
+        "Markov-Switching-Modell"@de,
+        "Verborgenes Markov-Modell"@de ;
+    dcterms:description "mathematisches Modell"@de,
+        "statistical Markov model"@en ;
+    sml:abbreviation "HMM"@de,
+        "HMM"@en ;
+    sml:prefAbbreviation "HMM"@de,
+        "HMM"@en ;
+    sml:prefDescription "mathematisches Modell"@de,
+        "statistical Markov model"@en ;
+    rdfs:subClassOf sml:Graphical_model,
+        sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Hidden_Markov_model>,
+        <http://de.dbpedia.org/resource/Hidden_Markov_Model>,
+        <http://www.wikidata.org/entity/Q176769> ;
+    skos:prefLabel "Hidden Markov Model"@de,
+        "Hidden Markov model"@en .
+
+sml:Hierarchical_classifier a owl:Class ;
+    rdfs:label "Hierarchical classifier"@en,
+        "hierarchical classifier"@en ;
+    dcterms:description "classifier that maps input data into defined subsumptive output categories"@en ;
+    sml:prefDescription "classifier that maps input data into defined subsumptive output categories"@en ;
+    rdfs:subClassOf sml:Statistical_classification ;
+    owl:sameAs <http://dbpedia.org/resource/Hierarchical_classifier>,
+        <http://www.wikidata.org/entity/Q4223017> ;
+    skos:prefLabel "Hierarchical classifier"@en .
+
+sml:Hierarchical_temporal_memory a owl:Class ;
+    rdfs:label "Hierarchischer Temporalspeicher"@de,
+        "hierarchischer Temporalspeicher"@de,
+        "Hierarchical temporal memory"@en,
+        "hierarchical temporal memory"@en ;
+    dcterms:alternative "Hierarchical Temporal Memory"@de,
+        "Hierarchical temporal memory"@en ;
+    dcterms:description "biological theory of intelligence"@en ;
+    sml:abbreviation "HTM"@de,
+        "HTM"@en ;
+    sml:prefAbbreviation "HTM"@de,
+        "HTM"@en ;
+    sml:prefDescription "biological theory of intelligence"@en ;
+    rdfs:subClassOf sml:Deep_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Hierarchical_temporal_memory>,
+        <http://de.dbpedia.org/resource/Hierarchischer_Temporalspeicher>,
+        <http://www.wikidata.org/entity/Q652594> ;
+    skos:prefLabel "Hierarchischer Temporalspeicher"@de,
+        "Hierarchical temporal memory"@en .
+
+sml:ID3_algorithm a owl:Class ;
+    rdfs:label "Iterative Dichotomiser 3"@de,
+        "ID3 algorithm"@en ;
+    dcterms:alternative "Iterative Dichotomiser 3"@en ;
+    dcterms:description "Algorithmus zur Konstruktion von Entscheidungsbäumen"@de,
+        "decision tree algorithm"@en ;
+    sml:abbreviation "ID3"@de ;
+    sml:prefAbbreviation "ID3"@de ;
+    sml:prefDescription "Algorithmus zur Konstruktion von Entscheidungsbäumen"@de,
+        "decision tree algorithm"@en ;
+    rdfs:subClassOf sml:Decision_tree_algorithms ;
+    owl:sameAs <http://dbpedia.org/resource/ID3_algorithm>,
+        <http://de.dbpedia.org/resource/Iterative_Dichotomiser_3>,
+        <http://www.wikidata.org/entity/Q1653378> ;
+    skos:prefLabel "Iterative Dichotomiser 3"@de,
+        "ID3 algorithm"@en .
+
+sml:Independent_component_analysis a owl:Class ;
+    rdfs:label "Unabhängigkeitsanalyse"@de,
+        "Independent component analysis"@en,
+        "independent component analysis"@en ;
+    dcterms:description "in signal processing, a computational method"@en ;
+    sml:abbreviation "ICA"@de ;
+    sml:prefAbbreviation "ICA"@de ;
+    sml:prefDescription "in signal processing, a computational method"@en ;
+    rdfs:subClassOf sml:Dimensionality_reduction ;
+    owl:sameAs <http://dbpedia.org/resource/Independent_component_analysis>,
+        <http://de.dbpedia.org/resource/Unabhängigkeitsanalyse>,
+        <http://www.wikidata.org/entity/Q1259145> ;
+    skos:prefLabel "Unabhängigkeitsanalyse"@de,
+        "Independent component analysis"@en .
+
+sml:Inductive_logic_programming a owl:Class ;
+    rdfs:label "Induktive logische Programmierung"@de,
+        "Inductive logic programming"@en ;
+    dcterms:alternative "ILP-based"@en ;
+    dcterms:description "learning logic programs from data"@en ;
+    sml:abbreviation "ILP"@en ;
+    sml:prefAbbreviation "ILP"@en ;
+    sml:prefDescription "learning logic programs from data"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Inductive_logic_programming>,
+        <http://de.dbpedia.org/resource/Induktive_logische_Programmierung>,
+        <http://www.wikidata.org/entity/Q1464197> ;
+    skos:prefLabel "Induktive logische Programmierung"@de,
+        "Inductive logic programming"@en .
+
+sml:Information_Fuzzy_Networks a owl:Class ;
+    rdfs:label "Information Fuzzy Networks"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Information_Fuzzy_Networks>,
+        <http://www.wikidata.org/entity/Q6030723> ;
+    skos:prefLabel "Information Fuzzy Networks"@en .
+
+sml:Information_bottleneck_method a owl:Class ;
+    rdfs:label "Information bottleneck method"@en,
+        "information bottleneck method"@en ;
+    rdfs:subClassOf sml:Unsupervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Information_bottleneck_method>,
+        <http://www.wikidata.org/entity/Q6031013> ;
+    skos:prefLabel "Information bottleneck method"@en .
+
+sml:Instance-based_learning a owl:Class ;
+    rdfs:label "Instance-based learning"@en,
+        "instance-based learning"@en ;
+    dcterms:alternative "memory-based learning"@en ;
+    dcterms:description "family of learning algorithms that, instead of performing explicit generalization, compares new problem instances with instances seen in training, which have been stored in memory"@en ;
+    sml:prefDescription "family of learning algorithms that, instead of performing explicit generalization, compares new problem instances with instances seen in training, which have been stored in memory"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Instance-based_learning>,
+        <http://www.wikidata.org/entity/Q17141258> ;
+    skos:prefLabel "Instance-based learning"@en .
+
+sml:Iterative_Dichotomiser_3 a owl:Class ;
+    rdfs:label "Iterative Dichotomiser 3"@de,
+        "Iterative Dichotomiser 3"@en ;
+    rdfs:subClassOf sml:Decision_tree_algorithms ;
+    owl:sameAs <http://dbpedia.org/resource/Iterative_Dichotomiser_3>,
+        <http://de.dbpedia.org/resource/Iterative_Dichotomiser_3>,
+        <http://www.wikidata.org/entity/Q1653378> ;
+    skos:prefLabel "Iterative Dichotomiser 3"@de,
+        "Iterative Dichotomiser 3"@en .
+
+sml:K-means_clustering a owl:Class ;
+    rdfs:label "K-Means-Algorithmus"@de,
+        "k-Means-Algorithmus"@de,
+        "K-means clustering"@en,
+        "k-means clustering"@en ;
+    dcterms:alternative "K-Means++ Algorithmus"@de,
+        "K-Median-Algorithmus"@de,
+        "K-means"@de ;
+    dcterms:description "mathematisches Verfahren zur Clusteranalyse"@de,
+        "vector quantization method that partitions n observations into k clusters in which each observation belongs to the cluster with the nearest mean, serving as a prototype of the cluster"@en ;
+    sml:prefDescription "mathematisches Verfahren zur Clusteranalyse"@de,
+        "vector quantization method that partitions n observations into k clusters in which each observation belongs to the cluster with the nearest mean, serving as a prototype of the cluster"@en ;
+    rdfs:subClassOf sml:Cluster_analysis ;
+    owl:sameAs <http://dbpedia.org/resource/K-means_clustering>,
+        <http://dbpedia.org/resource/k-means_clustering>,
+        <http://de.dbpedia.org/resource/K-Means-Algorithmus>,
+        <http://www.wikidata.org/entity/Q310401> ;
+    skos:prefLabel "K-Means-Algorithmus"@de,
+        "K-means clustering"@en,
+        "k-means clustering"@en .
+
+sml:K-medians a owl:Class ;
+    rdfs:label "K-medians"@en,
+        "K-medians clustering"@en ;
+    dcterms:description "Algorithmus zur Clusteranalyse"@de,
+        "cluster analysis algorithm"@en ;
+    sml:prefDescription "Algorithmus zur Clusteranalyse"@de,
+        "cluster analysis algorithm"@en ;
+    rdfs:subClassOf sml:Cluster_analysis ;
+    owl:sameAs <http://dbpedia.org/resource/K-medians>,
+        <http://www.wikidata.org/entity/Q4041956> ;
+    skos:prefLabel "K-medians"@en .
+
+sml:K-nearest_neighbors_algorithm a owl:Class ;
+    rdfs:label "Nächste-Nachbarn-Klassifikation"@de,
+        "K-nearest neighbors algorithm"@en,
+        "k-nearest neighbors algorithm"@en ;
+    rdfs:subClassOf sml:Instance-based_algorithm,
+        sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/K-nearest_neighbors_algorithm>,
+        <http://dbpedia.org/resource/k-nearest_neighbors_algorithm>,
+        <http://de.dbpedia.org/resource/Nächste-Nachbarn-Klassifikation>,
+        <http://www.wikidata.org/entity/Q1071612> ;
+    skos:prefLabel "Nächste-Nachbarn-Klassifikation"@de,
+        "K-nearest neighbors algorithm"@en,
+        "k-nearest neighbors algorithm"@en .
+
+sml:K-nearest_neighbors_classification a owl:Class ;
+    rdfs:label "k-nearest neighbors classification"@en ;
+    rdfs:subClassOf sml:Anomaly_detection ;
+    owl:sameAs <http://dbpedia.org/resource/k-nearest_neighbors_classification> ;
+    skos:prefLabel "k-nearest neighbors classification"@en .
+
+sml:Lazy_learning a owl:Class ;
+    rdfs:label "Lazy learning"@de,
+        "Lazy learning"@en,
+        "lazy learning"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Lazy_learning>,
+        <http://de.dbpedia.org/resource/Lazy_learning>,
+        <http://www.wikidata.org/entity/Q130657> ;
+    skos:prefLabel "Lazy learning"@de,
+        "Lazy learning"@en .
+
+sml:Learning_Automata a owl:Class ;
+    rdfs:label "Learning Automata"@en,
+        "Learning automata"@en ;
+    rdfs:subClassOf sml:Reinforcement_learning,
+        sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Learning_Automata>,
+        <http://www.wikidata.org/entity/Q6510160> ;
+    skos:prefLabel "Learning Automata"@en .
+
+sml:Learning_Vector_Quantization a owl:Class ;
+    rdfs:label "Lernende Vektorquantisierung"@de,
+        "Learning Vector Quantization"@en ;
+    dcterms:alternative "Learning Vector Quantization"@de ;
+    sml:abbreviation "LVQ"@de ;
+    sml:prefAbbreviation "LVQ"@de ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Learning_Vector_Quantization>,
+        <http://de.dbpedia.org/resource/Lernende_Vektorquantisierung>,
+        <http://www.wikidata.org/entity/Q1820283> ;
+    skos:prefLabel "Lernende Vektorquantisierung"@de,
+        "Learning Vector Quantization"@en .
+
+sml:Learning_to_rank a owl:Class ;
+    rdfs:label "Learning to rank"@en,
+        "learning to rank"@en ;
+    dcterms:alternative "machine-learned ranking"@en ;
+    dcterms:description "Anwendung im maschinellen Lernen"@de,
+        "application of machine learning"@en ;
+    sml:abbreviation "MLR"@en ;
+    sml:prefAbbreviation "MLR"@en ;
+    sml:prefDescription "Anwendung im maschinellen Lernen"@de,
+        "application of machine learning"@en ;
+    rdfs:subClassOf sml:Other_machine_learning_methods_and_problems ;
+    owl:sameAs <http://dbpedia.org/resource/Learning_to_rank>,
+        <http://www.wikidata.org/entity/Q4330127> ;
+    skos:prefLabel "Learning to rank"@en .
+
+sml:Learning_vector_quantization a owl:Class ;
+    rdfs:label "Lernende Vektorquantisierung"@de,
+        "Learning vector quantization"@en ;
+    rdfs:subClassOf sml:Instance-based_algorithm ;
+    owl:sameAs <http://dbpedia.org/resource/Learning_vector_quantization>,
+        <http://de.dbpedia.org/resource/Lernende_Vektorquantisierung>,
+        <http://www.wikidata.org/entity/Q1820283> ;
+    skos:prefLabel "Lernende Vektorquantisierung"@de,
+        "Learning vector quantization"@en .
+
+sml:Least-angle_regression a owl:Class ;
+    rdfs:label "Least-angle regression"@en ;
+    rdfs:subClassOf sml:Regularization_algorithm ;
+    owl:sameAs <http://dbpedia.org/resource/Least-angle_regression>,
+        <http://www.wikidata.org/entity/Q17086233> ;
+    skos:prefLabel "Least-angle regression"@en .
+
+sml:Least_Absolute_Shrinkage_and_Selection_Operator a owl:Class ;
+    rdfs:label "Least Absolute Shrinkage and Selection Operator"@en,
+        "lasso"@en ;
+    dcterms:alternative "least absoute shrinkage and selection operator"@en ;
+    dcterms:description "statistical method"@en ;
+    sml:abbreviation "LASSO"@en ;
+    sml:prefAbbreviation "LASSO"@en ;
+    sml:prefDescription "statistical method"@en ;
+    rdfs:subClassOf sml:Regularization_algorithm ;
+    owl:sameAs <http://dbpedia.org/resource/Least_Absolute_Shrinkage_and_Selection_Operator>,
+        <http://www.wikidata.org/entity/Q20789991> ;
+    skos:prefLabel "Least Absolute Shrinkage and Selection Operator"@en .
+
+sml:Linear_discriminant_analysis a owl:Class ;
+    rdfs:label "Diskriminanzfunktion"@de,
+        "Linear discriminant analysis"@en,
+        "linear discriminant analysis"@en ;
+    dcterms:alternative "Diskriminante Funktion"@de,
+        "Fisher'sche Diskriminante"@de,
+        "Fisher'sche Diskriminanzfunktion"@de,
+        "Fishersche Diskriminante"@de,
+        "Fishersche Diskriminanzfunktion"@de,
+        "Fisher’sche Diskriminante"@de,
+        "Fisher’sche Diskriminanzfunktion"@de,
+        "Linear discriminant analysis"@de,
+        "Trennfunktion"@de,
+        "Linear discriminant analysis"@en ;
+    dcterms:description "method used in statistics, pattern recognition and machine learning"@en ;
+    sml:abbreviation "FLD"@de,
+        "LDA"@en ;
+    sml:prefAbbreviation "FLD"@de,
+        "LDA"@en ;
+    sml:prefDescription "method used in statistics, pattern recognition and machine learning"@en ;
+    rdfs:subClassOf sml:Dimensionality_reduction ;
+    owl:sameAs <http://dbpedia.org/resource/Linear_discriminant_analysis>,
+        <http://de.dbpedia.org/resource/Diskriminanzfunktion>,
+        <http://www.wikidata.org/entity/Q1228929> ;
+    skos:prefLabel "Diskriminanzfunktion"@de,
+        "Linear discriminant analysis"@en .
+
+sml:Linear_regression a owl:Class ;
+    rdfs:label "Lineare Regression"@de,
+        "Linear regression"@en,
+        "linear regression"@en ;
+    dcterms:alternative "linear regression analysis"@en,
+        "linear regression method"@en ;
+    dcterms:description "Spezialfall der Regressionsanalyse"@de,
+        "statistical approach for modeling the relationship between a scalar dependent variable and one or more explanatory variables"@en ;
+    sml:prefDescription "Spezialfall der Regressionsanalyse"@de,
+        "statistical approach for modeling the relationship between a scalar dependent variable and one or more explanatory variables"@en ;
+    rdfs:subClassOf sml:Linear_classifier,
+        sml:Regression_analysis,
+        sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Linear_regression>,
+        <http://de.dbpedia.org/resource/Lineare_Regression>,
+        <http://www.wikidata.org/entity/Q10861030> ;
+    skos:prefLabel "Lineare Regression"@de,
+        "Linear regression"@en .
+
+sml:Local_outlier_factor a owl:Class ;
+    rdfs:label "Local Outlier Factor"@de,
+        "Lokaler Ausreißerfaktor"@de,
+        "Local outlier factor"@en,
+        "local outlier factor"@en ;
+    dcterms:alternative "Local Outlier Factor"@en ;
+    dcterms:description "Algorithmus der mathematischen Statistik zur Erkennung von Ausreißern"@de,
+        "algorithm"@en ;
+    sml:prefDescription "Algorithmus der mathematischen Statistik zur Erkennung von Ausreißern"@de,
+        "algorithm"@en ;
+    rdfs:subClassOf sml:Anomaly_detection ;
+    owl:sameAs <http://dbpedia.org/resource/Local_outlier_factor>,
+        <http://de.dbpedia.org/resource/Local_Outlier_Factor>,
+        <http://www.wikidata.org/entity/Q387942> ;
+    skos:prefLabel "Local Outlier Factor"@de,
+        "Local outlier factor"@en .
+
+sml:Logic_learning_machine a owl:Class ;
+    rdfs:label "Logic learning machine"@en ;
+    rdfs:subClassOf sml:Artificial_neural_network ;
+    owl:sameAs <http://dbpedia.org/resource/Logic_learning_machine>,
+        <http://www.wikidata.org/entity/Q25051557> ;
+    skos:prefLabel "Logic learning machine"@en .
+
+sml:Logistic_Model_Tree a owl:Class ;
+    rdfs:label "Logistic Model Tree"@en,
+        "Logistic model tree"@en ;
+    dcterms:description "algorithm in computer science"@en ;
+    sml:prefDescription "algorithm in computer science"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Logistic_Model_Tree>,
+        <http://www.wikidata.org/entity/Q6667643> ;
+    skos:prefLabel "Logistic Model Tree"@en .
+
+sml:Logistic_regression a owl:Class ;
+    rdfs:label "Logistische Regression"@de,
+        "Logistic regression"@en,
+        "logistic regression model"@en ;
+    dcterms:alternative "Logit-Modell"@de,
+        "Logitmodell"@de,
+        "logistic model"@en,
+        "logistic models"@en,
+        "logistic regression"@en,
+        "logit model"@en,
+        "logit regression"@en ;
+    dcterms:description "Regressionsanalyse"@de,
+        "statistical model"@en ;
+    sml:prefDescription "Regressionsanalyse"@de,
+        "statistical model"@en ;
+    rdfs:subClassOf sml:Linear_classifier,
+        sml:Regression_analysis,
+        sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Logistic_regression>,
+        <http://de.dbpedia.org/resource/Logistische_Regression>,
+        <http://www.wikidata.org/entity/Q1132755> ;
+    skos:prefLabel "Logistische Regression"@de,
+        "Logistic regression"@en .
+
+sml:Long_short-term_memory a owl:Class ;
+    rdfs:label "Long short-term memory"@de,
+        "langes Kurzzeitgedächtnis"@de,
+        "Long short-term memory"@en,
+        "long short-term memory"@en ;
+    dcterms:alternative "Long Short-Term Memory"@de ;
+    dcterms:description "Konzept im Bereich künstlicher Intelligenz"@de,
+        "recurrent neural network architecture"@en ;
+    sml:abbreviation "LSTM"@en ;
+    sml:prefAbbreviation "LSTM"@en ;
+    sml:prefDescription "Konzept im Bereich künstlicher Intelligenz"@de,
+        "recurrent neural network architecture"@en ;
+    rdfs:subClassOf sml:Recurrent_neural_network ;
+    owl:sameAs <http://dbpedia.org/resource/Long_short-term_memory>,
+        <http://de.dbpedia.org/resource/Long_short-term_memory>,
+        <http://www.wikidata.org/entity/Q6673524> ;
+    skos:prefLabel "Long short-term memory"@de,
+        "Long short-term memory"@en .
+
+sml:Mean-shift a owl:Class ;
+    rdfs:label "Mean-shift"@en ;
+    rdfs:subClassOf sml:Cluster_analysis ;
+    owl:sameAs <http://dbpedia.org/resource/Mean-shift>,
+        <http://www.wikidata.org/entity/Q6803557> ;
+    skos:prefLabel "Mean-shift"@en .
+
+sml:Mean_shift a owl:Class ;
+    rdfs:label "Mean shift"@en,
+        "Mean-shift"@en ;
+    dcterms:description "algorithm used to determine the modes of distribution of probability of a dataset"@en ;
+    sml:prefDescription "algorithm used to determine the modes of distribution of probability of a dataset"@en ;
+    rdfs:subClassOf sml:Cluster_analysis ;
+    owl:sameAs <http://dbpedia.org/resource/Mean_shift>,
+        <http://www.wikidata.org/entity/Q6803557> ;
+    skos:prefLabel "Mean shift"@en .
+
+sml:Multi-label_classification a owl:Class ;
+    rdfs:label "Multi-label classification"@en ;
+    dcterms:description "variants of the classification problem where multiple labels may be assigned to each instance"@en ;
+    sml:prefDescription "variants of the classification problem where multiple labels may be assigned to each instance"@en ;
+    rdfs:subClassOf sml:Statistical_classification ;
+    owl:sameAs <http://dbpedia.org/resource/Multi-label_classification>,
+        <http://www.wikidata.org/entity/Q3553958> ;
+    skos:prefLabel "Multi-label classification"@en .
+
+sml:Multidimensional_scaling a owl:Class ;
+    rdfs:label "Multidimensionale Skalierung"@de,
+        "Multidimensional scaling"@en,
+        "multidimensional scaling"@en ;
+    dcterms:description "set of related ordination techniques used in information visualization"@en ;
+    sml:abbreviation "NMDS"@de,
+        "MDS"@en ;
+    sml:prefAbbreviation "NMDS"@de,
+        "MDS"@en ;
+    sml:prefDescription "set of related ordination techniques used in information visualization"@en ;
+    rdfs:subClassOf sml:Dimensionality_reduction ;
+    owl:sameAs <http://dbpedia.org/resource/Multidimensional_scaling>,
+        <http://de.dbpedia.org/resource/Multidimensionale_Skalierung>,
+        <http://www.wikidata.org/entity/Q620538> ;
+    skos:prefLabel "Multidimensionale Skalierung"@de,
+        "Multidimensional scaling"@en .
+
+sml:Multilayer_perceptron a owl:Class ;
+    rdfs:label "Mehrlagiges Perzeptron"@de,
+        "mehrlagiges Perzeptron"@de,
+        "Multilayer perceptron"@en,
+        "multilayer perceptron"@en ;
+    dcterms:alternative "Multi-Layer Perceptron"@en ;
+    dcterms:description "type of feedforward neural network"@en ;
+    sml:abbreviation "MLP"@en ;
+    sml:prefAbbreviation "MLP"@en ;
+    sml:prefDescription "type of feedforward neural network"@en ;
+    rdfs:subClassOf sml:Artificial_neural_network ;
+    owl:sameAs <http://dbpedia.org/resource/Multilayer_perceptron>,
+        <http://de.dbpedia.org/resource/Mehrlagiges_Perzeptron>,
+        <http://www.wikidata.org/entity/Q2991667> ;
+    skos:prefLabel "Mehrlagiges Perzeptron"@de,
+        "Multilayer perceptron"@en .
+
+sml:Multinomial_Naive_Bayes a owl:Class ;
+    rdfs:label "Multinomial Naive Bayes"@en ;
+    rdfs:subClassOf sml:Bayesian_statistics ;
+    owl:sameAs <http://dbpedia.org/resource/Multinomial_Naive_Bayes>,
+        <http://www.wikidata.org/entity/Q812530> ;
+    skos:prefLabel "Multinomial Naive Bayes"@en .
+
+sml:Multinomial_logistic_regression a owl:Class ;
+    rdfs:label "Multinomial logistic regression"@de,
+        "Multinomiale logistische Regression"@de,
+        "Multinomial logistic regression"@en ;
+    dcterms:alternative "Maximum Entropy Classifier"@en,
+        "Multi-class Logistic Regression"@en,
+        "Multinomial Logistic"@en,
+        "Softmax Regression"@en ;
+    dcterms:description "regression for more than two discrete outcomes"@en ;
+    sml:abbreviation "SMR"@en ;
+    sml:prefAbbreviation "SMR"@en ;
+    sml:prefDescription "regression for more than two discrete outcomes"@en ;
+    rdfs:subClassOf sml:Linear_classifier ;
+    owl:sameAs <http://dbpedia.org/resource/Multinomial_logistic_regression>,
+        <http://de.dbpedia.org/resource/Multinomiale_logistische_Regression>,
+        <http://www.wikidata.org/entity/Q1650843> ;
+    skos:prefLabel "Multinomiale logistische Regression"@de,
+        "Multinomial logistic regression"@en .
+
+sml:Multivariate_adaptive_regression_splines a owl:Class ;
+    rdfs:label "Multivariate adaptive regression splines"@en ;
+    dcterms:description "non-parametric regression technique"@en ;
+    sml:abbreviation "MARS"@en ;
+    sml:prefAbbreviation "MARS"@en ;
+    sml:prefDescription "non-parametric regression technique"@en ;
+    rdfs:subClassOf sml:Regression_analysis ;
+    owl:sameAs <http://dbpedia.org/resource/Multivariate_adaptive_regression_splines>,
+        <http://www.wikidata.org/entity/Q3455882> ;
+    skos:prefLabel "Multivariate adaptive regression splines"@en .
+
+sml:Naive_Bayes a owl:Class ;
+    rdfs:label "Naive Bayes"@en ;
+    rdfs:subClassOf sml:Bayesian_network,
+        sml:Bayesian_statistics ;
+    owl:sameAs <http://dbpedia.org/resource/Naive_Bayes>,
+        <http://www.wikidata.org/entity/Q812530> ;
+    skos:prefLabel "Naive Bayes"@en .
+
+sml:Naive_Bayes_classifier a owl:Class ;
+    rdfs:label "Naiver Bayes-Klassifikator"@de,
+        "Naive Bayes classifier"@en ;
+    dcterms:alternative "Naive Bayes-Klassifikator"@de,
+        "Naive Bayes"@en ;
+    dcterms:description "classification algorithm"@en ;
+    sml:prefDescription "classification algorithm"@en ;
+    rdfs:subClassOf sml:Linear_classifier,
+        sml:Probabilistic_classifier,
+        sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Naive_Bayes_classifier>,
+        <http://www.wikidata.org/entity/Q812530> ;
+    skos:prefLabel "Naive Bayes classifier"@en .
+
+sml:Nearest_neighbor__pattern_recognition_ a owl:Class ;
+    rdfs:label "Nächste-Nachbarn-Klassifikation"@de,
+        "Nearest neighbor (pattern recognition)"@en,
+        "k-nearest neighbors algorithm"@en ;
+    dcterms:alternative "K-Nearest-Neighbor"@de,
+        "Nächster-Nachbar-Klassifikator"@de,
+        "k-nearest neighbor algorithm"@en ;
+    dcterms:description "mathematische Methode zur Schätzung von Wahrscheinlichkeitsdichtefunktionen"@de,
+        "classification algorithm"@en ;
+    sml:abbreviation "K-NN"@en,
+        "KNN"@en ;
+    sml:prefAbbreviation "KNN"@en ;
+    sml:prefDescription "mathematische Methode zur Schätzung von Wahrscheinlichkeitsdichtefunktionen"@de,
+        "classification algorithm"@en ;
+    rdfs:subClassOf sml:Minimum_message_length,
+        sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Nearest_neighbor_(pattern_recognition)>,
+        <http://de.dbpedia.org/resource/Nächste-Nachbarn-Klassifikation>,
+        <http://www.wikidata.org/entity/Q1071612> ;
+    skos:prefLabel "Nächste-Nachbarn-Klassifikation"@de,
+        "Nearest neighbor (pattern recognition)"@en .
+
+sml:Non-negative_matrix_factorization a owl:Class ;
+    rdfs:label "Non-negative matrix factorization"@en,
+        "non-negative matrix factorization"@en ;
+    dcterms:alternative "nonnegative matrix factorization"@en ;
+    dcterms:description "algorithms for matrix decomposition"@en ;
+    sml:abbreviation "NMF"@en ;
+    sml:prefAbbreviation "NMF"@en ;
+    sml:prefDescription "algorithms for matrix decomposition"@en ;
+    rdfs:subClassOf sml:Dimensionality_reduction ;
+    owl:sameAs <http://dbpedia.org/resource/Non-negative_matrix_factorization>,
+        <http://www.wikidata.org/entity/Q10843505> ;
+    skos:prefLabel "Non-negative matrix factorization"@en .
+
+sml:OPTICS_algorithm a owl:Class ;
+    rdfs:label "OPTICS algorithm"@en ;
+    dcterms:description "mathematischer Algorithmus zur Clusteranalyse"@de,
+        "algorithm for finding density based clusters in spatial data"@en ;
+    sml:abbreviation "OPTICS"@de ;
+    sml:prefAbbreviation "OPTICS"@de ;
+    sml:prefDescription "mathematischer Algorithmus zur Clusteranalyse"@de,
+        "algorithm for finding density based clusters in spatial data"@en ;
+    rdfs:subClassOf sml:Cluster_analysis ;
+    owl:sameAs <http://dbpedia.org/resource/OPTICS_algorithm>,
+        <http://de.dbpedia.org/resource/OPTICS>,
+        <http://www.wikidata.org/entity/Q2007847> ;
+    skos:prefLabel "OPTICS"@de,
+        "OPTICS algorithm"@en .
+
+sml:Occam_learning a owl:Class ;
+    rdfs:label "Occam learning"@en ;
+    rdfs:subClassOf sml:Other_machine_learning_methods_and_problems ;
+    owl:sameAs <http://dbpedia.org/resource/Occam_learning>,
+        <http://www.wikidata.org/entity/Q25048571> ;
+    skos:prefLabel "Occam learning"@en .
+
+sml:Online_machine_learning a owl:Class ;
+    rdfs:label "Onlinelearning"@de,
+        "Online machine learning"@en,
+        "online machine learning"@en ;
+    dcterms:alternative "adaptive learning"@en,
+        "incremental learning"@en,
+        "online learning"@en ;
+    dcterms:description "method of machine learning"@en ;
+    sml:prefDescription "method of machine learning"@en ;
+    rdfs:subClassOf sml:Other_machine_learning_methods_and_problems ;
+    owl:sameAs <http://dbpedia.org/resource/Online_machine_learning>,
+        <http://www.wikidata.org/entity/Q7094097> ;
+    skos:prefLabel "Online machine learning"@en .
+
+sml:Ordinal_classification a owl:Class ;
+    rdfs:label "Skalenniveau"@de,
+        "Ordinal classification"@en,
+        "level of measurement"@en ;
+    dcterms:alternative "Messniveau"@de,
+        "Skalendignität"@de,
+        "type of measurable quantity"@en,
+        "type of measurement"@en,
+        "type of measurement scale"@en,
+        "type of scale of measure"@en,
+        "type of variable of measurement"@en ;
+    dcterms:description "Eigenschaft von Merkmalen bzw. Variablen"@de,
+        "classification that describes the nature of information within the numbers assigned to variables"@en ;
+    sml:prefDescription "Eigenschaft von Merkmalen bzw. Variablen"@de,
+        "classification that describes the nature of information within the numbers assigned to variables"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Ordinal_classification>,
+        <http://de.dbpedia.org/resource/Skalenniveau>,
+        <http://www.wikidata.org/entity/Q951437> ;
+    skos:prefLabel "Skalenniveau"@de,
+        "Ordinal classification"@en .
+
+sml:Ordinary_least_squares_regression a owl:Class ;
+    rdfs:label "Methode der kleinsten Quadrate"@de,
+        "Ordinary least squares regression"@en,
+        "ordinary least squares"@en ;
+    dcterms:alternative "linear least squares"@en ;
+    dcterms:description "Die Methode der kleinsten Quadrate ist das mathematische Standardverfahren zur Ausgleichungsrechnung"@de,
+        "method for estimating the unknown parameters in a linear regression model"@en ;
+    sml:abbreviation "OLS"@de,
+        "OLS"@en ;
+    sml:prefAbbreviation "OLS"@de,
+        "OLS"@en ;
+    sml:prefDescription "Die Methode der kleinsten Quadrate ist das mathematische Standardverfahren zur Ausgleichungsrechnung"@de,
+        "method for estimating the unknown parameters in a linear regression model"@en ;
+    rdfs:subClassOf sml:Regression_analysis ;
+    owl:sameAs <http://dbpedia.org/resource/Ordinary_least_squares_regression>,
+        <http://www.wikidata.org/entity/Q2912993> ;
+    skos:prefLabel "Ordinary least squares regression"@en .
+
+sml:PAC_learning a owl:Class ;
+    rdfs:label "Probably Approximately Correct Learning"@de,
+        "PAC learning"@en,
+        "Probably approximately correct learning"@en ;
+    dcterms:alternative "PAC learning"@en ;
+    dcterms:description "Wahrscheinlich Annähernd Richtiges Lernen"@de,
+        "framework for mathematical analysis of machine learning"@en ;
+    sml:abbreviation "WARL"@de ;
+    sml:prefAbbreviation "WARL"@de ;
+    sml:prefDescription "Wahrscheinlich Annähernd Richtiges Lernen"@de,
+        "framework for mathematical analysis of machine learning"@en ;
+    rdfs:subClassOf sml:Other_machine_learning_methods_and_problems ;
+    owl:sameAs <http://dbpedia.org/resource/PAC_learning>,
+        <http://de.dbpedia.org/resource/Probably_Approximately_Correct_Learning>,
+        <http://www.wikidata.org/entity/Q458526> ;
+    skos:prefLabel "Probably Approximately Correct Learning"@de,
+        "PAC learning"@en .
+
+sml:Partial_least_squares_regression a owl:Class ;
+    rdfs:label "Methode der partiellen kleinsten Quadrate"@de,
+        "Partial least squares regression"@en ;
+    dcterms:alternative "PLS regression"@en ;
+    rdfs:subClassOf sml:Dimensionality_reduction ;
+    owl:sameAs <http://dbpedia.org/resource/Partial_least_squares_regression>,
+        <http://www.wikidata.org/entity/Q422009> ;
+    skos:prefLabel "Partial least squares regression"@en .
+
+sml:Perceptron a owl:Class ;
+    rdfs:label "Perzeptron"@de,
+        "Perceptron"@en,
+        "perceptron"@en ;
+    dcterms:alternative "Perceptron"@de,
+        "Perceptron-Konvergenz-Theorem"@de ;
+    dcterms:description "vereinfachtes künstliches neuronales Netz"@de,
+        "algorithm for supervised learning of binary classifiers"@en ;
+    sml:prefDescription "vereinfachtes künstliches neuronales Netz"@de,
+        "algorithm for supervised learning of binary classifiers"@en ;
+    rdfs:subClassOf sml:Linear_classifier,
+        sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Perceptron>,
+        <http://de.dbpedia.org/resource/Perzeptron>,
+        <http://www.wikidata.org/entity/Q690207> ;
+    skos:prefLabel "Perzeptron"@de,
+        "Perceptron"@en .
+
+sml:Principal_component_analysis a owl:Class ;
+    rdfs:label "Hauptkomponentenanalyse"@de,
+        "Principal component analysis"@en,
+        "principal component analysis"@en ;
+    dcterms:alternative "principal components analysis"@en ;
+    dcterms:description "Verfahren der multivariaten Statistik"@de,
+        "conversion of a set of observations of possibly correlated variables into a set of values of linearly uncorrelated variables called principal components"@en ;
+    sml:abbreviation "PCA"@en ;
+    sml:prefAbbreviation "PCA"@en ;
+    sml:prefDescription "Verfahren der multivariaten Statistik"@de,
+        "conversion of a set of observations of possibly correlated variables into a set of values of linearly uncorrelated variables called principal components"@en ;
+    rdfs:subClassOf sml:Dimensionality_reduction ;
+    owl:sameAs <http://dbpedia.org/resource/Principal_component_analysis>,
+        <http://de.dbpedia.org/resource/Hauptkomponentenanalyse>,
+        <http://www.wikidata.org/entity/Q2873> ;
+    skos:prefLabel "Hauptkomponentenanalyse"@de,
+        "Principal component analysis"@en .
+
+sml:Principal_component_regression a owl:Class ;
+    rdfs:label "Hauptkomponentenregression"@de,
+        "Principal component regression"@en ;
+    dcterms:description "regressionsanalytisches Verfahren"@de,
+        "statistical technique"@en ;
+    sml:prefDescription "regressionsanalytisches Verfahren"@de,
+        "statistical technique"@en ;
+    rdfs:subClassOf sml:Dimensionality_reduction ;
+    owl:sameAs <http://dbpedia.org/resource/Principal_component_regression>,
+        <http://de.dbpedia.org/resource/Hauptkomponentenregression>,
+        <http://www.wikidata.org/entity/Q3455892> ;
+    skos:prefLabel "Hauptkomponentenregression"@de,
+        "Principal component regression"@en .
+
+sml:Probably_approximately_correct_learning a owl:Class ;
+    rdfs:label "Probably Approximately Correct Learning"@de,
+        "Probably approximately correct learning"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Probably_approximately_correct_learning>,
+        <http://de.dbpedia.org/resource/Probably_Approximately_Correct_Learning>,
+        <http://www.wikidata.org/entity/Q458526> ;
+    skos:prefLabel "Probably Approximately Correct Learning"@de,
+        "Probably approximately correct learning"@en .
+
+sml:Projection_pursuit a owl:Class ;
+    rdfs:label "Projection Pursuit"@de,
+        "Projection pursuit"@en ;
+    dcterms:description "statistisches Verfahren"@de,
+        "statistical technique"@en ;
+    sml:prefDescription "statistisches Verfahren"@de,
+        "statistical technique"@en ;
+    rdfs:subClassOf sml:Dimensionality_reduction ;
+    owl:sameAs <http://dbpedia.org/resource/Projection_pursuit>,
+        <http://de.dbpedia.org/resource/Projection_Pursuit>,
+        <http://www.wikidata.org/entity/Q382970> ;
+    skos:prefLabel "Projection Pursuit"@de,
+        "Projection pursuit"@en .
+
+sml:Proper_generalized_decomposition a owl:Class ;
+    rdfs:label "Proper generalized decomposition"@en,
+        "proper generalized decomposition"@en ;
+    dcterms:description "numerical method for solving boundary value problems"@en ;
+    sml:abbreviation "PGD"@en ;
+    sml:prefAbbreviation "PGD"@en ;
+    sml:prefDescription "numerical method for solving boundary value problems"@en ;
+    rdfs:subClassOf sml:Dimensionality_reduction ;
+    owl:sameAs <http://dbpedia.org/resource/Proper_generalized_decomposition>,
+        <http://www.wikidata.org/entity/Q55080117> ;
+    skos:prefLabel "Proper generalized decomposition"@en .
+
+sml:Q-learning a owl:Class ;
+    rdfs:label "Q-learning"@en ;
+    dcterms:description "Model free Reinforcement Learning algorithm. (Machine Learning algorithm)"@en ;
+    sml:prefDescription "Model free Reinforcement Learning algorithm. (Machine Learning algorithm)"@en ;
+    rdfs:subClassOf sml:Reinforcement_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Q-learning>,
+        <http://www.wikidata.org/entity/Q2664563> ;
+    skos:prefLabel "Q-learning"@en .
+
+sml:Quadratic_classifier a owl:Class ;
+    rdfs:label "Quadratic classifier"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Quadratic_classifier>,
+        <http://www.wikidata.org/entity/Q7268357> ;
+    skos:prefLabel "Quadratic classifier"@en .
+
+sml:Random_Forest a owl:Class ;
+    rdfs:label "Random Forest"@de,
+        "Random Forest"@en ;
+    rdfs:subClassOf sml:Ensemble_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Random_Forest>,
+        <http://de.dbpedia.org/resource/Random_Forest>,
+        <http://www.wikidata.org/entity/Q245748> ;
+    skos:prefLabel "Random Forest"@de,
+        "Random Forest"@en .
+
+sml:Random_forest a owl:Class ;
+    rdfs:label "Random Forest"@de,
+        "Random forest"@en,
+        "random forest"@en ;
+    dcterms:alternative "Zufallswald"@de,
+        "random forests"@en,
+        "randomized trees"@en ;
+    dcterms:description "Algorithmus aus dem Maschinellen Lernen"@de,
+        "statistical algorithm that is used to cluster points of data in functional groups"@en ;
+    sml:prefDescription "Algorithmus aus dem Maschinellen Lernen"@de,
+        "statistical algorithm that is used to cluster points of data in functional groups"@en ;
+    rdfs:subClassOf sml:Decision_tree_algorithms,
+        sml:Ensemble_learning,
+        sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Random_forest>,
+        <http://de.dbpedia.org/resource/Random_Forest>,
+        <http://www.wikidata.org/entity/Q245748> ;
+    skos:prefLabel "Random Forest"@de,
+        "Random forest"@en .
+
+sml:Relevance_vector_machine a owl:Class ;
+    rdfs:label "Relevance vector machine"@en,
+        "relevance vector machine"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Relevance_vector_machine>,
+        <http://www.wikidata.org/entity/Q7310972> ;
+    skos:prefLabel "Relevance vector machine"@en .
+
+sml:Restricted_Boltzmann_machine a owl:Class ;
+    rdfs:label "Restricted Boltzmann machine"@en ;
+    dcterms:description "class of artificial neural network"@en ;
+    sml:prefDescription "class of artificial neural network"@en ;
+    rdfs:subClassOf sml:Artificial_neural_network ;
+    owl:sameAs <http://dbpedia.org/resource/Restricted_Boltzmann_machine>,
+        <http://www.wikidata.org/entity/Q7316287> ;
+    skos:prefLabel "Restricted Boltzmann machine"@en .
+
+sml:Ridge_regression a owl:Class ;
+    rdfs:label "Tichonow-Regularisierung"@de,
+        "Ridge regression"@en,
+        "Tikhonov regularization"@en ;
+    dcterms:alternative "Phillips–Twomey method"@en,
+        "Tikhonov–Miller method"@en,
+        "constrained linear inversion"@en,
+        "constrained linear inversion method"@en,
+        "linear regularization"@en,
+        "ridge regression"@en,
+        "weight decay"@en ;
+    dcterms:description "regularization technique for ill-posed problems"@en ;
+    sml:prefDescription "regularization technique for ill-posed problems"@en ;
+    rdfs:subClassOf sml:Regularization_algorithm ;
+    owl:sameAs <http://dbpedia.org/resource/Ridge_regression>,
+        <http://www.wikidata.org/entity/Q2778212> ;
+    skos:prefLabel "Ridge regression"@en .
+
+sml:Ripple_down_rules a owl:Class ;
+    rdfs:label "Ripple down rules"@en,
+        "Ripple-down rules"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Ripple_down_rules>,
+        <http://www.wikidata.org/entity/Q7335709> ;
+    skos:prefLabel "Ripple down rules"@en .
+
+sml:SLIQ a owl:Class ;
+    rdfs:label "Redox-Flow-Batterie"@de,
+        "flow battery"@en ;
+    dcterms:alternative "Flussbatterie"@de,
+        "Flüssigbatterie"@de,
+        "Nasszelle"@de,
+        "Redox-Flow-Batterien"@de,
+        "Redox-Flussbatterie"@de,
+        "Strömungsbatterie"@de,
+        "redox flow battery"@en ;
+    dcterms:description "Flüssigbatterie, speichert elektrische Energie in chemischen Verbindungen"@de,
+        "type of electrochemical cell where chemical energy is provided by two chemical components dissolved in liquids"@en ;
+    sml:abbreviation "SLIQ"@en ;
+    sml:prefAbbreviation "SLIQ"@en ;
+    sml:prefDescription "Flüssigbatterie, speichert elektrische Energie in chemischen Verbindungen"@de,
+        "type of electrochemical cell where chemical energy is provided by two chemical components dissolved in liquids"@en ;
+    rdfs:subClassOf sml:Decision_tree_algorithms ;
+    owl:sameAs <http://dbpedia.org/resource/SLIQ>,
+        <http://de.dbpedia.org/resource/Redox-Flow-Batterie>,
+        <http://www.wikidata.org/entity/Q907511> ;
+    skos:prefLabel "Redox-Flow-Batterie"@de,
+        "SLIQ"@en .
+
+sml:SPRINT a owl:Class ;
+    rdfs:label "Sprint"@de,
+        "Sprint (Begriffsklärung)"@de,
+        "Sprint"@en ;
+    dcterms:description "Wikimedia-Begriffsklärungsseite"@de,
+        "Wikimedia disambiguation page"@en ;
+    sml:abbreviation "SPRINT"@en ;
+    sml:prefAbbreviation "SPRINT"@en ;
+    sml:prefDescription "Wikimedia-Begriffsklärungsseite"@de,
+        "Wikimedia disambiguation page"@en ;
+    rdfs:subClassOf sml:Boosting__machine_learning_ ;
+    owl:sameAs <http://dbpedia.org/resource/SPRINT>,
+        <http://de.dbpedia.org/resource/Sprint_(Begriffsklärung)>,
+        <http://www.wikidata.org/entity/Q1421125> ;
+    skos:prefLabel "Sprint (Begriffsklärung)"@de,
+        "SPRINT"@en .
+
+sml:Sammon_mapping a owl:Class ;
+    rdfs:label "Sammon mapping"@en,
+        "Sammon projection"@en ;
+    rdfs:subClassOf sml:Dimensionality_reduction ;
+    owl:sameAs <http://dbpedia.org/resource/Sammon_mapping>,
+        <http://www.wikidata.org/entity/Q11249674> ;
+    skos:prefLabel "Sammon mapping"@en .
+
+sml:Self-organizing_map a owl:Class ;
+    rdfs:label "Selbstorganisierende Karte"@de,
+        "Self-organizing map"@en,
+        "self-organizing map"@en ;
+    dcterms:alternative "Kohonen-karten"@de,
+        "Kohonenkarte"@de,
+        "Kohonenkarten"@de,
+        "Kohonennetz"@de,
+        "Kohonennetze"@de,
+        "Selbstorganisierende Karten"@de,
+        "Self-Organizing Maps"@de,
+        "Kohonen map"@en,
+        "Kohonen network"@en,
+        "self-organizing feature map"@en ;
+    dcterms:description "type of artificial neural network"@en ;
+    sml:abbreviation "SOFM"@de,
+        "SOFM"@en,
+        "SOM"@en ;
+    sml:prefAbbreviation "SOFM"@de,
+        "SOM"@en ;
+    sml:prefDescription "type of artificial neural network"@en ;
+    rdfs:subClassOf sml:Artificial_neural_network,
+        sml:Instance-based_algorithm ;
+    owl:sameAs <http://dbpedia.org/resource/Self-organizing_map>,
+        <http://de.dbpedia.org/resource/Selbstorganisierende_Karte>,
+        <http://www.wikidata.org/entity/Q1136838> ;
+    skos:prefLabel "Selbstorganisierende Karte"@de,
+        "Self-organizing map"@en .
+
+<http://simple-ml.de/rdf#Semi-supervised_learning#Generative_models> a owl:Class ;
+    rdfs:label "Semi-supervised learning#Generative models"@en ;
+    rdfs:subClassOf sml:Semi-supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Semi-supervised_learning#Generative_models> ;
+    skos:prefLabel "Semi-supervised learning#Generative models"@en .
+
+<http://simple-ml.de/rdf#Semi-supervised_learning#Laplacian_regularization> a owl:Class ;
+    rdfs:label "Semi-supervised learning#Laplacian regularization"@en ;
+    rdfs:subClassOf sml:Semi-supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Semi-supervised_learning#Laplacian_regularization> ;
+    skos:prefLabel "Semi-supervised learning#Laplacian regularization"@en .
+
+<http://simple-ml.de/rdf#Semi-supervised_learning#Low-density_separation> a owl:Class ;
+    rdfs:label "Semi-supervised learning#Low-density separation"@en ;
+    rdfs:subClassOf sml:Semi-supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Semi-supervised_learning#Low-density_separation> ;
+    skos:prefLabel "Semi-supervised learning#Low-density separation"@en .
+
+sml:Single-linkage_clustering a owl:Class ;
+    rdfs:label "Single-linkage clustering"@en ;
+    dcterms:description "agglomerative hierarchical clustering method"@en ;
+    sml:prefDescription "agglomerative hierarchical clustering method"@en ;
+    rdfs:subClassOf sml:Hierarchical_clustering ;
+    owl:sameAs <http://dbpedia.org/resource/Single-linkage_clustering>,
+        <http://www.wikidata.org/entity/Q7523744> ;
+    skos:prefLabel "Single-linkage clustering"@en .
+
+sml:Spiking_neural_network a owl:Class ;
+    rdfs:label "Gepulste neuronale Netze"@de,
+        "Spiking Neural Network"@de,
+        "Spiking neural network"@en,
+        "spiking neural network"@en ;
+    dcterms:alternative "Gepulste neuronale Netze"@de,
+        "Spiking neuralnetwork"@en ;
+    dcterms:description "artificial neural network that mimics real neurons by incorporate the concept of time, in which neurons fire when its potential reaches a target value"@en ;
+    sml:abbreviation "SNN"@de,
+        "SNN"@en ;
+    sml:prefAbbreviation "SNN"@de,
+        "SNN"@en ;
+    sml:prefDescription "artificial neural network that mimics real neurons by incorporate the concept of time, in which neurons fire when its potential reaches a target value"@en ;
+    rdfs:subClassOf sml:Artificial_neural_network ;
+    owl:sameAs <http://dbpedia.org/resource/Spiking_neural_network>,
+        <http://de.dbpedia.org/resource/Gepulste_neuronale_Netze>,
+        <http://www.wikidata.org/entity/Q9067355> ;
+    skos:prefLabel "Gepulste neuronale Netze"@de,
+        "Spiking neural network"@en .
+
+sml:Stacked_Auto-Encoders a owl:Class ;
+    rdfs:label "Deep Learning"@de,
+        "Stacked Auto-Encoders"@en ;
+    rdfs:subClassOf sml:Deep_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Stacked_Auto-Encoders>,
+        <http://de.dbpedia.org/resource/Deep_Learning>,
+        <http://www.wikidata.org/entity/Q197536> ;
+    skos:prefLabel "Deep Learning"@de,
+        "Stacked Auto-Encoders"@en .
+
+sml:Stacked_Generalization a owl:Class ;
+    rdfs:label "Ensemble learning"@de,
+        "Stacked Generalization"@en ;
+    rdfs:subClassOf sml:Ensemble_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Stacked_Generalization>,
+        <http://de.dbpedia.org/resource/Ensemble_learning>,
+        <http://www.wikidata.org/entity/Q245652> ;
+    skos:prefLabel "Ensemble learning"@de,
+        "Stacked Generalization"@en .
+
+<http://simple-ml.de/rdf#State–action–reward–state–action> a owl:Class ;
+    rdfs:label "State–action–reward–state–action"@en ;
+    sml:abbreviation "SARSA"@en ;
+    sml:prefAbbreviation "SARSA"@en ;
+    rdfs:subClassOf sml:Reinforcement_learning ;
+    owl:sameAs <http://dbpedia.org/resource/State–action–reward–state–action>,
+        <http://www.wikidata.org/entity/Q7388768> ;
+    skos:prefLabel "State–action–reward–state–action"@en .
+
+sml:Statistical_learning a owl:Class ;
+    rdfs:label "Maschinelles Lernen"@de,
+        "maschinelles Lernen"@de,
+        "Statistical learning"@en,
+        "machine learning"@en ;
+    dcterms:alternative "statistical learning"@en ;
+    dcterms:description "Algorithmen zur Erkennung nützlicher Muster in Datenmengen"@de,
+        "scientific study of algorithms and statistical models that computer systems use to perform tasks without explicit instructions"@en ;
+    sml:abbreviation "ML"@de,
+        "ML"@en ;
+    sml:prefAbbreviation "ML"@de,
+        "ML"@en ;
+    sml:prefDescription "Algorithmen zur Erkennung nützlicher Muster in Datenmengen"@de,
+        "scientific study of algorithms and statistical models that computer systems use to perform tasks without explicit instructions"@en ;
+    rdfs:subClassOf sml:Other_machine_learning_methods_and_problems ;
+    owl:sameAs <http://dbpedia.org/resource/Statistical_learning>,
+        <http://de.dbpedia.org/resource/Maschinelles_Lernen>,
+        <http://www.wikidata.org/entity/Q2539> ;
+    skos:prefLabel "Maschinelles Lernen"@de,
+        "Statistical learning"@en .
+
+sml:Stepwise_regression a owl:Class ;
+    rdfs:label "Stepwise regression"@en,
+        "stepwise regression"@en ;
+    dcterms:description "Method of statistical factor analysis"@en ;
+    sml:prefDescription "Method of statistical factor analysis"@en ;
+    rdfs:subClassOf sml:Regression_analysis ;
+    owl:sameAs <http://dbpedia.org/resource/Stepwise_regression>,
+        <http://www.wikidata.org/entity/Q7611170> ;
+    skos:prefLabel "Stepwise regression"@en .
+
+sml:Support-vector_machine a owl:Class ;
+    rdfs:label "Support Vector Machine"@de,
+        "Support-vector machine"@en,
+        "support vector machine"@en ;
+    dcterms:alternative "support vector machines"@en ;
+    dcterms:description "mathematisches Verfahren der Mustererkennung"@de,
+        "set of methods for supervised statistical learning"@en ;
+    sml:abbreviation "SVM"@de,
+        "SVM"@en ;
+    sml:prefAbbreviation "SVM"@de,
+        "SVM"@en ;
+    sml:prefDescription "mathematisches Verfahren der Mustererkennung"@de,
+        "set of methods for supervised statistical learning"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Support-vector_machine>,
+        <http://de.dbpedia.org/resource/Support_Vector_Machine>,
+        <http://www.wikidata.org/entity/Q282453> ;
+    skos:prefLabel "Support Vector Machine"@de,
+        "Support-vector machine"@en .
+
+sml:Support_vector_machine a owl:Class ;
+    rdfs:label "Support Vector Machine"@de,
+        "Support vector machine"@en ;
+    rdfs:subClassOf sml:Linear_classifier,
+        sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Support_vector_machine>,
+        <http://de.dbpedia.org/resource/Support_Vector_Machine>,
+        <http://www.wikidata.org/entity/Q282453> ;
+    skos:prefLabel "Support Vector Machine"@de,
+        "Support vector machine"@en .
+
+sml:Symbolic_machine_learning_algorithms a owl:Class ;
+    rdfs:label "Symbolic machine learning algorithms"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Symbolic_machine_learning_algorithms> ;
+    skos:prefLabel "Symbolic machine learning algorithms"@en .
+
+sml:T-distributed_stochastic_neighbor_embedding a owl:Class ;
+    rdfs:label "t-distributed stochastic neighbor embedding"@en ;
+    rdfs:subClassOf sml:Dimensionality_reduction ;
+    owl:sameAs <http://dbpedia.org/resource/t-distributed_stochastic_neighbor_embedding> ;
+    skos:prefLabel "t-distributed stochastic neighbor embedding"@en .
+
+sml:Temporal_difference_learning a owl:Class ;
+    rdfs:label "Temporal Difference Learning"@de,
+        "Temporal difference learning"@en ;
+    dcterms:alternative "TD-Learning"@de,
+        "TD Models"@en ;
+    dcterms:description "Methode des bestärkenden Lernens"@de,
+        "intelligent Tutoring System"@en ;
+    sml:prefDescription "Methode des bestärkenden Lernens"@de,
+        "intelligent Tutoring System"@en ;
+    rdfs:subClassOf sml:Reinforcement_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Temporal_difference_learning>,
+        <http://de.dbpedia.org/resource/Temporal_Difference_Learning>,
+        <http://www.wikidata.org/entity/Q7698910> ;
+    skos:prefLabel "Temporal Difference Learning"@de,
+        "Temporal difference learning"@en .
+
+sml:Transduction__machine_learning_ a owl:Class ;
+    rdfs:label "Transduction"@en,
+        "Transduction (machine learning)"@en ;
+    dcterms:description "Type of statistical inference"@en ;
+    sml:prefDescription "Type of statistical inference"@en ;
+    rdfs:subClassOf sml:Semi-supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Transduction_(machine_learning)>,
+        <http://www.wikidata.org/entity/Q7833965> ;
+    skos:prefLabel "Transduction (machine learning)"@en .
+
+sml:Transformer__machine_learning_model_ a owl:Class ;
+    rdfs:label "Transformer"@de,
+        "Transformer (Maschinelles Lernen)"@de,
+        "Transformer (machine learning model)"@en,
+        "transformer"@en ;
+    dcterms:alternative "transformer architecture"@en,
+        "transformer model"@en,
+        "transformers"@en ;
+    dcterms:description "Ein Maschinenlernmodell von Google Brain"@de,
+        "A machine learning model from Google Brain"@en ;
+    sml:prefDescription "Ein Maschinenlernmodell von Google Brain"@de,
+        "A machine learning model from Google Brain"@en ;
+    rdfs:subClassOf sml:Artificial_neural_network ;
+    owl:sameAs <http://dbpedia.org/resource/Transformer_(machine_learning_model)>,
+        <http://de.dbpedia.org/resource/Transformer_(Maschinelles_Lernen)>,
+        <http://www.wikidata.org/entity/Q85810444> ;
+    skos:prefLabel "Transformer (Maschinelles Lernen)"@de,
+        "Transformer (machine learning model)"@en .
+
+sml:U-Net a owl:Class ;
+    rdfs:label "U-Net"@en ;
+    dcterms:description "convolutoonal neural network developed at University of Freiburg"@en ;
+    sml:prefDescription "convolutoonal neural network developed at University of Freiburg"@en ;
+    rdfs:subClassOf sml:Convolutional_neural_network ;
+    owl:sameAs <http://dbpedia.org/resource/U-Net>,
+        <http://www.wikidata.org/entity/Q55636383> ;
+    skos:prefLabel "U-Net"@en .
+
+sml:VC_theory a owl:Class ;
+    rdfs:label "VC theory"@en,
+        "Vapnik–Chervonenkis theory"@en ;
+    dcterms:description "theory"@en ;
+    sml:prefDescription "theory"@en ;
+    rdfs:subClassOf sml:Other_machine_learning_methods_and_problems ;
+    owl:sameAs <http://dbpedia.org/resource/VC_theory>,
+        <http://www.wikidata.org/entity/Q819095> ;
+    skos:prefLabel "VC theory"@en .
+
+sml:Vector_Quantization a owl:Class ;
+    rdfs:label "Vektorquantisierung"@de,
+        "Vector Quantization"@en,
+        "vector quantization"@en ;
+    dcterms:alternative "Vector Quantization, VQ"@en,
+        "Vector quantisation"@en,
+        "block quantization"@en,
+        "pattern matching quantization"@en ;
+    dcterms:description "signal processing technique"@en ;
+    sml:prefDescription "signal processing technique"@en ;
+    rdfs:subClassOf sml:Unsupervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Vector_Quantization>,
+        <http://de.dbpedia.org/resource/Vektorquantisierung>,
+        <http://www.wikidata.org/entity/Q612536> ;
+    skos:prefLabel "Vektorquantisierung"@de,
+        "Vector Quantization"@en .
+
+sml:Bayesian_network a owl:Class ;
+    rdfs:label "Bayessches Netz"@de,
+        "bayessches Netz"@de,
+        "Bayesian network"@en ;
+    dcterms:alternative "Bayes'sches Netz"@de,
+        "Bayes’sches Netz"@de,
+        "Kausalnetz"@de,
+        "kausales Netz"@de,
+        "Bayes net"@en,
+        "belief network"@en,
+        "decision network"@en ;
+    dcterms:description "ein gerichteter azyklischer Graph, in dem die Knoten Zufallsvariablen und die Kanten bedingte Abhängigkeiten zwischen den Variablen beschreiben"@de,
+        "probabilistic graphical model that represents a set of variables and their conditional dependencies via a directed acyclic graph"@en ;
+    sml:prefDescription "ein gerichteter azyklischer Graph, in dem die Knoten Zufallsvariablen und die Kanten bedingte Abhängigkeiten zwischen den Variablen beschreiben"@de,
+        "probabilistic graphical model that represents a set of variables and their conditional dependencies via a directed acyclic graph"@en ;
+    rdfs:subClassOf sml:Graphical_model,
+        sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Bayesian_network>,
+        <http://de.dbpedia.org/resource/Bayessches_Netz>,
+        <http://www.wikidata.org/entity/Q812540> ;
+    skos:prefLabel "Bayessches Netz"@de,
+        "Bayesian network"@en .
+
+sml:Boosting__machine_learning_ a owl:Class ;
+    rdfs:label "Boosting"@de,
+        "Boosting (machine learning)"@en,
+        "boosting"@en ;
+    dcterms:description "Algorithmus der automatischen Klassifizierung"@de,
+        "method in machine learning"@en ;
+    sml:prefDescription "Algorithmus der automatischen Klassifizierung"@de,
+        "method in machine learning"@en ;
+    rdfs:subClassOf sml:Ensemble_learning,
+        sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Boosting_(machine_learning)>,
+        <http://de.dbpedia.org/resource/Boosting>,
+        <http://www.wikidata.org/entity/Q466303> ;
+    skos:prefLabel "Boosting"@de,
+        "Boosting (machine learning)"@en .
+
+sml:Convolutional_neural_network a owl:Class ;
+    rdfs:label "Convolutional Neural Network"@de,
+        "Convolutional neural network"@en,
+        "convolutional neural network"@en ;
+    dcterms:alternative "ConvNet"@en,
+        "Convolution Neural Network"@en,
+        "Convolutional Net"@en,
+        "Convolutional Network"@en,
+        "convolutional neural-network"@en ;
+    dcterms:description "spezielles Konzept Neuronaler Netze"@de,
+        "A class of deep neural networks, most commonly applied to analyzing visual imagery."@en ;
+    sml:abbreviation "CNN"@de,
+        "CNN"@en ;
+    sml:prefAbbreviation "CNN"@de,
+        "CNN"@en ;
+    sml:prefDescription "spezielles Konzept Neuronaler Netze"@de,
+        "A class of deep neural networks, most commonly applied to analyzing visual imagery."@en ;
+    rdfs:subClassOf sml:Artificial_neural_network,
+        sml:Deep_learning,
+        sml:Feedforward_neural_network ;
+    owl:sameAs <http://dbpedia.org/resource/Convolutional_neural_network>,
+        <http://de.dbpedia.org/resource/Convolutional_Neural_Network>,
+        <http://www.wikidata.org/entity/Q17084460> ;
+    skos:prefLabel "Convolutional Neural Network"@de,
+        "Convolutional neural network"@en .
+
+sml:Probabilistic_classifier a owl:Class ;
+    rdfs:label "Probabilistische Klassifikation"@de,
+        "Class membership probabilities"@en,
+        "Probabilistic classifier"@en ;
+    rdfs:subClassOf sml:Statistical_classification ;
+    owl:sameAs <http://dbpedia.org/resource/Probabilistic_classifier>,
+        <http://de.dbpedia.org/resource/Probabilistische_Klassifikation>,
+        <http://www.wikidata.org/entity/Q5128022> ;
+    skos:prefLabel "Probabilistische Klassifikation"@de,
+        "Probabilistic classifier"@en .
+
+sml:Structured_prediction a mex-algo:AlgorithmClass,
+        owl:Class ;
+    rdfs:label "Structured prediction"@en,
+        "structured prediction"@en ;
+    dcterms:description "supervised machine learning techniques"@en ;
+    sml:prefDescription "supervised machine learning techniques"@en ;
+    owl:sameAs <http://dbpedia.org/resource/Structured_prediction>,
+        <http://www.wikidata.org/entity/Q7625208> ;
+    skos:prefLabel "Structured prediction"@en .
+
+sml:Anomaly_detection a mex-algo:AlgorithmClass,
+        owl:Class ;
+    rdfs:label "Anomaly detection"@en,
+        "anomaly detection"@en ;
+    dcterms:alternative "novelty detection"@en,
+        "outlier detection"@en ;
+    dcterms:description "the identification of rare items, events or observations which raise suspicions by differing significantly from the expected or majority of the data"@en ;
+    sml:prefDescription "the identification of rare items, events or observations which raise suspicions by differing significantly from the expected or majority of the data"@en ;
+    owl:sameAs <http://dbpedia.org/resource/Anomaly_detection>,
+        <http://www.wikidata.org/entity/Q3560506> ;
+    skos:prefLabel "Anomaly detection"@en .
+
+sml:Ensembles_of_classifiers a owl:Class ;
+    rdfs:label "Ensembles of classifiers"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Ensembles_of_classifiers>,
+        <http://www.wikidata.org/entity/Q20758206> ;
+    skos:prefLabel "Ensembles of classifiers"@en .
+
+sml:Feedforward_neural_network a owl:Class ;
+    rdfs:label "Feedforward neural network"@en,
+        "feedforward neural network"@en ;
+    dcterms:alternative "feed forward neural network"@en,
+        "feed-forward neural network"@en ;
+    dcterms:description "artificial neural network wherein connections between the nodes do not form a cycle"@en ;
+    sml:prefDescription "artificial neural network wherein connections between the nodes do not form a cycle"@en ;
+    rdfs:subClassOf sml:Artificial_neural_network ;
+    owl:sameAs <http://dbpedia.org/resource/Feedforward_neural_network>,
+        <http://www.wikidata.org/entity/Q5441227> ;
+    skos:prefLabel "Feedforward neural network"@en .
+
+sml:Hierarchical_clustering a owl:Class ;
+    rdfs:label "Hierarchische Clusteranalyse"@de,
+        "hierarchische Clusteranalyse"@de,
+        "Hierarchical clustering"@en,
+        "hierarchical clustering"@en ;
+    dcterms:alternative "hierarchical cluster analysis"@en ;
+    dcterms:description "mathematisches Verfahren der Statistik"@de,
+        "method of cluster analysis which seeks to build a hierarchy of clusters"@en ;
+    sml:abbreviation "HCA"@en ;
+    sml:prefAbbreviation "HCA"@en ;
+    sml:prefDescription "mathematisches Verfahren der Statistik"@de,
+        "method of cluster analysis which seeks to build a hierarchy of clusters"@en ;
+    rdfs:subClassOf sml:Cluster_analysis ;
+    owl:sameAs <http://dbpedia.org/resource/Hierarchical_clustering>,
+        <http://de.dbpedia.org/resource/Hierarchische_Clusteranalyse>,
+        <http://www.wikidata.org/entity/Q1277447> ;
+    skos:prefLabel "Hierarchische Clusteranalyse"@de,
+        "Hierarchical clustering"@en .
+
+sml:Minimum_message_length a owl:Class ;
+    rdfs:label "Minimum message length"@en ;
+    dcterms:description "formal information theory restatement of Occam's Razor"@en ;
+    sml:prefDescription "formal information theory restatement of Occam's Razor"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Minimum_message_length>,
+        <http://www.wikidata.org/entity/Q4428882> ;
+    skos:prefLabel "Minimum message length"@en .
+
+sml:Association_rule_learning a owl:Class ;
+    rdfs:label "Assoziationsanalyse"@de,
+        "Association rule learning"@en,
+        "association rule learning"@en ;
+    dcterms:alternative "association rule mining"@en ;
+    dcterms:description "Verfahren zum Aufdecken relevanter Beziehung"@de,
+        "method for discovering interesting relations between variables in databases"@en ;
+    sml:prefDescription "Verfahren zum Aufdecken relevanter Beziehung"@de,
+        "method for discovering interesting relations between variables in databases"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Association_rule_learning>,
+        <http://de.dbpedia.org/resource/Assoziationsanalyse>,
+        <http://www.wikidata.org/entity/Q386780> ;
+    skos:prefLabel "Assoziationsanalyse"@de,
+        "Association rule learning"@en .
+
+sml:Graphical_model a owl:Class ;
+    rdfs:label "Probabilistische Graphische Modelle"@de,
+        "Graphical model"@en,
+        "graphical model"@en ;
+    dcterms:description "probabilistic model for which a graph expresses the conditional dependence structure between random variables"@en ;
+    sml:prefDescription "probabilistic model for which a graph expresses the conditional dependence structure between random variables"@en ;
+    rdfs:subClassOf sml:Structured_prediction ;
+    owl:sameAs <http://dbpedia.org/resource/Graphical_model>,
+        <http://de.dbpedia.org/resource/Probabilistische_Graphische_Modelle>,
+        <http://www.wikidata.org/entity/Q1143367> ;
+    skos:prefLabel "Probabilistische Graphische Modelle"@de,
+        "Graphical model"@en .
+
+sml:Instance-based_algorithm a mex-algo:AlgorithmClass,
+        owl:Class ;
+    rdfs:label "Instance-based algorithm"@en ;
+    owl:sameAs <http://dbpedia.org/resource/Instance-based_algorithm> ;
+    skos:prefLabel "Instance-based algorithm"@en .
+
+sml:Recurrent_neural_network a owl:Class ;
+    rdfs:label "Rekurrentes neuronales Netz"@de,
+        "Recurrent neural network"@en,
+        "recurrent neural network"@en ;
+    dcterms:alternative "Rekurrentes Netz"@de,
+        "rückgekoppeltes neuronales Netz"@de ;
+    dcterms:description "rückgekoppeltes neuronales Netz"@de,
+        "class of artificial neural network where connections between units form a directed graph along a temporal sequence"@en ;
+    sml:abbreviation "RNN"@en ;
+    sml:prefAbbreviation "RNN"@en ;
+    sml:prefDescription "rückgekoppeltes neuronales Netz"@de,
+        "class of artificial neural network where connections between units form a directed graph along a temporal sequence"@en ;
+    rdfs:subClassOf sml:Artificial_neural_network,
+        sml:Deep_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Recurrent_neural_network>,
+        <http://de.dbpedia.org/resource/Rekurrentes_neuronales_Netz>,
+        <http://www.wikidata.org/entity/Q1457734> ;
+    skos:prefLabel "Rekurrentes neuronales Netz"@de,
+        "Recurrent neural network"@en .
+
+sml:Regularization_algorithm a owl:Class ;
+    rdfs:label "Regularization algorithm"@en ;
+    rdfs:subClassOf sml:Regression_analysis ;
+    owl:sameAs <http://dbpedia.org/resource/Regularization_algorithm> ;
+    skos:prefLabel "Regularization algorithm"@en .
+
+sml:Reinforcement_learning a mex-algo:AlgorithmClass,
+        owl:Class ;
+    rdfs:label "Bestärkendes Lernen"@de,
+        "bestärkendes Lernen"@de,
+        "Reinforcement learning"@en,
+        "reinforcement learning"@en ;
+    dcterms:alternative "reinforcement learning"@de,
+        "verstärkendes Lernen"@de ;
+    dcterms:description "Reihe von Methoden des maschinellen Lernens, bei denen ein Agent selbständig eine Strategie erlernt, um erhaltene Belohnungen zu maximieren"@de,
+        "field of machine learning"@en ;
+    sml:prefDescription "Reihe von Methoden des maschinellen Lernens, bei denen ein Agent selbständig eine Strategie erlernt, um erhaltene Belohnungen zu maximieren"@de,
+        "field of machine learning"@en ;
+    owl:sameAs <http://dbpedia.org/resource/Reinforcement_learning>,
+        <http://de.dbpedia.org/resource/Bestärkendes_Lernen>,
+        <http://www.wikidata.org/entity/Q830687> ;
+    skos:prefLabel "Bestärkendes Lernen"@de,
+        "Reinforcement learning"@en .
+
+sml:Unsupervised_learning a mex-algo:AlgorithmClass,
+        owl:Class ;
+    rdfs:label "Unüberwachtes Lernen"@de,
+        "unüberwachtes Lernen"@de,
+        "Unsupervised learning"@en,
+        "unsupervised learning"@en ;
+    dcterms:alternative "unsupervised machine learning"@en ;
+    dcterms:description "Zweig des maschinellen Lernens"@de,
+        "machine learning technique"@en ;
+    sml:prefDescription "Zweig des maschinellen Lernens"@de,
+        "machine learning technique"@en ;
+    owl:sameAs <http://dbpedia.org/resource/Unsupervised_learning>,
+        <http://de.dbpedia.org/resource/Unüberwachtes_Lernen>,
+        <http://www.wikidata.org/entity/Q1152135> ;
+    skos:prefLabel "Unüberwachtes Lernen"@de,
+        "Unsupervised learning"@en .
+
+sml:Statistical_classification a owl:Class ;
+    rdfs:label "Klassifikationsverfahren"@de,
+        "Statistical classification"@en,
+        "statistical classification"@en ;
+    dcterms:alternative "cluster analysis"@en ;
+    dcterms:description "Methoden zur Einteilung von Objekten in Klassen"@de,
+        "problem of identifying to which of a set of categories (sub-populations) a new observation belongs, on the basis of a training set of data containing observations (or instances) whose category membership is known"@en ;
+    sml:prefDescription "Methoden zur Einteilung von Objekten in Klassen"@de,
+        "problem of identifying to which of a set of categories (sub-populations) a new observation belongs, on the basis of a training set of data containing observations (or instances) whose category membership is known"@en ;
+    rdfs:subClassOf sml:Regression_analysis ;
+    owl:sameAs <http://dbpedia.org/resource/Statistical_classification>,
+        <http://de.dbpedia.org/resource/Klassifikationsverfahren>,
+        <http://www.wikidata.org/entity/Q1744628> ;
+    skos:prefLabel "Klassifikationsverfahren"@de,
+        "Statistical classification"@en .
+
+sml:Semi-supervised_learning a mex-algo:AlgorithmClass,
+        owl:Class ;
+    rdfs:label "Halbüberwachtes Lernen"@de,
+        "Semi-supervised learning"@en,
+        "semi-supervised learning"@en ;
+    dcterms:alternative "semisupervised learning"@en ;
+    dcterms:description "class of machine learning techniques"@en ;
+    sml:prefDescription "class of machine learning techniques"@en ;
+    owl:sameAs <http://dbpedia.org/resource/Semi-supervised_learning>,
+        <http://www.wikidata.org/entity/Q1041418> ;
+    skos:prefLabel "Semi-supervised learning"@en .
+
+sml:Bayesian_statistics a mex-algo:AlgorithmClass,
+        owl:Class ;
+    rdfs:label "Bayessche Statistik"@de,
+        "bayessche Statistik"@de,
+        "Bayesian statistics"@en ;
+    dcterms:description "Zweig der Statistik, der mit dem bayesschen Wahrscheinlichkeitsbegriff und dem Satz von Bayes Fragestellungen der Stochastik untersucht"@de,
+        "theory in the field of statistics"@en ;
+    sml:prefDescription "Zweig der Statistik, der mit dem bayesschen Wahrscheinlichkeitsbegriff und dem Satz von Bayes Fragestellungen der Stochastik untersucht"@de,
+        "theory in the field of statistics"@en ;
+    owl:sameAs <http://dbpedia.org/resource/Bayesian_statistics>,
+        <http://de.dbpedia.org/resource/Bayessche_Statistik>,
+        <http://www.wikidata.org/entity/Q4874481> ;
+    skos:prefLabel "Bayessche Statistik"@de,
+        "Bayesian statistics"@en .
+
+sml:Linear_classifier a owl:Class ;
+    rdfs:label "Linear classifier"@en ;
+    rdfs:subClassOf sml:Statistical_classification ;
+    owl:sameAs <http://dbpedia.org/resource/Linear_classifier>,
+        <http://www.wikidata.org/entity/Q2679259> ;
+    skos:prefLabel "Linear classifier"@en .
+
+sml:Regression_analysis a mex-algo:AlgorithmClass,
+        owl:Class ;
+    rdfs:label "Regressionsanalyse"@de,
+        "Regression analysis"@en,
+        "regression analysis"@en ;
+    dcterms:alternative "Einfachregression"@de,
+        "Lineare Regressionsanalyse"@de,
+        "OLS-Regression"@de,
+        "Ordinary Least Squares"@de,
+        "Regressions-Analyse"@de,
+        "Regressionsgerade"@de,
+        "Regressionskurve"@de,
+        "Regressionslinie"@de,
+        "Regressionsrechnung"@de,
+        "regression"@en,
+        "regression method"@en ;
+    dcterms:description "statische Analyseverfahren"@de,
+        "set of statistical processes for estimating the relationships among variables"@en ;
+    sml:prefDescription "statische Analyseverfahren"@de,
+        "set of statistical processes for estimating the relationships among variables"@en ;
+    owl:sameAs <http://dbpedia.org/resource/Regression_analysis>,
+        <http://de.dbpedia.org/resource/Regressionsanalyse>,
+        <http://www.wikidata.org/entity/Q208042> ;
+    skos:prefLabel "Regressionsanalyse"@de,
+        "Regression analysis"@en .
+
+sml:Deep_learning a owl:Class ;
+    rdfs:label "Deep Learning"@de,
+        "Deep learning"@en,
+        "deep learning"@en ;
+    dcterms:alternative "tiefes Kennenlernen"@de,
+        "tiefes Lernen"@de,
+        "tiefes maschinelles Kennenlernen"@de,
+        "tiefes maschinelles Lernen"@de,
+        "tiefgehendes Kennenlernen"@de,
+        "tiefgehendes Lernen"@de,
+        "tiefgehendes maschinelles Kennenlernen"@de,
+        "tiefgehendes maschinelles Lernen"@de,
+        "Deep Learning"@en,
+        "deep machine learning"@en,
+        "deep structured learning"@en,
+        "hierarchical learning"@en ;
+    dcterms:description "Zweig des maschinellen Lernens"@de,
+        "branch of machine learning"@en ;
+    sml:abbreviation "DL"@de,
+        "DL"@en ;
+    sml:prefAbbreviation "DL"@de,
+        "DL"@en ;
+    sml:prefDescription "Zweig des maschinellen Lernens"@de,
+        "branch of machine learning"@en ;
+    rdfs:subClassOf sml:Artificial_neural_network ;
+    owl:sameAs <http://dbpedia.org/resource/Deep_learning>,
+        <http://de.dbpedia.org/resource/Deep_Learning>,
+        <http://www.wikidata.org/entity/Q197536> ;
+    skos:prefLabel "Deep Learning"@de,
+        "Deep learning"@en .
+
+sml:Ensemble_learning a owl:Class ;
+    rdfs:label "Ensemble learning"@de,
+        "Ensemble learning"@en,
+        "ensemble learning"@en ;
+    dcterms:description "in statistics and machine learning, using multiple algorithms"@en ;
+    sml:prefDescription "in statistics and machine learning, using multiple algorithms"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Ensemble_learning>,
+        <http://de.dbpedia.org/resource/Ensemble_learning>,
+        <http://www.wikidata.org/entity/Q245652> ;
+    skos:prefLabel "Ensemble learning"@de,
+        "Ensemble learning"@en .
+
+sml:Decision_tree_algorithms a mex-algo:AlgorithmClass,
+        owl:Class ;
+    rdfs:label "Decision tree algorithms"@en ;
+    owl:sameAs <http://dbpedia.org/resource/Decision_tree_algorithms> ;
+    skos:prefLabel "Decision tree algorithms"@en .
+
+sml:Other_machine_learning_methods_and_problems a mex-algo:AlgorithmClass,
+        owl:Class ;
+    rdfs:label "Other machine learning methods and problems"@en ;
+    owl:sameAs <http://dbpedia.org/resource/Other_machine_learning_methods_and_problems> ;
+    skos:prefLabel "Other machine learning methods and problems"@en .
+
+sml:Cluster_analysis a mex-algo:AlgorithmClass,
+        owl:Class ;
+    rdfs:label "Clusteranalyse"@de,
+        "Cluster analysis"@en,
+        "cluster analysis"@en ;
+    dcterms:alternative "Ballungsanalyse"@de,
+        "Cluster-Analyse"@de,
+        "Clustering-Algorithmus"@de,
+        "Clustering-Verfahren"@de,
+        "Clustermethode"@de,
+        "Clusterverfahren"@de,
+        "cluster analysis in marketing"@en,
+        "clustering"@en ;
+    dcterms:description "Verfahren zur Entdeckung von Ähnlichkeitsstrukturen in Datenbeständen"@de,
+        "task of grouping a set of objects in such a way that objects in the same group (called a cluster) are more similar (in some sense or another) to each other than to those in other groups (clusters)"@en ;
+    sml:prefDescription "Verfahren zur Entdeckung von Ähnlichkeitsstrukturen in Datenbeständen"@de,
+        "task of grouping a set of objects in such a way that objects in the same group (called a cluster) are more similar (in some sense or another) to each other than to those in other groups (clusters)"@en ;
+    owl:sameAs <http://dbpedia.org/resource/Cluster_analysis>,
+        <http://de.dbpedia.org/resource/Clusteranalyse>,
+        <http://www.wikidata.org/entity/Q622825> ;
+    skos:prefLabel "Clusteranalyse"@de,
+        "Cluster analysis"@en .
+
+sml:Artificial_neural_network a owl:Class ;
+    rdfs:label "Künstliches neuronales Netz"@de,
+        "künstliches neuronales Netz"@de,
+        "Artificial neural network"@en,
+        "artificial neural network"@en ;
+    dcterms:alternative "artificial neural networks"@de,
+        "künstliche neuronale Netzwerke"@de,
+        "Artificial neural networks"@en,
+        "Neural Networks, Computer"@en,
+        "Simulated Neural Network"@en,
+        "Static Neural Network"@en,
+        "Synergetic Neural Network"@en,
+        "connectionist system"@en,
+        "connectionist systems"@en,
+        "deep nets"@en,
+        "neural network"@en ;
+    dcterms:description "miteinander verbundene Neuronen, die als Teil eines Nervensystems einen Zusammenhang bilden"@de,
+        "computational model used in machine learning, based on connected, hierarchical functions"@en ;
+    sml:abbreviation "ANN"@en,
+        "SNN"@en ;
+    sml:prefAbbreviation "ANN"@en ;
+    sml:prefDescription "miteinander verbundene Neuronen, die als Teil eines Nervensystems einen Zusammenhang bilden"@de,
+        "computational model used in machine learning, based on connected, hierarchical functions"@en ;
+    rdfs:subClassOf sml:Supervised_learning ;
+    owl:sameAs <http://dbpedia.org/resource/Artificial_neural_network>,
+        <http://de.dbpedia.org/resource/Künstliches_neuronales_Netz>,
+        <http://www.wikidata.org/entity/Q192776> ;
+    skos:prefLabel "Künstliches neuronales Netz"@de,
+        "Artificial neural network"@en .
+
+sml:Dimensionality_reduction a mex-algo:AlgorithmClass,
+        owl:Class ;
+    rdfs:label "Dimensionalitätsreduktion"@de,
+        "Dimensionality reduction"@en,
+        "dimensionality reduction"@en ;
+    dcterms:alternative "Dimensionsreduktion"@de,
+        "Dimensionality reduction"@en,
+        "dimension reduction"@en,
+        "dimensional reduction"@en ;
+    dcterms:description "process of reducing the number of random variables under consideration"@en ;
+    sml:prefDescription "process of reducing the number of random variables under consideration"@en ;
+    owl:sameAs <http://dbpedia.org/resource/Dimensionality_reduction>,
+        <http://www.wikidata.org/entity/Q16000077> ;
+    skos:prefLabel "Dimensionality reduction"@en .
+
+sml:Supervised_learning a mex-algo:AlgorithmClass,
+        owl:Class ;
+    rdfs:label "Überwachtes Lernen"@de,
+        "überwachtes Lernen"@de,
+        "Supervised learning"@en,
+        "supervised learning"@en ;
+    dcterms:alternative "supervised machine learning"@en ;
+    dcterms:description "Teilgebiet des maschinellen Lernens"@de,
+        "machine learning task of learning a function that maps an input to an output based on example input-output pairs"@en ;
+    sml:prefDescription "Teilgebiet des maschinellen Lernens"@de,
+        "machine learning task of learning a function that maps an input to an output based on example input-output pairs"@en ;
+    owl:sameAs <http://dbpedia.org/resource/Supervised_learning>,
+        <http://de.dbpedia.org/resource/Überwachtes_Lernen>,
+        <http://www.wikidata.org/entity/Q334384> ;
+    skos:prefLabel "Überwachtes Lernen"@de,
+        "Supervised learning"@en .
+

@@ -1,9 +1,0 @@
-package tests.emptyBody
-
-// semantic_warning "Unnecessary enum body."
-enum MyEnum1 »{}«
-
-// no_semantic_warning "Unnecessary enum body."
-enum MyEnum2 »{
-    INSTANCE
-}«

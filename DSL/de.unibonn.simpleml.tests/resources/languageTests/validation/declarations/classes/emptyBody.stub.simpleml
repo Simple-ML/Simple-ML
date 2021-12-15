@@ -1,9 +1,0 @@
-package tests.emptyBody
-
-// semantic_warning "Unnecessary class body."
-class MyClass1 »{}«
-
-// no_semantic_warning "Unnecessary class body."
-class MyClass2 »{
-    fun f()
-}«

@@ -1,15 +1,29 @@
 # Imports ----------------------------------------------------------------------
-from simpleml.dataset import joinTwoDatasets
+from simpleml.dataset import joinTwoDatasets, readDataSetFromCSV
 from simpleml.util import exportDictionaryAsJSON
 
 
 # Workflow steps ---------------------------------------------------------------
 
 def exampleWorkflow():
-    dataset = joinTwoDatasets('SpeedAveragesMiniSampleWKT2.csv', 'SpeedAveragesMiniSampleWKT3.csv', ',', '_first', '_second')
-    '''print(exportDictionaryAsJSON(dataset.getProfile()))
+    dataset1 = readDataSetFromCSV('SpeedAveragesMiniSampleWKT2.csv', 'Local dataset', ',', 'True')
+    sample_dataset1 = dataset1.sample(5)
 
-    sample_dataset = dataset.sample(50)
+    dataset2 = readDataSetFromCSV('SpeedAveragesMiniSampleWKT3.csv', 'Local dataset', ',', 'True')
+    sample_dataset2 = dataset2.sample(5)
+    #print(sample_dataset1.data)
+
+    dataset = joinTwoDatasets(sample_dataset1, sample_dataset2, 'id', 'id', '_l', '_r')
+    #dataset = joinTwoDatasets('SpeedAveragesMiniSampleWKT2.csv', 'SpeedAveragesMiniSampleWKT3.csv', ',', '_first', '_second')
+    #print(dataset)
+
+    sample_dataset = dataset.sample(3)
+
+    #print(type(sample_dataset))
+    train, test = sample_dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
+    #print(sample_dataset.data)
+    print(train.data)
+    '''
     train, test = sample_dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
 
     X_train = train.dropAttributes("chlorides")
@@ -20,7 +34,6 @@ def exampleWorkflow():
     print(exportDictionaryAsJSON(X_train.getProfile()))
     print(exportDictionaryAsJSON(y_train.getProfile()))
     print(exportDictionaryAsJSON(X_test.getProfile()))
-
 '''
 if __name__ == '__main__':
     exampleWorkflow()
