@@ -6,7 +6,6 @@ import de.unibonn.simpleml.emf.createSmlCompilationUnit
 import de.unibonn.simpleml.emf.createSmlDummyResource
 import de.unibonn.simpleml.emf.smlClass
 import de.unibonn.simpleml.emf.smlPackage
-import de.unibonn.simpleml.emf.uniquePackageOrNull
 import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlClass

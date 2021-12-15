@@ -4,13 +4,13 @@ import com.google.inject.Binder
 import com.google.inject.name.Names
 import de.unibonn.simpleml.conversion.SimpleMLIDValueConverter
 import de.unibonn.simpleml.conversion.SimpleMLSTRINGValueConverter
+import de.unibonn.simpleml.conversion.SimpleMLValueConverterService
 import de.unibonn.simpleml.naming.QualifiedNameProviderInjectionTarget
 import de.unibonn.simpleml.resource.SimpleMLResourceDescriptionStrategy
 import de.unibonn.simpleml.scoping.SimpleMLImportedNamespaceAwareLocalScopeProvider
 import de.unibonn.simpleml.serializer.SerializerExtensionsInjectionTarget
 import de.unibonn.simpleml.serializer.SimpleMLCrossReferenceSerializer
 import de.unibonn.simpleml.serializer.SimpleMLHiddenTokenSequencer
-import de.unibonn.simpleml.conversion.SimpleMLValueConverterService
 import de.unibonn.simpleml.services.SimpleMLGrammarAccess
 import org.eclipse.xtext.IGrammarAccess
 import org.eclipse.xtext.conversion.IValueConverterService
@@ -21,7 +21,6 @@ import org.eclipse.xtext.scoping.IScopeProvider
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
 import org.eclipse.xtext.serializer.sequencer.IHiddenTokenSequencer
 import org.eclipse.xtext.serializer.tokens.ICrossReferenceSerializer
-
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
