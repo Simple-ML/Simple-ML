@@ -1,0 +1,7 @@
+@    AnnotationUse    (         1 ,  b    =  2   )
+class MyClass
+
+// -----------------------------------------------------------------------------
+
+@AnnotationUse(1, b = 2)
+class MyClass

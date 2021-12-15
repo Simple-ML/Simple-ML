@@ -1,0 +1,23 @@
+step myStep1  (  )  {      }    
+
+@Annotation1
+ @Annotation2         step
+   myStep2
+   (   a  :   Int  ,  b :   Int
+   
+    )     
+     ->   (
+   a:
+   Int   ,    b  :   Int  )
+   {
+  val a = 1; }
+
+// -----------------------------------------------------------------------------
+
+step myStep1() {}
+
+@Annotation1
+@Annotation2
+step myStep2(a: Int, b: Int) -> (a: Int, b: Int) {
+    val a = 1;
+}

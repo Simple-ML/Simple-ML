@@ -1,0 +1,85 @@
+package tests.astToPrologFactbase.expressions
+
+// Arguments -----------------------------------------------------------------------------------------------------------
+fun f(a: Int)
+
+workflow myWorkflowWithPositionalArgument {
+    f(0);
+}
+
+workflow myWorkflowWithResolvableNamedArgument {
+    f(a = 1);
+}
+
+workflow myWorkflowWithUnresolvedArgument {
+    f(myUnresolvedParameter = 2);
+}
+
+
+// Calls ---------------------------------------------------------------------------------------------------------------
+workflow myWorkflowWithSimpleCall {
+    val simpleCall = f();
+}
+
+workflow myWorkflowWithComplexCall {
+    val complexCall = f<Int, Int>(1, 2);
+}
+
+
+// Lambdas -------------------------------------------------------------------------------------------------------------
+workflow myWorkflowWithSimpleLambda {
+    val simpleLambda = lambda {};
+}
+
+workflow myWorkflowWithComplexLambda {
+    val complexLambda = lambda(a, b) {
+        1;
+        2;
+    };
+}
+
+
+// Literals ------------------------------------------------------------------------------------------------------------
+workflow myWorkflowWithLiterals {
+    val booleanLiteral = true;
+    val floatLiteral = 1.0;
+    val intLiteral = 42;
+    val nullLiteral = null;
+    val stringLiteral = "bla";
+}
+
+
+// Lambdas -------------------------------------------------------------------------------------------------------------
+workflow myWorkflowWithMemberAccess {
+    val memberAccess = C?.f;
+}
+
+
+// Operations ----------------------------------------------------------------------------------------------------------
+workflow myWorkflowWithOperations {
+    val infixOperation = 1 + 2;
+    val prefixOperation = -1;
+}
+
+
+// Parenthesized expression --------------------------------------------------------------------------------------------
+workflow myWorkflowWithParenthesizedExpression {
+    val parenthesizedExpression = (1);
+}
+
+
+// Template strings ----------------------------------------------------------------------------------------------------
+workflow myWorkflowWithTemplateString {
+    "prefix {{ 1 }} infix {{ 1 }} suffix";
+}
+
+
+// References ----------------------------------------------------------------------------------------------------------
+workflow myWorkflowWithResolvableReference {
+    val a = 1;
+    a;
+}
+
+workflow myWorkflowWithUnresolvableReference {
+    myUnresolvedDeclaration;
+}

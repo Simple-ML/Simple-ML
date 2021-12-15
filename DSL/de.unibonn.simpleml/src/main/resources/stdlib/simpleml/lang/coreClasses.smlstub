@@ -1,0 +1,13 @@
+package simpleml.lang
+
+class Any
+
+class Boolean
+
+class Number
+
+class Int sub Number
+
+class Float sub Number
+
+class String

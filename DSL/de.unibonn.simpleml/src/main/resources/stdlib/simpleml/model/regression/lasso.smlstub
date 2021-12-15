@@ -1,0 +1,18 @@
+package simpleml.model.regression
+
+import simpleml.model.*
+import simpleml.dataset.Dataset
+
+class Lasso(regularizationStrength: Float or 0.5) sub Estimator {
+    attr regularizationStrength: Float
+
+    fun fit(features: Dataset, target: Dataset) -> trainedModel: TrainedLasso
+}
+
+class TrainedLasso sub Model {
+    attr slope: Int
+
+    attr yIntercept: Int
+
+    fun predict(features: Dataset) -> results: Any
+}

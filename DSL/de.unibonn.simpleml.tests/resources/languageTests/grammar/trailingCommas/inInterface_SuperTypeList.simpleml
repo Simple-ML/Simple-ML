@@ -1,5 +1,0 @@
-package tests.trailingComma.inInterfaceSuperTypeList
-
-// no_syntax_error
-
-interface I sub D, E,
