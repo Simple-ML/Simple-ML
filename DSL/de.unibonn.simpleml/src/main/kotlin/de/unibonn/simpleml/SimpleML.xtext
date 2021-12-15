@@ -614,10 +614,17 @@ terminal SL_COMMENT
     ;
 
 terminal STRING returns ecore::EString
-    : STRING_DELIMITER
+    : STRING_START
       STRING_TEXT*
-      '{'?
-      STRING_DELIMITER
+      STRING_END
+    ;
+
+terminal fragment STRING_START
+    : STRING_DELIMITER
+    ;
+
+terminal fragment STRING_END
+    : '{'? STRING_DELIMITER
     ;
 
 terminal fragment STRING_DELIMITER
@@ -625,7 +632,7 @@ terminal fragment STRING_DELIMITER
     ;
 
 terminal fragment STRING_TEXT
-    : ESCAPE_SEQUENCE
+    : '{'? ESCAPE_SEQUENCE
     | '{'? !('\\'|STRING_DELIMITER|'{')
     ;
 
@@ -642,7 +649,7 @@ terminal fragment TEMPLATE_EXPRESSION_END
     ;
 
 terminal TEMPLATE_STRING_START
-    : STRING_DELIMITER
+    : STRING_START
       STRING_TEXT*
       TEMPLATE_EXPRESSION_START
     ;
@@ -656,7 +663,7 @@ terminal TEMPLATE_STRING_INNER
 terminal TEMPLATE_STRING_END
     : TEMPLATE_EXPRESSION_END
       STRING_TEXT*
-      STRING_DELIMITER
+      STRING_END
     ;
 
 terminal TEST_MARKER

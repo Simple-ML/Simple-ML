@@ -12,6 +12,8 @@ workflow myWorkflow {
         string
     ";
     "{";
+    "{\n";
+    "{ {";
     "not a template { ??? }";
-    "not a template either \{\{ ??? }}";
+    "not a template either \{{ ??? }}";
 }

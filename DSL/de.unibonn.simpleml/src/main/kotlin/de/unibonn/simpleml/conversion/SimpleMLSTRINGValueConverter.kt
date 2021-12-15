@@ -12,20 +12,23 @@ import org.eclipse.xtext.conversion.impl.STRINGValueConverter
 @Singleton
 class SimpleMLSTRINGValueConverter : STRINGValueConverter() {
 
+    private val converter by lazy {
+        Implementation()
+    }
+
     /**
      * Converts the value to its textual representation by adding delimiters and escaping characters.
      */
     override fun toEscapedString(value: String?): String {
-        println("toEscapedString $value")
-
-        return '"' + createConverter().convertToJavaString(value, false) + '"'
+        return '"' + converter.convertToJavaString(value, false) + '"'
     }
 
     /**
-     * Creates the implementation of the converter to unescape characters. This method is **not** called for escaping.
+     * Creates the implementation of the converter to unescape characters. This method is **not** called  for escaping
+     * by the superclass.
      */
     override fun createConverter(): STRINGValueConverter.Implementation {
-        return Implementation()
+        return converter
     }
 
     /**
@@ -37,8 +40,6 @@ class SimpleMLSTRINGValueConverter : STRINGValueConverter() {
          * Escapes the character and adds it to the builder. This is necessary for serialization.
          */
         override fun escapeAndAppendTo(c: Char, useUnicode: Boolean, result: StringBuilder) {
-            println("escapeAndAppendTo $c")
-
             val appendMe: String
             when (c) {
                 '\b' -> appendMe = "\\b"
@@ -65,9 +66,6 @@ class SimpleMLSTRINGValueConverter : STRINGValueConverter() {
                 }
             }
             result.append(appendMe)
-
-            println(appendMe)
-            println(result)
         }
 
         /**
@@ -94,14 +92,11 @@ class SimpleMLSTRINGValueConverter : STRINGValueConverter() {
                 else -> return handleUnknownEscapeSequence(string, c, useUnicode, index + 1, result)
             }
             validateAndAppendChar(c, result)
-
-            println(c)
-
             return index + 1
         }
     }
 
     override fun getInvalidEscapeSequenceMessage(): String {
-        return "Invalid escape sequence (valid ones are  \\b  \\t  \\n  \\u000c  \\r  \\\"  \\'  \\\\  \\{ )."
+        return "Invalid escape sequence (valid ones are  \\b  \\t  \\n  \\f  \\r  \\\"  \\'  \\\\  \\{ )."
     }
 }

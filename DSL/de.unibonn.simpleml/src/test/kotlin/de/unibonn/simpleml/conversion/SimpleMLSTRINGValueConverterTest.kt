@@ -55,7 +55,7 @@ class SimpleMLSTRINGValueConverterTest {
         val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
         compilationUnit.shouldNotBeNull()
 
-        val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("unescapedOpeningBrace")
+        val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("escapedOpeningBrace")
 
         val strings = workflow.descendants<SmlString>().toList()
         strings.shouldHaveSize(1)

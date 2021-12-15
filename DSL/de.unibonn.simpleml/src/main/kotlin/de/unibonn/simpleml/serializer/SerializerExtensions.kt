@@ -13,17 +13,6 @@ internal object SerializerExtensionsInjectionTarget {
 }
 
 /**
- * Serializes a subtree of the EMF model while keeping the original formatting intact. This only works if the [EObject]
- * is part of a [Resource].
- *
- * @receiver The root of the subtree.
- * @return A result object indicating success or failure.
- */
-fun EObject.serializeToString(): SerializationResult {
-    return serializeToStringWithSaveOptions(WithoutFormatting)
-}
-
-/**
  * Serializes a subtree of the EMF model and applies the formatter to it. This only works if the [EObject] is part of a
  * [Resource].
  *

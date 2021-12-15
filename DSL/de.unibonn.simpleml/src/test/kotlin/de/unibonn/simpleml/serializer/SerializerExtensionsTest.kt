@@ -29,64 +29,6 @@ class SerializerExtensionsTest {
     private val factory = SimpleMLPackage.eINSTANCE.simpleMLFactory
 
     @Nested
-    inner class serializeToString {
-
-        @Test
-        fun `should serialize a complete EMF model and keep its formatting`() {
-            val compilationUnit = parseHelper.parseResource("serialization/ExtensionsTest.smltest")
-            compilationUnit.shouldNotBeNull()
-
-            val result = compilationUnit.serializeToString()
-            result.shouldBeInstanceOf<SerializationResult.Success>()
-            result.code.shouldBe(
-                """
-                |package tests class MyClass { attr myAttribute: Int }
-                """.trimMargin().withSystemLineBreaks()
-            )
-        }
-
-        @Test
-        fun `should serialize a subtree of the EMF model and keep its formatting`() {
-            val compilationUnit = parseHelper.parseResource("serialization/ExtensionsTest.smltest")
-            compilationUnit.shouldNotBeNull()
-
-            val `class` = compilationUnit.findUniqueDeclarationOrFail<SmlClass>("MyClass")
-
-            val result = `class`.serializeToString()
-            result.shouldBeInstanceOf<SerializationResult.Success>()
-            result.code.shouldBe(
-                """
-                |class MyClass { attr myAttribute: Int }
-                """.trimMargin().withSystemLineBreaks()
-            )
-        }
-
-        @Test
-        fun `should not serialize EObjects without Resource`() {
-            val compilationUnit = factory.createSmlCompilationUnit()
-
-            val result = compilationUnit.serializeToString()
-            result.shouldBeInstanceOf<SerializationResult.NotInResourceFailure>()
-        }
-
-        @Test
-        fun `should not serialize wrong EMF models`() {
-            val compilationUnit = factory.createSmlCompilationUnit().apply {
-                // Missing SmlAnnotationUseHolder
-                members += factory.createSmlPackage().apply {
-                    name = "tests"
-                }
-            }
-
-            val dummyResource = XtextResource()
-            dummyResource.contents += compilationUnit
-
-            val result = compilationUnit.serializeToString()
-            result.shouldBeInstanceOf<SerializationResult.WrongEmfModelStructureFailure>()
-        }
-    }
-
-    @Nested
     inner class serializeToFormattedString {
 
         @Test
