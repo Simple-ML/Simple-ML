@@ -74,7 +74,7 @@ tasks.register("generateXtextLanguage") {
     inputs.files(
         "$rootPath/de.unibonn.simpleml/model/SimpleML.ecore",
         "$rootPath/de.unibonn.simpleml/model/SimpleML.genmodel",
-        "$rootPath/de.unibonn.simpleml/src/main/resources/SimpleML.xtext"
+        "$rootPath/de.unibonn.simpleml/src/main/kotlin/de/unibonn/simpleml/SimpleML.xtext"
     )
     outputs.dirs(
         "$rootPath/de.unibonn.simpleml/META-INF",

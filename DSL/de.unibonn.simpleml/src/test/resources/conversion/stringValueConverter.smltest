@@ -1,0 +1,11 @@
+workflow escapedOpeningBrace {
+    "\{";
+}
+
+workflow escapedSingleQuote {
+    "\'";
+}
+
+workflow unescapedSingleQuote {
+    "'";
+}
