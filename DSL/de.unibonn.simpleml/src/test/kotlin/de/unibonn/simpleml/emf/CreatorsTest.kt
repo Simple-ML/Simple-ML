@@ -2,7 +2,7 @@ package de.unibonn.simpleml.emf
 
 import de.unibonn.simpleml.constant.FileExtension
 import de.unibonn.simpleml.serializer.SerializationResult
-import de.unibonn.simpleml.serializer.serializeToString
+import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlTemplateStringPart
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
@@ -45,7 +45,7 @@ class CreatorsTest {
         )
 
         result.contents.shouldHaveSize(1)
-        result.contents[0].serializeToString().shouldBeInstanceOf<SerializationResult.Success>()
+        result.contents[0].serializeToFormattedString().shouldBeInstanceOf<SerializationResult.Success>()
     }
 
     @Test

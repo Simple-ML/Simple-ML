@@ -16,6 +16,9 @@ import org.eclipse.xtext.resource.IEObjectDescription
 import org.eclipse.xtext.resource.impl.DefaultResourceDescriptionStrategy
 import org.eclipse.xtext.util.IAcceptor
 
+/**
+ * Describes which objects are exported to other resources.
+ */
 class SimpleMLResourceDescriptionStrategy : DefaultResourceDescriptionStrategy() {
     override fun createEObjectDescriptions(eObject: EObject, acceptor: IAcceptor<IEObjectDescription>): Boolean {
         return when (eObject) {
