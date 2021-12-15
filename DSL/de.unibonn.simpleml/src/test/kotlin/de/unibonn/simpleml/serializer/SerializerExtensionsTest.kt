@@ -11,6 +11,7 @@ import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
 import de.unibonn.simpleml.testing.withSystemLineBreaks
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldNotContain
 import io.kotest.matchers.types.shouldBeInstanceOf
 import org.eclipse.xtext.resource.XtextResource
 import org.eclipse.xtext.testing.InjectWith
@@ -45,7 +46,7 @@ class SerializerExtensionsTest {
                 |class MyClass {
                 |    attr myAttribute: Int
                 |}
-                """.trimMargin().withSystemLineBreaks()
+                """.trimMargin()
             )
         }
 
@@ -62,8 +63,24 @@ class SerializerExtensionsTest {
                 """class MyClass {
                 |    attr myAttribute: Int
                 |}
-                """.trimMargin().withSystemLineBreaks()
+                """.trimMargin()
             )
+        }
+
+        @Test
+        fun `should use line feed as line separator`() {
+            val compilationUnit = parseHelper.parseResource("serialization/ExtensionsTest.smltest")
+            compilationUnit.shouldNotBeNull()
+
+            val `class` = compilationUnit.findUniqueDeclarationOrFail<SmlClass>("MyClass")
+
+            val result = `class`.serializeToFormattedString()
+            result.shouldBeInstanceOf<SerializationResult.Success>()
+            result.code.count { it == '\n' } shouldBe 2
+
+            if (System.lineSeparator() != "\n") {
+                result.code.shouldNotContain(System.lineSeparator())
+            }
         }
 
         @Test

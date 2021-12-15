@@ -35,6 +35,7 @@ private fun EObject.serializeToStringWithSaveOptions(options: SaveOptions): Seri
         val code = SerializerExtensionsInjectionTarget.serializer
             .serialize(this, options)
             .trim()
+            .replace(System.lineSeparator(), "\n")
 
         SerializationResult.Success(code)
     } catch (e: RuntimeException) {
