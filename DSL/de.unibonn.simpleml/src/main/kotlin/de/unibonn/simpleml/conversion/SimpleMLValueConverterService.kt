@@ -7,16 +7,21 @@ import com.google.inject.Singleton
 import org.eclipse.xtext.conversion.IValueConverter
 import org.eclipse.xtext.conversion.ValueConverter
 import org.eclipse.xtext.conversion.impl.AbstractDeclarativeValueConverterService
+import org.eclipse.xtext.conversion.impl.IDValueConverter
 import org.eclipse.xtext.conversion.impl.INTValueConverter
+import org.eclipse.xtext.conversion.impl.STRINGValueConverter
 
 /**
  * Converters for ID, INT, and STRING.
  */
 @Singleton
-open class SimpleMLDeclarativeValueConverterService : AbstractDeclarativeValueConverterService() {
+open class SimpleMLValueConverterService : AbstractDeclarativeValueConverterService() {
+
+    @Inject
+    private lateinit var idValueConverter: IDValueConverter
 
     @ValueConverter(rule = "ID")
-    fun ID() = SimpleMLIDValueConverter()
+    fun ID() = idValueConverter
 
     @Inject
     private lateinit var intValueConverter: INTValueConverter
@@ -26,6 +31,9 @@ open class SimpleMLDeclarativeValueConverterService : AbstractDeclarativeValueCo
         return intValueConverter
     }
 
+    @Inject
+    private lateinit var stringValueConverter: STRINGValueConverter
+
     @ValueConverter(rule = "STRING")
-    fun STRING() = SimpleMLSTRINGValueConverter()
+    fun STRING() = stringValueConverter
 }

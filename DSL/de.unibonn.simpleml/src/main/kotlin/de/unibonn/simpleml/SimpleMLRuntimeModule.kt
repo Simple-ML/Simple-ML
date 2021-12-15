@@ -2,14 +2,20 @@ package de.unibonn.simpleml
 
 import com.google.inject.Binder
 import com.google.inject.name.Names
+import de.unibonn.simpleml.conversion.SimpleMLIDValueConverter
+import de.unibonn.simpleml.conversion.SimpleMLSTRINGValueConverter
 import de.unibonn.simpleml.naming.QualifiedNameProviderInjectionTarget
 import de.unibonn.simpleml.resource.SimpleMLResourceDescriptionStrategy
 import de.unibonn.simpleml.scoping.SimpleMLImportedNamespaceAwareLocalScopeProvider
 import de.unibonn.simpleml.serializer.SerializerExtensionsInjectionTarget
 import de.unibonn.simpleml.serializer.SimpleMLCrossReferenceSerializer
 import de.unibonn.simpleml.serializer.SimpleMLHiddenTokenSequencer
-import de.unibonn.simpleml.conversion.SimpleMLDeclarativeValueConverterService
+import de.unibonn.simpleml.conversion.SimpleMLValueConverterService
+import de.unibonn.simpleml.services.SimpleMLGrammarAccess
+import org.eclipse.xtext.IGrammarAccess
 import org.eclipse.xtext.conversion.IValueConverterService
+import org.eclipse.xtext.conversion.impl.IDValueConverter
+import org.eclipse.xtext.conversion.impl.STRINGValueConverter
 import org.eclipse.xtext.resource.IDefaultResourceDescriptionStrategy
 import org.eclipse.xtext.scoping.IScopeProvider
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
@@ -30,12 +36,24 @@ open class SimpleMLRuntimeModule : AbstractSimpleMLRuntimeModule() {
         return SimpleMLResourceDescriptionStrategy::class.java
     }
 
+    override fun bindIGrammarAccess(): Class<out IGrammarAccess> {
+        return SimpleMLGrammarAccess::class.java
+    }
+
     fun bindIHiddenTokenSequencer(): Class<out IHiddenTokenSequencer> {
         return SimpleMLHiddenTokenSequencer::class.java
     }
 
-    override fun bindIValueConverterService(): Class<out IValueConverterService?>? {
-        return SimpleMLDeclarativeValueConverterService::class.java
+    override fun bindIValueConverterService(): Class<out IValueConverterService> {
+        return SimpleMLValueConverterService::class.java
+    }
+
+    fun bindIDValueConverter(): Class<out IDValueConverter> {
+        return SimpleMLIDValueConverter::class.java
+    }
+
+    fun bindSTRINGValueConverter(): Class<out STRINGValueConverter> {
+        return SimpleMLSTRINGValueConverter::class.java
     }
 
     override fun configureIScopeProviderDelegate(binder: Binder) {
