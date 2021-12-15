@@ -616,6 +616,7 @@ terminal SL_COMMENT
 terminal STRING returns ecore::EString
     : STRING_DELIMITER
       STRING_TEXT*
+      '{'?
       STRING_DELIMITER
     ;
 
@@ -625,12 +626,11 @@ terminal fragment STRING_DELIMITER
 
 terminal fragment STRING_TEXT
     : ESCAPE_SEQUENCE
-    | '{' !'{'
-    | !('\\'|STRING_DELIMITER|'{')
+    | '{'? !('\\'|STRING_DELIMITER|'{')
     ;
 
 terminal fragment ESCAPE_SEQUENCE
-    : '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */
+    : '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\'|'{' */
     ;
 
 terminal fragment TEMPLATE_EXPRESSION_START

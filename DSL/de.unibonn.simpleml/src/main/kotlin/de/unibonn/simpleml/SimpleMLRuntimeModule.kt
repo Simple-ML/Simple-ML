@@ -8,11 +8,14 @@ import de.unibonn.simpleml.scoping.SimpleMLImportedNamespaceAwareLocalScopeProvi
 import de.unibonn.simpleml.serializer.SerializerExtensionsInjectionTarget
 import de.unibonn.simpleml.serializer.SimpleMLCrossReferenceSerializer
 import de.unibonn.simpleml.serializer.SimpleMLHiddenTokenSequencer
+import de.unibonn.simpleml.conversion.SimpleMLDeclarativeValueConverterService
+import org.eclipse.xtext.conversion.IValueConverterService
 import org.eclipse.xtext.resource.IDefaultResourceDescriptionStrategy
 import org.eclipse.xtext.scoping.IScopeProvider
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
 import org.eclipse.xtext.serializer.sequencer.IHiddenTokenSequencer
 import org.eclipse.xtext.serializer.tokens.ICrossReferenceSerializer
+
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
@@ -29,6 +32,10 @@ open class SimpleMLRuntimeModule : AbstractSimpleMLRuntimeModule() {
 
     fun bindIHiddenTokenSequencer(): Class<out IHiddenTokenSequencer> {
         return SimpleMLHiddenTokenSequencer::class.java
+    }
+
+    override fun bindIValueConverterService(): Class<out IValueConverterService?>? {
+        return SimpleMLDeclarativeValueConverterService::class.java
     }
 
     override fun configureIScopeProviderDelegate(binder: Binder) {

@@ -5,10 +5,13 @@ workflow myWorkflow {
     "myString";
     "'";
     "\n";
+    "\u000c";
     "
         multi
         line
         string
     ";
+    "{";
     "not a template { ??? }";
+    "not a template either \{\{ ??? }}";
 }

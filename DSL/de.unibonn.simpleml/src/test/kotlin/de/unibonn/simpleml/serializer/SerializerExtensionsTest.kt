@@ -3,9 +3,6 @@
 package de.unibonn.simpleml.serializer
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.serializer.SerializationResult
-import de.unibonn.simpleml.serializer.serializeToFormattedString
-import de.unibonn.simpleml.serializer.serializeToString
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.testing.ParseHelper
@@ -36,7 +33,7 @@ class SerializerExtensionsTest {
 
         @Test
         fun `should serialize a complete EMF model and keep its formatting`() {
-            val compilationUnit = parseHelper.parseResource("serialization/test.smltest")
+            val compilationUnit = parseHelper.parseResource("serialization/ExtensionsTest.smltest")
             compilationUnit.shouldNotBeNull()
 
             val result = compilationUnit.serializeToString()
@@ -50,7 +47,7 @@ class SerializerExtensionsTest {
 
         @Test
         fun `should serialize a subtree of the EMF model and keep its formatting`() {
-            val compilationUnit = parseHelper.parseResource("serialization/test.smltest")
+            val compilationUnit = parseHelper.parseResource("serialization/ExtensionsTest.smltest")
             compilationUnit.shouldNotBeNull()
 
             val `class` = compilationUnit.findUniqueDeclarationOrFail<SmlClass>("MyClass")
@@ -94,7 +91,7 @@ class SerializerExtensionsTest {
 
         @Test
         fun `should serialize and format a complete EMF model created from a resource`() {
-            val compilationUnit = parseHelper.parseResource("serialization/test.smltest")
+            val compilationUnit = parseHelper.parseResource("serialization/ExtensionsTest.smltest")
             compilationUnit.shouldNotBeNull()
 
             val result = compilationUnit.serializeToFormattedString()
@@ -112,7 +109,7 @@ class SerializerExtensionsTest {
 
         @Test
         fun `should serialize and format a subtree of the EMF model from a resource`() {
-            val compilationUnit = parseHelper.parseResource("serialization/test.smltest")
+            val compilationUnit = parseHelper.parseResource("serialization/ExtensionsTest.smltest")
             compilationUnit.shouldNotBeNull()
 
             val `class` = compilationUnit.findUniqueDeclarationOrFail<SmlClass>("MyClass")
