@@ -171,8 +171,15 @@ class AstToPrologFactbase {
         when (obj) {
             is SmlAnnotation -> {
                 obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
+                obj.constraintsOrEmpty().forEach { visitConstraint(it, obj.id) }
 
-                +AnnotationT(obj.id, parentId, obj.name, obj.parameterList?.parameters?.map { it.id })
+                +AnnotationT(
+                    obj.id,
+                    parentId,
+                    obj.name,
+                    obj.parameterList?.parameters?.map { it.id },
+                    obj.constraintList?.constraints?.map { it.id }
+                )
             }
             is SmlAttribute -> {
                 obj.type?.let { visitType(it, obj.id) }

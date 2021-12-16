@@ -225,6 +225,9 @@ class SimpleMLFormatter : AbstractFormatter2() {
 
                 // EObject "parameterList"
                 doc.formatObject(obj.parameterList, noSpace, null)
+
+                // EObject "constraintList"
+                doc.formatObject(obj.constraintList, oneSpace, null)
             }
             is SmlAnnotationUse -> {
 
@@ -287,7 +290,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // EObject "parentTypeList"
                 doc.formatObject(obj.parentTypeList, oneSpace, null)
 
-                // EObject "typeParameterConstraintList"
+                // EObject "constraintList"
                 doc.formatObject(obj.constraintList, oneSpace, null)
 
                 // EObject "body"
@@ -401,7 +404,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // EObject "parameterList"
                 doc.formatObject(obj.parameterList, noSpace, null)
 
-                // EObject "typeParameterConstraintList"
+                // EObject "constraintList"
                 doc.formatObject(obj.constraintList, oneSpace, null)
             }
             is SmlFunction -> {
@@ -433,7 +436,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // EObject "resultList"
                 doc.formatObject(obj.resultList, oneSpace, null)
 
-                // EObject "typeParameterConstraintList"
+                // EObject "constraintList"
                 doc.formatObject(obj.constraintList, oneSpace, null)
             }
             is SmlWorkflow -> {

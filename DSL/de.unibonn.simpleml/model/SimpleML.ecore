@@ -15,6 +15,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractPackageMember" abstract="true" eSuperTypes="#//SmlAbstractDeclaration" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotation" eSuperTypes="#//SmlAbstractCompilationUnitMember #//SmlAbstractPackageMember">
         <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList" containment="true" />
+        <eStructuralFeatures xsi:type="ecore:EReference" name="constraintList" eType="#//SmlConstraintList" containment="true" />
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotationUseHolder" eSuperTypes="#//SmlAbstractAnnotatedObject" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotationUse" eSuperTypes="#//SmlAbstractObject">

@@ -212,12 +212,18 @@ sealed class DeclarationT(
  * The list of parameters or null. Each element in the list is the ID of a parameterT fact for the respective parameter.
  * Note that an empty list is used for an annotation with an empty parameter list, e.g. `annotation A()`, while null is
  * used for an annotation with no parameter list at all, like `annotation B`.
+ *
+ * @param constraints
+ * The IDs of the facts for the constraints of this annotation or null if the annotation has no type parameter
+ * constraints. Note that the grammar forbids the use of the keyword `where` without any type parameter constraints
+ * afterwards, so this will never be set to an empty list.
  */
 data class AnnotationT(
     override val id: Id<SmlAnnotation>,
     override val parent: Id<SmlAbstractObject>, // Actually just SmlCompilationUnit but this allows a handleDeclaration function
     override val name: String,
-    val parameters: List<Id<SmlParameter>>?
+    val parameters: List<Id<SmlParameter>>?,
+    val constraints: List<Id<SmlAbstractConstraint>>?,
 ) : DeclarationT("annotationT", id, parent, name, parameters) {
     override fun toString() = super.toString()
 }

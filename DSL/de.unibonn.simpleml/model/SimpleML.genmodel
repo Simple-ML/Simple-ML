@@ -16,6 +16,7 @@
         <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractNamedTypeDeclaration" />
         <genClasses ecoreClass="SimpleML.ecore#//SmlAnnotation">
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAnnotation/parameterList" />
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAnnotation/constraintList" />
         </genClasses>
         <genClasses ecoreClass="SimpleML.ecore#//SmlAnnotationUseHolder" />
         <genClasses ecoreClass="SimpleML.ecore#//SmlAnnotationUse">

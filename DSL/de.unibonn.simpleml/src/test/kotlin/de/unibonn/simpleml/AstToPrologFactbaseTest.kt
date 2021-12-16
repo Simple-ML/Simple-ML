@@ -137,6 +137,7 @@ class AstToPrologFactbaseTest {
                 val annotationT = findUniqueFactOrFail<AnnotationT> { it.name == "MySimpleAnnotation" }
                 annotationT.asClue {
                     annotationT.parameters.shouldBeNull()
+                    annotationT.constraints.shouldBeNull()
                 }
 
                 shouldHaveNAnnotationUses(annotationT, 0)
@@ -146,6 +147,12 @@ class AstToPrologFactbaseTest {
             fun `should reference parameters`() = withFactbaseFromFile("declarations") {
                 val annotationT = findUniqueFactOrFail<AnnotationT> { it.name == "MyComplexAnnotation" }
                 shouldBeNChildrenOf<ParameterT>(annotationT.parameters, annotationT, 2)
+            }
+
+            @Test
+            fun `should reference constraints`() = withFactbaseFromFile("declarations") {
+                val annotationT = findUniqueFactOrFail<AnnotationT> { it.name == "MyComplexAnnotation" }
+                shouldBeNChildrenOf<TypeParameterConstraintT>(annotationT.constraints, annotationT, 2)
             }
 
             @Test
@@ -236,7 +243,7 @@ class AstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should reference type parameter constraints`() = withFactbaseFromFile("declarations") {
+            fun `should reference constraints`() = withFactbaseFromFile("declarations") {
                 val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
                 shouldBeNChildrenOf<TypeParameterConstraintT>(classT.constraints, classT, 2)
             }
@@ -318,7 +325,7 @@ class AstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should reference type parameter constraints`() = withFactbaseFromFile("declarations") {
+            fun `should reference constraints`() = withFactbaseFromFile("declarations") {
                 val enumVariantT = findUniqueFactOrFail<EnumVariantT> { it.name == "MyComplexVariant" }
                 shouldBeNChildrenOf<TypeParameterConstraintT>(enumVariantT.constraints, enumVariantT, 2)
             }
@@ -373,7 +380,7 @@ class AstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should reference type parameter constraints`() = withFactbaseFromFile("declarations") {
+            fun `should reference constraints`() = withFactbaseFromFile("declarations") {
                 val functionT = findUniqueFactOrFail<FunctionT> { it.name == "myComplexFunction" }
                 shouldBeNChildrenOf<TypeParameterConstraintT>(functionT.constraints, functionT, 2)
             }

@@ -31,6 +31,7 @@ SmlCompilationUnitMember returns SmlAbstractAnnotatedObject
     | {SmlAnnotation.annotationUseHolder=current}
           'annotation' name=ID
           parameterList=SmlParameterList?
+          constraintList=SmlConstraintList?
 
     | {SmlClass.annotationUseHolder=current}
           'class' name=ID
@@ -77,6 +78,7 @@ SmlPackageMember returns SmlAbstractAnnotatedObject
     ( {SmlAnnotation.annotationUseHolder=current}
           'annotation' name=ID
           parameterList=SmlParameterList?
+          constraintList=SmlConstraintList?
 
     | {SmlClass.annotationUseHolder=current}
           'class' name=ID

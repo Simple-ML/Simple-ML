@@ -64,6 +64,10 @@ fun SmlAnnotation?.parametersOrEmpty(): List<SmlParameter> {
     return this?.parameterList?.parameters.orEmpty()
 }
 
+fun SmlAnnotation?.constraintsOrEmpty(): List<SmlAbstractConstraint> {
+    return this?.constraintList?.constraints.orEmpty()
+}
+
 // SmlAnnotationUse --------------------------------------------------------------------------------
 
 fun SmlAnnotationUse?.argumentsOrEmpty(): List<SmlArgument> {
