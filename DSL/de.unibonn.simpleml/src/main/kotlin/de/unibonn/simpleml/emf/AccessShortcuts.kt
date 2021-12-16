@@ -3,6 +3,7 @@
 package de.unibonn.simpleml.emf
 
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
+import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractLocalVariable
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
@@ -16,6 +17,7 @@ import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlConstraintList
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
@@ -28,8 +30,6 @@ import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
-import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
-import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraintList
 import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
@@ -126,12 +126,12 @@ fun SmlClass?.typeParametersOrEmpty(): List<SmlTypeParameter> {
     return this?.typeParameterList?.typeParameters.orEmpty()
 }
 
-fun SmlClass?.typeParameterConstraintsOrEmpty(): List<SmlTypeParameterConstraint> {
-    return this?.typeParameterConstraintList?.constraints.orEmpty()
-}
-
 fun SmlClass?.parentTypesOrEmpty(): List<SmlAbstractType> {
     return this?.parentTypeList?.parentTypes.orEmpty()
+}
+
+fun SmlClass?.constraintsOrEmpty(): List<SmlAbstractConstraint> {
+    return this?.constraintList?.constraints.orEmpty()
 }
 
 // SmlCompilationUnit ------------------------------------------------------------------------------
@@ -165,8 +165,8 @@ fun SmlEnumVariant?.typeParametersOrEmpty(): List<SmlTypeParameter> {
     return this?.typeParameterList?.typeParameters.orEmpty()
 }
 
-fun SmlEnumVariant?.typeParameterConstraintsOrEmpty(): List<SmlTypeParameterConstraint> {
-    return this?.typeParameterConstraintList?.constraints.orEmpty()
+fun SmlEnumVariant?.constraintsOrEmpty(): List<SmlAbstractConstraint> {
+    return this?.constraintList?.constraints.orEmpty()
 }
 
 // SmlFunction -------------------------------------------------------------------------------------
@@ -183,8 +183,8 @@ fun SmlFunction?.typeParametersOrEmpty(): List<SmlTypeParameter> {
     return this?.typeParameterList?.typeParameters.orEmpty()
 }
 
-fun SmlFunction?.typeParameterConstraintsOrEmpty(): List<SmlTypeParameterConstraint> {
-    return this?.typeParameterConstraintList?.constraints.orEmpty()
+fun SmlFunction?.constraintsOrEmpty(): List<SmlAbstractConstraint> {
+    return this?.constraintList?.constraints.orEmpty()
 }
 
 // SmlLambda ---------------------------------------------------------------------------------------
@@ -294,7 +294,7 @@ fun SmlAnnotationUse?.targetOrNull(): SmlAbstractDeclaration? {
  * Accessing siblings                                                                                                 *
  * ********************************************************************************************************************/
 
-fun SmlTypeParameterConstraintList.typeParametersOrNull(): List<SmlTypeParameter>? {
+fun SmlConstraintList.typeParametersOrNull(): List<SmlTypeParameter>? {
     return when (val parent = this.eContainer()) {
         is SmlClass -> parent.typeParametersOrEmpty()
         is SmlEnumVariant -> return parent.typeParametersOrEmpty()

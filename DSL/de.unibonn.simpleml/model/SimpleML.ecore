@@ -29,7 +29,7 @@
         <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterList" eType="#//SmlTypeParameterList" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="parentTypeList" eType="#//SmlParentTypeList" containment="true" />
-        <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterConstraintList" eType="#//SmlTypeParameterConstraintList" containment="true" />
+        <eStructuralFeatures xsi:type="ecore:EReference" name="constraintList" eType="#//SmlConstraintList" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlClassBody" containment="true" />
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlClassBody" eSuperTypes="#//SmlAbstractObject">
@@ -58,14 +58,14 @@
     <eClassifiers xsi:type="ecore:EClass" name="SmlEnumVariant" eSuperTypes="#//SmlAbstractNamedTypeDeclaration">
         <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterList" eType="#//SmlTypeParameterList" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList" containment="true" />
-        <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterConstraintList" eType="#//SmlTypeParameterConstraintList" containment="true" />
+        <eStructuralFeatures xsi:type="ecore:EReference" name="constraintList" eType="#//SmlConstraintList" containment="true" />
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlFunction" eSuperTypes="#//SmlAbstractDeclaration #//SmlAbstractClassMember #//SmlAbstractCompilationUnitMember #//SmlAbstractPackageMember">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="static" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterList" eType="#//SmlTypeParameterList" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="resultList" eType="#//SmlResultList" containment="true" />
-        <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterConstraintList" eType="#//SmlTypeParameterConstraintList" containment="true" />
+        <eStructuralFeatures xsi:type="ecore:EReference" name="constraintList" eType="#//SmlConstraintList" containment="true" />
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlParameterList" eSuperTypes="#//SmlAbstractObject">
         <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1" eType="#//SmlParameter" containment="true" />
@@ -201,14 +201,6 @@
     <eClassifiers xsi:type="ecore:EClass" name="SmlTypeParameter" eSuperTypes="#//SmlAbstractNamedTypeDeclaration">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="variance" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" />
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SmlTypeParameterConstraintList" eSuperTypes="#//SmlAbstractObject">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="constraints" upperBound="-1" eType="#//SmlTypeParameterConstraint" containment="true" />
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SmlTypeParameterConstraint" eSuperTypes="#//SmlAbstractObject">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="leftOperand" eType="#//SmlTypeParameter" />
-        <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" />
-        <eStructuralFeatures xsi:type="ecore:EReference" name="rightOperand" eType="#//SmlAbstractType" containment="true" />
-    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlTypeArgumentList" eSuperTypes="#//SmlAbstractObject">
         <eStructuralFeatures xsi:type="ecore:EReference" name="typeArguments" upperBound="-1" eType="#//SmlTypeArgument" containment="true" />
     </eClassifiers>
@@ -221,5 +213,14 @@
     <eClassifiers xsi:type="ecore:EClass" name="SmlTypeProjection" eSuperTypes="#//SmlAbstractTypeArgumentValue">
         <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//SmlAbstractType" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="variance" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" />
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SmlConstraintList" eSuperTypes="#//SmlAbstractObject">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="constraints" upperBound="-1" eType="#//SmlAbstractConstraint" containment="true" />
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractConstraint" abstract="true" eSuperTypes="#//SmlAbstractObject"/>
+    <eClassifiers xsi:type="ecore:EClass" name="SmlTypeParameterConstraint" eSuperTypes="#//SmlAbstractConstraint">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="leftOperand" eType="#//SmlTypeParameter" />
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" />
+        <eStructuralFeatures xsi:type="ecore:EReference" name="rightOperand" eType="#//SmlAbstractType" containment="true" />
     </eClassifiers>
 </ecore:EPackage>

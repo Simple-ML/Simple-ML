@@ -60,7 +60,7 @@ import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
-import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraintList
+import de.unibonn.simpleml.simpleML.SmlConstraintList
 import de.unibonn.simpleml.simpleML.SmlTypeParameterList
 import de.unibonn.simpleml.simpleML.SmlTypeProjection
 import de.unibonn.simpleml.simpleML.SmlUnionType
@@ -288,7 +288,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatObject(obj.parentTypeList, oneSpace, null)
 
                 // EObject "typeParameterConstraintList"
-                doc.formatObject(obj.typeParameterConstraintList, oneSpace, null)
+                doc.formatObject(obj.constraintList, oneSpace, null)
 
                 // EObject "body"
                 doc.formatObject(obj.body, oneSpace, null)
@@ -402,7 +402,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatObject(obj.parameterList, noSpace, null)
 
                 // EObject "typeParameterConstraintList"
-                doc.formatObject(obj.typeParameterConstraintList, oneSpace, null)
+                doc.formatObject(obj.constraintList, oneSpace, null)
             }
             is SmlFunction -> {
 
@@ -434,7 +434,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatObject(obj.resultList, oneSpace, null)
 
                 // EObject "typeParameterConstraintList"
-                doc.formatObject(obj.typeParameterConstraintList, oneSpace, null)
+                doc.formatObject(obj.constraintList, oneSpace, null)
             }
             is SmlWorkflow -> {
 
@@ -895,7 +895,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // Feature "name"
                 doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME)
             }
-            is SmlTypeParameterConstraintList -> {
+            is SmlConstraintList -> {
 
                 // Keyword "where"
                 doc.formatKeyword(obj, "where", null, oneSpace)

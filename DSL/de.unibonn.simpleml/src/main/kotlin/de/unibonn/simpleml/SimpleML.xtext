@@ -37,7 +37,7 @@ SmlCompilationUnitMember returns SmlAbstractAnnotatedObject
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
           parentTypeList=SmlParentTypeList?
-          typeParameterConstraintList=SmlTypeParameterConstraintList?
+          constraintList=SmlConstraintList?
           body=SmlClassBody?
 
     | {SmlEnum.annotationUseHolder=current}
@@ -49,7 +49,7 @@ SmlCompilationUnitMember returns SmlAbstractAnnotatedObject
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList
           resultList=SmlResultList?
-          typeParameterConstraintList=SmlTypeParameterConstraintList?
+          constraintList=SmlConstraintList?
 
     | {SmlWorkflow.annotationUseHolder=current}
           'workflow' name=ID
@@ -83,7 +83,7 @@ SmlPackageMember returns SmlAbstractAnnotatedObject
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
           parentTypeList=SmlParentTypeList?
-          typeParameterConstraintList=SmlTypeParameterConstraintList?
+          constraintList=SmlConstraintList?
           body=SmlClassBody?
 
     | {SmlEnum.annotationUseHolder=current}
@@ -95,7 +95,7 @@ SmlPackageMember returns SmlAbstractAnnotatedObject
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList
           resultList=SmlResultList?
-          typeParameterConstraintList=SmlTypeParameterConstraintList?
+          constraintList=SmlConstraintList?
 
     | {SmlWorkflow.annotationUseHolder=current}
           'workflow' name=ID
@@ -160,7 +160,7 @@ SmlClassMember returns SmlAbstractAnnotatedObject
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
           parentTypeList=SmlParentTypeList?
-          typeParameterConstraintList=SmlTypeParameterConstraintList?
+          constraintList=SmlConstraintList?
           body=SmlClassBody?
 
     | {SmlEnum.annotationUseHolder=current}
@@ -173,7 +173,7 @@ SmlClassMember returns SmlAbstractAnnotatedObject
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList
           resultList=SmlResultList?
-          typeParameterConstraintList=SmlTypeParameterConstraintList?
+          constraintList=SmlConstraintList?
     )
     ;
 
@@ -189,7 +189,7 @@ SmlEnumVariant
       name=ID
       typeParameterList=SmlTypeParameterList?
       parameterList=SmlParameterList?
-      typeParameterConstraintList=SmlTypeParameterConstraintList?
+      constraintList=SmlConstraintList?
     ;
 
 
@@ -547,7 +547,7 @@ SmlTypeParameterVariance
     | 'out'
     ;
 
-SmlTypeParameterConstraintList
+SmlConstraintList
     : 'where' constraints+=SmlTypeParameterConstraint (',' constraints+=SmlTypeParameterConstraint)* ','?
     ;
 

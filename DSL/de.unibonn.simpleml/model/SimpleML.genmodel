@@ -30,7 +30,7 @@
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClass/typeParameterList" />
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClass/parameterList" />
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClass/parentTypeList" />
-            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClass/typeParameterConstraintList" />
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClass/constraintList" />
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClass/body" />
         </genClasses>
         <genClasses ecoreClass="SimpleML.ecore#//SmlClassBody">
@@ -60,14 +60,14 @@
         <genClasses ecoreClass="SimpleML.ecore#//SmlEnumVariant">
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlEnumVariant/typeParameterList" />
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlEnumVariant/parameterList" />
-            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlEnumVariant/typeParameterConstraintList" />
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlEnumVariant/constraintList" />
         </genClasses>
         <genClasses ecoreClass="SimpleML.ecore#//SmlFunction">
             <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlFunction/static" />
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlFunction/typeParameterList" />
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlFunction/parameterList" />
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlFunction/resultList" />
-            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlFunction/typeParameterConstraintList" />
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlFunction/constraintList" />
         </genClasses>
         <genClasses ecoreClass="SimpleML.ecore#//SmlParameterList">
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlParameterList/parameters" />
@@ -203,14 +203,6 @@
         <genClasses ecoreClass="SimpleML.ecore#//SmlTypeParameter">
             <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlTypeParameter/variance" />
         </genClasses>
-        <genClasses ecoreClass="SimpleML.ecore#//SmlTypeParameterConstraintList">
-            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlTypeParameterConstraintList/constraints" />
-        </genClasses>
-        <genClasses ecoreClass="SimpleML.ecore#//SmlTypeParameterConstraint">
-            <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlTypeParameterConstraint/leftOperand" />
-            <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlTypeParameterConstraint/operator" />
-            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlTypeParameterConstraint/rightOperand" />
-        </genClasses>
         <genClasses ecoreClass="SimpleML.ecore#//SmlTypeArgumentList">
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlTypeArgumentList/typeArguments" />
         </genClasses>
@@ -223,6 +215,15 @@
         <genClasses ecoreClass="SimpleML.ecore#//SmlTypeProjection">
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlTypeProjection/type" />
             <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlTypeProjection/variance" />
+        </genClasses>
+        <genClasses ecoreClass="SimpleML.ecore#//SmlConstraintList">
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlConstraintList/constraints" />
+        </genClasses>
+        <genClasses ecoreClass="SimpleML.ecore#//SmlAbstractConstraint" />
+        <genClasses ecoreClass="SimpleML.ecore#//SmlTypeParameterConstraint">
+            <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlTypeParameterConstraint/leftOperand" />
+            <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlTypeParameterConstraint/operator" />
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlTypeParameterConstraint/rightOperand" />
         </genClasses>
     </genPackages>
 </genmodel:GenModel>

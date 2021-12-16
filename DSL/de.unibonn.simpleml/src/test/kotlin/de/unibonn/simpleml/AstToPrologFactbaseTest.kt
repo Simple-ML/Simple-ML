@@ -210,7 +210,7 @@ class AstToPrologFactbaseTest {
                     classT.typeParameters.shouldBeNull()
                     classT.parameters.shouldBeNull()
                     classT.parentTypes.shouldBeNull()
-                    classT.typeParameterConstraints.shouldBeNull()
+                    classT.constraints.shouldBeNull()
                     classT.members.shouldBeNull()
                 }
 
@@ -238,7 +238,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should reference type parameter constraints`() = withFactbaseFromFile("declarations") {
                 val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
-                shouldBeNChildrenOf<TypeParameterConstraintT>(classT.typeParameterConstraints, classT, 2)
+                shouldBeNChildrenOf<TypeParameterConstraintT>(classT.constraints, classT, 2)
             }
 
             @Test
@@ -320,7 +320,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should reference type parameter constraints`() = withFactbaseFromFile("declarations") {
                 val enumVariantT = findUniqueFactOrFail<EnumVariantT> { it.name == "MyComplexVariant" }
-                shouldBeNChildrenOf<TypeParameterConstraintT>(enumVariantT.typeParameterConstraints, enumVariantT, 2)
+                shouldBeNChildrenOf<TypeParameterConstraintT>(enumVariantT.constraints, enumVariantT, 2)
             }
 
             @Test
@@ -340,7 +340,7 @@ class AstToPrologFactbaseTest {
                     functionT.typeParameters.shouldBeNull()
                     functionT.parameters.shouldBeEmpty()
                     functionT.results.shouldBeNull()
-                    functionT.typeParameterConstraints.shouldBeNull()
+                    functionT.constraints.shouldBeNull()
                 }
 
                 shouldHaveNAnnotationUses(functionT, 0)
@@ -375,7 +375,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should reference type parameter constraints`() = withFactbaseFromFile("declarations") {
                 val functionT = findUniqueFactOrFail<FunctionT> { it.name == "myComplexFunction" }
-                shouldBeNChildrenOf<TypeParameterConstraintT>(functionT.typeParameterConstraints, functionT, 2)
+                shouldBeNChildrenOf<TypeParameterConstraintT>(functionT.constraints, functionT, 2)
             }
 
             @Test

@@ -3,13 +3,13 @@ package de.unibonn.simpleml.prolog_bridge.converters
 import de.unibonn.simpleml.emf.annotationUsesOrEmpty
 import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.assigneesOrEmpty
+import de.unibonn.simpleml.emf.constraintsOrEmpty
 import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.statementsOrEmpty
 import de.unibonn.simpleml.emf.typeArgumentsOrEmpty
-import de.unibonn.simpleml.emf.typeParameterConstraintsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.emf.variantsOrEmpty
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
@@ -67,6 +67,7 @@ import de.unibonn.simpleml.prolog_bridge.utils.Id
 import de.unibonn.simpleml.prolog_bridge.utils.IdManager
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
+import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
@@ -182,7 +183,7 @@ class AstToPrologFactbase {
                 obj.typeParametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
                 obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
                 obj.parentTypesOrEmpty().forEach { visitType(it, obj.id) }
-                obj.typeParameterConstraintsOrEmpty().forEach { visitTypeParameterConstraint(it, obj.id) }
+                obj.constraintsOrEmpty().forEach { visitConstraint(it, obj.id) }
                 obj.memberDeclarationsOrEmpty().forEach { visitDeclaration(it, obj.id) }
 
                 val body = when (obj.body) {
@@ -197,7 +198,7 @@ class AstToPrologFactbase {
                     obj.typeParameterList?.typeParameters?.map { it.id },
                     obj.parameterList?.parameters?.map { it.id },
                     obj.parentTypeList?.parentTypes?.map { it.id },
-                    obj.typeParameterConstraintList?.constraints?.map { it.id },
+                    obj.constraintList?.constraints?.map { it.id },
                     body
                 )
             }
@@ -209,7 +210,7 @@ class AstToPrologFactbase {
             is SmlEnumVariant -> {
                 obj.typeParametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
                 obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
-                obj.typeParameterConstraintsOrEmpty().forEach { visitTypeParameterConstraint(it, obj.id) }
+                obj.constraintsOrEmpty().forEach { visitConstraint(it, obj.id) }
 
                 +EnumVariantT(
                     obj.id,
@@ -217,14 +218,14 @@ class AstToPrologFactbase {
                     obj.name,
                     obj.typeParameterList?.typeParameters?.map { it.id },
                     obj.parameterList?.parameters?.map { it.id },
-                    obj.typeParameterConstraintList?.constraints?.map { it.id },
+                    obj.constraintList?.constraints?.map { it.id },
                 )
             }
             is SmlFunction -> {
                 obj.typeParametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
                 obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
                 obj.resultsOrEmpty().forEach { visitDeclaration(it, obj.id) }
-                obj.typeParameterConstraintsOrEmpty().forEach { visitTypeParameterConstraint(it, obj.id) }
+                obj.constraintsOrEmpty().forEach { visitConstraint(it, obj.id) }
 
                 +FunctionT(
                     obj.id,
@@ -234,7 +235,7 @@ class AstToPrologFactbase {
                     obj.typeParameterList?.typeParameters?.map { it.id },
                     obj.parametersOrEmpty().map { it.id },
                     obj.resultList?.results?.map { it.id },
-                    obj.typeParameterConstraintList?.constraints?.map { it.id },
+                    obj.constraintList?.constraints?.map { it.id },
                 )
             }
             is SmlPackage -> {
@@ -529,14 +530,23 @@ class AstToPrologFactbase {
         visitSourceLocation(obj)
     }
 
-    private fun PlFactbase.visitTypeParameterConstraint(
-        obj: SmlTypeParameterConstraint,
+    private fun PlFactbase.visitConstraint(
+        obj: SmlAbstractConstraint,
         parentId: Id<SmlAbstractObject>
     ) {
-        visitCrossReference(obj, SimpleMLPackage.Literals.SML_TYPE_PARAMETER_CONSTRAINT__LEFT_OPERAND, obj.leftOperand)
-        visitType(obj.rightOperand, obj.id)
+        when (obj) {
+            is SmlTypeParameterConstraint -> {
+                visitCrossReference(
+                    obj,
+                    SimpleMLPackage.Literals.SML_TYPE_PARAMETER_CONSTRAINT__LEFT_OPERAND,
+                    obj.leftOperand
+                )
+                visitType(obj.rightOperand, obj.id)
 
-        +TypeParameterConstraintT(obj.id, parentId, obj.leftOperand.id, obj.operator, obj.rightOperand.id)
+                +TypeParameterConstraintT(obj.id, parentId, obj.leftOperand.id, obj.operator, obj.rightOperand.id)
+            }
+        }
+
         visitSourceLocation(obj)
     }
 

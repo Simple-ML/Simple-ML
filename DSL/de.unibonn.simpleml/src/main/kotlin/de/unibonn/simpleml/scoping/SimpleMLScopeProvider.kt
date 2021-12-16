@@ -30,7 +30,7 @@ import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
-import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraintList
+import de.unibonn.simpleml.simpleML.SmlConstraintList
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
@@ -260,7 +260,7 @@ class SimpleMLScopeProvider @Inject constructor(
 
     private fun scopeForTypeParameterConstraintLeftOperand(smlTypeParameterConstraint: SmlTypeParameterConstraint): IScope {
         val typeParameters = smlTypeParameterConstraint
-            .closestAncestorOrNull<SmlTypeParameterConstraintList>()
+            .closestAncestorOrNull<SmlConstraintList>()
             ?.typeParametersOrNull()
             ?: emptyList()
 
