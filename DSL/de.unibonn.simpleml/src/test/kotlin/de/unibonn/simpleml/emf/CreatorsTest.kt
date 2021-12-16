@@ -242,9 +242,9 @@ class CreatorsTest {
     fun `createSmlClass should omit empty type parameter constraint list`() {
         val `class` = createSmlClass(
             "Test",
-            typeParameterConstraints = emptyList()
+            constraints = emptyList()
         )
-        `class`.typeParameterConstraintList.shouldBeNull()
+        `class`.constraintList.shouldBeNull()
     }
 
     @Test
@@ -352,9 +352,9 @@ class CreatorsTest {
     fun `createSmlEnumVariant should omit empty type parameter constraint list`() {
         val enum = createSmlEnumVariant(
             "Test",
-            typeParameterConstraints = emptyList()
+            constraints = emptyList()
         )
-        enum.typeParameterConstraintList.shouldBeNull()
+        enum.constraintList.shouldBeNull()
     }
 
     @Test
@@ -437,9 +437,9 @@ class CreatorsTest {
     fun `createSmlFunction should omit empty type parameter constraint list`() {
         val function = createSmlFunction(
             "test",
-            typeParameterConstraints = emptyList()
+            constraints = emptyList()
         )
-        function.typeParameterConstraintList.shouldBeNull()
+        function.constraintList.shouldBeNull()
     }
 
     @Test

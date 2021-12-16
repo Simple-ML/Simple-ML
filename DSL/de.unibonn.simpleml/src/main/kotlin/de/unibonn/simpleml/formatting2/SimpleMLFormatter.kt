@@ -32,6 +32,7 @@ import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlClassBody
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlConstraintList
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumBody
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
@@ -60,7 +61,6 @@ import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
-import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraintList
 import de.unibonn.simpleml.simpleML.SmlTypeParameterList
 import de.unibonn.simpleml.simpleML.SmlTypeProjection
 import de.unibonn.simpleml.simpleML.SmlUnionType
@@ -225,6 +225,9 @@ class SimpleMLFormatter : AbstractFormatter2() {
 
                 // EObject "parameterList"
                 doc.formatObject(obj.parameterList, noSpace, null)
+
+                // EObject "constraintList"
+                doc.formatObject(obj.constraintList, oneSpace, null)
             }
             is SmlAnnotationUse -> {
 
@@ -287,8 +290,8 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // EObject "parentTypeList"
                 doc.formatObject(obj.parentTypeList, oneSpace, null)
 
-                // EObject "typeParameterConstraintList"
-                doc.formatObject(obj.typeParameterConstraintList, oneSpace, null)
+                // EObject "constraintList"
+                doc.formatObject(obj.constraintList, oneSpace, null)
 
                 // EObject "body"
                 doc.formatObject(obj.body, oneSpace, null)
@@ -401,8 +404,8 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // EObject "parameterList"
                 doc.formatObject(obj.parameterList, noSpace, null)
 
-                // EObject "typeParameterConstraintList"
-                doc.formatObject(obj.typeParameterConstraintList, oneSpace, null)
+                // EObject "constraintList"
+                doc.formatObject(obj.constraintList, oneSpace, null)
             }
             is SmlFunction -> {
 
@@ -433,8 +436,8 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // EObject "resultList"
                 doc.formatObject(obj.resultList, oneSpace, null)
 
-                // EObject "typeParameterConstraintList"
-                doc.formatObject(obj.typeParameterConstraintList, oneSpace, null)
+                // EObject "constraintList"
+                doc.formatObject(obj.constraintList, oneSpace, null)
             }
             is SmlWorkflow -> {
 
@@ -895,7 +898,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // Feature "name"
                 doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME)
             }
-            is SmlTypeParameterConstraintList -> {
+            is SmlConstraintList -> {
 
                 // Keyword "where"
                 doc.formatKeyword(obj, "where", null, oneSpace)

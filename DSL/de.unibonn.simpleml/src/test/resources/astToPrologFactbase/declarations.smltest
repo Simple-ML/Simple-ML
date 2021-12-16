@@ -12,7 +12,7 @@ annotation MySimpleAnnotation
 annotation MyComplexAnnotation(
     a: Int,
     b: Int
-)
+) where T1 super Number, T2 sub Number
 
 
 // Classes, Attributes & Type parameters -------------------------------------------------------------------------------
