@@ -8,7 +8,6 @@ import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
-import de.unibonn.simpleml.testing.withSystemLineBreaks
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldNotContain

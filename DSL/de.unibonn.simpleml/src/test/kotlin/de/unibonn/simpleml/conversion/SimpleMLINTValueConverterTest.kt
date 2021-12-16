@@ -6,8 +6,6 @@ import com.google.inject.Inject
 import de.unibonn.simpleml.constant.FileExtension
 import de.unibonn.simpleml.emf.createSmlDummyResource
 import de.unibonn.simpleml.emf.createSmlInt
-import de.unibonn.simpleml.emf.createSmlNull
-import de.unibonn.simpleml.emf.createSmlTemplateString
 import de.unibonn.simpleml.emf.smlExpressionStatement
 import de.unibonn.simpleml.emf.smlWorkflow
 import de.unibonn.simpleml.serializer.SerializationResult

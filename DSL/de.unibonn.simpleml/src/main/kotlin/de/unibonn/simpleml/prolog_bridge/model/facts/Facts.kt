@@ -42,7 +42,6 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStarProjection
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlTemplateString
-import de.unibonn.simpleml.simpleML.SmlAbstractTemplateStringPart
 import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
 import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
 import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
