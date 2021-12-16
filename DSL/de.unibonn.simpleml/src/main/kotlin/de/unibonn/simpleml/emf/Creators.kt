@@ -56,7 +56,6 @@ import de.unibonn.simpleml.simpleML.SmlResultList
 import de.unibonn.simpleml.simpleML.SmlStarProjection
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlTemplateString
-import de.unibonn.simpleml.simpleML.SmlTemplateStringPart
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
@@ -1017,10 +1016,27 @@ fun createSmlTemplateString(
 
     return factory.createSmlTemplateString().apply {
         stringParts.forEachIndexed { index, value ->
-            this.expressions += factory.createSmlTemplateStringPart().apply {
-                this.value = value
+
+            // Next template string part
+            this.expressions += when (index) {
+                0 -> {
+                    factory.createSmlTemplateStringStart().apply {
+                        this.value = value
+                    }
+                }
+                stringParts.size - 1 -> {
+                    factory.createSmlTemplateStringEnd().apply {
+                        this.value = value
+                    }
+                }
+                else -> {
+                    factory.createSmlTemplateStringInner().apply {
+                        this.value = value
+                    }
+                }
             }
 
+            // Next template expression
             if (index < templateExpressions.size) {
                 this.expressions += templateExpressions[index]
             }

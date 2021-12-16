@@ -1,3 +1,3 @@
 workflow templateStringParts {
-    "start{{ }}inner{{ }}end";
+    "start{{ 1 }}inner{{ 1 }}end";
 }

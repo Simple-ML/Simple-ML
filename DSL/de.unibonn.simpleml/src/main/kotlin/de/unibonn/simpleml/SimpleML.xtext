@@ -438,15 +438,15 @@ SmlTemplateString
       expressions+=SmlTemplateStringEnd
     ;
 
-SmlTemplateStringStart returns SmlTemplateStringPart
+SmlTemplateStringStart
     : value=TEMPLATE_STRING_START
     ;
 
-SmlTemplateStringInner returns SmlTemplateStringPart
+SmlTemplateStringInner
     : value=TEMPLATE_STRING_INNER
     ;
 
-SmlTemplateStringEnd returns SmlTemplateStringPart
+SmlTemplateStringEnd
     : value=TEMPLATE_STRING_END
     ;
 

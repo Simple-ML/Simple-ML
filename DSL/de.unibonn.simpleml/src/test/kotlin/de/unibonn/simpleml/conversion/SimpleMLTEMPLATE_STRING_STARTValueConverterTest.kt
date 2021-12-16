@@ -11,7 +11,7 @@ import de.unibonn.simpleml.emf.smlExpressionStatement
 import de.unibonn.simpleml.emf.smlWorkflow
 import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
-import de.unibonn.simpleml.simpleML.SmlTemplateStringPart
+import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.utils.descendants
@@ -49,8 +49,8 @@ class SimpleMLTEMPLATE_STRING_STARTValueConverterTest {
             )
             compilationUnit.shouldNotBeNull()
 
-            val stringTemplateParts = compilationUnit.descendants<SmlTemplateStringPart>().toList()
-            stringTemplateParts.shouldHaveSize(3)
+            val stringTemplateParts = compilationUnit.descendants<SmlTemplateStringStart>().toList()
+            stringTemplateParts.shouldHaveSize(1)
 
             stringTemplateParts[0].value shouldBe "start"
         }

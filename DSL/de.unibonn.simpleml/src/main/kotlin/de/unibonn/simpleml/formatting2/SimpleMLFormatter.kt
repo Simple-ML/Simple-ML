@@ -55,7 +55,7 @@ import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlResultList
 import de.unibonn.simpleml.simpleML.SmlTemplateString
-import de.unibonn.simpleml.simpleML.SmlTemplateStringPart
+import de.unibonn.simpleml.simpleML.SmlAbstractTemplateStringPart
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
@@ -767,7 +767,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
 
                 // Feature expressions
                 obj.expressions.forEach {
-                    if (it !is SmlTemplateStringPart) {
+                    if (it !is SmlAbstractTemplateStringPart) {
                         doc.formatObject(it, oneSpace, oneSpace)
                     }
                 }

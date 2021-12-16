@@ -4,7 +4,9 @@ import de.unibonn.simpleml.constant.FileExtension
 import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlInt
-import de.unibonn.simpleml.simpleML.SmlTemplateStringPart
+import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
+import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
+import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import io.kotest.assertions.asClue
 import io.kotest.assertions.throwables.shouldThrowExactly
@@ -447,17 +449,19 @@ class CreatorsTest {
     @Test
     fun `createSmlTemplate should interleave string parts and template expressions`() {
         val templateString = createSmlTemplateString(
-            listOf("Start", "Inner", "End"),
-            listOf(createSmlInt(1), createSmlInt(1))
+            listOf("Start", "Inner", "Inner", "End"),
+            listOf(createSmlInt(1), createSmlInt(1), createSmlInt(1))
         )
 
         templateString.expressions.asClue {
-            it.shouldHaveSize(5)
-            it[0].shouldBeInstanceOf<SmlTemplateStringPart>()
+            it.shouldHaveSize(7)
+            it[0].shouldBeInstanceOf<SmlTemplateStringStart>()
             it[1].shouldBeInstanceOf<SmlInt>()
-            it[2].shouldBeInstanceOf<SmlTemplateStringPart>()
+            it[2].shouldBeInstanceOf<SmlTemplateStringInner>()
             it[3].shouldBeInstanceOf<SmlInt>()
-            it[4].shouldBeInstanceOf<SmlTemplateStringPart>()
+            it[4].shouldBeInstanceOf<SmlTemplateStringInner>()
+            it[5].shouldBeInstanceOf<SmlInt>()
+            it[6].shouldBeInstanceOf<SmlTemplateStringEnd>()
         }
     }
 
