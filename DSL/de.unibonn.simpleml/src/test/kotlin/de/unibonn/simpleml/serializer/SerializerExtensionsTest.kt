@@ -8,7 +8,6 @@ import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
-import de.unibonn.simpleml.testing.withSystemLineBreaks
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldNotContain
@@ -34,7 +33,7 @@ class SerializerExtensionsTest {
 
         @Test
         fun `should serialize and format a complete EMF model created from a resource`() {
-            val compilationUnit = parseHelper.parseResource("serialization/ExtensionsTest.smltest")
+            val compilationUnit = parseHelper.parseResource("serialization/extensionsTest.smltest")
             compilationUnit.shouldNotBeNull()
 
             val result = compilationUnit.serializeToFormattedString()
@@ -52,7 +51,7 @@ class SerializerExtensionsTest {
 
         @Test
         fun `should serialize and format a subtree of the EMF model from a resource`() {
-            val compilationUnit = parseHelper.parseResource("serialization/ExtensionsTest.smltest")
+            val compilationUnit = parseHelper.parseResource("serialization/extensionsTest.smltest")
             compilationUnit.shouldNotBeNull()
 
             val `class` = compilationUnit.findUniqueDeclarationOrFail<SmlClass>("MyClass")
@@ -69,7 +68,7 @@ class SerializerExtensionsTest {
 
         @Test
         fun `should use line feed as line separator`() {
-            val compilationUnit = parseHelper.parseResource("serialization/ExtensionsTest.smltest")
+            val compilationUnit = parseHelper.parseResource("serialization/extensionsTest.smltest")
             compilationUnit.shouldNotBeNull()
 
             val `class` = compilationUnit.findUniqueDeclarationOrFail<SmlClass>("MyClass")

@@ -4,7 +4,9 @@ import de.unibonn.simpleml.constant.FileExtension
 import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlInt
-import de.unibonn.simpleml.simpleML.SmlTemplateStringPart
+import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
+import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
+import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import io.kotest.assertions.asClue
 import io.kotest.assertions.throwables.shouldThrowExactly
@@ -38,11 +40,7 @@ class CreatorsTest {
 
     @Test
     fun `createSmlDummyResource should create serializable dummy resource`() {
-        val result = createSmlDummyResource(
-            "test",
-            FileExtension.TEST,
-            createSmlCompilationUnit()
-        )
+        val result = createSmlDummyResource("test", FileExtension.TEST)
 
         result.contents.shouldHaveSize(1)
         result.contents[0].serializeToFormattedString().shouldBeInstanceOf<SerializationResult.Success>()
@@ -451,64 +449,20 @@ class CreatorsTest {
     @Test
     fun `createSmlTemplate should interleave string parts and template expressions`() {
         val templateString = createSmlTemplateString(
-            listOf("Start", "Inner", "End"),
-            listOf(createSmlInt(1), createSmlInt(1))
+            listOf("Start", "Inner", "Inner", "End"),
+            listOf(createSmlInt(1), createSmlInt(1), createSmlInt(1))
         )
 
         templateString.expressions.asClue {
-            it.shouldHaveSize(5)
-            it[0].shouldBeInstanceOf<SmlTemplateStringPart>()
+            it.shouldHaveSize(7)
+            it[0].shouldBeInstanceOf<SmlTemplateStringStart>()
             it[1].shouldBeInstanceOf<SmlInt>()
-            it[2].shouldBeInstanceOf<SmlTemplateStringPart>()
+            it[2].shouldBeInstanceOf<SmlTemplateStringInner>()
             it[3].shouldBeInstanceOf<SmlInt>()
-            it[4].shouldBeInstanceOf<SmlTemplateStringPart>()
+            it[4].shouldBeInstanceOf<SmlTemplateStringInner>()
+            it[5].shouldBeInstanceOf<SmlInt>()
+            it[6].shouldBeInstanceOf<SmlTemplateStringEnd>()
         }
-    }
-
-    @Test
-    fun `createSmlTemplate should add delimiters to string parts when they don't exist already`() {
-        val templateString = createSmlTemplateString(
-            listOf("Start ", " Inner ", " End"),
-            listOf(createSmlInt(1), createSmlInt(1))
-        )
-
-        val expressions = templateString.expressions
-        expressions.shouldHaveSize(5)
-
-        val start = expressions[0]
-        start.shouldBeInstanceOf<SmlTemplateStringPart>()
-        start.value shouldBe "\"Start {{"
-
-        val inner = expressions[2]
-        inner.shouldBeInstanceOf<SmlTemplateStringPart>()
-        inner.value shouldBe "}} Inner {{"
-
-        val end = expressions[4]
-        end.shouldBeInstanceOf<SmlTemplateStringPart>()
-        end.value shouldBe "}} End\""
-    }
-
-    @Test
-    fun `createSmlTemplate should not add delimiters to string parts when they do exist already`() {
-        val templateString = createSmlTemplateString(
-            listOf("\"Start {{", "}} Inner {{", "}} End\""),
-            listOf(createSmlInt(1), createSmlInt(1))
-        )
-
-        val expressions = templateString.expressions
-        expressions.shouldHaveSize(5)
-
-        val start = expressions[0]
-        start.shouldBeInstanceOf<SmlTemplateStringPart>()
-        start.value shouldBe "\"Start {{"
-
-        val inner = expressions[2]
-        inner.shouldBeInstanceOf<SmlTemplateStringPart>()
-        inner.value shouldBe "}} Inner {{"
-
-        val end = expressions[4]
-        end.shouldBeInstanceOf<SmlTemplateStringPart>()
-        end.value shouldBe "}} End\""
     }
 
     @Test

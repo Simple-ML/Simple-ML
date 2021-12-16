@@ -3,6 +3,7 @@ package de.unibonn.simpleml
 import com.google.inject.Binder
 import com.google.inject.name.Names
 import de.unibonn.simpleml.conversion.SimpleMLIDValueConverter
+import de.unibonn.simpleml.conversion.SimpleMLQualifiedNameValueConverter
 import de.unibonn.simpleml.conversion.SimpleMLSTRINGValueConverter
 import de.unibonn.simpleml.conversion.SimpleMLValueConverterService
 import de.unibonn.simpleml.naming.QualifiedNameProviderInjectionTarget
@@ -15,6 +16,7 @@ import de.unibonn.simpleml.services.SimpleMLGrammarAccess
 import org.eclipse.xtext.IGrammarAccess
 import org.eclipse.xtext.conversion.IValueConverterService
 import org.eclipse.xtext.conversion.impl.IDValueConverter
+import org.eclipse.xtext.conversion.impl.QualifiedNameValueConverter
 import org.eclipse.xtext.conversion.impl.STRINGValueConverter
 import org.eclipse.xtext.resource.IDefaultResourceDescriptionStrategy
 import org.eclipse.xtext.scoping.IScopeProvider
@@ -53,6 +55,10 @@ open class SimpleMLRuntimeModule : AbstractSimpleMLRuntimeModule() {
 
     fun bindSTRINGValueConverter(): Class<out STRINGValueConverter> {
         return SimpleMLSTRINGValueConverter::class.java
+    }
+
+    fun bindQualifiedNameValueConverter(): Class<out QualifiedNameValueConverter> {
+        return SimpleMLQualifiedNameValueConverter::class.java
     }
 
     override fun configureIScopeProviderDelegate(binder: Binder) {

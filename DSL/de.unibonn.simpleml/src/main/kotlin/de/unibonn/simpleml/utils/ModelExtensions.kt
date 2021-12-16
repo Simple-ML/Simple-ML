@@ -39,7 +39,6 @@ import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
-import de.unibonn.simpleml.simpleML.SmlTemplateStringPart
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
@@ -350,16 +349,6 @@ fun SmlPlaceholder.usesIn(obj: EObject): Sequence<SmlReference> {
             statement.descendants<SmlReference>()
                 .filter { it.declaration == this }
         }
-}
-
-// Template string part ------------------------------------------------------------------------------------------------
-
-fun SmlTemplateStringPart.realValue(): String {
-    return this.value
-        .removePrefix("}}") // TEMPLATE_STRING_INBETWEEN & TEMPLATE_STRING_END
-        .removePrefix("\"") // TEMPLATE_STRING_START
-        .removeSuffix("{{") // TEMPLATE_STRING_START & TEMPLATE_STRING_INBETWEEN
-        .removeSuffix("\"") // TEMPLATE_STRING_END
 }
 
 // Type ----------------------------------------------------------------------------------------------------------------
