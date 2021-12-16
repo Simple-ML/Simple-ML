@@ -114,12 +114,12 @@ fun createSmlDummyResource(
 fun createSmlAnnotation(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
-    parameters: List<SmlParameter>? = null
+    parameters: List<SmlParameter> = emptyList()
 ): SmlAnnotation {
     return factory.createSmlAnnotation().apply {
         this.name = name
         this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
-        this.parameterList = createSmlParameterList(parameters)
+        this.parameterList = createSmlParameterList(parameters.ifEmpty { null })
     }
 }
 
@@ -129,7 +129,7 @@ fun createSmlAnnotation(
 fun SmlCompilationUnit.smlAnnotation(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
-    parameters: List<SmlParameter>? = null
+    parameters: List<SmlParameter> = emptyList()
 ) {
     this.addMember(createSmlAnnotation(name, annotations, parameters))
 }
@@ -140,7 +140,7 @@ fun SmlCompilationUnit.smlAnnotation(
 fun SmlPackage.smlAnnotation(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
-    parameters: List<SmlParameter>? = null
+    parameters: List<SmlParameter> = emptyList()
 ) {
     this.addMember(createSmlAnnotation(name, annotations, parameters))
 }
@@ -737,12 +737,12 @@ fun createSmlInt(value: Int): SmlInt {
  * Returns a new object of class [SmlLambda].
  */
 fun createSmlLambda(
-    parameters: List<SmlParameter>? = null,
+    parameters: List<SmlParameter> = emptyList(),
     statements: List<SmlAbstractStatement> = emptyList(),
     init: SmlLambda.() -> Unit = {}
 ): SmlLambda {
     return factory.createSmlLambda().apply {
-        this.parameterList = createSmlParameterList(parameters)
+        this.parameterList = createSmlParameterList(parameters.ifEmpty { null })
         this.body = factory.createSmlBlock()
         statements.forEach { addStatement(it) }
         this.init()

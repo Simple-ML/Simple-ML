@@ -27,6 +27,7 @@ import org.junit.jupiter.api.extension.ExtendWith
  * - Handling of annotations (features annotationUseHolder vs. annotations)
  * - Extension functions should add created object to receiver
  * - Creators for objects with cross-references that take a name instead of the referenced object
+ * - Should not create unnecessary syntax (like empty class bodies)
  *
  * There are also some special tests:
  * - Dummy resource should be serializable
@@ -58,6 +59,16 @@ class CreatorsTest {
         val annotationUseHolder = annotation.annotationUseHolder
         annotationUseHolder.shouldNotBeNull()
         annotationUseHolder.annotations.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `createSmlAnnotation should omit empty parameter lists`() {
+        val annotation = createSmlAnnotation(
+            "Test",
+            parameters = emptyList()
+        )
+
+        annotation.parameterList.shouldBeNull()
     }
 
     @Test
@@ -350,6 +361,12 @@ class CreatorsTest {
         }
 
         `package`.members.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `createSmlLambda should omit empty parameter lists`() {
+        val lambda = createSmlLambda(parameters = emptyList())
+        lambda.parameterList.shouldBeNull()
     }
 
     @Test
