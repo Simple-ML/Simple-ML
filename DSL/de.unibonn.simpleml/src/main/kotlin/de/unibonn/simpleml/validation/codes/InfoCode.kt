@@ -4,8 +4,9 @@ enum class InfoCode {
 
     // Unnecessary syntax that can be simplified
     UnnecessaryAssignment,
-    UnnecessaryParameterList,
+    UnnecessaryArgumentList,
     UnnecessaryBody,
+    UnnecessaryParameterList,
     UnnecessaryResultList,
     UnnecessaryTypeArgumentList,
     UnnecessaryTypeParameterList,
