@@ -180,6 +180,15 @@ class CreatorsTest {
     }
 
     @Test
+    fun `createSmlCall should omit empty type argument lists`() {
+        val call = createSmlCall(
+            createSmlNull(),
+            typeArguments = emptyList()
+        )
+        call.typeArgumentList.shouldBeNull()
+    }
+
+    @Test
     fun `createSmlClass should store annotation uses in annotationUseHolder`() {
         val `class` = createSmlClass(
             "Test",
@@ -408,6 +417,15 @@ class CreatorsTest {
         val annotationUseHolder = lambdaResult.annotationUseHolder
         annotationUseHolder.shouldNotBeNull()
         annotationUseHolder.annotations.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `createSmlNamedType should omit empty type argument lists`() {
+        val namedType = createSmlNamedType(
+            createSmlClass("Int"),
+            typeArguments = emptyList()
+        )
+        namedType.typeArgumentList.shouldBeNull()
     }
 
     @Test

@@ -296,12 +296,12 @@ fun createSmlBoolean(value: Boolean): SmlBoolean {
  */
 fun createSmlCall(
     receiver: SmlAbstractExpression,
-    typeArguments: List<SmlTypeArgument>? = null,
+    typeArguments: List<SmlTypeArgument> = emptyList(),
     arguments: List<SmlArgument> = emptyList()
 ): SmlCall {
     return factory.createSmlCall().apply {
         this.receiver = receiver
-        this.typeArgumentList = createSmlTypeArgumentList(typeArguments)
+        this.typeArgumentList = createSmlTypeArgumentList(typeArguments.ifEmpty { null })
         this.argumentList = createSmlArgumentList(arguments)
     }
 }
@@ -800,12 +800,12 @@ fun createSmlMemberType(receiver: SmlAbstractType, member: SmlNamedType): SmlMem
  */
 fun createSmlNamedType(
     declaration: SmlAbstractNamedTypeDeclaration,
-    typeArguments: List<SmlTypeArgument>? = null,
+    typeArguments: List<SmlTypeArgument> = emptyList(),
     isNullable: Boolean = false
 ): SmlNamedType {
     return factory.createSmlNamedType().apply {
         this.declaration = declaration
-        this.typeArgumentList = createSmlTypeArgumentList(typeArguments)
+        this.typeArgumentList = createSmlTypeArgumentList(typeArguments.ifEmpty { null })
         this.isNullable = isNullable
     }
 }
