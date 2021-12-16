@@ -325,7 +325,7 @@ fun createSmlClass(
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null, // null and emptyList() are semantically different
     parentTypes: List<SmlAbstractType> = emptyList(),
-    typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
+    typeParameterConstraints: List<SmlTypeParameterConstraint> = emptyList(),
     members: List<SmlAbstractClassMember> = emptyList(),
     init: SmlClass.() -> Unit = {}
 ): SmlClass {
@@ -350,7 +350,7 @@ fun SmlClass.smlClass(
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType> = emptyList(),
-    typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
+    typeParameterConstraints: List<SmlTypeParameterConstraint> = emptyList(),
     members: List<SmlAbstractClassMember> = emptyList(),
     init: SmlClass.() -> Unit = {}
 ) {
@@ -377,7 +377,7 @@ fun SmlCompilationUnit.smlClass(
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType> = emptyList(),
-    typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
+    typeParameterConstraints: List<SmlTypeParameterConstraint> = emptyList(),
     members: List<SmlAbstractClassMember> = emptyList(),
     init: SmlClass.() -> Unit = {}
 ) {
@@ -404,7 +404,7 @@ fun SmlPackage.smlClass(
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType> = emptyList(),
-    typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
+    typeParameterConstraints: List<SmlTypeParameterConstraint> = emptyList(),
     members: List<SmlAbstractClassMember> = emptyList(),
     init: SmlClass.() -> Unit = {}
 ) {
@@ -525,7 +525,7 @@ fun createSmlEnumVariant(
     annotations: List<SmlAnnotationUse> = emptyList(),
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null, // null and emptyList() are semantically different
-    typeParameterConstraints: List<SmlTypeParameterConstraint>? = null
+    typeParameterConstraints: List<SmlTypeParameterConstraint> = emptyList()
 ): SmlEnumVariant {
     return factory.createSmlEnumVariant().apply {
         this.name = name
@@ -544,7 +544,7 @@ fun SmlEnum.smlEnumVariant(
     annotations: List<SmlAnnotationUse> = emptyList(),
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null,
-    typeParameterConstraint: List<SmlTypeParameterConstraint>? = null
+    typeParameterConstraint: List<SmlTypeParameterConstraint> = emptyList()
 ) {
     this.addVariant(createSmlEnumVariant(name, annotations, typeParameters, parameters, typeParameterConstraint))
 }
@@ -598,7 +598,7 @@ fun createSmlFunction(
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
     results: List<SmlResult> = emptyList(),
-    typeParameterConstraints: List<SmlTypeParameterConstraint>? = null
+    typeParameterConstraints: List<SmlTypeParameterConstraint> = emptyList()
 ): SmlFunction {
     return factory.createSmlFunction().apply {
         this.name = name
@@ -621,7 +621,7 @@ fun SmlClass.smlFunction(
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
     results: List<SmlResult> = emptyList(),
-    typeParameterConstraints: List<SmlTypeParameterConstraint>? = null
+    typeParameterConstraints: List<SmlTypeParameterConstraint> = emptyList()
 ) {
     this.addMember(
         createSmlFunction(
@@ -646,7 +646,7 @@ fun SmlCompilationUnit.smlFunction(
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
     results: List<SmlResult> = emptyList(),
-    typeParameterConstraints: List<SmlTypeParameterConstraint>? = null
+    typeParameterConstraints: List<SmlTypeParameterConstraint> = emptyList()
 ) {
     this.addMember(
         createSmlFunction(
@@ -671,7 +671,7 @@ fun SmlPackage.smlFunction(
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
     results: List<SmlResult> = emptyList(),
-    typeParameterConstraints: List<SmlTypeParameterConstraint>? = null
+    typeParameterConstraints: List<SmlTypeParameterConstraint> = emptyList()
 ) {
     this.addMember(
         createSmlFunction(
@@ -1144,10 +1144,12 @@ fun createSmlTypeParameterConstraint(
 }
 
 /**
- * Returns a new object of class [SmlTypeParameterConstraintList] or `null` if the parameter is `null`.
+ * Returns a new object of class [SmlTypeParameterConstraintList] or `null` if the list of constraints is empty.
  */
-private fun createSmlTypeParameterConstraintList(typeParameterConstraints: List<SmlTypeParameterConstraint>?): SmlTypeParameterConstraintList? {
-    if (typeParameterConstraints == null) {
+private fun createSmlTypeParameterConstraintList(
+    typeParameterConstraints: List<SmlTypeParameterConstraint>
+): SmlTypeParameterConstraintList? {
+    if (typeParameterConstraints.isEmpty()) {
         return null
     }
 
