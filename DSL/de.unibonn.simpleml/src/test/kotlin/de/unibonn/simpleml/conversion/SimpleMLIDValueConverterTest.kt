@@ -37,7 +37,7 @@ class SimpleMLIDValueConverterTest {
     }
 
     @Test
-    fun `should remove backticks`() {
+    fun `should remove backticks (file)`() {
         val compilationUnit = parseHelper.parseResource("conversion/idValueConverter.smltest")
         compilationUnit.shouldNotBeNull()
 
@@ -51,7 +51,7 @@ class SimpleMLIDValueConverterTest {
     }
 
     @Test
-    fun `should escape keywords`() {
+    fun `should escape keywords (creator)`() {
         val compilationUnit = createSmlCompilationUnit {
             smlClass("class")
         }
@@ -68,7 +68,7 @@ class SimpleMLIDValueConverterTest {
     }
 
     @Test
-    fun `should not escape non-keywords`() {
+    fun `should not escape non-keywords (creator)`() {
         val compilationUnit = createSmlCompilationUnit {
             smlPackage("notAKeyword")
         }

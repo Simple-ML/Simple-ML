@@ -41,7 +41,7 @@ class SimpleMLSTRINGValueConverterTest {
     }
 
     @Test
-    fun `should unescape opening curly brace`() {
+    fun `should unescape opening curly brace (file)`() {
         val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
         compilationUnit.shouldNotBeNull()
 
@@ -58,7 +58,7 @@ class SimpleMLSTRINGValueConverterTest {
     }
 
     @Test
-    fun `should keep escaped opening curly brace (from file)`() {
+    fun `should keep escaped opening curly brace (file)`() {
         val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
         compilationUnit.shouldNotBeNull()
 
@@ -73,7 +73,7 @@ class SimpleMLSTRINGValueConverterTest {
     }
 
     @Test
-    fun `should keep unescaped opening curly brace (from file)`() {
+    fun `should keep unescaped opening curly brace (file)`() {
         val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
         compilationUnit.shouldNotBeNull()
 
@@ -88,7 +88,7 @@ class SimpleMLSTRINGValueConverterTest {
     }
 
     @Test
-    fun `should always escape opening curly brace (from creator)`() {
+    fun `should always escape opening curly brace (creator)`() {
         val string = createSmlString("{")
 
         createSmlDummyResource("test", FileExtension.TEST) {
@@ -110,7 +110,7 @@ class SimpleMLSTRINGValueConverterTest {
     }
 
     @Test
-    fun `should unescape single quote`() {
+    fun `should unescape single quote (file)`() {
         val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
         compilationUnit.shouldNotBeNull()
 
@@ -127,7 +127,7 @@ class SimpleMLSTRINGValueConverterTest {
     }
 
     @Test
-    fun `should not escape single quote (from file)`() {
+    fun `should not escape single quote (file)`() {
         val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
         compilationUnit.shouldNotBeNull()
 
@@ -142,7 +142,7 @@ class SimpleMLSTRINGValueConverterTest {
     }
 
     @Test
-    fun `should not escape single quote (from creator)`() {
+    fun `should not escape single quote (creator)`() {
         val string = createSmlString("'")
 
         createSmlDummyResource("test", FileExtension.TEST) {

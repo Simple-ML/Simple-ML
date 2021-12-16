@@ -10,7 +10,7 @@ import org.eclipse.xtext.conversion.impl.STRINGValueConverter
  * Example: The string `"myString \{"` in a DSL program has the value `myString {`.
  */
 @Singleton
-class SimpleMLSTRINGValueConverter : STRINGValueConverter() {
+open class SimpleMLSTRINGValueConverter : STRINGValueConverter() {
 
     private val converter by lazy {
         Implementation()

@@ -9,6 +9,7 @@ import org.eclipse.xtext.conversion.ValueConverter
 import org.eclipse.xtext.conversion.impl.AbstractDeclarativeValueConverterService
 import org.eclipse.xtext.conversion.impl.IDValueConverter
 import org.eclipse.xtext.conversion.impl.INTValueConverter
+import org.eclipse.xtext.conversion.impl.QualifiedNameValueConverter
 import org.eclipse.xtext.conversion.impl.STRINGValueConverter
 
 /**
@@ -36,4 +37,13 @@ open class SimpleMLValueConverterService : AbstractDeclarativeValueConverterServ
 
     @ValueConverter(rule = "STRING")
     fun STRING() = stringValueConverter
+
+    @Inject
+    private lateinit var qualifiedNameValueConverter: QualifiedNameValueConverter
+
+    @ValueConverter(rule = "QualifiedName")
+    fun QualifiedName() = qualifiedNameValueConverter
+
+    @ValueConverter(rule = "QualifiedNameWithWildcard")
+    fun QualifiedNameWithWildcard() = qualifiedNameValueConverter
 }

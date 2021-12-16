@@ -690,7 +690,7 @@ fun SmlPackage.smlFunction(
 /**
  * Returns a new object of class [SmlImport].
  */
-fun createSmlImport(importedNamespace: String, alias: String?): SmlImport {
+fun createSmlImport(importedNamespace: String, alias: String? = null): SmlImport {
     return factory.createSmlImport().apply {
         this.importedNamespace = importedNamespace
         this.alias = createSmlImportAlias(alias)

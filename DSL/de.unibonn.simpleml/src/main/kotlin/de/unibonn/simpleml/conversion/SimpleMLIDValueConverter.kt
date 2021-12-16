@@ -11,9 +11,8 @@ import org.eclipse.xtext.nodemodel.INode
  *
  * __Example__: The ID ``` `fun` ``` in a DSL program has the value `fun`.
  *
- * __Note__: This converter is not called for qualified names since this is a data type rule. For this an extra
- * converter would need to be added. A semantic check exists currently that prevents the use of backticks in packages.
- * See the Eclipse forum for more information: [https://www.eclipse.org/forums/index.php/t/1088504/].
+ * __Note__: This converter is not called for qualified names since this is a data type rule and requires another
+ * converter. See the Eclipse forum for more information: [https://www.eclipse.org/forums/index.php/t/1088504/].
  */
 @Singleton
 class SimpleMLIDValueConverter : IDValueConverter() {
