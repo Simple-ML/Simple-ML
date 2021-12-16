@@ -401,7 +401,7 @@ fun SmlPackage.smlClass(
 /**
  * Adds a new member to the receiver.
  */
-private fun SmlClass.addMember(member: SmlAbstractClassMember) {
+fun SmlClass.addMember(member: SmlAbstractClassMember) {
     if (this.body == null) {
         this.body = factory.createSmlClassBody()
     }
@@ -419,7 +419,7 @@ fun createSmlCompilationUnit(init: SmlCompilationUnit.() -> Unit = {}): SmlCompi
 /**
  * Adds a new member to the receiver.
  */
-private fun SmlCompilationUnit.addMember(member: SmlAbstractCompilationUnitMember) {
+fun SmlCompilationUnit.addMember(member: SmlAbstractCompilationUnitMember) {
     this.members += member
 }
 
@@ -474,7 +474,7 @@ fun SmlPackage.smlEnum(
 /**
  * Adds a new variant to the receiver.
  */
-private fun SmlEnum.addVariant(variant: SmlEnumVariant) {
+fun SmlEnum.addVariant(variant: SmlEnumVariant) {
     if (this.body == null) {
         this.body = factory.createSmlEnumBody()
     }
