@@ -39,6 +39,24 @@ open class SimpleMLValueConverterService : AbstractDeclarativeValueConverterServ
     fun STRING() = stringValueConverter
 
     @Inject
+    private lateinit var templateStringStartValueConverter: SimpleMLTEMPLATE_STRING_STARTValueConverter
+
+    @ValueConverter(rule = "TEMPLATE_STRING_START")
+    fun TEMPLATE_STRING_START() = templateStringStartValueConverter
+
+    @Inject
+    private lateinit var templateStringInnerValueConverter: SimpleMLTEMPLATE_STRING_INNERValueConverter
+
+    @ValueConverter(rule = "TEMPLATE_STRING_INNER")
+    fun TEMPLATE_STRING_INNER() = templateStringInnerValueConverter
+
+    @Inject
+    private lateinit var templateStringEndValueConverter: SimpleMLTEMPLATE_STRING_ENDValueConverter
+
+    @ValueConverter(rule = "TEMPLATE_STRING_END")
+    fun TEMPLATE_STRING_END() = templateStringEndValueConverter
+
+    @Inject
     private lateinit var qualifiedNameValueConverter: QualifiedNameValueConverter
 
     @ValueConverter(rule = "QualifiedName")

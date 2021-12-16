@@ -462,52 +462,6 @@ class CreatorsTest {
     }
 
     @Test
-    fun `createSmlTemplate should add delimiters to string parts when they don't exist already`() {
-        val templateString = createSmlTemplateString(
-            listOf("Start ", " Inner ", " End"),
-            listOf(createSmlInt(1), createSmlInt(1))
-        )
-
-        val expressions = templateString.expressions
-        expressions.shouldHaveSize(5)
-
-        val start = expressions[0]
-        start.shouldBeInstanceOf<SmlTemplateStringPart>()
-        start.value shouldBe "\"Start {{"
-
-        val inner = expressions[2]
-        inner.shouldBeInstanceOf<SmlTemplateStringPart>()
-        inner.value shouldBe "}} Inner {{"
-
-        val end = expressions[4]
-        end.shouldBeInstanceOf<SmlTemplateStringPart>()
-        end.value shouldBe "}} End\""
-    }
-
-    @Test
-    fun `createSmlTemplate should not add delimiters to string parts when they do exist already`() {
-        val templateString = createSmlTemplateString(
-            listOf("\"Start {{", "}} Inner {{", "}} End\""),
-            listOf(createSmlInt(1), createSmlInt(1))
-        )
-
-        val expressions = templateString.expressions
-        expressions.shouldHaveSize(5)
-
-        val start = expressions[0]
-        start.shouldBeInstanceOf<SmlTemplateStringPart>()
-        start.value shouldBe "\"Start {{"
-
-        val inner = expressions[2]
-        inner.shouldBeInstanceOf<SmlTemplateStringPart>()
-        inner.value shouldBe "}} Inner {{"
-
-        val end = expressions[4]
-        end.shouldBeInstanceOf<SmlTemplateStringPart>()
-        end.value shouldBe "}} End\""
-    }
-
-    @Test
     fun `createSmlTypeArgument should create an SmlTypeParameter when only a name is passed`() {
         val typeArgument = createSmlTypeArgument(
             createSmlStarProjection(),

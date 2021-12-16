@@ -994,7 +994,7 @@ fun createSmlString(value: String): SmlString {
 }
 
 /**
- * Returns a new object of class [SmlTemplateString]. String parts don't need to include delimiters (`"`, `{{`, `}}`).
+ * Returns a new object of class [SmlTemplateString]. String parts should not include delimiters (`"`, `{{`, `}}`).
  * Template expressions are inserted between the string parts.
  *
  * @throws IllegalArgumentException If `stringParts.size < 2`.
@@ -1017,85 +1017,16 @@ fun createSmlTemplateString(
 
     return factory.createSmlTemplateString().apply {
         stringParts.forEachIndexed { index, value ->
-            when (index) {
-                // Start
-                0 -> {
-                    this.expressions += createSmlTemplateStringStart(value)
-                    this.expressions += templateExpressions[index]
-                }
-                // End
-                stringParts.size - 1 -> {
-                    this.expressions += createSmlTemplateStringEnd(value)
-                }
-                // Inner
-                else -> {
-                    this.expressions += createSmlTemplateStringInner(value)
-                    this.expressions += templateExpressions[index]
-                }
+            this.expressions += factory.createSmlTemplateStringPart().apply {
+                this.value = value
+            }
+
+            if (index < templateExpressions.size) {
+                this.expressions += templateExpressions[index]
             }
         }
 
         this.expressions += expressions
-    }
-}
-
-/**
- * Returns a new object of class [SmlTemplateStringPart]. Adds `"` to the value at the start and `{{` at the end as
- * needed.
- */
-private fun createSmlTemplateStringStart(value: String): SmlTemplateStringPart {
-    return factory.createSmlTemplateStringPart().apply {
-        val prefix = when {
-            value.startsWith("\"") -> ""
-            else -> "\""
-        }
-
-        val suffix = when {
-            value.endsWith("{{") -> ""
-            else -> "{{"
-        }
-
-        this.value = "$prefix$value$suffix"
-    }
-}
-
-/**
- * Returns a new object of class [SmlTemplateStringPart]. Adds `}}` to the value at the start and `{{` at the end as
- * needed.
- */
-private fun createSmlTemplateStringInner(value: String): SmlTemplateStringPart {
-    return factory.createSmlTemplateStringPart().apply {
-        val prefix = when {
-            value.startsWith("}}") -> ""
-            else -> "}}"
-        }
-
-        val suffix = when {
-            value.endsWith("{{") -> ""
-            else -> "{{"
-        }
-
-        this.value = "$prefix$value$suffix"
-    }
-}
-
-/**
- * Returns a new object of class [SmlTemplateStringPart]. Adds `}}` to the value at the start and `"` at the end as
- * needed.
- */
-private fun createSmlTemplateStringEnd(value: String): SmlTemplateStringPart {
-    return factory.createSmlTemplateStringPart().apply {
-        val prefix = when {
-            value.startsWith("}}") -> ""
-            else -> "}}"
-        }
-
-        val suffix = when {
-            value.endsWith("\"") -> ""
-            else -> "\""
-        }
-
-        this.value = "$prefix$value$suffix"
     }
 }
 

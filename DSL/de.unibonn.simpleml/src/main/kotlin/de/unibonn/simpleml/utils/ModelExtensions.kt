@@ -352,16 +352,6 @@ fun SmlPlaceholder.usesIn(obj: EObject): Sequence<SmlReference> {
         }
 }
 
-// Template string part ------------------------------------------------------------------------------------------------
-
-fun SmlTemplateStringPart.realValue(): String {
-    return this.value
-        .removePrefix("}}") // TEMPLATE_STRING_INBETWEEN & TEMPLATE_STRING_END
-        .removePrefix("\"") // TEMPLATE_STRING_START
-        .removeSuffix("{{") // TEMPLATE_STRING_START & TEMPLATE_STRING_INBETWEEN
-        .removeSuffix("\"") // TEMPLATE_STRING_END
-}
-
 // Type ----------------------------------------------------------------------------------------------------------------
 
 sealed interface ClassResult {
