@@ -301,7 +301,7 @@ fun createSmlCall(
 ): SmlCall {
     return factory.createSmlCall().apply {
         this.receiver = receiver
-        this.typeArgumentList = createSmlTypeArgumentList(typeArguments.ifEmpty { null })
+        this.typeArgumentList = createSmlTypeArgumentList(typeArguments)
         this.argumentList = createSmlArgumentList(arguments)
     }
 }
@@ -322,7 +322,7 @@ fun createSmlCallableType(parameters: List<SmlParameter>, results: List<SmlResul
 fun createSmlClass(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
-    typeParameters: List<SmlTypeParameter>? = null,
+    typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType>? = null,
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
@@ -347,7 +347,7 @@ fun createSmlClass(
 fun SmlClass.smlClass(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
-    typeParameters: List<SmlTypeParameter>? = null,
+    typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType>? = null,
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
@@ -374,7 +374,7 @@ fun SmlClass.smlClass(
 fun SmlCompilationUnit.smlClass(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
-    typeParameters: List<SmlTypeParameter>? = null,
+    typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType>? = null,
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
@@ -401,7 +401,7 @@ fun SmlCompilationUnit.smlClass(
 fun SmlPackage.smlClass(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
-    typeParameters: List<SmlTypeParameter>? = null,
+    typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType>? = null,
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
@@ -523,8 +523,8 @@ private fun SmlEnum.addVariant(variant: SmlEnumVariant) {
 fun createSmlEnumVariant(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
-    typeParameters: List<SmlTypeParameter>? = null,
-    parameters: List<SmlParameter>? = null,
+    typeParameters: List<SmlTypeParameter> = emptyList(),
+    parameters: List<SmlParameter>? = null, // null and emptyList() are semantically different
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null
 ): SmlEnumVariant {
     return factory.createSmlEnumVariant().apply {
@@ -543,8 +543,8 @@ fun SmlEnum.smlEnumVariant(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
     typeParameters: List<SmlTypeParameter> = emptyList(),
-    parameters: List<SmlParameter> = emptyList(),
-    typeParameterConstraint: List<SmlTypeParameterConstraint> = emptyList()
+    parameters: List<SmlParameter>? = null,
+    typeParameterConstraint: List<SmlTypeParameterConstraint>? = null
 ) {
     this.addVariant(createSmlEnumVariant(name, annotations, typeParameters, parameters, typeParameterConstraint))
 }
@@ -595,7 +595,7 @@ fun createSmlFunction(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
     isStatic: Boolean = false,
-    typeParameters: List<SmlTypeParameter>? = null,
+    typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
     results: List<SmlResult> = emptyList(),
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null
@@ -618,7 +618,7 @@ fun SmlClass.smlFunction(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
     isStatic: Boolean = false,
-    typeParameters: List<SmlTypeParameter>? = null,
+    typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
     results: List<SmlResult> = emptyList(),
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null
@@ -643,7 +643,7 @@ fun SmlCompilationUnit.smlFunction(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
     isStatic: Boolean = false,
-    typeParameters: List<SmlTypeParameter>? = null,
+    typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
     results: List<SmlResult> = emptyList(),
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null
@@ -668,7 +668,7 @@ fun SmlPackage.smlFunction(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
     isStatic: Boolean = false,
-    typeParameters: List<SmlTypeParameter>? = null,
+    typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
     results: List<SmlResult> = emptyList(),
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null
@@ -805,7 +805,7 @@ fun createSmlNamedType(
 ): SmlNamedType {
     return factory.createSmlNamedType().apply {
         this.declaration = declaration
-        this.typeArgumentList = createSmlTypeArgumentList(typeArguments.ifEmpty { null })
+        this.typeArgumentList = createSmlTypeArgumentList(typeArguments)
         this.isNullable = isNullable
     }
 }
@@ -1073,10 +1073,10 @@ fun createSmlTypeArgument(
 }
 
 /**
- * Returns a new object of class [SmlTypeArgumentList] or `null` if the parameter is `null`.
+ * Returns a new object of class [SmlTypeArgumentList] or `null` if the list of type arguments is empty.
  */
-private fun createSmlTypeArgumentList(typeArguments: List<SmlTypeArgument>?): SmlTypeArgumentList? {
-    if (typeArguments == null) {
+private fun createSmlTypeArgumentList(typeArguments: List<SmlTypeArgument>): SmlTypeArgumentList? {
+    if (typeArguments.isEmpty()) {
         return null
     }
 
@@ -1101,10 +1101,10 @@ fun createSmlTypeParameter(
 }
 
 /**
- * Returns a new object of class [SmlTypeParameterList] or `null` if the parameter is `null`.
+ * Returns a new object of class [SmlTypeParameterList] or `null` if the list of type parameters is empty.
  */
-private fun createSmlTypeParameterList(typeParameters: List<SmlTypeParameter>?): SmlTypeParameterList? {
-    if (typeParameters == null) {
+private fun createSmlTypeParameterList(typeParameters: List<SmlTypeParameter>): SmlTypeParameterList? {
+    if (typeParameters.isEmpty()) {
         return null
     }
 

@@ -212,6 +212,15 @@ class CreatorsTest {
     }
 
     @Test
+    fun `createSmlClass should omit empty type parameter list`() {
+        val `class` = createSmlClass(
+            "Test",
+            typeParameters = emptyList()
+        )
+        `class`.typeParameterList.shouldBeNull()
+    }
+
+    @Test
     fun `smlClass should add the created class to the receiving class`() {
         val `class` = createSmlClass("Test") {
             smlClass("Test")
@@ -304,6 +313,15 @@ class CreatorsTest {
     }
 
     @Test
+    fun `createSmlEnumVariant should omit empty type parameter list`() {
+        val enum = createSmlEnumVariant(
+            "Test",
+            typeParameters = emptyList()
+        )
+        enum.typeParameterList.shouldBeNull()
+    }
+
+    @Test
     fun `smlEnumVariant should add the created variant to the receiver`() {
         val enum = createSmlEnum("Test") {
             smlEnumVariant("Test")
@@ -368,6 +386,15 @@ class CreatorsTest {
             results = emptyList()
         )
         function.resultList.shouldBeNull()
+    }
+
+    @Test
+    fun `createSmlFunction should omit empty type parameter list`() {
+        val function = createSmlFunction(
+            "test",
+            typeParameters = emptyList()
+        )
+        function.typeParameterList.shouldBeNull()
     }
 
     @Test
