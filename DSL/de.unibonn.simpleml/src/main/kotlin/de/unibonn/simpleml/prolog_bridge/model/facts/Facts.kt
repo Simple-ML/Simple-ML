@@ -3,6 +3,7 @@ package de.unibonn.simpleml.prolog_bridge.model.facts
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlTerm.Companion.fromJavaRepresentation
 import de.unibonn.simpleml.prolog_bridge.utils.Id
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
+import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
@@ -211,12 +212,18 @@ sealed class DeclarationT(
  * The list of parameters or null. Each element in the list is the ID of a parameterT fact for the respective parameter.
  * Note that an empty list is used for an annotation with an empty parameter list, e.g. `annotation A()`, while null is
  * used for an annotation with no parameter list at all, like `annotation B`.
+ *
+ * @param constraints
+ * The IDs of the facts for the constraints of this annotation or null if the annotation has no type parameter
+ * constraints. Note that the grammar forbids the use of the keyword `where` without any type parameter constraints
+ * afterwards, so this will never be set to an empty list.
  */
 data class AnnotationT(
     override val id: Id<SmlAnnotation>,
     override val parent: Id<SmlAbstractObject>, // Actually just SmlCompilationUnit but this allows a handleDeclaration function
     override val name: String,
-    val parameters: List<Id<SmlParameter>>?
+    val parameters: List<Id<SmlParameter>>?,
+    val constraints: List<Id<SmlAbstractConstraint>>?,
 ) : DeclarationT("annotationT", id, parent, name, parameters) {
     override fun toString() = super.toString()
 }
@@ -277,10 +284,10 @@ data class AttributeT(
  * grammar forbids the use of the keyword `sub` without any parent types afterwards, so this will never be set to an
  * empty list.
  *
- * @param typeParameterConstraints
- * The IDs of the typeParameterConstraintT facts for the type parameter constraints of this class or null if the class
- * has no type parameter constraints. Note that the grammar forbids the use of the keyword `where` without any type
- * parameter constraints afterwards, so this will never be set to an empty list.
+ * @param constraints
+ * The IDs of the facts for the constraints of this class or null if the class has no type parameter constraints. Note
+ * that the grammar forbids the use of the keyword `where` without any type parameter constraints afterwards, so this
+ * will never be set to an empty list.
  *
  * @param members
  * The list of class members or null. Each element in the list is the ID of the fact for the respective member. Note
@@ -294,7 +301,7 @@ data class ClassT(
     val typeParameters: List<Id<SmlTypeParameter>>?,
     val parameters: List<Id<SmlParameter>>?,
     val parentTypes: List<Id<SmlAbstractType>>?,
-    val typeParameterConstraints: List<Id<SmlTypeParameterConstraint>>?,
+    val constraints: List<Id<SmlAbstractConstraint>>?,
     val members: List<Id<SmlAbstractDeclaration>>?
 ) : DeclarationT(
     "classT",
@@ -304,7 +311,7 @@ data class ClassT(
     typeParameters,
     parameters,
     parentTypes,
-    typeParameterConstraints,
+    constraints,
     members
 ) {
     override fun toString() = super.toString()
@@ -348,6 +355,21 @@ data class EnumT(
  *
  * @param name
  * The name of the enum instance.
+ *
+ * @param typeParameters
+ * The list of type parameters or null. Each element in the list is the ID of a typeParameterT fact for the respective
+ * type parameter. Note that an empty list is used for a variant with an empty type parameter list, e.g. `A<>`,
+ * while null is used for a variant with no type parameter list at all, like `B`.
+ *
+ * @param parameters
+ * The list of parameters or null. Each element in the list is the ID of a parameterT fact for the respective parameter.
+ * Note that an empty list is used for a variant with a constructor with an empty parameter list, e.g. `A()`, while
+ * null is used for a variant with no constructor at all, like `B`.
+ *
+ * @param constraints
+ * The IDs of the facts for the constraints of this variant or null if the variant has no type parameter constraints.
+ * Note that the grammar forbids the use of the keyword `where` without any type parameter constraints afterwards, so
+ * this will never be set to an empty list.
  */
 data class EnumVariantT(
     override val id: Id<SmlEnumVariant>,
@@ -355,9 +377,9 @@ data class EnumVariantT(
     override val name: String,
     val typeParameters: List<Id<SmlTypeParameter>>?,
     val parameters: List<Id<SmlParameter>>?,
-    val typeParameterConstraints: List<Id<SmlTypeParameterConstraint>>?
+    val constraints: List<Id<SmlAbstractConstraint>>?
 ) :
-    DeclarationT("enumVariantT", id, parent, name, typeParameters, parameters, typeParameterConstraints) {
+    DeclarationT("enumVariantT", id, parent, name, typeParameters, parameters, constraints) {
     override fun toString() = super.toString()
 }
 
@@ -390,10 +412,10 @@ data class EnumVariantT(
  * an empty list is used for a function with an empty result list, e.g. `fun a() -> ()`, while null is used for a
  * function with no result list at all, like `fun b()`.
  *
- * @param typeParameterConstraints
- * The IDs of the typeParameterConstraintT facts for the type parameter constraints of this function or null if the
- * function has no type parameter constraints. Note that the grammar forbids the use of the keyword `where` without any
- * type parameter constraints afterwards, so this will never be set to an empty list.
+ * @param constraints
+ * The IDs of the facts for the constraints of this function or null if the function has no type parameter constraints.
+ * Note that the grammar forbids the use of the keyword `where` without any type parameter constraints afterwards, so
+ * this will never be set to an empty list.
  */
 data class FunctionT(
     override val id: Id<SmlFunction>,
@@ -403,7 +425,7 @@ data class FunctionT(
     val typeParameters: List<Id<SmlTypeParameter>>?,
     val parameters: List<Id<SmlParameter>>,
     val results: List<Id<SmlResult>>?,
-    val typeParameterConstraints: List<Id<SmlTypeParameterConstraint>>?
+    val constraints: List<Id<SmlAbstractConstraint>>?
 ) : DeclarationT(
     "functionT",
     id,
@@ -413,7 +435,7 @@ data class FunctionT(
     typeParameters,
     parameters,
     results,
-    typeParameterConstraints
+    constraints
 ) {
     override fun toString() = super.toString()
 }

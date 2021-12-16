@@ -1,3 +1,5 @@
+package tests.trailingComma.inEnumVariantTypeParameterList
+
 // no_syntax_error
 
 enum E {
