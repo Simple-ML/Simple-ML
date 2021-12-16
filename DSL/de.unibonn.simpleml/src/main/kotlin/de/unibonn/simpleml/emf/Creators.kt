@@ -323,8 +323,8 @@ fun createSmlClass(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
     typeParameters: List<SmlTypeParameter> = emptyList(),
-    parameters: List<SmlParameter>? = null,
-    parentTypes: List<SmlAbstractType>? = null,
+    parameters: List<SmlParameter>? = null, // null and emptyList() are semantically different
+    parentTypes: List<SmlAbstractType> = emptyList(),
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
     members: List<SmlAbstractClassMember> = emptyList(),
     init: SmlClass.() -> Unit = {}
@@ -349,7 +349,7 @@ fun SmlClass.smlClass(
     annotations: List<SmlAnnotationUse> = emptyList(),
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null,
-    parentTypes: List<SmlAbstractType>? = null,
+    parentTypes: List<SmlAbstractType> = emptyList(),
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
     members: List<SmlAbstractClassMember> = emptyList(),
     init: SmlClass.() -> Unit = {}
@@ -376,7 +376,7 @@ fun SmlCompilationUnit.smlClass(
     annotations: List<SmlAnnotationUse> = emptyList(),
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null,
-    parentTypes: List<SmlAbstractType>? = null,
+    parentTypes: List<SmlAbstractType> = emptyList(),
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
     members: List<SmlAbstractClassMember> = emptyList(),
     init: SmlClass.() -> Unit = {}
@@ -403,7 +403,7 @@ fun SmlPackage.smlClass(
     annotations: List<SmlAnnotationUse> = emptyList(),
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null,
-    parentTypes: List<SmlAbstractType>? = null,
+    parentTypes: List<SmlAbstractType> = emptyList(),
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
     members: List<SmlAbstractClassMember> = emptyList(),
     init: SmlClass.() -> Unit = {}
@@ -907,10 +907,10 @@ fun createSmlParenthesizedType(type: SmlAbstractType): SmlParenthesizedType {
 }
 
 /**
- * Returns a new object of class [SmlParentTypeList] or `null` if the parameter is `null`.
+ * Returns a new object of class [SmlParentTypeList] or `null` if the list of parent type is empty.
  */
-private fun createSmlParentTypeList(parentTypes: List<SmlAbstractType>?): SmlParentTypeList? {
-    if (parentTypes == null) {
+private fun createSmlParentTypeList(parentTypes: List<SmlAbstractType>): SmlParentTypeList? {
+    if (parentTypes.isEmpty()) {
         return null
     }
 

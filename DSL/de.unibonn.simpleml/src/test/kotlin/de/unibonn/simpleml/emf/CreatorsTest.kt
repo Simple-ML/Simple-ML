@@ -221,6 +221,15 @@ class CreatorsTest {
     }
 
     @Test
+    fun `createSmlClass should omit empty parent type list`() {
+        val `class` = createSmlClass(
+            "Test",
+            parentTypes = emptyList()
+        )
+        `class`.parentTypeList.shouldBeNull()
+    }
+
+    @Test
     fun `createSmlClass should omit empty type parameter list`() {
         val `class` = createSmlClass(
             "Test",
