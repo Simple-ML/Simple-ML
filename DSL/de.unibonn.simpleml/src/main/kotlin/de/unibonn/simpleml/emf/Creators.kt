@@ -93,6 +93,23 @@ fun createSmlDummyResource(
 }
 
 /**
+ * Returns a new [Resource].
+ *
+ * This can be useful to serialize EObjects that were initialized with the creators in this file rather than generated
+ * by the parser, since serialization requires EObjects to be contained in a resource.
+ */
+fun createSmlDummyResource(
+    fileName: String,
+    fileExtension: FileExtension,
+    init: SmlCompilationUnit.() -> Unit = {}
+): Resource {
+    val uri = URI.createURI("dummy:/$fileName.${fileExtension.extension}")
+    return XtextResource(uri).apply {
+        this.contents += createSmlCompilationUnit(init = init)
+    }
+}
+
+/**
  * Returns a new object of class [SmlAnnotation].
  */
 fun createSmlAnnotation(
@@ -310,6 +327,7 @@ fun createSmlClass(
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType>? = null,
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
+    members: List<SmlAbstractClassMember>? = null,
     init: SmlClass.() -> Unit = {}
 ): SmlClass {
     return factory.createSmlClass().apply {
@@ -319,6 +337,7 @@ fun createSmlClass(
         this.parameterList = createSmlParameterList(parameters)
         this.parentTypeList = createSmlParentTypeList(parentTypes)
         this.typeParameterConstraintList = createSmlTypeParameterConstraintList(typeParameterConstraints)
+        members?.forEach { addMember(it) }
         this.init()
     }
 }
@@ -333,6 +352,7 @@ fun SmlClass.smlClass(
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType>? = null,
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
+    members: List<SmlAbstractClassMember>? = null,
     init: SmlClass.() -> Unit = {}
 ) {
     this.addMember(
@@ -343,6 +363,7 @@ fun SmlClass.smlClass(
             parameters,
             parentTypes,
             typeParameterConstraints,
+            members,
             init
         )
     )
@@ -358,6 +379,7 @@ fun SmlCompilationUnit.smlClass(
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType>? = null,
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
+    members: List<SmlAbstractClassMember>? = null,
     init: SmlClass.() -> Unit = {}
 ) {
     this.addMember(
@@ -368,6 +390,7 @@ fun SmlCompilationUnit.smlClass(
             parameters,
             parentTypes,
             typeParameterConstraints,
+            members,
             init
         )
     )
@@ -383,6 +406,7 @@ fun SmlPackage.smlClass(
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType>? = null,
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
+    members: List<SmlAbstractClassMember>? = null,
     init: SmlClass.() -> Unit = {}
 ) {
     this.addMember(
@@ -393,6 +417,7 @@ fun SmlPackage.smlClass(
             parameters,
             parentTypes,
             typeParameterConstraints,
+            members,
             init
         )
     )
@@ -401,7 +426,7 @@ fun SmlPackage.smlClass(
 /**
  * Adds a new member to the receiver.
  */
-fun SmlClass.addMember(member: SmlAbstractClassMember) {
+private fun SmlClass.addMember(member: SmlAbstractClassMember) {
     if (this.body == null) {
         this.body = factory.createSmlClassBody()
     }
@@ -412,14 +437,20 @@ fun SmlClass.addMember(member: SmlAbstractClassMember) {
 /**
  * Returns a new object of class [SmlCompilationUnit].
  */
-fun createSmlCompilationUnit(init: SmlCompilationUnit.() -> Unit = {}): SmlCompilationUnit {
-    return factory.createSmlCompilationUnit().apply(init)
+fun createSmlCompilationUnit(
+    members: List<SmlAbstractCompilationUnitMember> = emptyList(),
+    init: SmlCompilationUnit.() -> Unit = {}
+): SmlCompilationUnit {
+    return factory.createSmlCompilationUnit().apply {
+        members.forEach { addMember(it) }
+        init()
+    }
 }
 
 /**
  * Adds a new member to the receiver.
  */
-fun SmlCompilationUnit.addMember(member: SmlAbstractCompilationUnitMember) {
+private fun SmlCompilationUnit.addMember(member: SmlAbstractCompilationUnitMember) {
     this.members += member
 }
 
@@ -429,11 +460,13 @@ fun SmlCompilationUnit.addMember(member: SmlAbstractCompilationUnitMember) {
 fun createSmlEnum(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
+    variants: List<SmlEnumVariant>? = null,
     init: SmlEnum.() -> Unit = {}
 ): SmlEnum {
     return factory.createSmlEnum().apply {
         this.name = name
         this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
+        variants?.forEach { addVariant(it) }
         this.init()
     }
 }
@@ -444,9 +477,10 @@ fun createSmlEnum(
 fun SmlClass.smlEnum(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
+    variants: List<SmlEnumVariant>? = null,
     init: SmlEnum.() -> Unit = {}
 ) {
-    this.addMember(createSmlEnum(name, annotations, init))
+    this.addMember(createSmlEnum(name, annotations, variants, init))
 }
 
 /**
@@ -455,9 +489,10 @@ fun SmlClass.smlEnum(
 fun SmlCompilationUnit.smlEnum(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
+    variants: List<SmlEnumVariant>? = null,
     init: SmlEnum.() -> Unit = {}
 ) {
-    this.addMember(createSmlEnum(name, annotations, init))
+    this.addMember(createSmlEnum(name, annotations, variants, init))
 }
 
 /**
@@ -466,15 +501,16 @@ fun SmlCompilationUnit.smlEnum(
 fun SmlPackage.smlEnum(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
+    variants: List<SmlEnumVariant>? = null,
     init: SmlEnum.() -> Unit = {}
 ) {
-    this.addMember(createSmlEnum(name, annotations, init))
+    this.addMember(createSmlEnum(name, annotations, variants, init))
 }
 
 /**
  * Adds a new variant to the receiver.
  */
-fun SmlEnum.addVariant(variant: SmlEnumVariant) {
+private fun SmlEnum.addVariant(variant: SmlEnumVariant) {
     if (this.body == null) {
         this.body = factory.createSmlEnumBody()
     }
@@ -701,10 +737,15 @@ fun createSmlInt(value: Int): SmlInt {
 /**
  * Returns a new object of class [SmlLambda].
  */
-fun createSmlLambda(parameters: List<SmlParameter>? = null, init: SmlLambda.() -> Unit = {}): SmlLambda {
+fun createSmlLambda(
+    parameters: List<SmlParameter>? = null,
+    statements: List<SmlAbstractStatement> = emptyList(),
+    init: SmlLambda.() -> Unit = {}
+): SmlLambda {
     return factory.createSmlLambda().apply {
         this.parameterList = createSmlParameterList(parameters)
         this.body = factory.createSmlBlock()
+        statements.forEach { addStatement(it) }
         this.init()
     }
 }
@@ -712,7 +753,7 @@ fun createSmlLambda(parameters: List<SmlParameter>? = null, init: SmlLambda.() -
 /**
  * Adds a new statement to the receiver.
  */
-fun SmlLambda.addStatement(statement: SmlAbstractStatement) {
+private fun SmlLambda.addStatement(statement: SmlAbstractStatement) {
     if (this.body == null) {
         this.body = factory.createSmlBlock()
     }
@@ -784,12 +825,14 @@ fun createSmlPackage(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
     imports: List<SmlImport> = emptyList(),
+    members: List<SmlAbstractPackageMember> = emptyList(),
     init: SmlPackage.() -> Unit = {}
 ): SmlPackage {
     return factory.createSmlPackage().apply {
         this.name = name
         this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
         this.imports += imports
+        members.forEach { addMember(it) }
         this.init()
     }
 }
@@ -801,15 +844,16 @@ fun SmlCompilationUnit.smlPackage(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
     imports: List<SmlImport> = emptyList(),
+    members: List<SmlAbstractPackageMember> = emptyList(),
     init: SmlPackage.() -> Unit = {}
 ) {
-    this.addMember(createSmlPackage(name, annotations, imports, init))
+    this.addMember(createSmlPackage(name, annotations, imports, members, init))
 }
 
 /**
  * Adds a new member to the receiver.
  */
-fun SmlPackage.addMember(member: SmlAbstractPackageMember) {
+private fun SmlPackage.addMember(member: SmlAbstractPackageMember) {
     this.members += member
 }
 
@@ -1203,12 +1247,14 @@ fun createSmlWildcard(): SmlWildcard {
 fun createSmlWorkflow(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
+    statements: List<SmlAbstractStatement> = emptyList(),
     init: SmlWorkflow.() -> Unit = {}
 ): SmlWorkflow {
     return factory.createSmlWorkflow().apply {
         this.name = name
         this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
         this.body = factory.createSmlBlock()
+        statements.forEach { addStatement(it) }
         this.init()
     }
 }
@@ -1219,9 +1265,10 @@ fun createSmlWorkflow(
 fun SmlCompilationUnit.smlWorkflow(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
+    statements: List<SmlAbstractStatement> = emptyList(),
     init: SmlWorkflow.() -> Unit = {}
 ) {
-    this.addMember(createSmlWorkflow(name, annotations, init))
+    this.addMember(createSmlWorkflow(name, annotations, statements, init))
 }
 
 /**
@@ -1230,15 +1277,16 @@ fun SmlCompilationUnit.smlWorkflow(
 fun SmlPackage.smlWorkflow(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
+    statements: List<SmlAbstractStatement> = emptyList(),
     init: SmlWorkflow.() -> Unit = {}
 ) {
-    this.addMember(createSmlWorkflow(name, annotations, init))
+    this.addMember(createSmlWorkflow(name, annotations, statements, init))
 }
 
 /**
  * Adds a new statement to the receiver.
  */
-fun SmlWorkflow.addStatement(statement: SmlAbstractStatement) {
+private fun SmlWorkflow.addStatement(statement: SmlAbstractStatement) {
     if (this.body == null) {
         this.body = factory.createSmlBlock()
     }
@@ -1254,6 +1302,7 @@ fun createSmlWorkflowStep(
     annotations: List<SmlAnnotationUse> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
     results: List<SmlResult>? = null,
+    statements: List<SmlAbstractStatement> = emptyList(),
     init: SmlWorkflowStep.() -> Unit = {}
 ): SmlWorkflowStep {
     return factory.createSmlWorkflowStep().apply {
@@ -1262,6 +1311,7 @@ fun createSmlWorkflowStep(
         this.parameterList = createSmlParameterList(parameters)
         this.resultList = createSmlResultList(results)
         this.body = factory.createSmlBlock()
+        statements.forEach { addStatement(it) }
         this.init()
     }
 }
@@ -1274,9 +1324,10 @@ fun SmlCompilationUnit.smlWorkflowStep(
     annotations: List<SmlAnnotationUse> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
     results: List<SmlResult>? = null,
+    statements: List<SmlAbstractStatement> = emptyList(),
     init: SmlWorkflowStep.() -> Unit = {}
 ) {
-    this.addMember(createSmlWorkflowStep(name, annotations, parameters, results, init))
+    this.addMember(createSmlWorkflowStep(name, annotations, parameters, results, statements, init))
 }
 
 /**
@@ -1287,15 +1338,16 @@ fun SmlPackage.smlWorkflowStep(
     annotations: List<SmlAnnotationUse> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
     results: List<SmlResult>? = null,
+    statements: List<SmlAbstractStatement> = emptyList(),
     init: SmlWorkflowStep.() -> Unit = {}
 ) {
-    this.addMember(createSmlWorkflowStep(name, annotations, parameters, results, init))
+    this.addMember(createSmlWorkflowStep(name, annotations, parameters, results, statements, init))
 }
 
 /**
  * Adds a new statement to the receiver.
  */
-fun SmlWorkflowStep.addStatement(statement: SmlAbstractStatement) {
+private fun SmlWorkflowStep.addStatement(statement: SmlAbstractStatement) {
     if (this.body == null) {
         this.body = factory.createSmlBlock()
     }

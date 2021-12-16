@@ -38,11 +38,7 @@ class CreatorsTest {
 
     @Test
     fun `createSmlDummyResource should create serializable dummy resource`() {
-        val result = createSmlDummyResource(
-            "test",
-            FileExtension.TEST,
-            createSmlCompilationUnit()
-        )
+        val result = createSmlDummyResource("test", FileExtension.TEST)
 
         result.contents.shouldHaveSize(1)
         result.contents[0].serializeToFormattedString().shouldBeInstanceOf<SerializationResult.Success>()
