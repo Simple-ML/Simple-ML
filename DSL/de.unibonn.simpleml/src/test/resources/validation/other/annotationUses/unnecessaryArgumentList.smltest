@@ -4,16 +4,16 @@ annotation AnnotationWithoutParameters
 
 annotation AnnotationWithParameters(a: Int)
 
-// semantic_warning "Unnecessary argument list."
+// semantic_info "Unnecessary argument list."
 @AnnotationWithoutParameters»()«
-// semantic_warning "Unnecessary argument list."
+// semantic_info "Unnecessary argument list."
 @AnnotationWithoutParameters»(1)«
-// no_semantic_warning "Unnecessary argument list."
+// no_semantic_info "Unnecessary argument list."
 @AnnotationWithParameters»()«
-// no_semantic_warning "Unnecessary argument list."
+// no_semantic_info "Unnecessary argument list."
 @AnnotationWithParameters»(1)«
-// no_semantic_warning "Unnecessary argument list."
+// no_semantic_info "Unnecessary argument list."
 @UnresolvedAnnotation»()«
-// no_semantic_warning "Unnecessary argument list."
+// no_semantic_info "Unnecessary argument list."
 @UnresolvedAnnotation»(1)«
 class MyClass

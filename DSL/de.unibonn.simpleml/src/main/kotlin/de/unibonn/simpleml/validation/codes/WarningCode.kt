@@ -7,6 +7,7 @@ enum class WarningCode {
     UnusedPlaceholder,
 
     // Other
+    DuplicateTarget,
     EmptyEnumVariantParameterList,
     ImplicitlyIgnoredResultOfCall,
     PlaceholderIsRenamingOfDeclaration,

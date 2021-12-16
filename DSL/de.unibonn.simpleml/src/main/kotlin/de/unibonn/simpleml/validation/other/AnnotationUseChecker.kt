@@ -28,12 +28,10 @@ import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.isResolved
 import de.unibonn.simpleml.utils.parametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.codes.ErrorCode
+import de.unibonn.simpleml.validation.codes.InfoCode
+import de.unibonn.simpleml.validation.codes.WarningCode
 import org.eclipse.xtext.validation.Check
-
-const val MISSING_ARGUMENT_LIST = "MISSING_ARGUMENT_LIST"
-const val UNNECESSARY_ARGUMENT_LIST = "UNNECESSARY_ARGUMENT_LIST"
-const val WRONG_TARGET = "WRONG_TARGET"
-const val DUPLICATE_TARGET = "DUPLICATE_TARGET"
 
 class AnnotationUseChecker : AbstractSimpleMLChecker() {
 
@@ -54,7 +52,7 @@ class AnnotationUseChecker : AbstractSimpleMLChecker() {
                     "This annotation target is used multiple times.",
                     it,
                     null,
-                    DUPLICATE_TARGET
+                    WarningCode.DuplicateTarget
                 )
             }
     }
@@ -75,7 +73,7 @@ class AnnotationUseChecker : AbstractSimpleMLChecker() {
             error(
                 "Missing argument list.",
                 Literals.SML_ANNOTATION_USE__ANNOTATION,
-                MISSING_ARGUMENT_LIST
+                ErrorCode.MISSING_ARGUMENT_LIST
             )
         }
     }
@@ -153,7 +151,7 @@ class AnnotationUseChecker : AbstractSimpleMLChecker() {
             error(
                 "This annotation cannot be applied to $wrongTarget.",
                 null,
-                WRONG_TARGET
+                ErrorCode.WRONG_TARGET
             )
         }
     }
@@ -166,10 +164,10 @@ class AnnotationUseChecker : AbstractSimpleMLChecker() {
 
         val parametersOrNull = smlAnnotationUse.argumentList.parametersOrNull()
         if (parametersOrNull != null && parametersOrNull.isEmpty()) {
-            warning(
+            info(
                 "Unnecessary argument list.",
                 Literals.SML_ANNOTATION_USE__ARGUMENT_LIST,
-                UNNECESSARY_ARGUMENT_LIST
+                InfoCode.UnnecessaryArgumentList
             )
         }
     }
