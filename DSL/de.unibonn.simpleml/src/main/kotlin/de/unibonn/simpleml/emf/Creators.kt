@@ -597,7 +597,7 @@ fun createSmlFunction(
     isStatic: Boolean = false,
     typeParameters: List<SmlTypeParameter>? = null,
     parameters: List<SmlParameter> = emptyList(),
-    results: List<SmlResult>? = null,
+    results: List<SmlResult> = emptyList(),
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null
 ): SmlFunction {
     return factory.createSmlFunction().apply {
@@ -606,7 +606,7 @@ fun createSmlFunction(
         this.isStatic = isStatic
         this.typeParameterList = createSmlTypeParameterList(typeParameters)
         this.parameterList = createSmlParameterList(parameters)
-        this.resultList = createSmlResultList(results)
+        this.resultList = createSmlResultList(results.ifEmpty { null })
         this.typeParameterConstraintList = createSmlTypeParameterConstraintList(typeParameterConstraints)
     }
 }
@@ -620,7 +620,7 @@ fun SmlClass.smlFunction(
     isStatic: Boolean = false,
     typeParameters: List<SmlTypeParameter>? = null,
     parameters: List<SmlParameter> = emptyList(),
-    results: List<SmlResult>? = null,
+    results: List<SmlResult> = emptyList(),
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null
 ) {
     this.addMember(
@@ -645,7 +645,7 @@ fun SmlCompilationUnit.smlFunction(
     isStatic: Boolean = false,
     typeParameters: List<SmlTypeParameter>? = null,
     parameters: List<SmlParameter> = emptyList(),
-    results: List<SmlResult>? = null,
+    results: List<SmlResult> = emptyList(),
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null
 ) {
     this.addMember(
@@ -670,7 +670,7 @@ fun SmlPackage.smlFunction(
     isStatic: Boolean = false,
     typeParameters: List<SmlTypeParameter>? = null,
     parameters: List<SmlParameter> = emptyList(),
-    results: List<SmlResult>? = null,
+    results: List<SmlResult> = emptyList(),
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null
 ) {
     this.addMember(
@@ -1248,7 +1248,7 @@ fun createSmlWorkflowStep(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
-    results: List<SmlResult>? = null,
+    results: List<SmlResult> = emptyList(),
     statements: List<SmlAbstractStatement> = emptyList(),
     init: SmlWorkflowStep.() -> Unit = {}
 ): SmlWorkflowStep {
@@ -1256,7 +1256,7 @@ fun createSmlWorkflowStep(
         this.name = name
         this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
         this.parameterList = createSmlParameterList(parameters)
-        this.resultList = createSmlResultList(results)
+        this.resultList = createSmlResultList(results.ifEmpty { null })
         this.body = factory.createSmlBlock()
         statements.forEach { addStatement(it) }
         this.init()
@@ -1270,7 +1270,7 @@ fun SmlCompilationUnit.smlWorkflowStep(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
-    results: List<SmlResult>? = null,
+    results: List<SmlResult> = emptyList(),
     statements: List<SmlAbstractStatement> = emptyList(),
     init: SmlWorkflowStep.() -> Unit = {}
 ) {
@@ -1284,7 +1284,7 @@ fun SmlPackage.smlWorkflowStep(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
-    results: List<SmlResult>? = null,
+    results: List<SmlResult> = emptyList(),
     statements: List<SmlAbstractStatement> = emptyList(),
     init: SmlWorkflowStep.() -> Unit = {}
 ) {
