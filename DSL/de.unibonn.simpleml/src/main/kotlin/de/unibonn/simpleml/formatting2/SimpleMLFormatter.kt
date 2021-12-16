@@ -32,6 +32,7 @@ import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlClassBody
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlConstraintList
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumBody
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
@@ -60,7 +61,6 @@ import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
-import de.unibonn.simpleml.simpleML.SmlConstraintList
 import de.unibonn.simpleml.simpleML.SmlTypeParameterList
 import de.unibonn.simpleml.simpleML.SmlTypeProjection
 import de.unibonn.simpleml.simpleML.SmlUnionType
