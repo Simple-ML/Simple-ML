@@ -15,6 +15,7 @@ import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
+import org.eclipse.xtext.conversion.impl.IDValueConverter
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.junit.jupiter.api.Test
@@ -28,10 +29,10 @@ class SimpleMLIDValueConverterTest {
     private lateinit var parseHelper: ParseHelper
 
     @Inject
-    private lateinit var idValueConverter: SimpleMLIDValueConverter
+    private lateinit var idValueConverter: IDValueConverter
 
     @Test
-    fun `should remove backticks (simple)`() {
+    fun `should remove backticks (direct converter call)`() {
         idValueConverter.toValue("`package`", null) shouldBe "package"
     }
 
@@ -45,7 +46,7 @@ class SimpleMLIDValueConverterTest {
     }
 
     @Test
-    fun `should escape keywords (simple)`() {
+    fun `should escape keywords (direct converter call)`() {
         idValueConverter.toString("package") shouldBe "`package`"
     }
 
@@ -62,7 +63,7 @@ class SimpleMLIDValueConverterTest {
     }
 
     @Test
-    fun `should not escape non-keywords (simple)`() {
+    fun `should not escape non-keywords (direct converter call)`() {
         idValueConverter.toString("notAKeyword") shouldBe "notAKeyword"
     }
 
