@@ -90,6 +90,15 @@ class CreatorsTest {
     }
 
     @Test
+    fun `createSmlAnnotationUse should omit empty argument lists`() {
+        val annotationUse = createSmlAnnotationUse(
+            "Test",
+            arguments = emptyList()
+        )
+        annotationUse.argumentList.shouldBeNull()
+    }
+
+    @Test
     fun `createSmlAnnotationUse should create an SmlAnnotation when only a name is passed`() {
         val annotationUse = createSmlAnnotationUse("Test")
         val annotation = annotationUse.annotation

@@ -148,17 +148,17 @@ fun SmlPackage.smlAnnotation(
 /**
  * Returns a new object of class [SmlAnnotationUse].
  */
-fun createSmlAnnotationUse(annotation: SmlAnnotation, arguments: List<SmlArgument>? = null): SmlAnnotationUse {
+fun createSmlAnnotationUse(annotation: SmlAnnotation, arguments: List<SmlArgument> = emptyList()): SmlAnnotationUse {
     return factory.createSmlAnnotationUse().apply {
         this.annotation = annotation
-        this.argumentList = createSmlArgumentList(arguments)
+        this.argumentList = createSmlArgumentList(arguments.ifEmpty { null })
     }
 }
 
 /**
  * Returns a new object of class [SmlAnnotationUse] that points to an annotation with the given name.
  */
-fun createSmlAnnotationUse(annotationName: String, arguments: List<SmlArgument>? = null): SmlAnnotationUse {
+fun createSmlAnnotationUse(annotationName: String, arguments: List<SmlArgument> = emptyList()): SmlAnnotationUse {
     return createSmlAnnotationUse(
         createSmlAnnotation(annotationName),
         arguments
