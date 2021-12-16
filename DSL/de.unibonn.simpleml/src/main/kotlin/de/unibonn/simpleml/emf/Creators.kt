@@ -326,7 +326,7 @@ fun createSmlClass(
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType>? = null,
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
-    members: List<SmlAbstractClassMember>? = null,
+    members: List<SmlAbstractClassMember> = emptyList(),
     init: SmlClass.() -> Unit = {}
 ): SmlClass {
     return factory.createSmlClass().apply {
@@ -336,7 +336,7 @@ fun createSmlClass(
         this.parameterList = createSmlParameterList(parameters)
         this.parentTypeList = createSmlParentTypeList(parentTypes)
         this.typeParameterConstraintList = createSmlTypeParameterConstraintList(typeParameterConstraints)
-        members?.forEach { addMember(it) }
+        members.forEach { addMember(it) }
         this.init()
     }
 }
@@ -351,7 +351,7 @@ fun SmlClass.smlClass(
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType>? = null,
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
-    members: List<SmlAbstractClassMember>? = null,
+    members: List<SmlAbstractClassMember> = emptyList(),
     init: SmlClass.() -> Unit = {}
 ) {
     this.addMember(
@@ -378,7 +378,7 @@ fun SmlCompilationUnit.smlClass(
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType>? = null,
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
-    members: List<SmlAbstractClassMember>? = null,
+    members: List<SmlAbstractClassMember> = emptyList(),
     init: SmlClass.() -> Unit = {}
 ) {
     this.addMember(
@@ -405,7 +405,7 @@ fun SmlPackage.smlClass(
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType>? = null,
     typeParameterConstraints: List<SmlTypeParameterConstraint>? = null,
-    members: List<SmlAbstractClassMember>? = null,
+    members: List<SmlAbstractClassMember> = emptyList(),
     init: SmlClass.() -> Unit = {}
 ) {
     this.addMember(
@@ -459,13 +459,13 @@ private fun SmlCompilationUnit.addMember(member: SmlAbstractCompilationUnitMembe
 fun createSmlEnum(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
-    variants: List<SmlEnumVariant>? = null,
+    variants: List<SmlEnumVariant> = emptyList(),
     init: SmlEnum.() -> Unit = {}
 ): SmlEnum {
     return factory.createSmlEnum().apply {
         this.name = name
         this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
-        variants?.forEach { addVariant(it) }
+        variants.forEach { addVariant(it) }
         this.init()
     }
 }
@@ -476,7 +476,7 @@ fun createSmlEnum(
 fun SmlClass.smlEnum(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
-    variants: List<SmlEnumVariant>? = null,
+    variants: List<SmlEnumVariant> = emptyList(),
     init: SmlEnum.() -> Unit = {}
 ) {
     this.addMember(createSmlEnum(name, annotations, variants, init))
@@ -488,7 +488,7 @@ fun SmlClass.smlEnum(
 fun SmlCompilationUnit.smlEnum(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
-    variants: List<SmlEnumVariant>? = null,
+    variants: List<SmlEnumVariant> = emptyList(),
     init: SmlEnum.() -> Unit = {}
 ) {
     this.addMember(createSmlEnum(name, annotations, variants, init))
@@ -500,7 +500,7 @@ fun SmlCompilationUnit.smlEnum(
 fun SmlPackage.smlEnum(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
-    variants: List<SmlEnumVariant>? = null,
+    variants: List<SmlEnumVariant> = emptyList(),
     init: SmlEnum.() -> Unit = {}
 ) {
     this.addMember(createSmlEnum(name, annotations, variants, init))

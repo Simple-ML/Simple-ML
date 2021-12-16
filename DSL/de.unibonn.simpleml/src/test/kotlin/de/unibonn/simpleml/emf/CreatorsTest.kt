@@ -194,6 +194,15 @@ class CreatorsTest {
     }
 
     @Test
+    fun `createSmlClass should omit empty body`() {
+        val `class` = createSmlClass(
+            "Test",
+            members = emptyList()
+        )
+        `class`.body.shouldBeNull()
+    }
+
+    @Test
     fun `smlClass should add the created class to the receiving class`() {
         val `class` = createSmlClass("Test") {
             smlClass("Test")
@@ -234,6 +243,15 @@ class CreatorsTest {
         val annotationUseHolder = `enum`.annotationUseHolder
         annotationUseHolder.shouldNotBeNull()
         annotationUseHolder.annotations.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `createSmlEnum should omit empty body`() {
+        val enum = createSmlEnum(
+            "Test",
+            variants = emptyList()
+        )
+        enum.body.shouldBeNull()
     }
 
     @Test
