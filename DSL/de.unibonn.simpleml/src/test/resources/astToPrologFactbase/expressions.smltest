@@ -70,7 +70,7 @@ workflow myWorkflowWithParenthesizedExpression {
 
 // Template strings ----------------------------------------------------------------------------------------------------
 workflow myWorkflowWithTemplateString {
-    "prefix {{ 1 }} infix {{ 1 }} suffix";
+    "start {{ 1 }} inner {{ 1 }} end";
 }
 
 

@@ -1,6 +1,14 @@
+@file:Suppress("ClassName")
+
 package de.unibonn.simpleml.conversion
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.emf.createSmlDummyResource
+import de.unibonn.simpleml.emf.createSmlString
+import de.unibonn.simpleml.emf.smlExpressionStatement
+import de.unibonn.simpleml.emf.smlPackage
+import de.unibonn.simpleml.emf.smlWorkflow
 import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlString
@@ -13,8 +21,10 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
+import org.eclipse.xtext.conversion.impl.STRINGValueConverter
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -26,79 +36,134 @@ class SimpleMLSTRINGValueConverterTest {
     private lateinit var parseHelper: ParseHelper
 
     @Inject
-    private lateinit var stringValueConverter: SimpleMLSTRINGValueConverter
+    private lateinit var stringValueConverter: STRINGValueConverter
 
-    @Test
-    fun `should unescape opening curly brace (simple)`() {
-        stringValueConverter.toValue("\"\\{\"", null) shouldBe "{"
+    @Nested
+    inner class toValue {
+        @Test
+        fun `should unescape opening curly brace (direct converter call)`() {
+            stringValueConverter.toValue("\"\\{\"", null) shouldBe "{"
+        }
+
+        @Test
+        fun `should unescape opening curly brace (file)`() {
+            val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
+            compilationUnit.shouldNotBeNull()
+
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("escapedOpeningBrace")
+
+            val strings = workflow.descendants<SmlString>().toList()
+            strings.shouldHaveSize(1)
+            strings[0].value shouldBe "{"
+        }
+
+        @Test
+        fun `should unescape single quote (direct converter call)`() {
+            stringValueConverter.toValue("\"\\'\"", null) shouldBe "'"
+        }
+
+        @Test
+        fun `should unescape single quote (file)`() {
+            val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
+            compilationUnit.shouldNotBeNull()
+
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("escapedSingleQuote")
+
+            val strings = workflow.descendants<SmlString>().toList()
+            strings.shouldHaveSize(1)
+            strings[0].value shouldBe "'"
+        }
     }
 
-    @Test
-    fun `should unescape opening curly brace`() {
-        val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
-        compilationUnit.shouldNotBeNull()
+    @Nested
+    inner class toString {
+        @Test
+        fun `should escape opening curly brace (direct converter call)`() {
+            stringValueConverter.toString("{") shouldBe "\"\\{\""
+        }
 
-        val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("escapedOpeningBrace")
+        @Test
+        fun `should keep escaped opening curly brace (file)`() {
+            val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
+            compilationUnit.shouldNotBeNull()
 
-        val strings = workflow.descendants<SmlString>().toList()
-        strings.shouldHaveSize(1)
-        strings[0].value shouldBe "{"
-    }
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("escapedOpeningBrace")
 
-    @Test
-    fun `should escape opening curly brace (simple)`() {
-        stringValueConverter.toString("{") shouldBe "\"\\{\""
-    }
+            val strings = workflow.descendants<SmlString>().toList()
+            strings.shouldHaveSize(1)
 
-    @Test
-    fun `should escape opening curly brace`() {
-        val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
-        compilationUnit.shouldNotBeNull()
+            val result = strings[0].serializeToFormattedString()
+            result.shouldBeInstanceOf<SerializationResult.Success>()
+            result.code shouldBe "\"\\{\""
+        }
 
-        val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("escapedOpeningBrace")
+        @Test
+        fun `should keep unescaped opening curly brace (file)`() {
+            val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
+            compilationUnit.shouldNotBeNull()
 
-        val strings = workflow.descendants<SmlString>().toList()
-        strings.shouldHaveSize(1)
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("unescapedOpeningBrace")
 
-        val result = strings[0].serializeToFormattedString()
-        result.shouldBeInstanceOf<SerializationResult.Success>()
-        result.code shouldBe "\"\\{\""
-    }
+            val strings = workflow.descendants<SmlString>().toList()
+            strings.shouldHaveSize(1)
 
-    @Test
-    fun `should unescape single quote (simple)`() {
-        stringValueConverter.toValue("\"\\'\"", null) shouldBe "'"
-    }
+            val result = strings[0].serializeToFormattedString()
+            result.shouldBeInstanceOf<SerializationResult.Success>()
+            result.code shouldBe "\"{\""
+        }
 
-    @Test
-    fun `should unescape single quote`() {
-        val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
-        compilationUnit.shouldNotBeNull()
+        @Test
+        fun `should always escape opening curly brace (creator)`() {
+            val string = createSmlString("{")
 
-        val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("escapedSingleQuote")
+            createSmlDummyResource("test", FileExtension.TEST) {
+                smlPackage("test") {
+                    smlWorkflow("test") {
+                        smlExpressionStatement(string)
+                    }
+                }
+            }
 
-        val strings = workflow.descendants<SmlString>().toList()
-        strings.shouldHaveSize(1)
-        strings[0].value shouldBe "'"
-    }
+            val result = string.serializeToFormattedString()
+            result.shouldBeInstanceOf<SerializationResult.Success>()
+            result.code shouldBe "\"\\{\""
+        }
 
-    @Test
-    fun `should not escape single quote (simple)`() {
-        stringValueConverter.toString("'") shouldBe "\"'\""
-    }
+        @Test
+        fun `should not escape single quote (direct converter call)`() {
+            stringValueConverter.toString("'") shouldBe "\"'\""
+        }
 
-    @Test
-    fun `should not escape single quote`() {
-        val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
-        compilationUnit.shouldNotBeNull()
+        @Test
+        fun `should not escape single quote (file)`() {
+            val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
+            compilationUnit.shouldNotBeNull()
 
-        val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("unescapedSingleQuote")
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("unescapedSingleQuote")
 
-        val strings = workflow.descendants<SmlString>().toList()
-        strings.shouldHaveSize(1)
+            val strings = workflow.descendants<SmlString>().toList()
+            strings.shouldHaveSize(1)
 
-        val result = strings[0].serializeToFormattedString()
-        result.shouldBeInstanceOf<SerializationResult.Success>()
-        result.code shouldBe "\"'\""
+            val result = strings[0].serializeToFormattedString()
+            result.shouldBeInstanceOf<SerializationResult.Success>()
+            result.code shouldBe "\"'\""
+        }
+
+        @Test
+        fun `should not escape single quote (creator)`() {
+            val string = createSmlString("'")
+
+            createSmlDummyResource("test", FileExtension.TEST) {
+                smlPackage("test") {
+                    smlWorkflow("test") {
+                        smlExpressionStatement(string)
+                    }
+                }
+            }
+
+            val result = string.serializeToFormattedString()
+            result.shouldBeInstanceOf<SerializationResult.Success>()
+            result.code shouldBe "\"'\""
+        }
     }
 }

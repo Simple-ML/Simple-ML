@@ -49,7 +49,9 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StarProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
-import de.unibonn.simpleml.prolog_bridge.model.facts.TemplateStringPartT
+import de.unibonn.simpleml.prolog_bridge.model.facts.TemplateStringEndT
+import de.unibonn.simpleml.prolog_bridge.model.facts.TemplateStringInnerT
+import de.unibonn.simpleml.prolog_bridge.model.facts.TemplateStringStartT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TemplateStringT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TypeParameterConstraintT
@@ -106,7 +108,9 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStarProjection
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlTemplateString
-import de.unibonn.simpleml.simpleML.SmlTemplateStringPart
+import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
+import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
+import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
@@ -117,7 +121,6 @@ import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.aliasName
-import de.unibonn.simpleml.utils.realValue
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.EcoreUtil2
@@ -433,8 +436,14 @@ class AstToPrologFactbase {
 
                 +TemplateStringT(obj.id, parentId, enclosingId, obj.expressions.map { it.id })
             }
-            is SmlTemplateStringPart -> {
-                +TemplateStringPartT(obj.id, parentId, enclosingId, obj.realValue())
+            is SmlTemplateStringStart -> {
+                +TemplateStringStartT(obj.id, parentId, enclosingId, obj.value)
+            }
+            is SmlTemplateStringInner -> {
+                +TemplateStringInnerT(obj.id, parentId, enclosingId, obj.value)
+            }
+            is SmlTemplateStringEnd -> {
+                +TemplateStringEndT(obj.id, parentId, enclosingId, obj.value)
             }
         }
 
@@ -520,7 +529,10 @@ class AstToPrologFactbase {
         visitSourceLocation(obj)
     }
 
-    private fun PlFactbase.visitTypeParameterConstraint(obj: SmlTypeParameterConstraint, parentId: Id<SmlAbstractObject>) {
+    private fun PlFactbase.visitTypeParameterConstraint(
+        obj: SmlTypeParameterConstraint,
+        parentId: Id<SmlAbstractObject>
+    ) {
         visitCrossReference(obj, SimpleMLPackage.Literals.SML_TYPE_PARAMETER_CONSTRAINT__LEFT_OPERAND, obj.leftOperand)
         visitType(obj.rightOperand, obj.id)
 

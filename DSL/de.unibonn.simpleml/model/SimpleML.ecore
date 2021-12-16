@@ -128,9 +128,12 @@
     <eClassifiers xsi:type="ecore:EClass" name="SmlTemplateString" eSuperTypes="#//SmlAbstractExpression">
         <eStructuralFeatures xsi:type="ecore:EReference" name="expressions" upperBound="-1" eType="#//SmlAbstractExpression" containment="true" />
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SmlTemplateStringPart" eSuperTypes="#//SmlAbstractLiteral">
+    <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractTemplateStringPart" abstract="true" eSuperTypes="#//SmlAbstractLiteral">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" />
     </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SmlTemplateStringStart" eSuperTypes="#//SmlAbstractTemplateStringPart" />
+    <eClassifiers xsi:type="ecore:EClass" name="SmlTemplateStringInner" eSuperTypes="#//SmlAbstractTemplateStringPart" />
+    <eClassifiers xsi:type="ecore:EClass" name="SmlTemplateStringEnd" eSuperTypes="#//SmlAbstractTemplateStringPart" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlLambda" eSuperTypes="#//SmlAbstractExpression">
         <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlBlock" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList" containment="true" />

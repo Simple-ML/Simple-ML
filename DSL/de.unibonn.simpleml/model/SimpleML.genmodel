@@ -130,9 +130,12 @@
         <genClasses ecoreClass="SimpleML.ecore#//SmlTemplateString">
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlTemplateString/expressions" />
         </genClasses>
-        <genClasses ecoreClass="SimpleML.ecore#//SmlTemplateStringPart">
+        <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractTemplateStringPart">
             <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlTemplateStringPart/value" />
         </genClasses>
+        <genClasses ecoreClass="SimpleML.ecore#//SmlTemplateStringStart" />
+        <genClasses ecoreClass="SimpleML.ecore#//SmlTemplateStringInner" />
+        <genClasses ecoreClass="SimpleML.ecore#//SmlTemplateStringEnd" />
         <genClasses ecoreClass="SimpleML.ecore#//SmlLambda">
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlLambda/body" />
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlLambda/parameterList" />

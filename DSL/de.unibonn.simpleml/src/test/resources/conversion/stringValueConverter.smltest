@@ -2,6 +2,10 @@ workflow escapedOpeningBrace {
     "\{";
 }
 
+workflow unescapedOpeningBrace {
+    "{";
+}
+
 workflow escapedSingleQuote {
     "\'";
 }

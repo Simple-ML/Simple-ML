@@ -42,7 +42,9 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStarProjection
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlTemplateString
-import de.unibonn.simpleml.simpleML.SmlTemplateStringPart
+import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
+import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
+import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
@@ -1236,7 +1238,7 @@ data class TemplateStringT(
 }
 
 /**
- * This Prolog fact represents string literals.
+ * This Prolog fact represents starts of template string.
  *
  * @param id
  * The ID of this fact.
@@ -1250,12 +1252,60 @@ data class TemplateStringT(
  * @param value
  * The value of the template string part.
  */
-data class TemplateStringPartT(
-    override val id: Id<SmlTemplateStringPart>,
+data class TemplateStringStartT(
+    override val id: Id<SmlTemplateStringStart>,
     override val parent: Id<SmlAbstractObject>,
     override val enclosing: Id<SmlAbstractObject>,
     val value: String
-) : ExpressionT("templateStringPartT", id, parent, enclosing, value) {
+) : ExpressionT("templateStringStartT", id, parent, enclosing, value) {
+    override fun toString() = super.toString()
+}
+
+/**
+ * This Prolog fact represents inner parts of template string.
+ *
+ * @param id
+ * The ID of this fact.
+ *
+ * @param parent
+ * The ID of the fact for the logical parent, e.g. a call.
+ *
+ * @param enclosing
+ * The ID of the fact for closest ancestor that is not an expression.
+ *
+ * @param value
+ * The value of the template string part.
+ */
+data class TemplateStringInnerT(
+    override val id: Id<SmlTemplateStringInner>,
+    override val parent: Id<SmlAbstractObject>,
+    override val enclosing: Id<SmlAbstractObject>,
+    val value: String
+) : ExpressionT("templateStringInnerT", id, parent, enclosing, value) {
+    override fun toString() = super.toString()
+}
+
+/**
+ * This Prolog fact represents the end of template strings.
+ *
+ * @param id
+ * The ID of this fact.
+ *
+ * @param parent
+ * The ID of the fact for the logical parent, e.g. a call.
+ *
+ * @param enclosing
+ * The ID of the fact for closest ancestor that is not an expression.
+ *
+ * @param value
+ * The value of the template string part.
+ */
+data class TemplateStringEndT(
+    override val id: Id<SmlTemplateStringEnd>,
+    override val parent: Id<SmlAbstractObject>,
+    override val enclosing: Id<SmlAbstractObject>,
+    val value: String
+) : ExpressionT("templateStringEndT", id, parent, enclosing, value) {
     override fun toString() = super.toString()
 }
 
