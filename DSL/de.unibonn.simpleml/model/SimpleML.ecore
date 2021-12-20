@@ -34,7 +34,29 @@
         <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlClassBody" containment="true" />
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlClassBody" eSuperTypes="#//SmlAbstractObject">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="members" upperBound="-1" eType="#//SmlAbstractAnnotatedObject" containment="true" />
+        <eStructuralFeatures xsi:type="ecore:EReference" name="members" upperBound="-1" eType="#//SmlAbstractObject" containment="true" />
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SmlBehaviorProtocol" eSuperTypes="#//SmlAbstractObject">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlBehaviorProtocolBody" containment="true" />
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SmlBehaviorProtocolBody" eSuperTypes="#//SmlAbstractObject">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//SmlAbstractBehaviorProtocolElement" containment="true" />
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractBehaviorProtocolElement" abstract="true" eSuperTypes="#//SmlAbstractObject" />
+    <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractBehaviorProtocolQuantifiedElement" abstract="true" eSuperTypes="#//SmlAbstractBehaviorProtocolElement">
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="quantifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" />
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SmlBehaviorProtocolSequence" eSuperTypes="#//SmlAbstractBehaviorProtocolElement">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1" eType="#//SmlAbstractBehaviorProtocolElement" containment="true" />
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SmlBehaviorProtocolAlternative" eSuperTypes="#//SmlAbstractBehaviorProtocolElement">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1" eType="#//SmlAbstractBehaviorProtocolElement" containment="true" />
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SmlBehaviorProtocolReference" eSuperTypes="#//SmlAbstractBehaviorProtocolQuantifiedElement">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="declaration" eType="#//SmlAbstractClassMember" />
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SmlBehaviorProtocolParenthesizedElement" eSuperTypes="#//SmlAbstractBehaviorProtocolQuantifiedElement">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//SmlAbstractBehaviorProtocolElement" containment="true" />
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlCompilationUnit" eSuperTypes="#//SmlAbstractObject">
         <eStructuralFeatures xsi:type="ecore:EReference" name="members" upperBound="-1" eType="#//SmlAbstractAnnotatedObject" containment="true" />

@@ -37,6 +37,28 @@
         <genClasses ecoreClass="SimpleML.ecore#//SmlClassBody">
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClassBody/members" />
         </genClasses>
+        <genClasses ecoreClass="SimpleML.ecore#//SmlBehaviorProtocol">
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlBehaviorProtocol/body" />
+        </genClasses>
+        <genClasses ecoreClass="SimpleML.ecore#//SmlBehaviorProtocolBody">
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlBehaviorProtocolBody/element" />
+        </genClasses>
+        <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractBehaviorProtocolElement" />
+        <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractBehaviorProtocolQuantifiedElement">
+            <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlAbstractBehaviorProtocolQuantifiedElement/name" />
+        </genClasses>
+        <genClasses ecoreClass="SimpleML.ecore#//SmlBehaviorProtocolSequence">
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlBehaviorProtocolSequence/elements" />
+        </genClasses>
+        <genClasses ecoreClass="SimpleML.ecore#//SmlBehaviorProtocolAlternative">
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlBehaviorProtocolAlternative/elements" />
+        </genClasses>
+        <genClasses ecoreClass="SimpleML.ecore#//SmlBehaviorProtocolReference">
+            <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlBehaviorProtocolReference/declaration" />
+        </genClasses>
+        <genClasses ecoreClass="SimpleML.ecore#//SmlBehaviorProtocolParenthesizedElement">
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlBehaviorProtocolParenthesizedElement/element" />
+        </genClasses>
         <genClasses ecoreClass="SimpleML.ecore#//SmlCompilationUnit">
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlCompilationUnit/members" />
         </genClasses>
