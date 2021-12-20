@@ -6,6 +6,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractLocalVariable
+import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAnnotation
@@ -13,6 +14,7 @@ import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlAnnotationUseHolder
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlAssignment
+import de.unibonn.simpleml.simpleML.SmlBehaviorProtocol
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
@@ -116,18 +118,12 @@ fun SmlCallableType?.resultsOrEmpty(): List<SmlResult> {
 
 // SmlClass ----------------------------------------------------------------------------------------
 
-fun SmlClass?.memberDeclarationsOrEmpty(): List<SmlAbstractDeclaration> {
-    return this?.body?.members
-        ?.filterIsInstance<SmlAbstractDeclaration>()
-        .orEmpty()
+fun SmlClass?.typeParametersOrEmpty(): List<SmlTypeParameter> {
+    return this?.typeParameterList?.typeParameters.orEmpty()
 }
 
 fun SmlClass?.parametersOrEmpty(): List<SmlParameter> {
     return this?.parameterList?.parameters.orEmpty()
-}
-
-fun SmlClass?.typeParametersOrEmpty(): List<SmlTypeParameter> {
-    return this?.typeParameterList?.typeParameters.orEmpty()
 }
 
 fun SmlClass?.parentTypesOrEmpty(): List<SmlAbstractType> {
@@ -136,6 +132,26 @@ fun SmlClass?.parentTypesOrEmpty(): List<SmlAbstractType> {
 
 fun SmlClass?.constraintsOrEmpty(): List<SmlAbstractConstraint> {
     return this?.constraintList?.constraints.orEmpty()
+}
+
+fun SmlClass?.membersOrEmpty(): List<SmlAbstractObject> {
+    return this?.body?.members.orEmpty()
+}
+
+fun SmlClass?.memberDeclarationsOrEmpty(): List<SmlAbstractDeclaration> {
+    return this?.body?.members
+        ?.filterIsInstance<SmlAbstractDeclaration>()
+        .orEmpty()
+}
+
+fun SmlClass?.protocolsOrEmpty(): List<SmlBehaviorProtocol> {
+    return this?.body?.members
+        ?.filterIsInstance<SmlBehaviorProtocol>()
+        .orEmpty()
+}
+
+fun SmlClass?.uniqueProtocolOrNull(): SmlBehaviorProtocol? {
+    return this.protocolsOrEmpty().uniqueOrNull()
 }
 
 // SmlCompilationUnit ------------------------------------------------------------------------------

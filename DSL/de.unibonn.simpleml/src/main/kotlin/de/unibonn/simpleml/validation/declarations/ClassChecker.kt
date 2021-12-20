@@ -2,6 +2,7 @@ package de.unibonn.simpleml.validation.declarations
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
+import de.unibonn.simpleml.emf.membersOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
@@ -41,7 +42,7 @@ class ClassChecker @Inject constructor(
 
     @Check
     fun body(smlClass: SmlClass) {
-        if (smlClass.body != null && smlClass.memberDeclarationsOrEmpty().isEmpty()) {
+        if (smlClass.body != null && smlClass.membersOrEmpty().isEmpty()) {
             info(
                 "Unnecessary class body.",
                 Literals.SML_CLASS__BODY,
