@@ -204,8 +204,9 @@ SmlBehaviorProtocolAlternative returns SmlAbstractBehaviorProtocolElement
     )?
     ;
 
-SmlBehaviorProtocolSequence
-    : elements+=SmlBehaviorProtocolPrimaryElement+
+SmlBehaviorProtocolSequence returns SmlAbstractBehaviorProtocolElement
+    : SmlBehaviorProtocolPrimaryElement
+      ({SmlBehaviorProtocolSequence.elements+=current} elements+=SmlBehaviorProtocolPrimaryElement+)
     ;
 
 SmlBehaviorProtocolPrimaryElement returns SmlAbstractBehaviorProtocolElement
