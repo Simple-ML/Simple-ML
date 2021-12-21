@@ -37,27 +37,39 @@
         <genClasses ecoreClass="SimpleML.ecore#//SmlClassBody">
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlClassBody/members" />
         </genClasses>
-        <genClasses ecoreClass="SimpleML.ecore#//SmlBehaviorProtocol">
+        <genClasses ecoreClass="SimpleML.ecore#//SmlProtocol">
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlBehaviorProtocol/body" />
         </genClasses>
-        <genClasses ecoreClass="SimpleML.ecore#//SmlBehaviorProtocolBody">
-            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlBehaviorProtocolBody/element" />
+        <genClasses ecoreClass="SimpleML.ecore#//SmlProtocolBody">
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlBehaviorProtocolBody/subterms" />
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlBehaviorProtocolBody/term" />
         </genClasses>
-        <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractBehaviorProtocolElement" />
-        <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractBehaviorProtocolQuantifiedElement">
-            <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlAbstractBehaviorProtocolQuantifiedElement/name" />
+        <genClasses ecoreClass="SimpleML.ecore#//SmlSubterm">
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlSubterm/term" />
         </genClasses>
-        <genClasses ecoreClass="SimpleML.ecore#//SmlBehaviorProtocolSequence">
-            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlBehaviorProtocolSequence/elements" />
+        <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractProtocolTerm" />
+        <genClasses ecoreClass="SimpleML.ecore#//SmlProtocolAlternative">
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlProtocolAlternative/terms" />
         </genClasses>
-        <genClasses ecoreClass="SimpleML.ecore#//SmlBehaviorProtocolAlternative">
-            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlBehaviorProtocolAlternative/elements" />
+        <genClasses ecoreClass="SimpleML.ecore#//SmlProtocolSequence">
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlProtocolSequence/terms" />
         </genClasses>
-        <genClasses ecoreClass="SimpleML.ecore#//SmlBehaviorProtocolReference">
-            <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlBehaviorProtocolReference/declaration" />
+        <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlProtocolQuantifiedTerm">
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlProtocolQuantifiedTerm/term" />
+            <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlProtocolQuantifiedTerm/quantifier" />
         </genClasses>
-        <genClasses ecoreClass="SimpleML.ecore#//SmlBehaviorProtocolParenthesizedElement">
-            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlBehaviorProtocolParenthesizedElement/element" />
+        <genClasses ecoreClass="SimpleML.ecore#//SmlProtocolComplement">
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlProtocolComplement/universe" />
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlProtocolComplement/tokens" />
+        </genClasses>
+        <genClasses ecoreClass="SimpleML.ecore#//SmlProtocolToken">
+            <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlProtocolToken/declaration" />
+        </genClasses>
+        <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlProtocolTokenClass">
+            <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlProtocolTokenClass/value" />
+        </genClasses>
+        <genClasses ecoreClass="SimpleML.ecore#//SmlProtocolParenthesizedTerm">
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlProtocolParenthesizedTerm/term" />
         </genClasses>
         <genClasses ecoreClass="SimpleML.ecore#//SmlCompilationUnit">
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlCompilationUnit/members" />

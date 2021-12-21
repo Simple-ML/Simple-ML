@@ -2,8 +2,8 @@
 
 class C {
     protocol {
-        subterm term1 = f;
-        subterm term2 = g;
+        subterm term1 = f
+        subterm term2 = g
 
         term1 | term2
     }

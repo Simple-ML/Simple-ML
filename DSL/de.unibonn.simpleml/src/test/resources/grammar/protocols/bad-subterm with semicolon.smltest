@@ -2,6 +2,6 @@
 
 class C {
     protocol {
-        subterm term = f
+        subterm term = f;
     }
 }

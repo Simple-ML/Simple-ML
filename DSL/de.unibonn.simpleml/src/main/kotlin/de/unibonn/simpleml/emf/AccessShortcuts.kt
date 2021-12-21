@@ -14,7 +14,6 @@ import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlAnnotationUseHolder
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlAssignment
-import de.unibonn.simpleml.simpleML.SmlBehaviorProtocol
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
@@ -29,6 +28,7 @@ import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.simpleML.SmlProtocol
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
@@ -144,13 +144,13 @@ fun SmlClass?.memberDeclarationsOrEmpty(): List<SmlAbstractDeclaration> {
         .orEmpty()
 }
 
-fun SmlClass?.protocolsOrEmpty(): List<SmlBehaviorProtocol> {
+fun SmlClass?.protocolsOrEmpty(): List<SmlProtocol> {
     return this?.body?.members
-        ?.filterIsInstance<SmlBehaviorProtocol>()
+        ?.filterIsInstance<SmlProtocol>()
         .orEmpty()
 }
 
-fun SmlClass?.uniqueProtocolOrNull(): SmlBehaviorProtocol? {
+fun SmlClass?.uniqueProtocolOrNull(): SmlProtocol? {
     return this.protocolsOrEmpty().uniqueOrNull()
 }
 

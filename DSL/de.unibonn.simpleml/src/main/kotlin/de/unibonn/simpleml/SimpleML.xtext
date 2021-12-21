@@ -152,7 +152,7 @@ SmlClassBody
 
 SmlClassMember returns SmlAbstractObject
     : SmlAnnotatedClassMember
-    | SmlBehaviorProtocol
+    | SmlProtocol
     ;
 
 SmlAnnotatedClassMember returns SmlAbstractAnnotatedObject
@@ -184,61 +184,73 @@ SmlAnnotatedClassMember returns SmlAbstractAnnotatedObject
     )
     ;
 
-SmlBehaviorProtocol
-    : 'protocol' body=SmlBehaviorProtocolBody
+SmlProtocol
+    : 'protocol' body=SmlProtocolBody
     ;
 
-SmlBehaviorProtocolBody
-    : {SmlBehaviorProtocolBody} '{' element=SmlBehaviorProtocolElement? '}'
+SmlProtocolBody
+    : {SmlProtocolBody}
+      '{'
+      subterms+=SmlSubterm*
+      term=SmlProtocolTerm?
+      '}'
     ;
 
-SmlBehaviorProtocolElement returns SmlAbstractBehaviorProtocolElement
-    : SmlBehaviorProtocolAlternative
+SmlSubterm
+    : 'subterm' name=ID '=' term=SmlProtocolTerm
     ;
 
-SmlBehaviorProtocolAlternative returns SmlAbstractBehaviorProtocolElement
-    : SmlBehaviorProtocolSequence
+SmlProtocolTerm returns SmlAbstractProtocolTerm
+    : SmlProtocolAlternative
+    ;
+
+SmlProtocolAlternative returns SmlAbstractProtocolTerm
+    : SmlProtocolSequence
     (
-        {SmlBehaviorProtocolAlternative.elements+=current} '|' elements+=SmlBehaviorProtocolSequence
-        ('|' elements+=SmlBehaviorProtocolSequence)*
+        {SmlProtocolAlternative.terms+=current} '|' terms+=SmlProtocolSequence
+        ('|' terms+=SmlProtocolSequence)*
     )?
     ;
 
-SmlBehaviorProtocolSequence returns SmlAbstractBehaviorProtocolElement
-    : SmlBehaviorProtocolQuantifiedElement
-      ({SmlBehaviorProtocolSequence.elements+=current} elements+=SmlBehaviorProtocolQuantifiedElement*)
+SmlProtocolSequence returns SmlAbstractProtocolTerm
+    : SmlProtocolQuantifiedTerm
+      ({SmlProtocolSequence.terms+=current} terms+=SmlProtocolQuantifiedTerm)
     ;
 
-SmlBehaviorProtocolQuantifiedElement returns SmlAbstractBehaviorProtocolQuantifiedElement
-    : SmlBehaviorProtocolPrimaryElement
-      ({SmlProtocolQuantifiedElement.element=current} quantifier=SmlBehaviorProtocolQuantifier)?
-    ;
-
-SmlBehaviorProtocolPrimaryElement returns SmlAbstractBehaviorProtocolElement
-    : SmlBehaviorProtocolReference
-    | SmlBehaviorProtocolParenthesizedElement
-    ;
-
-// TODO: SmlBehaviorProtocol -> SmlProtocol
-// TODO: SmlWorkflowStep -> SmlStep
-// TODO: quantified element es postfix operator
-// TODO: difference
-// TODO: subprotocols
-// TODO: token classes
-// todo: call elements terms
-
-SmlBehaviorProtocolToken
-    : declaration=[SmlAbstractClassMember]
-    ;
-
-SmlBehaviorProtocolParenthesizedElement
-    : '(' element=SmlBehaviorProtocolElement ')'
+SmlProtocolQuantifiedTerm returns SmlAbstractProtocolTerm
+    : SmlProtocolPrimaryElement
+      ({SmlProtocolQuantifiedTerm.term=current} quantifier=SmlBehaviorProtocolQuantifier)?
     ;
 
 SmlBehaviorProtocolQuantifier
     : '?'
     | '*'
     | '+'
+    ;
+
+SmlProtocolPrimaryElement returns SmlAbstractProtocolTerm
+    : SmlProtocolToken
+    | SmlProtocolTokenClass
+    | SmlProtocolParenthesizedTerm
+    ;
+
+SmlProtocolComplement
+    : '['
+      universe=SmlProtocolTokenClass
+      tokens+=SmlProtocolToken*
+      ']'
+    ;
+
+SmlProtocolToken
+    : declaration=[SmlAbstractClassMember]
+    ;
+
+SmlProtocolTokenClass
+    : value=('.' | '\\a' | '\\f')
+    ;
+
+SmlProtocolParenthesizedTerm
+    : '(' term=SmlProtocolTerm ')'
     ;
 
 
