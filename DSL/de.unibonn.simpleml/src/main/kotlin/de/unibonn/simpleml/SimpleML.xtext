@@ -219,7 +219,7 @@ SmlProtocolAlternative returns SmlAbstractProtocolTerm
 SmlProtocolSequence returns SmlAbstractProtocolTerm
     : SmlProtocolQuantifiedTerm
     (
-        {SmlProtocolSequence.terms+=current} =>terms+=SmlProtocolQuantifiedTerm
+        {SmlProtocolSequence.terms+=current} terms+=SmlProtocolQuantifiedTerm
         (terms+=SmlProtocolQuantifiedTerm)*
     )?
     ;
@@ -243,7 +243,8 @@ SmlProtocolPrimaryElement returns SmlAbstractProtocolTerm
     ;
 
 SmlProtocolComplement
-    : '['
+    : {SmlProtocolComplement}
+      '['
       universe=SmlProtocolTokenClass?
       '^'
       referenceList=SmlProtocolReferenceList?
@@ -251,8 +252,7 @@ SmlProtocolComplement
     ;
 
 SmlProtocolReferenceList
-    : {SmlProtocolReferenceList}
-      references+=SmlProtocolReference+
+    : references+=SmlProtocolReference+
     ;
 
 SmlProtocolReference
@@ -260,7 +260,13 @@ SmlProtocolReference
     ;
 
 SmlProtocolTokenClass
-    : value=('.' | '\\a' | '\\f')
+    : value=SmlProtocolTokenClassValue
+    ;
+
+SmlProtocolTokenClassValue
+    : '.'
+    | '\\a'
+    | '\\f'
     ;
 
 SmlProtocolParenthesizedTerm

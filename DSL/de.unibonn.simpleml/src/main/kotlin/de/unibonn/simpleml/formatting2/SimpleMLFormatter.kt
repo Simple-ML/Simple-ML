@@ -13,6 +13,7 @@ import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_NAMED_TYPE__NUL
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_PREFIX_OPERATION__OPERATOR
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_PROTOCOL_COMPLEMENT__UNIVERSE
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_PROTOCOL_QUANTIFIED_TERM__QUANTIFIER
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_PROTOCOL_TOKEN_CLASS__VALUE
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_ARGUMENT__TYPE_PARAMETER
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_PARAMETER_CONSTRAINT__LEFT_OPERAND
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_PARAMETER_CONSTRAINT__OPERATOR
@@ -66,6 +67,7 @@ import de.unibonn.simpleml.simpleML.SmlProtocolReferenceList
 import de.unibonn.simpleml.simpleML.SmlProtocolSequence
 import de.unibonn.simpleml.simpleML.SmlProtocolSubterm
 import de.unibonn.simpleml.simpleML.SmlProtocolSubtermList
+import de.unibonn.simpleml.simpleML.SmlProtocolTokenClass
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlResultList
 import de.unibonn.simpleml.simpleML.SmlTemplateString
@@ -686,10 +688,10 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 doc.formatKeyword(obj, "[", null, noSpace)
 
                 // Keyword "^"
-                doc.formatKeyword(obj, "^", noSpace, oneSpace)
+                doc.formatKeyword(obj, "^", noSpace, null)
 
                 // EObject "referenceList"
-                doc.formatObject(obj.referenceList)
+                doc.formatObject(obj.referenceList, oneSpace, null)
 
                 // Keyword "]"
                 doc.formatKeyword(obj, "]", noSpace, null)
