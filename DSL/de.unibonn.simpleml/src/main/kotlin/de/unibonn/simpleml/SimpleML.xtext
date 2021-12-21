@@ -191,12 +191,16 @@ SmlProtocol
 SmlProtocolBody
     : {SmlProtocolBody}
       '{'
-      subterms+=SmlSubterm*
+      subtermList=SmlProtocolSubtermList?
       term=SmlProtocolTerm?
       '}'
     ;
 
-SmlSubterm
+SmlProtocolSubtermList
+    : subterms+=SmlProtocolSubterm+
+    ;
+
+SmlProtocolSubterm
     : 'subterm' name=ID '=' term=SmlProtocolTerm
     ;
 
@@ -219,30 +223,37 @@ SmlProtocolSequence returns SmlAbstractProtocolTerm
 
 SmlProtocolQuantifiedTerm returns SmlAbstractProtocolTerm
     : SmlProtocolPrimaryElement
-      ({SmlProtocolQuantifiedTerm.term=current} quantifier=SmlBehaviorProtocolQuantifier)?
+      ({SmlProtocolQuantifiedTerm.term=current} quantifier=SmlProtocolQuantifier)?
     ;
 
-SmlBehaviorProtocolQuantifier
+SmlProtocolQuantifier
     : '?'
     | '*'
     | '+'
     ;
 
 SmlProtocolPrimaryElement returns SmlAbstractProtocolTerm
-    : SmlProtocolToken
+    : SmlProtocolComplement
+    | SmlProtocolReference
     | SmlProtocolTokenClass
     | SmlProtocolParenthesizedTerm
     ;
 
 SmlProtocolComplement
     : '['
-      universe=SmlProtocolTokenClass
-      tokens+=SmlProtocolToken*
+      universe=SmlProtocolTokenClass?
+      '^'
+      referenceList=SmlProtocolReferenceList?
       ']'
     ;
 
-SmlProtocolToken
-    : declaration=[SmlAbstractClassMember]
+SmlProtocolReferenceList
+    : {SmlProtocolReferenceList}
+      references+=SmlProtocolReference+
+    ;
+
+SmlProtocolReference
+    : token=[SmlAbstractProtocolToken]
     ;
 
 SmlProtocolTokenClass
