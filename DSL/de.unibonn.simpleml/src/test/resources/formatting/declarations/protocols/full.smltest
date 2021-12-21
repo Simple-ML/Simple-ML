@@ -1,0 +1,22 @@
+class C {
+    protocol {
+        subterm
+          
+         term1
+ =   f ;        subterm    term2 
+ = g 
+ ;
+             f
+ g
+} }
+
+// -----------------------------------------------------------------------------
+
+class C {
+    protocol {
+        subterm term1 = f;
+        subterm term2 = g;
+
+        f g
+    }
+}
