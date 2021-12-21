@@ -3,8 +3,5 @@
 class C {
     protocol {
         f
-        f?
-        f*
-        f+
     }
 }

@@ -559,7 +559,7 @@ QualifiedName
     ;
 
 QualifiedNameWithWildcard
-    : QualifiedName '.*'?
+    : QualifiedName ('.' '*')?
     ;
 
 
