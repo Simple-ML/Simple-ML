@@ -1,4 +1,4 @@
-// syntax_error
+// no_syntax_error
 
 class C {
     protocol {

@@ -201,7 +201,7 @@ SmlProtocolSubtermList
     ;
 
 SmlProtocolSubterm
-    : 'subterm' name=ID '=' term=SmlProtocolTerm
+    : 'subterm' name=ID '=' term=SmlProtocolTerm ';'
     ;
 
 SmlProtocolTerm returns SmlAbstractProtocolTerm
@@ -218,7 +218,10 @@ SmlProtocolAlternative returns SmlAbstractProtocolTerm
 
 SmlProtocolSequence returns SmlAbstractProtocolTerm
     : SmlProtocolQuantifiedTerm
-      ({SmlProtocolSequence.terms+=current} terms+=SmlProtocolQuantifiedTerm)
+    (
+        {SmlProtocolSequence.terms+=current} terms+=SmlProtocolQuantifiedTerm
+        (terms+=SmlProtocolQuantifiedTerm)*
+    )?
     ;
 
 SmlProtocolQuantifiedTerm returns SmlAbstractProtocolTerm
