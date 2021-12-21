@@ -7,6 +7,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractLocalVariable
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
+import de.unibonn.simpleml.simpleML.SmlAbstractProtocolTerm
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAnnotation
@@ -29,6 +30,10 @@ import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlProtocol
+import de.unibonn.simpleml.simpleML.SmlProtocolBody
+import de.unibonn.simpleml.simpleML.SmlProtocolComplement
+import de.unibonn.simpleml.simpleML.SmlProtocolReference
+import de.unibonn.simpleml.simpleML.SmlProtocolSubterm
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
@@ -245,6 +250,28 @@ fun SmlPackage?.memberDeclarationsOrEmpty(): List<SmlAbstractDeclaration> {
     return this?.members
         ?.filterIsInstance<SmlAbstractDeclaration>()
         .orEmpty()
+}
+
+// SmlProtocol -------------------------------------------------------------------------------------
+
+fun SmlProtocol?.subtermsOrEmpty(): List<SmlProtocolSubterm> {
+    return this?.body.subtermsOrEmpty()
+}
+
+fun SmlProtocol?.termOrNull(): SmlAbstractProtocolTerm? {
+    return this?.body?.term
+}
+
+// SmlProtocolBody ---------------------------------------------------------------------------------
+
+fun SmlProtocolBody?.subtermsOrEmpty(): List<SmlProtocolSubterm> {
+    return this?.subtermList?.subterms.orEmpty()
+}
+
+// SmlProtocolComplement ---------------------------------------------------------------------------
+
+fun SmlProtocolComplement?.referencesOrEmpty(): List<SmlProtocolReference> {
+    return this?.referenceList?.references.orEmpty()
 }
 
 // SmlUnionType ------------------------------------------------------------------------------------
