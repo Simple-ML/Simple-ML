@@ -3,7 +3,7 @@ class C {
         f|g
 |
          
-          h
+          (  h  )
     }
 }
 
@@ -11,6 +11,6 @@ class C {
 
 class C {
     protocol {
-        f | g | h
+        f | g | (h)
     }
 }

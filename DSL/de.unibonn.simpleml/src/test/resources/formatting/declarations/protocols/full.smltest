@@ -8,11 +8,13 @@ class C {
  ;
              f 
         (
-            g
-               | 
-    h   i
-    )   ?  [ .  ^
-    j
+            
+            (
+    g   h
+)   |   (
+       i   j   
+       )  ) ?  [ .  ^
+    k
 ]
 } }
 
@@ -23,6 +25,6 @@ class C {
         subterm term1 = f;
         subterm term2 = g;
 
-        f (g | h i)? [.^j]
+        f ((g h) | (i j))? [.^ k]
     }
 }

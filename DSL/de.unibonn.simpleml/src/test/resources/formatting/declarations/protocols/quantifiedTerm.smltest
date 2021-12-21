@@ -1,6 +1,6 @@
 class C {
     protocol {
-        .  ? .   *  .   +
+        .  ? .   *  (  f     )   +
     }
 }
 
@@ -8,6 +8,6 @@ class C {
 
 class C {
     protocol {
-        .? .* .+
+        .? .* (f)+
     }
 }

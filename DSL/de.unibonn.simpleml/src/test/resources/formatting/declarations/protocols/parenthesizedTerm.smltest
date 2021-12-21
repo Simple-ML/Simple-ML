@@ -1,6 +1,7 @@
 class C {
     protocol {
         (    f     
+        g     
         )
     }
 }
@@ -9,6 +10,6 @@ class C {
 
 class C {
     protocol {
-        (f)
+        (f g)
     }
 }

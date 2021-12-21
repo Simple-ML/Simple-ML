@@ -720,6 +720,9 @@ class SimpleMLFormatter : AbstractFormatter2() {
             }
             is SmlProtocolQuantifiedTerm -> {
 
+                // EObject "term"
+                doc.formatObject(obj.term)
+
                 // Feature "quantifier"
                 doc.formatFeature(obj, SML_PROTOCOL_QUANTIFIED_TERM__QUANTIFIER, noSpace, null)
             }
