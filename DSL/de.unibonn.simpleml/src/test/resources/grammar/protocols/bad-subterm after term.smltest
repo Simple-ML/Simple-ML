@@ -2,6 +2,8 @@
 
 class C {
     protocol {
-        val subprotocol = f
+        f
+
+        subterm term = f;
     }
 }
