@@ -219,7 +219,7 @@ SmlProtocolAlternative returns SmlAbstractProtocolTerm
 SmlProtocolSequence returns SmlAbstractProtocolTerm
     : SmlProtocolQuantifiedTerm
     (
-        {SmlProtocolSequence.terms+=current} terms+=SmlProtocolQuantifiedTerm
+        {SmlProtocolSequence.terms+=current} =>terms+=SmlProtocolQuantifiedTerm
         (terms+=SmlProtocolQuantifiedTerm)*
     )?
     ;

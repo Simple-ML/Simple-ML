@@ -3,26 +3,14 @@ class C {
         subterm
           
          term1
- =   f ;        subterm    term2 
- = g 
- ;
-             f 
-        (
-            g
-               | 
-    h   i
-    )   ?  [ .  ^
-    j
-]
-} }
+ =   f;
+    }
+}
 
 // -----------------------------------------------------------------------------
 
 class C {
     protocol {
         subterm term1 = f;
-        subterm term2 = g;
-
-        f (g | h i)? [.^j]
     }
 }
