@@ -59,5 +59,6 @@ enum class ErrorCode {
     MISSING_ARGUMENT_LIST,
     WRONG_TARGET,
 
-    OneProtocolPerClass
+    OneProtocolPerClass,
+    OnlyReferenceInstanceMembers
 }
