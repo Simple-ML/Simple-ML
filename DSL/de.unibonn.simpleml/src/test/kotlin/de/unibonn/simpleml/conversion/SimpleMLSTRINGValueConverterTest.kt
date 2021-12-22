@@ -3,7 +3,7 @@
 package de.unibonn.simpleml.conversion
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlDummyResource
 import de.unibonn.simpleml.emf.createSmlString
 import de.unibonn.simpleml.emf.smlExpressionStatement
@@ -116,7 +116,7 @@ class SimpleMLSTRINGValueConverterTest {
         fun `should always escape opening curly brace (creator)`() {
             val string = createSmlString("{")
 
-            createSmlDummyResource("test", FileExtension.TEST) {
+            createSmlDummyResource("test", SmlFileExtension.Test) {
                 smlPackage("test") {
                     smlWorkflow("test") {
                         smlExpressionStatement(string)
@@ -153,7 +153,7 @@ class SimpleMLSTRINGValueConverterTest {
         fun `should not escape single quote (creator)`() {
             val string = createSmlString("'")
 
-            createSmlDummyResource("test", FileExtension.TEST) {
+            createSmlDummyResource("test", SmlFileExtension.Test) {
                 smlPackage("test") {
                     smlWorkflow("test") {
                         smlExpressionStatement(string)

@@ -1,6 +1,6 @@
 package de.unibonn.simpleml
 
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.prolog_bridge.Main
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
@@ -119,7 +119,7 @@ class AstToPrologFactbaseTest {
                 val resourceS = findUniqueFactOrFail<ResourceS>()
                 resourceS.asClue {
                     resourceS.target shouldBe compilationUnitT.id
-                    resourceS.uri shouldEndWith "astToPrologFactbase/empty.${FileExtension.TEST}"
+                    resourceS.uri shouldEndWith "astToPrologFactbase/empty.${SmlFileExtension.Test}"
                 }
             }
 
@@ -1697,6 +1697,6 @@ class AstToPrologFactbaseTest {
     // ****************************************************************************************************************/
 
     private fun withFactbaseFromFile(file: String, lambda: PlFactbase.() -> Unit) {
-        main.createFactbase("$testRoot/$file.${FileExtension.TEST}").apply(lambda)
+        main.createFactbase("$testRoot/$file.${SmlFileExtension.Test}").apply(lambda)
     }
 }

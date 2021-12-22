@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.emf
 
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
+import de.unibonn.simpleml.constant.SmlTypeParameterConstraintOperator
 import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlInt
@@ -41,7 +42,7 @@ class CreatorsTest {
 
     @Test
     fun `createSmlDummyResource should create serializable dummy resource`() {
-        val result = createSmlDummyResource("test", FileExtension.TEST)
+        val result = createSmlDummyResource("test", SmlFileExtension.Test)
 
         result.contents.shouldHaveSize(1)
         result.contents[0].serializeToFormattedString().shouldBeInstanceOf<SerializationResult.Success>()
@@ -625,7 +626,7 @@ class CreatorsTest {
     fun `createTypeParameterConstraint should create an SmlTypeParameter when only a name is passed`() {
         val constraint = createSmlTypeParameterConstraint(
             "Test",
-            "sub",
+            SmlTypeParameterConstraintOperator.SubclassOf,
             createSmlNamedType(createSmlClass("Test"))
         )
         val leftOperand = constraint.leftOperand

@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.generator
 
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.uniquePackageOrNull
 import org.eclipse.emf.common.util.URI
@@ -15,9 +15,9 @@ fun Resource.baseFileName(): String {
     return this.uri.toUNIXString()
         .split("/")
         .last()
-        .removeSuffix(".${FileExtension.STUB}")
-        .removeSuffix(".${FileExtension.TEST}")
-        .removeSuffix(".${FileExtension.FLOW}")
+        .removeSuffix(".${SmlFileExtension.Stub}")
+        .removeSuffix(".${SmlFileExtension.Test}")
+        .removeSuffix(".${SmlFileExtension.Flow}")
 }
 
 fun Resource.baseGeneratedFilePath(): String {

@@ -2,7 +2,12 @@
 
 package de.unibonn.simpleml.emf
 
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
+import de.unibonn.simpleml.constant.SmlInfixOperationOperator
+import de.unibonn.simpleml.constant.SmlPrefixOperationOperator
+import de.unibonn.simpleml.constant.SmlProtocolTokenClassValue
+import de.unibonn.simpleml.constant.SmlTypeParameterConstraintOperator
+import de.unibonn.simpleml.constant.SmlVariance
 import de.unibonn.simpleml.simpleML.SimpleMLFactory
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractClassMember
@@ -52,6 +57,7 @@ import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlParenthesizedType
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
+import de.unibonn.simpleml.simpleML.SmlProtocolTokenClass
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlResultList
@@ -83,7 +89,7 @@ private val factory = SimpleMLFactory.eINSTANCE
  */
 fun createSmlDummyResource(
     fileName: String,
-    fileExtension: FileExtension,
+    fileExtension: SmlFileExtension,
     compilationUnit: SmlCompilationUnit
 ): Resource {
     val uri = URI.createURI("dummy:/$fileName.${fileExtension.extension}")
@@ -100,7 +106,7 @@ fun createSmlDummyResource(
  */
 fun createSmlDummyResource(
     fileName: String,
-    fileExtension: FileExtension,
+    fileExtension: SmlFileExtension,
     init: SmlCompilationUnit.() -> Unit = {}
 ): Resource {
     val uri = URI.createURI("dummy:/$fileName.${fileExtension.extension}")
@@ -715,12 +721,12 @@ private fun createSmlImportAlias(name: String?): SmlImportAlias? {
  */
 fun createSmlInfixOperation(
     leftOperand: SmlAbstractExpression,
-    operator: String,
+    operator: SmlInfixOperationOperator,
     rightOperand: SmlAbstractExpression
 ): SmlInfixOperation {
     return factory.createSmlInfixOperation().apply {
         this.leftOperand = leftOperand
-        this.operator = operator
+        this.operator = operator.operator
         this.rightOperand = rightOperand
     }
 }
@@ -933,10 +939,31 @@ fun createSmlPlaceholder(name: String, annotations: List<SmlAnnotationUse>): Sml
 /**
  * Returns a new object of class [SmlPrefixOperation].
  */
-fun createSmlPrefixOperation(operator: String, operand: SmlAbstractExpression): SmlPrefixOperation {
+fun createSmlPrefixOperation(operator: SmlPrefixOperationOperator, operand: SmlAbstractExpression): SmlPrefixOperation {
     return factory.createSmlPrefixOperation().apply {
-        this.operator = operator
+        this.operator = operator.operator
         this.operand = operand
+    }
+}
+
+//Protocol
+//ProtocolAlternative
+//ProtocolBody
+//ProtocolComplement
+//ProtocolParenthesizedTerm
+//ProtocolQuantifiedTerm
+//ProtocolReference
+//ProtocolReferenceList
+//ProtocolSequence
+//ProtocolSubtermList
+//ProtocolSubterm
+
+/**
+ * Returns a new object of class [SmlProtocolTokenClass].
+ */
+fun createSmlProtocolTokenClass(value: SmlProtocolTokenClassValue): SmlProtocolTokenClass {
+    return factory.createSmlProtocolTokenClass().apply {
+        this.value = value.value
     }
 }
 
@@ -1092,12 +1119,12 @@ private fun createSmlTypeArgumentList(typeArguments: List<SmlTypeArgument>): Sml
 fun createSmlTypeParameter(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
-    variance: String? = null
+    variance: SmlVariance = SmlVariance.Invariant
 ): SmlTypeParameter {
     return factory.createSmlTypeParameter().apply {
         this.name = name
         this.annotations += annotations
-        this.variance = variance
+        this.variance = variance.variance
     }
 }
 
@@ -1119,12 +1146,12 @@ private fun createSmlTypeParameterList(typeParameters: List<SmlTypeParameter>): 
  */
 fun createSmlTypeParameterConstraint(
     leftOperand: SmlTypeParameter,
-    operator: String,
+    operator: SmlTypeParameterConstraintOperator,
     rightOperand: SmlAbstractType
 ): SmlTypeParameterConstraint {
     return factory.createSmlTypeParameterConstraint().apply {
         this.leftOperand = leftOperand
-        this.operator = operator
+        this.operator = operator.operator
         this.rightOperand = rightOperand
     }
 }
@@ -1134,7 +1161,7 @@ fun createSmlTypeParameterConstraint(
  */
 fun createSmlTypeParameterConstraint(
     leftOperandName: String,
-    operator: String,
+    operator: SmlTypeParameterConstraintOperator,
     rightOperand: SmlAbstractType
 ): SmlTypeParameterConstraint {
     return createSmlTypeParameterConstraint(
@@ -1160,10 +1187,10 @@ private fun createSmlConstraintList(constraints: List<SmlAbstractConstraint>): S
 /**
  * Returns a new object of class [SmlTypeProjection].
  */
-fun createSmlTypeProjection(type: SmlAbstractType, variance: String? = null): SmlTypeProjection {
+fun createSmlTypeProjection(type: SmlAbstractType, variance: SmlVariance = SmlVariance.Invariant): SmlTypeProjection {
     return factory.createSmlTypeProjection().apply {
         this.type = type
-        this.variance = variance
+        this.variance = variance.variance
     }
 }
 

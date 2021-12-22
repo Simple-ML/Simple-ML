@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.testing
 
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
 import org.eclipse.core.runtime.FileLocator
 import org.junit.jupiter.api.DynamicContainer
 import org.junit.jupiter.api.DynamicNode
@@ -58,9 +58,9 @@ private fun createDynamicTestFromResource(
 private fun isTestFile(filePath: Path): Boolean {
     return Files.isRegularFile(filePath) &&
         (
-            filePath.fileName.toString().endsWith(".${FileExtension.FLOW}") ||
-                filePath.fileName.toString().endsWith(".${FileExtension.STUB}") ||
-                filePath.fileName.toString().endsWith(".${FileExtension.TEST}")
+            filePath.fileName.toString().endsWith(".${SmlFileExtension.Flow}") ||
+                filePath.fileName.toString().endsWith(".${SmlFileExtension.Stub}") ||
+                filePath.fileName.toString().endsWith(".${SmlFileExtension.Test}")
             ) &&
         !filePath.fileName.toString().startsWith("_skip_")
 }

@@ -1,7 +1,7 @@
 package de.unibonn.simpleml
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.annotationUsesOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAnnotation
@@ -2065,10 +2065,10 @@ class ScopingTest {
 
         val compilationUnit =
             parseHelper.parseResourceWithContext(
-                "scoping/$resourceName/main.${FileExtension.TEST}",
+                "scoping/$resourceName/main.${SmlFileExtension.Test}",
                 listOf(
-                    "scoping/$resourceName/externalsInOtherPackage.${FileExtension.TEST}",
-                    "scoping/$resourceName/externalsInSamePackage.${FileExtension.TEST}",
+                    "scoping/$resourceName/externalsInOtherPackage.${SmlFileExtension.Test}",
+                    "scoping/$resourceName/externalsInSamePackage.${SmlFileExtension.Test}",
                 )
             ) ?: throw IllegalArgumentException("File is not a compilation unit.")
 
