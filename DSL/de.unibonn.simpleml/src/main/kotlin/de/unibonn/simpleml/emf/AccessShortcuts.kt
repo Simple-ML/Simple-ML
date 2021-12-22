@@ -35,11 +35,11 @@ import de.unibonn.simpleml.simpleML.SmlProtocolComplement
 import de.unibonn.simpleml.simpleML.SmlProtocolReference
 import de.unibonn.simpleml.simpleML.SmlProtocolSubterm
 import de.unibonn.simpleml.simpleML.SmlResult
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.closestAncestorOrNull
 import de.unibonn.simpleml.utils.uniqueOrNull

@@ -9,8 +9,8 @@ import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
-import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlStep
+import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.resource.IEObjectDescription
 import org.eclipse.xtext.resource.impl.DefaultResourceDescriptionStrategy

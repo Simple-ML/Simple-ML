@@ -7,8 +7,8 @@ import de.unibonn.simpleml.emf.uniquePackageOrNull
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlPackage
-import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlStep
+import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode

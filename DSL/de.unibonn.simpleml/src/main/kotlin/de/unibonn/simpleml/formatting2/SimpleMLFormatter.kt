@@ -67,6 +67,7 @@ import de.unibonn.simpleml.simpleML.SmlProtocolSubterm
 import de.unibonn.simpleml.simpleML.SmlProtocolSubtermList
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlResultList
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
@@ -76,7 +77,6 @@ import de.unibonn.simpleml.simpleML.SmlTypeParameterList
 import de.unibonn.simpleml.simpleML.SmlTypeProjection
 import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
@@ -734,7 +734,6 @@ class SimpleMLFormatter : AbstractFormatter2() {
                     }
                 }
             }
-
 
             /**********************************************************************************************************
              * Statements

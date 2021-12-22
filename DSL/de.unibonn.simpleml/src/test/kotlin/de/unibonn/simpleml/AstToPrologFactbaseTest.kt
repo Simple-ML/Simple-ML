@@ -52,6 +52,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StarProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StatementT
+import de.unibonn.simpleml.prolog_bridge.model.facts.StepT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TemplateStringEndT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TemplateStringInnerT
@@ -65,7 +66,6 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.TypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.UnionTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.UnresolvedT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WildcardT
-import de.unibonn.simpleml.prolog_bridge.model.facts.StepT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowT
 import de.unibonn.simpleml.prolog_bridge.model.facts.YieldT
 import de.unibonn.simpleml.testing.assertions.findUniqueFactOrFail

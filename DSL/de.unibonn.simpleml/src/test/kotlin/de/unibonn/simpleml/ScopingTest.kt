@@ -22,10 +22,10 @@ import de.unibonn.simpleml.simpleML.SmlProtocolReference
 import de.unibonn.simpleml.simpleML.SmlProtocolSubterm
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
-import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.ResourceName

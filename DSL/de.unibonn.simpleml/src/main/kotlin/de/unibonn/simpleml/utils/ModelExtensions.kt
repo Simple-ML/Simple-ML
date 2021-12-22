@@ -39,11 +39,11 @@ import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.stdlib.isPure
 import org.eclipse.emf.ecore.EObject
 import kotlin.contracts.ExperimentalContracts

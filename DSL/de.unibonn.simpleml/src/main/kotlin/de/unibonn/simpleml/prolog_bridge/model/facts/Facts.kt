@@ -52,6 +52,7 @@ import de.unibonn.simpleml.simpleML.SmlProtocolTokenClass
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStarProjection
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
@@ -64,7 +65,6 @@ import de.unibonn.simpleml.simpleML.SmlTypeProjection
 import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlYield
 
 /**

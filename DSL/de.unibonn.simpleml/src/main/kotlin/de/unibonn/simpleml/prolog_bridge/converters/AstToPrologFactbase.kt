@@ -61,6 +61,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ResourceS
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StarProjectionT
+import de.unibonn.simpleml.prolog_bridge.model.facts.StepT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TemplateStringEndT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TemplateStringInnerT
@@ -73,7 +74,6 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.TypeProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.UnionTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.UnresolvedT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WildcardT
-import de.unibonn.simpleml.prolog_bridge.model.facts.StepT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowT
 import de.unibonn.simpleml.prolog_bridge.model.facts.YieldT
 import de.unibonn.simpleml.prolog_bridge.utils.Id
@@ -130,6 +130,7 @@ import de.unibonn.simpleml.simpleML.SmlProtocolTokenClass
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStarProjection
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
@@ -142,7 +143,6 @@ import de.unibonn.simpleml.simpleML.SmlTypeProjection
 import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.aliasName
 import org.eclipse.emf.ecore.EObject

@@ -18,9 +18,9 @@ import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlResult
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.stdlib.StdlibAnnotations
 import de.unibonn.simpleml.stdlib.StdlibEnums.AnnotationTargetVariants
 import de.unibonn.simpleml.stdlib.uniqueAnnotationUseOrNull

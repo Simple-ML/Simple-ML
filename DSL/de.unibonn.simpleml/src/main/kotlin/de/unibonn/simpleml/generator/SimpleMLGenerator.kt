@@ -24,9 +24,9 @@ import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlReference
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.isCompilationUnitMember
 import de.unibonn.simpleml.utils.isNamed
