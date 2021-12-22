@@ -3,7 +3,7 @@
 package de.unibonn.simpleml.conversion
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlCompilationUnit
 import de.unibonn.simpleml.emf.createSmlDummyResource
 import de.unibonn.simpleml.emf.createSmlImport
@@ -89,7 +89,7 @@ class SimpleMLQualifiedNameValueConverterTest {
             val `package` = createSmlPackage("simpleml.package")
             createSmlDummyResource(
                 "test",
-                FileExtension.TEST,
+                SmlFileExtension.Test,
                 createSmlCompilationUnit(listOf(`package`))
             )
 
@@ -101,7 +101,7 @@ class SimpleMLQualifiedNameValueConverterTest {
         @Test
         fun `should escape keywords (creator, with wildcard)`() {
             val import = createSmlImport("simpleml.package.*")
-            createSmlDummyResource("test", FileExtension.TEST) {
+            createSmlDummyResource("test", SmlFileExtension.Test) {
                 smlPackage(name = "test", imports = listOf(import))
             }
 
@@ -125,7 +125,7 @@ class SimpleMLQualifiedNameValueConverterTest {
             val `package` = createSmlPackage("simpleml.notAKeyword")
             createSmlDummyResource(
                 "test",
-                FileExtension.TEST,
+                SmlFileExtension.Test,
                 createSmlCompilationUnit(listOf(`package`))
             )
 
@@ -137,7 +137,7 @@ class SimpleMLQualifiedNameValueConverterTest {
         @Test
         fun `should not escape non-keywords (creator, with wildcard)`() {
             val import = createSmlImport("simpleml.notAKeyword.*")
-            createSmlDummyResource("test", FileExtension.TEST) {
+            createSmlDummyResource("test", SmlFileExtension.Test) {
                 smlPackage(name = "test", imports = listOf(import))
             }
 

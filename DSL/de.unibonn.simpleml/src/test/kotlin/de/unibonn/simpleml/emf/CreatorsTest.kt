@@ -1,15 +1,19 @@
 package de.unibonn.simpleml.emf
 
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
+import de.unibonn.simpleml.constant.SmlProtocolTokenClassValue
+import de.unibonn.simpleml.constant.SmlTypeParameterConstraintOperator
 import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlInt
+import de.unibonn.simpleml.simpleML.SmlProtocol
 import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
 import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
 import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import io.kotest.assertions.asClue
-import io.kotest.assertions.throwables.shouldThrowExactly
+import io.kotest.assertions.throwables.shouldNotThrow
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -41,7 +45,7 @@ class CreatorsTest {
 
     @Test
     fun `createSmlDummyResource should create serializable dummy resource`() {
-        val result = createSmlDummyResource("test", FileExtension.TEST)
+        val result = createSmlDummyResource("test", SmlFileExtension.Test)
 
         result.contents.shouldHaveSize(1)
         result.contents[0].serializeToFormattedString().shouldBeInstanceOf<SerializationResult.Success>()
@@ -116,7 +120,7 @@ class CreatorsTest {
 
     @Test
     fun `smlAssignment should throw if no type arguments are passed`() {
-        shouldThrowExactly<IllegalArgumentException> {
+        shouldThrow<IllegalArgumentException> {
             createSmlAssignment(listOf(), createSmlInt(1))
         }
     }
@@ -239,7 +243,7 @@ class CreatorsTest {
     }
 
     @Test
-    fun `createSmlClass should omit empty type parameter constraint list`() {
+    fun `createSmlClass should omit empty constraint list`() {
         val `class` = createSmlClass(
             "Test",
             constraints = emptyList()
@@ -349,7 +353,7 @@ class CreatorsTest {
     }
 
     @Test
-    fun `createSmlEnumVariant should omit empty type parameter constraint list`() {
+    fun `createSmlEnumVariant should omit empty constraint list`() {
         val enum = createSmlEnumVariant(
             "Test",
             constraints = emptyList()
@@ -434,7 +438,7 @@ class CreatorsTest {
     }
 
     @Test
-    fun `createSmlFunction should omit empty type parameter constraint list`() {
+    fun `createSmlFunction should omit empty constraint list`() {
         val function = createSmlFunction(
             "test",
             constraints = emptyList()
@@ -540,6 +544,88 @@ class CreatorsTest {
     }
 
     @Test
+    fun `createSmlProtocol should omit empty subterm list`() {
+        val protocol = createSmlProtocol(emptyList())
+        protocol.body.shouldNotBeNull()
+        protocol.body.subtermList.shouldBeNull()
+    }
+
+    @Test
+    fun `smlProtocol should add the created protocol to the receiving class`() {
+        val `class` = createSmlClass("Test") {
+            smlProtocol()
+        }
+
+        `class`.body.shouldNotBeNull()
+        `class`.body.members.filterIsInstance<SmlProtocol>().shouldHaveSize(1)
+    }
+
+    @Test
+    fun `createSmlProtocolAlternative should throw if fewer than two terms are passed`() {
+        shouldThrow<IllegalArgumentException> {
+            createSmlProtocolAlternative(listOf())
+        }
+
+        shouldThrow<IllegalArgumentException> {
+            createSmlProtocolAlternative(
+                listOf(
+                    createSmlProtocolTokenClass(SmlProtocolTokenClassValue.Anything)
+                )
+            )
+        }
+
+        shouldNotThrow<IllegalArgumentException> {
+            createSmlProtocolAlternative(
+                listOf(
+                    createSmlProtocolTokenClass(SmlProtocolTokenClassValue.Anything),
+                    createSmlProtocolTokenClass(SmlProtocolTokenClassValue.Anything),
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `createSmlProtocolComplement should omit empty reference list`() {
+        val complement = createSmlProtocolComplement()
+        complement.referenceList.shouldBeNull()
+    }
+
+    @Test
+    fun `createSmlProtocolSequence should throw if fewer than two terms are passed`() {
+        shouldThrow<IllegalArgumentException> {
+            createSmlProtocolSequence(listOf())
+        }
+
+        shouldThrow<IllegalArgumentException> {
+            createSmlProtocolSequence(
+                listOf(
+                    createSmlProtocolTokenClass(SmlProtocolTokenClassValue.Anything)
+                )
+            )
+        }
+
+        shouldNotThrow<IllegalArgumentException> {
+            createSmlProtocolSequence(
+                listOf(
+                    createSmlProtocolTokenClass(SmlProtocolTokenClassValue.Anything),
+                    createSmlProtocolTokenClass(SmlProtocolTokenClassValue.Anything),
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `smlProtocolSubterm should add the created subterm to the receiving protocol`() {
+        val protocol = createSmlProtocol {
+            smlProtocolSubterm("test", createSmlProtocolTokenClass(SmlProtocolTokenClassValue.Anything))
+        }
+
+        protocol.body.shouldNotBeNull()
+        protocol.body.subtermList.shouldNotBeNull()
+        protocol.body.subtermList.subterms.shouldHaveSize(1)
+    }
+
+    @Test
     fun `createSmlResult should store annotation uses in annotations`() {
         val result = createSmlResult(
             "Test",
@@ -552,7 +638,7 @@ class CreatorsTest {
 
     @Test
     fun `createSmlTemplate should throw if there are fewer than 2 string parts`() {
-        shouldThrowExactly<IllegalArgumentException> {
+        shouldThrow<IllegalArgumentException> {
             createSmlTemplateString(
                 listOf("Test"),
                 listOf(createSmlInt(1))
@@ -562,7 +648,7 @@ class CreatorsTest {
 
     @Test
     fun `createSmlTemplate should throw if there is no template expression`() {
-        shouldThrowExactly<IllegalArgumentException> {
+        shouldThrow<IllegalArgumentException> {
             createSmlTemplateString(
                 listOf("Test", "Test"),
                 listOf()
@@ -572,7 +658,7 @@ class CreatorsTest {
 
     @Test
     fun `createSmlTemplate should throw if numbers of string parts and template expressions don't match`() {
-        shouldThrowExactly<IllegalArgumentException> {
+        shouldThrow<IllegalArgumentException> {
             createSmlTemplateString(
                 listOf("Test", "Test", "Test"),
                 listOf(createSmlInt(1))
@@ -625,7 +711,7 @@ class CreatorsTest {
     fun `createTypeParameterConstraint should create an SmlTypeParameter when only a name is passed`() {
         val constraint = createSmlTypeParameterConstraint(
             "Test",
-            "sub",
+            SmlTypeParameterConstraintOperator.SubclassOf,
             createSmlNamedType(createSmlClass("Test"))
         )
         val leftOperand = constraint.leftOperand
@@ -635,8 +721,18 @@ class CreatorsTest {
 
     @Test
     fun `createSmlUnionType should throw if no type arguments are passed`() {
-        shouldThrowExactly<IllegalArgumentException> {
+        shouldThrow<IllegalArgumentException> {
             createSmlUnionType(listOf())
+        }
+
+        shouldNotThrow<IllegalArgumentException> {
+            createSmlUnionType(
+                listOf(
+                    createSmlTypeArgument(
+                        createSmlStarProjection()
+                    )
+                )
+            )
         }
     }
 

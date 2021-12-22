@@ -150,7 +150,12 @@ SmlClassBody
     : {SmlClassBody} '{' members+=SmlClassMember* '}'
     ;
 
-SmlClassMember returns SmlAbstractAnnotatedObject
+SmlClassMember returns SmlAbstractObject
+    : SmlAnnotatedClassMember
+    | SmlProtocol
+    ;
+
+SmlAnnotatedClassMember returns SmlAbstractAnnotatedObject
     : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
 
     ( {SmlAttribute.annotationUseHolder=current}
@@ -177,6 +182,95 @@ SmlClassMember returns SmlAbstractAnnotatedObject
           resultList=SmlResultList?
           constraintList=SmlConstraintList?
     )
+    ;
+
+SmlProtocol
+    : 'protocol' body=SmlProtocolBody
+    ;
+
+SmlProtocolBody
+    : {SmlProtocolBody}
+      '{'
+      subtermList=SmlProtocolSubtermList?
+      term=SmlProtocolTerm?
+      '}'
+    ;
+
+SmlProtocolSubtermList
+    : subterms+=SmlProtocolSubterm+
+    ;
+
+SmlProtocolSubterm
+    : 'subterm' name=ID '=' term=SmlProtocolTerm ';'
+    ;
+
+SmlProtocolTerm returns SmlAbstractProtocolTerm
+    : SmlProtocolAlternative
+    ;
+
+SmlProtocolAlternative returns SmlAbstractProtocolTerm
+    : SmlProtocolSequence
+    (
+        {SmlProtocolAlternative.terms+=current} '|' terms+=SmlProtocolSequence
+        ('|' terms+=SmlProtocolSequence)*
+    )?
+    ;
+
+SmlProtocolSequence returns SmlAbstractProtocolTerm
+    : SmlProtocolQuantifiedTerm
+    (
+        {SmlProtocolSequence.terms+=current} terms+=SmlProtocolQuantifiedTerm
+        (terms+=SmlProtocolQuantifiedTerm)*
+    )?
+    ;
+
+SmlProtocolQuantifiedTerm returns SmlAbstractProtocolTerm
+    : SmlProtocolPrimaryElement
+      ({SmlProtocolQuantifiedTerm.term=current} quantifier=SmlProtocolQuantifier)?
+    ;
+
+SmlProtocolQuantifier
+    : '?'
+    | '*'
+    | '+'
+    ;
+
+SmlProtocolPrimaryElement returns SmlAbstractProtocolTerm
+    : SmlProtocolComplement
+    | SmlProtocolReference
+    | SmlProtocolTokenClass
+    | SmlProtocolParenthesizedTerm
+    ;
+
+SmlProtocolComplement
+    : {SmlProtocolComplement}
+      '['
+      universe=SmlProtocolTokenClass?
+      '^'
+      referenceList=SmlProtocolReferenceList?
+      ']'
+    ;
+
+SmlProtocolReferenceList
+    : references+=SmlProtocolReference+
+    ;
+
+SmlProtocolReference
+    : token=[SmlAbstractProtocolToken]
+    ;
+
+SmlProtocolTokenClass
+    : value=SmlProtocolTokenClassValue
+    ;
+
+SmlProtocolTokenClassValue
+    : '.'
+    | '\\a'
+    | '\\f'
+    ;
+
+SmlProtocolParenthesizedTerm
+    : '(' term=SmlProtocolTerm ')'
     ;
 
 
@@ -471,7 +565,7 @@ QualifiedName
     ;
 
 QualifiedNameWithWildcard
-    : QualifiedName '.*'?
+    : QualifiedName ('.' '*')?
     ;
 
 

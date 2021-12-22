@@ -6,6 +6,8 @@ import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractLocalVariable
+import de.unibonn.simpleml.simpleML.SmlAbstractObject
+import de.unibonn.simpleml.simpleML.SmlAbstractProtocolTerm
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAnnotation
@@ -27,6 +29,11 @@ import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.simpleML.SmlProtocol
+import de.unibonn.simpleml.simpleML.SmlProtocolBody
+import de.unibonn.simpleml.simpleML.SmlProtocolComplement
+import de.unibonn.simpleml.simpleML.SmlProtocolReference
+import de.unibonn.simpleml.simpleML.SmlProtocolSubterm
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
@@ -116,18 +123,12 @@ fun SmlCallableType?.resultsOrEmpty(): List<SmlResult> {
 
 // SmlClass ----------------------------------------------------------------------------------------
 
-fun SmlClass?.memberDeclarationsOrEmpty(): List<SmlAbstractDeclaration> {
-    return this?.body?.members
-        ?.filterIsInstance<SmlAbstractDeclaration>()
-        .orEmpty()
+fun SmlClass?.typeParametersOrEmpty(): List<SmlTypeParameter> {
+    return this?.typeParameterList?.typeParameters.orEmpty()
 }
 
 fun SmlClass?.parametersOrEmpty(): List<SmlParameter> {
     return this?.parameterList?.parameters.orEmpty()
-}
-
-fun SmlClass?.typeParametersOrEmpty(): List<SmlTypeParameter> {
-    return this?.typeParameterList?.typeParameters.orEmpty()
 }
 
 fun SmlClass?.parentTypesOrEmpty(): List<SmlAbstractType> {
@@ -136,6 +137,26 @@ fun SmlClass?.parentTypesOrEmpty(): List<SmlAbstractType> {
 
 fun SmlClass?.constraintsOrEmpty(): List<SmlAbstractConstraint> {
     return this?.constraintList?.constraints.orEmpty()
+}
+
+fun SmlClass?.membersOrEmpty(): List<SmlAbstractObject> {
+    return this?.body?.members.orEmpty()
+}
+
+fun SmlClass?.memberDeclarationsOrEmpty(): List<SmlAbstractDeclaration> {
+    return this?.body?.members
+        ?.filterIsInstance<SmlAbstractDeclaration>()
+        .orEmpty()
+}
+
+fun SmlClass?.protocolsOrEmpty(): List<SmlProtocol> {
+    return this?.body?.members
+        ?.filterIsInstance<SmlProtocol>()
+        .orEmpty()
+}
+
+fun SmlClass?.uniqueProtocolOrNull(): SmlProtocol? {
+    return this.protocolsOrEmpty().uniqueOrNull()
 }
 
 // SmlCompilationUnit ------------------------------------------------------------------------------
@@ -231,6 +252,28 @@ fun SmlPackage?.memberDeclarationsOrEmpty(): List<SmlAbstractDeclaration> {
         .orEmpty()
 }
 
+// SmlProtocol -------------------------------------------------------------------------------------
+
+fun SmlProtocol?.subtermsOrEmpty(): List<SmlProtocolSubterm> {
+    return this?.body.subtermsOrEmpty()
+}
+
+fun SmlProtocol?.termOrNull(): SmlAbstractProtocolTerm? {
+    return this?.body?.term
+}
+
+// SmlProtocolBody ---------------------------------------------------------------------------------
+
+fun SmlProtocolBody?.subtermsOrEmpty(): List<SmlProtocolSubterm> {
+    return this?.subtermList?.subterms.orEmpty()
+}
+
+// SmlProtocolComplement ---------------------------------------------------------------------------
+
+fun SmlProtocolComplement?.referencesOrEmpty(): List<SmlProtocolReference> {
+    return this?.referenceList?.references.orEmpty()
+}
+
 // SmlUnionType ------------------------------------------------------------------------------------
 
 fun SmlUnionType?.typeArgumentsOrEmpty(): List<SmlTypeArgument> {
@@ -284,6 +327,7 @@ fun EObject?.containingCompilationUnitOrNull() = this?.closestAncestorOrNull<Sml
 fun EObject?.containingFunctionOrNull() = this?.closestAncestorOrNull<SmlFunction>()
 fun EObject?.containingLambdaOrNull() = this?.closestAncestorOrNull<SmlLambda>()
 fun EObject?.containingPackageOrNull() = this?.closestAncestorOrNull<SmlPackage>()
+fun EObject?.containingProtocolOrNull() = this?.closestAncestorOrNull<SmlProtocol>()
 fun EObject?.containingWorkflowOrNull() = this?.closestAncestorOrNull<SmlWorkflow>()
 fun EObject?.containingWorkflowStepOrNull() = this?.closestAncestorOrNull<SmlWorkflowStep>()
 

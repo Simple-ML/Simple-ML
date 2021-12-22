@@ -2,7 +2,13 @@
 
 package de.unibonn.simpleml.emf
 
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
+import de.unibonn.simpleml.constant.SmlInfixOperationOperator
+import de.unibonn.simpleml.constant.SmlPrefixOperationOperator
+import de.unibonn.simpleml.constant.SmlProtocolQuantifiedTermQuantifier
+import de.unibonn.simpleml.constant.SmlProtocolTokenClassValue
+import de.unibonn.simpleml.constant.SmlTypeParameterConstraintOperator
+import de.unibonn.simpleml.constant.SmlVariance
 import de.unibonn.simpleml.simpleML.SimpleMLFactory
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractClassMember
@@ -11,7 +17,10 @@ import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractNamedTypeDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlAbstractPackageMember
+import de.unibonn.simpleml.simpleML.SmlAbstractProtocolTerm
+import de.unibonn.simpleml.simpleML.SmlAbstractProtocolToken
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAbstractTypeArgumentValue
@@ -52,6 +61,16 @@ import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlParenthesizedType
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
+import de.unibonn.simpleml.simpleML.SmlProtocol
+import de.unibonn.simpleml.simpleML.SmlProtocolAlternative
+import de.unibonn.simpleml.simpleML.SmlProtocolComplement
+import de.unibonn.simpleml.simpleML.SmlProtocolParenthesizedTerm
+import de.unibonn.simpleml.simpleML.SmlProtocolQuantifiedTerm
+import de.unibonn.simpleml.simpleML.SmlProtocolReference
+import de.unibonn.simpleml.simpleML.SmlProtocolReferenceList
+import de.unibonn.simpleml.simpleML.SmlProtocolSequence
+import de.unibonn.simpleml.simpleML.SmlProtocolSubterm
+import de.unibonn.simpleml.simpleML.SmlProtocolTokenClass
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlResultList
@@ -83,7 +102,7 @@ private val factory = SimpleMLFactory.eINSTANCE
  */
 fun createSmlDummyResource(
     fileName: String,
-    fileExtension: FileExtension,
+    fileExtension: SmlFileExtension,
     compilationUnit: SmlCompilationUnit
 ): Resource {
     val uri = URI.createURI("dummy:/$fileName.${fileExtension.extension}")
@@ -100,7 +119,7 @@ fun createSmlDummyResource(
  */
 fun createSmlDummyResource(
     fileName: String,
-    fileExtension: FileExtension,
+    fileExtension: SmlFileExtension,
     init: SmlCompilationUnit.() -> Unit = {}
 ): Resource {
     val uri = URI.createURI("dummy:/$fileName.${fileExtension.extension}")
@@ -327,6 +346,7 @@ fun createSmlClass(
     parameters: List<SmlParameter>? = null, // null and emptyList() are semantically different
     parentTypes: List<SmlAbstractType> = emptyList(),
     constraints: List<SmlAbstractConstraint> = emptyList(),
+    protocol: SmlProtocol? = null,
     members: List<SmlAbstractClassMember> = emptyList(),
     init: SmlClass.() -> Unit = {}
 ): SmlClass {
@@ -337,6 +357,7 @@ fun createSmlClass(
         this.parameterList = createSmlParameterList(parameters)
         this.parentTypeList = createSmlParentTypeList(parentTypes)
         this.constraintList = createSmlConstraintList(constraints)
+        protocol?.let { addMember(it) }
         members.forEach { addMember(it) }
         this.init()
     }
@@ -352,6 +373,7 @@ fun SmlClass.smlClass(
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType> = emptyList(),
     constraints: List<SmlAbstractConstraint> = emptyList(),
+    protocol: SmlProtocol? = null,
     members: List<SmlAbstractClassMember> = emptyList(),
     init: SmlClass.() -> Unit = {}
 ) {
@@ -363,6 +385,7 @@ fun SmlClass.smlClass(
             parameters,
             parentTypes,
             constraints,
+            protocol,
             members,
             init
         )
@@ -379,6 +402,7 @@ fun SmlCompilationUnit.smlClass(
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType> = emptyList(),
     constraints: List<SmlAbstractConstraint> = emptyList(),
+    protocol: SmlProtocol? = null,
     members: List<SmlAbstractClassMember> = emptyList(),
     init: SmlClass.() -> Unit = {}
 ) {
@@ -390,6 +414,7 @@ fun SmlCompilationUnit.smlClass(
             parameters,
             parentTypes,
             constraints,
+            protocol,
             members,
             init
         )
@@ -406,6 +431,7 @@ fun SmlPackage.smlClass(
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType> = emptyList(),
     constraints: List<SmlAbstractConstraint> = emptyList(),
+    protocol: SmlProtocol? = null,
     members: List<SmlAbstractClassMember> = emptyList(),
     init: SmlClass.() -> Unit = {}
 ) {
@@ -417,6 +443,7 @@ fun SmlPackage.smlClass(
             parameters,
             parentTypes,
             constraints,
+            protocol,
             members,
             init
         )
@@ -426,7 +453,7 @@ fun SmlPackage.smlClass(
 /**
  * Adds a new member to the receiver.
  */
-private fun SmlClass.addMember(member: SmlAbstractClassMember) {
+private fun SmlClass.addMember(member: SmlAbstractObject) {
     if (this.body == null) {
         this.body = factory.createSmlClassBody()
     }
@@ -452,6 +479,19 @@ fun createSmlCompilationUnit(
  */
 private fun SmlCompilationUnit.addMember(member: SmlAbstractCompilationUnitMember) {
     this.members += member
+}
+
+/**
+ * Returns a new object of class [SmlConstraintList] or `null` if the list of constraints is empty.
+ */
+private fun createSmlConstraintList(constraints: List<SmlAbstractConstraint>): SmlConstraintList? {
+    if (constraints.isEmpty()) {
+        return null
+    }
+
+    return factory.createSmlConstraintList().apply {
+        this.constraints += constraints
+    }
 }
 
 /**
@@ -715,12 +755,12 @@ private fun createSmlImportAlias(name: String?): SmlImportAlias? {
  */
 fun createSmlInfixOperation(
     leftOperand: SmlAbstractExpression,
-    operator: String,
+    operator: SmlInfixOperationOperator,
     rightOperand: SmlAbstractExpression
 ): SmlInfixOperation {
     return factory.createSmlInfixOperation().apply {
         this.leftOperand = leftOperand
-        this.operator = operator
+        this.operator = operator.operator
         this.rightOperand = rightOperand
     }
 }
@@ -933,10 +973,163 @@ fun createSmlPlaceholder(name: String, annotations: List<SmlAnnotationUse>): Sml
 /**
  * Returns a new object of class [SmlPrefixOperation].
  */
-fun createSmlPrefixOperation(operator: String, operand: SmlAbstractExpression): SmlPrefixOperation {
+fun createSmlPrefixOperation(operator: SmlPrefixOperationOperator, operand: SmlAbstractExpression): SmlPrefixOperation {
     return factory.createSmlPrefixOperation().apply {
-        this.operator = operator
+        this.operator = operator.operator
         this.operand = operand
+    }
+}
+
+/**
+ * Returns a new object of class [SmlProtocol].
+ */
+fun createSmlProtocol(
+    subterms: List<SmlProtocolSubterm> = emptyList(),
+    term: SmlAbstractProtocolTerm? = null,
+    init: SmlProtocol.() -> Unit = {}
+): SmlProtocol {
+    return factory.createSmlProtocol().apply {
+        this.body = factory.createSmlProtocolBody()
+        subterms.forEach { addSubterm(it) }
+        this.body.term = term
+        this.init()
+    }
+}
+
+/**
+ * Adds a new object of class [SmlProtocol] to the receiver.
+ */
+fun SmlClass.smlProtocol(
+    subterms: List<SmlProtocolSubterm> = emptyList(),
+    term: SmlAbstractProtocolTerm? = null,
+    init: SmlProtocol.() -> Unit = {}
+) {
+    this.addMember(createSmlProtocol(subterms, term, init))
+}
+
+/**
+ * Adds a new subterm to the receiver.
+ */
+private fun SmlProtocol.addSubterm(subterm: SmlProtocolSubterm) {
+    if (this.body == null) {
+        this.body = factory.createSmlProtocolBody()
+    }
+
+    if (this.body.subtermList == null) {
+        this.body.subtermList = factory.createSmlProtocolSubtermList()
+    }
+
+    this.body.subtermList.subterms += subterm
+}
+
+/**
+ * Returns a new object of class [SmlProtocolAlternative].
+ */
+fun createSmlProtocolAlternative(terms: List<SmlAbstractProtocolTerm>): SmlProtocolAlternative {
+    if (terms.size < 2) {
+        throw IllegalArgumentException("Must have at least two terms.")
+    }
+
+    return factory.createSmlProtocolAlternative().apply {
+        this.terms += terms
+    }
+}
+
+/**
+ * Returns a new object of class [SmlProtocolComplement].
+ */
+fun createSmlProtocolComplement(
+    universe: SmlProtocolTokenClass? = null,
+    references: List<SmlProtocolReference> = emptyList()
+): SmlProtocolComplement {
+    return factory.createSmlProtocolComplement().apply {
+        this.universe = universe
+        this.referenceList = createSmlProtocolReferenceList(references)
+    }
+}
+
+/**
+ * Returns a new object of class [SmlProtocolParenthesizedTerm].
+ */
+fun createSmlProtocolParenthesizedTerm(term: SmlAbstractProtocolTerm): SmlProtocolParenthesizedTerm {
+    return factory.createSmlProtocolParenthesizedTerm().apply {
+        this.term = term
+    }
+}
+
+/**
+ * Returns a new object of class [SmlProtocolQuantifiedTerm].
+ */
+fun createSmlProtocolQuantifiedTerm(
+    term: SmlAbstractProtocolTerm,
+    quantifier: SmlProtocolQuantifiedTermQuantifier
+): SmlProtocolQuantifiedTerm {
+    return factory.createSmlProtocolQuantifiedTerm().apply {
+        this.term = term
+        this.quantifier = quantifier.quantifier
+    }
+}
+
+/**
+ * Returns a new object of class [SmlProtocolReference].
+ */
+fun createSmlProtocolReference(token: SmlAbstractProtocolToken): SmlProtocolReference {
+    return factory.createSmlProtocolReference().apply {
+        this.token = token
+    }
+}
+
+/**
+ * Returns a new object of class [SmlProtocolReferenceList] or `null` if the list of protocols is empty.
+ */
+private fun createSmlProtocolReferenceList(references: List<SmlProtocolReference>): SmlProtocolReferenceList? {
+    if (references.isEmpty()) {
+        return null
+    }
+
+    return factory.createSmlProtocolReferenceList().apply {
+        this.references += references
+    }
+}
+
+/**
+ * Returns a new object of class [SmlProtocolSequence].
+ *
+ * @throws IllegalArgumentException If `terms.size < 2`.
+ */
+fun createSmlProtocolSequence(terms: List<SmlAbstractProtocolTerm>): SmlProtocolSequence {
+    if (terms.size < 2) {
+        throw IllegalArgumentException("Must have at least two terms.")
+    }
+
+    return factory.createSmlProtocolSequence().apply {
+        this.terms += terms
+    }
+}
+
+/**
+ * Returns a new object of class [SmlProtocolSubterm].
+ */
+fun createSmlProtocolSubterm(name: String, term: SmlAbstractProtocolTerm): SmlProtocolSubterm {
+    return factory.createSmlProtocolSubterm().apply {
+        this.name = name
+        this.term = term
+    }
+}
+
+/**
+ * Returns a new object of class [SmlProtocolSubterm].
+ */
+fun SmlProtocol.smlProtocolSubterm(name: String, term: SmlAbstractProtocolTerm) {
+    this.addSubterm(createSmlProtocolSubterm(name, term))
+}
+
+/**
+ * Returns a new object of class [SmlProtocolTokenClass].
+ */
+fun createSmlProtocolTokenClass(value: SmlProtocolTokenClassValue): SmlProtocolTokenClass {
+    return factory.createSmlProtocolTokenClass().apply {
+        this.value = value.value
     }
 }
 
@@ -1092,12 +1285,12 @@ private fun createSmlTypeArgumentList(typeArguments: List<SmlTypeArgument>): Sml
 fun createSmlTypeParameter(
     name: String,
     annotations: List<SmlAnnotationUse> = emptyList(),
-    variance: String? = null
+    variance: SmlVariance = SmlVariance.Invariant
 ): SmlTypeParameter {
     return factory.createSmlTypeParameter().apply {
         this.name = name
         this.annotations += annotations
-        this.variance = variance
+        this.variance = variance.variance
     }
 }
 
@@ -1119,12 +1312,12 @@ private fun createSmlTypeParameterList(typeParameters: List<SmlTypeParameter>): 
  */
 fun createSmlTypeParameterConstraint(
     leftOperand: SmlTypeParameter,
-    operator: String,
+    operator: SmlTypeParameterConstraintOperator,
     rightOperand: SmlAbstractType
 ): SmlTypeParameterConstraint {
     return factory.createSmlTypeParameterConstraint().apply {
         this.leftOperand = leftOperand
-        this.operator = operator
+        this.operator = operator.operator
         this.rightOperand = rightOperand
     }
 }
@@ -1134,7 +1327,7 @@ fun createSmlTypeParameterConstraint(
  */
 fun createSmlTypeParameterConstraint(
     leftOperandName: String,
-    operator: String,
+    operator: SmlTypeParameterConstraintOperator,
     rightOperand: SmlAbstractType
 ): SmlTypeParameterConstraint {
     return createSmlTypeParameterConstraint(
@@ -1145,25 +1338,12 @@ fun createSmlTypeParameterConstraint(
 }
 
 /**
- * Returns a new object of class [SmlConstraintList] or `null` if the list of constraints is empty.
- */
-private fun createSmlConstraintList(constraints: List<SmlAbstractConstraint>): SmlConstraintList? {
-    if (constraints.isEmpty()) {
-        return null
-    }
-
-    return factory.createSmlConstraintList().apply {
-        this.constraints += constraints
-    }
-}
-
-/**
  * Returns a new object of class [SmlTypeProjection].
  */
-fun createSmlTypeProjection(type: SmlAbstractType, variance: String? = null): SmlTypeProjection {
+fun createSmlTypeProjection(type: SmlAbstractType, variance: SmlVariance = SmlVariance.Invariant): SmlTypeProjection {
     return factory.createSmlTypeProjection().apply {
         this.type = type
-        this.variance = variance
+        this.variance = variance.variance
     }
 }
 

@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.utils
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.simpleML.SmlClass
 import org.eclipse.core.runtime.FileLocator
 import org.eclipse.emf.common.util.URI
@@ -59,7 +59,7 @@ class SimpleMLStdlib @Inject constructor(
             }
 
             val stdlibFiles = Files.walk(stdlibBase)
-                .filter { it.toString().endsWith(".${FileExtension.STUB}") }
+                .filter { it.toString().endsWith(".${SmlFileExtension.Stub}") }
 
             for (path in stdlibFiles) {
                 val relativePath = path.toString().replace("stdlib/", "")

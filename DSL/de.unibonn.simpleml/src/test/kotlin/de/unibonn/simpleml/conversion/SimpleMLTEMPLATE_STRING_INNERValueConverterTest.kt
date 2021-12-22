@@ -3,7 +3,7 @@
 package de.unibonn.simpleml.conversion
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlDummyResource
 import de.unibonn.simpleml.emf.createSmlNull
 import de.unibonn.simpleml.emf.createSmlTemplateString
@@ -70,7 +70,7 @@ class SimpleMLTEMPLATE_STRING_INNERValueConverterTest {
                 listOf(createSmlNull(), createSmlNull())
             )
 
-            createSmlDummyResource("test", FileExtension.TEST) {
+            createSmlDummyResource("test", SmlFileExtension.Test) {
                 smlWorkflow("test") {
                     smlExpressionStatement(stringTemplate)
                 }
