@@ -22,10 +22,10 @@ import de.unibonn.simpleml.simpleML.SmlProtocolReference
 import de.unibonn.simpleml.simpleML.SmlProtocolSubterm
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
-import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.ResourceName
@@ -137,7 +137,7 @@ class ScopingTest {
             }
 
         @Test
-        fun `should resolve parameter in called callable in same workflow step`() =
+        fun `should resolve parameter in called callable in same step`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
                 arguments.shouldHaveSize(15)
@@ -192,7 +192,7 @@ class ScopingTest {
             }
 
         @Test
-        fun `should resolve parameter in called lambda in same workflow step`() =
+        fun `should resolve parameter in called lambda in same step`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
                 arguments.shouldHaveSize(15)
@@ -206,17 +206,16 @@ class ScopingTest {
             }
 
         @Test
-        fun `should resolve parameter in called workflow step in same file`() =
+        fun `should resolve parameter in called step in same file`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
                 arguments.shouldHaveSize(15)
 
-                val parameterInWorkflowStepInSameFile =
-                    findUniqueDeclarationOrFail<SmlParameter>("parameterInWorkflowStepInSameFile")
+                val parameterInStepInSameFile = findUniqueDeclarationOrFail<SmlParameter>("parameterInStepInSameFile")
 
                 val referencedParameter = arguments[6].parameter
                 referencedParameter.shouldBeResolved()
-                referencedParameter.shouldBe(parameterInWorkflowStepInSameFile)
+                referencedParameter.shouldBe(parameterInStepInSameFile)
             }
 
         @Test
@@ -851,7 +850,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve annotation in same file`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToAnnotations")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToAnnotations")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -860,7 +859,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve annotation in same package`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToAnnotations")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToAnnotations")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -869,7 +868,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve annotation in another package if imported`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToAnnotations")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToAnnotations")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -878,7 +877,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve annotation in another package if not imported`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToAnnotations")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToAnnotations")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -887,7 +886,7 @@ class ScopingTest {
 
         @Test
         fun `should resolve class in same file`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToClasses")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToClasses")
             val classInSameFile = findUniqueDeclarationOrFail<SmlClass>("ClassInSameFile")
 
             val references = step.descendants<SmlReference>().toList()
@@ -900,7 +899,7 @@ class ScopingTest {
 
         @Test
         fun `should resolve class in same package`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToClasses")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToClasses")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -912,7 +911,7 @@ class ScopingTest {
 
         @Test
         fun `should resolve class in another package if imported`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToClasses")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToClasses")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -924,7 +923,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve class in another package if not imported`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToClasses")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToClasses")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -933,7 +932,7 @@ class ScopingTest {
 
         @Test
         fun `should resolve enum in same file`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToEnums")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToEnums")
             val enumInSameFile = findUniqueDeclarationOrFail<SmlEnum>("EnumInSameFile")
 
             val references = step.descendants<SmlReference>().toList()
@@ -946,7 +945,7 @@ class ScopingTest {
 
         @Test
         fun `should resolve enum in same package`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToEnums")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToEnums")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -958,7 +957,7 @@ class ScopingTest {
 
         @Test
         fun `should resolve enum in another package if imported`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToEnums")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToEnums")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -970,7 +969,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve enum in another package if not imported`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToEnums")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToEnums")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -979,7 +978,7 @@ class ScopingTest {
 
         @Test
         fun `should resolve global function in same file`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToGlobalFunctions")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToGlobalFunctions")
             val globalFunctionInSameFile = findUniqueDeclarationOrFail<SmlFunction>("globalFunctionInSameFile")
 
             val references = step.descendants<SmlReference>().toList()
@@ -992,7 +991,7 @@ class ScopingTest {
 
         @Test
         fun `should resolve global function in same package`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToGlobalFunctions")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToGlobalFunctions")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -1004,7 +1003,7 @@ class ScopingTest {
 
         @Test
         fun `should resolve global function in another package if imported`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToGlobalFunctions")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToGlobalFunctions")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -1016,7 +1015,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve global function in another package if not imported`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToGlobalFunctions")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToGlobalFunctions")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -1025,7 +1024,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve lambda result`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToLambdaResults")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToLambdaResults")
 
             val reference = step.descendants<SmlReference>().firstOrNull()
             reference.shouldNotBeNull()
@@ -1033,8 +1032,8 @@ class ScopingTest {
         }
 
         @Test
-        fun `should resolve parameter of workflow step in same workflow step`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToParameters")
+        fun `should resolve parameter of step in same step`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToParameters")
             val parameterInStep = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInStep")
 
             val references = step.descendants<SmlReference>().toList()
@@ -1046,8 +1045,8 @@ class ScopingTest {
         }
 
         @Test
-        fun `should resolve parameter of workflow step in lambda in same workflow step`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToParameters")
+        fun `should resolve parameter of step in lambda in same step`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToParameters")
             val parameterInStep = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInStep")
 
             val references = step.descendants<SmlReference>().toList()
@@ -1061,7 +1060,7 @@ class ScopingTest {
         @Test
         fun `should resolve parameter of lambda in same lambda`() =
             withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToParameters")
+                val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToParameters")
                 val parameterInLambda = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInLambda")
 
                 val references = step.descendants<SmlReference>().toList()
@@ -1073,9 +1072,9 @@ class ScopingTest {
             }
 
         @Test
-        fun `should resolve parameter of workflow step in lambda within lambda in same workflow step`() =
+        fun `should resolve parameter of step in lambda within lambda in same step`() =
             withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToParameters")
+                val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToParameters")
                 val parameterInStep = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInStep")
 
                 val references = step.descendants<SmlReference>().toList()
@@ -1089,7 +1088,7 @@ class ScopingTest {
         @Test
         fun `should resolve parameter of lambda in nested lambda`() =
             withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToParameters")
+                val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToParameters")
                 val parameterInLambda = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInLambda")
 
                 val references = step.descendants<SmlReference>().toList()
@@ -1101,8 +1100,8 @@ class ScopingTest {
             }
 
         @Test
-        fun `should resolve placeholder of workflow step in same workflow step`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToPlaceholders")
+        fun `should resolve placeholder of step in same step`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToPlaceholders")
             val placeholderInStep = step.findUniqueDeclarationOrFail<SmlPlaceholder>("placeholderInStep")
 
             val references = step.descendants<SmlReference>().toList()
@@ -1114,8 +1113,8 @@ class ScopingTest {
         }
 
         @Test
-        fun `should resolve placeholder of workflow step in lambda in same workflow step`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToPlaceholders")
+        fun `should resolve placeholder of step in lambda in same step`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToPlaceholders")
             val placeholderInStep = step.findUniqueDeclarationOrFail<SmlPlaceholder>("placeholderInStep")
 
             val references = step.descendants<SmlReference>().toList()
@@ -1129,7 +1128,7 @@ class ScopingTest {
         @Test
         fun `should resolve placeholder of lambda in same lambda`() =
             withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToPlaceholders")
+                val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToPlaceholders")
                 val placeholderInLambda = step.findUniqueDeclarationOrFail<SmlPlaceholder>("placeholderInLambda")
 
                 val references = step.descendants<SmlReference>().toList()
@@ -1141,9 +1140,9 @@ class ScopingTest {
             }
 
         @Test
-        fun `should resolve placeholder of workflow step in lambda within lambda in same workflow step`() =
+        fun `should resolve placeholder of step in lambda within lambda in same step`() =
             withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToPlaceholders")
+                val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToPlaceholders")
                 val placeholderInStep = step.findUniqueDeclarationOrFail<SmlPlaceholder>("placeholderInStep")
 
                 val references = step.descendants<SmlReference>().toList()
@@ -1157,7 +1156,7 @@ class ScopingTest {
         @Test
         fun `should resolve placeholder of lambda in nested lambda`() =
             withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToPlaceholders")
+                val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToPlaceholders")
                 val placeholderInLambda = step.findUniqueDeclarationOrFail<SmlPlaceholder>("placeholderInLambda")
 
                 val references = step.descendants<SmlReference>().toList()
@@ -1170,7 +1169,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve type parameters`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToTypeParameters")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToTypeParameters")
 
             val reference = step.descendants<SmlReference>().firstOrNull()
             reference.shouldNotBeNull()
@@ -1178,9 +1177,9 @@ class ScopingTest {
         }
 
         @Test
-        fun `should resolve workflow step in same file`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToWorkflowSteps")
-            val stepInSameFile = findUniqueDeclarationOrFail<SmlWorkflowStep>("stepInSameFile")
+        fun `should resolve step in same file`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToSteps")
+            val stepInSameFile = findUniqueDeclarationOrFail<SmlStep>("stepInSameFile")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -1191,8 +1190,8 @@ class ScopingTest {
         }
 
         @Test
-        fun `should resolve workflow step in same package`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToWorkflowSteps")
+        fun `should resolve step in same package`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToSteps")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -1203,8 +1202,8 @@ class ScopingTest {
         }
 
         @Test
-        fun `should resolve workflow step in another package if imported`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToWorkflowSteps")
+        fun `should resolve step in another package if imported`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToSteps")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -1215,8 +1214,8 @@ class ScopingTest {
         }
 
         @Test
-        fun `should not resolve workflow step in another package if not imported`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToWorkflowSteps")
+        fun `should not resolve step in another package if not imported`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToSteps")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -1225,7 +1224,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve workflow in same file`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToWorkflows")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToWorkflows")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -1234,7 +1233,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve workflow in same package`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToWorkflows")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToWorkflows")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -1243,7 +1242,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve workflow in another package if imported`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToWorkflows")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToWorkflows")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -1252,7 +1251,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve workflow in another package if not imported`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("directReferencesToWorkflows")
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToWorkflows")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(4)
@@ -1260,8 +1259,8 @@ class ScopingTest {
         }
 
         @Test
-        fun `should not resolve placeholder declared later in same workflow step`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("forwardReferences")
+        fun `should not resolve placeholder declared later in same step`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlStep>("forwardReferences")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(3)
@@ -1270,7 +1269,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve placeholder declared later from nested lambda`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("forwardReferences")
+            val step = findUniqueDeclarationOrFail<SmlStep>("forwardReferences")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(3)
@@ -1280,7 +1279,7 @@ class ScopingTest {
         @Test
         fun `should not resolve placeholder that lambda is assigned to from body of lambda`() =
             withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("forwardReferences")
+                val step = findUniqueDeclarationOrFail<SmlStep>("forwardReferences")
 
                 val references = step.descendants<SmlReference>().toList()
                 references.shouldHaveSize(3)
@@ -1288,9 +1287,9 @@ class ScopingTest {
             }
 
         @Test
-        fun `should resolve declaration shadowed by parameter of workflow step`() =
+        fun `should resolve declaration shadowed by parameter of step`() =
             withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("shadowedReferences")
+                val step = findUniqueDeclarationOrFail<SmlStep>("shadowedReferences")
 
                 val parameters = step.parametersOrEmpty()
                 parameters.shouldHaveSize(1)
@@ -1304,9 +1303,9 @@ class ScopingTest {
             }
 
         @Test
-        fun `should resolve declaration shadowed by placeholder of workflow step`() =
+        fun `should resolve declaration shadowed by placeholder of step`() =
             withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("shadowedReferences")
+                val step = findUniqueDeclarationOrFail<SmlStep>("shadowedReferences")
 
                 val placeholders = step.descendants<SmlPlaceholder>().toList()
                 placeholders.shouldHaveSize(3)
@@ -1322,7 +1321,7 @@ class ScopingTest {
         @Test
         fun `should resolve declaration shadowed by parameter of lambda`() =
             withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("shadowedReferences")
+                val step = findUniqueDeclarationOrFail<SmlStep>("shadowedReferences")
 
                 val parameters = step.body.descendants<SmlParameter>().toList()
                 parameters.shouldHaveSize(1)
@@ -1338,7 +1337,7 @@ class ScopingTest {
         @Test
         fun `should resolve declaration shadowed by placeholder of lambda`() =
             withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("shadowedReferences")
+                val step = findUniqueDeclarationOrFail<SmlStep>("shadowedReferences")
 
                 val placeholders = step.descendants<SmlPlaceholder>().toList()
                 placeholders.shouldHaveSize(3)
@@ -1353,7 +1352,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve function locals`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToFunctionLocals")
+            val step = findUniqueDeclarationOrFail<SmlStep>("referencesToFunctionLocals")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(2)
@@ -1364,7 +1363,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve lambda locals`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToLambdaLocals")
+            val step = findUniqueDeclarationOrFail<SmlStep>("referencesToLambdaLocals")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(3)
@@ -1372,8 +1371,8 @@ class ScopingTest {
         }
 
         @Test
-        fun `should not resolve workflow step locals`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToWorkflowStepLocals")
+        fun `should not resolve step locals`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlStep>("referencesToStepLocals")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(3)
@@ -1384,7 +1383,7 @@ class ScopingTest {
 
         @Test
         fun `should not resolve unknown declaration`() = withResource(REFERENCE) {
-            val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("unresolvedReferences")
+            val step = findUniqueDeclarationOrFail<SmlStep>("unresolvedReferences")
 
             val references = step.descendants<SmlReference>().toList()
             references.shouldHaveSize(1)
@@ -1396,7 +1395,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve static class attribute accessed from class`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToClassMembers")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToClassMembers")
                 val classStaticAttributeInSameFile =
                     findUniqueDeclarationOrFail<SmlAttribute>("classStaticAttributeInSameFile")
 
@@ -1410,7 +1409,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve instance class attribute accessed from class instance`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToClassMembers")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToClassMembers")
                 val classInstanceAttributeInSameFile =
                     findUniqueDeclarationOrFail<SmlAttribute>("classInstanceAttributeInSameFile")
 
@@ -1424,7 +1423,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve nested class accessed from class`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToClassMembers")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToClassMembers")
                 val classInClassInSameFile =
                     findUniqueDeclarationOrFail<SmlClass>("ClassInClassInSameFile")
 
@@ -1438,7 +1437,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve nested enum accessed from class`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToClassMembers")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToClassMembers")
                 val enumInClassInSameFile =
                     findUniqueDeclarationOrFail<SmlEnum>("EnumInClassInSameFile")
 
@@ -1452,7 +1451,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve static class method accessed from class`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToClassMembers")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToClassMembers")
                 val classStaticMethodInSameFile =
                     findUniqueDeclarationOrFail<SmlFunction>("classStaticMethodInSameFile")
 
@@ -1466,7 +1465,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve instance class method accessed from class instance`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToClassMembers")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToClassMembers")
                 val classInstanceMethodInSameFile =
                     findUniqueDeclarationOrFail<SmlFunction>("classInstanceMethodInSameFile")
 
@@ -1480,7 +1479,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve enum variants`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToEnumVariants")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToEnumVariants")
                 val enumVariantInSameFile =
                     findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameFile")
 
@@ -1493,8 +1492,8 @@ class ScopingTest {
             }
 
             @Test
-            fun `should resolve enum variants from workflow step annotation`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToEnumVariants")
+            fun `should resolve enum variants from step annotation`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToEnumVariants")
                 val enumVariantInSameFile =
                     findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameFile")
 
@@ -1563,7 +1562,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve parameters of enum variants`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToEnumVariantParameters")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToEnumVariantParameters")
                 val enumVariantParameterInSameFile =
                     findUniqueDeclarationOrFail<SmlParameter>("enumVariantParameterInSameFile")
 
@@ -1577,7 +1576,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve inherited static class attribute accessed from class`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInheritedClassMembers")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToInheritedClassMembers")
                 val superClassStaticAttribute =
                     findUniqueDeclarationOrFail<SmlAttribute>("superClassStaticAttribute")
 
@@ -1592,7 +1591,7 @@ class ScopingTest {
             @Test
             fun `should resolve inherited instance class attribute accessed from class instance`() =
                 withResource(REFERENCE) {
-                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInheritedClassMembers")
+                    val step = findUniqueDeclarationOrFail<SmlStep>("referencesToInheritedClassMembers")
                     val superClassInstanceAttribute =
                         findUniqueDeclarationOrFail<SmlAttribute>("superClassInstanceAttribute")
 
@@ -1606,7 +1605,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve inherited nested class accessed from class`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInheritedClassMembers")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToInheritedClassMembers")
                 val classInSuperClass =
                     findUniqueDeclarationOrFail<SmlClass>("ClassInSuperClass")
 
@@ -1620,7 +1619,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve inherited nested enum accessed from class`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInheritedClassMembers")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToInheritedClassMembers")
                 val enumInSuperClass =
                     findUniqueDeclarationOrFail<SmlEnum>("EnumInSuperClass")
 
@@ -1634,7 +1633,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve inherited static class method accessed from class`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInheritedClassMembers")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToInheritedClassMembers")
                 val superClassStaticMethod =
                     findUniqueDeclarationOrFail<SmlFunction>("superClassStaticMethod")
 
@@ -1649,7 +1648,7 @@ class ScopingTest {
             @Test
             fun `should resolve inherited instance class method accessed from class instance`() =
                 withResource(REFERENCE) {
-                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInheritedClassMembers")
+                    val step = findUniqueDeclarationOrFail<SmlStep>("referencesToInheritedClassMembers")
                     val superClassInstanceMethod =
                         findUniqueDeclarationOrFail<SmlFunction>("superClassInstanceMethod")
 
@@ -1663,7 +1662,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve overridden instance attribute`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToOverriddenMembers")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToOverriddenMembers")
                 val subClassForOverriding = findUniqueDeclarationOrFail<SmlClass>("SubClassForOverriding")
                 val instanceAttributeForOverriding =
                     subClassForOverriding.findUniqueDeclarationOrFail<SmlAttribute>("instanceAttributeForOverriding")
@@ -1678,7 +1677,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve overridden instance method`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToOverriddenMembers")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToOverriddenMembers")
                 val subClassForOverriding = findUniqueDeclarationOrFail<SmlClass>("SubClassForOverriding")
                 val instanceMethodForOverriding =
                     subClassForOverriding.findUniqueDeclarationOrFail<SmlFunction>("instanceMethodForOverriding")
@@ -1693,7 +1692,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve hidden static attribute`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToHiddenMembers")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToHiddenMembers")
                 val subClassForHiding = findUniqueDeclarationOrFail<SmlClass>("SubClassForHiding")
                 val staticAttributeForHiding =
                     subClassForHiding.findUniqueDeclarationOrFail<SmlAttribute>("staticAttributeForHiding")
@@ -1708,7 +1707,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve hidden nested class`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToHiddenMembers")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToHiddenMembers")
                 val subClassForHiding = findUniqueDeclarationOrFail<SmlClass>("SubClassForHiding")
                 val nestedClassForHiding =
                     subClassForHiding.findUniqueDeclarationOrFail<SmlClass>("NestedClassForHiding")
@@ -1723,7 +1722,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve hidden nested enum`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToHiddenMembers")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToHiddenMembers")
                 val subClassForHiding = findUniqueDeclarationOrFail<SmlClass>("SubClassForHiding")
                 val nestedEnumForHiding =
                     subClassForHiding.findUniqueDeclarationOrFail<SmlEnum>("NestedEnumForHiding")
@@ -1738,7 +1737,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve hidden static method`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToHiddenMembers")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToHiddenMembers")
                 val subClassForHiding = findUniqueDeclarationOrFail<SmlClass>("SubClassForHiding")
                 val staticMethodForHiding =
                     subClassForHiding.findUniqueDeclarationOrFail<SmlFunction>("staticMethodForHiding")
@@ -1753,7 +1752,7 @@ class ScopingTest {
 
             @Test
             fun `should not resolve static class members accessed from instance`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToStaticClassMembersFromInstance")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToStaticClassMembersFromInstance")
                 val classInSameFile = findUniqueDeclarationOrFail<SmlClass>("ClassInSameFile")
 
                 val references = step.descendants<SmlReference>()
@@ -1767,7 +1766,7 @@ class ScopingTest {
 
             @Test
             fun `should not resolve instance class members accessed from class`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToInstanceClassMembersFromClass")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToInstanceClassMembersFromClass")
                 val classInSameFile = findUniqueDeclarationOrFail<SmlClass>("ClassInSameFile")
 
                 val references = step.descendants<SmlReference>()
@@ -1781,7 +1780,7 @@ class ScopingTest {
 
             @Test
             fun `should not resolve class members with unqualified access`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("unqualifiedReferencesToClassMembers")
+                val step = findUniqueDeclarationOrFail<SmlStep>("unqualifiedReferencesToClassMembers")
 
                 val references = step.descendants<SmlReference>().toList()
                 references.shouldHaveSize(6)
@@ -1792,7 +1791,7 @@ class ScopingTest {
 
             @Test
             fun `should not resolve enum variants with unqualified access`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("unqualifiedReferencesToEnumVariants")
+                val step = findUniqueDeclarationOrFail<SmlStep>("unqualifiedReferencesToEnumVariants")
 
                 val references = step.descendants<SmlReference>().toList()
                 references.shouldHaveSize(1)
@@ -1801,7 +1800,7 @@ class ScopingTest {
 
             @Test
             fun `should not resolve parameters of enum variants with unqualified access`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("unqualifiedReferencesToEnumVariantParameters")
+                val step = findUniqueDeclarationOrFail<SmlStep>("unqualifiedReferencesToEnumVariantParameters")
 
                 val references = step.descendants<SmlReference>().toList()
                 references.shouldHaveSize(1)
@@ -1811,7 +1810,7 @@ class ScopingTest {
             @Test
             fun `should resolve result of callable type with one result without matching member`() =
                 withResource(REFERENCE) {
-                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToCallableTypeResults")
+                    val step = findUniqueDeclarationOrFail<SmlStep>("referencesToCallableTypeResults")
                     val singleResult = step.findUniqueDeclarationOrFail<SmlResult>("singleResult")
 
                     val references = step.descendants<SmlReference>().toList()
@@ -1825,7 +1824,7 @@ class ScopingTest {
             @Test
             fun `should resolve attribute for callable type with one result with matching class attribute`() =
                 withResource(REFERENCE) {
-                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToCallableTypeResults")
+                    val step = findUniqueDeclarationOrFail<SmlStep>("referencesToCallableTypeResults")
                     val classForResultMemberAccess = findUniqueDeclarationOrFail<SmlClass>("ClassForResultMemberAccess")
                     val result = classForResultMemberAccess.findUniqueDeclarationOrFail<SmlAttribute>("result")
 
@@ -1840,7 +1839,7 @@ class ScopingTest {
             @Test
             fun `should resolve result for callable type with one result with matching enum variant`() =
                 withResource(REFERENCE) {
-                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToCallableTypeResults")
+                    val step = findUniqueDeclarationOrFail<SmlStep>("referencesToCallableTypeResults")
                     val callableWithOneResultWithIdenticalEnumVariant =
                         step.findUniqueDeclarationOrFail<SmlParameter>("callableWithOneResultWithIdenticalEnumVariant")
                     val result =
@@ -1856,7 +1855,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve result of callable type with multiple results`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToCallableTypeResults")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToCallableTypeResults")
                 val result1 = step.findUniqueDeclarationOrFail<SmlResult>("result1")
 
                 val references = step.descendants<SmlReference>().toList()
@@ -1870,7 +1869,7 @@ class ScopingTest {
             @Test
             fun `should resolve result of function with one result without matching member`() =
                 withResource(REFERENCE) {
-                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToFunctionResults")
+                    val step = findUniqueDeclarationOrFail<SmlStep>("referencesToFunctionResults")
                     val globalFunctionResultInSameFile =
                         findUniqueDeclarationOrFail<SmlResult>("globalFunctionResultInSameFile")
 
@@ -1885,7 +1884,7 @@ class ScopingTest {
             @Test
             fun `should resolve member for function with one result with matching member`() =
                 withResource(REFERENCE) {
-                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToFunctionResults")
+                    val step = findUniqueDeclarationOrFail<SmlStep>("referencesToFunctionResults")
                     val classForResultMemberAccess = findUniqueDeclarationOrFail<SmlClass>("ClassForResultMemberAccess")
                     val result = classForResultMemberAccess.findUniqueDeclarationOrFail<SmlAttribute>("result")
 
@@ -1899,7 +1898,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve result of function with multiple results`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToFunctionResults")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToFunctionResults")
                 val globalFunctionWithTwoResults =
                     findUniqueDeclarationOrFail<SmlFunction>("globalFunctionWithTwoResults")
                 val result1 = globalFunctionWithTwoResults.findUniqueDeclarationOrFail<SmlResult>("result1")
@@ -1914,7 +1913,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve result of lambda with one result without matching member`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToLambdaResults")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToLambdaResults")
                 val singleResult = step.findUniqueDeclarationOrFail<SmlLambdaResult>("singleResult")
 
                 val references = step.descendants<SmlReference>().toList()
@@ -1928,7 +1927,7 @@ class ScopingTest {
             @Test
             fun `should resolve member for lambda with one result with matching member`() =
                 withResource(REFERENCE) {
-                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToLambdaResults")
+                    val step = findUniqueDeclarationOrFail<SmlStep>("referencesToLambdaResults")
                     val classForResultMemberAccess = findUniqueDeclarationOrFail<SmlClass>("ClassForResultMemberAccess")
                     val result = classForResultMemberAccess.findUniqueDeclarationOrFail<SmlAttribute>("result")
 
@@ -1942,7 +1941,7 @@ class ScopingTest {
 
             @Test
             fun `should resolve result of lambda with multiple results`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToLambdaResults")
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToLambdaResults")
                 val result1 = step.findUniqueDeclarationOrFail<SmlLambdaResult>("result1")
 
                 val references = step.descendants<SmlReference>().toList()
@@ -1954,9 +1953,9 @@ class ScopingTest {
             }
 
             @Test
-            fun `should resolve result of workflow step with one result without matching member`() =
+            fun `should resolve result of step with one result without matching member`() =
                 withResource(REFERENCE) {
-                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToWorkflowStepResults")
+                    val step = findUniqueDeclarationOrFail<SmlStep>("referencesToStepResults")
                     val stepResultInSameFile = findUniqueDeclarationOrFail<SmlResult>("stepResultInSameFile")
 
                     val references = step.descendants<SmlReference>().toList()
@@ -1968,9 +1967,9 @@ class ScopingTest {
                 }
 
             @Test
-            fun `should resolve member for workflow step with one result with matching member`() =
+            fun `should resolve member for step with one result with matching member`() =
                 withResource(REFERENCE) {
-                    val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToWorkflowStepResults")
+                    val step = findUniqueDeclarationOrFail<SmlStep>("referencesToStepResults")
                     val classForResultMemberAccess = findUniqueDeclarationOrFail<SmlClass>("ClassForResultMemberAccess")
                     val result = classForResultMemberAccess.findUniqueDeclarationOrFail<SmlAttribute>("result")
 
@@ -1983,10 +1982,10 @@ class ScopingTest {
                 }
 
             @Test
-            fun `should resolve result of workflow step with multiple results`() = withResource(REFERENCE) {
-                val step = findUniqueDeclarationOrFail<SmlWorkflowStep>("referencesToWorkflowStepResults")
+            fun `should resolve result of step with multiple results`() = withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlStep>("referencesToStepResults")
                 val stepInSameFileWithTwoResults =
-                    findUniqueDeclarationOrFail<SmlWorkflowStep>("stepWithTwoResults")
+                    findUniqueDeclarationOrFail<SmlStep>("stepWithTwoResults")
                 val result1 = stepInSameFileWithTwoResults.findUniqueDeclarationOrFail<SmlResult>("result1")
 
                 val references = step.descendants<SmlReference>().toList()
@@ -2216,7 +2215,7 @@ class ScopingTest {
     inner class Yield {
 
         @Test
-        fun `should resolve result in same workflow step`() = withResource(YIELD) {
+        fun `should resolve result in same step`() = withResource(YIELD) {
             val yields = this.descendants<SmlYield>().toList()
             yields.shouldHaveSize(7)
 
@@ -2228,21 +2227,21 @@ class ScopingTest {
         }
 
         @Test
-        fun `should not resolve result in another workflow step in same file`() = withResource(YIELD) {
+        fun `should not resolve result in another step in same file`() = withResource(YIELD) {
             val yields = this.descendants<SmlYield>().toList()
             yields.shouldHaveSize(7)
             yields[1].result.shouldNotBeResolved()
         }
 
         @Test
-        fun `should not resolve result in another workflow step in same package`() = withResource(YIELD) {
+        fun `should not resolve result in another step in same package`() = withResource(YIELD) {
             val yields = this.descendants<SmlYield>().toList()
             yields.shouldHaveSize(7)
             yields[2].result.shouldNotBeResolved()
         }
 
         @Test
-        fun `should not resolve result in another workflow step that is imported and in another package`() =
+        fun `should not resolve result in another step that is imported and in another package`() =
             withResource(YIELD) {
                 val yields = this.descendants<SmlYield>().toList()
                 yields.shouldHaveSize(7)
@@ -2250,7 +2249,7 @@ class ScopingTest {
             }
 
         @Test
-        fun `should not resolve result in another workflow step that is not imported and in another package`() =
+        fun `should not resolve result in another step that is not imported and in another package`() =
             withResource(YIELD) {
                 val yields = this.descendants<SmlYield>().toList()
                 yields.shouldHaveSize(7)

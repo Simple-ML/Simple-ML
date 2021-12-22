@@ -1,14 +1,14 @@
-// no_semantic_error "A workflow file must only declare workflows and workflow steps."
+// no_semantic_error "A workflow file must only declare workflows and steps."
 package »tests.validation.compilationUnits.workflowFileMustOnlyDeclareWorkflowsOrSteps«
 
-// semantic_error "A workflow file must only declare workflows and workflow steps."
+// semantic_error "A workflow file must only declare workflows and steps."
 annotation »MyAnnotation«
-// semantic_error "A workflow file must only declare workflows and workflow steps."
+// semantic_error "A workflow file must only declare workflows and steps."
 class »MyClass«
-// semantic_error "A workflow file must only declare workflows and workflow steps."
+// semantic_error "A workflow file must only declare workflows and steps."
 enum »MyEnum«
 
-// no_semantic_error "A workflow file must only declare workflows and workflow steps."
+// no_semantic_error "A workflow file must only declare workflows and steps."
 step »myStep«() {}
-// no_semantic_error "A workflow file must only declare workflows and workflow steps."
+// no_semantic_error "A workflow file must only declare workflows and steps."
 workflow »myWorkflow« {}

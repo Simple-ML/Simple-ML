@@ -7,8 +7,8 @@ import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlPackage
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.utils.SimpleMLIndexExtensions
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.importedNameOrNull
@@ -28,24 +28,24 @@ class PackageChecker @Inject constructor(
     fun members(smlPackage: SmlPackage) {
         if (smlPackage.isInStubFile()) {
             smlPackage.members
-                .filter { it is SmlWorkflow || it is SmlWorkflowStep }
+                .filter { it is SmlWorkflow || it is SmlStep }
                 .forEach {
                     error(
-                        "A stub file must not declare workflows or workflow steps.",
+                        "A stub file must not declare workflows or steps.",
                         it,
                         Literals.SML_ABSTRACT_DECLARATION__NAME,
-                        ErrorCode.STUB_FILE_MUST_NOT_DECLARE_WORKFLOWS
+                        ErrorCode.StubFileMustNotDeclareWorkflowsOrSteps
                     )
                 }
         } else if (!smlPackage.isInTestFile()) {
             smlPackage.members
-                .filter { it !is SmlWorkflow && it !is SmlWorkflowStep }
+                .filter { it !is SmlWorkflow && it !is SmlStep }
                 .forEach {
                     error(
-                        "A workflow file must only declare workflows and workflow steps.",
+                        "A workflow file must only declare workflows and steps.",
                         it,
                         Literals.SML_ABSTRACT_DECLARATION__NAME,
-                        ErrorCode.WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_WORKFLOW_STEPS
+                        ErrorCode.WorkflowFileMustOnlyDeclareWorkflowsAndSteps
                     )
                 }
         }

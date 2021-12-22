@@ -52,6 +52,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.SourceLocationS
 import de.unibonn.simpleml.prolog_bridge.model.facts.StarProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StatementT
+import de.unibonn.simpleml.prolog_bridge.model.facts.StepT
 import de.unibonn.simpleml.prolog_bridge.model.facts.StringT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TemplateStringEndT
 import de.unibonn.simpleml.prolog_bridge.model.facts.TemplateStringInnerT
@@ -65,7 +66,6 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.TypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.UnionTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.UnresolvedT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WildcardT
-import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowStepT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowT
 import de.unibonn.simpleml.prolog_bridge.model.facts.YieldT
 import de.unibonn.simpleml.testing.assertions.findUniqueFactOrFail
@@ -584,6 +584,51 @@ class AstToPrologFactbaseTest {
         }
 
         @Nested
+        inner class Steps {
+            @Test
+            fun `should handle simple steps`() = withFactbaseFromFile("declarations") {
+                val stepT = findUniqueFactOrFail<StepT> { it.name == "mySimpleStep" }
+                stepT.asClue {
+                    stepT.parameters.shouldBeEmpty()
+                    stepT.results.shouldBeNull()
+                    stepT.statements.shouldBeEmpty()
+                }
+
+                shouldHaveNAnnotationUses(stepT, 0)
+            }
+
+            @Test
+            fun `should reference parameters`() = withFactbaseFromFile("declarations") {
+                val stepT = findUniqueFactOrFail<StepT> { it.name == "myComplexStep" }
+                shouldBeNChildrenOf<ParameterT>(stepT.parameters, stepT, 2)
+            }
+
+            @Test
+            fun `should reference results`() = withFactbaseFromFile("declarations") {
+                val stepT = findUniqueFactOrFail<StepT> { it.name == "myComplexStep" }
+                shouldBeNChildrenOf<ResultT>(stepT.results, stepT, 2)
+            }
+
+            @Test
+            fun `should reference statements`() = withFactbaseFromFile("declarations") {
+                val stepT = findUniqueFactOrFail<StepT> { it.name == "myComplexStep" }
+                shouldBeNChildrenOf<StatementT>(stepT.statements, stepT, 1)
+            }
+
+            @Test
+            fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
+                val stepT = findUniqueFactOrFail<StepT> { it.name == "myComplexStep" }
+                shouldHaveNAnnotationUses(stepT, 1)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations") {
+                val stepT = findUniqueFactOrFail<StepT> { it.name == "mySimpleStep" }
+                findUniqueFactOrFail<SourceLocationS> { it.target == stepT.id }
+            }
+        }
+
+        @Nested
         inner class Workflow {
             @Test
             fun `should handle simple workflows`() = withFactbaseFromFile("declarations") {
@@ -613,51 +658,6 @@ class AstToPrologFactbaseTest {
                 findUniqueFactOrFail<SourceLocationS> { it.target == workflowT.id }
             }
         }
-
-        @Nested
-        inner class WorkflowSteps {
-            @Test
-            fun `should handle simple workflow steps`() = withFactbaseFromFile("declarations") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "mySimpleStep" }
-                workflowStepT.asClue {
-                    workflowStepT.parameters.shouldBeEmpty()
-                    workflowStepT.results.shouldBeNull()
-                    workflowStepT.statements.shouldBeEmpty()
-                }
-
-                shouldHaveNAnnotationUses(workflowStepT, 0)
-            }
-
-            @Test
-            fun `should reference parameters`() = withFactbaseFromFile("declarations") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myComplexStep" }
-                shouldBeNChildrenOf<ParameterT>(workflowStepT.parameters, workflowStepT, 2)
-            }
-
-            @Test
-            fun `should reference results`() = withFactbaseFromFile("declarations") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myComplexStep" }
-                shouldBeNChildrenOf<ResultT>(workflowStepT.results, workflowStepT, 2)
-            }
-
-            @Test
-            fun `should reference statements`() = withFactbaseFromFile("declarations") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myComplexStep" }
-                shouldBeNChildrenOf<StatementT>(workflowStepT.statements, workflowStepT, 1)
-            }
-
-            @Test
-            fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myComplexStep" }
-                shouldHaveNAnnotationUses(workflowStepT, 1)
-            }
-
-            @Test
-            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "mySimpleStep" }
-                findUniqueFactOrFail<SourceLocationS> { it.target == workflowStepT.id }
-            }
-        }
     }
 
     // *****************************************************************************************************************
@@ -671,22 +671,22 @@ class AstToPrologFactbaseTest {
         inner class Assignment {
             @Test
             fun `should reference assignees`() = withFactbaseFromFile("statements") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
-                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
+                val stepT = findUniqueFactOrFail<StepT> { it.name == "myFunctionalStep" }
+                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == stepT.id }
                 shouldBeNChildrenOf<NodeWithParent>(assignmentT.assignees, assignmentT, 4)
             }
 
             @Test
             fun `should reference expression`() = withFactbaseFromFile("statements") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
-                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
+                val stepT = findUniqueFactOrFail<StepT> { it.name == "myFunctionalStep" }
+                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == stepT.id }
                 shouldBeChildExpressionOf<ExpressionT>(assignmentT.expression, assignmentT)
             }
 
             @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("statements") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
-                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
+                val stepT = findUniqueFactOrFail<StepT> { it.name == "myFunctionalStep" }
+                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == stepT.id }
                 findUniqueFactOrFail<SourceLocationS> { it.target == assignmentT.id }
             }
         }
@@ -735,15 +735,15 @@ class AstToPrologFactbaseTest {
         inner class Wildcard {
             @Test
             fun `should handle wildcards`() = withFactbaseFromFile("statements") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
-                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
+                val stepT = findUniqueFactOrFail<StepT> { it.name == "myFunctionalStep" }
+                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == stepT.id }
                 findUniqueFactOrFail<WildcardT> { it.parent == assignmentT.id }
             }
 
             @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("statements") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
-                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
+                val stepT = findUniqueFactOrFail<StepT> { it.name == "myFunctionalStep" }
+                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == stepT.id }
                 val wildcardT = findUniqueFactOrFail<WildcardT> { it.parent == assignmentT.id }
                 findUniqueFactOrFail<SourceLocationS> { it.target == wildcardT.id }
             }
@@ -753,20 +753,20 @@ class AstToPrologFactbaseTest {
         inner class Yield {
             @Test
             fun `should reference result if possible`() = withFactbaseFromFile("statements") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
-                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
+                val stepT = findUniqueFactOrFail<StepT> { it.name == "myFunctionalStep" }
+                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == stepT.id }
                 val yieldT = findUniqueFactOrFail<YieldT> { it.parent == assignmentT.id }
                 val resultT = findUniqueFactOrFail<ResultT> { it.id == yieldT.result }
                 resultT.asClue {
-                    resultT.parent shouldBe workflowStepT.id
+                    resultT.parent shouldBe stepT.id
                     resultT.name shouldBe "a"
                 }
             }
 
             @Test
             fun `should store name for unresolvable results`() = withFactbaseFromFile("statements") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myStepWithUnresolvedYield" }
-                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
+                val stepT = findUniqueFactOrFail<StepT> { it.name == "myStepWithUnresolvedYield" }
+                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == stepT.id }
                 val yieldT = findUniqueFactOrFail<YieldT> { it.parent == assignmentT.id }
                 val unresolvedT = findUniqueFactOrFail<UnresolvedT> { it.id == yieldT.result }
                 unresolvedT.asClue {
@@ -776,8 +776,8 @@ class AstToPrologFactbaseTest {
 
             @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("statements") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myFunctionalStep" }
-                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == workflowStepT.id }
+                val stepT = findUniqueFactOrFail<StepT> { it.name == "myFunctionalStep" }
+                val assignmentT = findUniqueFactOrFail<AssignmentT> { it.parent == stepT.id }
                 val yieldT = findUniqueFactOrFail<YieldT> { it.parent == assignmentT.id }
                 findUniqueFactOrFail<SourceLocationS> { it.target == yieldT.id }
             }
@@ -1466,9 +1466,9 @@ class AstToPrologFactbaseTest {
         inner class CallableType {
             @Test
             fun `should handle simple callable types`() = withFactbaseFromFile("types") {
-                val workflowStepT =
-                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleCallableType" }
-                val callableTypeT = findUniqueFactOrFail<CallableTypeT> { isContainedIn(it, workflowStepT) }
+                val stepT =
+                    findUniqueFactOrFail<StepT> { it.name == "myWorkflowStepWithSimpleCallableType" }
+                val callableTypeT = findUniqueFactOrFail<CallableTypeT> { isContainedIn(it, stepT) }
                 callableTypeT.asClue {
                     callableTypeT.parameters.shouldBeEmpty()
                     callableTypeT.results.shouldBeEmpty()
@@ -1477,25 +1477,25 @@ class AstToPrologFactbaseTest {
 
             @Test
             fun `should reference parameters`() = withFactbaseFromFile("types") {
-                val workflowStepT =
-                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexCallableType" }
-                val callableTypeT = findUniqueFactOrFail<CallableTypeT> { isContainedIn(it, workflowStepT) }
+                val stepT =
+                    findUniqueFactOrFail<StepT> { it.name == "myWorkflowStepWithComplexCallableType" }
+                val callableTypeT = findUniqueFactOrFail<CallableTypeT> { isContainedIn(it, stepT) }
                 shouldBeNChildrenOf<ParameterT>(callableTypeT.parameters, callableTypeT, 2)
             }
 
             @Test
             fun `should reference results`() = withFactbaseFromFile("types") {
-                val workflowStepT =
-                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexCallableType" }
-                val callableTypeT = findUniqueFactOrFail<CallableTypeT> { isContainedIn(it, workflowStepT) }
+                val stepT =
+                    findUniqueFactOrFail<StepT> { it.name == "myWorkflowStepWithComplexCallableType" }
+                val callableTypeT = findUniqueFactOrFail<CallableTypeT> { isContainedIn(it, stepT) }
                 shouldBeNChildrenOf<ResultT>(callableTypeT.results, callableTypeT, 2)
             }
 
             @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("types") {
-                val workflowStepT =
-                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleCallableType" }
-                val callableTypeT = findUniqueFactOrFail<CallableTypeT> { isContainedIn(it, workflowStepT) }
+                val stepT =
+                    findUniqueFactOrFail<StepT> { it.name == "myWorkflowStepWithSimpleCallableType" }
+                val callableTypeT = findUniqueFactOrFail<CallableTypeT> { isContainedIn(it, stepT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == callableTypeT.id }
             }
         }
@@ -1504,22 +1504,22 @@ class AstToPrologFactbaseTest {
         inner class MemberType {
             @Test
             fun `should reference receiver`() = withFactbaseFromFile("types") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithMemberType" }
-                val memberTypeT = findUniqueFactOrFail<MemberTypeT> { isContainedIn(it, workflowStepT) }
+                val stepT = findUniqueFactOrFail<StepT> { it.name == "myWorkflowStepWithMemberType" }
+                val memberTypeT = findUniqueFactOrFail<MemberTypeT> { isContainedIn(it, stepT) }
                 shouldBeChildOf<TypeT>(memberTypeT.receiver, memberTypeT)
             }
 
             @Test
             fun `should reference member`() = withFactbaseFromFile("types") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithMemberType" }
-                val memberTypeT = findUniqueFactOrFail<MemberTypeT> { isContainedIn(it, workflowStepT) }
+                val stepT = findUniqueFactOrFail<StepT> { it.name == "myWorkflowStepWithMemberType" }
+                val memberTypeT = findUniqueFactOrFail<MemberTypeT> { isContainedIn(it, stepT) }
                 shouldBeChildOf<NamedTypeT>(memberTypeT.member, memberTypeT)
             }
 
             @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("types") {
-                val workflowStepT = findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithMemberType" }
-                val memberTypeT = findUniqueFactOrFail<MemberTypeT> { isContainedIn(it, workflowStepT) }
+                val stepT = findUniqueFactOrFail<StepT> { it.name == "myWorkflowStepWithMemberType" }
+                val memberTypeT = findUniqueFactOrFail<MemberTypeT> { isContainedIn(it, stepT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == memberTypeT.id }
             }
         }
@@ -1528,9 +1528,9 @@ class AstToPrologFactbaseTest {
         inner class NamedType {
             @Test
             fun `should handle simple named types`() = withFactbaseFromFile("types") {
-                val workflowStepT =
-                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleResolvableNamedType" }
-                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStepT) }
+                val stepT =
+                    findUniqueFactOrFail<StepT> { it.name == "myWorkflowStepWithSimpleResolvableNamedType" }
+                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, stepT) }
                 namedTypeT.asClue {
                     namedTypeT.typeArguments.shouldBeNull()
                     namedTypeT.isNullable shouldBe false
@@ -1539,9 +1539,9 @@ class AstToPrologFactbaseTest {
 
             @Test
             fun `should reference declaration if possible`() = withFactbaseFromFile("types") {
-                val workflowStepT =
-                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexResolvableNamedType" }
-                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStepT) }
+                val stepT =
+                    findUniqueFactOrFail<StepT> { it.name == "myWorkflowStepWithComplexResolvableNamedType" }
+                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, stepT) }
                 val declarationT = findUniqueFactOrFail<DeclarationT> { it.id == namedTypeT.declaration }
                 declarationT.asClue {
                     declarationT.name shouldBe "C"
@@ -1550,17 +1550,17 @@ class AstToPrologFactbaseTest {
 
             @Test
             fun `should reference type arguments`() = withFactbaseFromFile("types") {
-                val workflowStepT =
-                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexResolvableNamedType" }
-                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStepT) }
+                val stepT =
+                    findUniqueFactOrFail<StepT> { it.name == "myWorkflowStepWithComplexResolvableNamedType" }
+                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, stepT) }
                 shouldBeNChildrenOf<TypeArgumentT>(namedTypeT.typeArguments, namedTypeT, 1)
             }
 
             @Test
             fun `should store nullability`() = withFactbaseFromFile("types") {
-                val workflowStepT =
-                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexResolvableNamedType" }
-                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStepT) }
+                val stepT =
+                    findUniqueFactOrFail<StepT> { it.name == "myWorkflowStepWithComplexResolvableNamedType" }
+                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, stepT) }
                 namedTypeT.asClue {
                     namedTypeT.isNullable shouldBe true
                 }
@@ -1568,9 +1568,9 @@ class AstToPrologFactbaseTest {
 
             @Test
             fun `should store name for unresolvable named types`() = withFactbaseFromFile("types") {
-                val workflowStepT =
-                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowWithUnresolvableNamedType" }
-                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStepT) }
+                val stepT =
+                    findUniqueFactOrFail<StepT> { it.name == "myWorkflowWithUnresolvableNamedType" }
+                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, stepT) }
                 val unresolvedT = findUniqueFactOrFail<UnresolvedT> { it.id == namedTypeT.declaration }
                 unresolvedT.asClue {
                     unresolvedT.name shouldBe "MyUnresolvedDeclaration"
@@ -1579,9 +1579,9 @@ class AstToPrologFactbaseTest {
 
             @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("types") {
-                val workflowStepT =
-                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleResolvableNamedType" }
-                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, workflowStepT) }
+                val stepT =
+                    findUniqueFactOrFail<StepT> { it.name == "myWorkflowStepWithSimpleResolvableNamedType" }
+                val namedTypeT = findUniqueFactOrFail<NamedTypeT> { isContainedIn(it, stepT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == namedTypeT.id }
             }
         }
@@ -1590,17 +1590,17 @@ class AstToPrologFactbaseTest {
         inner class ParenthesizedType {
             @Test
             fun `should reference type`() = withFactbaseFromFile("types") {
-                val workflowStepT =
-                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithParenthesizedType" }
-                val parenthesizedTypeT = findUniqueFactOrFail<ParenthesizedTypeT> { isContainedIn(it, workflowStepT) }
+                val stepT =
+                    findUniqueFactOrFail<StepT> { it.name == "myWorkflowStepWithParenthesizedType" }
+                val parenthesizedTypeT = findUniqueFactOrFail<ParenthesizedTypeT> { isContainedIn(it, stepT) }
                 shouldBeChildOf<TypeT>(parenthesizedTypeT.type, parenthesizedTypeT)
             }
 
             @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("types") {
-                val workflowStepT =
-                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithParenthesizedType" }
-                val parenthesizedTypeT = findUniqueFactOrFail<ParenthesizedTypeT> { isContainedIn(it, workflowStepT) }
+                val stepT =
+                    findUniqueFactOrFail<StepT> { it.name == "myWorkflowStepWithParenthesizedType" }
+                val parenthesizedTypeT = findUniqueFactOrFail<ParenthesizedTypeT> { isContainedIn(it, stepT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == parenthesizedTypeT.id }
             }
         }
@@ -1765,9 +1765,9 @@ class AstToPrologFactbaseTest {
         inner class UnionType {
             @Test
             fun `should handle simple union types`() = withFactbaseFromFile("types") {
-                val workflowStepT =
-                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleUnionType" }
-                val unionTypeT = findUniqueFactOrFail<UnionTypeT> { isContainedIn(it, workflowStepT) }
+                val stepT =
+                    findUniqueFactOrFail<StepT> { it.name == "myWorkflowStepWithSimpleUnionType" }
+                val unionTypeT = findUniqueFactOrFail<UnionTypeT> { isContainedIn(it, stepT) }
                 unionTypeT.asClue {
                     unionTypeT.typeArguments.shouldBeEmpty()
                 }
@@ -1775,17 +1775,17 @@ class AstToPrologFactbaseTest {
 
             @Test
             fun `should store type arguments`() = withFactbaseFromFile("types") {
-                val workflowStepT =
-                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithComplexUnionType" }
-                val unionTypeT = findUniqueFactOrFail<UnionTypeT> { isContainedIn(it, workflowStepT) }
+                val stepT =
+                    findUniqueFactOrFail<StepT> { it.name == "myWorkflowStepWithComplexUnionType" }
+                val unionTypeT = findUniqueFactOrFail<UnionTypeT> { isContainedIn(it, stepT) }
                 shouldBeNChildrenOf<TypeArgumentT>(unionTypeT.typeArguments, unionTypeT, 2)
             }
 
             @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("types") {
-                val workflowStepT =
-                    findUniqueFactOrFail<WorkflowStepT> { it.name == "myWorkflowStepWithSimpleUnionType" }
-                val unionTypeT = findUniqueFactOrFail<UnionTypeT> { isContainedIn(it, workflowStepT) }
+                val stepT =
+                    findUniqueFactOrFail<StepT> { it.name == "myWorkflowStepWithSimpleUnionType" }
+                val unionTypeT = findUniqueFactOrFail<UnionTypeT> { isContainedIn(it, stepT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == unionTypeT.id }
             }
         }

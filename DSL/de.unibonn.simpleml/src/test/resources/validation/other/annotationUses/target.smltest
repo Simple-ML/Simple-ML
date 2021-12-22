@@ -3,7 +3,7 @@
 // no_semantic_error "This annotation cannot be applied to a compilation unit."
 »@AnnotationForCompilationUnits«
 // no_semantic_error "This annotation cannot be applied to a compilation unit."
-»@AnotationForMultipleTargets«
+»@AnnotationForMultipleTargets«
 // no_semantic_error "This annotation cannot be applied to a compilation unit."
 »@AnnotationForAnything«
 // no_semantic_error "This annotation cannot be applied to a compilation unit."
@@ -51,10 +51,10 @@ annotation AnnotationForTypeParameters
 annotation AnnotationForWorkflows
 
 @Target(AnnotationTarget.WorkflowStep)
-annotation AnnotationForWorkflowSteps
+annotation AnnotationForSteps
 
 @Target(AnnotationTarget.CompilationUnit, AnnotationTarget.Class)
-annotation AnotationForMultipleTargets
+annotation AnnotationForMultipleTargets
 
 annotation AnnotationForAnything
 
@@ -73,7 +73,7 @@ annotation TestAnnotation
 // no_semantic_error "This annotation cannot be applied to a class."
 »@AnnotationForClasses«
 // no_semantic_error "This annotation cannot be applied to a class."
-»@AnotationForMultipleTargets«
+»@AnnotationForMultipleTargets«
 // no_semantic_error "This annotation cannot be applied to a class."
 »@AnnotationForAnything«
 class TestClass<
@@ -140,7 +140,7 @@ fun testFunction(
 )
 
 // semantic_error "This annotation cannot be applied to a workflow."
-»@AnnotationForWorkflowSteps«
+»@AnnotationForSteps«
 // no_semantic_error "This annotation cannot be applied to a workflow."
 »@AnnotationForWorkflows«
 // no_semantic_error "This annotation cannot be applied to a workflow."
@@ -168,10 +168,10 @@ workflow testWorkflow {
     };
 }
 
-// semantic_error "This annotation cannot be applied to a workflow step."
+// semantic_error "This annotation cannot be applied to a step."
 »@AnnotationForAnnotations«
-// no_semantic_error "This annotation cannot be applied to a workflow step."
-»@AnnotationForWorkflowSteps«
-// no_semantic_error "This annotation cannot be applied to a workflow step."
+// no_semantic_error "This annotation cannot be applied to a step."
+»@AnnotationForSteps«
+// no_semantic_error "This annotation cannot be applied to a step."
 »@AnnotationForAnything«
 step testStep() {}

@@ -75,6 +75,7 @@ import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlResultList
 import de.unibonn.simpleml.simpleML.SmlStarProjection
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
@@ -86,7 +87,6 @@ import de.unibonn.simpleml.simpleML.SmlTypeProjection
 import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
@@ -269,7 +269,7 @@ fun SmlWorkflow.smlAssignment(assignees: List<SmlAbstractAssignee>, expression: 
 /**
  * Adds a new object of class [SmlAssignment] to the receiver.
  */
-fun SmlWorkflowStep.smlAssignment(assignees: List<SmlAbstractAssignee>, expression: SmlAbstractExpression) {
+fun SmlStep.smlAssignment(assignees: List<SmlAbstractAssignee>, expression: SmlAbstractExpression) {
     this.addStatement(createSmlAssignment(assignees, expression))
 }
 
@@ -616,7 +616,7 @@ fun SmlWorkflow.smlExpressionStatement(expression: SmlAbstractExpression) {
 /**
  * Adds a new object of class [SmlExpressionStatement] to the receiver.
  */
-fun SmlWorkflowStep.smlExpressionStatement(expression: SmlAbstractExpression) {
+fun SmlStep.smlExpressionStatement(expression: SmlAbstractExpression) {
     this.addStatement(createSmlExpressionStatement(expression))
 }
 
@@ -1178,6 +1178,67 @@ fun createSmlStarProjection(): SmlStarProjection {
 }
 
 /**
+ * Returns a new object of class [SmlStep].
+ */
+fun createSmlStep(
+    name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
+    parameters: List<SmlParameter> = emptyList(),
+    results: List<SmlResult> = emptyList(),
+    statements: List<SmlAbstractStatement> = emptyList(),
+    init: SmlStep.() -> Unit = {}
+): SmlStep {
+    return factory.createSmlStep().apply {
+        this.name = name
+        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
+        this.parameterList = createSmlParameterList(parameters)
+        this.resultList = createSmlResultList(results.ifEmpty { null })
+        this.body = factory.createSmlBlock()
+        statements.forEach { addStatement(it) }
+        this.init()
+    }
+}
+
+/**
+ * Adds a new object of class [SmlStep] to the receiver.
+ */
+fun SmlCompilationUnit.smlStep(
+    name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
+    parameters: List<SmlParameter> = emptyList(),
+    results: List<SmlResult> = emptyList(),
+    statements: List<SmlAbstractStatement> = emptyList(),
+    init: SmlStep.() -> Unit = {}
+) {
+    this.addMember(createSmlStep(name, annotations, parameters, results, statements, init))
+}
+
+/**
+ * Adds a new object of class [SmlStep] to the receiver.
+ */
+fun SmlPackage.smlStep(
+    name: String,
+    annotations: List<SmlAnnotationUse> = emptyList(),
+    parameters: List<SmlParameter> = emptyList(),
+    results: List<SmlResult> = emptyList(),
+    statements: List<SmlAbstractStatement> = emptyList(),
+    init: SmlStep.() -> Unit = {}
+) {
+    this.addMember(createSmlStep(name, annotations, parameters, results, statements, init))
+}
+
+/**
+ * Adds a new statement to the receiver.
+ */
+private fun SmlStep.addStatement(statement: SmlAbstractStatement) {
+    if (this.body == null) {
+        this.body = factory.createSmlBlock()
+    }
+
+    this.body.statements += statement
+}
+
+/**
  * Returns a new object of class [SmlString].
  */
 fun createSmlString(value: String): SmlString {
@@ -1415,67 +1476,6 @@ fun SmlPackage.smlWorkflow(
  * Adds a new statement to the receiver.
  */
 private fun SmlWorkflow.addStatement(statement: SmlAbstractStatement) {
-    if (this.body == null) {
-        this.body = factory.createSmlBlock()
-    }
-
-    this.body.statements += statement
-}
-
-/**
- * Returns a new object of class [SmlWorkflowStep].
- */
-fun createSmlWorkflowStep(
-    name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
-    parameters: List<SmlParameter> = emptyList(),
-    results: List<SmlResult> = emptyList(),
-    statements: List<SmlAbstractStatement> = emptyList(),
-    init: SmlWorkflowStep.() -> Unit = {}
-): SmlWorkflowStep {
-    return factory.createSmlWorkflowStep().apply {
-        this.name = name
-        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
-        this.parameterList = createSmlParameterList(parameters)
-        this.resultList = createSmlResultList(results.ifEmpty { null })
-        this.body = factory.createSmlBlock()
-        statements.forEach { addStatement(it) }
-        this.init()
-    }
-}
-
-/**
- * Adds a new object of class [SmlWorkflow] to the receiver.
- */
-fun SmlCompilationUnit.smlWorkflowStep(
-    name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
-    parameters: List<SmlParameter> = emptyList(),
-    results: List<SmlResult> = emptyList(),
-    statements: List<SmlAbstractStatement> = emptyList(),
-    init: SmlWorkflowStep.() -> Unit = {}
-) {
-    this.addMember(createSmlWorkflowStep(name, annotations, parameters, results, statements, init))
-}
-
-/**
- * Adds a new object of class [SmlWorkflow] to the receiver.
- */
-fun SmlPackage.smlWorkflowStep(
-    name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
-    parameters: List<SmlParameter> = emptyList(),
-    results: List<SmlResult> = emptyList(),
-    statements: List<SmlAbstractStatement> = emptyList(),
-    init: SmlWorkflowStep.() -> Unit = {}
-) {
-    this.addMember(createSmlWorkflowStep(name, annotations, parameters, results, statements, init))
-}
-
-/**
- * Adds a new statement to the receiver.
- */
-private fun SmlWorkflowStep.addStatement(statement: SmlAbstractStatement) {
     if (this.body == null) {
         this.body = factory.createSmlBlock()
     }

@@ -6,7 +6,7 @@ import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.typing.Type
 import de.unibonn.simpleml.typing.TypeComputer
 import de.unibonn.simpleml.typing.TypeConformance
@@ -75,7 +75,7 @@ class Proposals @Inject constructor(
                             typeComputer.hasPrimitiveType(it)
                         }
                     }
-                    is SmlWorkflowStep -> {
+                    is SmlStep -> {
                         obj.parametersOrEmpty().all {
                             typeComputer.hasPrimitiveType(it)
                         }
@@ -107,7 +107,7 @@ class Proposals @Inject constructor(
                             parameterTypes
                         }
                     }
-                    is SmlWorkflowStep -> {
+                    is SmlStep -> {
                         obj.parametersOrEmpty().map { typeComputer.typeOf(it) }
                     }
                     else -> return@filterValues false

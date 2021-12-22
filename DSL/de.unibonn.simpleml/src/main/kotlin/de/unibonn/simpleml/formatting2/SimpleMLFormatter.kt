@@ -11,9 +11,7 @@ import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_MEMBER_ACCESS__
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_NAMED_TYPE__DECLARATION
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_NAMED_TYPE__NULLABLE
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_PREFIX_OPERATION__OPERATOR
-import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_PROTOCOL_COMPLEMENT__UNIVERSE
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_PROTOCOL_QUANTIFIED_TERM__QUANTIFIER
-import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_PROTOCOL_TOKEN_CLASS__VALUE
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_ARGUMENT__TYPE_PARAMETER
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_PARAMETER_CONSTRAINT__LEFT_OPERAND
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_PARAMETER_CONSTRAINT__OPERATOR
@@ -67,9 +65,9 @@ import de.unibonn.simpleml.simpleML.SmlProtocolReferenceList
 import de.unibonn.simpleml.simpleML.SmlProtocolSequence
 import de.unibonn.simpleml.simpleML.SmlProtocolSubterm
 import de.unibonn.simpleml.simpleML.SmlProtocolSubtermList
-import de.unibonn.simpleml.simpleML.SmlProtocolTokenClass
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlResultList
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
@@ -79,7 +77,6 @@ import de.unibonn.simpleml.simpleML.SmlTypeParameterList
 import de.unibonn.simpleml.simpleML.SmlTypeProjection
 import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
@@ -471,7 +468,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // EObject "body"
                 doc.formatObject(obj.body)
             }
-            is SmlWorkflowStep -> {
+            is SmlStep -> {
 
                 // Features "annotations"
                 doc.formatAnnotations(obj)
@@ -737,7 +734,6 @@ class SimpleMLFormatter : AbstractFormatter2() {
                     }
                 }
             }
-
 
             /**********************************************************************************************************
              * Statements
