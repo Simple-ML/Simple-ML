@@ -50,6 +50,6 @@ class SimpleMLIndexExtensions @Inject constructor(
             Literals.SML_CLASS,
             Literals.SML_ENUM,
             Literals.SML_FUNCTION,
-            Literals.SML_WORKFLOW_STEP
+            Literals.SML_STEP
         )
 }

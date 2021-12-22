@@ -52,6 +52,7 @@ import de.unibonn.simpleml.simpleML.SmlProtocolTokenClass
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStarProjection
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
@@ -64,7 +65,6 @@ import de.unibonn.simpleml.simpleML.SmlTypeProjection
 import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.simpleML.SmlYield
 
 /**
@@ -624,7 +624,7 @@ data class WorkflowT(
 }
 
 /**
- * This Prolog fact represents workflow steps.
+ * This Prolog fact represents steps.
  *
  * @param id
  * The ID of this fact.
@@ -633,30 +633,30 @@ data class WorkflowT(
  * The ID of the compilationUnitT fact for the containing compilation unit.
  *
  * @param name
- * The name of the workflow step.
+ * The name of the step.
  *
  * @param parameters
- * The IDs of the parameterT facts for the parameters of the workflow step. The grammar requires the list to be there so
- * this is never null.
+ * The IDs of the parameterT facts for the parameters of the step. The grammar requires the list to be there so this is
+ * never null.
  *
  * @param results
  * The list of result or null. Each element in the list is the ID of a resultT fact for the respective result. Note that
- * an empty list is used for a workflow step with an empty result list, e.g. `step a() -> () {}`, while null is used
- * for a workflow step with no result list at all, like `step b() {}`.
+ * an empty list is used for a step with an empty result list, e.g. `step a() -> () {}`, while null is used for a step
+ * with no result list at all, like `step b() {}`.
  *
  * @param statements
- * The IDs of the facts for the statements in the body of the workflow step. The grammar requires the body to be there
- * so this is never null.
+ * The IDs of the facts for the statements in the body of the step. The grammar requires the body to be there so this is
+ * never null.
  */
-data class WorkflowStepT(
-    override val id: Id<SmlWorkflowStep>,
+data class StepT(
+    override val id: Id<SmlStep>,
     override val parent: Id<SmlAbstractObject>, // Actually just SmlCompilationUnit but this allows a handleDeclaration function
     override val name: String,
     val parameters: List<Id<SmlParameter>>,
     val results: List<Id<SmlResult>>?,
     val statements: List<Id<SmlAbstractStatement>>
 ) : DeclarationT(
-    "workflowStepT",
+    "stepT",
     id,
     parent,
     name,

@@ -154,8 +154,8 @@ class CreatorsTest {
     }
 
     @Test
-    fun `smlAssignment should add the created assignment to the receiving workflow step`() {
-        val step = createSmlWorkflowStep("Test") {
+    fun `smlAssignment should add the created assignment to the receiving step`() {
+        val step = createSmlStep("Test") {
             smlAssignment(
                 listOf(createSmlWildcard()),
                 createSmlInt(1)
@@ -395,8 +395,8 @@ class CreatorsTest {
     }
 
     @Test
-    fun `smlExpressionStatement should add the created expression statement to the receiving workflow step`() {
-        val step = createSmlWorkflowStep("Test") {
+    fun `smlExpressionStatement should add the created expression statement to the receiving step`() {
+        val step = createSmlStep("Test") {
             smlExpressionStatement(createSmlInt(1))
         }
 
@@ -745,6 +745,47 @@ class CreatorsTest {
     }
 
     @Test
+    fun `createSmlStep should store annotation uses in annotationUseHolder`() {
+        val step = createSmlStep(
+            "test",
+            listOf(createSmlAnnotationUse("Test"))
+        )
+
+        step.annotations.shouldHaveSize(0)
+
+        val annotationUseHolder = step.annotationUseHolder
+        annotationUseHolder.shouldNotBeNull()
+        annotationUseHolder.annotations.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `createSmlStep should omit empty result list`() {
+        val function = createSmlStep(
+            "test",
+            results = emptyList()
+        )
+        function.resultList.shouldBeNull()
+    }
+
+    @Test
+    fun `smlStep should add the created step to the receiving compilation unit`() {
+        val compilationUnit = createSmlCompilationUnit {
+            smlStep("test")
+        }
+
+        compilationUnit.members.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `smlStep should add the created step to the receiving package`() {
+        val `package` = createSmlPackage("Test") {
+            smlStep("test")
+        }
+
+        `package`.members.shouldHaveSize(1)
+    }
+
+    @Test
     fun `createSmlWorkflow should store annotation uses in annotationUseHolder`() {
         val workflow = createSmlWorkflow(
             "test",
@@ -771,47 +812,6 @@ class CreatorsTest {
     fun `smlWorkflow should add the created workflow to the receiving package`() {
         val `package` = createSmlPackage("Test") {
             smlWorkflow("test")
-        }
-
-        `package`.members.shouldHaveSize(1)
-    }
-
-    @Test
-    fun `createSmlWorkflowStep should store annotation uses in annotationUseHolder`() {
-        val workflowStep = createSmlWorkflowStep(
-            "test",
-            listOf(createSmlAnnotationUse("Test"))
-        )
-
-        workflowStep.annotations.shouldHaveSize(0)
-
-        val annotationUseHolder = workflowStep.annotationUseHolder
-        annotationUseHolder.shouldNotBeNull()
-        annotationUseHolder.annotations.shouldHaveSize(1)
-    }
-
-    @Test
-    fun `createSmlWorkflowStep should omit empty result list`() {
-        val function = createSmlWorkflowStep(
-            "test",
-            results = emptyList()
-        )
-        function.resultList.shouldBeNull()
-    }
-
-    @Test
-    fun `smlWorkflowStep should add the created workflow step to the receiving compilation unit`() {
-        val compilationUnit = createSmlCompilationUnit {
-            smlWorkflowStep("test")
-        }
-
-        compilationUnit.members.shouldHaveSize(1)
-    }
-
-    @Test
-    fun `smlWorkflowStep should add the created workflow step to the receiving package`() {
-        val `package` = createSmlPackage("Test") {
-            smlWorkflowStep("test")
         }
 
         `package`.members.shouldHaveSize(1)

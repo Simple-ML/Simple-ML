@@ -55,19 +55,19 @@ fun myComplexFunction
     where T1 super Number, T2 sub Number
 
 
+// Steps ---------------------------------------------------------------------------------------------------------------
+step mySimpleStep() {}
+
+@MySimpleAnnotation
+step myComplexStep (a, b) -> (a, b) {
+    val a = 1;
+}
+
+
 // Workflows -----------------------------------------------------------------------------------------------------------
 workflow mySimpleWorkflow {}
 
 @MySimpleAnnotation
 workflow myComplexWorkflow {
-    val a = 1;
-}
-
-
-// Workflow steps ------------------------------------------------------------------------------------------------------
-step mySimpleStep() {}
-
-@MySimpleAnnotation
-step myComplexStep (a, b) -> (a, b) {
     val a = 1;
 }

@@ -151,7 +151,7 @@ step directReferencesToTypeParameters() {
     TYPE_PARAMETER_IN_SAME_FILE;
 }
 
-step directReferencesToWorkflowSteps() {
+step directReferencesToSteps() {
     stepInSameFile;
     stepInSamePackage;
     stepInOtherPackage1;
@@ -312,7 +312,7 @@ step referencesToLambdaResults() {
     lambdaWithTwoResults().result1;
 }
 
-step referencesToWorkflowStepResults() {
+step referencesToStepResults() {
     stepInSameFile(1).stepResultInSameFile;
     stepWithOneResultWithIdenticalMember().result;
     stepWithTwoResults().result1;
@@ -336,7 +336,7 @@ step referencesToLambdaLocals() {
     lambdaYield;
 }
 
-step referencesToWorkflowStepLocals() {
+step referencesToStepLocals() {
     stepParameterInSameFile;
     stepResultInSameFile;
     placeholderInSameFile;

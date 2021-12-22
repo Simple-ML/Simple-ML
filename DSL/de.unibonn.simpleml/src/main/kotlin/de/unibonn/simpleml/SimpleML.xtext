@@ -52,14 +52,14 @@ SmlCompilationUnitMember returns SmlAbstractAnnotatedObject
           resultList=SmlResultList?
           constraintList=SmlConstraintList?
 
-    | {SmlWorkflow.annotationUseHolder=current}
-          'workflow' name=ID
-          body=SmlBlock
-
-    | {SmlWorkflowStep.annotationUseHolder=current}
+    | {SmlStep.annotationUseHolder=current}
           'step' name=ID
           parameterList=SmlParameterList
-          resultList=SmlWorkflowStepResultList?
+          resultList=SmlResultList?
+          body=SmlBlock
+
+    | {SmlWorkflow.annotationUseHolder=current}
+          'workflow' name=ID
           body=SmlBlock
     )
     ;
@@ -99,14 +99,14 @@ SmlPackageMember returns SmlAbstractAnnotatedObject
           resultList=SmlResultList?
           constraintList=SmlConstraintList?
 
-    | {SmlWorkflow.annotationUseHolder=current}
-          'workflow' name=ID
-          body=SmlBlock
-
-    | {SmlWorkflowStep.annotationUseHolder=current}
+    | {SmlStep.annotationUseHolder=current}
           'step' name=ID
           parameterList=SmlParameterList
-          resultList=SmlWorkflowStepResultList?
+          resultList=SmlResultList?
+          body=SmlBlock
+
+    | {SmlWorkflow.annotationUseHolder=current}
+          'workflow' name=ID
           body=SmlBlock
     )
     ;
@@ -321,15 +321,6 @@ SmlResultList
 SmlResult
     : annotations+=SmlAnnotationUse*
       name=ID (':' type=SmlType)?
-    ;
-
-SmlWorkflowStepResultList returns SmlResultList
-    : {SmlResultList} '->' results+=SmlWorkflowStepResult // If there is exactly one result we need no parentheses
-    | {SmlResultList} '->' '(' (results+=SmlWorkflowStepResult (',' results+=SmlWorkflowStepResult)* ','?)? ')'
-    ;
-
-SmlWorkflowStepResult returns SmlResult
-    : name=ID (':' type=SmlType)?
     ;
 
 
