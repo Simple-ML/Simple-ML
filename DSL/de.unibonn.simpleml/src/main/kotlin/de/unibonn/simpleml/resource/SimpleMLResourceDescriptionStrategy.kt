@@ -10,7 +10,7 @@ import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
-import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.simpleML.SmlStep
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.resource.IEObjectDescription
 import org.eclipse.xtext.resource.impl.DefaultResourceDescriptionStrategy
@@ -55,7 +55,7 @@ class SimpleMLResourceDescriptionStrategy : DefaultResourceDescriptionStrategy()
                 super.createEObjectDescriptions(eObject, acceptor)
                 false
             }
-            is SmlWorkflowStep -> {
+            is SmlStep -> {
                 super.createEObjectDescriptions(eObject, acceptor)
             }
             else -> {

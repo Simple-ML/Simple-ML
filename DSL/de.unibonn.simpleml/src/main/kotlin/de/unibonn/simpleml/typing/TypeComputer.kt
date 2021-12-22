@@ -33,7 +33,7 @@ import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlString
-import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.stdlib.StdlibClasses
 import de.unibonn.simpleml.utils.SimpleMLStdlib
@@ -105,7 +105,7 @@ class TypeComputer @Inject constructor(
                 assigned.inferType(isStatic = false)
             }
             this is SmlResult -> type.inferType(isStatic = false)
-            this is SmlWorkflowStep -> CallableType(
+            this is SmlStep -> CallableType(
                 parametersOrEmpty().map { it.inferType(false) },
                 resultsOrEmpty().map { it.inferType(false) }
             )
@@ -144,7 +144,7 @@ class TypeComputer @Inject constructor(
                         else -> TupleType(results.map { it.inferType(false) })
                     }
                 }
-                is SmlWorkflowStep -> {
+                is SmlStep -> {
                     val results = callable.resultsOrEmpty()
                     when (results.size) {
                         1 -> results.first().inferType(false)

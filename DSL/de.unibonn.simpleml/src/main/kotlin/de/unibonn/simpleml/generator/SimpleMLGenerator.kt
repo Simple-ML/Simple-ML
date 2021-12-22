@@ -26,7 +26,7 @@ import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.isCompilationUnitMember
 import de.unibonn.simpleml.utils.isNamed
@@ -115,16 +115,16 @@ class SimpleMLGenerator @Inject constructor(
             appendLine()
         }
 
-        // Workflow steps
-        val workflowStepString = compilationUnit.members
-            .filterIsInstance<SmlWorkflowStep>()
+        // Steps
+        val stepString = compilationUnit.members
+            .filterIsInstance<SmlStep>()
             .sortedBy { it.name }
             .joinToString("\n") {
                 compileWorkflowSteps(it)
             }
-        if (workflowStepString.isNotBlank()) {
-            appendLine("# Workflow steps ---------------------------------------------------------------\n")
-            appendLine(workflowStepString)
+        if (stepString.isNotBlank()) {
+            appendLine("# Steps --------------------------------------------------------------------\n")
+            appendLine(stepString)
         }
 
         // Workflows
@@ -178,7 +178,7 @@ class SimpleMLGenerator @Inject constructor(
 
     private data class ImportData(val importPath: String, val declarationName: String)
 
-    private fun compileWorkflowSteps(workflowStep: SmlWorkflowStep) = buildString {
+    private fun compileWorkflowSteps(workflowStep: SmlStep) = buildString {
         append("def ${workflowStep.name}(")
         append(workflowStep.parametersOrEmpty().joinToString { it.name })
         appendLine("):")

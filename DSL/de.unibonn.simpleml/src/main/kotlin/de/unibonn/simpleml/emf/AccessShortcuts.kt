@@ -39,7 +39,7 @@ import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.closestAncestorOrNull
 import de.unibonn.simpleml.utils.uniqueOrNull
@@ -294,25 +294,25 @@ fun SmlWorkflow?.statementsOrEmpty(): List<SmlAbstractStatement> {
 
 // SmlWorkflowStep ---------------------------------------------------------------------------------
 
-fun SmlWorkflowStep?.localVariablesOrEmpty(): List<SmlAbstractLocalVariable> {
+fun SmlStep?.localVariablesOrEmpty(): List<SmlAbstractLocalVariable> {
     return this.parametersOrEmpty() + this.placeholdersOrEmpty()
 }
 
-fun SmlWorkflowStep?.parametersOrEmpty(): List<SmlParameter> {
+fun SmlStep?.parametersOrEmpty(): List<SmlParameter> {
     return this?.parameterList?.parameters.orEmpty()
 }
 
-fun SmlWorkflowStep?.placeholdersOrEmpty(): List<SmlPlaceholder> {
+fun SmlStep?.placeholdersOrEmpty(): List<SmlPlaceholder> {
     return this.statementsOrEmpty()
         .filterIsInstance<SmlAssignment>()
         .flatMap { it.placeholdersOrEmpty() }
 }
 
-fun SmlWorkflowStep?.resultsOrEmpty(): List<SmlResult> {
+fun SmlStep?.resultsOrEmpty(): List<SmlResult> {
     return this?.resultList?.results.orEmpty()
 }
 
-fun SmlWorkflowStep?.statementsOrEmpty(): List<SmlAbstractStatement> {
+fun SmlStep?.statementsOrEmpty(): List<SmlAbstractStatement> {
     return this?.body?.statements.orEmpty()
 }
 
@@ -329,7 +329,7 @@ fun EObject?.containingLambdaOrNull() = this?.closestAncestorOrNull<SmlLambda>()
 fun EObject?.containingPackageOrNull() = this?.closestAncestorOrNull<SmlPackage>()
 fun EObject?.containingProtocolOrNull() = this?.closestAncestorOrNull<SmlProtocol>()
 fun EObject?.containingWorkflowOrNull() = this?.closestAncestorOrNull<SmlWorkflow>()
-fun EObject?.containingWorkflowStepOrNull() = this?.closestAncestorOrNull<SmlWorkflowStep>()
+fun EObject?.containingWorkflowStepOrNull() = this?.closestAncestorOrNull<SmlStep>()
 
 fun SmlAnnotationUse?.targetOrNull(): SmlAbstractDeclaration? {
     return when (val declaration = this.containingDeclarationOrNull() ?: return null) {

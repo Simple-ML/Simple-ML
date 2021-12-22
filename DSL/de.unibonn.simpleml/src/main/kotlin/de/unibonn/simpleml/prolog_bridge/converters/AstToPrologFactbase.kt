@@ -73,7 +73,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.TypeProjectionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.UnionTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.UnresolvedT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WildcardT
-import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowStepT
+import de.unibonn.simpleml.prolog_bridge.model.facts.StepT
 import de.unibonn.simpleml.prolog_bridge.model.facts.WorkflowT
 import de.unibonn.simpleml.prolog_bridge.model.facts.YieldT
 import de.unibonn.simpleml.prolog_bridge.utils.Id
@@ -142,7 +142,7 @@ import de.unibonn.simpleml.simpleML.SmlTypeProjection
 import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.aliasName
 import org.eclipse.emf.ecore.EObject
@@ -299,12 +299,12 @@ class AstToPrologFactbase {
 
                 +WorkflowT(obj.id, parentId, obj.name, obj.statementsOrEmpty().map { it.id })
             }
-            is SmlWorkflowStep -> {
+            is SmlStep -> {
                 obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
                 obj.resultsOrEmpty().forEach { visitDeclaration(it, obj.id) }
                 obj.statementsOrEmpty().forEach { visitStatement(it, obj.id) }
 
-                +WorkflowStepT(
+                +StepT(
                     obj.id,
                     parentId,
                     obj.name,

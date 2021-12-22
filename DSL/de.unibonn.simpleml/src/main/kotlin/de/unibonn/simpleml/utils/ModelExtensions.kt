@@ -43,7 +43,7 @@ import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.stdlib.isPure
 import org.eclipse.emf.ecore.EObject
 import kotlin.contracts.ExperimentalContracts
@@ -154,7 +154,7 @@ fun SmlCall.isRecursive(): Boolean {
 
 private fun SmlCall.isRecursive(origin: Set<EObject>, visited: Set<EObject>): Boolean {
     return when (val callable = this.callableOrNull()) {
-        is SmlWorkflowStep -> callable in origin || callable !in visited && callable.descendants<SmlCall>()
+        is SmlStep -> callable in origin || callable !in visited && callable.descendants<SmlCall>()
             .any { it.isRecursive(origin, visited + callable) }
         is SmlLambda -> callable in origin || callable !in visited && callable.descendants<SmlCall>()
             .any { it.isRecursive(origin, visited + callable) }
@@ -169,7 +169,7 @@ fun SmlCall.parametersOrNull(): List<SmlParameter>? {
         is SmlFunction -> callable.parametersOrEmpty()
         is SmlCallableType -> callable.parametersOrEmpty()
         is SmlLambda -> callable.parametersOrEmpty()
-        is SmlWorkflowStep -> callable.parametersOrEmpty()
+        is SmlStep -> callable.parametersOrEmpty()
         else -> null
     }
 }
@@ -181,7 +181,7 @@ fun SmlCall.resultsOrNull(): List<SmlAbstractDeclaration>? {
         is SmlFunction -> callable.resultsOrEmpty()
         is SmlCallableType -> callable.resultsOrEmpty()
         is SmlLambda -> callable.lambdaResultsOrEmpty()
-        is SmlWorkflowStep -> callable.resultsOrEmpty()
+        is SmlStep -> callable.resultsOrEmpty()
         else -> null
     }
 }
@@ -230,7 +230,7 @@ fun SmlAbstractDeclaration.isCompilationUnitMember(): Boolean {
                 this is SmlEnum ||
                 this is SmlFunction ||
                 this is SmlWorkflow ||
-                this is SmlWorkflowStep
+                this is SmlStep
             )
 }
 
@@ -284,7 +284,7 @@ fun EObject?.isCallable() =
         this is SmlFunction ||
         this is SmlCallableType ||
         this is SmlLambda ||
-        this is SmlWorkflowStep
+        this is SmlStep
 
 // Enum ----------------------------------------------------------------------------------------------------------------
 
@@ -300,7 +300,7 @@ fun SmlAbstractExpression.hasSideEffects(): Boolean {
 
         val callable = this.callableOrNull()
         return callable is SmlFunction && !callable.isPure() ||
-            callable is SmlWorkflowStep && !callable.isInferredPure() ||
+            callable is SmlStep && !callable.isInferredPure() ||
             callable is SmlLambda && !callable.isInferredPure()
     }
 
@@ -434,4 +434,4 @@ fun SmlTypeArgumentList.typeParametersOrNull(): List<SmlTypeParameter>? {
     return null
 }
 
-fun SmlWorkflowStep.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }
+fun SmlStep.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }

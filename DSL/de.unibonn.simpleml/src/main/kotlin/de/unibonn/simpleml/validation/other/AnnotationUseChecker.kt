@@ -20,7 +20,7 @@ import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.simpleML.SmlWorkflowStep
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.stdlib.StdlibAnnotations
 import de.unibonn.simpleml.stdlib.StdlibEnums.AnnotationTargetVariants
 import de.unibonn.simpleml.stdlib.uniqueAnnotationUseOrNull
@@ -140,8 +140,8 @@ class AnnotationUseChecker : AbstractSimpleMLChecker() {
             actualTarget is SmlWorkflow && AnnotationTargetVariants.Workflow !in legalTargets -> {
                 "a workflow"
             }
-            actualTarget is SmlWorkflowStep && AnnotationTargetVariants.WorkflowStep !in legalTargets -> {
-                "a workflow step"
+            actualTarget is SmlStep && AnnotationTargetVariants.WorkflowStep !in legalTargets -> {
+                "a step"
             }
             else -> null
         }
