@@ -7,8 +7,10 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.Node
 import de.unibonn.simpleml.prolog_bridge.model.facts.NodeWithParent
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFact
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
+import de.unibonn.simpleml.prolog_bridge.model.facts.ProtocolTermT
 import de.unibonn.simpleml.prolog_bridge.utils.Id
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
+import de.unibonn.simpleml.simpleML.SmlAbstractProtocolTerm
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.ints.shouldBeGreaterThan
@@ -80,6 +82,37 @@ inline fun <reified T : ExpressionT> PlFactbase.shouldBeNChildExpressionsOf(
     childIds shouldHaveSize n
     childIds.forEach {
         shouldBeChildExpressionOf<T>(it, parent)
+    }
+}
+
+inline fun <reified T : ProtocolTermT> PlFactbase.shouldBeChildProtocolTermOf(
+    childId: Id<SmlAbstractProtocolTerm>?,
+    parent: Node
+) {
+    childId.shouldNotBeNull()
+
+    val child = findUniqueFactOrFail<T> { it.id == childId }
+    val expectedEnclosing = when (parent) {
+        is ProtocolTermT -> parent.enclosing
+        else -> parent.id
+    }
+
+    child.asClue {
+        child.id.value shouldBeGreaterThan parent.id.value
+        child.parent shouldBe parent.id
+        child.enclosing shouldBe expectedEnclosing
+    }
+}
+
+inline fun <reified T : ProtocolTermT> PlFactbase.shouldBeNChildProtocolTermsOf(
+    childIds: List<Id<SmlAbstractProtocolTerm>>?,
+    parent: Node,
+    n: Int
+) {
+    childIds.shouldNotBeNull()
+    childIds shouldHaveSize n
+    childIds.forEach {
+        shouldBeChildProtocolTermOf<T>(it, parent)
     }
 }
 

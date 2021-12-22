@@ -1,0 +1,22 @@
+package tests.astToPrologFactbase.protocols
+
+class MyClassWithSimpleProtocol {
+    protocol {}
+}
+
+class MyClassWithComplexProtocol {
+    attr member: Int
+
+    protocol {
+        subterm alternative = . | .;
+        subterm complement = [\a^ member member];
+        subterm parenthesizedTerm = (.);
+        subterm quantifiedTerm = .?;
+        subterm reference = member;
+        subterm unresolvedReference = unresolved;
+        subterm sequence = . .;
+        subterm tokenClass = \a;
+
+        .
+    }
+}
