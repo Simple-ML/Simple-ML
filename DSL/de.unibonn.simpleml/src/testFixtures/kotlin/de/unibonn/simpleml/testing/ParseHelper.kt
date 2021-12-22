@@ -1,3 +1,5 @@
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
+
 package de.unibonn.simpleml.testing
 
 import com.google.inject.Inject

@@ -8,7 +8,7 @@ import org.eclipse.emf.ecore.resource.Resource
  * Different file extensions associated with Simple-ML programs. The dot that separates file name and file extension is
  * not included.
  */
-enum class FileExtension(val extension: String) {
+enum class SmlFileExtension(val extension: String) {
 
     /**
      * Marks the file as a workflow file, which can be executed by our runtime component.
@@ -16,7 +16,7 @@ enum class FileExtension(val extension: String) {
      * @see isInFlowFile
      * @see isFlowFile
      */
-    FLOW("smlflow"),
+    Flow("smlflow"),
 
     /**
      * Marks the file as a stub file, which describes an external API.
@@ -24,7 +24,7 @@ enum class FileExtension(val extension: String) {
      * @see isInStubFile
      * @see isStubFile
      */
-    STUB("smlstub"),
+    Stub("smlstub"),
 
     /**
      * Marks the file as a test file, which disables some checks to simplify its use as input of test cases. This file
@@ -33,10 +33,10 @@ enum class FileExtension(val extension: String) {
      * @see isInTestFile
      * @see isTestFile
      */
-    TEST("smltest");
+    Test("smltest");
 
     override fun toString(): String {
-        return this.extension
+        return extension
     }
 }
 
@@ -58,22 +58,22 @@ fun EObject.isInTestFile() = this.eResource().isTestFile()
 /**
  * Returns whether the resource represents a flow file.
  */
-fun Resource.isFlowFile() = this.hasExtension(FileExtension.FLOW)
+fun Resource.isFlowFile() = this.hasExtension(SmlFileExtension.Flow)
 
 /**
  * Returns whether the resource represents a stub file.
  */
-fun Resource.isStubFile() = this.hasExtension(FileExtension.STUB)
+fun Resource.isStubFile() = this.hasExtension(SmlFileExtension.Stub)
 
 /**
  * Returns whether the resource represents a test file.
  */
-fun Resource.isTestFile() = this.hasExtension(FileExtension.TEST)
+fun Resource.isTestFile() = this.hasExtension(SmlFileExtension.Test)
 
 /**
  * Returns whether the resource represents a file with the given extension.
  */
-private fun Resource.hasExtension(fileExtension: FileExtension): Boolean {
+private fun Resource.hasExtension(fileExtension: SmlFileExtension): Boolean {
 
     // The original file path is normally lost for dynamic tests, so they attach it as an EMF adapter
     this.eAdapters().filterIsInstance<OriginalFilePath>().firstOrNull()?.let {

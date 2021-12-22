@@ -3,7 +3,7 @@
 package de.unibonn.simpleml.conversion
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlDummyResource
 import de.unibonn.simpleml.emf.createSmlInt
 import de.unibonn.simpleml.emf.smlExpressionStatement
@@ -67,7 +67,7 @@ class SimpleMLINTValueConverterTest {
         fun `should convert int to string (creator)`() {
             val int = createSmlInt(1)
 
-            createSmlDummyResource("test", FileExtension.TEST) {
+            createSmlDummyResource("test", SmlFileExtension.Test) {
                 smlWorkflow("test") {
                     smlExpressionStatement(int)
                 }

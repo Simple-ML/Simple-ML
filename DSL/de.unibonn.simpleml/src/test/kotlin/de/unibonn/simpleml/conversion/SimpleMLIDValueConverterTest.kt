@@ -3,7 +3,7 @@
 package de.unibonn.simpleml.conversion
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlCompilationUnit
 import de.unibonn.simpleml.emf.createSmlDummyResource
 import de.unibonn.simpleml.emf.smlClass
@@ -63,7 +63,7 @@ class SimpleMLIDValueConverterTest {
             val compilationUnit = createSmlCompilationUnit {
                 smlClass("class")
             }
-            createSmlDummyResource("test", FileExtension.TEST, compilationUnit)
+            createSmlDummyResource("test", SmlFileExtension.Test, compilationUnit)
 
             val result = compilationUnit.serializeToFormattedString()
             result.shouldBeInstanceOf<SerializationResult.Success>()
@@ -80,7 +80,7 @@ class SimpleMLIDValueConverterTest {
             val compilationUnit = createSmlCompilationUnit {
                 smlPackage("notAKeyword")
             }
-            createSmlDummyResource("test", FileExtension.TEST, compilationUnit)
+            createSmlDummyResource("test", SmlFileExtension.Test, compilationUnit)
 
             val result = compilationUnit.serializeToFormattedString()
             result.shouldBeInstanceOf<SerializationResult.Success>()

@@ -8,3 +8,8 @@ class MyClass1 »{}«
 class MyClass2 »{
     fun f()
 }«
+
+// no_semantic_info "Unnecessary class body."
+class MyClass3 »{
+    protocol {}
+}«

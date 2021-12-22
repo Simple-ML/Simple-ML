@@ -7,6 +7,8 @@ import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
+import de.unibonn.simpleml.simpleML.SmlAbstractProtocolTerm
+import de.unibonn.simpleml.simpleML.SmlAbstractProtocolToken
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAbstractTypeArgumentValue
@@ -38,6 +40,15 @@ import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
+import de.unibonn.simpleml.simpleML.SmlProtocol
+import de.unibonn.simpleml.simpleML.SmlProtocolAlternative
+import de.unibonn.simpleml.simpleML.SmlProtocolComplement
+import de.unibonn.simpleml.simpleML.SmlProtocolParenthesizedTerm
+import de.unibonn.simpleml.simpleML.SmlProtocolQuantifiedTerm
+import de.unibonn.simpleml.simpleML.SmlProtocolReference
+import de.unibonn.simpleml.simpleML.SmlProtocolSequence
+import de.unibonn.simpleml.simpleML.SmlProtocolSubterm
+import de.unibonn.simpleml.simpleML.SmlProtocolTokenClass
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStarProjection
@@ -128,7 +139,12 @@ sealed class Node(factName: String, id: Id<SmlAbstractObject>, vararg otherArgum
  * @param otherArguments
  * Arguments of this fact beyond ID and parent. Arguments can either be `null`, booleans, IDs, number, strings or lists.
  */
-sealed class NodeWithParent(factName: String, id: Id<SmlAbstractObject>, parent: Id<SmlAbstractObject>, vararg otherArguments: Any?) :
+sealed class NodeWithParent(
+    factName: String,
+    id: Id<SmlAbstractObject>,
+    parent: Id<SmlAbstractObject>,
+    vararg otherArguments: Any?
+) :
     Node(factName, id, parent, *otherArguments) {
 
     /**
@@ -184,7 +200,7 @@ data class CompilationUnitT(
 sealed class DeclarationT(
     factName: String,
     id: Id<SmlAbstractDeclaration>,
-    parent: Id<SmlAbstractObject>, // SmlClassOrInterface | SmlCompilationUnit
+    parent: Id<SmlAbstractObject>, // SmlClass | SmlCompilationUnit
     name: String,
     vararg otherArguments: Any?
 ) :
@@ -248,7 +264,7 @@ data class AnnotationT(
  */
 data class AttributeT(
     override val id: Id<SmlAttribute>,
-    override val parent: Id<SmlAbstractObject>, // Actually just SmlClassOrInterface but this allows a handleDeclaration function
+    override val parent: Id<SmlAbstractObject>, // Actually just SmlClass but this allows a handleDeclaration function
     override val name: String,
     val isStatic: Boolean,
     val type: Id<SmlAbstractType>?
@@ -296,13 +312,13 @@ data class AttributeT(
  */
 data class ClassT(
     override val id: Id<SmlClass>,
-    override val parent: Id<SmlAbstractObject>, // SmlClassOrInterface | SmlCompilationUnit
+    override val parent: Id<SmlAbstractObject>, // SmlClass | SmlCompilationUnit
     override val name: String,
     val typeParameters: List<Id<SmlTypeParameter>>?,
     val parameters: List<Id<SmlParameter>>?,
     val parentTypes: List<Id<SmlAbstractType>>?,
     val constraints: List<Id<SmlAbstractConstraint>>?,
-    val members: List<Id<SmlAbstractDeclaration>>?
+    val members: List<Id<SmlAbstractObject>>? // SmlClassMember | SmlProtocol
 ) : DeclarationT(
     "classT",
     id,
@@ -336,7 +352,7 @@ data class ClassT(
  */
 data class EnumT(
     override val id: Id<SmlEnum>,
-    override val parent: Id<SmlAbstractObject>, // SmlClassOrInterface | SmlCompilationUnit
+    override val parent: Id<SmlAbstractObject>, // SmlClass | SmlCompilationUnit
     override val name: String,
     val variants: List<Id<SmlEnumVariant>>?
 ) :
@@ -419,7 +435,7 @@ data class EnumVariantT(
  */
 data class FunctionT(
     override val id: Id<SmlFunction>,
-    override val parent: Id<SmlAbstractObject>, // SmlClassOrInterface | SmlCompilationUnit
+    override val parent: Id<SmlAbstractObject>, // SmlClass | SmlCompilationUnit
     override val name: String,
     val isStatic: Boolean,
     val typeParameters: List<Id<SmlTypeParameter>>?,
@@ -1123,7 +1139,11 @@ data class MemberAccessT(
  * @param enclosing
  * The ID of the fact for closest ancestor that is not an expression.
  */
-data class NullT(override val id: Id<SmlNull>, override val parent: Id<SmlAbstractObject>, override val enclosing: Id<SmlAbstractObject>) :
+data class NullT(
+    override val id: Id<SmlNull>,
+    override val parent: Id<SmlAbstractObject>,
+    override val enclosing: Id<SmlAbstractObject>
+) :
     ExpressionT("nullT", id, parent, enclosing) {
     override fun toString() = super.toString()
 }
@@ -1350,7 +1370,12 @@ data class TemplateStringEndT(
  * @param otherArguments
  * Arguments of this fact beyond ID and parent. Arguments can either be `null`, booleans, IDs, number, strings or lists.
  */
-sealed class TypeT(factName: String, id: Id<SmlAbstractType>, parent: Id<SmlAbstractObject>, vararg otherArguments: Any?) :
+sealed class TypeT(
+    factName: String,
+    id: Id<SmlAbstractType>,
+    parent: Id<SmlAbstractObject>,
+    vararg otherArguments: Any?
+) :
     NodeWithParent(factName, id, parent, *otherArguments)
 
 /**
@@ -1620,6 +1645,104 @@ data class AnnotationUseT(
     val arguments: List<Id<SmlArgument>>?
 ) :
     NodeWithParent("annotationUseT", id, parent, annotation, arguments) {
+    override fun toString() = super.toString()
+}
+
+data class ProtocolT(
+    override val id: Id<SmlProtocol>,
+    override val parent: Id<SmlClass>,
+    val subterms: List<Id<SmlProtocolSubterm>>?,
+    val term: Id<SmlAbstractProtocolTerm>?
+) : NodeWithParent("protocolT", id, parent, subterms, term) {
+    override fun toString() = super.toString()
+}
+
+sealed class ProtocolTermT(
+    factName: String,
+    id: Id<SmlAbstractProtocolTerm>,
+    parent: Id<SmlAbstractObject>,
+    enclosing: Id<SmlAbstractObject>,
+    vararg otherArguments: Any?
+) : NodeWithParent(factName, id, parent, enclosing, *otherArguments) {
+
+    /**
+     * The ID of the fact for closest ancestor that is not an expression. This is usually a statement but can also be a
+     * parameter if the expression is its default value.
+     */
+    abstract val enclosing: Id<SmlAbstractObject>
+}
+
+data class ProtocolAlternativeT(
+    override val id: Id<SmlProtocolAlternative>,
+    override val parent: Id<SmlAbstractObject>,
+    override val enclosing: Id<SmlAbstractObject>,
+    val terms: List<Id<SmlAbstractProtocolTerm>>
+) : ProtocolTermT("protocolAlternativeT", id, parent, enclosing, terms) {
+    override fun toString() = super.toString()
+}
+
+data class ProtocolComplementT(
+    override val id: Id<SmlProtocolComplement>,
+    override val parent: Id<SmlAbstractObject>,
+    override val enclosing: Id<SmlAbstractObject>,
+    val universe: Id<SmlProtocolTokenClass>?,
+    val references: List<Id<SmlProtocolReference>>?
+) : ProtocolTermT("protocolComplementT", id, parent, enclosing, references) {
+    override fun toString() = super.toString()
+}
+
+data class ProtocolParenthesizedTermT(
+    override val id: Id<SmlProtocolParenthesizedTerm>,
+    override val parent: Id<SmlAbstractObject>,
+    override val enclosing: Id<SmlAbstractObject>,
+    val term: Id<SmlAbstractProtocolTerm>
+) : ProtocolTermT("protocolParenthesizedTermT", id, parent, enclosing, term) {
+    override fun toString() = super.toString()
+}
+
+data class ProtocolQuantifiedTermT(
+    override val id: Id<SmlProtocolQuantifiedTerm>,
+    override val parent: Id<SmlAbstractObject>,
+    override val enclosing: Id<SmlAbstractObject>,
+    val term: Id<SmlAbstractProtocolTerm>,
+    val quantifier: String
+) : ProtocolTermT("protocolQuantifiedTermT", id, parent, term, enclosing, quantifier) {
+    override fun toString() = super.toString()
+}
+
+data class ProtocolReferenceT(
+    override val id: Id<SmlProtocolReference>,
+    override val parent: Id<SmlAbstractObject>,
+    override val enclosing: Id<SmlAbstractObject>,
+    val token: Id<SmlAbstractProtocolToken>,
+) : ProtocolTermT("protocolReferenceT", id, parent, enclosing, token) {
+    override fun toString() = super.toString()
+}
+
+data class ProtocolSequenceT(
+    override val id: Id<SmlProtocolSequence>,
+    override val parent: Id<SmlAbstractObject>,
+    override val enclosing: Id<SmlAbstractObject>,
+    val terms: List<Id<SmlAbstractProtocolTerm>>,
+) : ProtocolTermT("protocolSequenceT", id, parent, enclosing, terms) {
+    override fun toString() = super.toString()
+}
+
+data class ProtocolSubtermT(
+    override val id: Id<SmlProtocolSubterm>,
+    override val parent: Id<SmlAbstractObject>, // Actually just SmlProtocol but this allows a handleDeclaration function
+    override val name: String,
+    val term: Id<SmlAbstractProtocolTerm>,
+) : DeclarationT("protocolSubtermT", id, parent, name, term) {
+    override fun toString() = super.toString()
+}
+
+data class ProtocolTokenClassT(
+    override val id: Id<SmlProtocolTokenClass>,
+    override val parent: Id<SmlAbstractObject>,
+    override val enclosing: Id<SmlAbstractObject>,
+    val value: String,
+) : ProtocolTermT("protocolTokenClassT", id, parent, enclosing, value) {
     override fun toString() = super.toString()
 }
 

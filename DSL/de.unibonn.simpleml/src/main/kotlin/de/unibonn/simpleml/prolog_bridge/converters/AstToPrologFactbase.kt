@@ -5,10 +5,14 @@ import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.emf.constraintsOrEmpty
 import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
+import de.unibonn.simpleml.emf.membersOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
+import de.unibonn.simpleml.emf.referencesOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.statementsOrEmpty
+import de.unibonn.simpleml.emf.subtermsOrEmpty
+import de.unibonn.simpleml.emf.termOrNull
 import de.unibonn.simpleml.emf.typeArgumentsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.emf.variantsOrEmpty
@@ -43,6 +47,15 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.ParenthesizedTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prolog_bridge.model.facts.PlaceholderT
 import de.unibonn.simpleml.prolog_bridge.model.facts.PrefixOperationT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ProtocolAlternativeT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ProtocolComplementT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ProtocolParenthesizedTermT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ProtocolQuantifiedTermT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ProtocolReferenceT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ProtocolSequenceT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ProtocolSubtermT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ProtocolT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ProtocolTokenClassT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ReferenceT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResourceS
 import de.unibonn.simpleml.prolog_bridge.model.facts.ResultT
@@ -71,6 +84,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
+import de.unibonn.simpleml.simpleML.SmlAbstractProtocolTerm
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAbstractTypeArgumentValue
@@ -104,6 +118,15 @@ import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlParenthesizedType
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
+import de.unibonn.simpleml.simpleML.SmlProtocol
+import de.unibonn.simpleml.simpleML.SmlProtocolAlternative
+import de.unibonn.simpleml.simpleML.SmlProtocolComplement
+import de.unibonn.simpleml.simpleML.SmlProtocolParenthesizedTerm
+import de.unibonn.simpleml.simpleML.SmlProtocolQuantifiedTerm
+import de.unibonn.simpleml.simpleML.SmlProtocolReference
+import de.unibonn.simpleml.simpleML.SmlProtocolSequence
+import de.unibonn.simpleml.simpleML.SmlProtocolSubterm
+import de.unibonn.simpleml.simpleML.SmlProtocolTokenClass
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStarProjection
@@ -191,12 +214,7 @@ class AstToPrologFactbase {
                 obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
                 obj.parentTypesOrEmpty().forEach { visitType(it, obj.id) }
                 obj.constraintsOrEmpty().forEach { visitConstraint(it, obj.id) }
-                obj.memberDeclarationsOrEmpty().forEach { visitDeclaration(it, obj.id) }
-
-                val body = when (obj.body) {
-                    null -> null
-                    else -> obj.memberDeclarationsOrEmpty().map { it.id }
-                }
+                obj.membersOrEmpty().forEach { visitClassMember(it, obj.id) }
 
                 +ClassT(
                     obj.id,
@@ -206,7 +224,7 @@ class AstToPrologFactbase {
                     obj.parameterList?.parameters?.map { it.id },
                     obj.parentTypeList?.parentTypes?.map { it.id },
                     obj.constraintList?.constraints?.map { it.id },
-                    body
+                    obj.body?.members?.map { it.id }
                 )
             }
             is SmlEnum -> {
@@ -263,6 +281,11 @@ class AstToPrologFactbase {
 
                 +ParameterT(obj.id, parentId, obj.name, obj.isVariadic, obj.type?.id, obj.defaultValue?.id)
             }
+            is SmlProtocolSubterm -> {
+                visitProtocolTerm(obj.term, obj.id, obj.id)
+
+                +ProtocolSubtermT(obj.id, parentId, obj.name, obj.term.id)
+            }
             is SmlResult -> {
                 obj.type?.let { visitType(it, obj.id) }
 
@@ -305,6 +328,77 @@ class AstToPrologFactbase {
 
     private fun PlFactbase.visitImport(obj: SmlImport, parentId: Id<SmlPackage>) {
         +ImportT(obj.id, parentId, obj.importedNamespace, obj.aliasName())
+        visitSourceLocation(obj)
+    }
+
+    private fun PlFactbase.visitClassMember(obj: SmlAbstractObject, parentId: Id<SmlClass>) {
+        when (obj) {
+            is SmlAbstractDeclaration -> visitDeclaration(obj, parentId)
+            is SmlProtocol -> visitProtocol(obj, parentId)
+        }
+    }
+
+    private fun PlFactbase.visitProtocol(obj: SmlProtocol, parentId: Id<SmlClass>) {
+        obj.subtermsOrEmpty().forEach { visitDeclaration(it, obj.id) }
+        obj.termOrNull()?.let { visitProtocolTerm(it, obj.id, obj.id) }
+
+        +ProtocolT(
+            obj.id,
+            parentId,
+            obj.body?.subtermList?.subterms?.map { it.id },
+            obj.body?.term?.id
+        )
+        visitSourceLocation(obj)
+    }
+
+    private fun PlFactbase.visitProtocolTerm(
+        obj: SmlAbstractProtocolTerm,
+        parentId: Id<SmlAbstractObject>,
+        enclosingId: Id<SmlAbstractObject>
+    ) {
+        when (obj) {
+            is SmlProtocolAlternative -> {
+                obj.terms.forEach { visitProtocolTerm(it, obj.id, enclosingId) }
+
+                +ProtocolAlternativeT(obj.id, parentId, enclosingId, obj.terms.map { it.id })
+            }
+            is SmlProtocolComplement -> {
+                obj.universe?.let { visitProtocolTerm(obj.universe, obj.id, enclosingId) }
+                obj.referencesOrEmpty().forEach { visitProtocolTerm(it, obj.id, enclosingId) }
+
+                +ProtocolComplementT(
+                    obj.id,
+                    parentId,
+                    enclosingId,
+                    obj.universe?.id,
+                    obj.referenceList?.references?.map { it.id }
+                )
+            }
+            is SmlProtocolParenthesizedTerm -> {
+                visitProtocolTerm(obj.term, obj.id, enclosingId)
+
+                +ProtocolParenthesizedTermT(obj.id, parentId, enclosingId, obj.term.id)
+            }
+            is SmlProtocolQuantifiedTerm -> {
+                visitProtocolTerm(obj.term, obj.id, enclosingId)
+
+                +ProtocolQuantifiedTermT(obj.id, parentId, enclosingId, obj.term.id, obj.quantifier)
+            }
+            is SmlProtocolReference -> {
+                visitCrossReference(obj, SimpleMLPackage.Literals.SML_PROTOCOL_REFERENCE__TOKEN, obj.token)
+
+                +ProtocolReferenceT(obj.id, parentId, enclosingId, obj.token.id)
+            }
+            is SmlProtocolSequence -> {
+                obj.terms.forEach { visitProtocolTerm(it, obj.id, enclosingId) }
+
+                +ProtocolSequenceT(obj.id, parentId, enclosingId, obj.terms.map { it.id })
+            }
+            is SmlProtocolTokenClass -> {
+                +ProtocolTokenClassT(obj.id, parentId, enclosingId, obj.value)
+            }
+        }
+
         visitSourceLocation(obj)
     }
 

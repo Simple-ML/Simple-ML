@@ -1,7 +1,7 @@
 package de.unibonn.simpleml
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.annotationUsesOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAnnotation
@@ -18,6 +18,8 @@ import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.simpleML.SmlProtocolReference
+import de.unibonn.simpleml.simpleML.SmlProtocolSubterm
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
@@ -47,6 +49,7 @@ private const val ANNOTATION_USE = "annotationUse"
 private const val ARGUMENT = "argument"
 private const val IMPORT_WITH_ALIAS = "importWithAlias"
 private const val NAMED_TYPE = "namedType"
+private const val PROTOCOL_REFERENCE = "protocolReference"
 private const val REFERENCE = "reference"
 private const val TYPE_ARGUMENT = "typeArgument"
 private const val TYPE_PARAMETER_CONSTRAINT = "typeParameterConstraint"
@@ -629,6 +632,217 @@ class ScopingTest {
                 referencedEnum.shouldBeResolved()
                 referencedEnum.shouldBe(enumInSameFile)
             }
+        }
+    }
+
+    @Nested
+    inner class ProtocolReference {
+
+        @Test
+        fun `should resolve static attribute in super class`() = withResource(PROTOCOL_REFERENCE) {
+            val superClassStaticAttributeReference =
+                findUniqueDeclarationOrFail<SmlProtocolSubterm>("superClassStaticAttributeReference")
+
+            val superClassStaticAttribute = findUniqueDeclarationOrFail<SmlAttribute>("superClassStaticAttribute")
+
+            val term = superClassStaticAttributeReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldBeResolved()
+            term.token shouldBe superClassStaticAttribute
+        }
+
+        @Test
+        fun `should resolve instance attribute in super class`() = withResource(PROTOCOL_REFERENCE) {
+            val superClassInstanceAttributeReference =
+                findUniqueDeclarationOrFail<SmlProtocolSubterm>("superClassInstanceAttributeReference")
+
+            val superClassInstanceAttribute = findUniqueDeclarationOrFail<SmlAttribute>("superClassInstanceAttribute")
+
+            val term = superClassInstanceAttributeReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldBeResolved()
+            term.token shouldBe superClassInstanceAttribute
+        }
+
+        @Test
+        fun `should resolve static method in super class`() = withResource(PROTOCOL_REFERENCE) {
+            val superClassStaticMethodReference =
+                findUniqueDeclarationOrFail<SmlProtocolSubterm>("superClassStaticMethodReference")
+
+            val superClassStaticMethod = findUniqueDeclarationOrFail<SmlFunction>("superClassStaticMethod")
+
+            val term = superClassStaticMethodReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldBeResolved()
+            term.token shouldBe superClassStaticMethod
+        }
+
+        @Test
+        fun `should resolve instance method in super class`() = withResource(PROTOCOL_REFERENCE) {
+            val superClassInstanceMethodReference =
+                findUniqueDeclarationOrFail<SmlProtocolSubterm>("superClassInstanceMethodReference")
+
+            val superClassInstanceMethod = findUniqueDeclarationOrFail<SmlFunction>("superClassInstanceMethod")
+
+            val term = superClassInstanceMethodReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldBeResolved()
+            term.token shouldBe superClassInstanceMethod
+        }
+
+        @Test
+        fun `should not resolve static attribute in container class`() = withResource(PROTOCOL_REFERENCE) {
+            val containerClassStaticAttributeReference =
+                findUniqueDeclarationOrFail<SmlProtocolSubterm>("containerClassStaticAttributeReference")
+
+            val term = containerClassStaticAttributeReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldNotBeResolved()
+        }
+
+        @Test
+        fun `should not resolve instance attribute in container class`() = withResource(PROTOCOL_REFERENCE) {
+            val containerClassInstanceAttributeReference =
+                findUniqueDeclarationOrFail<SmlProtocolSubterm>("containerClassInstanceAttributeReference")
+
+            val term = containerClassInstanceAttributeReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldNotBeResolved()
+        }
+
+        @Test
+        fun `should not resolve static method in container class`() = withResource(PROTOCOL_REFERENCE) {
+            val containerClassStaticMethodReference =
+                findUniqueDeclarationOrFail<SmlProtocolSubterm>("containerClassStaticMethodReference")
+
+            val term = containerClassStaticMethodReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldNotBeResolved()
+        }
+
+        @Test
+        fun `should not resolve instance method in container class`() = withResource(PROTOCOL_REFERENCE) {
+            val containerClassInstanceMethodReference =
+                findUniqueDeclarationOrFail<SmlProtocolSubterm>("containerClassInstanceMethodReference")
+
+            val term = containerClassInstanceMethodReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldNotBeResolved()
+        }
+
+        @Test
+        fun `should resolve static attribute in own class`() = withResource(PROTOCOL_REFERENCE) {
+            val subClassStaticAttributeReference =
+                findUniqueDeclarationOrFail<SmlProtocolSubterm>("subClassStaticAttributeReference")
+
+            val subClassStaticAttribute = findUniqueDeclarationOrFail<SmlAttribute>("subClassStaticAttribute")
+
+            val term = subClassStaticAttributeReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldBeResolved()
+            term.token shouldBe subClassStaticAttribute
+        }
+
+        @Test
+        fun `should resolve instance attribute in own class`() = withResource(PROTOCOL_REFERENCE) {
+            val subClassInstanceAttributeReference =
+                findUniqueDeclarationOrFail<SmlProtocolSubterm>("subClassInstanceAttributeReference")
+
+            val subClassInstanceAttribute = findUniqueDeclarationOrFail<SmlAttribute>("subClassInstanceAttribute")
+
+            val term = subClassInstanceAttributeReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldBeResolved()
+            term.token shouldBe subClassInstanceAttribute
+        }
+
+        @Test
+        fun `should resolve static method in own class`() = withResource(PROTOCOL_REFERENCE) {
+            val subClassStaticMethodReference =
+                findUniqueDeclarationOrFail<SmlProtocolSubterm>("subClassStaticMethodReference")
+
+            val subClassStaticMethod = findUniqueDeclarationOrFail<SmlFunction>("subClassStaticMethod")
+
+            val term = subClassStaticMethodReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldBeResolved()
+            term.token shouldBe subClassStaticMethod
+        }
+
+        @Test
+        fun `should resolve instance method in own class`() = withResource(PROTOCOL_REFERENCE) {
+            val subClassInstanceMethodReference =
+                findUniqueDeclarationOrFail<SmlProtocolSubterm>("subClassInstanceMethodReference")
+
+            val subClassInstanceMethod = findUniqueDeclarationOrFail<SmlFunction>("subClassInstanceMethod")
+
+            val term = subClassInstanceMethodReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldBeResolved()
+            term.token shouldBe subClassInstanceMethod
+        }
+
+        @Test
+        fun `should resolve overriding declaration`() = withResource(PROTOCOL_REFERENCE) {
+            val overriddenReference = findUniqueDeclarationOrFail<SmlProtocolSubterm>("overriddenReference")
+
+            val subClass = findUniqueDeclarationOrFail<SmlClass>("SubClass")
+            val overridden = subClass.findUniqueDeclarationOrFail<SmlFunction>("overridden")
+
+            val term = overriddenReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldBeResolved()
+            term.token shouldBe overridden
+        }
+
+        @Test
+        fun `should resolve other subterms`() = withResource(PROTOCOL_REFERENCE) {
+            val subtermReference = findUniqueDeclarationOrFail<SmlProtocolSubterm>("subtermReference")
+            val forwardReference = findUniqueDeclarationOrFail<SmlProtocolSubterm>("forwardReference")
+
+            val term = subtermReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldBeResolved()
+            term.token shouldBe forwardReference
+        }
+
+        @Test
+        fun `should resolve shadowing subterm`() = withResource(PROTOCOL_REFERENCE) {
+            val shadowedReference = findUniqueDeclarationOrFail<SmlProtocolSubterm>("shadowedReference")
+            val shadowed = findUniqueDeclarationOrFail<SmlProtocolSubterm>("shadowed")
+
+            val term = shadowedReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldBeResolved()
+            term.token shouldBe shadowed
+        }
+
+        @Test
+        fun `should not resolve forward reference to subterm`() = withResource(PROTOCOL_REFERENCE) {
+            val forwardReference = findUniqueDeclarationOrFail<SmlProtocolSubterm>("forwardReference")
+
+            val term = forwardReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldNotBeResolved()
+        }
+
+        @Test
+        fun `should not resolve unknown declaration`() = withResource(PROTOCOL_REFERENCE) {
+            val unresolvedReference = findUniqueDeclarationOrFail<SmlProtocolSubterm>("unresolvedReference")
+
+            val term = unresolvedReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldNotBeResolved()
+        }
+
+        @Test
+        fun `should not resolve something that is not a protocol token`() = withResource(PROTOCOL_REFERENCE) {
+            val notAProtocolTokenReference =
+                findUniqueDeclarationOrFail<SmlProtocolSubterm>("notAProtocolTokenReference")
+
+            val term = notAProtocolTokenReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldNotBeResolved()
         }
     }
 
@@ -2065,10 +2279,10 @@ class ScopingTest {
 
         val compilationUnit =
             parseHelper.parseResourceWithContext(
-                "scoping/$resourceName/main.${FileExtension.TEST}",
+                "scoping/$resourceName/main.${SmlFileExtension.Test}",
                 listOf(
-                    "scoping/$resourceName/externalsInOtherPackage.${FileExtension.TEST}",
-                    "scoping/$resourceName/externalsInSamePackage.${FileExtension.TEST}",
+                    "scoping/$resourceName/externalsInOtherPackage.${SmlFileExtension.Test}",
+                    "scoping/$resourceName/externalsInSamePackage.${SmlFileExtension.Test}",
                 )
             ) ?: throw IllegalArgumentException("File is not a compilation unit.")
 

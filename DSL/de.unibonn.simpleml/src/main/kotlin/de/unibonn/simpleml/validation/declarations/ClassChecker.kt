@@ -2,8 +2,10 @@ package de.unibonn.simpleml.validation.declarations
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
+import de.unibonn.simpleml.emf.membersOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
+import de.unibonn.simpleml.emf.protocolsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlClass
@@ -41,7 +43,7 @@ class ClassChecker @Inject constructor(
 
     @Check
     fun body(smlClass: SmlClass) {
-        if (smlClass.body != null && smlClass.memberDeclarationsOrEmpty().isEmpty()) {
+        if (smlClass.body != null && smlClass.membersOrEmpty().isEmpty()) {
             info(
                 "Unnecessary class body.",
                 Literals.SML_CLASS__BODY,
@@ -111,6 +113,21 @@ class ClassChecker @Inject constructor(
                 Literals.SML_CLASS__TYPE_PARAMETER_LIST,
                 InfoCode.UnnecessaryTypeParameterList
             )
+        }
+    }
+
+    @Check
+    fun multipleProtocols(smlClass: SmlClass) {
+        val protocols = smlClass.protocolsOrEmpty()
+        if (protocols.size > 1) {
+            protocols.forEach {
+                error(
+                    "A class must have only one protocol.",
+                    it,
+                    null,
+                    ErrorCode.OneProtocolPerClass
+                )
+            }
         }
     }
 }

@@ -11,6 +11,9 @@ import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_MEMBER_ACCESS__
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_NAMED_TYPE__DECLARATION
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_NAMED_TYPE__NULLABLE
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_PREFIX_OPERATION__OPERATOR
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_PROTOCOL_COMPLEMENT__UNIVERSE
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_PROTOCOL_QUANTIFIED_TERM__QUANTIFIER
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_PROTOCOL_TOKEN_CLASS__VALUE
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_ARGUMENT__TYPE_PARAMETER
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_PARAMETER_CONSTRAINT__LEFT_OPERAND
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_PARAMETER_CONSTRAINT__OPERATOR
@@ -54,6 +57,17 @@ import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlParenthesizedType
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
+import de.unibonn.simpleml.simpleML.SmlProtocol
+import de.unibonn.simpleml.simpleML.SmlProtocolAlternative
+import de.unibonn.simpleml.simpleML.SmlProtocolBody
+import de.unibonn.simpleml.simpleML.SmlProtocolComplement
+import de.unibonn.simpleml.simpleML.SmlProtocolParenthesizedTerm
+import de.unibonn.simpleml.simpleML.SmlProtocolQuantifiedTerm
+import de.unibonn.simpleml.simpleML.SmlProtocolReferenceList
+import de.unibonn.simpleml.simpleML.SmlProtocolSequence
+import de.unibonn.simpleml.simpleML.SmlProtocolSubterm
+import de.unibonn.simpleml.simpleML.SmlProtocolSubtermList
+import de.unibonn.simpleml.simpleML.SmlProtocolTokenClass
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlResultList
 import de.unibonn.simpleml.simpleML.SmlTemplateString
@@ -588,6 +602,142 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // EObject "type"
                 doc.formatObject(obj.type)
             }
+
+            /**********************************************************************************************************
+             * Protocols
+             **********************************************************************************************************/
+
+            is SmlProtocol -> {
+
+                // Keyword "protocol"
+                doc.formatKeyword(obj, "protocol", null, oneSpace)
+
+                // EObject "body"
+                doc.formatObject(obj.body)
+            }
+            is SmlProtocolBody -> {
+
+                // Keyword "{"
+                val openingBrace = obj.regionForKeyword("{")
+                if (obj.subtermList == null && obj.term == null) {
+                    doc.append(openingBrace, noSpace)
+                } else {
+                    doc.append(openingBrace, newLine)
+                }
+
+                // EObject "subtermList"
+                if (obj.term == null) {
+                    doc.formatObject(obj.subtermList, null, newLine)
+                } else {
+                    doc.format(obj.subtermList)
+                    doc.append(obj.subtermList, newLines(2))
+                }
+
+                // EObject "term"
+                doc.formatObject(obj.term, null, newLine)
+
+                // Keyword "}"
+                val closingBrace = obj.regionForKeyword("}")
+                doc.prepend(closingBrace, noSpace)
+
+                doc.interior(openingBrace, closingBrace, indent)
+            }
+            is SmlProtocolSubtermList -> {
+                obj.subterms.forEach {
+                    if (it === obj.subterms.last()) {
+                        doc.formatObject(it, null, null)
+                    } else {
+                        doc.formatObject(it, null, newLine)
+                    }
+                }
+            }
+            is SmlProtocolSubterm -> {
+
+                // Keyword "subterm"
+                doc.formatKeyword(obj, "subterm", null, oneSpace)
+
+                // Feature "name"
+                doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME, oneSpace, oneSpace)
+
+                // Keyword "="
+                doc.formatKeyword(obj, "=", oneSpace, oneSpace)
+
+                // EObject "term"
+                doc.formatObject(obj.term, oneSpace, noSpace)
+
+                // Keyword ";"
+                doc.formatKeyword(obj, ";", noSpace, null)
+            }
+            is SmlProtocolAlternative -> {
+
+                // Keywords '|'
+                val pipes = textRegionExtensions.allRegionsFor(obj).keywords("|")
+                pipes.forEach {
+                    doc.prepend(it, oneSpace)
+                    doc.append(it, oneSpace)
+                }
+
+                // EObject "terms"
+                obj.terms.forEach {
+                    doc.formatObject(it)
+                }
+            }
+            is SmlProtocolComplement -> {
+
+                // Keyword "["
+                doc.formatKeyword(obj, "[", null, noSpace)
+
+                // Keyword "^"
+                doc.formatKeyword(obj, "^", noSpace, null)
+
+                // EObject "referenceList"
+                doc.formatObject(obj.referenceList, oneSpace, null)
+
+                // Keyword "]"
+                doc.formatKeyword(obj, "]", noSpace, null)
+            }
+            is SmlProtocolReferenceList -> {
+
+                // EObject "terms"
+                obj.references.forEach {
+                    if (it == obj.references.last()) {
+                        doc.formatObject(it)
+                    } else {
+                        doc.formatObject(it, null, oneSpace)
+                    }
+                }
+            }
+            is SmlProtocolParenthesizedTerm -> {
+
+                // Keyword "("
+                doc.formatKeyword(obj, "(", null, noSpace)
+
+                // EObject "term"
+                doc.formatObject(obj.term, noSpace, noSpace)
+
+                // Keyword ")"
+                doc.formatKeyword(obj, ")", noSpace, null)
+            }
+            is SmlProtocolQuantifiedTerm -> {
+
+                // EObject "term"
+                doc.formatObject(obj.term)
+
+                // Feature "quantifier"
+                doc.formatFeature(obj, SML_PROTOCOL_QUANTIFIED_TERM__QUANTIFIER, noSpace, null)
+            }
+            is SmlProtocolSequence -> {
+
+                // EObject "terms"
+                obj.terms.forEach {
+                    if (it == obj.terms.last()) {
+                        doc.formatObject(it)
+                    } else {
+                        doc.formatObject(it, null, oneSpace)
+                    }
+                }
+            }
+
 
             /**********************************************************************************************************
              * Statements
