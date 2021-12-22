@@ -639,15 +639,6 @@ class ScopingTest {
     inner class ProtocolReference {
 
         @Test
-        fun `should not resolve forward references to subterms`() = withResource(PROTOCOL_REFERENCE) {
-            val forwardReference = findUniqueDeclarationOrFail<SmlProtocolSubterm>("forwardReference")
-
-            val term = forwardReference.term
-            term.shouldBeInstanceOf<SmlProtocolReference>()
-            term.token.shouldNotBeResolved()
-        }
-
-        @Test
         fun `should resolve static attribute in super class`() = withResource(PROTOCOL_REFERENCE) {
             val superClassStaticAttributeReference =
                 findUniqueDeclarationOrFail<SmlProtocolSubterm>("superClassStaticAttributeReference")
@@ -789,6 +780,50 @@ class ScopingTest {
             term.shouldBeInstanceOf<SmlProtocolReference>()
             term.token.shouldBeResolved()
             term.token shouldBe subClassInstanceMethod
+        }
+
+        @Test
+        fun `should resolve overriding declaration`() = withResource(PROTOCOL_REFERENCE) {
+            val overriddenReference = findUniqueDeclarationOrFail<SmlProtocolSubterm>("overriddenReference")
+
+            val subClass = findUniqueDeclarationOrFail<SmlClass>("SubClass")
+            val overridden = subClass.findUniqueDeclarationOrFail<SmlFunction>("overridden")
+
+            val term = overriddenReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldBeResolved()
+            term.token shouldBe overridden
+        }
+
+        @Test
+        fun `should resolve other subterms`() = withResource(PROTOCOL_REFERENCE) {
+            val subtermReference = findUniqueDeclarationOrFail<SmlProtocolSubterm>("subtermReference")
+            val forwardReference = findUniqueDeclarationOrFail<SmlProtocolSubterm>("forwardReference")
+
+            val term = subtermReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldBeResolved()
+            term.token shouldBe forwardReference
+        }
+
+        @Test
+        fun `should resolve shadowing subterm`() = withResource(PROTOCOL_REFERENCE) {
+            val shadowedReference = findUniqueDeclarationOrFail<SmlProtocolSubterm>("shadowedReference")
+            val shadowed = findUniqueDeclarationOrFail<SmlProtocolSubterm>("shadowed")
+
+            val term = shadowedReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldBeResolved()
+            term.token shouldBe shadowed
+        }
+
+        @Test
+        fun `should not resolve forward reference to subterm`() = withResource(PROTOCOL_REFERENCE) {
+            val forwardReference = findUniqueDeclarationOrFail<SmlProtocolSubterm>("forwardReference")
+
+            val term = forwardReference.term
+            term.shouldBeInstanceOf<SmlProtocolReference>()
+            term.token.shouldNotBeResolved()
         }
 
         @Test

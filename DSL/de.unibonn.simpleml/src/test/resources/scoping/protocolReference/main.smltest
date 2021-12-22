@@ -4,6 +4,8 @@ class SuperClass {
 
     static fun superClassStaticMethod()
     fun superClassInstanceMethod()
+
+    fun overridden()
 }
 
 class ContainerClass {
@@ -19,11 +21,13 @@ class ContainerClass {
 
         static fun subClassStaticMethod()
         fun subClassInstanceMethod()
+
+        fun overridden()
+        attr shadowed: Int
         
         enum NotAProtocolToken
 
         protocol {
-            subterm forwardReference = superClassStaticAttributeReference;
             subterm superClassStaticAttributeReference = superClassStaticAttribute;
             subterm superClassInstanceAttributeReference = superClassInstanceAttribute;
             subterm superClassStaticMethodReference = superClassStaticMethod;
@@ -38,6 +42,14 @@ class ContainerClass {
             subterm subClassInstanceMethodReference = subClassInstanceMethod;
             subterm notAProtocolTokenReference = NotAProtocolToken;
             subterm unresolvedReference = unresolved;
+
+            subterm forwardReference = subtermReference;
+            subterm subtermReference = forwardReference;
+
+            subterm overriddenReference = overridden;
+
+            subterm shadowed = shadowed;
+            subterm shadowedReference = shadowed;
         }
     }
 }

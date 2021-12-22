@@ -3,15 +3,18 @@ package de.unibonn.simpleml.scoping
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingClassOrNull
+import de.unibonn.simpleml.emf.containingProtocolOrNull
 import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
+import de.unibonn.simpleml.emf.subtermsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrNull
 import de.unibonn.simpleml.emf.uniquePackageOrNull
 import de.unibonn.simpleml.emf.variantsOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractNamedTypeDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractProtocolToken
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
@@ -27,6 +30,9 @@ import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.simpleML.SmlProtocol
+import de.unibonn.simpleml.simpleML.SmlProtocolReference
+import de.unibonn.simpleml.simpleML.SmlProtocolSubterm
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
@@ -67,6 +73,7 @@ class SimpleMLScopeProvider @Inject constructor(
         return when (context) {
             is SmlArgument -> scopeForArgumentParameter(context)
             is SmlNamedType -> scopeForNamedTypeDeclaration(context)
+            is SmlProtocolReference -> scopeForProtocolReferenceToken(context)
             is SmlReference -> scopeForReferenceDeclaration(context)
             is SmlTypeArgument -> scopeForTypeArgumentTypeParameter(context)
             is SmlTypeParameterConstraint -> scopeForTypeParameterConstraintLeftOperand(context)
@@ -247,6 +254,31 @@ class SimpleMLScopeProvider @Inject constructor(
             type is EnumType -> Scopes.scopeFor(type.smlEnum.variantsOrEmpty())
             else -> IScope.NULLSCOPE
         }
+    }
+
+    private fun scopeForProtocolReferenceToken(context: SmlProtocolReference): IScope {
+        val containingClass = context.containingClassOrNull() ?: return IScope.NULLSCOPE
+        val containingProtocol = context.containingProtocolOrNull() ?: return IScope.NULLSCOPE
+        val containingSubtermOrNull = context.closestAncestorOrNull<SmlProtocolSubterm>()
+
+        // Own & inherited class members
+        val members = containingClass.memberDeclarationsOrEmpty().filterIsInstance<SmlAbstractProtocolToken>()
+        val superTypeMembers = classHierarchy.superClassMembers(containingClass)
+            .filterIsInstance<SmlAbstractProtocolToken>()
+            .toList()
+
+        val resultScope = Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers))
+
+        // Subterms
+        return Scopes.scopeFor(containingProtocol.subtermsUpTo(containingSubtermOrNull), resultScope)
+    }
+
+    private fun SmlProtocol.subtermsUpTo(containingSubtermOrNull: SmlProtocolSubterm?): List<SmlProtocolSubterm> {
+        if (containingSubtermOrNull == null) {
+            return this.subtermsOrEmpty()
+        }
+
+        return this.subtermsOrEmpty().takeWhile { it !== containingSubtermOrNull }
     }
 
     private fun scopeForTypeArgumentTypeParameter(smlTypeArgument: SmlTypeArgument): IScope {
