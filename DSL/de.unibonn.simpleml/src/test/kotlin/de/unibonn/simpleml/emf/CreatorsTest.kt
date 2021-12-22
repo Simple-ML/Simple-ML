@@ -6,6 +6,7 @@ import de.unibonn.simpleml.constant.SmlTypeParameterConstraintOperator
 import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlInt
+import de.unibonn.simpleml.simpleML.SmlProtocol
 import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
 import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
 import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
@@ -242,7 +243,7 @@ class CreatorsTest {
     }
 
     @Test
-    fun `createSmlClass should omit empty type parameter constraint list`() {
+    fun `createSmlClass should omit empty constraint list`() {
         val `class` = createSmlClass(
             "Test",
             constraints = emptyList()
@@ -352,7 +353,7 @@ class CreatorsTest {
     }
 
     @Test
-    fun `createSmlEnumVariant should omit empty type parameter constraint list`() {
+    fun `createSmlEnumVariant should omit empty constraint list`() {
         val enum = createSmlEnumVariant(
             "Test",
             constraints = emptyList()
@@ -437,7 +438,7 @@ class CreatorsTest {
     }
 
     @Test
-    fun `createSmlFunction should omit empty type parameter constraint list`() {
+    fun `createSmlFunction should omit empty constraint list`() {
         val function = createSmlFunction(
             "test",
             constraints = emptyList()
@@ -543,6 +544,23 @@ class CreatorsTest {
     }
 
     @Test
+    fun `createSmlProtocol should omit empty subterm list`() {
+        val protocol = createSmlProtocol(emptyList())
+        protocol.body.shouldNotBeNull()
+        protocol.body.subtermList.shouldBeNull()
+    }
+
+    @Test
+    fun `smlProtocol should add the created protocol to the receiving class`() {
+        val `class` = createSmlClass("Test") {
+            smlProtocol()
+        }
+
+        `class`.body.shouldNotBeNull()
+        `class`.body.members.filterIsInstance<SmlProtocol>().shouldHaveSize(1)
+    }
+
+    @Test
     fun `createSmlProtocolAlternative should throw if fewer than two terms are passed`() {
         shouldThrow<IllegalArgumentException> {
             createSmlProtocolAlternative(listOf())
@@ -567,6 +585,12 @@ class CreatorsTest {
     }
 
     @Test
+    fun `createSmlProtocolComplement should omit empty reference list`() {
+        val complement = createSmlProtocolComplement()
+        complement.referenceList.shouldBeNull()
+    }
+
+    @Test
     fun `createSmlProtocolSequence should throw if fewer than two terms are passed`() {
         shouldThrow<IllegalArgumentException> {
             createSmlProtocolSequence(listOf())
@@ -588,6 +612,17 @@ class CreatorsTest {
                 )
             )
         }
+    }
+
+    @Test
+    fun `smlProtocolSubterm should add the created subterm to the receiving protocol`() {
+        val protocol = createSmlProtocol {
+            smlProtocolSubterm("test", createSmlProtocolTokenClass(SmlProtocolTokenClassValue.Anything))
+        }
+
+        protocol.body.shouldNotBeNull()
+        protocol.body.subtermList.shouldNotBeNull()
+        protocol.body.subtermList.subterms.shouldHaveSize(1)
     }
 
     @Test

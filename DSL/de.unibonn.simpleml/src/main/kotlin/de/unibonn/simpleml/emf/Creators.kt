@@ -990,7 +990,7 @@ fun createSmlProtocol(
 ): SmlProtocol {
     return factory.createSmlProtocol().apply {
         this.body = factory.createSmlProtocolBody()
-        subterms.forEach { addSubterm(it) } // TODO: subtermList test should be null if no subterms are ever added
+        subterms.forEach { addSubterm(it) }
         this.body.term = term
         this.init()
     }
@@ -999,7 +999,7 @@ fun createSmlProtocol(
 /**
  * Adds a new object of class [SmlProtocol] to the receiver.
  */
-fun SmlClass.smlProtocol( // TODO: test
+fun SmlClass.smlProtocol(
     subterms: List<SmlProtocolSubterm> = emptyList(),
     term: SmlAbstractProtocolTerm? = null,
     init: SmlProtocol.() -> Unit = {}
@@ -1084,7 +1084,7 @@ fun createSmlProtocolReference(token: SmlAbstractProtocolToken): SmlProtocolRefe
  */
 private fun createSmlProtocolReferenceList(references: List<SmlProtocolReference>): SmlProtocolReferenceList? {
     if (references.isEmpty()) {
-        return null // TODO: test
+        return null
     }
 
     return factory.createSmlProtocolReferenceList().apply {
@@ -1120,7 +1120,7 @@ fun createSmlProtocolSubterm(name: String, term: SmlAbstractProtocolTerm): SmlPr
 /**
  * Returns a new object of class [SmlProtocolSubterm].
  */
-fun SmlProtocol.smlProtocolSubterm(name: String, term: SmlAbstractProtocolTerm) { // TODO: test
+fun SmlProtocol.smlProtocolSubterm(name: String, term: SmlAbstractProtocolTerm) {
     this.addSubterm(createSmlProtocolSubterm(name, term))
 }
 
