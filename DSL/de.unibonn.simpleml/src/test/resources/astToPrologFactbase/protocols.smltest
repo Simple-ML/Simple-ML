@@ -9,7 +9,8 @@ class MyClassWithComplexProtocol {
 
     protocol {
         subterm alternative = . | .;
-        subterm complement = [\a^ member member];
+        subterm simpleComplement = [^];
+        subterm complexComplement = [\a^ member member];
         subterm parenthesizedTerm = (.);
         subterm quantifiedTerm = .?;
         subterm reference = member;

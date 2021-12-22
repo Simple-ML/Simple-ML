@@ -1264,7 +1264,7 @@ class AstToPrologFactbaseTest {
             fun `should reference subterms`() = withFactbaseFromFile("protocols") {
                 val classT = findUniqueFactOrFail<ClassT> { it.name == "MyClassWithComplexProtocol" }
                 val protocolT = findUniqueFactOrFail<ProtocolT> { it.parent == classT.id }
-                shouldBeNChildrenOf<ProtocolSubtermT>(protocolT.subterms, protocolT, 8)
+                shouldBeNChildrenOf<ProtocolSubtermT>(protocolT.subterms, protocolT, 9)
             }
 
             @Test
@@ -1301,20 +1301,33 @@ class AstToPrologFactbaseTest {
         @Nested
         inner class ProtocolComplements {
             @Test
+            fun `should handle simple complements`() = withFactbaseFromFile("protocols") {
+                val subtermT = findUniqueFactOrFail<ProtocolSubtermT> { it.name == "simpleComplement" }
+                val complementT = findUniqueFactOrFail<ProtocolComplementT> { isContainedIn(it, subtermT) }
+                complementT.asClue {
+                    complementT.universe.shouldBeNull()
+                    complementT.references.shouldBeNull()
+                }
+            }
+
+            @Test
             fun `should reference universe`() = withFactbaseFromFile("protocols") {
-                val complementT = findUniqueFactOrFail<ProtocolComplementT>()
+                val subtermT = findUniqueFactOrFail<ProtocolSubtermT> { it.name == "complexComplement" }
+                val complementT = findUniqueFactOrFail<ProtocolComplementT> { isContainedIn(it, subtermT) }
                 shouldBeChildProtocolTermOf<ProtocolTokenClassT>(complementT.universe, complementT)
             }
 
             @Test
             fun `should reference references`() = withFactbaseFromFile("protocols") {
-                val complementT = findUniqueFactOrFail<ProtocolComplementT>()
+                val subtermT = findUniqueFactOrFail<ProtocolSubtermT> { it.name == "complexComplement" }
+                val complementT = findUniqueFactOrFail<ProtocolComplementT> { isContainedIn(it, subtermT) }
                 shouldBeNChildProtocolTermsOf<ProtocolReferenceT>(complementT.references, complementT, 2)
             }
 
             @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("protocols") {
-                val complementT = findUniqueFactOrFail<ProtocolComplementT>()
+                val subtermT = findUniqueFactOrFail<ProtocolSubtermT> { it.name == "simpleComplement" }
+                val complementT = findUniqueFactOrFail<ProtocolComplementT> { isContainedIn(it, subtermT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == complementT.id }
             }
         }
@@ -1360,7 +1373,7 @@ class AstToPrologFactbaseTest {
         @Nested
         inner class ProtocolReferences {
             @Test
-            fun `should reference declaration if possible`() = withFactbaseFromFile("expressions") {
+            fun `should reference declaration if possible`() = withFactbaseFromFile("protocols") {
                 val subtermT = findUniqueFactOrFail<ProtocolSubtermT> { it.name == "reference" }
                 val referenceT = findUniqueFactOrFail<ProtocolReferenceT> { isContainedIn(it, subtermT) }
                 val attributeT = findUniqueFactOrFail<AttributeT> { it.id == referenceT.token }
@@ -1370,7 +1383,7 @@ class AstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should store name for unresolvable references`() = withFactbaseFromFile("expressions") {
+            fun `should store name for unresolvable references`() = withFactbaseFromFile("protocols") {
                 val subtermT = findUniqueFactOrFail<ProtocolSubtermT> { it.name == "unresolvedReference" }
                 val referenceT = findUniqueFactOrFail<ProtocolReferenceT> { isContainedIn(it, subtermT) }
                 val unresolvedT = findUniqueFactOrFail<UnresolvedT> { it.id == referenceT.token }
@@ -1380,7 +1393,7 @@ class AstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should store source location in separate relation`() = withFactbaseFromFile("expressions") {
+            fun `should store source location in separate relation`() = withFactbaseFromFile("protocols") {
                 val subtermT = findUniqueFactOrFail<ProtocolSubtermT> { it.name == "reference" }
                 val referenceT = findUniqueFactOrFail<ProtocolReferenceT> { isContainedIn(it, subtermT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == referenceT.id }

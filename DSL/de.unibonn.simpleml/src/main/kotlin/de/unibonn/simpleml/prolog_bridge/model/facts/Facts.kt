@@ -1685,7 +1685,7 @@ data class ProtocolComplementT(
     override val id: Id<SmlProtocolComplement>,
     override val parent: Id<SmlAbstractObject>,
     override val enclosing: Id<SmlAbstractObject>,
-    val universe: Id<SmlProtocolTokenClass>,
+    val universe: Id<SmlProtocolTokenClass>?,
     val references: List<Id<SmlProtocolReference>>?
 ) : ProtocolTermT("protocolComplementT", id, parent, enclosing, references) {
     override fun toString() = super.toString()
