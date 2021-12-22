@@ -1,9 +1,9 @@
 package de.unibonn.simpleml.constant
 
-import de.unibonn.simpleml.simpleML.SmlPrefixOperation
+import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
 
 /**
- * The possible values for an [SmlPrefixOperation].
+ * The possible operators for an [SmlTypeParameterConstraint].
  */
 enum class SmlTypeParameterConstraintOperator(val operator: String) {
 

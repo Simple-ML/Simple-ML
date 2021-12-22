@@ -1,9 +1,9 @@
 package de.unibonn.simpleml.constant
 
-import de.unibonn.simpleml.simpleML.SmlPrefixOperation
+import de.unibonn.simpleml.simpleML.SmlInfixOperation
 
 /**
- * The possible values for an [SmlPrefixOperation].
+ * The possible operators for an [SmlInfixOperation].
  */
 enum class SmlInfixOperationOperator(val operator: String) {
 

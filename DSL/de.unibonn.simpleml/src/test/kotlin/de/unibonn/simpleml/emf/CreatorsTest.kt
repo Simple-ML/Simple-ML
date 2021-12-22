@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.emf
 
 import de.unibonn.simpleml.constant.SmlFileExtension
+import de.unibonn.simpleml.constant.SmlProtocolTokenClassValue
 import de.unibonn.simpleml.constant.SmlTypeParameterConstraintOperator
 import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
@@ -10,7 +11,8 @@ import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
 import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import io.kotest.assertions.asClue
-import io.kotest.assertions.throwables.shouldThrowExactly
+import io.kotest.assertions.throwables.shouldNotThrow
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -117,7 +119,7 @@ class CreatorsTest {
 
     @Test
     fun `smlAssignment should throw if no type arguments are passed`() {
-        shouldThrowExactly<IllegalArgumentException> {
+        shouldThrow<IllegalArgumentException> {
             createSmlAssignment(listOf(), createSmlInt(1))
         }
     }
@@ -541,6 +543,54 @@ class CreatorsTest {
     }
 
     @Test
+    fun `createSmlProtocolAlternative should throw if fewer than two terms are passed`() {
+        shouldThrow<IllegalArgumentException> {
+            createSmlProtocolAlternative(listOf())
+        }
+
+        shouldThrow<IllegalArgumentException> {
+            createSmlProtocolAlternative(
+                listOf(
+                    createSmlProtocolTokenClass(SmlProtocolTokenClassValue.Anything)
+                )
+            )
+        }
+
+        shouldNotThrow<IllegalArgumentException> {
+            createSmlProtocolAlternative(
+                listOf(
+                    createSmlProtocolTokenClass(SmlProtocolTokenClassValue.Anything),
+                    createSmlProtocolTokenClass(SmlProtocolTokenClassValue.Anything),
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `createSmlProtocolSequence should throw if fewer than two terms are passed`() {
+        shouldThrow<IllegalArgumentException> {
+            createSmlProtocolSequence(listOf())
+        }
+
+        shouldThrow<IllegalArgumentException> {
+            createSmlProtocolSequence(
+                listOf(
+                    createSmlProtocolTokenClass(SmlProtocolTokenClassValue.Anything)
+                )
+            )
+        }
+
+        shouldNotThrow<IllegalArgumentException> {
+            createSmlProtocolSequence(
+                listOf(
+                    createSmlProtocolTokenClass(SmlProtocolTokenClassValue.Anything),
+                    createSmlProtocolTokenClass(SmlProtocolTokenClassValue.Anything),
+                )
+            )
+        }
+    }
+
+    @Test
     fun `createSmlResult should store annotation uses in annotations`() {
         val result = createSmlResult(
             "Test",
@@ -553,7 +603,7 @@ class CreatorsTest {
 
     @Test
     fun `createSmlTemplate should throw if there are fewer than 2 string parts`() {
-        shouldThrowExactly<IllegalArgumentException> {
+        shouldThrow<IllegalArgumentException> {
             createSmlTemplateString(
                 listOf("Test"),
                 listOf(createSmlInt(1))
@@ -563,7 +613,7 @@ class CreatorsTest {
 
     @Test
     fun `createSmlTemplate should throw if there is no template expression`() {
-        shouldThrowExactly<IllegalArgumentException> {
+        shouldThrow<IllegalArgumentException> {
             createSmlTemplateString(
                 listOf("Test", "Test"),
                 listOf()
@@ -573,7 +623,7 @@ class CreatorsTest {
 
     @Test
     fun `createSmlTemplate should throw if numbers of string parts and template expressions don't match`() {
-        shouldThrowExactly<IllegalArgumentException> {
+        shouldThrow<IllegalArgumentException> {
             createSmlTemplateString(
                 listOf("Test", "Test", "Test"),
                 listOf(createSmlInt(1))
@@ -636,8 +686,18 @@ class CreatorsTest {
 
     @Test
     fun `createSmlUnionType should throw if no type arguments are passed`() {
-        shouldThrowExactly<IllegalArgumentException> {
+        shouldThrow<IllegalArgumentException> {
             createSmlUnionType(listOf())
+        }
+
+        shouldNotThrow<IllegalArgumentException> {
+            createSmlUnionType(
+                listOf(
+                    createSmlTypeArgument(
+                        createSmlStarProjection()
+                    )
+                )
+            )
         }
     }
 

@@ -3,7 +3,7 @@ package de.unibonn.simpleml.constant
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 
 /**
- * The possible values for an [SmlPrefixOperation].
+ * The possible operators for an [SmlPrefixOperation].
  */
 enum class SmlPrefixOperationOperator(val operator: String) {
 
