@@ -12,17 +12,17 @@ annotation AnnotationWithRequiredParameters(a: Int)
 // no_semantic_error "Missing argument list."
 @»AnnotationWithoutParameters«
 // no_semantic_error "Missing argument list."
-@»AnnotationWithoutParameters«
+@»AnnotationWithoutParameters()«
 // no_semantic_error "Missing argument list."
 @»AnnotationWithoutRequiredParameters«
 // no_semantic_error "Missing argument list."
-@»AnnotationWithoutRequiredParameters«
-// semantic_error "Missing argument list."
-@»AnnotationWithRequiredParameters«
+@»AnnotationWithoutRequiredParameters()«
 // semantic_error "Missing argument list."
 @»AnnotationWithRequiredParameters«
 // no_semantic_error "Missing argument list."
-@»UnresolvedAnnotation«
+@»AnnotationWithRequiredParameters()«
 // no_semantic_error "Missing argument list."
 @»UnresolvedAnnotation«
+// no_semantic_error "Missing argument list."
+@»UnresolvedAnnotation()«
 class MyClass
