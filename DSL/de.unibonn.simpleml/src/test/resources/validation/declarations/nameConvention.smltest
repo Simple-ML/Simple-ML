@@ -26,6 +26,17 @@ class »Class_Snake_Case« {
     attr »_attributeUnderscore«: Int    
     // semantic_warning "Names of attributes should be lowerCamelCase."
     attr »attribute_snake_case«: Int
+
+    protocol {
+        // semantic_warning "Names of protocol subterms should be lowerCamelCase."
+        subterm »SubtermUppercase« = .;
+        // no_semantic_warning "Names of protocol subterms should be lowerCamelCase."
+        subterm »subtermLowercase1« = .;
+        // semantic_warning "Names of protocol subterms should be lowerCamelCase."
+        subterm »_subtermUnderscore« = .;    
+        // semantic_warning "Names of protocol subterms should be lowerCamelCase."
+        subterm »subterm_snake_case« = .;
+    }
 }
 
 // no_semantic_warning "Names of enums should be UpperCamelCase."
@@ -43,7 +54,16 @@ enum »Enum_Snake_Case« {
     // semantic_warning "Names of enum variants should be UpperCamelCase."
     »_enumVariantUnderscore«
     // semantic_warning "Names of enum variants should be UpperCamelCase."
-    »Enum_Variant_Snake_Case«
+    »Enum_Variant_Snake_Case«<
+        // no_semantic_warning "Names of type parameters should be UpperCamelCase."
+        »TypeParameterUppercase«,
+        // semantic_warning "Names of type parameters should be UpperCamelCase."
+        »typeParameterLowercase1«,
+        // semantic_warning "Names of type parameters should be UpperCamelCase."
+        »_typeParameterUnderscore«,    
+        // semantic_warning "Names of type parameters should be UpperCamelCase."
+        »typeParameter_snake_case«
+    >
 }
 
 // semantic_warning "Names of functions should be lowerCamelCase."
@@ -90,6 +110,17 @@ workflow »workflowLowercase1« {}
 workflow »_workflowUnderscore« {}
 // semantic_warning "Names of workflows should be lowerCamelCase."
 workflow »workflow_snake_case« {
+    lambda {
+        // semantic_warning "Names of lambda results should be lowerCamelCase."
+        yield »LambdaResultUppercase« = 1;
+        // no_semantic_warning "Names of lambda results should be lowerCamelCase."
+        yield »lambdaResultLowercase1« = 1;
+        // semantic_warning "Names of lambda results should be lowerCamelCase."
+        yield »_lambdaResultUnderscore« = 1;    
+        // semantic_warning "Names of lambda results should be lowerCamelCase."
+        yield »lambdaResult_snake_case« = 1;
+    };
+
     // semantic_warning "Names of placeholders should be lowerCamelCase."
     val »PlaceholderUppercase« = 1;
     // no_semantic_warning "Names of placeholders should be lowerCamelCase."

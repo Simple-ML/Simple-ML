@@ -7,22 +7,22 @@ annotation AnnotationWithoutParameters
 annotation AnnotationWithoutRequiredParameters(a: Int or 0)
 
 @MultiUse
-annotation AnnotationWithParameters(a: Int)
+annotation AnnotationWithRequiredParameters(a: Int)
 
 // no_semantic_error "Missing argument list."
 @»AnnotationWithoutParameters«
 // no_semantic_error "Missing argument list."
-@»AnnotationWithoutParameters«
-// semantic_error "Missing argument list."
+@»AnnotationWithoutParameters()«
+// no_semantic_error "Missing argument list."
 @»AnnotationWithoutRequiredParameters«
+// no_semantic_error "Missing argument list."
+@»AnnotationWithoutRequiredParameters()«
 // semantic_error "Missing argument list."
-@»AnnotationWithoutRequiredParameters«
-// semantic_error "Missing argument list."
-@»AnnotationWithParameters«
-// semantic_error "Missing argument list."
-@»AnnotationWithParameters«
+@»AnnotationWithRequiredParameters«
+// no_semantic_error "Missing argument list."
+@»AnnotationWithRequiredParameters()«
 // no_semantic_error "Missing argument list."
 @»UnresolvedAnnotation«
 // no_semantic_error "Missing argument list."
-@»UnresolvedAnnotation«
+@»UnresolvedAnnotation()«
 class MyClass

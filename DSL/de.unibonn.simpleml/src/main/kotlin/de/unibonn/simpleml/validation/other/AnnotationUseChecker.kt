@@ -25,6 +25,7 @@ import de.unibonn.simpleml.stdlib.StdlibAnnotations
 import de.unibonn.simpleml.stdlib.StdlibEnums.AnnotationTargetVariants
 import de.unibonn.simpleml.stdlib.uniqueAnnotationUseOrNull
 import de.unibonn.simpleml.utils.duplicatesBy
+import de.unibonn.simpleml.utils.isRequired
 import de.unibonn.simpleml.utils.isResolved
 import de.unibonn.simpleml.utils.parametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
@@ -69,7 +70,7 @@ class AnnotationUseChecker : AbstractSimpleMLChecker() {
         }
 
         val parameters = smlAnnotationUse.annotation.parametersOrEmpty()
-        if (parameters.isNotEmpty()) {
+        if (parameters.any { it.isRequired() }) {
             error(
                 "Missing argument list.",
                 Literals.SML_ANNOTATION_USE__ANNOTATION,
@@ -140,7 +141,7 @@ class AnnotationUseChecker : AbstractSimpleMLChecker() {
             actualTarget is SmlWorkflow && AnnotationTargetVariants.Workflow !in legalTargets -> {
                 "a workflow"
             }
-            actualTarget is SmlStep && AnnotationTargetVariants.WorkflowStep !in legalTargets -> {
+            actualTarget is SmlStep && AnnotationTargetVariants.Step !in legalTargets -> {
                 "a step"
             }
             else -> null
@@ -158,12 +159,12 @@ class AnnotationUseChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun unnecessaryArgumentList(smlAnnotationUse: SmlAnnotationUse) {
-        if (smlAnnotationUse.argumentList == null) {
+        if (smlAnnotationUse.argumentList == null || smlAnnotationUse.argumentsOrEmpty().isNotEmpty()) {
             return
         }
 
         val parametersOrNull = smlAnnotationUse.argumentList.parametersOrNull()
-        if (parametersOrNull != null && parametersOrNull.isEmpty()) {
+        if (parametersOrNull != null && parametersOrNull.none { it.isRequired() }) {
             info(
                 "Unnecessary argument list.",
                 Literals.SML_ANNOTATION_USE__ARGUMENT_LIST,
