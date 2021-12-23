@@ -25,10 +25,10 @@ class EnumVariantChecker : AbstractSimpleMLChecker() {
     @Check
     fun parameterList(smlEnumVariant: SmlEnumVariant) {
         if (smlEnumVariant.parameterList != null && smlEnumVariant.parametersOrEmpty().isEmpty()) {
-            warning(
-                "An enum variant with an empty parameter list must be instantiated by users. Consider removing the parameter list.",
+            info(
+                "Unnecessary parameter list.",
                 Literals.SML_ENUM_VARIANT__PARAMETER_LIST,
-                WarningCode.EmptyEnumVariantParameterList
+                InfoCode.UnnecessaryParameterList
             )
         }
     }

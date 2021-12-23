@@ -1,5 +1,8 @@
 package de.unibonn.simpleml.validation.expressions
 
+import de.unibonn.simpleml.emf.argumentsOrEmpty
+import de.unibonn.simpleml.emf.parametersOrEmpty
+import de.unibonn.simpleml.emf.typeArgumentsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAssignment
@@ -12,7 +15,9 @@ import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.utils.CallableResult
 import de.unibonn.simpleml.utils.callableOrNull
 import de.unibonn.simpleml.utils.isRecursive
+import de.unibonn.simpleml.utils.isRequired
 import de.unibonn.simpleml.utils.maybeCallable
+import de.unibonn.simpleml.utils.parametersOrNull
 import de.unibonn.simpleml.utils.resultsOrNull
 import de.unibonn.simpleml.utils.typeParametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
@@ -131,6 +136,37 @@ class CallChecker : AbstractSimpleMLChecker() {
                 }
             }
             else -> {}
+        }
+    }
+
+    @Check
+    fun unnecessaryArgumentList(smlCall: SmlCall) {
+
+        // Call has no argument list anyway
+        if (smlCall.argumentList == null) {
+            return
+        }
+
+        // Call is used to pass type arguments or arguments
+        if (smlCall.typeArgumentsOrEmpty().isNotEmpty() || smlCall.argumentsOrEmpty().isNotEmpty()) {
+            return
+        }
+
+        // Receiver is not callable or cannot be resolved
+        val callable = smlCall.callableOrNull() ?: return
+
+        // Only calls to enum variants can sometimes be omitted without changing the meaning of the program
+        if (callable !is SmlEnumVariant) {
+            return
+        }
+
+        // This enum variant does not need to be called
+        if (callable.typeParametersOrEmpty().isEmpty() && callable.parametersOrEmpty().isEmpty()) {
+            info(
+                "Unnecessary argument list.",
+                Literals.SML_CALL__ARGUMENT_LIST,
+                InfoCode.UnnecessaryArgumentList
+            )
         }
     }
 }
