@@ -60,5 +60,7 @@ enum class ErrorCode {
     WRONG_TARGET,
 
     OneProtocolPerClass,
-    OnlyReferenceInstanceMembers
+    OnlyReferenceInstanceMembers,
+
+    MissingTemplateExpression
 }
