@@ -1,16 +1,20 @@
 package de.unibonn.simpleml.emf
 
 import de.unibonn.simpleml.constant.SmlFileExtension
+import de.unibonn.simpleml.constant.SmlPrefixOperationOperator
 import de.unibonn.simpleml.constant.SmlProtocolTokenClassValue
 import de.unibonn.simpleml.constant.SmlTypeParameterConstraintOperator
 import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
+import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlInt
+import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlProtocol
 import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
 import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
 import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
+import de.unibonn.simpleml.testing.assertions.shouldBeCloseTo
 import io.kotest.assertions.asClue
 import io.kotest.assertions.throwables.shouldNotThrow
 import io.kotest.assertions.throwables.shouldThrow
@@ -406,6 +410,18 @@ class CreatorsTest {
     }
 
     @Test
+    fun `createSmlFloat should wrap negative numbers in a prefix operation (-)`() {
+        val float = createSmlFloat(-1.0)
+
+        float.shouldBeInstanceOf<SmlPrefixOperation>()
+        float.operator shouldBe SmlPrefixOperationOperator.Minus.operator
+
+        val operand = float.operand
+        operand.shouldBeInstanceOf<SmlFloat>()
+        operand.value shouldBeCloseTo 1.0
+    }
+
+    @Test
     fun `createSmlFunction should store annotation uses in annotationUseHolder`() {
         val function = createSmlFunction(
             "test",
@@ -473,6 +489,18 @@ class CreatorsTest {
         }
 
         `package`.members.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `createSmlInt should wrap negative numbers in a prefix operation (-)`() {
+        val int = createSmlInt(-1)
+
+        int.shouldBeInstanceOf<SmlPrefixOperation>()
+        int.operator shouldBe SmlPrefixOperationOperator.Minus.operator
+
+        val operand = int.operand
+        operand.shouldBeInstanceOf<SmlInt>()
+        operand.value shouldBe 1
     }
 
     @Test
