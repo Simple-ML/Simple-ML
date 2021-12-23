@@ -9,6 +9,7 @@ import de.unibonn.simpleml.validation.declarations.EnumChecker
 import de.unibonn.simpleml.validation.declarations.EnumVariantChecker
 import de.unibonn.simpleml.validation.declarations.FunctionChecker
 import de.unibonn.simpleml.validation.declarations.ImportChecker
+import de.unibonn.simpleml.validation.declarations.NameConventionChecker
 import de.unibonn.simpleml.validation.declarations.PackageChecker
 import de.unibonn.simpleml.validation.declarations.ParameterChecker
 import de.unibonn.simpleml.validation.declarations.ParameterListChecker
@@ -57,6 +58,8 @@ import org.eclipse.xtext.validation.ComposedChecks
         ResultChecker::class,
         WorkflowChecker::class,
         StepChecker::class,
+
+        NameConventionChecker::class,
 
         // Expressions
         CallChecker::class,
