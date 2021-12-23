@@ -91,6 +91,7 @@ import de.unibonn.simpleml.simpleML.SmlYield
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.resource.XtextResource
+import kotlin.math.absoluteValue
 
 private val factory = SimpleMLFactory.eINSTANCE
 
@@ -621,11 +622,17 @@ fun SmlStep.smlExpressionStatement(expression: SmlAbstractExpression) {
 }
 
 /**
- * Returns a new object of class [SmlFloat].
+ * Returns a new object of class [SmlFloat] if the value is non-negative. Otherwise, the absolute value will be wrapped
+ * in a [SmlPrefixOperation] to negate it.
  */
-fun createSmlFloat(value: Double): SmlFloat {
-    return factory.createSmlFloat().apply {
-        this.value = value
+fun createSmlFloat(value: Double): SmlAbstractExpression {
+    val float = factory.createSmlFloat().apply {
+        this.value = value.absoluteValue
+    }
+
+    return when {
+        value < 0 -> createSmlPrefixOperation(SmlPrefixOperationOperator.Minus, float)
+        else -> float
     }
 }
 
@@ -766,11 +773,17 @@ fun createSmlInfixOperation(
 }
 
 /**
- * Returns a new object of class [SmlInt].
+ * Returns a new object of class [SmlInt] if the value is non-negative. Otherwise, the absolute value will be wrapped in
+ * a [SmlPrefixOperation] to negate it.
  */
-fun createSmlInt(value: Int): SmlInt {
-    return factory.createSmlInt().apply {
-        this.value = value
+fun createSmlInt(value: Int): SmlAbstractExpression {
+    val int = factory.createSmlInt().apply {
+        this.value = value.absoluteValue
+    }
+
+    return when {
+        value < 0 -> createSmlPrefixOperation(SmlPrefixOperationOperator.Minus, int)
+        else -> int
     }
 }
 
