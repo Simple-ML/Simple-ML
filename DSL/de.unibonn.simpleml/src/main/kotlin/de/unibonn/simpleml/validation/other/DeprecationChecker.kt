@@ -12,7 +12,6 @@ import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.stdlib.isDeprecated
 import de.unibonn.simpleml.utils.assignedOrNull
-import de.unibonn.simpleml.utils.maybeAssigned
 import de.unibonn.simpleml.utils.parameterOrNull
 import de.unibonn.simpleml.utils.typeParameterOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
