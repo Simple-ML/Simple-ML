@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.validation.other
 
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
+import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.isNamed
 import de.unibonn.simpleml.utils.isPositional
 import de.unibonn.simpleml.utils.typeParameterOrNull
@@ -42,6 +43,47 @@ class TypeArgumentListChecker : AbstractSimpleMLChecker() {
                     it,
                     null,
                     ErrorCode.NO_POSITIONAL_TYPE_ARGUMENTS_AFTER_FIRST_NAMED_TYPE_ARGUMENT
+                )
+            }
+    }
+
+    @Check
+    fun tooManyTypeArguments(smlTypeArgumentList: SmlTypeArgumentList) {
+        val typeParameter = smlTypeArgumentList.typeParametersOrNull() ?: return
+
+        val maximumExpectedNumberOfArguments = typeParameter.size
+        val actualNumberOfArguments = smlTypeArgumentList.typeArguments.size
+
+        if (actualNumberOfArguments > maximumExpectedNumberOfArguments) {
+            val message = buildString {
+                append("Expected ")
+
+                when (maximumExpectedNumberOfArguments) {
+                    1 -> append("exactly 1 type argument")
+                    else -> append("exactly $maximumExpectedNumberOfArguments type arguments")
+                }
+
+                append(" but got $actualNumberOfArguments.")
+            }
+
+            error(
+                message,
+                null,
+                ErrorCode.TooManyTypeArguments
+            )
+        }
+    }
+
+    @Check
+    fun uniqueTypeParameters(smlTypeArgumentList: SmlTypeArgumentList) {
+        smlTypeArgumentList.typeArguments
+            .duplicatesBy { it.typeParameterOrNull()?.name }
+            .forEach {
+                error(
+                    "The type parameter '${it.typeParameterOrNull()?.name}' is already set.",
+                    it,
+                    null,
+                    ErrorCode.UniqueTypeParameters
                 )
             }
     }
