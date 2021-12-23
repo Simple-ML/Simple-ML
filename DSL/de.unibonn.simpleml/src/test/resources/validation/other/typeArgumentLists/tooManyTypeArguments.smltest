@@ -1,0 +1,14 @@
+package tests.validation.typeArgumentLists.tooManyTypeArguments
+
+class MyClass<T>
+
+step myStep(
+    // no_semantic_error "Expected exactly 1 type argument but got 0."
+    f: MyClass»<>«,
+    // no_semantic_error "Expected exactly 1 type argument but got 1."
+    g: MyClass»<Int>«,
+    // semantic_error "Expected exactly 1 type argument but got 2."
+    h: MyClass»<Int, Int>«,
+    // no_semantic_error
+    i: Unresolved»<Int, Int>«
+) {}
