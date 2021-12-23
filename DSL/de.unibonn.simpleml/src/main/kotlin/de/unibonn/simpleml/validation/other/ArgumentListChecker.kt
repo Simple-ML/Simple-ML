@@ -86,7 +86,6 @@ class ArgumentListChecker : AbstractSimpleMLChecker() {
     @Check
     fun uniqueParameters(smlArgumentList: SmlArgumentList) {
         smlArgumentList.arguments
-            .filter { it.parameterOrNull() != null }
             .duplicatesBy { it.parameterOrNull()?.name }
             .forEach {
                 error(

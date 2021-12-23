@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - [Custom outline and breadcrumbs](https://github.com/Simple-ML/Simple-ML/pull/114)
+- Additional brackets, auto-closing pairs, and surrounding pairs
 ### Changed
 ### Deprecated
 ### Removed
