@@ -8,6 +8,7 @@ enum class WarningCode {
     SegmentsShouldBeLowerCamelCase,
 
     // Deprecation
+    AssignedDeclarationIsDeprecated,
     CorrespondingParameterIsDeprecated,
     CorrespondingTypeParameterIsDeprecated,
     ReferencedDeclarationIsDeprecated,
