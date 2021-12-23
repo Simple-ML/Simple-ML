@@ -197,12 +197,14 @@ class IssueFinderTest {
         return """//\s*(?<severity>\S+)\s*(?:(?<regex>r)?"(?<message>[^"]*)")?"""
             .toRegex()
             .findAll(program)
-            .map { ExpectedIssue(
-                it.groupValues[1],
-                it.groupValues[3],
-                it.groupValues[2] == "r",
-                null
-            ) }
+            .map {
+                ExpectedIssue(
+                    it.groupValues[1],
+                    it.groupValues[3],
+                    it.groupValues[2] == "r",
+                    null
+                )
+            }
             .toList()
     }
 
