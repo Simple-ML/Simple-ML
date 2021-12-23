@@ -50,7 +50,7 @@ annotation AnnotationForTypeParameters
 @Target(AnnotationTarget.Workflow)
 annotation AnnotationForWorkflows
 
-@Target(AnnotationTarget.WorkflowStep)
+@Target(AnnotationTarget.Step)
 annotation AnnotationForSteps
 
 @Target(AnnotationTarget.CompilationUnit, AnnotationTarget.Class)

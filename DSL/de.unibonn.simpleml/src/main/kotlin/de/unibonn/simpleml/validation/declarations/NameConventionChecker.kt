@@ -8,11 +8,14 @@ import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.simpleML.SmlLambdaResult
 import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.simpleML.SmlProtocolSubterm
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
+import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.WarningCode
@@ -66,6 +69,11 @@ class NameConventionChecker : AbstractSimpleMLChecker() {
     }
 
     @Check
+    fun lambdaResultNamesShouldBeLowerCamelCase(smlLambdaResult: SmlLambdaResult) {
+        smlLambdaResult.nameShouldBeLowerCamelCase("lambda results")
+    }
+
+    @Check
     fun parameterNamesShouldBeLowerCamelCase(smlParameter: SmlParameter) {
         smlParameter.nameShouldBeLowerCamelCase("parameters")
     }
@@ -76,6 +84,11 @@ class NameConventionChecker : AbstractSimpleMLChecker() {
     }
 
     @Check
+    fun protocolSubtermNamesShouldBeLowerCamelCase(smlProtocolSubterm: SmlProtocolSubterm) {
+        smlProtocolSubterm.nameShouldBeLowerCamelCase("protocol subterms")
+    }
+
+    @Check
     fun resultNamesShouldBeLowerCamelCase(smlResult: SmlResult) {
         smlResult.nameShouldBeLowerCamelCase("results")
     }
@@ -83,6 +96,11 @@ class NameConventionChecker : AbstractSimpleMLChecker() {
     @Check
     fun stepNamesShouldBeLowerCamelCase(smlStep: SmlStep) {
         smlStep.nameShouldBeLowerCamelCase("steps")
+    }
+
+    @Check
+    fun typeParameterNamesShouldBeUpperCamelCase(smlTypeParameter: SmlTypeParameter) {
+        smlTypeParameter.nameShouldBeUpperCamelCase("type parameters")
     }
 
     @Check
