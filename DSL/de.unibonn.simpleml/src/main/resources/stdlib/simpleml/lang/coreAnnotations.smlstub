@@ -35,9 +35,30 @@ annotation SingleUse
 annotation MultiUse
 
 @Description("The declaration should no longer be used.")
+@Target(
+    AnnotationTarget.Annotation,
+    AnnotationTarget.Attribute,
+    AnnotationTarget.Class,
+    AnnotationTarget.Enum,
+    AnnotationTarget.EnumVariant,
+    AnnotationTarget.Function,
+    AnnotationTarget.Parameter,
+    AnnotationTarget.Result,
+    AnnotationTarget.Step,
+    AnnotationTarget.TypeParameter,
+)
 annotation Deprecated(
-    @Description("Use this instead.")
-    alternative: String
+    @Description("What to use instead.")
+    alternative: String? or null,
+
+    @Description("Why the declaration was deprecated.")
+    reason: String? or null,
+
+    @Description("When the declaration was deprecated.")
+    sinceVersion: String? or null,
+
+    @Description("When the declaration will be removed.")
+    removalVersion: String? or null,
 )
 
 @Description("The function returns the same results for the same arguments and has no side effects.")
