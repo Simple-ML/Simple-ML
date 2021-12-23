@@ -128,12 +128,6 @@ class CallChecker : AbstractSimpleMLChecker() {
                         Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
                         ErrorCode.CALLED_CLASS_MUST_HAVE_CONSTRUCTOR
                     )
-                } else if (callable is SmlEnumVariant && callable.parameterList == null) {
-                    error(
-                        "Cannot create an instance of an enum variant that has no constructor.",
-                        Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
-                        ErrorCode.CALLED_ENUM_VARIANT_MUST_HAVE_CONSTRUCTOR
-                    )
                 }
             }
             else -> {}

@@ -1,7 +1,10 @@
 package tests.validation.other.annotationUses.unnecessaryArgumentList
 
 @MultiUse
-annotation AnnotationWithoutParameters
+annotation AnnotationWithoutParameterList
+
+@MultiUse
+annotation AnnotationWithEmptyParameterList()
 
 @MultiUse
 annotation AnnotationWithoutRequiredParameters(a: Int or 0)
@@ -10,9 +13,13 @@ annotation AnnotationWithoutRequiredParameters(a: Int or 0)
 annotation AnnotationWithRequiredParameters(a: Int)
 
 // semantic_info "Unnecessary argument list."
-@AnnotationWithoutParameters»()«
+@AnnotationWithoutParameterList»()«
 // no_semantic_info "Unnecessary argument list."
-@AnnotationWithoutParameters»(1)«
+@AnnotationWithoutParameterList»(1)«
+// semantic_info "Unnecessary argument list."
+@AnnotationWithEmptyParameterList»()«
+// no_semantic_info "Unnecessary argument list."
+@AnnotationWithEmptyParameterList»(1)«
 // semantic_info "Unnecessary argument list."
 @AnnotationWithoutRequiredParameters»()«
 // no_semantic_info "Unnecessary argument list."

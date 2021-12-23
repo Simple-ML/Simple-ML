@@ -1,0 +1,36 @@
+package tests.validation.expressions.memberAccesses.enumVariantMustBeCalled
+
+enum E {
+    A
+    B()
+    C(c: Int or 0)
+    D(d: Int)
+}
+
+workflow test {
+
+    // no_semantic_error "An enum variant with parameters must be called."
+    »E.A«;
+    // no_semantic_error "An enum variant with parameters must be called."
+    »E.A«();
+
+    // no_semantic_error "An enum variant with parameters must be called."
+    »E.B«;
+    // no_semantic_error "An enum variant with parameters must be called."
+    »E.B«();
+
+    // semantic_error "An enum variant with parameters must be called."
+    »E.C«;
+    // no_semantic_error "An enum variant with parameters must be called."
+    »E.C«();
+
+    // semantic_error "An enum variant with parameters must be called."
+    »E.D«;
+    // no_semantic_error "An enum variant with parameters must be called."
+    »E.D«();
+
+    // no_semantic_error "An enum variant with parameters must be called."
+    »E.Unresolved«;
+    // no_semantic_error "An enum variant with parameters must be called."
+    »E.Unresolved«();
+}
