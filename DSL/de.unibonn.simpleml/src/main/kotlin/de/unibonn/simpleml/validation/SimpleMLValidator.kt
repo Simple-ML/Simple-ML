@@ -23,6 +23,7 @@ import de.unibonn.simpleml.validation.expressions.MemberAccessChecker
 import de.unibonn.simpleml.validation.expressions.TemplateStringChecker
 import de.unibonn.simpleml.validation.other.AnnotationUseChecker
 import de.unibonn.simpleml.validation.other.ArgumentListChecker
+import de.unibonn.simpleml.validation.other.DeprecationChecker
 import de.unibonn.simpleml.validation.other.ProtocolChecker
 import de.unibonn.simpleml.validation.other.TypeArgumentListChecker
 import de.unibonn.simpleml.validation.statements.AssignmentChecker
@@ -79,6 +80,7 @@ import org.eclipse.xtext.validation.ComposedChecks
         // Other
         AnnotationUseChecker::class,
         ArgumentListChecker::class,
+        DeprecationChecker::class,
         ProtocolChecker::class,
         TypeArgumentListChecker::class,
     ]

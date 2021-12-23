@@ -1,0 +1,147 @@
+package tests.validation.declarations.deprecation
+
+@Deprecated
+annotation DeprecatedAnnotation
+annotation ValidAnnotation
+
+@Deprecated
+class DeprecatedClass
+class ValidClass {
+
+    @Deprecated
+    attr deprecatedAttribute: Int
+    attr validAttribute: Int
+}
+
+@Deprecated
+enum DeprecatedEnum
+enum ValidEnum {
+    @Deprecated DeprecatedEnumVariant
+    ValidEnumVariant 
+}
+
+@Deprecated
+fun deprecatedFunction()
+fun validFunction(
+    @Deprecated deprecatedParameter: Int or 1,
+    validParameter: Int or 1
+) -> (
+    @Deprecated deprecatedResult: Int, 
+    validResult: Int
+) 
+
+fun functionWithTypeParameters<@Deprecated DeprecatedTypeParameter, ValidTypeParameter>() where
+
+    /* 
+    * Showing an error for yields is pointless, since constraints must stay.
+    * Deprecation is only relevant for callers.
+    */
+
+    // no_semantic_warning "The referenced declaration is deprecated."
+    »DeprecatedTypeParameter« sub Int,
+    // no_semantic_warning "The referenced declaration is deprecated."
+    »ValidTypeParameter« sub Int,
+
+@Deprecated step deprecatedStep() {}
+step validStep() {}
+
+// semantic_warning "The used annotation is deprecated."
+@»DeprecatedAnnotation«
+// no_semantic_warning "The used annotation is deprecated."
+@»ValidAnnotation«
+// no_semantic_warning "The used annotation is deprecated."
+@»Unresolved«
+step testStep(
+
+    // semantic_warning "The referenced declaration is deprecated."
+    param1: »DeprecatedClass«,
+    // no_semantic_warning "The referenced declaration is deprecated."
+    param2: »ValidClass«,
+
+    // semantic_warning "The referenced declaration is deprecated."
+    param3: »DeprecatedEnum«,
+    // no_semantic_warning "The referenced declaration is deprecated."
+    param4: »ValidEnum«,
+    // no_semantic_warning "The referenced declaration is deprecated."
+    param5: »Unresolved«
+)
+-> (
+    @Deprecated deprecatedResult: Int, 
+    validResult: Int
+) {
+
+    // semantic_warning "The referenced declaration is deprecated."
+    param2.»deprecatedAttribute«;
+    // no_semantic_warning "The referenced declaration is deprecated."
+    param2.»validAttribute«;
+
+    // semantic_warning "The referenced declaration is deprecated."
+    ValidEnum.»DeprecatedEnumVariant«;
+    // no_semantic_warning "The referenced declaration is deprecated."
+    ValidEnum.»ValidEnumVariant«;
+
+    // semantic_warning "The referenced declaration is deprecated."
+    »deprecatedFunction«();
+    // no_semantic_warning "The referenced declaration is deprecated."
+    »validFunction«();
+
+    validFunction(
+        // semantic_warning "The corresponding parameter is deprecated."
+        »deprecatedParameter = 1«,
+        // no_semantic_warning "The corresponding parameter is deprecated."
+        »validParameter = 1«,
+        // no_semantic_warning "The corresponding parameter is deprecated."
+        »unresolved = 1«,
+    );
+
+    validFunction(
+        // semantic_warning "The corresponding parameter is deprecated."
+        »1«,
+        // no_semantic_warning "The corresponding parameter is deprecated."
+        »1«,
+        // no_semantic_warning "The corresponding parameter is deprecated."
+        »1«,
+    );
+
+    // semantic_warning "The referenced declaration is deprecated."
+    validFunction().»deprecatedResult«;
+
+    // no_semantic_warning "The referenced declaration is deprecated."
+    validFunction().»validResult«;
+
+    functionWithTypeParameters<
+        // semantic_warning "The corresponding type parameter is deprecated."
+        »DeprecatedTypeParameter = Int«,
+        // no_semantic_warning "The corresponding type parameter is deprecated."
+        »ValidTypeParameter = Int«,
+        // no_semantic_warning "The corresponding type parameter is deprecated."
+        »Unresolved = Int«
+    >();
+
+    functionWithTypeParameters<
+        // semantic_warning "The corresponding type parameter is deprecated."
+        »Int«,
+        // no_semantic_warning "The corresponding type parameter is deprecated."
+        »Int«,
+        // no_semantic_warning "The corresponding type parameter is deprecated."
+        »Int«
+    >();
+
+    // semantic_warning "The referenced declaration is deprecated."
+    »deprecatedStep«();
+    // no_semantic_warning "The referenced declaration is deprecated."
+    »validStep«();
+
+    // no_semantic_warning "The referenced declaration is deprecated."
+    »unresolved«;
+
+    /* 
+     * Showing an error for yields is pointless, since we must yield something.
+     * Deprecation is only relevant for callers.
+     */
+
+    // no_semantic_warning "The referenced declaration is deprecated."
+    yield »deprecatedResult« = 1;
+    // no_semantic_warning "The referenced declaration is deprecated."
+    yield »validResult« = 1;
+}
