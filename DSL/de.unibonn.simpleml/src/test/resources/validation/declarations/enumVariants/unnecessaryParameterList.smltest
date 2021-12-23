@@ -2,7 +2,9 @@ package tests.validation.declarations.enumVariants.unnecessaryParameterList
 
 enum MyEnum {
     // semantic_info "Unnecessary parameter list."
-    MyVariant1»()«
+    MyVariant1»()«    
+    // semantic_info "Unnecessary parameter list."
+    MyVariant1<T>»()«
     // no_semantic_info "Unnecessary parameter list."
     MyVariant2»(a: Int)«
 }
