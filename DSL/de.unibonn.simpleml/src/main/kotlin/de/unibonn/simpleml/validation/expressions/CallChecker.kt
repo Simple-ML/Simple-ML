@@ -1,5 +1,8 @@
 package de.unibonn.simpleml.validation.expressions
 
+import de.unibonn.simpleml.emf.argumentsOrEmpty
+import de.unibonn.simpleml.emf.parametersOrEmpty
+import de.unibonn.simpleml.emf.typeArgumentsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAssignment
@@ -128,15 +131,40 @@ class CallChecker : AbstractSimpleMLChecker() {
                         Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
                         ErrorCode.CALLED_CLASS_MUST_HAVE_CONSTRUCTOR
                     )
-                } else if (callable is SmlEnumVariant && callable.parameterList == null) {
-                    error(
-                        "Cannot create an instance of an enum variant that has no constructor.",
-                        Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
-                        ErrorCode.CALLED_ENUM_VARIANT_MUST_HAVE_CONSTRUCTOR
-                    )
                 }
             }
             else -> {}
+        }
+    }
+
+    @Check
+    fun unnecessaryArgumentList(smlCall: SmlCall) {
+
+        // Call has no argument list anyway
+        if (smlCall.argumentList == null) {
+            return
+        }
+
+        // Call is used to pass type arguments or arguments
+        if (smlCall.typeArgumentsOrEmpty().isNotEmpty() || smlCall.argumentsOrEmpty().isNotEmpty()) {
+            return
+        }
+
+        // Receiver is not callable or cannot be resolved
+        val callable = smlCall.callableOrNull() ?: return
+
+        // Only calls to enum variants can sometimes be omitted without changing the meaning of the program
+        if (callable !is SmlEnumVariant) {
+            return
+        }
+
+        // This enum variant does not need to be called
+        if (callable.typeParametersOrEmpty().isEmpty() && callable.parametersOrEmpty().isEmpty()) {
+            info(
+                "Unnecessary argument list.",
+                Literals.SML_CALL__ARGUMENT_LIST,
+                InfoCode.UnnecessaryArgumentList
+            )
         }
     }
 }

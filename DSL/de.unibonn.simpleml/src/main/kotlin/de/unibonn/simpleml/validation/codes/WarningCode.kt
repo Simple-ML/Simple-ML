@@ -18,7 +18,6 @@ enum class WarningCode {
 
     // Other
     DuplicateTarget,
-    EmptyEnumVariantParameterList,
     ImplicitlyIgnoredResultOfCall,
     PlaceholderIsRenamingOfDeclaration,
     StatementDoesNothing,
