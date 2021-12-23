@@ -140,7 +140,7 @@ class AnnotationUseChecker : AbstractSimpleMLChecker() {
             actualTarget is SmlWorkflow && AnnotationTargetVariants.Workflow !in legalTargets -> {
                 "a workflow"
             }
-            actualTarget is SmlStep && AnnotationTargetVariants.WorkflowStep !in legalTargets -> {
+            actualTarget is SmlStep && AnnotationTargetVariants.Step !in legalTargets -> {
                 "a step"
             }
             else -> null

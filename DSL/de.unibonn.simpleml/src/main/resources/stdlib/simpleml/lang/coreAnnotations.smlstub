@@ -21,9 +21,9 @@ enum AnnotationTarget {
     Parameter
     Placeholder
     Result
+    Step
     TypeParameter
     Workflow
-    WorkflowStep
 }
 
 @Description("The annotation can only be used once per declaration. This is the default behavior unless @MultiUse is used.")

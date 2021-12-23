@@ -29,8 +29,8 @@ object StdlibEnums {
         val Parameter: QualifiedName = AnnotationTarget.append("Parameter")
         val Placeholder: QualifiedName = AnnotationTarget.append("Placeholder")
         val Result: QualifiedName = AnnotationTarget.append("Result")
+        val Step: QualifiedName = AnnotationTarget.append("Step")
         val TypeParameter: QualifiedName = AnnotationTarget.append("TypeParameter")
         val Workflow: QualifiedName = AnnotationTarget.append("Workflow")
-        val WorkflowStep: QualifiedName = AnnotationTarget.append("WorkflowStep")
     }
 }
