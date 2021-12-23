@@ -15,9 +15,7 @@ import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.utils.CallableResult
 import de.unibonn.simpleml.utils.callableOrNull
 import de.unibonn.simpleml.utils.isRecursive
-import de.unibonn.simpleml.utils.isRequired
 import de.unibonn.simpleml.utils.maybeCallable
-import de.unibonn.simpleml.utils.parametersOrNull
 import de.unibonn.simpleml.utils.resultsOrNull
 import de.unibonn.simpleml.utils.typeParametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
