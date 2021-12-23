@@ -16,15 +16,15 @@ step myStep(
         »B = Int«
     >,
     h: MyClass<
-        // no_semantic_error "The type parameter 'A' is already set."
+        // no_semantic_error r"The type parameter '\w+' is already set\."
         »A = Int«,
-        // no_semantic_error "The type parameter 'B' is already set."
+        // no_semantic_error r"The type parameter '\w+' is already set\."
         »B = Int«
     >,
     i: MyClass<
-        // no_semantic_error "The type parameter 'Unresolved' is already set."
+        // no_semantic_error r"The type parameter '\w+' is already set\."
         »Unresolved = Int«,
-        // no_semantic_error "The type parameter 'Unresolved' is already set."
-        »Unresolve = Int«
+        // no_semantic_error r"The type parameter '\w+' is already set\."
+        »Unresolved = Int«
     >
 ) {}

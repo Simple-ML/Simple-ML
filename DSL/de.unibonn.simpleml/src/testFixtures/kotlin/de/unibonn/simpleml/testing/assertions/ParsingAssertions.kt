@@ -84,6 +84,7 @@ fun List<Issue>.stringify(): String {
 class ExpectedIssue(
     val severity: String,
     val message: String,
+    val messageIsRegex: Boolean,
     private val range: XtextRange?
 ) {
 
@@ -98,9 +99,9 @@ class ExpectedIssue(
     private fun messageMatches(issue: Issue): Boolean {
         return when {
             message.isBlank() -> true
-            "???" !in message -> message == issue.message
+            !messageIsRegex -> message == issue.message
             else -> {
-                val regex = Regex(message.replace("???", "\\w*"))
+                val regex = Regex(message)
                 regex.matches(issue.message)
             }
         }
@@ -117,8 +118,14 @@ class ExpectedIssue(
 
     override fun toString() = buildString {
         append(severity)
+        if (messageIsRegex || message.isNotBlank()) {
+            append(" ")
+        }
+        if (messageIsRegex) {
+            append("r")
+        }
         if (message.isNotBlank()) {
-            append(" \"$message\"")
+            append("\"$message\"")
         }
         range?.let { append(" at $range") }
     }

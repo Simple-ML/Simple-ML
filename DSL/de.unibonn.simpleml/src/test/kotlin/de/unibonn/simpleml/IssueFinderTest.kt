@@ -180,7 +180,12 @@ class IssueFinderTest {
         }
 
         return outerZipBy(severitiesAndMessages(program), locations) { severityAndMessage, location ->
-            ExpectedIssue(severityAndMessage!!.severity, severityAndMessage.message, location)
+            ExpectedIssue(
+                severityAndMessage!!.severity,
+                severityAndMessage.message,
+                severityAndMessage.messageIsRegex,
+                location
+            )
         }
     }
 
@@ -189,10 +194,15 @@ class IssueFinderTest {
     }
 
     private fun severitiesAndMessages(program: String): List<ExpectedIssue> {
-        return """//\s*(?<severity>\S+)\s*(?:"(?<message>[^"]*)")?"""
+        return """//\s*(?<severity>\S+)\s*(?:(?<regex>r)?"(?<message>[^"]*)")?"""
             .toRegex()
             .findAll(program)
-            .map { ExpectedIssue(it.groupValues[1], it.groupValues[2], null) }
+            .map { ExpectedIssue(
+                it.groupValues[1],
+                it.groupValues[3],
+                it.groupValues[2] == "r",
+                null
+            ) }
             .toList()
     }
 
