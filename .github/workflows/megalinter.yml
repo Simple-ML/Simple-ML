@@ -28,7 +28,7 @@ jobs:
       # MegaLinter
       - name: MegaLinter
         id: ml
-        uses: megalinter/megalinter@v5.3.0
+        uses: megalinter/megalinter@v5.4.0
         env:
           DISABLE: COPYPASTE,SPELL
           FILTER_REGEX_EXCLUDE: (\.github/workflows/)
