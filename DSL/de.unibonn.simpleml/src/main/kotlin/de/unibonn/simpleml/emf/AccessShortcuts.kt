@@ -5,6 +5,7 @@ package de.unibonn.simpleml.emf
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractLambda
 import de.unibonn.simpleml.simpleML.SmlAbstractLocalVariable
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlAbstractProtocolTerm
@@ -63,6 +64,12 @@ fun Resource?.compilationUnitOrNull(): SmlCompilationUnit? {
 
 fun SmlAbstractDeclaration?.annotationUsesOrEmpty(): List<SmlAnnotationUse> {
     return this?.annotationUseHolder?.annotations ?: this?.annotations.orEmpty()
+}
+
+// SmlAbstractLambda -------------------------------------------------------------------------------
+
+fun SmlAbstractLambda?.parametersOrEmpty(): List<SmlParameter> {
+    return this?.parameterList?.parameters.orEmpty()
 }
 
 // SmlAnnotation -----------------------------------------------------------------------------------
@@ -212,7 +219,7 @@ fun SmlFunction?.constraintsOrEmpty(): List<SmlAbstractConstraint> {
     return this?.constraintList?.constraints.orEmpty()
 }
 
-// SmlLambda ---------------------------------------------------------------------------------------
+// SmlBlockLambda ----------------------------------------------------------------------------------
 
 fun SmlBlockLambda?.lambdaResultsOrEmpty(): List<SmlBlockLambdaResult> {
     return this.statementsOrEmpty()
@@ -222,10 +229,6 @@ fun SmlBlockLambda?.lambdaResultsOrEmpty(): List<SmlBlockLambdaResult> {
 
 fun SmlBlockLambda?.localVariablesOrEmpty(): List<SmlAbstractLocalVariable> {
     return this.parametersOrEmpty() + this.placeholdersOrEmpty()
-}
-
-fun SmlBlockLambda?.parametersOrEmpty(): List<SmlParameter> {
-    return this?.parameterList?.parameters.orEmpty()
 }
 
 fun SmlBlockLambda?.placeholdersOrEmpty(): List<SmlPlaceholder> {
