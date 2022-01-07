@@ -32,6 +32,7 @@ import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
+import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -892,6 +893,43 @@ data class ArgumentT(
 }
 
 /**
+ * This Prolog fact represents block lambdas.
+ *
+ * @param id
+ * The ID of this fact.
+ *
+ * @param parent
+ * The ID of the fact for the logical parent, e.g. a call.
+ *
+ * @param enclosing
+ * The ID of the fact for closest ancestor that is not an expression.
+ *
+ * @param parameters
+ * The list of parameters. Each element in the list is the ID of a parameterT fact for the respective parameter.The
+ * grammar requires the body to be there so this is never null.
+ *
+ * @param statements
+ * The IDs of the facts for the statements in the body of the lambda. The grammar requires the body to be there
+ * so this is never null.
+ */
+data class BlockLambdaT(
+    override val id: Id<SmlBlockLambda>,
+    override val parent: Id<SmlAbstractObject>,
+    override val enclosing: Id<SmlAbstractObject>,
+    val parameters: List<Id<SmlParameter>>,
+    val statements: List<Id<SmlAbstractStatement>>
+) : ExpressionT(
+    "blockLambdaT",
+    id,
+    parent,
+    enclosing,
+    parameters,
+    statements
+) {
+    override fun toString() = super.toString()
+}
+
+/**
  * This Prolog fact represents boolean literals.
  *
  * @param id
@@ -955,6 +993,42 @@ data class CallT(
     receiver,
     typeArguments,
     arguments
+) {
+    override fun toString() = super.toString()
+}
+
+/**
+ * This Prolog fact represents expression lambdas.
+ *
+ * @param id
+ * The ID of this fact.
+ *
+ * @param parent
+ * The ID of the fact for the logical parent, e.g. a call.
+ *
+ * @param enclosing
+ * The ID of the fact for closest ancestor that is not an expression.
+ *
+ * @param parameters
+ * The list of parameters. Each element in the list is the ID of a parameterT fact for the respective parameter.The
+ * grammar requires the body to be there so this is never null.
+ *
+ * @param result
+ * The ID of the fact for the result of the lambda.
+ */
+data class ExpressionLambdaT(
+    override val id: Id<SmlExpressionLambda>,
+    override val parent: Id<SmlAbstractObject>,
+    override val enclosing: Id<SmlAbstractObject>,
+    val parameters: List<Id<SmlParameter>>,
+    val result: Id<SmlAbstractExpression>
+) : ExpressionT(
+    "expressionLambdaT",
+    id,
+    parent,
+    enclosing,
+    parameters,
+    result
 ) {
     override fun toString() = super.toString()
 }
@@ -1046,42 +1120,6 @@ data class IntT(
     val value: Int
 ) :
     ExpressionT("intT", id, parent, enclosing, value) {
-    override fun toString() = super.toString()
-}
-
-/**
- * This Prolog fact represents block lambdas.
- *
- * @param id
- * The ID of this fact.
- *
- * @param parent
- * The ID of the fact for the logical parent, e.g. a call.
- *
- * @param enclosing
- * The ID of the fact for closest ancestor that is not an expression.
- *
- * @param parameters
- * The list of parameters. Each element in the list is the ID of a parameterT fact for the respective parameter.
- *
- * @param statements
- * The IDs of the facts for the statements in the body of the lambda. The grammar requires the body to be there
- * so this is never null.
- */
-data class BlockLambdaT(
-    override val id: Id<SmlBlockLambda>,
-    override val parent: Id<SmlAbstractObject>,
-    override val enclosing: Id<SmlAbstractObject>,
-    val parameters: List<Id<SmlParameter>>,
-    val statements: List<Id<SmlAbstractStatement>>
-) : ExpressionT(
-    "blockLambdaT",
-    id,
-    parent,
-    enclosing,
-    parameters,
-    statements
-) {
     override fun toString() = super.toString()
 }
 

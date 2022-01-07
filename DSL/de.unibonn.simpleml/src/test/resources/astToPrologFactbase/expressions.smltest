@@ -15,6 +15,18 @@ workflow myWorkflowWithUnresolvedArgument {
     f(myUnresolvedParameter = 2);
 }
 
+// Block lambdas -------------------------------------------------------------------------------------------------------
+workflow myWorkflowWithSimpleBlockLambda {
+    val simpleBlockLambda = () {};
+}
+
+workflow myWorkflowWithComplexBlockLambda {
+    val complexBlockLambda = (a, b) {
+        1;
+        2;
+    };
+}
+
 
 // Calls ---------------------------------------------------------------------------------------------------------------
 workflow myWorkflowWithSimpleCall {
@@ -26,16 +38,13 @@ workflow myWorkflowWithComplexCall {
 }
 
 
-// Lambdas -------------------------------------------------------------------------------------------------------------
-workflow myWorkflowWithSimpleLambda {
-    val simpleLambda = () {};
+// Expression lambdas --------------------------------------------------------------------------------------------------
+workflow myWorkflowWithSimpleExpressionLambda {
+    val simpleExpressionLambda = () -> 1;
 }
 
-workflow myWorkflowWithComplexLambda {
-    val complexLambda = (a, b) {
-        1;
-        2;
-    };
+workflow myWorkflowWithComplexExpressionLambda {
+    val complexExpressionLambda = (a, b) -> 1;
 }
 
 

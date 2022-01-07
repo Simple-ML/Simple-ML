@@ -36,6 +36,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.InfixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.IntT
 import de.unibonn.simpleml.prolog_bridge.model.facts.BlockLambdaResultT
 import de.unibonn.simpleml.prolog_bridge.model.facts.BlockLambdaT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionLambdaT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberAccessT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NamedTypeT
@@ -108,6 +109,7 @@ import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
+import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -468,6 +470,18 @@ class AstToPrologFactbase {
             is SmlBoolean -> {
                 +BooleanT(obj.id, parentId, enclosingId, obj.isTrue)
             }
+            is SmlBlockLambda -> {
+                obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
+                obj.statementsOrEmpty().forEach { visitStatement(it, obj.id) }
+
+                +BlockLambdaT(
+                    obj.id,
+                    parentId,
+                    enclosingId,
+                    obj.parametersOrEmpty().map { it.id },
+                    obj.statementsOrEmpty().map { it.id }
+                )
+            }
             is SmlCall -> {
                 visitExpression(obj.receiver, obj.id, enclosingId)
                 obj.typeArgumentsOrEmpty().forEach { visitTypeArgument(it, obj.id) }
@@ -482,6 +496,18 @@ class AstToPrologFactbase {
                     obj.argumentsOrEmpty().map { it.id }
                 )
             }
+            is SmlExpressionLambda -> {
+                obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
+                visitExpression(obj.result, obj.id, enclosingId)
+
+                +ExpressionLambdaT(
+                    obj.id,
+                    parentId,
+                    enclosingId,
+                    obj.parametersOrEmpty().map { it.id },
+                    obj.result.id
+                )
+            }
             is SmlFloat -> {
                 +FloatT(obj.id, parentId, enclosingId, obj.value)
             }
@@ -493,18 +519,6 @@ class AstToPrologFactbase {
             }
             is SmlInt -> {
                 +IntT(obj.id, parentId, enclosingId, obj.value)
-            }
-            is SmlBlockLambda -> {
-                obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
-                obj.statementsOrEmpty().forEach { visitStatement(it, obj.id) }
-
-                +BlockLambdaT(
-                    obj.id,
-                    parentId,
-                    enclosingId,
-                    obj.parametersOrEmpty().map { it.id },
-                    obj.statementsOrEmpty().map { it.id }
-                )
             }
             is SmlMemberAccess -> {
                 visitExpression(obj.receiver, obj.id, enclosingId)
