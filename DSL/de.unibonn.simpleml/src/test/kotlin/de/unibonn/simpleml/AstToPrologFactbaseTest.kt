@@ -7,6 +7,8 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AssignmentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AttributeT
+import de.unibonn.simpleml.prolog_bridge.model.facts.BlockLambdaResultT
+import de.unibonn.simpleml.prolog_bridge.model.facts.BlockLambdaT
 import de.unibonn.simpleml.prolog_bridge.model.facts.BooleanT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CallT
 import de.unibonn.simpleml.prolog_bridge.model.facts.CallableTypeT
@@ -15,6 +17,7 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.CompilationUnitT
 import de.unibonn.simpleml.prolog_bridge.model.facts.DeclarationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumT
 import de.unibonn.simpleml.prolog_bridge.model.facts.EnumVariantT
+import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionLambdaT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionStatementT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.FloatT
@@ -22,9 +25,6 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InfixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.IntT
-import de.unibonn.simpleml.prolog_bridge.model.facts.BlockLambdaResultT
-import de.unibonn.simpleml.prolog_bridge.model.facts.BlockLambdaT
-import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionLambdaT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberAccessT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NamedTypeT
