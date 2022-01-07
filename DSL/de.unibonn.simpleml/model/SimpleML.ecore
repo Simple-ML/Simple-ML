@@ -176,9 +176,14 @@
     <eClassifiers xsi:type="ecore:EClass" name="SmlTemplateStringStart" eSuperTypes="#//SmlAbstractTemplateStringPart" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlTemplateStringInner" eSuperTypes="#//SmlAbstractTemplateStringPart" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlTemplateStringEnd" eSuperTypes="#//SmlAbstractTemplateStringPart" />
-    <eClassifiers xsi:type="ecore:EClass" name="SmlBlockLambda" eSuperTypes="#//SmlAbstractExpression">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlBlock" containment="true" />
+    <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractLambda" abstract="true" eSuperTypes="#//SmlAbstractExpression">
         <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList" containment="true" />
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SmlBlockLambda" eSuperTypes="#//SmlAbstractLambda">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlBlock" containment="true" />
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SmlExpressionLambda" eSuperTypes="#//SmlAbstractLambda">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="result" eType="#//SmlAbstractExpression" containment="true" />
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlInfixOperation" eSuperTypes="#//SmlAbstractExpression">
         <eStructuralFeatures xsi:type="ecore:EReference" name="leftOperand" eType="#//SmlAbstractExpression" containment="true" />

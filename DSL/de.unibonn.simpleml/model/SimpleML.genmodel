@@ -154,8 +154,8 @@
         <genClasses ecoreClass="SimpleML.ecore#//SmlExpressionStatement">
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlExpressionStatement/expression" />
         </genClasses>
-        <genClasses ecoreClass="SimpleML.ecore#//SmlAbstractExpression" />
-        <genClasses ecoreClass="SimpleML.ecore#//SmlAbstractLiteral" />
+        <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractExpression" />
+        <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractLiteral" />
         <genClasses ecoreClass="SimpleML.ecore#//SmlBoolean">
             <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlBoolean/true" />
         </genClasses>
@@ -178,9 +178,14 @@
         <genClasses ecoreClass="SimpleML.ecore#//SmlTemplateStringStart" />
         <genClasses ecoreClass="SimpleML.ecore#//SmlTemplateStringInner" />
         <genClasses ecoreClass="SimpleML.ecore#//SmlTemplateStringEnd" />
+        <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractLambda">
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAbstractLambda/parameterList" />
+        </genClasses>
         <genClasses ecoreClass="SimpleML.ecore#//SmlBlockLambda">
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlBlockLambda/body" />
-            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlBlockLambda/parameterList" />
+        </genClasses>
+        <genClasses ecoreClass="SimpleML.ecore#//SmlExpressionLambda">
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlExpressionLambda/result" />
         </genClasses>
         <genClasses ecoreClass="SimpleML.ecore#//SmlInfixOperation">
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlInfixOperation/leftOperand" />
