@@ -363,8 +363,7 @@ SmlExpressionStatement
 // Lambdas -------------------------------------------------------------------------------------------------------------
 
 SmlBlockLambda
-    : 'lambda'
-      parameterList=SmlSimpleParameterList?
+    : parameterList=SmlSimpleParameterList?
       body=SmlBlockLambdaBlock
     ;
 
@@ -583,8 +582,7 @@ SmlParenthesizedType
 // Callable Types ------------------------------------------------------------------------------------------------------
 
 SmlCallableType
-    : 'callable'
-      parameterList=SmlParameterList
+    : parameterList=SmlParameterList
       resultList=SmlResultList
     ;
 
