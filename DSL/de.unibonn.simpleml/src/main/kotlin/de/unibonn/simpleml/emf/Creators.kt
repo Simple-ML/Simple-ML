@@ -49,6 +49,7 @@ import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
+import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -301,6 +302,43 @@ fun SmlClass.smlAttribute(
     type: SmlAbstractType? = null
 ) {
     this.addMember(createSmlAttribute(name, annotations, isStatic, type))
+}
+
+/**
+ * Returns a new object of class [SmlBlockLambda].
+ */
+fun createSmlBlockLambda(
+    parameters: List<SmlParameter> = emptyList(),
+    statements: List<SmlAbstractStatement> = emptyList(),
+    init: SmlBlockLambda.() -> Unit = {}
+): SmlBlockLambda {
+    return factory.createSmlBlockLambda().apply {
+        this.parameterList = createSmlParameterList(parameters.ifEmpty { null })
+        this.body = factory.createSmlBlock()
+        statements.forEach { addStatement(it) }
+        this.init()
+    }
+}
+
+/**
+ * Adds a new statement to the receiver.
+ */
+private fun SmlBlockLambda.addStatement(statement: SmlAbstractStatement) {
+    if (this.body == null) {
+        this.body = factory.createSmlBlock()
+    }
+
+    this.body.statements += statement
+}
+
+/**
+ * Returns a new object of class [SmlBlockLambdaResult].
+ */
+fun createSmlBlockLambdaResult(name: String, annotations: List<SmlAnnotationUse> = emptyList()): SmlBlockLambdaResult {
+    return factory.createSmlBlockLambdaResult().apply {
+        this.name = name
+        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
+    }
 }
 
 /**
@@ -592,6 +630,19 @@ fun SmlEnum.smlEnumVariant(
 }
 
 /**
+ * Returns a new object of class [SmlExpressionLambda].
+ */
+fun createSmlExpressionLambda(
+    parameters: List<SmlParameter> = emptyList(),
+    result: SmlAbstractExpression
+): SmlExpressionLambda {
+    return factory.createSmlExpressionLambda().apply {
+        this.parameterList = createSmlParameterList(parameters)
+        this.result = result
+    }
+}
+
+/**
  * Returns a new object of class [SmlExpressionStatement].
  */
 fun createSmlExpressionStatement(expression: SmlAbstractExpression): SmlExpressionStatement {
@@ -784,43 +835,6 @@ fun createSmlInt(value: Int): SmlAbstractExpression {
     return when {
         value < 0 -> createSmlPrefixOperation(SmlPrefixOperationOperator.Minus, int)
         else -> int
-    }
-}
-
-/**
- * Returns a new object of class [SmlBlockLambda].
- */
-fun createSmlBlockLambda(
-    parameters: List<SmlParameter> = emptyList(),
-    statements: List<SmlAbstractStatement> = emptyList(),
-    init: SmlBlockLambda.() -> Unit = {}
-): SmlBlockLambda {
-    return factory.createSmlBlockLambda().apply {
-        this.parameterList = createSmlParameterList(parameters.ifEmpty { null })
-        this.body = factory.createSmlBlock()
-        statements.forEach { addStatement(it) }
-        this.init()
-    }
-}
-
-/**
- * Adds a new statement to the receiver.
- */
-private fun SmlBlockLambda.addStatement(statement: SmlAbstractStatement) {
-    if (this.body == null) {
-        this.body = factory.createSmlBlock()
-    }
-
-    this.body.statements += statement
-}
-
-/**
- * Returns a new object of class [SmlBlockLambdaResult].
- */
-fun createSmlBlockLambdaResult(name: String, annotations: List<SmlAnnotationUse> = emptyList()): SmlBlockLambdaResult {
-    return factory.createSmlBlockLambdaResult().apply {
-        this.name = name
-        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
     }
 }
 

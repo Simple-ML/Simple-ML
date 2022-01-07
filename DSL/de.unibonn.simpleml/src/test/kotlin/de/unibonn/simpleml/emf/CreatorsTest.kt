@@ -197,6 +197,26 @@ class CreatorsTest {
     }
 
     @Test
+    fun `createSmlBlockLambda should omit empty parameter lists`() {
+        val lambda = createSmlBlockLambda(parameters = emptyList())
+        lambda.parameterList.shouldBeNull()
+    }
+
+    @Test
+    fun `createSmlBlockLambdaResult should store annotation uses in annotationUseHolder`() {
+        val lambdaResult = createSmlBlockLambdaResult(
+            "test",
+            listOf(createSmlAnnotationUse("Test"))
+        )
+
+        lambdaResult.annotations.shouldHaveSize(0)
+
+        val annotationUseHolder = lambdaResult.annotationUseHolder
+        annotationUseHolder.shouldNotBeNull()
+        annotationUseHolder.annotations.shouldHaveSize(1)
+    }
+
+    @Test
     fun `createSmlCall should omit empty type argument lists`() {
         val call = createSmlCall(
             createSmlNull(),
@@ -501,26 +521,6 @@ class CreatorsTest {
         val operand = int.operand
         operand.shouldBeInstanceOf<SmlInt>()
         operand.value shouldBe 1
-    }
-
-    @Test
-    fun `createSmlLambda should omit empty parameter lists`() {
-        val lambda = createSmlBlockLambda(parameters = emptyList())
-        lambda.parameterList.shouldBeNull()
-    }
-
-    @Test
-    fun `createSmlLambdaResult should store annotation uses in annotationUseHolder`() {
-        val lambdaResult = createSmlBlockLambdaResult(
-            "test",
-            listOf(createSmlAnnotationUse("Test"))
-        )
-
-        lambdaResult.annotations.shouldHaveSize(0)
-
-        val annotationUseHolder = lambdaResult.annotationUseHolder
-        annotationUseHolder.shouldNotBeNull()
-        annotationUseHolder.annotations.shouldHaveSize(1)
     }
 
     @Test
