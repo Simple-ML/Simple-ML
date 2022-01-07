@@ -362,36 +362,36 @@ SmlExpressionStatement
 
 // Lambdas -------------------------------------------------------------------------------------------------------------
 
-SmlLambda
+SmlBlockLambda
     : 'lambda'
       parameterList=SmlSimpleParameterList?
-      body=SmlLambdaBlock
+      body=SmlBlockLambdaBlock
     ;
 
-SmlLambdaBlock returns SmlBlock
-    : {SmlBlock} '{' statements+=SmlLambdaStatement* '}'
+SmlBlockLambdaBlock returns SmlBlock
+    : {SmlBlock} '{' statements+=SmlBlockLambdaStatement* '}'
     ;
 
-SmlLambdaStatement returns SmlAbstractStatement
-    : SmlLambdaAssignment
+SmlBlockLambdaStatement returns SmlAbstractStatement
+    : SmlBlockLambdaAssignment
     | SmlExpressionStatement
     ;
 
-SmlLambdaAssignment returns SmlAssignment
-    : assigneeList=SmlLambdaAssigneeList '=' expression=SmlExpression ';'
+SmlBlockLambdaAssignment returns SmlAssignment
+    : assigneeList=SmlBlockLambdaAssigneeList '=' expression=SmlExpression ';'
     ;
 
-SmlLambdaAssigneeList returns SmlAssigneeList
-    : {SmlAssigneeList} assignees+=SmlLambdaAssignee
-    | {SmlAssigneeList} '(' (assignees+=SmlLambdaAssignee (',' assignees+=SmlLambdaAssignee)* ','?)? ')'
+SmlBlockLambdaAssigneeList returns SmlAssigneeList
+    : {SmlAssigneeList} assignees+=SmlBlockLambdaAssignee
+    | {SmlAssigneeList} '(' (assignees+=SmlBlockLambdaAssignee (',' assignees+=SmlBlockLambdaAssignee)* ','?)? ')'
     ;
 
-SmlLambdaAssignee returns SmlAbstractAnnotatedObject
+SmlBlockLambdaAssignee returns SmlAbstractAnnotatedObject
     : {SmlWildcard} '_'
     |
     ( {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
         ( {SmlPlaceholder.annotationUseHolder=current} 'val' name=ID
-        | {SmlLambdaResult.annotationUseHolder=current} 'yield' name=ID
+        | {SmlBlockLambdaResult.annotationUseHolder=current} 'yield' name=ID
         )
     )
     ;
@@ -483,7 +483,7 @@ SmlCallArgument returns SmlArgument
     ;
 
 SmlPrimaryExpression returns SmlAbstractExpression
-    : SmlLambda
+    : SmlBlockLambda
     | SmlLiteral
     | SmlParenthesizedExpression
     | SmlReference

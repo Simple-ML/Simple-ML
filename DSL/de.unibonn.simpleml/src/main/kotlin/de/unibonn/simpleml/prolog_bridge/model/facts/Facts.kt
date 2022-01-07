@@ -30,8 +30,8 @@ import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
-import de.unibonn.simpleml.simpleML.SmlLambda
-import de.unibonn.simpleml.simpleML.SmlLambdaResult
+import de.unibonn.simpleml.simpleML.SmlBlockLambda
+import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -689,7 +689,7 @@ data class StepT(
 sealed class StatementT(
     factName: String,
     id: Id<SmlAbstractStatement>,
-    parent: Id<SmlAbstractObject>, // SmlLambda | SmlWorkflow | SmlWorkflowStep
+    parent: Id<SmlAbstractObject>, // SmlBlockLambda | SmlWorkflow | SmlWorkflowStep
     vararg otherArguments: Any?
 ) :
     NodeWithParent(factName, id, parent, *otherArguments)
@@ -725,7 +725,7 @@ data class AssignmentT(
 interface AssigneeT
 
 /**
- * This Prolog fact represents results of a lambda.
+ * This Prolog fact represents results of a block lambda.
  *
  * @param id
  * The ID of this fact.
@@ -736,12 +736,12 @@ interface AssigneeT
  * @param name
  * The name of the result.
  */
-data class LambdaResultT(
-    override val id: Id<SmlLambdaResult>,
+data class BlockLambdaResultT(
+    override val id: Id<SmlBlockLambdaResult>,
     override val parent: Id<SmlAssignment>,
     override val name: String
 ) :
-    DeclarationT("lambdaResultT", id, parent, name), AssigneeT {
+    DeclarationT("blockLambdaResultT", id, parent, name), AssigneeT {
     override fun toString() = super.toString()
 }
 
@@ -1050,7 +1050,7 @@ data class IntT(
 }
 
 /**
- * This Prolog fact represents lambdas.
+ * This Prolog fact represents block lambdas.
  *
  * @param id
  * The ID of this fact.
@@ -1070,14 +1070,14 @@ data class IntT(
  * The IDs of the facts for the statements in the body of the lambda. The grammar requires the body to be there
  * so this is never null.
  */
-data class LambdaT(
-    override val id: Id<SmlLambda>,
+data class BlockLambdaT(
+    override val id: Id<SmlBlockLambda>,
     override val parent: Id<SmlAbstractObject>,
     override val enclosing: Id<SmlAbstractObject>,
     val parameters: List<Id<SmlParameter>>?,
     val statements: List<Id<SmlAbstractStatement>>
 ) : ExpressionT(
-    "lambdaT",
+    "blockLambdaT",
     id,
     parent,
     enclosing,

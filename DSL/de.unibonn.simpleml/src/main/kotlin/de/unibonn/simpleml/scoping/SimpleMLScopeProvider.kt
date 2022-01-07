@@ -25,7 +25,7 @@ import de.unibonn.simpleml.simpleML.SmlBlock
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlConstraintList
-import de.unibonn.simpleml.simpleML.SmlLambda
+import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -212,7 +212,7 @@ class SimpleMLScopeProvider @Inject constructor(
         val placeholders = containingBlock.placeholdersUpTo(containingStatement)
 
         return when (val callable = containingBlock.eContainer()) {
-            is SmlLambda -> Scopes.scopeFor(
+            is SmlBlockLambda -> Scopes.scopeFor(
                 placeholders + callable.parametersOrEmpty(),
                 localDeclarations(callable, parentScope)
             )

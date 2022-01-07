@@ -23,8 +23,8 @@ import de.unibonn.simpleml.simpleML.SmlConstraintList
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.simpleML.SmlLambda
-import de.unibonn.simpleml.simpleML.SmlLambdaResult
+import de.unibonn.simpleml.simpleML.SmlBlockLambda
+import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
@@ -89,8 +89,8 @@ fun SmlAssignment?.assigneesOrEmpty(): List<SmlAbstractAssignee> {
         .orEmpty()
 }
 
-fun SmlAssignment?.lambdaResultsOrEmpty(): List<SmlLambdaResult> {
-    return this.assigneesOrEmpty().filterIsInstance<SmlLambdaResult>()
+fun SmlAssignment?.lambdaResultsOrEmpty(): List<SmlBlockLambdaResult> {
+    return this.assigneesOrEmpty().filterIsInstance<SmlBlockLambdaResult>()
 }
 
 fun SmlAssignment?.placeholdersOrEmpty(): List<SmlPlaceholder> {
@@ -214,27 +214,27 @@ fun SmlFunction?.constraintsOrEmpty(): List<SmlAbstractConstraint> {
 
 // SmlLambda ---------------------------------------------------------------------------------------
 
-fun SmlLambda?.lambdaResultsOrEmpty(): List<SmlLambdaResult> {
+fun SmlBlockLambda?.lambdaResultsOrEmpty(): List<SmlBlockLambdaResult> {
     return this.statementsOrEmpty()
         .filterIsInstance<SmlAssignment>()
         .flatMap { it.lambdaResultsOrEmpty() }
 }
 
-fun SmlLambda?.localVariablesOrEmpty(): List<SmlAbstractLocalVariable> {
+fun SmlBlockLambda?.localVariablesOrEmpty(): List<SmlAbstractLocalVariable> {
     return this.parametersOrEmpty() + this.placeholdersOrEmpty()
 }
 
-fun SmlLambda?.parametersOrEmpty(): List<SmlParameter> {
+fun SmlBlockLambda?.parametersOrEmpty(): List<SmlParameter> {
     return this?.parameterList?.parameters.orEmpty()
 }
 
-fun SmlLambda?.placeholdersOrEmpty(): List<SmlPlaceholder> {
+fun SmlBlockLambda?.placeholdersOrEmpty(): List<SmlPlaceholder> {
     return this.statementsOrEmpty()
         .filterIsInstance<SmlAssignment>()
         .flatMap { it.placeholdersOrEmpty() }
 }
 
-fun SmlLambda?.statementsOrEmpty(): List<SmlAbstractStatement> {
+fun SmlBlockLambda?.statementsOrEmpty(): List<SmlAbstractStatement> {
     return this?.body?.statements.orEmpty()
 }
 
@@ -325,7 +325,7 @@ fun EObject?.containingDeclarationOrNull() = this?.closestAncestorOrNull<SmlAbst
 fun EObject?.containingEnumOrNull() = this?.closestAncestorOrNull<SmlEnum>()
 fun EObject?.containingCompilationUnitOrNull() = this?.closestAncestorOrNull<SmlCompilationUnit>()
 fun EObject?.containingFunctionOrNull() = this?.closestAncestorOrNull<SmlFunction>()
-fun EObject?.containingLambdaOrNull() = this?.closestAncestorOrNull<SmlLambda>()
+fun EObject?.containingLambdaOrNull() = this?.closestAncestorOrNull<SmlBlockLambda>()
 fun EObject?.containingPackageOrNull() = this?.closestAncestorOrNull<SmlPackage>()
 fun EObject?.containingProtocolOrNull() = this?.closestAncestorOrNull<SmlProtocol>()
 fun EObject?.containingWorkflowOrNull() = this?.closestAncestorOrNull<SmlWorkflow>()

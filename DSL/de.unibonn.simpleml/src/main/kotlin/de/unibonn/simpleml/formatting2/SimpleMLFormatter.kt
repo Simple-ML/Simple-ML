@@ -42,8 +42,8 @@ import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlImportAlias
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
-import de.unibonn.simpleml.simpleML.SmlLambda
-import de.unibonn.simpleml.simpleML.SmlLambdaResult
+import de.unibonn.simpleml.simpleML.SmlBlockLambda
+import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -790,7 +790,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // Keyword ")"
                 doc.formatKeyword(obj, ")", noSpace, null)
             }
-            is SmlLambdaResult -> {
+            is SmlBlockLambdaResult -> {
 
                 // Features "annotations"
                 doc.formatAnnotations(obj, inlineAnnotations = true)
@@ -890,7 +890,7 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // EObject "operand"
                 doc.formatObject(obj.operand)
             }
-            is SmlLambda -> {
+            is SmlBlockLambda -> {
 
                 // Keyword "lambda"
                 doc.formatKeyword(obj, "lambda", null, oneSpace)

@@ -131,7 +131,7 @@ class CreatorsTest {
 
     @Test
     fun `smlAssignment should add the created assignment to the receiving lambda`() {
-        val lambda = createSmlLambda {
+        val lambda = createSmlBlockLambda {
             smlAssignment(
                 listOf(createSmlWildcard()),
                 createSmlInt(1)
@@ -378,7 +378,7 @@ class CreatorsTest {
 
     @Test
     fun `smlExpressionStatement should add the created expression statement to the receiving lambda`() {
-        val lambda = createSmlLambda {
+        val lambda = createSmlBlockLambda {
             smlExpressionStatement(createSmlInt(1))
         }
 
@@ -505,13 +505,13 @@ class CreatorsTest {
 
     @Test
     fun `createSmlLambda should omit empty parameter lists`() {
-        val lambda = createSmlLambda(parameters = emptyList())
+        val lambda = createSmlBlockLambda(parameters = emptyList())
         lambda.parameterList.shouldBeNull()
     }
 
     @Test
     fun `createSmlLambdaResult should store annotation uses in annotationUseHolder`() {
-        val lambdaResult = createSmlLambdaResult(
+        val lambdaResult = createSmlBlockLambdaResult(
             "test",
             listOf(createSmlAnnotationUse("Test"))
         )

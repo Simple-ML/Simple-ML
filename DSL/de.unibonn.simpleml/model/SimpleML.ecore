@@ -148,7 +148,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="SmlYield" eSuperTypes="#//SmlAbstractAssignee">
         <eStructuralFeatures xsi:type="ecore:EReference" name="result" eType="#//SmlResult" />
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SmlLambdaResult" eSuperTypes="#//SmlAbstractDeclaration #//SmlAbstractAssignee" />
+    <eClassifiers xsi:type="ecore:EClass" name="SmlBlockLambdaResult" eSuperTypes="#//SmlAbstractDeclaration #//SmlAbstractAssignee" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlExpressionStatement" eSuperTypes="#//SmlAbstractStatement">
         <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//SmlAbstractExpression" containment="true" />
     </eClassifiers>
@@ -176,7 +176,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="SmlTemplateStringStart" eSuperTypes="#//SmlAbstractTemplateStringPart" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlTemplateStringInner" eSuperTypes="#//SmlAbstractTemplateStringPart" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlTemplateStringEnd" eSuperTypes="#//SmlAbstractTemplateStringPart" />
-    <eClassifiers xsi:type="ecore:EClass" name="SmlLambda" eSuperTypes="#//SmlAbstractExpression">
+    <eClassifiers xsi:type="ecore:EClass" name="SmlBlockLambda" eSuperTypes="#//SmlAbstractExpression">
         <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlBlock" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList" containment="true" />
     </eClassifiers>

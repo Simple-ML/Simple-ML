@@ -13,7 +13,7 @@ import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.simpleML.SmlLambdaResult
+import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlParameter
@@ -1914,7 +1914,7 @@ class ScopingTest {
             @Test
             fun `should resolve result of lambda with one result without matching member`() = withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlStep>("referencesToLambdaResults")
-                val singleResult = step.findUniqueDeclarationOrFail<SmlLambdaResult>("singleResult")
+                val singleResult = step.findUniqueDeclarationOrFail<SmlBlockLambdaResult>("singleResult")
 
                 val references = step.descendants<SmlReference>().toList()
                 references.shouldHaveSize(7)
@@ -1942,7 +1942,7 @@ class ScopingTest {
             @Test
             fun `should resolve result of lambda with multiple results`() = withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlStep>("referencesToLambdaResults")
-                val result1 = step.findUniqueDeclarationOrFail<SmlLambdaResult>("result1")
+                val result1 = step.findUniqueDeclarationOrFail<SmlBlockLambdaResult>("result1")
 
                 val references = step.descendants<SmlReference>().toList()
                 references.shouldHaveSize(7)

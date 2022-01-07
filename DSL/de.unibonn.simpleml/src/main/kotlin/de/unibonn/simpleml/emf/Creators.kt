@@ -47,8 +47,8 @@ import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlImportAlias
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
-import de.unibonn.simpleml.simpleML.SmlLambda
-import de.unibonn.simpleml.simpleML.SmlLambdaResult
+import de.unibonn.simpleml.simpleML.SmlBlockLambda
+import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -256,7 +256,7 @@ fun createSmlAssignment(assignees: List<SmlAbstractAssignee>, expression: SmlAbs
 /**
  * Adds a new object of class [SmlAssignment] to the receiver.
  */
-fun SmlLambda.smlAssignment(assignees: List<SmlAbstractAssignee>, expression: SmlAbstractExpression) {
+fun SmlBlockLambda.smlAssignment(assignees: List<SmlAbstractAssignee>, expression: SmlAbstractExpression) {
     this.addStatement(createSmlAssignment(assignees, expression))
 }
 
@@ -603,7 +603,7 @@ fun createSmlExpressionStatement(expression: SmlAbstractExpression): SmlExpressi
 /**
  * Adds a new object of class [SmlExpressionStatement] to the receiver.
  */
-fun SmlLambda.smlExpressionStatement(expression: SmlAbstractExpression) {
+fun SmlBlockLambda.smlExpressionStatement(expression: SmlAbstractExpression) {
     this.addStatement(createSmlExpressionStatement(expression))
 }
 
@@ -788,14 +788,14 @@ fun createSmlInt(value: Int): SmlAbstractExpression {
 }
 
 /**
- * Returns a new object of class [SmlLambda].
+ * Returns a new object of class [SmlBlockLambda].
  */
-fun createSmlLambda(
+fun createSmlBlockLambda(
     parameters: List<SmlParameter> = emptyList(),
     statements: List<SmlAbstractStatement> = emptyList(),
-    init: SmlLambda.() -> Unit = {}
-): SmlLambda {
-    return factory.createSmlLambda().apply {
+    init: SmlBlockLambda.() -> Unit = {}
+): SmlBlockLambda {
+    return factory.createSmlBlockLambda().apply {
         this.parameterList = createSmlParameterList(parameters.ifEmpty { null })
         this.body = factory.createSmlBlock()
         statements.forEach { addStatement(it) }
@@ -806,7 +806,7 @@ fun createSmlLambda(
 /**
  * Adds a new statement to the receiver.
  */
-private fun SmlLambda.addStatement(statement: SmlAbstractStatement) {
+private fun SmlBlockLambda.addStatement(statement: SmlAbstractStatement) {
     if (this.body == null) {
         this.body = factory.createSmlBlock()
     }
@@ -815,10 +815,10 @@ private fun SmlLambda.addStatement(statement: SmlAbstractStatement) {
 }
 
 /**
- * Returns a new object of class [SmlLambdaResult].
+ * Returns a new object of class [SmlBlockLambdaResult].
  */
-fun createSmlLambdaResult(name: String, annotations: List<SmlAnnotationUse> = emptyList()): SmlLambdaResult {
-    return factory.createSmlLambdaResult().apply {
+fun createSmlBlockLambdaResult(name: String, annotations: List<SmlAnnotationUse> = emptyList()): SmlBlockLambdaResult {
+    return factory.createSmlBlockLambdaResult().apply {
         this.name = name
         this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
     }

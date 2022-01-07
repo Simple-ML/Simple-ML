@@ -12,7 +12,7 @@ import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.simpleML.SmlLambdaResult
+import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
@@ -123,7 +123,7 @@ class AnnotationUseChecker : AbstractSimpleMLChecker() {
             actualTarget is SmlFunction && AnnotationTargetVariants.Function !in legalTargets -> {
                 "a function"
             }
-            actualTarget is SmlLambdaResult && AnnotationTargetVariants.LambdaResult !in legalTargets -> {
+            actualTarget is SmlBlockLambdaResult && AnnotationTargetVariants.LambdaResult !in legalTargets -> {
                 "a lambda result"
             }
             actualTarget is SmlParameter && AnnotationTargetVariants.Parameter !in legalTargets -> {

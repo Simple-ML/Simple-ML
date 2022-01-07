@@ -34,8 +34,8 @@ import de.unibonn.simpleml.prolog_bridge.model.facts.FunctionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ImportT
 import de.unibonn.simpleml.prolog_bridge.model.facts.InfixOperationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.IntT
-import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaResultT
-import de.unibonn.simpleml.prolog_bridge.model.facts.LambdaT
+import de.unibonn.simpleml.prolog_bridge.model.facts.BlockLambdaResultT
+import de.unibonn.simpleml.prolog_bridge.model.facts.BlockLambdaT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberAccessT
 import de.unibonn.simpleml.prolog_bridge.model.facts.MemberTypeT
 import de.unibonn.simpleml.prolog_bridge.model.facts.NamedTypeT
@@ -106,8 +106,8 @@ import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
-import de.unibonn.simpleml.simpleML.SmlLambda
-import de.unibonn.simpleml.simpleML.SmlLambdaResult
+import de.unibonn.simpleml.simpleML.SmlBlockLambda
+import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -426,10 +426,10 @@ class AstToPrologFactbase {
 
     private fun PlFactbase.visitAssignee(obj: SmlAbstractAssignee, parentId: Id<SmlAssignment>) {
         when (obj) {
-            is SmlLambdaResult -> {
+            is SmlBlockLambdaResult -> {
                 obj.annotationUsesOrEmpty().forEach { visitAnnotationUse(it, obj.id) }
 
-                +LambdaResultT(obj.id, parentId, obj.name)
+                +BlockLambdaResultT(obj.id, parentId, obj.name)
             }
             is SmlPlaceholder -> {
                 obj.annotationUsesOrEmpty().forEach { visitAnnotationUse(it, obj.id) }
@@ -494,11 +494,11 @@ class AstToPrologFactbase {
             is SmlInt -> {
                 +IntT(obj.id, parentId, enclosingId, obj.value)
             }
-            is SmlLambda -> {
+            is SmlBlockLambda -> {
                 obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
                 obj.statementsOrEmpty().forEach { visitStatement(it, obj.id) }
 
-                +LambdaT(
+                +BlockLambdaT(
                     obj.id,
                     parentId,
                     enclosingId,
