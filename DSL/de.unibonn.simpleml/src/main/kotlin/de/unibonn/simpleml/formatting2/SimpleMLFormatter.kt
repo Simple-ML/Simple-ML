@@ -44,6 +44,7 @@ import de.unibonn.simpleml.simpleML.SmlImportAlias
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
+import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -841,6 +842,14 @@ class SimpleMLFormatter : AbstractFormatter2() {
              * Expressions
              **********************************************************************************************************/
 
+            is SmlBlockLambda -> {
+
+                // EObject "parameterList"
+                doc.formatObject(obj.parameterList, null, oneSpace)
+
+                // EObject "body"
+                doc.formatObject(obj.body, oneSpace, null)
+            }
             is SmlCall -> {
 
                 // EObject "receiver"
@@ -851,6 +860,17 @@ class SimpleMLFormatter : AbstractFormatter2() {
 
                 // EObject "argumentList"
                 doc.formatObject(obj.argumentList)
+            }
+            is SmlExpressionLambda -> {
+
+                // EObject "parameterList"
+                doc.formatObject(obj.parameterList, null, oneSpace)
+
+                // Keyword "->"
+                doc.formatKeyword(obj, "->", oneSpace, oneSpace)
+
+                // EObject "result"
+                doc.formatObject(obj.result, oneSpace, null)
             }
             is SmlInfixOperation -> {
 
@@ -877,6 +897,17 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // EObject "member"
                 doc.formatObject(obj.member, noSpace, null)
             }
+            is SmlParenthesizedExpression -> {
+
+                // Keyword "("
+                doc.formatKeyword(obj, "(", null, noSpace)
+
+                // EObject "expression"
+                doc.formatObject(obj.expression, noSpace, noSpace)
+
+                // Keyword ")"
+                doc.formatKeyword(obj, ")", noSpace, null)
+            }
             is SmlPrefixOperation -> {
 
                 // Feature "operator"
@@ -889,28 +920,6 @@ class SimpleMLFormatter : AbstractFormatter2() {
 
                 // EObject "operand"
                 doc.formatObject(obj.operand)
-            }
-            is SmlBlockLambda -> {
-
-                // Keyword "lambda"
-                doc.formatKeyword(obj, "lambda", null, oneSpace)
-
-                // EObject "parameterList"
-                doc.formatObject(obj.parameterList, oneSpace, oneSpace)
-
-                // EObject "body"
-                doc.formatObject(obj.body, oneSpace, null)
-            }
-            is SmlParenthesizedExpression -> {
-
-                // Keyword "("
-                doc.formatKeyword(obj, "(", null, noSpace)
-
-                // EObject "expression"
-                doc.formatObject(obj.expression, noSpace, noSpace)
-
-                // Keyword ")"
-                doc.formatKeyword(obj, ")", noSpace, null)
             }
             is SmlTemplateString -> {
 
