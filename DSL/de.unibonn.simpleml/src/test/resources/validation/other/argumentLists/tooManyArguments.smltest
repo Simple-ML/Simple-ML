@@ -29,7 +29,7 @@ fun myFunction1(a: Int, b: Int or 0)
 fun myFunction2(a: Int)
 fun myFunction3(vararg a: Int)
 
-step g(f1: callable (a: Int, b: Int or 0) -> (), f2: callable (a: Int) -> (), f3: callable (vararg a: Int) -> ()) {
+step g(f1: (a: Int, b: Int or 0) -> (), f2: (a: Int) -> (), f3: (vararg a: Int) -> ()) {
     // semantic_error "Expected between 1 and 2 arguments but got 3."
     f1»(1, 2, 3)«;
     // semantic_error "Expected exactly 1 argument but got 3."
@@ -77,7 +77,7 @@ workflow myWorkflow {
     myFunction3»(1, 2)«;
 
     // semantic_error "Expected exactly 1 argument but got 3."
-    lambda (a: Int) {}»(1, 2, 3)«;
+    (a) {}»(1, 2, 3)«;
     // no_semantic_error "Expected exactly 1 argument but got 0."
-    lambda (a: Int) {}»(1)«;
+    (a) {}»(1)«;
 }

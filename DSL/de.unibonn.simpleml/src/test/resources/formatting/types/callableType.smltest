@@ -1,10 +1,10 @@
-step s1(f: callable    (  )
+step s1(f:     (  )
   ->    (   )) {}
 
-step s2(f: callable   (   )   ->
+step s2(f:    (   )   ->
 result  :   Int    ) {}
 
-step s3(f: callable
+step s3(f: 
     (  @AnnotationUse      a
     :   Int  ,   vararg   b  :
      Int  or   3 )    -> (
@@ -13,8 +13,8 @@ step s3(f: callable
 
 // -----------------------------------------------------------------------------
 
-step s1(f: callable () -> ()) {}
+step s1(f: () -> ()) {}
 
-step s2(f: callable () -> result: Int) {}
+step s2(f: () -> result: Int) {}
 
-step s3(f: callable (@AnnotationUse a: Int, vararg b: Int or 3) -> (@AnnotationUse a: Int, b: Int)) {}
+step s3(f: (@AnnotationUse a: Int, vararg b: Int or 3) -> (@AnnotationUse a: Int, b: Int)) {}

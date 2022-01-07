@@ -9,6 +9,8 @@ import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAttribute
+import de.unibonn.simpleml.simpleML.SmlBlockLambda
+import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlBoolean
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCallableType
@@ -19,8 +21,6 @@ import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
-import de.unibonn.simpleml.simpleML.SmlLambda
-import de.unibonn.simpleml.simpleML.SmlLambdaResult
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -95,11 +95,11 @@ class TypeComputer @Inject constructor(
                 parametersOrEmpty().map { it.inferType(false) },
                 resultsOrEmpty().map { it.inferType(false) }
             )
-            this is SmlLambdaResult -> {
+            this is SmlBlockLambdaResult -> {
                 val assigned = assignedOrNull() ?: return ANY
                 assigned.inferType(isStatic = false)
             }
-            this is SmlParameter -> type.inferType(isStatic = false)
+            this is SmlParameter -> type?.inferType(isStatic = false) ?: ANY
             this is SmlPlaceholder -> {
                 val assigned = assignedOrNull() ?: return ANY
                 assigned.inferType(isStatic = false)
@@ -137,7 +137,7 @@ class TypeComputer @Inject constructor(
                         else -> TupleType(results.map { it.inferType(false) })
                     }
                 }
-                is SmlLambda -> {
+                is SmlBlockLambda -> {
                     val results = callable.lambdaResultsOrEmpty()
                     when (results.size) {
                         1 -> results.first().inferType(false)
@@ -165,7 +165,7 @@ class TypeComputer @Inject constructor(
                 "?:" -> ANY // TODO
                 else -> NothingType
             }
-            this is SmlLambda -> CallableType(
+            this is SmlBlockLambda -> CallableType(
                 parametersOrEmpty().map { it.inferType(false) },
                 lambdaResultsOrEmpty().map { it.inferType(false) }
             )

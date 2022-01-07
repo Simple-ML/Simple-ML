@@ -31,7 +31,7 @@
             "patterns": [
                 {
                     "name": "keyword.control.simple-ml",
-                    "match": "\\b(_|and|annotation|as|attr|callable|class|enum|false|fun|import|in|lambda|not|null|or|out|package|protocol|static|step|sub|subterm|super|true|union|val|vararg|where|workflow|yield)\\b"
+                    "match": "\\b(_|and|annotation|as|attr|class|enum|false|fun|import|in|not|null|or|out|package|protocol|static|step|sub|subterm|super|true|union|val|vararg|where|workflow|yield)\\b"
                 }
             ]
         },

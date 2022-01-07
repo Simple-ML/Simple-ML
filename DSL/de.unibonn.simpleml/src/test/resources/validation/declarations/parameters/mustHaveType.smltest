@@ -21,9 +21,8 @@ class MyClass(»a«, »b«: Int) {
 fun myFunction(»a«, »b«: Int)
 
 workflow myWorkflow {
-    // semantic_error "A parameter must have a type."
     // no_semantic_error "A parameter must have a type."
-    lambda (»a«, »b«: Int) {};
+    (»a«) {};
 }
 
 // semantic_error "A parameter must have a type."
@@ -33,5 +32,5 @@ step myStep1(»a«, »b«: Int) {}
 // semantic_error "A parameter must have a type."
 // no_semantic_error "A parameter must have a type."
 step myStep2(
-    f: callable (»a«, »b«: Int) -> ()
+    f: (»a«, »b«: Int) -> ()
 ) {}

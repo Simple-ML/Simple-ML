@@ -28,7 +28,7 @@ enum E {
 )
 fun f(a: Int, b: Int or 0)
 
-step g(f: callable (a: Int, b: Int or 0) -> ()) {
+step g(f: (a: Int, b: Int or 0) -> ()) {
     f(
         // semantic_error "The parameter 'a' is already set."
         »1«,
@@ -108,19 +108,19 @@ workflow test {
         »b = 1«
     );
 
-    lambda (a: Int, b: Int) {}(
+    (a, b) {}(
         // semantic_error "The parameter 'a' is already set."
         »1«,
         // semantic_error "The parameter 'a' is already set."
         »a = 1«
     );
-    lambda (a: Int, b: Int) {}(
+    (a, b) {}(
         // semantic_error "The parameter 'b' is already set."
         »b = 1«,
         // semantic_error "The parameter 'b' is already set."
         »b = 1«
     );
-    lambda (a: Int, b: Int) {}(
+    (a, b) {}(
         // no_semantic_error "The parameter 'a' is already set."
         »a = 1«,
         // no_semantic_error "The parameter 'b' is already set."

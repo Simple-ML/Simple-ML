@@ -146,7 +146,7 @@ fun testFunction(
 // no_semantic_error "This annotation cannot be applied to a workflow."
 »@AnnotationForAnything«
 workflow testWorkflow {
-    lambda {
+    () {
         (
 
             // semantic_error "This annotation cannot be applied to a lambda result."

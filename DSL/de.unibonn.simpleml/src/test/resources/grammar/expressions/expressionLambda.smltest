@@ -1,9 +1,7 @@
 // no_syntax_error
 
 workflow myWorkflow {
-    call();
+    () -> 1;
 
-    () {
-        call();
-    };
+    (a, b) -> 1;
 }

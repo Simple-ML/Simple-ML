@@ -27,7 +27,7 @@ step a() {
     »f«();
 
     /* For now we still want to treat this as an error even though the lambda is never run */
-    lambda {
+    () {
         // semantic_error "Recursive calls are not allowed."
         »a«();
         // no_semantic_error "Recursive calls are not allowed."
@@ -40,17 +40,17 @@ step a() {
         »f«();
     };
 
-    val lambda1 = lambda {
+    val lambda1 = () {
         // no_semantic_error "Recursive calls are not allowed."
         »lambda1«();
     };
 
-    val lambda2 = lambda {
+    val lambda2 = () {
         // no_semantic_error "Recursive calls are not allowed."
         »lambda3«();
     };
 
-    val lambda3 = lambda {
+    val lambda3 = () {
         // no_semantic_error "Recursive calls are not allowed."
         »lambda2«();
     };

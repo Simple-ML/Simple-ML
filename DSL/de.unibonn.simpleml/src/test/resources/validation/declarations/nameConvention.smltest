@@ -110,7 +110,7 @@ workflow »workflowLowercase1« {}
 workflow »_workflowUnderscore« {}
 // semantic_warning "Names of workflows should be lowerCamelCase."
 workflow »workflow_snake_case« {
-    lambda {
+    () {
         // semantic_warning "Names of lambda results should be lowerCamelCase."
         yield »LambdaResultUppercase« = 1;
         // no_semantic_warning "Names of lambda results should be lowerCamelCase."

@@ -3,8 +3,8 @@ package de.unibonn.simpleml.validation.statements
 import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAssignment
+import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlCall
-import de.unibonn.simpleml.simpleML.SmlLambdaResult
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlYield
@@ -47,7 +47,7 @@ class AssignmentChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun hasNoEffect(smlAssignment: SmlAssignment) {
-        if (smlAssignment.assigneesOrEmpty().any { it is SmlPlaceholder || it is SmlYield || it is SmlLambdaResult }) {
+        if (smlAssignment.assigneesOrEmpty().any { it is SmlPlaceholder || it is SmlYield || it is SmlBlockLambdaResult }) {
             return
         }
 

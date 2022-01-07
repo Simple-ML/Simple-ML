@@ -17,6 +17,8 @@ import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlAttribute
+import de.unibonn.simpleml.simpleML.SmlBlockLambda
+import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlBoolean
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCallableType
@@ -24,14 +26,13 @@ import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
+import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
-import de.unibonn.simpleml.simpleML.SmlLambda
-import de.unibonn.simpleml.simpleML.SmlLambdaResult
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -689,7 +690,7 @@ data class StepT(
 sealed class StatementT(
     factName: String,
     id: Id<SmlAbstractStatement>,
-    parent: Id<SmlAbstractObject>, // SmlLambda | SmlWorkflow | SmlWorkflowStep
+    parent: Id<SmlAbstractObject>, // SmlBlockLambda | SmlWorkflow | SmlWorkflowStep
     vararg otherArguments: Any?
 ) :
     NodeWithParent(factName, id, parent, *otherArguments)
@@ -725,7 +726,7 @@ data class AssignmentT(
 interface AssigneeT
 
 /**
- * This Prolog fact represents results of a lambda.
+ * This Prolog fact represents results of a block lambda.
  *
  * @param id
  * The ID of this fact.
@@ -736,12 +737,12 @@ interface AssigneeT
  * @param name
  * The name of the result.
  */
-data class LambdaResultT(
-    override val id: Id<SmlLambdaResult>,
+data class BlockLambdaResultT(
+    override val id: Id<SmlBlockLambdaResult>,
     override val parent: Id<SmlAssignment>,
     override val name: String
 ) :
-    DeclarationT("lambdaResultT", id, parent, name), AssigneeT {
+    DeclarationT("blockLambdaResultT", id, parent, name), AssigneeT {
     override fun toString() = super.toString()
 }
 
@@ -892,6 +893,43 @@ data class ArgumentT(
 }
 
 /**
+ * This Prolog fact represents block lambdas.
+ *
+ * @param id
+ * The ID of this fact.
+ *
+ * @param parent
+ * The ID of the fact for the logical parent, e.g. a call.
+ *
+ * @param enclosing
+ * The ID of the fact for closest ancestor that is not an expression.
+ *
+ * @param parameters
+ * The list of parameters. Each element in the list is the ID of a parameterT fact for the respective parameter.The
+ * grammar requires the body to be there so this is never null.
+ *
+ * @param statements
+ * The IDs of the facts for the statements in the body of the lambda. The grammar requires the body to be there
+ * so this is never null.
+ */
+data class BlockLambdaT(
+    override val id: Id<SmlBlockLambda>,
+    override val parent: Id<SmlAbstractObject>,
+    override val enclosing: Id<SmlAbstractObject>,
+    val parameters: List<Id<SmlParameter>>,
+    val statements: List<Id<SmlAbstractStatement>>
+) : ExpressionT(
+    "blockLambdaT",
+    id,
+    parent,
+    enclosing,
+    parameters,
+    statements
+) {
+    override fun toString() = super.toString()
+}
+
+/**
  * This Prolog fact represents boolean literals.
  *
  * @param id
@@ -955,6 +993,42 @@ data class CallT(
     receiver,
     typeArguments,
     arguments
+) {
+    override fun toString() = super.toString()
+}
+
+/**
+ * This Prolog fact represents expression lambdas.
+ *
+ * @param id
+ * The ID of this fact.
+ *
+ * @param parent
+ * The ID of the fact for the logical parent, e.g. a call.
+ *
+ * @param enclosing
+ * The ID of the fact for closest ancestor that is not an expression.
+ *
+ * @param parameters
+ * The list of parameters. Each element in the list is the ID of a parameterT fact for the respective parameter.The
+ * grammar requires the body to be there so this is never null.
+ *
+ * @param result
+ * The ID of the fact for the result of the lambda.
+ */
+data class ExpressionLambdaT(
+    override val id: Id<SmlExpressionLambda>,
+    override val parent: Id<SmlAbstractObject>,
+    override val enclosing: Id<SmlAbstractObject>,
+    val parameters: List<Id<SmlParameter>>,
+    val result: Id<SmlAbstractExpression>
+) : ExpressionT(
+    "expressionLambdaT",
+    id,
+    parent,
+    enclosing,
+    parameters,
+    result
 ) {
     override fun toString() = super.toString()
 }
@@ -1046,44 +1120,6 @@ data class IntT(
     val value: Int
 ) :
     ExpressionT("intT", id, parent, enclosing, value) {
-    override fun toString() = super.toString()
-}
-
-/**
- * This Prolog fact represents lambdas.
- *
- * @param id
- * The ID of this fact.
- *
- * @param parent
- * The ID of the fact for the logical parent, e.g. a call.
- *
- * @param enclosing
- * The ID of the fact for closest ancestor that is not an expression.
- *
- * @param parameters
- * The list of parameters or null. Each element in the list is the ID of a parameterT fact for the respective parameter.
- * Note that an empty list is used for a call with an empty parameter list, e.g. `lambda a() {}`, while null is used
- * for a lambda with no parameter list at all, like `lambda b {}`.
- *
- * @param statements
- * The IDs of the facts for the statements in the body of the lambda. The grammar requires the body to be there
- * so this is never null.
- */
-data class LambdaT(
-    override val id: Id<SmlLambda>,
-    override val parent: Id<SmlAbstractObject>,
-    override val enclosing: Id<SmlAbstractObject>,
-    val parameters: List<Id<SmlParameter>>?,
-    val statements: List<Id<SmlAbstractStatement>>
-) : ExpressionT(
-    "lambdaT",
-    id,
-    parent,
-    enclosing,
-    parameters,
-    statements
-) {
     override fun toString() = super.toString()
 }
 
