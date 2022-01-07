@@ -1,9 +1,9 @@
 workflow myWorkflow {
-    lambda       {
+    ()       {
 
     };
-    lambda      (  a  :   Int
-         ,   b  :  Int )
+          (  a  
+         ,   b   )
      {
  val a = 1;    };
 }
@@ -11,8 +11,8 @@ workflow myWorkflow {
 // -----------------------------------------------------------------------------
 
 workflow myWorkflow {
-    lambda {};
-    lambda (a: Int, b: Int) {
+    () {};
+    (a, b) {
         val a = 1;
     };
 }

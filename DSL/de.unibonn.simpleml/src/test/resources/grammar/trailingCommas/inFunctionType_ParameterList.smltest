@@ -3,5 +3,5 @@ package tests.trailingComma.inFunctionTypeParameterList
 // no_syntax_error
 
 step s(
-    f: callable (x: Int, y: Int, ) -> ()
+    f: (x: Int, y: Int, ) -> ()
 ) {}

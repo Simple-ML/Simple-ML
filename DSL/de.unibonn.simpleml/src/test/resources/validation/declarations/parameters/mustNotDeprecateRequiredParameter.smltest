@@ -28,5 +28,5 @@ step myStep1(»@Deprecated("")« a: Int, »@Deprecated("")« b: Int or 3) {}
 // semantic_error "A required parameter cannot be deprecated."
 // no_semantic_error "A required parameter cannot be deprecated."
 step myStep2(
-    f: callable (»@Deprecated("")« a: Int, »@Deprecated("")« b: Int or 3) -> ()
+    f: (»@Deprecated("")« a: Int, »@Deprecated("")« b: Int or 3) -> ()
 ) {}

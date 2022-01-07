@@ -4,11 +4,11 @@ import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAttribute
+import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.simpleML.SmlLambdaResult
 import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
@@ -69,8 +69,8 @@ class NameConventionChecker : AbstractSimpleMLChecker() {
     }
 
     @Check
-    fun lambdaResultNamesShouldBeLowerCamelCase(smlLambdaResult: SmlLambdaResult) {
-        smlLambdaResult.nameShouldBeLowerCamelCase("lambda results")
+    fun lambdaResultNamesShouldBeLowerCamelCase(smlBlockLambdaResult: SmlBlockLambdaResult) {
+        smlBlockLambdaResult.nameShouldBeLowerCamelCase("lambda results")
     }
 
     @Check

@@ -17,8 +17,8 @@ step stepInSameFile(parameterInStepInSameFile: Int) {}
 
 enum notAParameter
 
-step stepForArgument(callableInSameStep: callable (parameterInCallableInSameStep: Int) -> ()) {
-    val lambdaInSameStep = lambda (parameterInLambdaInSameStep: Int) {};
+step stepForArgument(callableInSameStep: (parameterInCallableInSameStep: Int) -> ()) {
+    val lambdaInSameStep = (parameterInLambdaInSameStep) {};
     callableInSameStep(parameterInCallableInSameStep = 1);
     ClassInSameFile(parameterInClassInSameFile = 1);
     EnumInSameFile.EnumVariantInSameFile(parameterInEnumVariantInSameFile = 1);

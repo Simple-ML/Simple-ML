@@ -131,7 +131,7 @@ class CreatorsTest {
 
     @Test
     fun `smlAssignment should add the created assignment to the receiving lambda`() {
-        val lambda = createSmlLambda {
+        val lambda = createSmlBlockLambda {
             smlAssignment(
                 listOf(createSmlWildcard()),
                 createSmlInt(1)
@@ -194,6 +194,26 @@ class CreatorsTest {
         val body = `class`.body
         body.shouldNotBeNull()
         body.members.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `createSmlBlockLambda should omit empty parameter lists`() {
+        val lambda = createSmlBlockLambda(parameters = emptyList())
+        lambda.parameterList.shouldBeNull()
+    }
+
+    @Test
+    fun `createSmlBlockLambdaResult should store annotation uses in annotationUseHolder`() {
+        val lambdaResult = createSmlBlockLambdaResult(
+            "test",
+            listOf(createSmlAnnotationUse("Test"))
+        )
+
+        lambdaResult.annotations.shouldHaveSize(0)
+
+        val annotationUseHolder = lambdaResult.annotationUseHolder
+        annotationUseHolder.shouldNotBeNull()
+        annotationUseHolder.annotations.shouldHaveSize(1)
     }
 
     @Test
@@ -378,7 +398,7 @@ class CreatorsTest {
 
     @Test
     fun `smlExpressionStatement should add the created expression statement to the receiving lambda`() {
-        val lambda = createSmlLambda {
+        val lambda = createSmlBlockLambda {
             smlExpressionStatement(createSmlInt(1))
         }
 
@@ -501,26 +521,6 @@ class CreatorsTest {
         val operand = int.operand
         operand.shouldBeInstanceOf<SmlInt>()
         operand.value shouldBe 1
-    }
-
-    @Test
-    fun `createSmlLambda should omit empty parameter lists`() {
-        val lambda = createSmlLambda(parameters = emptyList())
-        lambda.parameterList.shouldBeNull()
-    }
-
-    @Test
-    fun `createSmlLambdaResult should store annotation uses in annotationUseHolder`() {
-        val lambdaResult = createSmlLambdaResult(
-            "test",
-            listOf(createSmlAnnotationUse("Test"))
-        )
-
-        lambdaResult.annotations.shouldHaveSize(0)
-
-        val annotationUseHolder = lambdaResult.annotationUseHolder
-        annotationUseHolder.shouldNotBeNull()
-        annotationUseHolder.annotations.shouldHaveSize(1)
     }
 
     @Test

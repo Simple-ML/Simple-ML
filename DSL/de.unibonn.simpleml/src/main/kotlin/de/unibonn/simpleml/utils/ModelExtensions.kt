@@ -24,6 +24,7 @@ import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlArgumentList
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlAttribute
+import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
@@ -31,7 +32,6 @@ import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
-import de.unibonn.simpleml.simpleML.SmlLambda
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -156,7 +156,7 @@ private fun SmlCall.isRecursive(origin: Set<EObject>, visited: Set<EObject>): Bo
     return when (val callable = this.callableOrNull()) {
         is SmlStep -> callable in origin || callable !in visited && callable.descendants<SmlCall>()
             .any { it.isRecursive(origin, visited + callable) }
-        is SmlLambda -> callable in origin || callable !in visited && callable.descendants<SmlCall>()
+        is SmlBlockLambda -> callable in origin || callable !in visited && callable.descendants<SmlCall>()
             .any { it.isRecursive(origin, visited + callable) }
         else -> false
     }
@@ -168,7 +168,7 @@ fun SmlCall.parametersOrNull(): List<SmlParameter>? {
         is SmlEnumVariant -> callable.parametersOrEmpty()
         is SmlFunction -> callable.parametersOrEmpty()
         is SmlCallableType -> callable.parametersOrEmpty()
-        is SmlLambda -> callable.parametersOrEmpty()
+        is SmlBlockLambda -> callable.parametersOrEmpty()
         is SmlStep -> callable.parametersOrEmpty()
         else -> null
     }
@@ -180,7 +180,7 @@ fun SmlCall.resultsOrNull(): List<SmlAbstractDeclaration>? {
         is SmlEnumVariant -> listOf(callable)
         is SmlFunction -> callable.resultsOrEmpty()
         is SmlCallableType -> callable.resultsOrEmpty()
-        is SmlLambda -> callable.lambdaResultsOrEmpty()
+        is SmlBlockLambda -> callable.lambdaResultsOrEmpty()
         is SmlStep -> callable.resultsOrEmpty()
         else -> null
     }
@@ -283,7 +283,7 @@ fun EObject?.isCallable() =
         this is SmlEnumVariant ||
         this is SmlFunction ||
         this is SmlCallableType ||
-        this is SmlLambda ||
+        this is SmlBlockLambda ||
         this is SmlStep
 
 // Enum ----------------------------------------------------------------------------------------------------------------
@@ -301,7 +301,7 @@ fun SmlAbstractExpression.hasSideEffects(): Boolean {
         val callable = this.callableOrNull()
         return callable is SmlFunction && !callable.isPure() ||
             callable is SmlStep && !callable.isInferredPure() ||
-            callable is SmlLambda && !callable.isInferredPure()
+            callable is SmlBlockLambda && !callable.isInferredPure()
     }
 
     return false
@@ -330,7 +330,7 @@ fun SmlImport.aliasName() = this.alias?.name
 
 // Lambda --------------------------------------------------------------------------------------------------------------
 
-fun SmlLambda.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }
+fun SmlBlockLambda.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }
 
 // Parameter -----------------------------------------------------------------------------------------------------------
 

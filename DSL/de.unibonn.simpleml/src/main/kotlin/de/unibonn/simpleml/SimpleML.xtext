@@ -302,14 +302,6 @@ SmlParameter
       ('or' defaultValue=SmlExpression)?
     ;
 
-SmlSimpleParameterList returns SmlParameterList
-    : {SmlParameterList} '(' (parameters+=SmlSimpleParameter (',' parameters+=SmlSimpleParameter)* ','?)? ')'
-    ;
-
-SmlSimpleParameter returns SmlParameter
-    : name=ID (':' type=SmlType)?
-    ;
-
 
 // Results -------------------------------------------------------------------------------------------------------------
 
@@ -359,50 +351,19 @@ SmlExpressionStatement
     : expression=SmlExpression ';'
     ;
 
-
-// Lambdas -------------------------------------------------------------------------------------------------------------
-
-SmlLambda
-    : 'lambda'
-      parameterList=SmlSimpleParameterList?
-      body=SmlLambdaBlock
-    ;
-
-SmlLambdaBlock returns SmlBlock
-    : {SmlBlock} '{' statements+=SmlLambdaStatement* '}'
-    ;
-
-SmlLambdaStatement returns SmlAbstractStatement
-    : SmlLambdaAssignment
-    | SmlExpressionStatement
-    ;
-
-SmlLambdaAssignment returns SmlAssignment
-    : assigneeList=SmlLambdaAssigneeList '=' expression=SmlExpression ';'
-    ;
-
-SmlLambdaAssigneeList returns SmlAssigneeList
-    : {SmlAssigneeList} assignees+=SmlLambdaAssignee
-    | {SmlAssigneeList} '(' (assignees+=SmlLambdaAssignee (',' assignees+=SmlLambdaAssignee)* ','?)? ')'
-    ;
-
-SmlLambdaAssignee returns SmlAbstractAnnotatedObject
-    : {SmlWildcard} '_'
-    |
-    ( {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
-        ( {SmlPlaceholder.annotationUseHolder=current} 'val' name=ID
-        | {SmlLambdaResult.annotationUseHolder=current} 'yield' name=ID
-        )
-    )
-    ;
-
-
 /**********************************************************************************************************************
  * Expressions
  **********************************************************************************************************************/
 
 SmlExpression returns SmlAbstractExpression
-    : SmlOrExpression
+    : SmlExpressionLambda
+    | SmlOrExpression
+    ;
+
+SmlExpressionLambda
+    : parameterList=SmlLambdaParameterList
+      '->'
+      result=SmlExpression
     ;
 
 SmlOrExpression returns SmlAbstractExpression
@@ -483,7 +444,7 @@ SmlCallArgument returns SmlArgument
     ;
 
 SmlPrimaryExpression returns SmlAbstractExpression
-    : SmlLambda
+    : SmlBlockLambda
     | SmlLiteral
     | SmlParenthesizedExpression
     | SmlReference
@@ -519,6 +480,17 @@ SmlString
     : value=STRING
     ;
 
+SmlReference
+    : declaration=[SmlAbstractDeclaration]
+    ;
+
+SmlParenthesizedExpression
+    : '(' expression=SmlExpression ')'
+    ;
+
+
+// Template strings ----------------------------------------------------------------------------------------------------
+
 SmlTemplateString
     : expressions+=SmlTemplateStringStart expressions+=SmlExpression?
       (expressions+=SmlTemplateStringInner expressions+=SmlExpression?)*
@@ -537,12 +509,48 @@ SmlTemplateStringEnd
     : value=TEMPLATE_STRING_END
     ;
 
-SmlReference
-    : declaration=[SmlAbstractDeclaration]
+
+// Block lambdas -------------------------------------------------------------------------------------------------------
+
+SmlBlockLambda
+    : parameterList=SmlLambdaParameterList
+      body=SmlBlockLambdaBlock
     ;
 
-SmlParenthesizedExpression
-    : '(' expression=SmlExpression ')'
+SmlBlockLambdaBlock returns SmlBlock
+    : {SmlBlock} '{' statements+=SmlBlockLambdaStatement* '}'
+    ;
+
+SmlBlockLambdaStatement returns SmlAbstractStatement
+    : SmlBlockLambdaAssignment
+    | SmlExpressionStatement
+    ;
+
+SmlBlockLambdaAssignment returns SmlAssignment
+    : assigneeList=SmlBlockLambdaAssigneeList '=' expression=SmlExpression ';'
+    ;
+
+SmlBlockLambdaAssigneeList returns SmlAssigneeList
+    : {SmlAssigneeList} assignees+=SmlBlockLambdaAssignee
+    | {SmlAssigneeList} '(' (assignees+=SmlBlockLambdaAssignee (',' assignees+=SmlBlockLambdaAssignee)* ','?)? ')'
+    ;
+
+SmlBlockLambdaAssignee returns SmlAbstractAnnotatedObject
+    : {SmlWildcard} '_'
+    |
+    ( {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
+        ( {SmlPlaceholder.annotationUseHolder=current} 'val' name=ID
+        | {SmlBlockLambdaResult.annotationUseHolder=current} 'yield' name=ID
+        )
+    )
+    ;
+
+SmlLambdaParameterList returns SmlParameterList
+    : {SmlParameterList} '(' (parameters+=SmlLambdaParameter (',' parameters+=SmlLambdaParameter)* ','?)? ')'
+    ;
+
+SmlLambdaParameter returns SmlParameter
+    : name=ID
     ;
 
 
@@ -583,8 +591,7 @@ SmlParenthesizedType
 // Callable Types ------------------------------------------------------------------------------------------------------
 
 SmlCallableType
-    : 'callable'
-      parameterList=SmlParameterList
+    : parameterList=SmlParameterList
       resultList=SmlResultList
     ;
 
