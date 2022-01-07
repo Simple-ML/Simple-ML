@@ -502,7 +502,7 @@ class AstToPrologFactbase {
                     obj.id,
                     parentId,
                     enclosingId,
-                    obj.parameterList?.parameters?.map { it.id },
+                    obj.parametersOrEmpty().map { it.id },
                     obj.statementsOrEmpty().map { it.id }
                 )
             }

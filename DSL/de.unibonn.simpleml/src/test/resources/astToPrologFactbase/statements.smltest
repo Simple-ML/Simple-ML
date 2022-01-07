@@ -13,7 +13,7 @@ step myFunctionalStep() -> a {
     ) = f();
 
     // Expression statement
-    lambda () {
+    () {
 
         // Lambda result
         yield mySimpleLambdaResult = 1;

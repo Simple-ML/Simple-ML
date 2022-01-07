@@ -1062,9 +1062,7 @@ data class IntT(
  * The ID of the fact for closest ancestor that is not an expression.
  *
  * @param parameters
- * The list of parameters or null. Each element in the list is the ID of a parameterT fact for the respective parameter.
- * Note that an empty list is used for a call with an empty parameter list, e.g. `lambda a() {}`, while null is used
- * for a lambda with no parameter list at all, like `lambda b {}`.
+ * The list of parameters. Each element in the list is the ID of a parameterT fact for the respective parameter.
  *
  * @param statements
  * The IDs of the facts for the statements in the body of the lambda. The grammar requires the body to be there
@@ -1074,7 +1072,7 @@ data class BlockLambdaT(
     override val id: Id<SmlBlockLambda>,
     override val parent: Id<SmlAbstractObject>,
     override val enclosing: Id<SmlAbstractObject>,
-    val parameters: List<Id<SmlParameter>>?,
+    val parameters: List<Id<SmlParameter>>,
     val statements: List<Id<SmlAbstractStatement>>
 ) : ExpressionT(
     "blockLambdaT",

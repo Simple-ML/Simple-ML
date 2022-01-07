@@ -1,17 +1,17 @@
 package tests.uniqueNames
 
 workflow w {
-    lambda (
+    (
         // semantic_error "A parameter, result or placeholder with name 'duplicateParameter' exists already in this lambda."
-        »duplicateParameter«: Int,
+        »duplicateParameter«,
         // semantic_error "A parameter, result or placeholder with name 'duplicateParameter' exists already in this lambda."
-        »duplicateParameter«: Int,
+        »duplicateParameter«,
         // no_semantic_error "A parameter, result or placeholder with name 'uniqueParameter' exists already in this lambda."
-        »uniqueParameter«: Int,
+        »uniqueParameter«,
         // semantic_error "A parameter, result or placeholder with name 'parameterAndPlaceholder' exists already in this lambda."
-        »parameterAndPlaceholder«: Int,
+        »parameterAndPlaceholder«,
         // semantic_error "A parameter, result or placeholder with name 'parameterAndResult' exists already in this lambda."
-        »parameterAndResult«: Int
+        »parameterAndResult«
     ) {
         // semantic_error "A parameter, result or placeholder with name 'duplicatePlaceholder' exists already in this lambda."
         val »duplicatePlaceholder« = 1;

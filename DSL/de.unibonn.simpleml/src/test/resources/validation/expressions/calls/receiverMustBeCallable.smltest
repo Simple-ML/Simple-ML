@@ -18,9 +18,9 @@ fun myFunction()
 
 workflow myWorkflow {}
 
-step test(a: Int, b: callable () -> ()) {
+step test(a: Int, b: () -> ()) {
     val c = 1;
-    val d = lambda () {};
+    val d = () {};
 
     /* References cannot point to annotations in the first place. */
     // no_semantic_error "This expression must not be called."

@@ -17,7 +17,7 @@ step myFunction() -> a: Int {
     // no_semantic_info "This assignment can be converted to an expression statement."
     »yield a = 1;«
 
-    lambda () {
+    () {
         // semantic_info "This assignment can be converted to an expression statement."
         »(_, _) = f();«
         // semantic_info "This assignment can be converted to an expression statement."

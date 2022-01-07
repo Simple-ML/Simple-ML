@@ -40,7 +40,7 @@ step myStep() {
     // no_semantic_warning "This statement does nothing."
     »MyClass().impureFunction();«
 
-    lambda () {
+    () {
         // semantic_warning "This statement does nothing."
         »1 + 2;«
         // semantic_warning "This statement does nothing."
@@ -55,7 +55,7 @@ step myStep() {
     };
 
     // semantic_warning "This statement does nothing."
-    »lambda () {
+    »() {
         pureFunction();
         MyClass().pureFunction();
     }();«
@@ -64,12 +64,12 @@ step myStep() {
     »pureStep();«
 
     // no_semantic_warning "This statement does nothing."
-    »lambda () {
+    »() {
         impureFunction();
     }();«
 
     // no_semantic_warning "This statement does nothing."
-    »lambda () {
+    »() {
         MyClass().impureFunction();
     }();«
 

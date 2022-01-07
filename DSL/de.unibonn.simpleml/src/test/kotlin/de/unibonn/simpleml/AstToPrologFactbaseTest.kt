@@ -990,7 +990,7 @@ class AstToPrologFactbaseTest {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithSimpleLambda" }
                 val blockLambdaT = findUniqueFactOrFail<BlockLambdaT> { isContainedIn(it, workflowT) }
                 blockLambdaT.asClue {
-                    blockLambdaT.parameters.shouldBeNull()
+                    blockLambdaT.parameters.shouldBeEmpty()
                     blockLambdaT.statements.shouldBeEmpty()
                 }
             }

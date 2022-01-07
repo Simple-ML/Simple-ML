@@ -31,5 +31,5 @@ fun myFunction2(»a«: Int)
 workflow myWorkflow {
 
     // no_semantic_error "After the first optional parameter all parameters must be optional."
-    lambda (»a«: Int) {};
+    (»a«) {};
 }

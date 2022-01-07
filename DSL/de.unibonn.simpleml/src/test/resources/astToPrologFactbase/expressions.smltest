@@ -28,11 +28,11 @@ workflow myWorkflowWithComplexCall {
 
 // Lambdas -------------------------------------------------------------------------------------------------------------
 workflow myWorkflowWithSimpleLambda {
-    val simpleLambda = lambda {};
+    val simpleLambda = () {};
 }
 
 workflow myWorkflowWithComplexLambda {
-    val complexLambda = lambda(a, b) {
+    val complexLambda = (a, b) {
         1;
         2;
     };

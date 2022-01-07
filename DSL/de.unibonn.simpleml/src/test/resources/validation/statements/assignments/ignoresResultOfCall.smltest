@@ -12,13 +12,13 @@ step stepOneResult() -> first: Int {}
 step stepTwoResults() -> (first: Int, second: Int) {}
 
 step test(
-    paramOneResult: callable () -> first: Int,
-    paramTwoResults: callable () -> (first: Int, second: Int)
+    paramOneResult: () -> first: Int,
+    paramTwoResults: () -> (first: Int, second: Int)
 ) {
-    val lambdaOneResult = lambda () {
+    val lambdaOneResult = () {
         yield first = 1;
     };
-    val lambdaTwoResults = lambda () {
+    val lambdaTwoResults = () {
         yield first = 1;
         yield second = 2;
     };

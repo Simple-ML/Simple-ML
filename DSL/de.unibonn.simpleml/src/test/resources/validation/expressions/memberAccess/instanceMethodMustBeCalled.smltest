@@ -7,8 +7,8 @@ class MyClass {
 
 fun myFunction()
 
-step test(a: callable () -> ()) {
-    val b = lambda () {};
+step test(a: () -> ()) {
+    val b = () {};
 
     // semantic_error "An instance method must be called."
     MyClass().»myInstanceMethod«;
