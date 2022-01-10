@@ -1,95 +1,24 @@
 import React, {useState, useEffect} from 'react';
 import {ResponsiveBar} from '@nivo/bar';
 import PropTypes from 'prop-types';
-//import dataset from '../data/streets_corrupted_shuffled_1000_profile';
-//let myData = dataset.attributes[2];
-//let data;
-//let state;
-//export default class SimpleBarChart extends React.Component {
-  //constructor(props) {
-    //super(props);
-    //this.state = {
-      //dataIsReady: false,
-    //};
-  //}
-  //componentDidMount() {
-    //fetch('data/streets_corrupted_shuffled_1000_profile.json', {
-      //headers: {
-        //'Content-Type': 'application/json',
-        //Accept: 'application/json',
-      //},
-    //})
-      //.then(function (response) {
-        //console.log(response);
-        //return response.json();
-      //})
-      //.then(function (myJson) {
-        //data = myJson;
-        //console.log(myJson);
-        //this.setState({
-          //dataIsReady: true,
-          //data: myJson,
-        //});
-      //});
-  //}
-  //render() {
-    //const {dataIsReady, data} = this.state;
-    //if (dataIsReady) {
-      //return <div>{JSON.stringify(data)}</div>;
-    //} else {
-      //return <h1> is loading </h1>;
-    //}
-  //}
-//}
+import './simpleBarChart.css'
 export default class SimpleBarChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: null,
-      isLoaded: false,
-      items:[] 
     };
   }
 
-  componentDidMount() {
-    fetch(this.props.url)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            isLoaded: true,
-            items: result
-          });
-        },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      )
-  }
-
   render() {
-    const { error, isLoaded, items } = this.state;
-    if (error) {
-      return <div>Error: {error.message}</div>;
-    } else if (!isLoaded) {
-      return <div>Loading...</div>;
-    } else {
-			console.log(items);
 		return ( 
 			<div>
-			<div className="App">
 			<h1> { this.props.title }</h1>
+			<div className="BarChartBackground">
 			<div style={{width:this.props.width,height:this.props.height}}>
 		<ResponsiveBar
-				data={ items.attributes[this.props.number].statistics.class_distribution}	
+				data={this.props.barChart}	
 				keys={['number_of_instances']}
-				indexBy="class"
+				indexBy="value"
 				margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
 				padding={0.3}
 				colors={{ scheme: 'purple_orange' }}
@@ -157,25 +86,21 @@ export default class SimpleBarChart extends React.Component {
 			</div>
 		);
     }
-  }
 }
-			//<div>{JSON.stringify(items)}</div>
+
 SimpleBarChart.defaultProps = {
 	width: '60vw',
-	height: '60vh',
-	title: 'Wochentag',
-	url: 'data/streets_corrupted_shuffled_1000_profile.json',
-	number: 2
+	height: '60vh'
 };
 SimpleBarChart.propTypes = {
-  /**
-   * Url where the data is being pulled from
-   */
-  url: PropTypes.string,
   /**
 	 * String for thWochentage title
    */
   title: PropTypes.string,
+  /**
+   * Bar Chart Object
+   */
+  barChart: PropTypes.array,
   /**
    * How high the chart is supposed to be can't be 0 else wont render (Logo string for the project name
    */
@@ -183,9 +108,5 @@ SimpleBarChart.propTypes = {
   /**
    * How wide the chart is supposed to be can't be 0 else wont render (Logo string for the project name
    */
-  width: PropTypes.string,
-  /**
-   * Which of the provided data from the given array should be used
-   */
-  number: PropTypes.oneOf([1, 2,9, 11]),
+  width: PropTypes.string
 };
