@@ -57,56 +57,139 @@ fun SmlAbstractExpression.toConstantExpressionOrNull(): SmlConstantExpression? {
 
         // Simple recursive cases
         is SmlArgument -> value.toConstantExpressionOrNull()
-        is SmlInfixOperation -> infixOperationToConstantExpression()
+        is SmlInfixOperation -> convertInfixOperation()
         is SmlParenthesizedExpression -> expression.toConstantExpressionOrNull()
-        is SmlPrefixOperation -> prefixOperationToConstantExpression()
-        is SmlTemplateString -> templateStringToConstantExpression()
+        is SmlPrefixOperation -> convertPrefixOperation()
+        is SmlTemplateString -> convertTemplateString()
 
         // Complex recursive cases
-        is SmlCall -> callToConstantExpression()
-        is SmlMemberAccess -> memberAccessToConstantExpression()
-        is SmlReference -> referenceToConstantExpression()
+        is SmlCall -> convertCall()
+        is SmlMemberAccess -> convertMemberAccess()
+        is SmlReference -> convertReference()
 
         // Warn if case is missing
         else -> throw IllegalArgumentException("Missing case to handle $this.")
     }
 }
 
-private fun SmlInfixOperation.infixOperationToConstantExpression(): SmlConstantExpression? {
-    val constantLeftOperand = leftOperand.toConstantExpressionOrNull() ?: return null
-    val constantRightOperand = rightOperand.toConstantExpressionOrNull() ?: return null
+private fun SmlInfixOperation.convertInfixOperation(): SmlConstantExpression? {
+    val constLeft = leftOperand.toConstantExpressionOrNull() ?: return null
+    val constRight = rightOperand.toConstantExpressionOrNull() ?: return null
 
-    return when (operator) { // TODO
-        Or.operator -> when {
-            constantLeftOperand is SmlConstantBoolean && constantRightOperand is SmlConstantBoolean -> {
-                SmlConstantBoolean(constantLeftOperand.value || constantRightOperand.value)
-            }
-            else -> null
+    return when (operator) {
+        Or.operator -> convertLogicalOperation(constLeft, Boolean::or, constRight)
+        And.operator -> convertLogicalOperation(constLeft, Boolean::and, constRight)
+        Equals.operator -> SmlConstantBoolean(constLeft == constRight)
+        NotEquals.operator -> SmlConstantBoolean(constLeft != constRight)
+        IdenticalTo.operator -> SmlConstantBoolean(constLeft == constRight)
+        NotIdenticalTo.operator -> SmlConstantBoolean(constLeft != constRight)
+        LessThan.operator -> convertComparisonOperation(
+            constLeft,
+            { a, b -> a < b },
+            { a, b -> a < b },
+            constRight
+        )
+        LessThanOrEquals.operator -> convertComparisonOperation(
+            constLeft,
+            { a, b -> a <= b },
+            { a, b -> a <= b },
+            constRight
+        )
+        GreaterThanOrEquals.operator -> convertComparisonOperation(
+            constLeft,
+            { a, b -> a >= b },
+            { a, b -> a >= b },
+            constRight
+        )
+        GreaterThan.operator -> convertComparisonOperation(
+            constLeft,
+            { a, b -> a > b },
+            { a, b -> a > b },
+            constRight
+        )
+        Plus.operator -> convertArithmeticOperation(
+            constLeft,
+            { a, b -> a + b },
+            { a, b -> a + b },
+            constRight
+        )
+        InfixMinus.operator -> convertArithmeticOperation(
+            constLeft,
+            { a, b -> a - b },
+            { a, b -> a - b },
+            constRight
+        )
+        Times.operator -> convertArithmeticOperation(
+            constLeft,
+            { a, b -> a * b },
+            { a, b -> a * b },
+            constRight
+        )
+        By.operator -> convertArithmeticOperation(
+            constLeft,
+            { a, b -> a / b },
+            { a, b -> a / b },
+            constRight
+        )
+        Elvis.operator -> when (constLeft) {
+            SmlConstantNull -> constRight
+            else -> constLeft
         }
-        And.operator -> when {
-            constantLeftOperand is SmlConstantBoolean && constantRightOperand is SmlConstantBoolean -> {
-                SmlConstantBoolean(constantLeftOperand.value && constantRightOperand.value)
-            }
-            else -> null
-        }
-        Equals.operator -> SmlConstantBoolean(constantLeftOperand == constantRightOperand)
-        NotEquals.operator -> SmlConstantBoolean(constantLeftOperand != constantRightOperand)
-        IdenticalTo.operator -> SmlConstantBoolean(constantLeftOperand == constantRightOperand)
-        NotIdenticalTo.operator -> SmlConstantBoolean(constantLeftOperand != constantRightOperand)
-        LessThan.operator -> null
-        LessThanOrEquals.operator -> null
-        GreaterThanOrEquals.operator -> null
-        GreaterThan.operator -> null
-        Plus.operator -> null
-        InfixMinus.operator -> null
-        Times.operator -> null
-        By.operator -> null
-        Elvis.operator -> null
         else -> throw IllegalArgumentException("Missing case to handle $this.")
     }
 }
 
-private fun SmlPrefixOperation.prefixOperationToConstantExpression(): SmlConstantExpression? {
+private fun convertLogicalOperation(
+    leftOperand: SmlConstantExpression,
+    operation: (Boolean, Boolean) -> Boolean,
+    rightOperand: SmlConstantExpression,
+): SmlConstantExpression? {
+
+    return when {
+        leftOperand is SmlConstantBoolean && rightOperand is SmlConstantBoolean -> {
+            SmlConstantBoolean(operation(leftOperand.value, rightOperand.value))
+        }
+        else -> null
+    }
+}
+
+private fun convertComparisonOperation(
+    leftOperand: SmlConstantExpression,
+    doubleOperation: (Double, Double) -> Boolean,
+    intOperation: (Int, Int) -> Boolean,
+    rightOperand: SmlConstantExpression,
+): SmlConstantExpression? {
+
+    return when {
+        leftOperand is SmlConstantInt && rightOperand is SmlConstantInt -> {
+            SmlConstantBoolean(intOperation(leftOperand.value, rightOperand.value))
+        }
+        leftOperand is SmlConstantNumber && rightOperand is SmlConstantNumber -> {
+            SmlConstantBoolean(doubleOperation(leftOperand.value.toDouble(), rightOperand.value.toDouble()))
+        }
+        else -> null
+    }
+}
+
+private fun convertArithmeticOperation(
+    leftOperand: SmlConstantExpression,
+    doubleOperation: (Double, Double) -> Double,
+    intOperation: (Int, Int) -> Int,
+    rightOperand: SmlConstantExpression,
+): SmlConstantExpression? {
+
+    return when {
+        leftOperand is SmlConstantInt && rightOperand is SmlConstantInt -> {
+            SmlConstantInt(intOperation(leftOperand.value, rightOperand.value))
+        }
+        leftOperand is SmlConstantNumber && rightOperand is SmlConstantNumber -> {
+            SmlConstantFloat(doubleOperation(leftOperand.value.toDouble(), rightOperand.value.toDouble()))
+        }
+        else -> null
+    }
+}
+
+private fun SmlPrefixOperation.convertPrefixOperation(): SmlConstantExpression? {
     val constantOperand = operand.toConstantExpressionOrNull() ?: return null
 
     return when (operator) {
@@ -123,18 +206,18 @@ private fun SmlPrefixOperation.prefixOperationToConstantExpression(): SmlConstan
     }
 }
 
-private fun SmlTemplateString.templateStringToConstantExpression(): SmlConstantExpression? {
+private fun SmlTemplateString.convertTemplateString(): SmlConstantExpression? {
     return null // TODO
 }
 
-private fun SmlCall.callToConstantExpression(): SmlConstantExpression? {
+private fun SmlCall.convertCall(): SmlConstantExpression? {
     return null // TODO
 }
 
-private fun SmlMemberAccess.memberAccessToConstantExpression(): SmlConstantExpression? {
+private fun SmlMemberAccess.convertMemberAccess(): SmlConstantExpression? {
     return null // TODO
 }
 
-private fun SmlReference.referenceToConstantExpression(): SmlConstantExpression? {
+private fun SmlReference.convertReference(): SmlConstantExpression? {
     return null // TODO
 }

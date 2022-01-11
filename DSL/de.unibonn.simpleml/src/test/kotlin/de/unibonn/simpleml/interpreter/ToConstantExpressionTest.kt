@@ -15,6 +15,7 @@ import de.unibonn.simpleml.emf.createSmlParenthesizedExpression
 import de.unibonn.simpleml.emf.createSmlPrefixOperation
 import de.unibonn.simpleml.emf.createSmlString
 import de.unibonn.simpleml.simpleML.SimpleMLFactory
+import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
@@ -410,48 +411,463 @@ class ToConstantExpressionTest {
         }
 
         @Nested
-        inner class LessThan { // TODO
+        inner class LessThan {
 
+            @ParameterizedTest
+            @CsvSource(
+                delimiter = '|',
+                textBlock = """
+                    0.5 | 1.5 | true
+                    0.5 | 1   | true
+                    0   | 1.5 | true
+                    0   | 1   | true
+                    1.5 | 0.5 | false
+                    1.5 | 0   | false
+                    1   | 0.5 | false
+                    1   | 0   | false"""
+            )
+            fun `should return whether left operand is less than right operand`(
+                leftOperand: Double,
+                rightOperand: Double,
+                expected: Boolean
+            ) {
+                val testData = createSmlInfixOperation(
+                    leftOperand = leftOperand.toSmlNumber(),
+                    operator = SmlInfixOperationOperator.LessThan,
+                    rightOperand = rightOperand.toSmlNumber()
+                )
+
+                testData.toConstantExpressionOrNull() shouldBe SmlConstantBoolean(expected)
+            }
+
+            @Test
+            fun `should return null if the left operand is not a constant number`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlNull(),
+                    operator = SmlInfixOperationOperator.LessThan,
+                    rightOperand = createSmlInt(1)
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
+
+            @Test
+            fun `should return null if the right operand is not a constant number`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlInt(1),
+                    operator = SmlInfixOperationOperator.LessThan,
+                    rightOperand = createSmlNull()
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
         }
 
         @Nested
-        inner class LessThanOrEquals { // TODO
+        inner class LessThanOrEquals {
 
+            @ParameterizedTest
+            @CsvSource(
+                delimiter = '|',
+                textBlock = """
+                    0.5 | 0.5 | true
+                    0.5 | 1   | true
+                    0   | 1.5 | true
+                    0   | 1   | true
+                    1.5 | 0.5 | false
+                    1.5 | 0   | false
+                    1   | 0.5 | false
+                    1   | 0   | false"""
+            )
+            fun `should return whether left operand is less than or equal to right operand`(
+                leftOperand: Double,
+                rightOperand: Double,
+                expected: Boolean
+            ) {
+                val testData = createSmlInfixOperation(
+                    leftOperand = leftOperand.toSmlNumber(),
+                    operator = SmlInfixOperationOperator.LessThanOrEquals,
+                    rightOperand = rightOperand.toSmlNumber()
+                )
+
+                testData.toConstantExpressionOrNull() shouldBe SmlConstantBoolean(expected)
+            }
+
+            @Test
+            fun `should return null if the left operand is not a constant number`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlNull(),
+                    operator = SmlInfixOperationOperator.LessThanOrEquals,
+                    rightOperand = createSmlInt(1)
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
+
+            @Test
+            fun `should return null if the right operand is not a constant number`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlInt(1),
+                    operator = SmlInfixOperationOperator.LessThanOrEquals,
+                    rightOperand = createSmlNull()
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
         }
 
         @Nested
-        inner class GreaterThanOrEquals { // TODO
+        inner class GreaterThanOrEquals {
 
+            @ParameterizedTest
+            @CsvSource(
+                delimiter = '|',
+                textBlock = """
+                    0.5 | 0.5 | true
+                    1.5 | 0   | true
+                    1   | 0.5 | true
+                    1   | 0   | true
+                    0.5 | 1.5 | false
+                    0.5 | 1   | false
+                    0   | 1.5 | false
+                    0   | 1   | false"""
+            )
+            fun `should return whether left operand is greater than or equal to right operand`(
+                leftOperand: Double,
+                rightOperand: Double,
+                expected: Boolean
+            ) {
+                val testData = createSmlInfixOperation(
+                    leftOperand = leftOperand.toSmlNumber(),
+                    operator = SmlInfixOperationOperator.GreaterThanOrEquals,
+                    rightOperand = rightOperand.toSmlNumber()
+                )
+
+                testData.toConstantExpressionOrNull() shouldBe SmlConstantBoolean(expected)
+            }
+
+            @Test
+            fun `should return null if the left operand is not a constant number`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlNull(),
+                    operator = SmlInfixOperationOperator.GreaterThanOrEquals,
+                    rightOperand = createSmlInt(1)
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
+
+            @Test
+            fun `should return null if the right operand is not a constant number`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlInt(1),
+                    operator = SmlInfixOperationOperator.GreaterThanOrEquals,
+                    rightOperand = createSmlNull()
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
         }
 
         @Nested
-        inner class GreaterThan { // TODO
+        inner class GreaterThan {
 
+            @ParameterizedTest
+            @CsvSource(
+                delimiter = '|',
+                textBlock = """
+                    1.5 | 0.5 | true
+                    1.5 | 0   | true
+                    1   | 0.5 | true
+                    1   | 0   | true
+                    0.5 | 1.5 | false
+                    0.5 | 1   | false
+                    0   | 1.5 | false
+                    0   | 1   | false"""
+            )
+            fun `should return whether left operand is greater than right operand`(
+                leftOperand: Double,
+                rightOperand: Double,
+                expected: Boolean
+            ) {
+                val testData = createSmlInfixOperation(
+                    leftOperand = leftOperand.toSmlNumber(),
+                    operator = SmlInfixOperationOperator.GreaterThan,
+                    rightOperand = rightOperand.toSmlNumber()
+                )
+
+                testData.toConstantExpressionOrNull() shouldBe SmlConstantBoolean(expected)
+            }
+
+            @Test
+            fun `should return null if the left operand is not a constant number`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlNull(),
+                    operator = SmlInfixOperationOperator.GreaterThan,
+                    rightOperand = createSmlInt(1)
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
+
+            @Test
+            fun `should return null if the right operand is not a constant number`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlInt(1),
+                    operator = SmlInfixOperationOperator.GreaterThan,
+                    rightOperand = createSmlNull()
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
         }
 
         @Nested
-        inner class Plus { // TODO
+        inner class Plus {
 
+            @ParameterizedTest
+            @CsvSource(
+                delimiter = '|',
+                textBlock = """
+                    1.5 | 0.25 | 1.75
+                    1.5 | 1    | 2.5
+                    1   | 0.25 | 1.25
+                    1   | 1    | 2"""
+            )
+            fun `should return sum of left and right operand`(
+                leftOperand: Double,
+                rightOperand: Double,
+                expected: Double
+            ) {
+                val testData = createSmlInfixOperation(
+                    leftOperand = leftOperand.toSmlNumber(),
+                    operator = SmlInfixOperationOperator.Plus,
+                    rightOperand = rightOperand.toSmlNumber()
+                )
+
+                testData.toConstantExpressionOrNull() shouldBe expected.toSmlNumber().toConstantExpressionOrNull()
+            }
+
+            @Test
+            fun `should return null if the left operand is not a constant number`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlNull(),
+                    operator = SmlInfixOperationOperator.Plus,
+                    rightOperand = createSmlInt(1)
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
+
+            @Test
+            fun `should return null if the right operand is not a constant number`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlInt(1),
+                    operator = SmlInfixOperationOperator.Plus,
+                    rightOperand = createSmlNull()
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
         }
 
         @Nested
-        inner class Minus { // TODO
+        inner class Minus {
 
+            @ParameterizedTest
+            @CsvSource(
+                delimiter = '|',
+                textBlock = """
+                    1.5 | 0.25 | 1.25
+                    1.5 | 1    | 0.5
+                    1   | 0.25 | 0.75
+                    1   | 1    | 0"""
+            )
+            fun `should return difference between left and right operand`(
+                leftOperand: Double,
+                rightOperand: Double,
+                expected: Double
+            ) {
+                val testData = createSmlInfixOperation(
+                    leftOperand = leftOperand.toSmlNumber(),
+                    operator = SmlInfixOperationOperator.Minus,
+                    rightOperand = rightOperand.toSmlNumber()
+                )
+
+                testData.toConstantExpressionOrNull() shouldBe expected.toSmlNumber().toConstantExpressionOrNull()
+            }
+
+            @Test
+            fun `should return null if the left operand is not a constant number`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlNull(),
+                    operator = SmlInfixOperationOperator.Minus,
+                    rightOperand = createSmlInt(1)
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
+
+            @Test
+            fun `should return null if the right operand is not a constant number`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlInt(1),
+                    operator = SmlInfixOperationOperator.Minus,
+                    rightOperand = createSmlNull()
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
         }
 
         @Nested
-        inner class Times { // TODO
+        inner class Times {
 
+            @ParameterizedTest
+            @CsvSource(
+                delimiter = '|',
+                textBlock = """
+                    1.5 | 0.5  | 0.75
+                    1.5 | 1    | 1.5
+                    1   | 0.25 | 0.25
+                    1   | 1    | 1"""
+            )
+            fun `should return product of left and right operand`(
+                leftOperand: Double,
+                rightOperand: Double,
+                expected: Double
+            ) {
+                val testData = createSmlInfixOperation(
+                    leftOperand = leftOperand.toSmlNumber(),
+                    operator = SmlInfixOperationOperator.Times,
+                    rightOperand = rightOperand.toSmlNumber()
+                )
+
+                testData.toConstantExpressionOrNull() shouldBe expected.toSmlNumber().toConstantExpressionOrNull()
+            }
+
+            @Test
+            fun `should return null if the left operand is not a constant number`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlNull(),
+                    operator = SmlInfixOperationOperator.Times,
+                    rightOperand = createSmlInt(1)
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
+
+            @Test
+            fun `should return null if the right operand is not a constant number`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlInt(1),
+                    operator = SmlInfixOperationOperator.Times,
+                    rightOperand = createSmlNull()
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
         }
 
         @Nested
-        inner class By { // TODO
+        inner class By {
 
+            @ParameterizedTest
+            @CsvSource(
+                delimiter = '|',
+                textBlock = """
+                    0.25 | 0.5   | 0.5
+                    1.5  | 1     | 1.5
+                    1    | 0.625 | 1.6
+                    1    | 1     | 1"""
+            )
+            fun `should return quotient of left and right operand`(
+                leftOperand: Double,
+                rightOperand: Double,
+                expected: Double
+            ) {
+                val testData = createSmlInfixOperation(
+                    leftOperand = leftOperand.toSmlNumber(),
+                    operator = SmlInfixOperationOperator.By,
+                    rightOperand = rightOperand.toSmlNumber()
+                )
+
+                testData.toConstantExpressionOrNull() shouldBe expected.toSmlNumber().toConstantExpressionOrNull()
+            }
+
+            @Test
+            fun `should return null if the left operand is not a constant number`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlNull(),
+                    operator = SmlInfixOperationOperator.By,
+                    rightOperand = createSmlInt(1)
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
+
+            @Test
+            fun `should return null if the right operand is not a constant number`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlInt(1),
+                    operator = SmlInfixOperationOperator.By,
+                    rightOperand = createSmlNull()
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
         }
 
         @Nested
-        inner class Elvis { // TODO
+        inner class Elvis {
 
+            @Test
+            fun `should return left operand if it does not evaluate to a constant null`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlBoolean(true),
+                    operator = SmlInfixOperationOperator.Elvis,
+                    rightOperand = createSmlBoolean(true)
+                )
+
+                testData.toConstantExpressionOrNull() shouldBe SmlConstantBoolean(true)
+            }
+
+            @Test
+            fun `should return right operand if the left operand evaluates to a constant null`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlNull(),
+                    operator = SmlInfixOperationOperator.Elvis,
+                    rightOperand = createSmlBoolean(true)
+                )
+
+                testData.toConstantExpressionOrNull() shouldBe SmlConstantBoolean(true)
+            }
+
+            @Test
+            fun `should return null if the left operand is not a constant expression`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlCall(
+                        receiver = createSmlNull()
+                    ),
+                    operator = SmlInfixOperationOperator.Elvis,
+                    rightOperand = createSmlInt(1)
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
+
+            @Test
+            fun `should return null if the right operand is not a constant expression`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlInt(1),
+                    operator = SmlInfixOperationOperator.Elvis,
+                    rightOperand = createSmlCall(
+                        receiver = createSmlNull()
+                    )
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
         }
     }
 
@@ -525,5 +941,12 @@ class ToConstantExpressionTest {
                 testData.toConstantExpressionOrNull().shouldBeNull()
             }
         }
+    }
+}
+
+private fun Double.toSmlNumber(): SmlAbstractExpression {
+    return when {
+        this == this.toInt().toDouble() -> createSmlInt(this.toInt())
+        else -> createSmlFloat(this)
     }
 }
