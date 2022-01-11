@@ -5,8 +5,9 @@ from simpleml.util import exportDictionaryAsJSON
 
 # Workflow steps ---------------------------------------------------------------
 
+
 def exampleWorkflow():
-    dataset = readDataSetFromCSV('SpeedAveragesMiniSampleWKT5.csv', 'Local dataset', ',', 'True')
+    dataset = readDataSetFromCSV('SpeedAveragesMiniSampleWKT.csv', 'Local dataset', ',', 'True')
     print(exportDictionaryAsJSON(dataset.getProfile()))
 
     sample_dataset = dataset.sample(50)

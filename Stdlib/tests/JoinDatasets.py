@@ -6,16 +6,17 @@ from simpleml.util import exportDictionaryAsJSON
 # Workflow steps ---------------------------------------------------------------
 
 def exampleWorkflow():
-    dataset1 = readDataSetFromCSV('SpeedAveragesMiniSampleWKT2.csv', 'Local dataset', ',', 'True')
+    dataset1 = readDataSetFromCSV('SpeedAveragesMiniSampleWKT.csv', 'Local dataset', ',', 'True')
     sample_dataset1 = dataset1.sample(5)
 
-    dataset2 = readDataSetFromCSV('SpeedAveragesMiniSampleWKT3.csv', 'Local dataset', ',', 'True')
+    dataset2 = readDataSetFromCSV('SpeedAveragesMiniSampleWKT.csv', 'Local dataset', ',', 'True')
     sample_dataset2 = dataset2.sample(5)
     #print(sample_dataset1.data)
 
     dataset = joinTwoDatasets(sample_dataset1, sample_dataset2, 'id', 'id', '_l', '_r')
-    #dataset = joinTwoDatasets('SpeedAveragesMiniSampleWKT2.csv', 'SpeedAveragesMiniSampleWKT3.csv', ',', '_first', '_second')
+    #dataset = joinTwoDatasets('SpeedAveragesMiniSampleWKT.csv', 'SpeedAveragesMiniSampleWKT.csv', ',', '_first', '_second')
     #print(dataset)
+    dataset.exportDataAsFile("/home/fakhar/Downloads/test123.csv")
 
     sample_dataset = dataset.sample(3)
 
@@ -34,6 +35,7 @@ def exampleWorkflow():
     print(exportDictionaryAsJSON(X_train.getProfile()))
     print(exportDictionaryAsJSON(y_train.getProfile()))
     print(exportDictionaryAsJSON(X_test.getProfile()))
-'''
+    '''
+
 if __name__ == '__main__':
     exampleWorkflow()
