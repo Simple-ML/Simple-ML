@@ -37,7 +37,10 @@ import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Minus as InfixMinus
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Minus as PrefixMinus
 
-fun SmlAbstractExpression.toConstantExpression(): SmlConstantExpression? {
+/**
+ * Tries to evaluate this expression. On success a [SmlConstantExpression] is returned, otherwise `null`.
+ */
+fun SmlAbstractExpression.toConstantExpressionOrNull(): SmlConstantExpression? {
     return when (this) {
 
         // Base cases
@@ -53,16 +56,16 @@ fun SmlAbstractExpression.toConstantExpression(): SmlConstantExpression? {
         is SmlExpressionLambda -> null
 
         // Simple recursive cases
-        is SmlArgument -> value.toConstantExpression()
+        is SmlArgument -> value.toConstantExpressionOrNull()
         is SmlInfixOperation -> infixOperationToConstantExpression()
-        is SmlParenthesizedExpression -> expression.toConstantExpression()
+        is SmlParenthesizedExpression -> expression.toConstantExpressionOrNull()
         is SmlPrefixOperation -> prefixOperationToConstantExpression()
         is SmlTemplateString -> templateStringToConstantExpression()
 
         // Complex recursive cases
-        is SmlCall -> null // TODO
-        is SmlMemberAccess -> null // TODO
-        is SmlReference -> null // TODO
+        is SmlCall -> callToConstantExpression()
+        is SmlMemberAccess -> memberAccessToConstantExpression()
+        is SmlReference -> referenceToConstantExpression()
 
         // Warn if case is missing
         else -> throw IllegalArgumentException("Missing case to handle $this.")
@@ -70,13 +73,26 @@ fun SmlAbstractExpression.toConstantExpression(): SmlConstantExpression? {
 }
 
 private fun SmlInfixOperation.infixOperationToConstantExpression(): SmlConstantExpression? {
+    val constantLeftOperand = leftOperand.toConstantExpressionOrNull() ?: return null
+    val constantRightOperand = rightOperand.toConstantExpressionOrNull() ?: return null
+
     return when (operator) { // TODO
-        Or.operator -> null
-        And.operator -> null
-        Equals.operator -> null
-        NotEquals.operator -> null
-        IdenticalTo.operator -> null
-        NotIdenticalTo.operator -> null
+        Or.operator -> when {
+            constantLeftOperand is SmlConstantBoolean && constantRightOperand is SmlConstantBoolean -> {
+                SmlConstantBoolean(constantLeftOperand.value || constantRightOperand.value)
+            }
+            else -> null
+        }
+        And.operator -> when {
+            constantLeftOperand is SmlConstantBoolean && constantRightOperand is SmlConstantBoolean -> {
+                SmlConstantBoolean(constantLeftOperand.value && constantRightOperand.value)
+            }
+            else -> null
+        }
+        Equals.operator -> SmlConstantBoolean(constantLeftOperand == constantRightOperand)
+        NotEquals.operator -> SmlConstantBoolean(constantLeftOperand != constantRightOperand)
+        IdenticalTo.operator -> SmlConstantBoolean(constantLeftOperand == constantRightOperand)
+        NotIdenticalTo.operator -> SmlConstantBoolean(constantLeftOperand != constantRightOperand)
         LessThan.operator -> null
         LessThanOrEquals.operator -> null
         GreaterThanOrEquals.operator -> null
@@ -91,7 +107,7 @@ private fun SmlInfixOperation.infixOperationToConstantExpression(): SmlConstantE
 }
 
 private fun SmlPrefixOperation.prefixOperationToConstantExpression(): SmlConstantExpression? {
-    val constantOperand = operand.toConstantExpression() ?: return null
+    val constantOperand = operand.toConstantExpressionOrNull() ?: return null
 
     return when (operator) {
         Not.operator -> when (constantOperand) {
@@ -108,5 +124,17 @@ private fun SmlPrefixOperation.prefixOperationToConstantExpression(): SmlConstan
 }
 
 private fun SmlTemplateString.templateStringToConstantExpression(): SmlConstantExpression? {
+    return null // TODO
+}
+
+private fun SmlCall.callToConstantExpression(): SmlConstantExpression? {
+    return null // TODO
+}
+
+private fun SmlMemberAccess.memberAccessToConstantExpression(): SmlConstantExpression? {
+    return null // TODO
+}
+
+private fun SmlReference.referenceToConstantExpression(): SmlConstantExpression? {
     return null // TODO
 }
