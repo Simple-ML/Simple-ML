@@ -14,6 +14,7 @@ import de.unibonn.simpleml.emf.createSmlNull
 import de.unibonn.simpleml.emf.createSmlParenthesizedExpression
 import de.unibonn.simpleml.emf.createSmlPrefixOperation
 import de.unibonn.simpleml.emf.createSmlString
+import de.unibonn.simpleml.emf.createSmlTemplateString
 import de.unibonn.simpleml.simpleML.SimpleMLFactory
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import io.kotest.matchers.nulls.shouldBeNull
@@ -31,49 +32,49 @@ class ToConstantExpressionTest {
     inner class BaseCases {
 
         @Test
-        fun `should return new boolean literal for boolean literal`() {
+        fun `should return value of boolean literal`() {
             val testData = createSmlBoolean(true)
             testData.toConstantExpressionOrNull() shouldBe SmlConstantBoolean(true)
         }
 
         @Test
-        fun `should return new float literal for float literal`() {
+        fun `should return value of float literal`() {
             val testData = createSmlFloat(1.0)
             testData.toConstantExpressionOrNull() shouldBe SmlConstantFloat(1.0)
         }
 
         @Test
-        fun `should return new int literal for int literal`() {
+        fun `should return value of int literal`() {
             val testData = createSmlInt(1)
             testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
         }
 
         @Test
-        fun `should return new null literal for null literal`() {
+        fun `should return value of null literal`() {
             val testData = createSmlNull()
             testData.toConstantExpressionOrNull() shouldBe SmlConstantNull
         }
 
         @Test
-        fun `should return new string literal for string literal`() {
+        fun `should return value of for string literal`() {
             val testData = createSmlString("test")
             testData.toConstantExpressionOrNull() shouldBe SmlConstantString("test")
         }
 
         @Test
-        fun `should return string literal for template string start`() {
+        fun `should return value of template string start`() {
             val testData = factory.createSmlTemplateStringStart().apply { value = "test" }
             testData.toConstantExpressionOrNull() shouldBe SmlConstantString("test")
         }
 
         @Test
-        fun `should return string literal for template string inner`() {
+        fun `should return value of template string inner`() {
             val testData = factory.createSmlTemplateStringInner().apply { value = "test" }
             testData.toConstantExpressionOrNull() shouldBe SmlConstantString("test")
         }
 
         @Test
-        fun `should return string literal for template string end`() {
+        fun `should return value of template string end`() {
             val testData = factory.createSmlTemplateStringEnd().apply { value = "test" }
             testData.toConstantExpressionOrNull() shouldBe SmlConstantString("test")
         }
@@ -940,6 +941,47 @@ class ToConstantExpressionTest {
 
                 testData.toConstantExpressionOrNull().shouldBeNull()
             }
+        }
+    }
+
+    @Nested
+    inner class TemplateString {
+
+        @Test
+        fun `should return concatenated string`() {
+            val testData = createSmlTemplateString(
+                stringParts = listOf(
+                    "start ",
+                    " inner1 ",
+                    " inner2 ",
+                    " inner3 ",
+                    " inner4 ",
+                    " end"
+                ),
+                templateExpressions = listOf(
+                    createSmlBoolean(true),
+                    createSmlFloat(1.0),
+                    createSmlInt(1),
+                    createSmlNull(),
+                    createSmlString("string")
+                )
+            )
+
+            testData.toConstantExpressionOrNull() shouldBe SmlConstantString(
+                value = "start true inner1 1.0 inner2 1 inner3 null inner4 string end"
+            )
+        }
+
+        @Test
+        fun `should return null if any expression is converted to null`() {
+            val testData = createSmlTemplateString(
+                stringParts = listOf("start ", " end"),
+                templateExpressions = listOf(
+                    createSmlCall(receiver = createSmlNull())
+                )
+            )
+
+            testData.toConstantExpressionOrNull().shouldBeNull()
         }
     }
 }

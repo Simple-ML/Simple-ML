@@ -207,7 +207,11 @@ private fun SmlPrefixOperation.convertPrefixOperation(): SmlConstantExpression? 
 }
 
 private fun SmlTemplateString.convertTemplateString(): SmlConstantExpression? {
-    return null // TODO
+    val constExpressions = expressions.map {
+        it.toConstantExpressionOrNull() ?: return null
+    }
+
+    return SmlConstantString(constExpressions.joinToString(""))
 }
 
 private fun SmlCall.convertCall(): SmlConstantExpression? {

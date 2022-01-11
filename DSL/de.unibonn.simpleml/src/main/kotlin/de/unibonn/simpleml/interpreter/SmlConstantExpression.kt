@@ -14,13 +14,15 @@ data class SmlConstantEnumVariant(val value: SmlEnumVariant): SmlConstantExpress
 
 sealed class SmlConstantNumber : SmlConstantExpression() {
     abstract val value: Number
+}
 
+data class SmlConstantFloat(override val value: Double) : SmlConstantNumber() {
     override fun toString(): String = value.toString()
 }
 
-data class SmlConstantFloat(override val value: Double) : SmlConstantNumber()
-
-data class SmlConstantInt(override val value: Int) : SmlConstantNumber()
+data class SmlConstantInt(override val value: Int) : SmlConstantNumber() {
+    override fun toString(): String = value.toString()
+}
 
 object SmlConstantNull : SmlConstantExpression() {
     override fun toString(): String = "null"
