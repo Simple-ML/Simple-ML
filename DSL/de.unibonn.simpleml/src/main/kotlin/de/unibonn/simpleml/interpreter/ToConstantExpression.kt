@@ -15,11 +15,15 @@ import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Or
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Plus
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Times
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Not
+import de.unibonn.simpleml.emf.parametersOrEmpty
+import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlArgument
+import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlBoolean
 import de.unibonn.simpleml.simpleML.SmlCall
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
@@ -27,6 +31,7 @@ import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlNull
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
+import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlString
@@ -34,6 +39,8 @@ import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
 import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
 import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
+import de.unibonn.simpleml.utils.closestAncestorOrNull
+import de.unibonn.simpleml.utils.indexOrNull
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Minus as InfixMinus
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Minus as PrefixMinus
 
@@ -214,14 +221,42 @@ private fun SmlTemplateString.convertTemplateString(): SmlConstantExpression? {
     return SmlConstantString(constExpressions.joinToString(""))
 }
 
+// TODO: everything below (incl. tests) --------------------------------------------------------------------------------
+
 private fun SmlCall.convertCall(): SmlConstantExpression? {
-    return null // TODO
+    return null // TODO implement + test
 }
 
 private fun SmlMemberAccess.convertMemberAccess(): SmlConstantExpression? {
-    return null // TODO
+    return null // TODO implement + test
 }
 
 private fun SmlReference.convertReference(): SmlConstantExpression? {
-    return null // TODO
+    return when (val declaration = this.declaration) {
+        is SmlEnumVariant -> when {
+            declaration.parametersOrEmpty().isEmpty() -> SmlConstantEnumVariant(declaration)
+            else -> null
+        }
+        is SmlPlaceholder -> declaration.convertAssignee() // TODO
+        else -> null
+    }
+}
+
+// TODO: update logic:
+//  evaluate right side (record type if call)
+//  pick the value at the appropriate index
+
+private fun SmlAbstractAssignee.convertAssignee(): SmlConstantExpression? {
+    val constFullAssignedExpression = closestAncestorOrNull<SmlAssignment>()
+        ?.expression
+        ?.toConstantExpressionOrNull()
+        ?: return null
+
+    return when (constFullAssignedExpression) {
+        is SmlConstantRecord -> null // TODO: test + access record by index - needs calls
+        else -> when {
+            indexOrNull() == 0 -> constFullAssignedExpression
+            else -> null
+        }
+    }
 }

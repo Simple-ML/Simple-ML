@@ -331,8 +331,8 @@ fun EObject?.containingFunctionOrNull() = this?.closestAncestorOrNull<SmlFunctio
 fun EObject?.containingLambdaOrNull() = this?.closestAncestorOrNull<SmlBlockLambda>()
 fun EObject?.containingPackageOrNull() = this?.closestAncestorOrNull<SmlPackage>()
 fun EObject?.containingProtocolOrNull() = this?.closestAncestorOrNull<SmlProtocol>()
+fun EObject?.containingStepOrNull() = this?.closestAncestorOrNull<SmlStep>()
 fun EObject?.containingWorkflowOrNull() = this?.closestAncestorOrNull<SmlWorkflow>()
-fun EObject?.containingWorkflowStepOrNull() = this?.closestAncestorOrNull<SmlStep>()
 
 fun SmlAnnotationUse?.targetOrNull(): SmlAbstractDeclaration? {
     return when (val declaration = this.containingDeclarationOrNull() ?: return null) {

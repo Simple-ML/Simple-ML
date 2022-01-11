@@ -2,17 +2,23 @@ package de.unibonn.simpleml.interpreter
 
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator
+import de.unibonn.simpleml.emf.createSmlAnnotation
 import de.unibonn.simpleml.emf.createSmlArgument
+import de.unibonn.simpleml.emf.createSmlAssignment
 import de.unibonn.simpleml.emf.createSmlBlockLambda
 import de.unibonn.simpleml.emf.createSmlBoolean
 import de.unibonn.simpleml.emf.createSmlCall
+import de.unibonn.simpleml.emf.createSmlEnumVariant
 import de.unibonn.simpleml.emf.createSmlExpressionLambda
 import de.unibonn.simpleml.emf.createSmlFloat
 import de.unibonn.simpleml.emf.createSmlInfixOperation
 import de.unibonn.simpleml.emf.createSmlInt
 import de.unibonn.simpleml.emf.createSmlNull
+import de.unibonn.simpleml.emf.createSmlParameter
 import de.unibonn.simpleml.emf.createSmlParenthesizedExpression
+import de.unibonn.simpleml.emf.createSmlPlaceholder
 import de.unibonn.simpleml.emf.createSmlPrefixOperation
+import de.unibonn.simpleml.emf.createSmlReference
 import de.unibonn.simpleml.emf.createSmlString
 import de.unibonn.simpleml.emf.createSmlTemplateString
 import de.unibonn.simpleml.simpleML.SimpleMLFactory
@@ -979,6 +985,67 @@ class ToConstantExpressionTest {
                 templateExpressions = listOf(
                     createSmlCall(receiver = createSmlNull())
                 )
+            )
+
+            testData.toConstantExpressionOrNull().shouldBeNull()
+        }
+    }
+
+    @Nested
+    inner class Reference {
+
+        @Test
+        fun `should return constant enum variant if referenced enum variant has no parameters`() {
+            val testEnumVariant = createSmlEnumVariant(name = "TestEnumVariant")
+            val testData = createSmlReference(
+                declaration = testEnumVariant
+            )
+
+            testData.toConstantExpressionOrNull() shouldBe SmlConstantEnumVariant(testEnumVariant)
+        }
+
+        @Test
+        fun `should return null if referenced enum variant has parameters`() {
+            val testEnumVariant = createSmlEnumVariant(
+                name = "TestEnumVariant",
+                parameters = listOf(
+                    createSmlParameter(name = "testParameter")
+                )
+            )
+            val testData = createSmlReference(
+                declaration = testEnumVariant
+            )
+
+            testData.toConstantExpressionOrNull().shouldBeNull()
+        }
+
+        @Test
+        fun `should convert assigned value of referenced placeholder`() {
+            val testPlaceholder = createSmlPlaceholder("testPlaceholder")
+            createSmlAssignment(
+                assignees = listOf(testPlaceholder),
+                createSmlNull()
+            )
+            val testData = createSmlReference(
+                declaration = testPlaceholder
+            )
+
+            testData.toConstantExpressionOrNull() shouldBe SmlConstantNull
+        }
+
+        @Test
+        fun `should return null if referenced placeholder has no assigned value`() {
+            val testData = createSmlReference(
+                declaration = createSmlPlaceholder("testPlaceholder")
+            )
+
+            testData.toConstantExpressionOrNull().shouldBeNull()
+        }
+
+        @Test
+        fun `should return null for other declarations`() {
+            val testData = createSmlReference(
+                declaration = createSmlAnnotation("TestAnnotation")
             )
 
             testData.toConstantExpressionOrNull().shouldBeNull()

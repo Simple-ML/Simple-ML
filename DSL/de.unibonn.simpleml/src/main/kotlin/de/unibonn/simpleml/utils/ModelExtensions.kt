@@ -2,9 +2,10 @@
 
 package de.unibonn.simpleml.utils
 
+import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.containingLambdaOrNull
-import de.unibonn.simpleml.emf.containingWorkflowStepOrNull
+import de.unibonn.simpleml.emf.containingStepOrNull
 import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
@@ -39,11 +40,13 @@ import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
+import de.unibonn.simpleml.simpleML.SmlResultList
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
+import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.stdlib.isPure
 import org.eclipse.emf.ecore.EObject
 import kotlin.contracts.ExperimentalContracts
@@ -141,7 +144,7 @@ fun SmlCall.maybeCallable(): CallableResult {
 }
 
 fun SmlCall.isRecursive(): Boolean {
-    val containingWorkflowStep = this.containingWorkflowStepOrNull() ?: return false
+    val containingWorkflowStep = this.containingStepOrNull() ?: return false
     val containingLambda = this.containingLambdaOrNull()
 
     val origin = mutableSetOf<EObject>(containingWorkflowStep)
@@ -194,7 +197,7 @@ fun SmlClass?.inheritedNonStaticMembersOrEmpty(): Set<SmlAbstractDeclaration> {
         ?.flatMap { it.memberDeclarationsOrEmpty() }
         ?.filter {
             it is SmlAttribute && !it.isStatic ||
-                it is SmlFunction && !it.isStatic
+                    it is SmlFunction && !it.isStatic
         }
         ?.toSet()
         .orEmpty()
@@ -224,14 +227,14 @@ fun SmlAbstractDeclaration.isInferredStatic(): Boolean {
 fun SmlAbstractDeclaration.isClassMember() = this.containingClassOrNull() != null
 fun SmlAbstractDeclaration.isCompilationUnitMember(): Boolean {
     return !isClassMember() &&
-        (
-            this is SmlAnnotation ||
-                this is SmlClass ||
-                this is SmlEnum ||
-                this is SmlFunction ||
-                this is SmlWorkflow ||
-                this is SmlStep
-            )
+            (
+                    this is SmlAnnotation ||
+                            this is SmlClass ||
+                            this is SmlEnum ||
+                            this is SmlFunction ||
+                            this is SmlWorkflow ||
+                            this is SmlStep
+                    )
 }
 
 @OptIn(ExperimentalContracts::class)
@@ -255,7 +258,12 @@ fun SmlAbstractAssignee.assignedOrNull(): EObject? {
 sealed interface AssignedResult {
     object Unresolved : AssignedResult
     object NotAssigned : AssignedResult
-    class Assigned(val assigned: EObject) : AssignedResult
+    sealed class Assigned : AssignedResult {
+        abstract val assigned: EObject
+    }
+
+    class AssignedExpression(override val assigned: SmlAbstractExpression) : Assigned()
+    class AssignedDeclaration(override val assigned: SmlAbstractDeclaration) : Assigned()
 }
 
 fun SmlAbstractAssignee.maybeAssigned(): AssignedResult {
@@ -267,24 +275,29 @@ fun SmlAbstractAssignee.maybeAssigned(): AssignedResult {
         is SmlCall -> {
             val results = expression.resultsOrNull() ?: return AssignedResult.Unresolved
             val result = results.getOrNull(thisIndex) ?: return AssignedResult.NotAssigned
-            AssignedResult.Assigned(result)
+            AssignedResult.AssignedDeclaration(result)
         }
         else -> when (thisIndex) {
-            0 -> AssignedResult.Assigned(expression)
+            0 -> AssignedResult.AssignedExpression(expression)
             else -> AssignedResult.NotAssigned
         }
     }
+}
+
+fun SmlAbstractAssignee.indexOrNull(): Int? {
+    val assignment = closestAncestorOrNull<SmlAssignment>() ?: return null
+    return assignment.assigneesOrEmpty().indexOf(this)
 }
 
 // EObject -------------------------------------------------------------------------------------------------------------
 
 fun EObject?.isCallable() =
     this is SmlClass ||
-        this is SmlEnumVariant ||
-        this is SmlFunction ||
-        this is SmlCallableType ||
-        this is SmlBlockLambda ||
-        this is SmlStep
+            this is SmlEnumVariant ||
+            this is SmlFunction ||
+            this is SmlCallableType ||
+            this is SmlBlockLambda ||
+            this is SmlStep
 
 // Enum ----------------------------------------------------------------------------------------------------------------
 
@@ -300,8 +313,8 @@ fun SmlAbstractExpression.hasSideEffects(): Boolean {
 
         val callable = this.callableOrNull()
         return callable is SmlFunction && !callable.isPure() ||
-            callable is SmlStep && !callable.isInferredPure() ||
-            callable is SmlBlockLambda && !callable.isInferredPure()
+                callable is SmlStep && !callable.isInferredPure() ||
+                callable is SmlBlockLambda && !callable.isInferredPure()
     }
 
     return false
@@ -349,6 +362,17 @@ fun SmlPlaceholder.usesIn(obj: EObject): Sequence<SmlReference> {
             statement.descendants<SmlReference>()
                 .filter { it.declaration == this }
         }
+}
+
+// Result --------------------------------------------------------------------------------------------------------------
+
+fun SmlResult.yieldOrNull(): SmlYield? {
+    val resultList = closestAncestorOrNull<SmlResultList>() ?: return null
+    val step = resultList.eContainer() as? SmlStep ?: return null
+
+    return step
+        .descendants<SmlYield>()
+        .firstOrNull { it.result == this }
 }
 
 // Type ----------------------------------------------------------------------------------------------------------------
