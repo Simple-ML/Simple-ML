@@ -1,113 +1,169 @@
 package de.unibonn.simpleml.interpreter
 
+import de.unibonn.simpleml.constant.SmlPrefixOperationOperator
+import de.unibonn.simpleml.emf.createSmlArgument
+import de.unibonn.simpleml.emf.createSmlBlockLambda
 import de.unibonn.simpleml.emf.createSmlBoolean
+import de.unibonn.simpleml.emf.createSmlExpressionLambda
 import de.unibonn.simpleml.emf.createSmlFloat
 import de.unibonn.simpleml.emf.createSmlInt
 import de.unibonn.simpleml.emf.createSmlNull
+import de.unibonn.simpleml.emf.createSmlParenthesizedExpression
+import de.unibonn.simpleml.emf.createSmlPrefixOperation
 import de.unibonn.simpleml.emf.createSmlString
 import de.unibonn.simpleml.simpleML.SimpleMLFactory
-import de.unibonn.simpleml.simpleML.SmlBoolean
-import de.unibonn.simpleml.simpleML.SmlFloat
-import de.unibonn.simpleml.simpleML.SmlInt
-import de.unibonn.simpleml.simpleML.SmlNull
-import de.unibonn.simpleml.simpleML.SmlString
-import io.kotest.assertions.asClue
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
-import io.kotest.matchers.types.shouldBeInstanceOf
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class ExpressionInterpreterTest {
 
     private val factory = SimpleMLFactory.eINSTANCE
 
-    @Test
-    fun `should return new boolean literal for boolean literal`() {
-        val testData = createSmlBoolean(true)
+    @Nested
+    inner class BaseCases {
 
-        testData.toConstantExpression().asClue {
-            it shouldNotBe testData
-            it.shouldBeInstanceOf<SmlBoolean>()
-            it.isTrue shouldBe true
+        @Test
+        fun `should return new boolean literal for boolean literal`() {
+            val testData = createSmlBoolean(true)
+            testData.toConstantExpression() shouldBe SmlConstantBoolean(true)
+        }
+
+        @Test
+        fun `should return new float literal for float literal`() {
+            val testData = createSmlFloat(1.0)
+            testData.toConstantExpression() shouldBe SmlConstantFloat(1.0)
+        }
+
+        @Test
+        fun `should return new int literal for int literal`() {
+            val testData = createSmlInt(1)
+            testData.toConstantExpression() shouldBe SmlConstantInt(1)
+        }
+
+        @Test
+        fun `should return new null literal for null literal`() {
+            val testData = createSmlNull()
+            testData.toConstantExpression() shouldBe SmlConstantNull
+        }
+
+        @Test
+        fun `should return new string literal for string literal`() {
+            val testData = createSmlString("test")
+            testData.toConstantExpression() shouldBe SmlConstantString("test")
+        }
+
+        @Test
+        fun `should return string literal for template string start`() {
+            val testData = factory.createSmlTemplateStringStart().apply { value = "test" }
+            testData.toConstantExpression() shouldBe SmlConstantString("test")
+        }
+
+        @Test
+        fun `should return string literal for template string inner`() {
+            val testData = factory.createSmlTemplateStringInner().apply { value = "test" }
+            testData.toConstantExpression() shouldBe SmlConstantString("test")
+        }
+
+        @Test
+        fun `should return string literal for template string end`() {
+            val testData = factory.createSmlTemplateStringEnd().apply { value = "test" }
+            testData.toConstantExpression() shouldBe SmlConstantString("test")
+        }
+
+        @Test
+        fun `should return null for block lambda`() {
+            val testData = createSmlBlockLambda()
+            testData.toConstantExpression().shouldBeNull()
+        }
+
+        @Test
+        fun `should return null for expression lambda`() {
+            val testData = createSmlExpressionLambda(result = createSmlNull())
+            testData.toConstantExpression().shouldBeNull()
         }
     }
 
-    @Test
-    fun `should return new float literal for float literal`() {
-        val testData = createSmlFloat(1.0)
+    @Nested
+    inner class Argument {
 
-        testData.toConstantExpression().asClue {
-            it shouldNotBe testData
-            it.shouldBeInstanceOf<SmlFloat>()
-            it.value shouldBe 1.0
+        @Test
+        fun `should return value as constant expression for arguments`() {
+            val testData = createSmlArgument(value = createSmlNull())
+            testData.toConstantExpression() shouldBe SmlConstantNull
         }
     }
 
-    @Test
-    fun `should return new int literal for int literal`() {
-        val testData = createSmlInt(1)
+    @Nested
+    inner class ParenthesizedExpression {
 
-        testData.toConstantExpression().asClue {
-            it shouldNotBe testData
-            it.shouldBeInstanceOf<SmlInt>()
-            it.value shouldBe 1
+        @Test
+        fun `should return expression as constant expression for parenthesized expressions`() {
+            val testData = createSmlParenthesizedExpression(createSmlNull())
+            testData.toConstantExpression() shouldBe SmlConstantNull
         }
     }
 
-    @Test
-    fun `should return new null literal for null literal`() {
-        val testData = createSmlNull()
+    @Nested
+    inner class PrefixOperation {
 
-        testData.toConstantExpression().asClue {
-            it shouldNotBe testData
-            it.shouldBeInstanceOf<SmlNull>()
-        }
-    }
+        @Nested
+        inner class Not {
 
-    @Test
-    fun `should return new string literal for string literal`() {
-        val testData = createSmlString("test")
+            @Test
+            fun `should return negated operand if it is a constant boolean`() {
+                val testData = createSmlPrefixOperation(
+                    operator = SmlPrefixOperationOperator.Not,
+                    operand = createSmlBoolean(true)
+                )
 
-        testData.toConstantExpression().asClue {
-            it shouldNotBe testData
-            it.shouldBeInstanceOf<SmlString>()
-            it.value shouldBe "test"
-        }
-    }
+                testData.toConstantExpression() shouldBe SmlConstantBoolean(false)
+            }
 
-    @Test
-    fun `should return string literal for template string start`() {
-        val testData = factory.createSmlTemplateStringStart().apply {
-            value = "test"
-        }
+            @Test
+            fun `should return null if the operand is not a constant boolean`() {
+                val testData = createSmlPrefixOperation(
+                    operator = SmlPrefixOperationOperator.Not,
+                    operand = createSmlNull()
+                )
 
-        testData.toConstantExpression().asClue {
-            it.shouldBeInstanceOf<SmlString>()
-            it.value shouldBe "test"
-        }
-    }
-
-    @Test
-    fun `should return string literal for template string inner`() {
-        val testData = factory.createSmlTemplateStringInner().apply {
-            value = "test"
+                testData.toConstantExpression().shouldBeNull()
+            }
         }
 
-        testData.toConstantExpression().asClue {
-            it.shouldBeInstanceOf<SmlString>()
-            it.value shouldBe "test"
-        }
-    }
+        @Nested
+        inner class Minus {
 
-    @Test
-    fun `should return string literal for template string end`() {
-        val testData = factory.createSmlTemplateStringEnd().apply {
-            value = "test"
-        }
+            @Test
+            fun `should return negated operand if it is a constant float`() {
+                val testData = createSmlPrefixOperation(
+                    operator = SmlPrefixOperationOperator.Minus,
+                    operand = createSmlFloat(1.0)
+                )
 
-        testData.toConstantExpression().asClue {
-            it.shouldBeInstanceOf<SmlString>()
-            it.value shouldBe "test"
+                testData.toConstantExpression() shouldBe SmlConstantFloat(-1.0)
+            }
+
+            @Test
+            fun `should return negated operand if it is a constant int`() {
+                val testData = createSmlPrefixOperation(
+                    operator = SmlPrefixOperationOperator.Minus,
+                    operand = createSmlInt(1)
+                )
+
+                testData.toConstantExpression() shouldBe SmlConstantInt(-1)
+            }
+
+            @Test
+            fun `should return null if the operand is not a constant number`() {
+                val testData = createSmlPrefixOperation(
+                    operator = SmlPrefixOperationOperator.Minus,
+                    operand = createSmlNull()
+                )
+
+                testData.toConstantExpression().shouldBeNull()
+            }
         }
     }
 }
