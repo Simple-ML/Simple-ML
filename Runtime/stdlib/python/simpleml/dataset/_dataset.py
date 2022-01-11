@@ -201,10 +201,12 @@ class Dataset:
             self.simple_data_types[column_name] = config.type_geometry
             lon_lat_pair_number += 1
 
-    def addColumnDescription(self, attribute_identifier, resource_node, domain_node, property_node, rdf_value_type, value_type,
+    def addColumnDescription(self, attribute_identifier, resource_node, domain_node, property_node, rdf_value_type,
+                             value_type,
                              attribute_label):
         self.attributes.append(attribute_identifier)
-        self.attribute_graph[attribute_identifier] = {"value_type": rdf_value_type, "resource": resource_node, "property": property_node,
+        self.attribute_graph[attribute_identifier] = {"value_type": rdf_value_type, "resource": resource_node,
+                                                      "property": property_node,
                                                       "class": domain_node}
         self.data_types[attribute_identifier] = value_type
 
@@ -301,6 +303,9 @@ class Dataset:
                             config.type_table_header_labels: list(self.attribute_labels.values()),
                             config.type_table_data_types: data_types}
 
+    def exportDataAsFile(self, file_path):
+        self.data.to_csv(file_path, encoding='utf-8')
+
 
 def loadDataset(datasetID: str) -> Dataset:
     from simpleml.data_catalog import getDataset
@@ -322,14 +327,14 @@ def readDataSetFromCSV(file_name: str, dataset_name: str, separator: str, has_he
     data_file_path = os.path.join(dir_name, global_config.data_folder_name, file_name)
     # print(data_file_path)
     speed_data = pd.read_csv(data_file_path, sep=separator)
-    #print(speed_data['geometry'])
+    # print(speed_data['geometry'])
     speed_data = speed_data.convert_dtypes()
-    #print(speed_data['geometry'])
+    # print(speed_data['geometry'])
     gdf = geopandas.GeoDataFrame(speed_data)
-    #print(gdf['geometry'])
-    #print(gdf.dtypes)
-    #print(speed_data.dtypes)
-    #print(speed_data.info())
+    # print(gdf['geometry'])
+    # print(gdf.dtypes)
+    # print(speed_data.dtypes)
+    # print(speed_data.info())
 
     attribute_names = speed_data.columns.values.tolist()
     attribute_types = {}
@@ -337,10 +342,10 @@ def readDataSetFromCSV(file_name: str, dataset_name: str, separator: str, has_he
     np_type = ''
     for attribute in attribute_names:
         type_change = speed_data[attribute]
-        #print(attribute)
-        #print(speed_data[attribute].dtype)
+        # print(attribute)
+        # print(speed_data[attribute].dtype)
         if speed_data[attribute].dtype == 'string':
-            #print('yes')
+            # print('yes')
             try:
                 speed_data[attribute] = pd.to_datetime(speed_data[attribute])
             except ValueError:
@@ -350,16 +355,16 @@ def readDataSetFromCSV(file_name: str, dataset_name: str, separator: str, has_he
                 speed_data[attribute] = speed_data[attribute].apply(wkt.loads)
             except:
                 pass'''
-            #print(speed_data[attribute].isna())
-            #print(type_change)
-            #print(speed_data.dtypes)
-            #print(speed_data[attribute].dtype)
+            # print(speed_data[attribute].isna())
+            # print(type_change)
+            # print(speed_data.dtypes)
+            # print(speed_data[attribute].dtype)
 
         attribute_types[attribute] = dataTypes(speed_data[attribute].dtype)
         attribute_labels[attribute] = dataset_name
-        #print(speed_data[attribute].dtype)
+        # print(speed_data[attribute].dtype)
 
-    #print(attribute_types)
+    # print(attribute_types)
 
     dataset = Dataset(id='', title=dataset_name, fileName=file_name, hasHeader=has_header, separator=separator,
                       null_value='', description='', subjects={}, number_of_instances=None, titles={}, descriptions={})
@@ -375,7 +380,7 @@ def readDataSetFromCSV(file_name: str, dataset_name: str, separator: str, has_he
 
 
 def dataTypes(type):
-    #print(type)
+    # print(type)
     if type == 'Float64':
         return np.double
     elif type == 'Int64':
@@ -387,93 +392,62 @@ def dataTypes(type):
     elif type == 'boolean':
         return np.bool
 
-def joinTwoDatasets(first_data: Dataset, second_data: Dataset, join_column_name_1, join_column_name_2, first_suffix: str, second_suffix: str) -> Dataset:
-    
+
+def joinTwoDatasets(first_data: Dataset, second_data: Dataset, join_column_name_1: str, join_column_name_2: str,
+                    first_suffix: str, second_suffix: str) -> Dataset:
     # TODO: check that types are join_column_name_1 and join_column_name_2 are the same
-    
-    #print(second_data.data)
-    joint_data = first_data.data.merge(second_data.data, on=('id'), suffixes=(first_suffix, second_suffix))
-    # TODO: how tpo join based on two column names
-    #joint_data = first_data.data.append(second_data.data, sort=False)
-    #print(joint_data.shape[0])
-    dataset = Dataset(id=first_data.id+'-'+second_data.id, title=first_data.title+'-'+second_data.title, fileName=None, hasHeader=None, separator=None,
-                      null_value='', description=first_data.description+'-'+second_data.description, subjects={'qw':'qw'}, number_of_instances=joint_data.shape[0])
+    if first_data.data[join_column_name_1].dtypes == second_data.data[join_column_name_2].dtypes:
+        # print(second_data.data)
+        joint_data = first_data.data.merge(second_data.data, left_on=join_column_name_1, right_on=join_column_name_2,
+                                           suffixes=(first_suffix, second_suffix))
+        # TODO: how tpo join based on two column names
+        # joint_data = first_data.data.append(second_data.data, sort=False)
+        # print(joint_data.shape[0])
+        dataset = Dataset(id=first_data.id + '-' + second_data.id, title=first_data.title + '-' + second_data.title,
+                          fileName=None, hasHeader=None, separator=None,
+                          null_value='', description=first_data.description + '-' + second_data.description,
+                          subjects={'qw': 'qw'}, number_of_instances=joint_data.shape[0])
 
-    attribute_names = joint_data.columns.values.tolist()
-    print(attribute_names)
+        attribute_names = joint_data.columns.values.tolist()
+        # print(attribute_names)
 
-    new_attribute_types = {}
-    for attribute in first_data.attributes:
-        if attribute == join_column_name_1:
-            continue
-        new_attribute_name = attribute + first_suffix
-        new_attribute_types[new_attribute_name] = first_data.data_types[attribute]
-    for attribute in second_data.attributes:
-        if attribute == join_column_name_2:
-            continue
-        new_attribute_name = attribute + second_suffix
-        new_attribute_types[new_attribute_name] = second_data.data_types[attribute]
+        new_attribute_types = {}
+        for attribute in first_data.attributes:
+            if attribute == join_column_name_1:
+                continue
+            new_attribute_name = attribute + first_suffix
+            new_attribute_types[new_attribute_name] = first_data.data_types[attribute]
+        for attribute in second_data.attributes:
+            if attribute == join_column_name_2:
+                continue
+            new_attribute_name = attribute + second_suffix
+            new_attribute_types[new_attribute_name] = second_data.data_types[attribute]
 
-    # same for labels
+        # same for labels
+        # print(new_attribute_types)
 
-    new_attribute_types[join_column_name_1] = first_data.data_types[join_column_name_1]
+        new_attribute_types[join_column_name_1] = first_data.data_types[join_column_name_1]
 
-    print(new_attribute_types)
-
-
-    #dataset.addColumnDescriptionForLocalDataset(attribute_names, attribute_types, attribute_labels)
-
-    pd.set_option("max_columns", None)
-    #print(joint_data.head(10))
-    '''dir_name = os.path.dirname(__file__)
-    first_data_file_path = os.path.join(dir_name, global_config.data_folder_name, first_file_name)
-    second_data_file_path = os.path.join(dir_name, global_config.data_folder_name, second_file_name)
-
-    first_data = pd.read_csv(first_data_file_path, sep=separator)
-    second_data = pd.read_csv(second_data_file_path, sep=separator)
-    #joint_data = second_data.join(first_data.set_index('id'), on='id', lsuffix=first_suffix, rsuffix=second_suffix)
-    #joint_data = first_data.join(second_data, lsuffix=first_suffix, rsuffix=second_suffix)
-    joint_data = first_data.merge(second_data, on=('id'), suffixes=('_l', '_r'))
-
-    pd.set_option("max_columns", None)
-    print(joint_data.head(10))
-    '''
-
-    #joint_dataset = first_data.copy()
-    dataset.data = joint_data
+        # joint_dataset = first_data.copy()
+        dataset.data = joint_data
+    else:
+        raise TypeError('Datatypes of joined columns do not match.')
     return dataset
 
-def joinTwoDatasets2(first_file_name: str, second_file_name: str, separator: str, first_suffix: str, second_suffix: str) -> Dataset:
+
+def joinTwoDatasets2(first_file_name: str, second_file_name: str, separator: str, first_suffix: str,
+                     second_suffix: str) -> Dataset:
     dir_name = os.path.dirname(__file__)
     first_data_file_path = os.path.join(dir_name, global_config.data_folder_name, first_file_name)
     second_data_file_path = os.path.join(dir_name, global_config.data_folder_name, second_file_name)
 
     first_data = pd.read_csv(first_data_file_path, sep=separator)
     second_data = pd.read_csv(second_data_file_path, sep=separator)
-    #joint_data = second_data.join(first_data.set_index('id'), on='id', lsuffix=first_suffix, rsuffix=second_suffix)
-    #joint_data = first_data.join(second_data, lsuffix=first_suffix, rsuffix=second_suffix)
+    # joint_data = second_data.join(first_data.set_index('id'), on='id', lsuffix=first_suffix, rsuffix=second_suffix)
+    # joint_data = first_data.join(second_data, lsuffix=first_suffix, rsuffix=second_suffix)
     joint_data = first_data.merge(second_data, on=('id'), suffixes=('_l', '_r'))
 
     pd.set_option("max_columns", None)
     print(joint_data.head(10))
 
     return True
-
-
-'''
-def checkHeader(file):
-    with open(file) as f:
-        first = f.read(1)
-    return first not in '.-0123456789'
-
-
-def detectSeparator(file):
-    with open(file, 'r') as csv_file:
-        header = csv_file.readline()
-        if header.find(";") != -1:
-            return ";"
-        if header.find(",") != -1:
-            return ","
-    # default delimiter (MS Office export)
-    return ";"
-'''
