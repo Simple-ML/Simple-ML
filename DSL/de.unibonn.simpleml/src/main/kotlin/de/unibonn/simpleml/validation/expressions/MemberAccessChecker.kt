@@ -47,17 +47,24 @@ class MemberAccessChecker @Inject constructor(
 
     @Check
     fun unnecessarySafeAccess(smlMemberAccess: SmlMemberAccess) {
-        if (!smlMemberAccess.isNullSafe) {
-            return
-        }
-
         val type = typeComputer.typeOf(smlMemberAccess.receiver)
-        if (!(type is NamedType && type.isNullable)) {
-            info(
-                "The receiver is never null so the safe access is unnecessary.",
-                null,
-                InfoCode.UnnecessarySafeAccess
-            )
+
+        if (smlMemberAccess.isNullSafe) {
+            if (!(type is NamedType && type.isNullable)) {
+                info(
+                    "The receiver is never null so the safe access is unnecessary.",
+                    null,
+                    InfoCode.UnnecessarySafeAccess
+                )
+            }
+        } else {
+            if (type is NamedType && type.isNullable) {
+                error(
+                    "The receiver can be null so a safe access must be used.",
+                    null,
+                    ErrorCode.MissingSafeAccess
+                )
+            }
         }
     }
 }
