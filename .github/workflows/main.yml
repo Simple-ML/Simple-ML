@@ -40,14 +40,6 @@ jobs:
           # upload-artifact does not use working-directory
           path: DSL/de.unibonn.simpleml/build/reports/tests/test/
 
-      - name: Upload test coverage
-        if: ${{ github.actor != 'dependabot[bot]' }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: Test coverage
-          # upload-artifact does not use working-directory
-          path: DSL/de.unibonn.simpleml/build/reports/kover/html/
-
   # Build and test Frontend component
   build-frontend:
     runs-on: ubuntu-latest
