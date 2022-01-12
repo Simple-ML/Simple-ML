@@ -163,7 +163,7 @@ class TypeComputer @Inject constructor(
                     else -> FLOAT
                 }
                 "?:" -> ANY // TODO
-                else -> NothingType
+                else -> NOTHING
             }
             this is SmlBlockLambda -> CallableType(
                 parametersOrEmpty().map { it.inferType(false) },
@@ -186,7 +186,7 @@ class TypeComputer @Inject constructor(
                     INT -> INT
                     else -> FLOAT
                 }
-                else -> NothingType
+                else -> NOTHING
             }
             this is SmlReference -> { // TODO
                 val declaration = this.declaration ?: return ANY
@@ -223,11 +223,12 @@ class TypeComputer @Inject constructor(
     private val BOOLEAN get() = stdlibType(context, StdlibClasses.Boolean.toString())
     private val FLOAT get() = stdlibType(context, StdlibClasses.Float.toString())
     private val INT get() = stdlibType(context, StdlibClasses.Int.toString())
+    private val NOTHING get() = stdlibType(context, StdlibClasses.Nothing.toString())
     private val STRING get() = stdlibType(context, StdlibClasses.String.toString())
 
     fun stdlibType(context: EObject, qualifiedName: String, isNullable: Boolean = false): Type {
         return when (val smlClass = stdlib.getClass(context, qualifiedName)) {
-            null -> NothingType
+            null -> UnresolvedType
             else -> ClassType(smlClass, isNullable, isStatic = false)
         }
     }

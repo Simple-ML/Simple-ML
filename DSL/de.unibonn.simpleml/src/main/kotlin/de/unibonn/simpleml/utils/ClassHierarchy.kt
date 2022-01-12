@@ -13,7 +13,8 @@ class ClassHierarchy @Inject constructor(
     // ClassOrInterface ------------------------------------------------------------------------------------------------
 
     fun isSubtypeOf(smlClass: SmlClass, other: SmlClass) =
-        smlClass == other || other in superClasses(smlClass)
+        smlClass == stdlib.getClass(smlClass, StdlibClasses.Nothing.toString()) ||
+            smlClass == other || other in superClasses(smlClass)
 
     fun superClasses(smlClass: SmlClass) = sequence<SmlClass> {
         val visited = mutableSetOf<SmlClass>()
