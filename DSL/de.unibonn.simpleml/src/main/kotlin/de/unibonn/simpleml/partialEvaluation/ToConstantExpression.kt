@@ -47,6 +47,7 @@ import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.indexOrNull
 import de.unibonn.simpleml.utils.isInferredPure
+import de.unibonn.simpleml.utils.isOptional
 import de.unibonn.simpleml.utils.uniqueBy
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Minus as InfixMinus
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Minus as PrefixMinus
@@ -262,8 +263,6 @@ private fun SmlTemplateString.simplifyTemplateString(
     return SmlConstantString(constExpressions.joinToString(""))
 }
 
-// TODO: everything below (incl. tests) --------------------------------------------------------------------------------
-
 private fun SmlCall.simplifyCall(substitutions: Map<SmlParameter, SmlSimplifiedExpression?>): SmlSimplifiedExpression? {
     return when {
         // TODO implement + test
@@ -296,24 +295,14 @@ private fun SmlReference.simplifyReference(
             declaration.parametersOrEmpty().isEmpty() -> SmlConstantEnumVariant(declaration)
             else -> null
         }
-        is SmlPlaceholder -> declaration.convertAssignee(substitutions)
-        is SmlParameter -> null // TODO
+        is SmlPlaceholder -> declaration.simplifyAssignee(substitutions)
+        is SmlParameter -> declaration.simplifyParameter(substitutions)
         is SmlStep -> declaration.simplifyStep()
         else -> null
     }
 }
 
-private fun SmlStep.simplifyStep(): SmlIntermediateStep? {
-    return when {
-        isInferredPure() -> SmlIntermediateStep(
-            parameters = parametersOrEmpty(),
-            yields = descendants<SmlYield>().toList().uniqueBy { it.result }
-        )
-        else -> null
-    }
-}
-
-private fun SmlAbstractAssignee.convertAssignee(
+private fun SmlAbstractAssignee.simplifyAssignee(
     substitutions: Map<SmlParameter, SmlSimplifiedExpression?>
 ): SmlSimplifiedExpression? {
     val simpleFullAssignedExpression = closestAncestorOrNull<SmlAssignment>()
@@ -327,5 +316,25 @@ private fun SmlAbstractAssignee.convertAssignee(
             indexOrNull() == 0 -> simpleFullAssignedExpression
             else -> null
         }
+    }
+}
+
+private fun SmlParameter.simplifyParameter(
+    substitutions: Map<SmlParameter, SmlSimplifiedExpression?>
+): SmlSimplifiedExpression? {
+    return when {
+        this in substitutions -> substitutions[this]
+        isOptional() -> defaultValue?.simplify(substitutions)
+        else -> null
+    }
+}
+
+private fun SmlStep.simplifyStep(): SmlIntermediateStep? {
+    return when {
+        isInferredPure() -> SmlIntermediateStep(
+            parameters = parametersOrEmpty(),
+            yields = descendants<SmlYield>().toList().uniqueBy { it.result }
+        )
+        else -> null
     }
 }

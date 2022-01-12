@@ -1208,6 +1208,39 @@ class ToConstantExpressionTest {
         }
 
         @Test
+        fun `simplify should return substituted value if it exists`() {
+            val testParameter = createSmlParameter("testParameter")
+            val testData = createSmlReference(
+                declaration = testParameter
+            )
+
+            testData.simplify(mapOf(testParameter to SmlConstantNull)) shouldBe SmlConstantNull
+        }
+
+        @Test
+        fun `simplify should return default value if referenced parameter is not substituted but optional`() {
+            val testParameter = createSmlParameter(
+                name = "testParameter",
+                defaultValue = createSmlNull()
+            )
+            val testData = createSmlReference(
+                declaration = testParameter
+            )
+
+            testData.simplify(emptyMap()) shouldBe SmlConstantNull
+        }
+
+        @Test
+        fun `simplify should return null if referenced parameter is required and not substituted`() {
+            val testParameter = createSmlParameter("testParameter")
+            val testData = createSmlReference(
+                declaration = testParameter
+            )
+
+            testData.simplify(emptyMap()).shouldBeNull()
+        }
+
+        @Test
         fun `toConstantExpression should return null if step is referenced`() {
             val testData = createSmlReference(createSmlStep("testStep"))
             testData.toConstantExpressionOrNull().shouldBeNull()
