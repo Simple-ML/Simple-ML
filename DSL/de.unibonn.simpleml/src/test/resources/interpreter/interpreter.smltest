@@ -1,10 +1,14 @@
 package tests.interpreter
 
+// Preparation -----------------------------------------------------------------
+
 @Impure
 fun impureFunction() -> result: Int
 
 @Pure
 fun pureFunction() -> result: Int
+
+// Test data -------------------------------------------------------------------
 
 workflow workflowWithImpureAndPureLambdas {
     val impureBlockLambda = () {
@@ -15,11 +19,16 @@ workflow workflowWithImpureAndPureLambdas {
         pureFunction();
     };
 
+    val recursiveBlockLambda = () {
+        recursiveStep();
+    };
+
     val impureExpressionLambda = () -> impureFunction();
 
     val pureExpressionLambda = () -> pureFunction();
-}
 
+    val recursiveExpressionLambda = () -> recursiveStep();
+}
 
 step impureStep() {
     impureFunction();
@@ -27,4 +36,8 @@ step impureStep() {
 
 step pureStep() {
     pureFunction();
+}
+
+step recursiveStep() -> result: Int {
+    yield result = recursiveStep();
 }

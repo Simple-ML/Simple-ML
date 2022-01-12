@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.interpreter
+package de.unibonn.simpleml.partialEvaluation
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator
@@ -60,10 +60,13 @@ class ToConstantExpressionTest {
 
     private lateinit var impureBlockLambda: SmlBlockLambda
     private lateinit var pureBlockLambda: SmlBlockLambda
+    private lateinit var recursiveBlockLambda: SmlBlockLambda
     private lateinit var impureExpressionLambda: SmlExpressionLambda
     private lateinit var pureExpressionLambda: SmlExpressionLambda
+    private lateinit var recursiveExpressionLambda: SmlExpressionLambda
     private lateinit var impureStep: SmlStep
     private lateinit var pureStep: SmlStep
+    private lateinit var recursiveStep: SmlStep
 
     @BeforeEach
     fun reset() {
@@ -71,19 +74,22 @@ class ToConstantExpressionTest {
         compilationUnit.shouldNotBeNull()
 
         val blockLambdas = compilationUnit.descendants<SmlBlockLambda>().toList()
-        blockLambdas.shouldHaveSize(2)
+        blockLambdas.shouldHaveSize(3)
 
         impureBlockLambda = blockLambdas[0]
         pureBlockLambda = blockLambdas[1]
+        recursiveBlockLambda = blockLambdas[2]
 
         val expressionLambdas = compilationUnit.descendants<SmlExpressionLambda>().toList()
-        expressionLambdas.shouldHaveSize(2)
+        expressionLambdas.shouldHaveSize(3)
 
         impureExpressionLambda = expressionLambdas[0]
         pureExpressionLambda = expressionLambdas[1]
+        recursiveExpressionLambda = expressionLambdas[2]
 
         impureStep = compilationUnit.findUniqueDeclarationOrFail("impureStep")
         pureStep = compilationUnit.findUniqueDeclarationOrFail("pureStep")
+        recursiveStep = compilationUnit.findUniqueDeclarationOrFail("recursiveStep")
     }
 
     @Nested
@@ -154,6 +160,11 @@ class ToConstantExpressionTest {
         }
 
         @Test
+        fun `simplify should return null for block lambda with recursive call`() {
+            recursiveBlockLambda.simplify(emptyMap()).shouldBeNull()
+        }
+
+        @Test
         fun `toConstantExpression should return null for expression lambda`() {
             val testData = createSmlExpressionLambda(result = createSmlNull())
             testData.toConstantExpressionOrNull().shouldBeNull()
@@ -167,6 +178,11 @@ class ToConstantExpressionTest {
         @Test
         fun `simplify should return intermediate expression lambda for pure expression lambda`() {
             pureExpressionLambda.simplify(emptyMap()).shouldBeInstanceOf<SmlIntermediateExpressionLambda>()
+        }
+
+        @Test
+        fun `simplify should return null for expression lambda with recursive call`() {
+            recursiveExpressionLambda.simplify(emptyMap()).shouldBeNull()
         }
     }
 
@@ -1198,14 +1214,20 @@ class ToConstantExpressionTest {
         }
 
         @Test
+        fun `simplify should return null if referenced step is impure`() {
+            val testData = createSmlReference(impureStep)
+            testData.simplify(emptyMap()).shouldBeNull()
+        }
+
+        @Test
         fun `simplify should return intermediate step if referenced step is pure`() {
             val testData = createSmlReference(pureStep)
             testData.simplify(emptyMap()).shouldBeInstanceOf<SmlIntermediateStep>()
         }
 
         @Test
-        fun `simplify should return null if referenced step is impure`() {
-            val testData = createSmlReference(impureStep)
+        fun `simplify should return null if referenced step has recursive calls`() {
+            val testData = createSmlReference(recursiveStep)
             testData.simplify(emptyMap()).shouldBeNull()
         }
 
