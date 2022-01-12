@@ -1054,6 +1054,7 @@ class ToConstantExpressionTest {
                     " inner2 ",
                     " inner3 ",
                     " inner4 ",
+                    " inner5 ",
                     " end"
                 ),
                 templateExpressions = listOf(
@@ -1061,12 +1062,13 @@ class ToConstantExpressionTest {
                     createSmlFloat(1.0),
                     createSmlInt(1),
                     createSmlNull(),
-                    createSmlString("string")
+                    createSmlString("string"),
+                    createSmlReference(createSmlEnumVariant("Variant"))
                 )
             )
 
             testData.toConstantExpressionOrNull() shouldBe SmlConstantString(
-                value = "start true inner1 1.0 inner2 1 inner3 null inner4 string end"
+                value = "start true inner1 1.0 inner2 1 inner3 null inner4 string inner5 Variant end"
             )
         }
 
