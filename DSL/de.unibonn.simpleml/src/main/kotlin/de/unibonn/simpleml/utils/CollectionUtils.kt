@@ -4,7 +4,7 @@ import kotlin.math.max
 
 /**
  * Creates a list of all elements in the iterable that the labeler maps to the same label as at least one other element.
- * Values that are mapped to null by the labeler are removed.
+ * Values that are mapped to `null` by the labeler are removed.
  */
 fun <I, K> Iterable<I>.duplicatesBy(labeler: (I) -> K): List<I> {
     return this
@@ -16,8 +16,21 @@ fun <I, K> Iterable<I>.duplicatesBy(labeler: (I) -> K): List<I> {
 }
 
 /**
- * Maps corresponding elements of the left and right list using the given zipper. The shorter list is padded with nulls
- * at the end, so the resulting list has the same length as the longer list.
+ * Creates a list of all elements in the iterable that the labeler maps to a unique label. Values that are mapped to
+ * `null` by the labeler are removed.
+ */
+fun <I, K> Iterable<I>.uniqueBy(labeler: (I) -> K): List<I> {
+    return this
+        .groupBy(labeler)
+        .filterKeys { it != null }
+        .values
+        .filter { it.size == 1 }
+        .flatten()
+}
+
+/**
+ * Maps corresponding elements of the left and right list using the given zipper. The shorter list is padded with
+ * `null`s at the end, so the resulting list has the same length as the longer list.
  */
 fun <L, R, O> outerZipBy(left: List<L>, right: List<R>, zipper: (L?, R?) -> O): List<O> {
     val maxSize = max(left.size, right.size)

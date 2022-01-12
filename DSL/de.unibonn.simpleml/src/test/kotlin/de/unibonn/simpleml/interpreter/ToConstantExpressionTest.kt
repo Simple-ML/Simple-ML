@@ -23,6 +23,7 @@ import de.unibonn.simpleml.emf.createSmlParenthesizedExpression
 import de.unibonn.simpleml.emf.createSmlPlaceholder
 import de.unibonn.simpleml.emf.createSmlPrefixOperation
 import de.unibonn.simpleml.emf.createSmlReference
+import de.unibonn.simpleml.emf.createSmlStep
 import de.unibonn.simpleml.emf.createSmlString
 import de.unibonn.simpleml.emf.createSmlTemplateString
 import de.unibonn.simpleml.emf.descendants
@@ -1188,6 +1189,24 @@ class ToConstantExpressionTest {
             )
 
             testData.toConstantExpressionOrNull().shouldBeNull()
+        }
+
+        @Test
+        fun `toConstantExpression should return null if step is referenced`() {
+            val testData = createSmlReference(createSmlStep("testStep"))
+            testData.toConstantExpressionOrNull().shouldBeNull()
+        }
+
+        @Test
+        fun `simplify should return intermediate step if referenced step is pure`() {
+            val testData = createSmlReference(pureStep)
+            testData.simplify(emptyMap()).shouldBeInstanceOf<SmlIntermediateStep>()
+        }
+
+        @Test
+        fun `simplify should return null if referenced step is impure`() {
+            val testData = createSmlReference(impureStep)
+            testData.simplify(emptyMap()).shouldBeNull()
         }
 
         @Test

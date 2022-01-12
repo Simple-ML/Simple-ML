@@ -16,6 +16,7 @@ import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Plus
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Times
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Not
 import de.unibonn.simpleml.emf.closestAncestorOrNull
+import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
@@ -43,9 +44,11 @@ import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
 import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
 import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
+import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.indexOrNull
 import de.unibonn.simpleml.utils.isInferredPure
 import de.unibonn.simpleml.utils.isResolved
+import de.unibonn.simpleml.utils.uniqueBy
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Minus as InfixMinus
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Minus as PrefixMinus
 
@@ -267,14 +270,16 @@ private fun SmlMemberAccess.simplifyMemberAccess(parameterToValue: Map<SmlParame
 
     return when (val constantReceiver = receiver.toConstantExpressionOrNull()) {
         SmlConstantNull -> when {
-            isNullSafe && member.declaration.isResolved() -> SmlConstantNull
+            isNullSafe -> SmlConstantNull
             else -> null
         }
         else -> null
     } // TODO implement + test
 }
 
-private fun SmlReference.simplifyReference(parameterToValue: Map<SmlParameter, SmlSimplifiedExpression?>): SmlSimplifiedExpression? {
+private fun SmlReference.simplifyReference(
+    parameterToValue: Map<SmlParameter, SmlSimplifiedExpression?>
+): SmlSimplifiedExpression? {
     return when (val declaration = this.declaration) {
         is SmlEnumVariant -> when {
             declaration.parametersOrEmpty().isEmpty() -> SmlConstantEnumVariant(declaration)
@@ -282,7 +287,17 @@ private fun SmlReference.simplifyReference(parameterToValue: Map<SmlParameter, S
         }
         is SmlPlaceholder -> declaration.convertAssignee(parameterToValue) // TODO
         is SmlParameter -> null // TODO
-        is SmlStep -> null // TODO
+        is SmlStep -> declaration.simplifyStep()
+        else -> null
+    }
+}
+
+private fun SmlStep.simplifyStep(): SmlIntermediateStep? {
+    return when {
+        isInferredPure() -> SmlIntermediateStep(
+            parameters = parametersOrEmpty(),
+            yields = descendants<SmlYield>().toList().uniqueBy { it.result }
+        )
         else -> null
     }
 }

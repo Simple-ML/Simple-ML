@@ -376,7 +376,8 @@ fun SmlResult.yieldOrNull(): SmlYield? {
 
     return step
         .descendants<SmlYield>()
-        .firstOrNull { it.result == this }
+        .toList()
+        .uniqueOrNull { it.result == this }
 }
 
 // Type ----------------------------------------------------------------------------------------------------------------
