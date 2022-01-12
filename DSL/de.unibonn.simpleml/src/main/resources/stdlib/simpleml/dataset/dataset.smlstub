@@ -11,7 +11,7 @@ class Dataset {
 
     fun exportDataAsFile(filePath: String)
 
-    fun filterGoodQuality(instance: int)
+    fun filterGoodQuality(instance: Int)
 }
 
 fun loadDataset(name: String) -> dataset: Dataset
@@ -19,4 +19,3 @@ fun loadDataset(name: String) -> dataset: Dataset
 fun readDataSetFromCSV(fileName: String, datasetName: String, separator: String, hasHeader: String) -> dataset: Dataset
 
 fun joinTwoDatasets(firstData: Dataset, secondData: Dataset, joinColumnName1: String, joinColumnName2: String, firstSuffix: String, secondSuffix: String) -> dataset: Dataset
-
