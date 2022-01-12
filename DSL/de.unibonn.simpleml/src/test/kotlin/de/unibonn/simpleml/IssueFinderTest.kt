@@ -1,6 +1,7 @@
 package de.unibonn.simpleml
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.emf.OriginalFilePath
 import de.unibonn.simpleml.testing.CategorizedTest
 import de.unibonn.simpleml.testing.FindTestRangesResult
 import de.unibonn.simpleml.testing.ParseHelper
@@ -20,7 +21,6 @@ import de.unibonn.simpleml.testing.createDynamicTestsFromResourceFolder
 import de.unibonn.simpleml.testing.findTestRanges
 import de.unibonn.simpleml.testing.getResourcePath
 import de.unibonn.simpleml.testing.testDisplayName
-import de.unibonn.simpleml.emf.OriginalFilePath
 import de.unibonn.simpleml.utils.outerZipBy
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension

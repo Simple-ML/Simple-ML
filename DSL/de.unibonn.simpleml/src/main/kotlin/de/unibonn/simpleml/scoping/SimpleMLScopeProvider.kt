@@ -214,10 +214,11 @@ class SimpleMLScopeProvider @Inject constructor(
         // Placeholders
         val placeholders = when (val containingStatement = context.closestAncestorOrNull<SmlAbstractStatement>()) {
             null -> emptyList()
-            else -> containingStatement
-                .closestAncestorOrNull<SmlBlock>()
-                ?.placeholdersUpTo(containingStatement)
-                .orEmpty()
+            else ->
+                containingStatement
+                    .closestAncestorOrNull<SmlBlock>()
+                    ?.placeholdersUpTo(containingStatement)
+                    .orEmpty()
         }
 
         // Parameters

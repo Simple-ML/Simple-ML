@@ -1,5 +1,6 @@
 package de.unibonn.simpleml.validation.declarations
 
+import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlBlock
 import de.unibonn.simpleml.simpleML.SmlClass
@@ -9,7 +10,6 @@ import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.utils.assignedOrNull
-import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.utils.usesIn
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.WarningCode

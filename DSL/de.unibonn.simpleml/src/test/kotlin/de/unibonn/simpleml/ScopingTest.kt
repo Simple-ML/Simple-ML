@@ -3,6 +3,7 @@ package de.unibonn.simpleml
 import com.google.inject.Inject
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.annotationUsesOrEmpty
+import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
@@ -33,7 +34,6 @@ import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
 import de.unibonn.simpleml.testing.assertions.shouldBeResolved
 import de.unibonn.simpleml.testing.assertions.shouldNotBeResolved
-import de.unibonn.simpleml.emf.descendants
 import io.kotest.assertions.forEachAsClue
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull

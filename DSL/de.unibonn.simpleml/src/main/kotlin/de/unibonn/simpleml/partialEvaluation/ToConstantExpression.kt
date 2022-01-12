@@ -275,15 +275,19 @@ private fun SmlCall.simplifyCall(substitutions: ParameterSubstitutions): SmlSimp
 
     return when (simpleReceiver) {
         is SmlIntermediateBlockLambda -> {
-            SmlIntermediateRecord(simpleReceiver.results.map {
-                it to it.simplifyAssignee(newSubstitutions)
-            })
+            SmlIntermediateRecord(
+                simpleReceiver.results.map {
+                    it to it.simplifyAssignee(newSubstitutions)
+                }
+            )
         }
         is SmlIntermediateExpressionLambda -> simpleReceiver.result.simplify(newSubstitutions)
         is SmlIntermediateStep -> {
-            SmlIntermediateRecord(simpleReceiver.yields.map {
-                it.result to it.simplifyAssignee(newSubstitutions)
-            })
+            SmlIntermediateRecord(
+                simpleReceiver.yields.map {
+                    it.result to it.simplifyAssignee(newSubstitutions)
+                }
+            )
         }
     }
 }
