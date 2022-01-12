@@ -80,9 +80,9 @@ tasks {
 
         extensions.configure(kotlinx.kover.api.KoverTaskExtension::class) {
             excludes = listOf(
-
-                // Classes in emf-gen
-                "de\\.unibonn\\.simpleml\\.simpleML\\..*",
+                // Currently broken
+//                "de.unibonn.simpleml.parser.antlr.*"
+//                "de.unibonn.simpleml.simpleML.*",
             )
         }
     }
@@ -91,7 +91,7 @@ tasks {
         rule {
             name = "Minimal line coverage rate in percents"
             bound {
-                minValue = 75
+                minValue = 66
             }
         }
     }

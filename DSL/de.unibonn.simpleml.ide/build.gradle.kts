@@ -58,7 +58,7 @@ tasks {
             excludes = listOf(
 
                 // Some classes in src-gen
-                "de\\.unibonn\\.simpleml\\.simpleML\\.ide\\.contentassist\\.antlr\\..*",
+                "de.unibonn.simpleml.simpleML.ide.contentassist.antlr.*",
             )
         }
     }
