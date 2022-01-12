@@ -83,7 +83,8 @@ class Dataset:
                 if copy.stats:
                     del copy.stats[attribute]
                 copy.attribute_labels.pop(attribute)
-        copy.attributes = [value for value in copy.attributes if value in attributeIDs]
+        copy.attributes = [
+            value for value in copy.attributes if value in attributeIDs]
 
         return copy
 
@@ -102,7 +103,8 @@ class Dataset:
                 if copy.stats:
                     del copy.stats[attribute]
                 copy.attribute_labels.pop(attribute)
-        copy.attributes = [value for value in copy.attributes if value not in attributeIDs]
+        copy.attributes = [
+            value for value in copy.attributes if value not in attributeIDs]
 
         return copy
 
@@ -118,7 +120,7 @@ class Dataset:
         #copy.data = copy.data[copy.data.column_name != 'False']
         #df = df[df.column_name != value]
         #print('Dataset class')
-        #print(copy.data)
+        # print(copy.data)
 
         return copy
 
@@ -150,7 +152,8 @@ class Dataset:
 
         from sklearn.model_selection import train_test_split
         # self.data.head()
-        train_data, test_data = train_test_split(self.data, train_size=trainRatio, random_state=randomState)
+        train_data, test_data = train_test_split(
+            self.data, train_size=trainRatio, random_state=randomState)
 
         train = self.copy(basic_data_only=True)
         train.title += " (Train)"
@@ -168,7 +171,8 @@ class Dataset:
 
         # TODO: Create global config file where we define the data folder path
         dirName = os.path.dirname(__file__)
-        dataFilePath = os.path.join(dirName, global_config.data_folder_name, self.fileName)
+        dataFilePath = os.path.join(
+            dirName, global_config.data_folder_name, self.fileName)
         # print(dataFilePath)
         # print('data_types')
         # print(self.data_types)
@@ -207,7 +211,8 @@ class Dataset:
             self.simple_data_types[wkt_column] = config.type_geometry
         # WKB columns
         for wkb_column in self.wkb_columns:
-            self.data[wkb_column] = self.data[wkb_column].apply(wkb.loads, hex=True)
+            self.data[wkb_column] = self.data[wkb_column].apply(
+                wkb.loads, hex=True)
             # latitude/longitude pairs
             self.simple_data_types[wkb_column] = config.type_geometry
 
@@ -248,7 +253,8 @@ class Dataset:
         self.attribute_labels = attribute_labels
 
     def getJson(self):
-        json_input = {"id": self.id, "title": self.title, "topics": self.topics}
+        json_input = {"id": self.id,
+                      "title": self.title, "topics": self.topics}
         return json.dumps(json_input)
 
     def getColumn(self, column_identifier):
@@ -264,12 +270,7 @@ class Dataset:
     def getRow(self, row_number):
         if self.data is None:
             self.readFile(self.separator)
-        return self.data.loc[row_number:row_number]
-
-    def getRows(self, row_number_start, row_number_end):
-        if self.data is None:
-            self.readFile(self.separator)
-        return self.data.loc[row_number_start: row_number_end]
+        return Instance(self.data.iloc[[row_number]].squeeze())
 
     def copy(self, basic_data_only: bool = False):
         copy = Dataset(id=self.id, title=self.title, subjects=self.subjects, description=self.description,
@@ -327,7 +328,8 @@ class Dataset:
         sample_as_list = self.data_sample.values.tolist()
         data_types = []
         for attribute in self.attributes:
-            data_types.append(config.data_type_labels[self.data_types[attribute]])
+            data_types.append(
+                config.data_type_labels[self.data_types[attribute]])
         self.sample_info = {config.type: config.type_table,
                             config.type_table_values: sample_as_list,
                             config.type_table_header_labels: list(self.attribute_labels.values()),
@@ -354,7 +356,8 @@ def readDataSetFromCSV(file_name: str, dataset_name: str, separator: str, has_he
     # dataset.spatial_columns = ["geometry"]
 
     dir_name = os.path.dirname(__file__)
-    data_file_path = os.path.join(dir_name, global_config.data_folder_name, file_name)
+    data_file_path = os.path.join(
+        dir_name, global_config.data_folder_name, file_name)
     # print(data_file_path)
     speed_data = pd.read_csv(data_file_path, sep=separator)
     # print(speed_data['geometry'])
@@ -399,7 +402,8 @@ def readDataSetFromCSV(file_name: str, dataset_name: str, separator: str, has_he
     dataset = Dataset(id='', title=dataset_name, fileName=file_name, hasHeader=has_header, separator=separator,
                       null_value='', description='', subjects={}, number_of_instances=None, titles={}, descriptions={})
 
-    dataset.addColumnDescriptionForLocalDataset(attribute_names, attribute_types, attribute_labels)
+    dataset.addColumnDescriptionForLocalDataset(
+        attribute_names, attribute_types, attribute_labels)
     # print(dataset)
 
     # addDomainModel(dataset)
@@ -468,17 +472,19 @@ def joinTwoDatasets(first_data: Dataset, second_data: Dataset, join_column_name_
 def joinTwoDatasets2(first_file_name: str, second_file_name: str, separator: str, first_suffix: str,
                      second_suffix: str) -> Dataset:
     dir_name = os.path.dirname(__file__)
-    first_data_file_path = os.path.join(dir_name, global_config.data_folder_name, first_file_name)
-    second_data_file_path = os.path.join(dir_name, global_config.data_folder_name, second_file_name)
+    first_data_file_path = os.path.join(
+        dir_name, global_config.data_folder_name, first_file_name)
+    second_data_file_path = os.path.join(
+        dir_name, global_config.data_folder_name, second_file_name)
 
     first_data = pd.read_csv(first_data_file_path, sep=separator)
     second_data = pd.read_csv(second_data_file_path, sep=separator)
     # joint_data = second_data.join(first_data.set_index('id'), on='id', lsuffix=first_suffix, rsuffix=second_suffix)
     # joint_data = first_data.join(second_data, lsuffix=first_suffix, rsuffix=second_suffix)
-    joint_data = first_data.merge(second_data, on=('id'), suffixes=('_l', '_r'))
+    joint_data = first_data.merge(
+        second_data, on=('id'), suffixes=('_l', '_r'))
 
     pd.set_option("max_columns", None)
     print(joint_data.head(10))
 
     return True
-
