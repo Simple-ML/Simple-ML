@@ -7,6 +7,8 @@ import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlYield
 
+typealias Substitutions = Map<SmlParameter, SmlSimplifiedExpression?>
+
 sealed interface SmlSimplifiedExpression
 
 internal sealed interface SmlIntermediateExpression: SmlSimplifiedExpression
@@ -17,12 +19,14 @@ internal sealed interface SmlIntermediateCallable : SmlIntermediateExpression {
 
 internal data class SmlIntermediateBlockLambda(
     override val parameters: List<SmlParameter>,
-    val results: List<SmlBlockLambdaResult>
+    val results: List<SmlBlockLambdaResult>,
+    val substitutionsDuringCreation: Substitutions
 ) : SmlIntermediateCallable
 
 internal data class SmlIntermediateExpressionLambda(
     override val parameters: List<SmlParameter>,
-    val result: SmlAbstractExpression
+    val result: SmlAbstractExpression,
+    val substitutionsDuringCreation: Substitutions
 ) : SmlIntermediateCallable
 
 internal data class SmlIntermediateStep(

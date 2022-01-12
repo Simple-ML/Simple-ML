@@ -59,9 +59,7 @@ fun SmlAbstractExpression.toConstantExpressionOrNull(): SmlConstantExpression? {
     return simplify(emptyMap()) as? SmlConstantExpression
 }
 
-internal fun SmlAbstractExpression.simplify(
-    substitutions: Map<SmlParameter, SmlSimplifiedExpression?>
-): SmlSimplifiedExpression? {
+internal fun SmlAbstractExpression.simplify(substitutions: Substitutions): SmlSimplifiedExpression? {
     return when (this) {
 
         // Base cases
@@ -73,8 +71,8 @@ internal fun SmlAbstractExpression.simplify(
         is SmlTemplateStringStart -> SmlConstantString(value)
         is SmlTemplateStringInner -> SmlConstantString(value)
         is SmlTemplateStringEnd -> SmlConstantString(value)
-        is SmlBlockLambda -> simplifyBlockLambda()
-        is SmlExpressionLambda -> simplifyExpressionLambda()
+        is SmlBlockLambda -> simplifyBlockLambda(substitutions)
+        is SmlExpressionLambda -> simplifyExpressionLambda(substitutions)
 
         // Simple recursive cases
         is SmlArgument -> value.simplify(substitutions)
@@ -93,29 +91,29 @@ internal fun SmlAbstractExpression.simplify(
     }
 }
 
-private fun SmlBlockLambda.simplifyBlockLambda(): SmlSimplifiedExpression? {
+private fun SmlBlockLambda.simplifyBlockLambda(substitutions: Substitutions): SmlSimplifiedExpression? {
     return when {
         isInferredPure() -> SmlIntermediateBlockLambda(
             parameters = parametersOrEmpty(),
-            results = lambdaResultsOrEmpty()
+            results = lambdaResultsOrEmpty(),
+            substitutionsDuringCreation = substitutions
         )
         else -> null
     }
 }
 
-private fun SmlExpressionLambda.simplifyExpressionLambda(): SmlSimplifiedExpression? {
+private fun SmlExpressionLambda.simplifyExpressionLambda(substitutions: Substitutions): SmlSimplifiedExpression? {
     return when {
         isInferredPure() -> SmlIntermediateExpressionLambda(
             parameters = parametersOrEmpty(),
-            result = result
+            result = result,
+            substitutionsDuringCreation = substitutions
         )
         else -> null
     }
 }
 
-private fun SmlInfixOperation.simplifyInfixOp(
-    substitutions: Map<SmlParameter, SmlSimplifiedExpression?>
-): SmlSimplifiedExpression? {
+private fun SmlInfixOperation.simplifyInfixOp(substitutions: Substitutions): SmlSimplifiedExpression? {
 
     // By design none of the operators are short-circuited
     val simpleLeft = leftOperand.simplify(substitutions) ?: return null
@@ -234,9 +232,7 @@ private fun simplifyArithmeticOp(
     }
 }
 
-private fun SmlPrefixOperation.simplifyPrefixOp(
-    substitutions: Map<SmlParameter, SmlSimplifiedExpression?>
-): SmlSimplifiedExpression? {
+private fun SmlPrefixOperation.simplifyPrefixOp(substitutions: Substitutions): SmlSimplifiedExpression? {
     val constantOperand = operand.simplify(substitutions) ?: return null
 
     return when (operator) {
@@ -253,9 +249,7 @@ private fun SmlPrefixOperation.simplifyPrefixOp(
     }
 }
 
-private fun SmlTemplateString.simplifyTemplateString(
-    substitutions: Map<SmlParameter, SmlSimplifiedExpression?>
-): SmlSimplifiedExpression? {
+private fun SmlTemplateString.simplifyTemplateString(substitutions: Substitutions): SmlSimplifiedExpression? {
     val constExpressions = expressions.map {
         it.simplify(substitutions) ?: return null
     }
@@ -263,16 +257,14 @@ private fun SmlTemplateString.simplifyTemplateString(
     return SmlConstantString(constExpressions.joinToString(""))
 }
 
-private fun SmlCall.simplifyCall(substitutions: Map<SmlParameter, SmlSimplifiedExpression?>): SmlSimplifiedExpression? {
-    return when {
+private fun SmlCall.simplifyCall(substitutions: Substitutions): SmlSimplifiedExpression? {
+    return when (val simpleReceiver = receiver.simplify(substitutions)) {
         // TODO implement + test
         else -> null
     }
 }
 
-private fun SmlMemberAccess.simplifyMemberAccess(
-    substitutions: Map<SmlParameter, SmlSimplifiedExpression?>
-): SmlSimplifiedExpression? {
+private fun SmlMemberAccess.simplifyMemberAccess(substitutions: Substitutions): SmlSimplifiedExpression? {
     if (member.declaration is SmlEnumVariant) {
         return member.simplifyReference(substitutions)
     }
@@ -287,9 +279,7 @@ private fun SmlMemberAccess.simplifyMemberAccess(
     }
 }
 
-private fun SmlReference.simplifyReference(
-    substitutions: Map<SmlParameter, SmlSimplifiedExpression?>
-): SmlSimplifiedExpression? {
+private fun SmlReference.simplifyReference(substitutions: Substitutions): SmlSimplifiedExpression? {
     return when (val declaration = this.declaration) {
         is SmlEnumVariant -> when {
             declaration.parametersOrEmpty().isEmpty() -> SmlConstantEnumVariant(declaration)
@@ -302,9 +292,7 @@ private fun SmlReference.simplifyReference(
     }
 }
 
-private fun SmlAbstractAssignee.simplifyAssignee(
-    substitutions: Map<SmlParameter, SmlSimplifiedExpression?>
-): SmlSimplifiedExpression? {
+private fun SmlAbstractAssignee.simplifyAssignee(substitutions: Substitutions): SmlSimplifiedExpression? {
     val simpleFullAssignedExpression = closestAncestorOrNull<SmlAssignment>()
         ?.expression
         ?.simplify(substitutions)
@@ -319,9 +307,7 @@ private fun SmlAbstractAssignee.simplifyAssignee(
     }
 }
 
-private fun SmlParameter.simplifyParameter(
-    substitutions: Map<SmlParameter, SmlSimplifiedExpression?>
-): SmlSimplifiedExpression? {
+private fun SmlParameter.simplifyParameter(substitutions: Substitutions): SmlSimplifiedExpression? {
     return when {
         this in substitutions -> substitutions[this]
         isOptional() -> defaultValue?.simplify(substitutions)
