@@ -10,6 +10,8 @@ class Dataset {
     fun splitIntoTrainAndTest(trainRatio: Float, randomState: Int? or null) -> (dataset1: Dataset, dataset2: Dataset)
 
     fun exportDataAsFile(filePath: String)
+
+    fun filterGoodQuality(instance: int)
 }
 
 fun loadDataset(name: String) -> dataset: Dataset

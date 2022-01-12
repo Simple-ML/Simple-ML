@@ -7,6 +7,7 @@ from simpleml.util import exportDictionaryAsJSON
 
 def exampleWorkflow():
     dataset = loadDataset("WhiteWineQualityBinary")
+    dataset = dataset.sample(10000000000)
     print(exportDictionaryAsJSON(dataset.getProfile()))
 
     train, test = dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
