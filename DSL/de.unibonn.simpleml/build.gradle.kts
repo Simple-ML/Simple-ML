@@ -80,9 +80,10 @@ tasks {
 
         extensions.configure(kotlinx.kover.api.KoverTaskExtension::class) {
             excludes = listOf(
-                // Currently broken
-//                "de.unibonn.simpleml.parser.antlr.*"
+                // Currently broken in Kover
+//                "de.unibonn.simpleml.parser.antlr.*",
 //                "de.unibonn.simpleml.simpleML.*",
+//                "de.unibonn.simpleml.testing.*"
             )
         }
     }
