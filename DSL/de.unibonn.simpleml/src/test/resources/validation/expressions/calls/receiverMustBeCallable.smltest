@@ -21,6 +21,7 @@ workflow myWorkflow {}
 step test(a: Int, b: () -> ()) {
     val c = 1;
     val d = () {};
+    val e = () -> 1;
 
     /* References cannot point to annotations in the first place. */
     // no_semantic_error "This expression must not be called."
@@ -54,6 +55,12 @@ step test(a: Int, b: () -> ()) {
     »c«();
     // no_semantic_error "This expression must not be called."
     »d«();
+    // no_semantic_error "This expression must not be called."
+    »e«();
+    // no_semantic_error "This expression must not be called."
+    »(d)«();
+    // no_semantic_error "This expression must not be called."
+    »(e)«();
 
 
     /******************************************************************************************************************

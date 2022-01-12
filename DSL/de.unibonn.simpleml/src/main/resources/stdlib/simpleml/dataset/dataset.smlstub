@@ -11,7 +11,7 @@ class Dataset {
 
     fun exportDataAsFile(filePath: String)
 
-    fun filterInstances(filter_func: Function) -> dataset: Dataset
+    fun filterInstances(@PythonName("filter_func") filterFunc: () -> ()) -> dataset: Dataset
 
     fun getRow(rowNumber: Int) -> instance: Instance
 }

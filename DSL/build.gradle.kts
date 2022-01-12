@@ -27,7 +27,7 @@ plugins {
 
     base
     idea
-    id("org.jetbrains.kotlinx.kover") version "0.4.4"
+    id("org.jetbrains.kotlinx.kover") version "0.5.0-RC"
 }
 
 repositories {
@@ -43,6 +43,10 @@ idea {
 kover {
     coverageEngine.set(kotlinx.kover.api.CoverageEngine.INTELLIJ)
     generateReportOnCheck.set(true)
+    this.disabledProjects = setOf(
+        "Simple-ML.DSL",
+        "de.unibonn.simpleml.vscode"
+    )
 }
 
 // Variables -----------------------------------------------------------------------------------------------------------

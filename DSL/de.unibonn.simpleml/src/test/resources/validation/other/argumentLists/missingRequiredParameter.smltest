@@ -29,6 +29,8 @@ step g(f: (a: Int, b: Int or 0) -> ()) {
     f»(1, 2, 3)«;
 }
 
+step stepWithVariadicParameter(vararg values: Int) {}
+
 workflow myWorkflow {
     // semantic_error "The parameter 'a' is required and must be set here."
     C»()«;
@@ -65,4 +67,16 @@ workflow myWorkflow {
     (a, b) {}»(a = 1, b = 1)«;
     // no_semantic_error "The parameter 'a' is required and must be set here."
     (a, b) {}»(1, 2, 3)«;
+
+    // semantic_error "The parameter 'a' is required and must be set here."
+    ((a, b) -> 1)»()«;
+    // no_semantic_error "The parameter 'a' is required and must be set here."
+    ((a, b) -> 1)»(a = 1)«;
+    // no_semantic_error "The parameter 'b' is required and must be set here."
+    ((a, b) -> 1)»(a = 1, b = 1)«;
+    // no_semantic_error "The parameter 'a' is required and must be set here."
+    ((a, b) -> 1)»(1, 2, 3)«;
+
+    // no_semantic_error "The parameter 'values' is required and must be set here."
+    stepWithVariadicParameter();
 }

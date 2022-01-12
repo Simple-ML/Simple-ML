@@ -6,6 +6,7 @@ import com.google.inject.Inject
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlDummyResource
 import de.unibonn.simpleml.emf.createSmlInt
+import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.smlExpressionStatement
 import de.unibonn.simpleml.emf.smlWorkflow
 import de.unibonn.simpleml.serializer.SerializationResult
@@ -13,7 +14,6 @@ import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
-import de.unibonn.simpleml.utils.descendants
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
