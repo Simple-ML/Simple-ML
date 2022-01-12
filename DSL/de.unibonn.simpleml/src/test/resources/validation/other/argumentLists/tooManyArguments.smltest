@@ -80,4 +80,9 @@ workflow myWorkflow {
     (a) {}»(1, 2, 3)«;
     // no_semantic_error "Expected exactly 1 argument but got 0."
     (a) {}»(1)«;
+
+    // semantic_error "Expected exactly 1 argument but got 3."
+    ((a) -> 1)»(1, 2, 3)«;
+    // no_semantic_error "Expected exactly 1 argument but got 0."
+    ((a) -> 1)»(1)«;
 }

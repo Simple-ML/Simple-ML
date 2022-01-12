@@ -3,9 +3,9 @@
 package de.unibonn.simpleml.emf
 
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
+import de.unibonn.simpleml.simpleML.SmlAbstractCallable
 import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
-import de.unibonn.simpleml.simpleML.SmlAbstractLambda
 import de.unibonn.simpleml.simpleML.SmlAbstractLocalVariable
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlAbstractProtocolTerm
@@ -25,6 +25,7 @@ import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlConstraintList
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
+import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlPackage
@@ -42,7 +43,6 @@ import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlYield
-import de.unibonn.simpleml.utils.closestAncestorOrNull
 import de.unibonn.simpleml.utils.uniqueOrNull
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
@@ -60,23 +60,19 @@ fun Resource?.compilationUnitOrNull(): SmlCompilationUnit? {
         ?.firstOrNull()
 }
 
+// SmlAbstractCallable -----------------------------------------------------------------------------
+
+fun SmlAbstractCallable?.parametersOrEmpty(): List<SmlParameter> {
+    return this?.parameterList?.parameters.orEmpty()
+}
+
 // SmlAbstractDeclaration --------------------------------------------------------------------------
 
 fun SmlAbstractDeclaration?.annotationUsesOrEmpty(): List<SmlAnnotationUse> {
     return this?.annotationUseHolder?.annotations ?: this?.annotations.orEmpty()
 }
 
-// SmlAbstractLambda -------------------------------------------------------------------------------
-
-fun SmlAbstractLambda?.parametersOrEmpty(): List<SmlParameter> {
-    return this?.parameterList?.parameters.orEmpty()
-}
-
 // SmlAnnotation -----------------------------------------------------------------------------------
-
-fun SmlAnnotation?.parametersOrEmpty(): List<SmlParameter> {
-    return this?.parameterList?.parameters.orEmpty()
-}
 
 fun SmlAnnotation?.constraintsOrEmpty(): List<SmlAbstractConstraint> {
     return this?.constraintList?.constraints.orEmpty()
@@ -120,10 +116,6 @@ fun SmlCall?.typeArgumentsOrEmpty(): List<SmlTypeArgument> {
 
 // SmlCallableType ---------------------------------------------------------------------------------
 
-fun SmlCallableType?.parametersOrEmpty(): List<SmlParameter> {
-    return this?.parameterList?.parameters.orEmpty()
-}
-
 fun SmlCallableType?.resultsOrEmpty(): List<SmlResult> {
     return this?.resultList?.results.orEmpty()
 }
@@ -132,10 +124,6 @@ fun SmlCallableType?.resultsOrEmpty(): List<SmlResult> {
 
 fun SmlClass?.typeParametersOrEmpty(): List<SmlTypeParameter> {
     return this?.typeParameterList?.typeParameters.orEmpty()
-}
-
-fun SmlClass?.parametersOrEmpty(): List<SmlParameter> {
-    return this?.parameterList?.parameters.orEmpty()
 }
 
 fun SmlClass?.parentTypesOrEmpty(): List<SmlAbstractType> {
@@ -189,10 +177,6 @@ fun SmlEnum?.variantsOrEmpty(): List<SmlEnumVariant> {
 
 // SmlEnumVariant ----------------------------------------------------------------------------------
 
-fun SmlEnumVariant?.parametersOrEmpty(): List<SmlParameter> {
-    return this?.parameterList?.parameters.orEmpty()
-}
-
 fun SmlEnumVariant?.typeParametersOrEmpty(): List<SmlTypeParameter> {
     return this?.typeParameterList?.typeParameters.orEmpty()
 }
@@ -202,10 +186,6 @@ fun SmlEnumVariant?.constraintsOrEmpty(): List<SmlAbstractConstraint> {
 }
 
 // SmlFunction -------------------------------------------------------------------------------------
-
-fun SmlFunction?.parametersOrEmpty(): List<SmlParameter> {
-    return this?.parameterList?.parameters.orEmpty()
-}
 
 fun SmlFunction?.resultsOrEmpty(): List<SmlResult> {
     return this?.resultList?.results.orEmpty()
@@ -301,10 +281,6 @@ fun SmlStep?.localVariablesOrEmpty(): List<SmlAbstractLocalVariable> {
     return this.parametersOrEmpty() + this.placeholdersOrEmpty()
 }
 
-fun SmlStep?.parametersOrEmpty(): List<SmlParameter> {
-    return this?.parameterList?.parameters.orEmpty()
-}
-
 fun SmlStep?.placeholdersOrEmpty(): List<SmlPlaceholder> {
     return this.statementsOrEmpty()
         .filterIsInstance<SmlAssignment>()
@@ -323,16 +299,18 @@ fun SmlStep?.statementsOrEmpty(): List<SmlAbstractStatement> {
  * Accessing ancestors                                                                                                *
  * ********************************************************************************************************************/
 
+fun EObject?.containingBlockLambdaOrNull() = this?.closestAncestorOrNull<SmlBlockLambda>()
+fun EObject?.containingCallableOrNull() = this?.closestAncestorOrNull<SmlAbstractCallable>()
 fun EObject?.containingClassOrNull() = this?.closestAncestorOrNull<SmlClass>()
+fun EObject?.containingCompilationUnitOrNull() = this?.closestAncestorOrNull<SmlCompilationUnit>()
 fun EObject?.containingDeclarationOrNull() = this?.closestAncestorOrNull<SmlAbstractDeclaration>()
 fun EObject?.containingEnumOrNull() = this?.closestAncestorOrNull<SmlEnum>()
-fun EObject?.containingCompilationUnitOrNull() = this?.closestAncestorOrNull<SmlCompilationUnit>()
+fun EObject?.containingExpressionLambdaOrNull() = this?.closestAncestorOrNull<SmlExpressionLambda>()
 fun EObject?.containingFunctionOrNull() = this?.closestAncestorOrNull<SmlFunction>()
-fun EObject?.containingLambdaOrNull() = this?.closestAncestorOrNull<SmlBlockLambda>()
 fun EObject?.containingPackageOrNull() = this?.closestAncestorOrNull<SmlPackage>()
 fun EObject?.containingProtocolOrNull() = this?.closestAncestorOrNull<SmlProtocol>()
+fun EObject?.containingStepOrNull() = this?.closestAncestorOrNull<SmlStep>()
 fun EObject?.containingWorkflowOrNull() = this?.closestAncestorOrNull<SmlWorkflow>()
-fun EObject?.containingWorkflowStepOrNull() = this?.closestAncestorOrNull<SmlStep>()
 
 fun SmlAnnotationUse?.targetOrNull(): SmlAbstractDeclaration? {
     return when (val declaration = this.containingDeclarationOrNull() ?: return null) {

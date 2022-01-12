@@ -3,6 +3,7 @@ package de.unibonn.simpleml
 import com.google.inject.Inject
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.annotationUsesOrEmpty
+import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
@@ -33,7 +34,6 @@ import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
 import de.unibonn.simpleml.testing.assertions.shouldBeResolved
 import de.unibonn.simpleml.testing.assertions.shouldNotBeResolved
-import de.unibonn.simpleml.utils.descendants
 import io.kotest.assertions.forEachAsClue
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -126,7 +126,7 @@ class ScopingTest {
         fun `should resolve parameter in use annotation in same file`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(15)
+                arguments.shouldHaveSize(16)
 
                 val parameterInAnnotationInSameFile =
                     findUniqueDeclarationOrFail<SmlParameter>("parameterInAnnotationInSameFile")
@@ -137,15 +137,29 @@ class ScopingTest {
             }
 
         @Test
+        fun `should resolve parameter in called block lambda in same step`() =
+            withResource(ARGUMENT) {
+                val arguments = this.descendants<SmlArgument>().toList()
+                arguments.shouldHaveSize(16)
+
+                val parameterInLambdaInSameStep =
+                    findUniqueDeclarationOrFail<SmlParameter>("parameterInBlockLambdaInSameStep")
+
+                val referencedParameter = arguments[1].parameter
+                referencedParameter.shouldBeResolved()
+                referencedParameter.shouldBe(parameterInLambdaInSameStep)
+            }
+
+        @Test
         fun `should resolve parameter in called callable in same step`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(15)
+                arguments.shouldHaveSize(16)
 
                 val parameterInCallableInSameStep =
                     findUniqueDeclarationOrFail<SmlParameter>("parameterInCallableInSameStep")
 
-                val referencedParameter = arguments[1].parameter
+                val referencedParameter = arguments[2].parameter
                 referencedParameter.shouldBeResolved()
                 referencedParameter.shouldBe(parameterInCallableInSameStep)
             }
@@ -154,11 +168,11 @@ class ScopingTest {
         fun `should resolve parameter in called class in same file`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(15)
+                arguments.shouldHaveSize(16)
 
                 val parameterInClassInSameFile = findUniqueDeclarationOrFail<SmlParameter>("parameterInClassInSameFile")
 
-                val referencedParameter = arguments[2].parameter
+                val referencedParameter = arguments[3].parameter
                 referencedParameter.shouldBeResolved()
                 referencedParameter.shouldBe(parameterInClassInSameFile)
             }
@@ -167,38 +181,24 @@ class ScopingTest {
         fun `should resolve parameter in called enum variant in same file`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(15)
+                arguments.shouldHaveSize(16)
 
                 val parameterInEnumVariantInSameFile =
                     findUniqueDeclarationOrFail<SmlParameter>("parameterInEnumVariantInSameFile")
 
-                val referencedParameter = arguments[3].parameter
+                val referencedParameter = arguments[4].parameter
                 referencedParameter.shouldBeResolved()
                 referencedParameter.shouldBe(parameterInEnumVariantInSameFile)
             }
 
         @Test
-        fun `should resolve parameter in called function in same file`() =
+        fun `should resolve parameter in called expression lambda in same step`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(15)
-
-                val parameterInFunctionSameFile =
-                    findUniqueDeclarationOrFail<SmlParameter>("parameterInFunctionSameFile")
-
-                val referencedParameter = arguments[4].parameter
-                referencedParameter.shouldBeResolved()
-                referencedParameter.shouldBe(parameterInFunctionSameFile)
-            }
-
-        @Test
-        fun `should resolve parameter in called lambda in same step`() =
-            withResource(ARGUMENT) {
-                val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(15)
+                arguments.shouldHaveSize(16)
 
                 val parameterInLambdaInSameStep =
-                    findUniqueDeclarationOrFail<SmlParameter>("parameterInLambdaInSameStep")
+                    findUniqueDeclarationOrFail<SmlParameter>("parameterInExpressionLambdaInSameStep")
 
                 val referencedParameter = arguments[5].parameter
                 referencedParameter.shouldBeResolved()
@@ -206,14 +206,28 @@ class ScopingTest {
             }
 
         @Test
+        fun `should resolve parameter in called function in same file`() =
+            withResource(ARGUMENT) {
+                val arguments = this.descendants<SmlArgument>().toList()
+                arguments.shouldHaveSize(16)
+
+                val parameterInFunctionSameFile =
+                    findUniqueDeclarationOrFail<SmlParameter>("parameterInFunctionSameFile")
+
+                val referencedParameter = arguments[6].parameter
+                referencedParameter.shouldBeResolved()
+                referencedParameter.shouldBe(parameterInFunctionSameFile)
+            }
+
+        @Test
         fun `should resolve parameter in called step in same file`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(15)
+                arguments.shouldHaveSize(16)
 
                 val parameterInStepInSameFile = findUniqueDeclarationOrFail<SmlParameter>("parameterInStepInSameFile")
 
-                val referencedParameter = arguments[6].parameter
+                val referencedParameter = arguments[7].parameter
                 referencedParameter.shouldBeResolved()
                 referencedParameter.shouldBe(parameterInStepInSameFile)
             }
@@ -222,9 +236,9 @@ class ScopingTest {
         fun `should resolve parameter in called function in same package`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(15)
+                arguments.shouldHaveSize(16)
 
-                val referencedParameter = arguments[7].parameter
+                val referencedParameter = arguments[8].parameter
                 referencedParameter.shouldBeResolved()
                 referencedParameter.name.shouldBe("parameterInSamePackage")
             }
@@ -233,9 +247,9 @@ class ScopingTest {
         fun `should resolve parameter in called function that is imported and in another package`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(15)
+                arguments.shouldHaveSize(16)
 
-                val referencedParameter = arguments[8].parameter
+                val referencedParameter = arguments[9].parameter
                 referencedParameter.shouldBeResolved()
                 referencedParameter.name.shouldBe("parameterInOtherPackage1")
             }
@@ -244,46 +258,46 @@ class ScopingTest {
         fun `should not resolve parameter in called function that is not imported and in another package`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(15)
-                arguments[9].parameter.shouldNotBeResolved()
+                arguments.shouldHaveSize(16)
+                arguments[10].parameter.shouldNotBeResolved()
             }
 
         @Test
         fun `should not resolve parameter in function other than called one in same package`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(15)
-                arguments[10].parameter.shouldNotBeResolved()
+                arguments.shouldHaveSize(16)
+                arguments[11].parameter.shouldNotBeResolved()
             }
 
         @Test
         fun `should not resolve parameter in function other than called one that is imported and in another package`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(15)
-                arguments[11].parameter.shouldNotBeResolved()
+                arguments.shouldHaveSize(16)
+                arguments[12].parameter.shouldNotBeResolved()
             }
 
         @Test
         fun `should not resolve parameter in function other than called one that is not imported and in another package`() =
             withResource(ARGUMENT) {
                 val arguments = this.descendants<SmlArgument>().toList()
-                arguments.shouldHaveSize(15)
-                arguments[12].parameter.shouldNotBeResolved()
+                arguments.shouldHaveSize(16)
+                arguments[13].parameter.shouldNotBeResolved()
             }
 
         @Test
         fun `should not resolve unknown declaration`() = withResource(ARGUMENT) {
             val arguments = this.descendants<SmlArgument>().toList()
-            arguments.shouldHaveSize(15)
-            arguments[13].parameter.shouldNotBeResolved()
+            arguments.shouldHaveSize(16)
+            arguments[14].parameter.shouldNotBeResolved()
         }
 
         @Test
         fun `should not resolve something that is not a parameter`() = withResource(ARGUMENT) {
             val arguments = this.descendants<SmlArgument>().toList()
-            arguments.shouldHaveSize(15)
-            arguments[14].parameter.shouldNotBeResolved()
+            arguments.shouldHaveSize(16)
+            arguments[15].parameter.shouldNotBeResolved()
         }
     }
 
@@ -1037,7 +1051,7 @@ class ScopingTest {
             val parameterInStep = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInStep")
 
             val references = step.descendants<SmlReference>().toList()
-            references.shouldHaveSize(5)
+            references.shouldHaveSize(6)
 
             val declaration = references[0].declaration
             declaration.shouldBeResolved()
@@ -1045,12 +1059,12 @@ class ScopingTest {
         }
 
         @Test
-        fun `should resolve parameter of step in lambda in same step`() = withResource(REFERENCE) {
+        fun `should resolve parameter of step in block lambda in same step`() = withResource(REFERENCE) {
             val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToParameters")
             val parameterInStep = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInStep")
 
             val references = step.descendants<SmlReference>().toList()
-            references.shouldHaveSize(5)
+            references.shouldHaveSize(6)
 
             val declaration = references[1].declaration
             declaration.shouldBeResolved()
@@ -1058,13 +1072,13 @@ class ScopingTest {
         }
 
         @Test
-        fun `should resolve parameter of lambda in same lambda`() =
+        fun `should resolve parameter of block lambda in same block lambda`() =
             withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToParameters")
-                val parameterInLambda = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInLambda")
+                val parameterInLambda = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInBlockLambda")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(5)
+                references.shouldHaveSize(6)
 
                 val declaration = references[2].declaration
                 declaration.shouldBeResolved()
@@ -1072,13 +1086,13 @@ class ScopingTest {
             }
 
         @Test
-        fun `should resolve parameter of step in lambda within lambda in same step`() =
+        fun `should resolve parameter of step in block lambda within block lambda in same step`() =
             withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToParameters")
                 val parameterInStep = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInStep")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(5)
+                references.shouldHaveSize(6)
 
                 val declaration = references[3].declaration
                 declaration.shouldBeResolved()
@@ -1086,15 +1100,29 @@ class ScopingTest {
             }
 
         @Test
-        fun `should resolve parameter of lambda in nested lambda`() =
+        fun `should resolve parameter of block lambda in nested block lambda`() =
             withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToParameters")
-                val parameterInLambda = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInLambda")
+                val parameterInLambda = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInBlockLambda")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(5)
+                references.shouldHaveSize(6)
 
                 val declaration = references[4].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(parameterInLambda)
+            }
+
+        @Test
+        fun `should resolve parameter of expression lambda in same expression lambda`() =
+            withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToParameters")
+                val parameterInLambda = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInExpressionLambda")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(6)
+
+                val declaration = references[5].declaration
                 declaration.shouldBeResolved()
                 declaration.shouldBe(parameterInLambda)
             }

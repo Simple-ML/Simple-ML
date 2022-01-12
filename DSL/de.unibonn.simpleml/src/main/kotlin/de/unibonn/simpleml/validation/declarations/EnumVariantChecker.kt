@@ -26,7 +26,7 @@ class EnumVariantChecker : AbstractSimpleMLChecker() {
         if (smlEnumVariant.parameterList != null && smlEnumVariant.parametersOrEmpty().isEmpty()) {
             info(
                 "Unnecessary parameter list.",
-                Literals.SML_ENUM_VARIANT__PARAMETER_LIST,
+                Literals.SML_ABSTRACT_CALLABLE__PARAMETER_LIST,
                 InfoCode.UnnecessaryParameterList
             )
         }

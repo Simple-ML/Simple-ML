@@ -990,7 +990,7 @@ private fun createSmlParentTypeList(parentTypes: List<SmlAbstractType>): SmlPare
 /**
  * Returns a new object of class [SmlPlaceholder].
  */
-fun createSmlPlaceholder(name: String, annotations: List<SmlAnnotationUse>): SmlPlaceholder {
+fun createSmlPlaceholder(name: String, annotations: List<SmlAnnotationUse> = emptyList()): SmlPlaceholder {
     return factory.createSmlPlaceholder().apply {
         this.name = name
         this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
