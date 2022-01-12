@@ -1096,12 +1096,7 @@ class ToConstantExpressionTest {
         @Test
         fun `should evaluate calls of block lambdas`() {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToBlockLambda")
-            val testData = workflow
-                .statementsOrEmpty()
-                .filterIsInstance<SmlExpressionStatement>()
-                .firstOrNull()
-                .shouldNotBeNull()
-                .expression
+            val testData = workflow.expectedExpression()
 
             testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
         }
@@ -1109,12 +1104,7 @@ class ToConstantExpressionTest {
         @Test
         fun `should evaluate calls of expression lambdas`() {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToExpressionLambda")
-            val testData = workflow
-                .statementsOrEmpty()
-                .filterIsInstance<SmlExpressionStatement>()
-                .firstOrNull()
-                .shouldNotBeNull()
-                .expression
+            val testData = workflow.expectedExpression()
 
             testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
         }
@@ -1122,12 +1112,7 @@ class ToConstantExpressionTest {
         @Test
         fun `should evaluate calls of steps`() {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToStep")
-            val testData = workflow
-                .statementsOrEmpty()
-                .filterIsInstance<SmlExpressionStatement>()
-                .firstOrNull()
-                .shouldNotBeNull()
-                .expression
+            val testData = workflow.expectedExpression()
 
             testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
         }
@@ -1135,12 +1120,7 @@ class ToConstantExpressionTest {
         @Test
         fun `should evaluate calls of steps with variadic parameter`() {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToStepWithVariadicParameter")
-            val testData = workflow
-                .statementsOrEmpty()
-                .filterIsInstance<SmlExpressionStatement>()
-                .firstOrNull()
-                .shouldNotBeNull()
-                .expression
+            val testData = workflow.expectedExpression()
 
             testData.toConstantExpressionOrNull().shouldBeNull()
         }
@@ -1150,12 +1130,7 @@ class ToConstantExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>(
                 "parameterAssignedDuringCall"
             )
-            val testData = workflow
-                .statementsOrEmpty()
-                .filterIsInstance<SmlExpressionStatement>()
-                .firstOrNull()
-                .shouldNotBeNull()
-                .expression
+            val testData = workflow.expectedExpression()
 
             testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(10)
         }
@@ -1165,12 +1140,7 @@ class ToConstantExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>(
                 "parameterAssignedDuringCreationOfLambda"
             )
-            val testData = workflow
-                .statementsOrEmpty()
-                .filterIsInstance<SmlExpressionStatement>()
-                .firstOrNull()
-                .shouldNotBeNull()
-                .expression
+            val testData = workflow.expectedExpression()
 
             testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
         }
@@ -1178,12 +1148,7 @@ class ToConstantExpressionTest {
         @Test
         fun `should evaluate calls with lambda as parameter`() {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("lambdaAsParameter")
-            val testData = workflow
-                .statementsOrEmpty()
-                .filterIsInstance<SmlExpressionStatement>()
-                .firstOrNull()
-                .shouldNotBeNull()
-                .expression
+            val testData = workflow.expectedExpression()
 
             testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
         }
@@ -1255,8 +1220,25 @@ class ToConstantExpressionTest {
         }
 
         @Test
-        fun `should access the result of a call by name`() {
+        fun `should access the result of a call by name if result exists`() {
+            val compilationUnit = parseHelper.parseResource("partialEvaluation/memberAccesses.smltest")
+            compilationUnit.shouldNotBeNull()
 
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("successfulResultAccess")
+            val testData = workflow.expectedExpression()
+
+            testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
+        }
+
+        @Test
+        fun `should return null if accessed result does not exist`() {
+            val compilationUnit = parseHelper.parseResource("partialEvaluation/memberAccesses.smltest")
+            compilationUnit.shouldNotBeNull()
+
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("failedResultAccess")
+            val testData = workflow.expectedExpression()
+
+            testData.toConstantExpressionOrNull().shouldBeNull()
         }
 
         @Test
@@ -1402,3 +1384,13 @@ private fun Double.toSmlNumber(): SmlAbstractExpression {
         else -> createSmlFloat(this)
     }
 }
+
+/**
+ * Helper method for tests loaded from a resource that returns the expression of the first expression statement in the
+ * workflow.
+ */
+private fun SmlWorkflow.expectedExpression() = statementsOrEmpty()
+    .filterIsInstance<SmlExpressionStatement>()
+    .firstOrNull()
+    .shouldNotBeNull()
+    .expression

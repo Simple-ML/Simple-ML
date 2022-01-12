@@ -5,6 +5,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractResult
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlYield
 
 typealias ParameterSubstitutions = Map<SmlParameter, SmlSimplifiedExpression?>
@@ -34,12 +35,13 @@ internal data class SmlIntermediateStep(
     val yields: List<SmlYield>
 ) : SmlIntermediateCallable
 
-class SmlIntermediateRecord(
+internal class SmlIntermediateRecord(
     resultSubstitutions: List<Pair<SmlAbstractResult, SmlSimplifiedExpression?>>
 ) : SmlIntermediateExpression {
     private val resultSubstitutions = resultSubstitutions.toMap()
 
-    fun getSubstitutionByResultOrNull(result: SmlAbstractResult): SmlSimplifiedExpression? {
+    fun getSubstitutionByReferenceOrNull(reference: SmlReference): SmlSimplifiedExpression? {
+        val result = reference.declaration as? SmlAbstractResult ?: return null
         return resultSubstitutions[result]
     }
 

@@ -331,7 +331,7 @@ private fun SmlMemberAccess.simplifyMemberAccess(substitutions: ParameterSubstit
             isNullSafe -> SmlConstantNull
             else -> null
         }
-        is SmlIntermediateRecord -> null // TODO implement + test
+        is SmlIntermediateRecord -> simpleReceiver.getSubstitutionByReferenceOrNull(member)
         else -> null
     }
 }
