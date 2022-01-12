@@ -258,8 +258,22 @@ private fun SmlTemplateString.simplifyTemplateString(substitutions: Substitution
 }
 
 private fun SmlCall.simplifyCall(substitutions: Substitutions): SmlSimplifiedExpression? {
+    val simpleReceiver = receiver.simplify(substitutions) as? SmlIntermediateCallable ?: return null
+
+    println(simpleReceiver)
+//    val
+
+    when (val simpleReceiver = receiver.simplify(substitutions)) {
+        is SmlIntermediateBlockLambda -> null
+        is SmlIntermediateExpressionLambda -> null
+        is SmlIntermediateStep -> null
+        else -> null
+    }
+
     return when (val simpleReceiver = receiver.simplify(substitutions)) {
-        // TODO implement + test
+        is SmlIntermediateBlockLambda -> null
+        is SmlIntermediateExpressionLambda -> null
+        is SmlIntermediateStep -> null
         else -> null
     }
 }

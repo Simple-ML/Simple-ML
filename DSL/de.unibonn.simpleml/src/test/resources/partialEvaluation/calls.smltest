@@ -2,26 +2,27 @@ package tests.partialEvaluation.higherOrder
 
 workflow callToBlockLambda {
     val lambda = (a) { yield result = a; };
-    val result = lambda(1);
+    lambda(1);
 }
 
 workflow callToExpressionLambda {
     val lambda = (a) -> a;
-    val result = lambda(1);
+    lambda(1);
 }
 
-step myStep1(a: Int) {
-
+step myStep1(a: Int) -> result: Int {
+    yield result = a;
 }
 
 workflow callToStep {
-
+    myStep1(1);
 }
 
-workflow parameterAssignedDuringCallOfLambda {
-    val result = ((a, b) -> ((b, c) {
-        yield result = a + b + c;
-    })(2, 3))(1, 4);
+workflow parameterAssignedDuringCall {
+    ((a, b) { 
+        val d = b;
+        yield result = ((b, c) -> a + b + c + d)(1, 2);
+    })(3, 4);
 }
 
 step myStep2(param: Int) -> f: () -> (result: Int) {
@@ -29,5 +30,5 @@ step myStep2(param: Int) -> f: () -> (result: Int) {
 }
 
 workflow parameterAssignedDuringCreationOfLambda {
-    val result = myStep2(1)();
+    myStep2(1)();
 }

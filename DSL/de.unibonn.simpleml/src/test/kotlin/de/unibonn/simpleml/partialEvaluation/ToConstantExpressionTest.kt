@@ -27,12 +27,16 @@ import de.unibonn.simpleml.emf.createSmlStep
 import de.unibonn.simpleml.emf.createSmlString
 import de.unibonn.simpleml.emf.createSmlTemplateString
 import de.unibonn.simpleml.emf.descendants
+import de.unibonn.simpleml.emf.statementsOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLFactory
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlExpressionLambda
+import de.unibonn.simpleml.simpleML.SmlExpressionStatement
+import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlStep
+import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
@@ -1091,8 +1095,78 @@ class ToConstantExpressionTest {
         }
 
         @Test
-        fun `should evaluate simple calls`() {
+        fun `should evaluate calls of block lambdas`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToBlockLambda")
+            val testData = workflow
+                .statementsOrEmpty()
+                .filterIsInstance<SmlExpressionStatement>()
+                .firstOrNull()
+                .shouldNotBeNull()
+                .expression
 
+            testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
+        }
+
+        @Test
+        fun `should evaluate calls of expression lambdas`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToExpressionLambda")
+            val testData = workflow
+                .statementsOrEmpty()
+                .filterIsInstance<SmlExpressionStatement>()
+                .firstOrNull()
+                .shouldNotBeNull()
+                .expression
+
+            testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
+        }
+
+        @Test
+        fun `should evaluate calls of steps`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToStep")
+            val testData = workflow
+                .statementsOrEmpty()
+                .filterIsInstance<SmlExpressionStatement>()
+                .firstOrNull()
+                .shouldNotBeNull()
+                .expression
+
+            testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
+        }
+
+        @Test
+        fun `should substitute parameters that were bound at call of a lambda`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>(
+                "parameterAssignedDuringCall"
+            )
+            val testData = workflow
+                .statementsOrEmpty()
+                .filterIsInstance<SmlExpressionStatement>()
+                .firstOrNull()
+                .shouldNotBeNull()
+                .expression
+
+            testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(10)
+        }
+
+        @Test
+        fun `should substitute parameters that were bound at creation of a lambda`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>(
+                "parameterAssignedDuringCreationOfLambda"
+            )
+            val testData = workflow
+                .statementsOrEmpty()
+                .filterIsInstance<SmlExpressionStatement>()
+                .firstOrNull()
+                .shouldNotBeNull()
+                .expression
+
+            testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
+        }
+
+        @Test
+        fun `should return null otherwise`() {
+            val testData = createSmlCall(receiver = createSmlNull())
+            testData.toConstantExpressionOrNull().shouldBeNull()
         }
     }
 

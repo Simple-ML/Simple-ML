@@ -87,7 +87,7 @@ tasks {
         }
     }
 
-    koverVerify {
+    koverProjectVerify {
         rule {
             name = "Minimal line coverage rate in percents"
             bound {
