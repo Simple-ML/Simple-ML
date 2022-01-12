@@ -56,9 +56,7 @@ tasks {
 
         extensions.configure(kotlinx.kover.api.KoverTaskExtension::class) {
             excludes = listOf(
-
-                // Some classes in src-gen
-                "de.unibonn.simpleml.simpleML.ide.contentassist.antlr.*",
+                "de.unibonn.simpleml.ide.contentassist.antlr.*",
             )
         }
     }
