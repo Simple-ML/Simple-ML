@@ -25,6 +25,7 @@ import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlConstraintList
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
+import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlPackage
@@ -298,12 +299,14 @@ fun SmlStep?.statementsOrEmpty(): List<SmlAbstractStatement> {
  * Accessing ancestors                                                                                                *
  * ********************************************************************************************************************/
 
+fun EObject?.containingBlockLambdaOrNull() = this?.closestAncestorOrNull<SmlBlockLambda>()
+fun EObject?.containingCallableOrNull() = this?.closestAncestorOrNull<SmlAbstractCallable>()
 fun EObject?.containingClassOrNull() = this?.closestAncestorOrNull<SmlClass>()
+fun EObject?.containingCompilationUnitOrNull() = this?.closestAncestorOrNull<SmlCompilationUnit>()
 fun EObject?.containingDeclarationOrNull() = this?.closestAncestorOrNull<SmlAbstractDeclaration>()
 fun EObject?.containingEnumOrNull() = this?.closestAncestorOrNull<SmlEnum>()
-fun EObject?.containingCompilationUnitOrNull() = this?.closestAncestorOrNull<SmlCompilationUnit>()
+fun EObject?.containingExpressionLambdaOrNull() = this?.closestAncestorOrNull<SmlExpressionLambda>()
 fun EObject?.containingFunctionOrNull() = this?.closestAncestorOrNull<SmlFunction>()
-fun EObject?.containingLambdaOrNull() = this?.closestAncestorOrNull<SmlBlockLambda>()
 fun EObject?.containingPackageOrNull() = this?.closestAncestorOrNull<SmlPackage>()
 fun EObject?.containingProtocolOrNull() = this?.closestAncestorOrNull<SmlProtocol>()
 fun EObject?.containingStepOrNull() = this?.closestAncestorOrNull<SmlStep>()

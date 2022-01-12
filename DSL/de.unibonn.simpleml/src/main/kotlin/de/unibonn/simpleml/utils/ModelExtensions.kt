@@ -5,7 +5,7 @@ package de.unibonn.simpleml.utils
 import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.containingClassOrNull
-import de.unibonn.simpleml.emf.containingLambdaOrNull
+import de.unibonn.simpleml.emf.containingBlockLambdaOrNull
 import de.unibonn.simpleml.emf.containingStepOrNull
 import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
@@ -151,7 +151,7 @@ fun SmlCall.maybeCallable(): CallableResult {
 
 fun SmlCall.isRecursive(): Boolean {
     val containingWorkflowStep = this.containingStepOrNull() ?: return false
-    val containingLambda = this.containingLambdaOrNull()
+    val containingLambda = this.containingBlockLambdaOrNull()
 
     val origin = mutableSetOf<EObject>(containingWorkflowStep)
     if (containingLambda != null) {

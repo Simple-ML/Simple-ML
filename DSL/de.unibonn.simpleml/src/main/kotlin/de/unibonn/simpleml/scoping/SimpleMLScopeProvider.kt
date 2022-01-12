@@ -3,6 +3,7 @@ package de.unibonn.simpleml.scoping
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.compilationUnitOrNull
+import de.unibonn.simpleml.emf.containingCallableOrNull
 import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.containingProtocolOrNull
 import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
@@ -35,7 +36,6 @@ import de.unibonn.simpleml.simpleML.SmlProtocol
 import de.unibonn.simpleml.simpleML.SmlProtocolReference
 import de.unibonn.simpleml.simpleML.SmlProtocolSubterm
 import de.unibonn.simpleml.simpleML.SmlReference
-import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
@@ -210,18 +210,31 @@ class SimpleMLScopeProvider @Inject constructor(
     }
 
     private fun localDeclarations(context: EObject, parentScope: IScope): IScope {
-        val containingStatement = context.closestAncestorOrNull<SmlAbstractStatement>()
-        val containingBlock = containingStatement?.closestAncestorOrNull<SmlBlock>() ?: return parentScope
 
-        val placeholders = containingBlock.placeholdersUpTo(containingStatement)
+        // Placeholders
+        val placeholders = when (val containingStatement = context.closestAncestorOrNull<SmlAbstractStatement>()) {
+            null -> emptyList()
+            else -> containingStatement
+                .closestAncestorOrNull<SmlBlock>()
+                ?.placeholdersUpTo(containingStatement)
+                .orEmpty()
+        }
 
-        return when (val callable = containingBlock.eContainer()) {
+        // Parameters
+        val containingCallable = context.containingCallableOrNull()
+        val parameters = containingCallable.parametersOrEmpty()
+
+        // Local declarations
+        val localDeclarations = placeholders + parameters
+
+        return when (containingCallable) {
+
+            // Lambdas can be nested
             is SmlAbstractLambda -> Scopes.scopeFor(
-                placeholders + callable.parametersOrEmpty(),
-                localDeclarations(callable, parentScope)
+                localDeclarations,
+                localDeclarations(containingCallable, parentScope)
             )
-            is SmlStep -> Scopes.scopeFor(placeholders + callable.parametersOrEmpty(), parentScope)
-            else -> Scopes.scopeFor(placeholders, parentScope)
+            else -> Scopes.scopeFor(localDeclarations, parentScope)
         }
     }
 
