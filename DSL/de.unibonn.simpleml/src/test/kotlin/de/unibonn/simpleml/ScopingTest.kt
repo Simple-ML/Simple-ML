@@ -1037,7 +1037,7 @@ class ScopingTest {
             val parameterInStep = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInStep")
 
             val references = step.descendants<SmlReference>().toList()
-            references.shouldHaveSize(5)
+            references.shouldHaveSize(6)
 
             val declaration = references[0].declaration
             declaration.shouldBeResolved()
@@ -1045,12 +1045,12 @@ class ScopingTest {
         }
 
         @Test
-        fun `should resolve parameter of step in lambda in same step`() = withResource(REFERENCE) {
+        fun `should resolve parameter of step in block lambda in same step`() = withResource(REFERENCE) {
             val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToParameters")
             val parameterInStep = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInStep")
 
             val references = step.descendants<SmlReference>().toList()
-            references.shouldHaveSize(5)
+            references.shouldHaveSize(6)
 
             val declaration = references[1].declaration
             declaration.shouldBeResolved()
@@ -1058,13 +1058,13 @@ class ScopingTest {
         }
 
         @Test
-        fun `should resolve parameter of lambda in same lambda`() =
+        fun `should resolve parameter of block lambda in same block lambda`() =
             withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToParameters")
-                val parameterInLambda = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInLambda")
+                val parameterInLambda = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInBlockLambda")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(5)
+                references.shouldHaveSize(6)
 
                 val declaration = references[2].declaration
                 declaration.shouldBeResolved()
@@ -1072,13 +1072,13 @@ class ScopingTest {
             }
 
         @Test
-        fun `should resolve parameter of step in lambda within lambda in same step`() =
+        fun `should resolve parameter of step in block lambda within block lambda in same step`() =
             withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToParameters")
                 val parameterInStep = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInStep")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(5)
+                references.shouldHaveSize(6)
 
                 val declaration = references[3].declaration
                 declaration.shouldBeResolved()
@@ -1086,15 +1086,29 @@ class ScopingTest {
             }
 
         @Test
-        fun `should resolve parameter of lambda in nested lambda`() =
+        fun `should resolve parameter of block lambda in nested block lambda`() =
             withResource(REFERENCE) {
                 val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToParameters")
-                val parameterInLambda = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInLambda")
+                val parameterInLambda = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInBlockLambda")
 
                 val references = step.descendants<SmlReference>().toList()
-                references.shouldHaveSize(5)
+                references.shouldHaveSize(6)
 
                 val declaration = references[4].declaration
+                declaration.shouldBeResolved()
+                declaration.shouldBe(parameterInLambda)
+            }
+
+        @Test
+        fun `should resolve parameter of expression lambda in same expression lambda`() =
+            withResource(REFERENCE) {
+                val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToParameters")
+                val parameterInLambda = step.findUniqueDeclarationOrFail<SmlParameter>("parameterInExpressionLambda")
+
+                val references = step.descendants<SmlReference>().toList()
+                references.shouldHaveSize(6)
+
+                val declaration = references[5].declaration
                 declaration.shouldBeResolved()
                 declaration.shouldBe(parameterInLambda)
             }

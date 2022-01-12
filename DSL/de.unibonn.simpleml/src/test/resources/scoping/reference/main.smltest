@@ -120,15 +120,17 @@ step directReferencesToLambdaResults() {
 step directReferencesToParameters(parameterInStep: Int) {
     parameterInStep;
 
-    val f = (parameterInLambda) {
+    val f = (parameterInBlockLambda) {
         parameterInStep;
-        parameterInLambda;
+        parameterInBlockLambda;
 
         val f = () {
             parameterInStep;
-            parameterInLambda;
+            parameterInBlockLambda;
         };
     };
+
+    val g = (parameterInExpressionLambda) -> parameterInExpressionLambda;
 }
 
 step directReferencesToPlaceholders() {

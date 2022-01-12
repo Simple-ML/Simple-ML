@@ -1,0 +1,15 @@
+package tests.interpreter.higherOrder
+
+workflow parameterAssignedDuringCallOfLambda {
+    val result = ((a, b) -> ((b, c) {
+        yield result = a + b + c;
+    })(2, 3))(1, 4);
+}
+
+step myStep(param: Int) -> f: () -> (result: Int) {
+    yield f = () -> param;
+}
+
+workflow parameterAssignedDuringCreationOfLambda {
+    val result = myStep(1)();
+}

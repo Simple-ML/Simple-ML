@@ -1,4 +1,4 @@
-package tests.interpreter
+package tests.interpreter.callables
 
 // Preparation -----------------------------------------------------------------
 

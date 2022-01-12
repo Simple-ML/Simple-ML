@@ -3,9 +3,9 @@
 package de.unibonn.simpleml.emf
 
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
+import de.unibonn.simpleml.simpleML.SmlAbstractCallable
 import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
-import de.unibonn.simpleml.simpleML.SmlAbstractLambda
 import de.unibonn.simpleml.simpleML.SmlAbstractLocalVariable
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlAbstractProtocolTerm
@@ -59,23 +59,19 @@ fun Resource?.compilationUnitOrNull(): SmlCompilationUnit? {
         ?.firstOrNull()
 }
 
+// SmlAbstractCallable -----------------------------------------------------------------------------
+
+fun SmlAbstractCallable?.parametersOrEmpty(): List<SmlParameter> {
+    return this?.parameterList?.parameters.orEmpty()
+}
+
 // SmlAbstractDeclaration --------------------------------------------------------------------------
 
 fun SmlAbstractDeclaration?.annotationUsesOrEmpty(): List<SmlAnnotationUse> {
     return this?.annotationUseHolder?.annotations ?: this?.annotations.orEmpty()
 }
 
-// SmlAbstractLambda -------------------------------------------------------------------------------
-
-fun SmlAbstractLambda?.parametersOrEmpty(): List<SmlParameter> {
-    return this?.parameterList?.parameters.orEmpty()
-}
-
 // SmlAnnotation -----------------------------------------------------------------------------------
-
-fun SmlAnnotation?.parametersOrEmpty(): List<SmlParameter> {
-    return this?.parameterList?.parameters.orEmpty()
-}
 
 fun SmlAnnotation?.constraintsOrEmpty(): List<SmlAbstractConstraint> {
     return this?.constraintList?.constraints.orEmpty()
@@ -119,10 +115,6 @@ fun SmlCall?.typeArgumentsOrEmpty(): List<SmlTypeArgument> {
 
 // SmlCallableType ---------------------------------------------------------------------------------
 
-fun SmlCallableType?.parametersOrEmpty(): List<SmlParameter> {
-    return this?.parameterList?.parameters.orEmpty()
-}
-
 fun SmlCallableType?.resultsOrEmpty(): List<SmlResult> {
     return this?.resultList?.results.orEmpty()
 }
@@ -131,10 +123,6 @@ fun SmlCallableType?.resultsOrEmpty(): List<SmlResult> {
 
 fun SmlClass?.typeParametersOrEmpty(): List<SmlTypeParameter> {
     return this?.typeParameterList?.typeParameters.orEmpty()
-}
-
-fun SmlClass?.parametersOrEmpty(): List<SmlParameter> {
-    return this?.parameterList?.parameters.orEmpty()
 }
 
 fun SmlClass?.parentTypesOrEmpty(): List<SmlAbstractType> {
@@ -188,10 +176,6 @@ fun SmlEnum?.variantsOrEmpty(): List<SmlEnumVariant> {
 
 // SmlEnumVariant ----------------------------------------------------------------------------------
 
-fun SmlEnumVariant?.parametersOrEmpty(): List<SmlParameter> {
-    return this?.parameterList?.parameters.orEmpty()
-}
-
 fun SmlEnumVariant?.typeParametersOrEmpty(): List<SmlTypeParameter> {
     return this?.typeParameterList?.typeParameters.orEmpty()
 }
@@ -201,10 +185,6 @@ fun SmlEnumVariant?.constraintsOrEmpty(): List<SmlAbstractConstraint> {
 }
 
 // SmlFunction -------------------------------------------------------------------------------------
-
-fun SmlFunction?.parametersOrEmpty(): List<SmlParameter> {
-    return this?.parameterList?.parameters.orEmpty()
-}
 
 fun SmlFunction?.resultsOrEmpty(): List<SmlResult> {
     return this?.resultList?.results.orEmpty()
@@ -298,10 +278,6 @@ fun SmlWorkflow?.statementsOrEmpty(): List<SmlAbstractStatement> {
 
 fun SmlStep?.localVariablesOrEmpty(): List<SmlAbstractLocalVariable> {
     return this.parametersOrEmpty() + this.placeholdersOrEmpty()
-}
-
-fun SmlStep?.parametersOrEmpty(): List<SmlParameter> {
-    return this?.parameterList?.parameters.orEmpty()
 }
 
 fun SmlStep?.placeholdersOrEmpty(): List<SmlPlaceholder> {

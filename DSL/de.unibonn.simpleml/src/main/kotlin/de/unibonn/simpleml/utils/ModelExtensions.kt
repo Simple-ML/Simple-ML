@@ -17,6 +17,7 @@ import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.emf.variantsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
+import de.unibonn.simpleml.simpleML.SmlAbstractCallable
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
@@ -40,6 +41,7 @@ import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
@@ -117,7 +119,7 @@ fun SmlCall.maybeCallable(): CallableResult {
 
         current = when {
             current.eIsProxy() -> return CallableResult.Unresolvable
-            current.isCallable() -> return CallableResult.Callable(current)
+            current is SmlAbstractCallable -> return CallableResult.Callable(current)
             current is SmlCall -> {
                 val results = current.resultsOrNull()
                 if (results == null || results.size != 1) {
@@ -133,6 +135,7 @@ fun SmlCall.maybeCallable(): CallableResult {
                 is SmlCallableType -> CallableResult.Callable(typeOrNull)
                 else -> CallableResult.NotCallable
             }
+            current is SmlParenthesizedExpression -> current.expression
             current is SmlReference -> current.declaration
             current is SmlResult -> return when (val typeOrNull = current.type) {
                 null -> CallableResult.Unresolvable
@@ -198,10 +201,7 @@ fun SmlClass?.inheritedNonStaticMembersOrEmpty(): Set<SmlAbstractDeclaration> {
     return this?.parentTypesOrEmpty()
         ?.mapNotNull { it.classOrNull() }
         ?.flatMap { it.memberDeclarationsOrEmpty() }
-        ?.filter {
-            it is SmlAttribute && !it.isStatic ||
-                    it is SmlFunction && !it.isStatic
-        }
+        ?.filter { it is SmlAttribute && !it.isStatic || it is SmlFunction && !it.isStatic }
         ?.toSet()
         .orEmpty()
 }
@@ -291,16 +291,6 @@ fun SmlAbstractAssignee.indexOrNull(): Int? {
     val assignment = closestAncestorOrNull<SmlAssignment>() ?: return null
     return assignment.assigneesOrEmpty().indexOf(this)
 }
-
-// EObject -------------------------------------------------------------------------------------------------------------
-
-fun EObject?.isCallable() =
-    this is SmlClass ||
-            this is SmlEnumVariant ||
-            this is SmlFunction ||
-            this is SmlCallableType ||
-            this is SmlBlockLambda ||
-            this is SmlStep
 
 // Enum ----------------------------------------------------------------------------------------------------------------
 

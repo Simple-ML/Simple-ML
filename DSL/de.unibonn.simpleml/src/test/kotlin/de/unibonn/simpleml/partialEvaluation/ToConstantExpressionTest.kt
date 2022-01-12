@@ -70,7 +70,7 @@ class ToConstantExpressionTest {
 
     @BeforeEach
     fun reset() {
-        val compilationUnit = parseHelper.parseResourceWithStdlib("interpreter/interpreter.smltest")
+        val compilationUnit = parseHelper.parseResourceWithStdlib("interpreter/callables.smltest")
         compilationUnit.shouldNotBeNull()
 
         val blockLambdas = compilationUnit.descendants<SmlBlockLambda>().toList()

@@ -21,7 +21,7 @@ class AnnotationChecker : AbstractSimpleMLChecker() {
         if (smlAnnotation.parameterList != null && smlAnnotation.parametersOrEmpty().isEmpty()) {
             info(
                 "Unnecessary parameter list.",
-                Literals.SML_ANNOTATION__PARAMETER_LIST,
+                Literals.SML_ABSTRACT_CALLABLE__PARAMETER_LIST,
                 InfoCode.UnnecessaryParameterList
             )
         }
