@@ -11,6 +11,7 @@ from shapely import wkt, wkb, geometry, ops
 
 import simpleml.util.global_configurations as global_config
 import simpleml.util.jsonLabels_util as config
+from simpleml.dataset._instance import Instance
 from simpleml.dataset._stats import getStatistics
 
 
@@ -102,6 +103,35 @@ class Dataset:
                     del copy.stats[attribute]
                 copy.attribute_labels.pop(attribute)
         copy.attributes = [value for value in copy.attributes if value not in attributeIDs]
+
+        return copy
+
+    def filterByAttribute(self, attribute: str, value) -> Dataset:
+
+        if self.data is None:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+
+        copy.data = copy.data.loc[copy.data[attribute] > value]
+
+        #copy.data = copy.data[copy.data.column_name != 'False']
+        #df = df[df.column_name != value]
+        #print('Dataset class')
+        #print(copy.data)
+
+        return copy
+
+    def filterInstances(self, filter_func) -> Dataset:
+
+        if self.data is None:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+
+        for index, row in copy.data.iterrows():
+            if not filter_func(Instance(row)):
+                copy.data.drop(index, inplace=True)
 
         return copy
 
@@ -451,3 +481,4 @@ def joinTwoDatasets2(first_file_name: str, second_file_name: str, separator: str
     print(joint_data.head(10))
 
     return True
+
