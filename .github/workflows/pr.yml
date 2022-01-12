@@ -44,7 +44,9 @@ jobs:
         with:
           name: Test report
           # upload-artifact does not use working-directory
-          path: DSL/de.unibonn.simpleml/build/reports/tests/test/
+          path: |
+            DSL/de.unibonn.simpleml/build/reports/tests/test/
+            DSL/de.unibonn.simpleml.ide/build/reports/tests/test/
 
       - name: Upload test coverage
         if: ${{ github.actor != 'dependabot[bot]' }}
@@ -52,7 +54,7 @@ jobs:
         with:
           name: Test coverage
           # upload-artifact does not use working-directory
-          path: DSL/de.unibonn.simpleml/build/reports/kover/html/
+          path: DSL/build/reports/kover/html/
 
 
   # Build and test Frontend component
