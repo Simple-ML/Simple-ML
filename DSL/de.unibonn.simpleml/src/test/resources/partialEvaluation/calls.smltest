@@ -1,0 +1,33 @@
+package tests.partialEvaluation.higherOrder
+
+workflow callToBlockLambda {
+    val lambda = (a) { yield result = a; };
+    val result = lambda(1);
+}
+
+workflow callToExpressionLambda {
+    val lambda = (a) -> a;
+    val result = lambda(1);
+}
+
+step myStep1(a: Int) {
+
+}
+
+workflow callToStep {
+
+}
+
+workflow parameterAssignedDuringCallOfLambda {
+    val result = ((a, b) -> ((b, c) {
+        yield result = a + b + c;
+    })(2, 3))(1, 4);
+}
+
+step myStep2(param: Int) -> f: () -> (result: Int) {
+    yield f = () -> param;
+}
+
+workflow parameterAssignedDuringCreationOfLambda {
+    val result = myStep2(1)();
+}

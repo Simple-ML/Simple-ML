@@ -98,7 +98,7 @@ fun SmlArgumentList.parametersOrNull(): List<SmlParameter>? {
 
 // Call ----------------------------------------------------------------------------------------------------------------
 
-fun SmlCall.callableOrNull(): EObject? {
+fun SmlCall.callableOrNull(): SmlAbstractCallable? {
     return when (val maybeCallable = this.maybeCallable()) {
         is CallableResult.Callable -> maybeCallable.callable
         else -> null
@@ -108,7 +108,7 @@ fun SmlCall.callableOrNull(): EObject? {
 sealed interface CallableResult {
     object Unresolvable : CallableResult
     object NotCallable : CallableResult
-    class Callable(val callable: EObject) : CallableResult
+    class Callable(val callable: SmlAbstractCallable) : CallableResult
 }
 
 fun SmlCall.maybeCallable(): CallableResult {
@@ -172,15 +172,7 @@ private fun SmlCall.isRecursive(origin: Set<EObject>, visited: Set<EObject>): Bo
 }
 
 fun SmlCall.parametersOrNull(): List<SmlParameter>? {
-    return when (val callable = this.callableOrNull()) {
-        is SmlClass -> callable.parametersOrEmpty()
-        is SmlEnumVariant -> callable.parametersOrEmpty()
-        is SmlFunction -> callable.parametersOrEmpty()
-        is SmlCallableType -> callable.parametersOrEmpty()
-        is SmlBlockLambda -> callable.parametersOrEmpty()
-        is SmlStep -> callable.parametersOrEmpty()
-        else -> null
-    }
+    return callableOrNull()?.parametersOrEmpty()
 }
 
 fun SmlCall.resultsOrNull(): List<SmlAbstractDeclaration>? {

@@ -30,6 +30,7 @@ import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.simpleML.SimpleMLFactory
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
+import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.testing.ParseHelper
@@ -70,7 +71,7 @@ class ToConstantExpressionTest {
 
     @BeforeEach
     fun reset() {
-        val compilationUnit = parseHelper.parseResourceWithStdlib("interpreter/callables.smltest")
+        val compilationUnit = parseHelper.parseResourceWithStdlib("partialEvaluation/callables.smltest")
         compilationUnit.shouldNotBeNull()
 
         val blockLambdas = compilationUnit.descendants<SmlBlockLambda>().toList()
@@ -1076,6 +1077,22 @@ class ToConstantExpressionTest {
             )
 
             testData.toConstantExpressionOrNull().shouldBeNull()
+        }
+    }
+
+    @Nested
+    inner class Call {
+
+        private lateinit var compilationUnit: SmlCompilationUnit
+
+        @BeforeEach
+        fun reset() {
+            compilationUnit = parseHelper.parseResourceWithStdlib("partialEvaluation/calls.smltest")!!
+        }
+
+        @Test
+        fun `should evaluate simple calls`() {
+
         }
     }
 
