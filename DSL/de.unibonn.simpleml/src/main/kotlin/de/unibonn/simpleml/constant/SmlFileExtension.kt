@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.constant
 
-import de.unibonn.simpleml.utils.OriginalFilePath
+import de.unibonn.simpleml.emf.OriginalFilePath
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 

@@ -46,7 +46,7 @@ import de.unibonn.simpleml.typing.EnumVariantType
 import de.unibonn.simpleml.typing.NamedType
 import de.unibonn.simpleml.typing.TypeComputer
 import de.unibonn.simpleml.utils.ClassHierarchy
-import de.unibonn.simpleml.utils.closestAncestorOrNull
+import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.utils.isInferredStatic
 import de.unibonn.simpleml.utils.parametersOrNull
 import de.unibonn.simpleml.utils.resultsOrNull
