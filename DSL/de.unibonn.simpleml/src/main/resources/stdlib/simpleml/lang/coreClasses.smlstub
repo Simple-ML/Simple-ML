@@ -1,6 +1,10 @@
 package simpleml.lang
 
+@Description("Common superclass of all classes.")
 class Any
+
+@Description("Common subclass of all classes.")
+class Nothing
 
 class Boolean
 
