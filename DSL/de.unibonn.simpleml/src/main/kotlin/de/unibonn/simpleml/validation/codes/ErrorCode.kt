@@ -64,5 +64,7 @@ enum class ErrorCode {
     OneProtocolPerClass,
     OnlyReferenceInstanceMembers,
 
-    MissingTemplateExpression
+    MissingTemplateExpression,
+
+    MissingSafeAccess
 }

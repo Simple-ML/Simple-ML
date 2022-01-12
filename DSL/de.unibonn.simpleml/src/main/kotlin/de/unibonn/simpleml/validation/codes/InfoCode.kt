@@ -6,6 +6,8 @@ enum class InfoCode {
     UnnecessaryAssignment,
     UnnecessaryArgumentList,
     UnnecessaryBody,
+    UnnecessaryElvisOperator,
+    UnnecessarySafeAccess,
     UnnecessaryParameterList,
     UnnecessaryResultList,
     UnnecessaryTypeArgumentList,

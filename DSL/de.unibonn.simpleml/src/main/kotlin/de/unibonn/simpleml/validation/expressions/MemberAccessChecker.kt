@@ -1,5 +1,6 @@
 package de.unibonn.simpleml.validation.expressions
 
+import com.google.inject.Inject
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
@@ -7,11 +8,16 @@ import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
+import de.unibonn.simpleml.typing.NamedType
+import de.unibonn.simpleml.typing.TypeComputer
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
+import de.unibonn.simpleml.validation.codes.InfoCode
 import org.eclipse.xtext.validation.Check
 
-class MemberAccessChecker : AbstractSimpleMLChecker() {
+class MemberAccessChecker @Inject constructor(
+    private val typeComputer: TypeComputer
+) : AbstractSimpleMLChecker() {
 
     @Check
     fun mustBeCalled(smlMemberAccess: SmlMemberAccess) {
@@ -35,6 +41,29 @@ class MemberAccessChecker : AbstractSimpleMLChecker() {
                         ErrorCode.ENUM_VARIANT_MUST_BE_INSTANTIATED
                     )
                 }
+            }
+        }
+    }
+
+    @Check
+    fun unnecessarySafeAccess(smlMemberAccess: SmlMemberAccess) {
+        val type = typeComputer.typeOf(smlMemberAccess.receiver)
+
+        if (smlMemberAccess.isNullSafe) {
+            if (!(type is NamedType && type.isNullable)) {
+                info(
+                    "The receiver is never null so the safe access is unnecessary.",
+                    null,
+                    InfoCode.UnnecessarySafeAccess
+                )
+            }
+        } else {
+            if (type is NamedType && type.isNullable) {
+                error(
+                    "The receiver can be null so a safe access must be used.",
+                    null,
+                    ErrorCode.MissingSafeAccess
+                )
             }
         }
     }

@@ -1,0 +1,9 @@
+package validation.expressions.elvis.unnecessaryElvisOperator
+
+workflow test {
+
+    // semantic_info "The left operand is never null so the elvis operator is unnecessary."
+    »1 ?: 2«;
+    // no_semantic_info "The left operand is never null so the elvis operator is unnecessary."
+    »null ?: 2«;
+}
