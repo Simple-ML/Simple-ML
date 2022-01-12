@@ -74,7 +74,11 @@ fun SmlArgument.parameterOrNull(): SmlParameter? {
                 return null
             }
 
-            return argumentList.parametersOrNull()?.getOrNull(thisIndex)
+            val parameter = argumentList.parametersOrNull()?.getOrNull(thisIndex)
+            return when {
+                parameter == null || parameter.isVariadic -> null
+                else -> parameter
+            }
         }
     }
 }

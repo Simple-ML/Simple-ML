@@ -34,7 +34,6 @@ import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
-import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.testing.ParseHelper
@@ -1134,6 +1133,19 @@ class ToConstantExpressionTest {
         }
 
         @Test
+        fun `should evaluate calls of steps with variadic parameter`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToStepWithVariadicParameter")
+            val testData = workflow
+                .statementsOrEmpty()
+                .filterIsInstance<SmlExpressionStatement>()
+                .firstOrNull()
+                .shouldNotBeNull()
+                .expression
+
+            testData.toConstantExpressionOrNull().shouldBeNull()
+        }
+
+        @Test
         fun `should substitute parameters that were bound at call of a lambda`() {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>(
                 "parameterAssignedDuringCall"
@@ -1153,6 +1165,19 @@ class ToConstantExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>(
                 "parameterAssignedDuringCreationOfLambda"
             )
+            val testData = workflow
+                .statementsOrEmpty()
+                .filterIsInstance<SmlExpressionStatement>()
+                .firstOrNull()
+                .shouldNotBeNull()
+                .expression
+
+            testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
+        }
+
+        @Test
+        fun `should evaluate calls with lambda as parameter`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("lambdaAsParameter")
             val testData = workflow
                 .statementsOrEmpty()
                 .filterIsInstance<SmlExpressionStatement>()

@@ -15,6 +15,7 @@ import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Or
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Plus
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Times
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Not
+import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
@@ -48,6 +49,7 @@ import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.indexOrNull
 import de.unibonn.simpleml.utils.isInferredPure
 import de.unibonn.simpleml.utils.isOptional
+import de.unibonn.simpleml.utils.parameterOrNull
 import de.unibonn.simpleml.utils.uniqueBy
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Minus as InfixMinus
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Minus as PrefixMinus
@@ -56,10 +58,18 @@ import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Minus as PrefixMi
  * Tries to evaluate this expression. On success a [SmlConstantExpression] is returned, otherwise `null`.
  */
 fun SmlAbstractExpression.toConstantExpressionOrNull(): SmlConstantExpression? {
-    return simplify(emptyMap()) as? SmlConstantExpression
+    return toConstantExpressionOrNull(emptyMap())
 }
 
-internal fun SmlAbstractExpression.simplify(substitutions: Substitutions): SmlSimplifiedExpression? {
+internal fun SmlAbstractExpression.toConstantExpressionOrNull(substitutions: ParameterSubstitutions): SmlConstantExpression? {
+    return when (val simplifiedExpression = simplify(substitutions)) {
+        is SmlConstantExpression? -> simplifiedExpression
+        is SmlIntermediateRecord -> simplifiedExpression.unwrap() as? SmlConstantExpression
+        else -> null
+    }
+}
+
+internal fun SmlAbstractExpression.simplify(substitutions: ParameterSubstitutions): SmlSimplifiedExpression? {
     return when (this) {
 
         // Base cases
@@ -91,102 +101,104 @@ internal fun SmlAbstractExpression.simplify(substitutions: Substitutions): SmlSi
     }
 }
 
-private fun SmlBlockLambda.simplifyBlockLambda(substitutions: Substitutions): SmlSimplifiedExpression? {
+private fun SmlBlockLambda.simplifyBlockLambda(substitutions: ParameterSubstitutions): SmlIntermediateBlockLambda? {
     return when {
         isInferredPure() -> SmlIntermediateBlockLambda(
             parameters = parametersOrEmpty(),
             results = lambdaResultsOrEmpty(),
-            substitutionsDuringCreation = substitutions
+            substitutionsOnCreation = substitutions
         )
         else -> null
     }
 }
 
-private fun SmlExpressionLambda.simplifyExpressionLambda(substitutions: Substitutions): SmlSimplifiedExpression? {
+private fun SmlExpressionLambda.simplifyExpressionLambda(
+    substitutions: ParameterSubstitutions
+): SmlIntermediateExpressionLambda? {
     return when {
         isInferredPure() -> SmlIntermediateExpressionLambda(
             parameters = parametersOrEmpty(),
             result = result,
-            substitutionsDuringCreation = substitutions
+            substitutionsOnCreation = substitutions
         )
         else -> null
     }
 }
 
-private fun SmlInfixOperation.simplifyInfixOp(substitutions: Substitutions): SmlSimplifiedExpression? {
+private fun SmlInfixOperation.simplifyInfixOp(substitutions: ParameterSubstitutions): SmlConstantExpression? {
 
     // By design none of the operators are short-circuited
-    val simpleLeft = leftOperand.simplify(substitutions) ?: return null
-    val simpleRight = rightOperand.simplify(substitutions) ?: return null
+    val constantLeft = leftOperand.toConstantExpressionOrNull(substitutions) ?: return null
+    val constantRight = rightOperand.toConstantExpressionOrNull(substitutions) ?: return null
 
     return when (operator) {
-        Or.operator -> simplifyLogicalOp(simpleLeft, Boolean::or, simpleRight)
-        And.operator -> simplifyLogicalOp(simpleLeft, Boolean::and, simpleRight)
-        Equals.operator -> SmlConstantBoolean(simpleLeft == simpleRight)
-        NotEquals.operator -> SmlConstantBoolean(simpleLeft != simpleRight)
-        IdenticalTo.operator -> SmlConstantBoolean(simpleLeft == simpleRight)
-        NotIdenticalTo.operator -> SmlConstantBoolean(simpleLeft != simpleRight)
+        Or.operator -> simplifyLogicalOp(constantLeft, Boolean::or, constantRight)
+        And.operator -> simplifyLogicalOp(constantLeft, Boolean::and, constantRight)
+        Equals.operator -> SmlConstantBoolean(constantLeft == constantRight)
+        NotEquals.operator -> SmlConstantBoolean(constantLeft != constantRight)
+        IdenticalTo.operator -> SmlConstantBoolean(constantLeft == constantRight)
+        NotIdenticalTo.operator -> SmlConstantBoolean(constantLeft != constantRight)
         LessThan.operator -> simplifyComparisonOp(
-            simpleLeft,
+            constantLeft,
             { a, b -> a < b },
             { a, b -> a < b },
-            simpleRight
+            constantRight
         )
         LessThanOrEquals.operator -> simplifyComparisonOp(
-            simpleLeft,
+            constantLeft,
             { a, b -> a <= b },
             { a, b -> a <= b },
-            simpleRight
+            constantRight
         )
         GreaterThanOrEquals.operator -> simplifyComparisonOp(
-            simpleLeft,
+            constantLeft,
             { a, b -> a >= b },
             { a, b -> a >= b },
-            simpleRight
+            constantRight
         )
         GreaterThan.operator -> simplifyComparisonOp(
-            simpleLeft,
+            constantLeft,
             { a, b -> a > b },
             { a, b -> a > b },
-            simpleRight
+            constantRight
         )
         Plus.operator -> simplifyArithmeticOp(
-            simpleLeft,
+            constantLeft,
             { a, b -> a + b },
             { a, b -> a + b },
-            simpleRight
+            constantRight
         )
         InfixMinus.operator -> simplifyArithmeticOp(
-            simpleLeft,
+            constantLeft,
             { a, b -> a - b },
             { a, b -> a - b },
-            simpleRight
+            constantRight
         )
         Times.operator -> simplifyArithmeticOp(
-            simpleLeft,
+            constantLeft,
             { a, b -> a * b },
             { a, b -> a * b },
-            simpleRight
+            constantRight
         )
         By.operator -> simplifyArithmeticOp(
-            simpleLeft,
+            constantLeft,
             { a, b -> a / b },
             { a, b -> a / b },
-            simpleRight
+            constantRight
         )
-        Elvis.operator -> when (simpleLeft) {
-            SmlConstantNull -> simpleRight
-            else -> simpleLeft
+        Elvis.operator -> when (constantLeft) {
+            SmlConstantNull -> constantRight
+            else -> constantLeft
         }
         else -> throw IllegalArgumentException("Missing case to handle $this.")
     }
 }
 
 private fun simplifyLogicalOp(
-    leftOperand: SmlSimplifiedExpression,
+    leftOperand: SmlConstantExpression,
     operation: (Boolean, Boolean) -> Boolean,
-    rightOperand: SmlSimplifiedExpression,
-): SmlSimplifiedExpression? {
+    rightOperand: SmlConstantExpression,
+): SmlConstantExpression? {
 
     return when {
         leftOperand is SmlConstantBoolean && rightOperand is SmlConstantBoolean -> {
@@ -197,11 +209,11 @@ private fun simplifyLogicalOp(
 }
 
 private fun simplifyComparisonOp(
-    leftOperand: SmlSimplifiedExpression,
+    leftOperand: SmlConstantExpression,
     doubleOperation: (Double, Double) -> Boolean,
     intOperation: (Int, Int) -> Boolean,
-    rightOperand: SmlSimplifiedExpression,
-): SmlSimplifiedExpression? {
+    rightOperand: SmlConstantExpression,
+): SmlConstantExpression? {
 
     return when {
         leftOperand is SmlConstantInt && rightOperand is SmlConstantInt -> {
@@ -215,11 +227,11 @@ private fun simplifyComparisonOp(
 }
 
 private fun simplifyArithmeticOp(
-    leftOperand: SmlSimplifiedExpression,
+    leftOperand: SmlConstantExpression,
     doubleOperation: (Double, Double) -> Double,
     intOperation: (Int, Int) -> Int,
-    rightOperand: SmlSimplifiedExpression,
-): SmlSimplifiedExpression? {
+    rightOperand: SmlConstantExpression,
+): SmlConstantExpression? {
 
     return when {
         leftOperand is SmlConstantInt && rightOperand is SmlConstantInt -> {
@@ -232,8 +244,8 @@ private fun simplifyArithmeticOp(
     }
 }
 
-private fun SmlPrefixOperation.simplifyPrefixOp(substitutions: Substitutions): SmlSimplifiedExpression? {
-    val constantOperand = operand.simplify(substitutions) ?: return null
+private fun SmlPrefixOperation.simplifyPrefixOp(substitutions: ParameterSubstitutions): SmlConstantExpression? {
+    val constantOperand = operand.toConstantExpressionOrNull(substitutions) ?: return null
 
     return when (operator) {
         Not.operator -> when (constantOperand) {
@@ -249,36 +261,67 @@ private fun SmlPrefixOperation.simplifyPrefixOp(substitutions: Substitutions): S
     }
 }
 
-private fun SmlTemplateString.simplifyTemplateString(substitutions: Substitutions): SmlSimplifiedExpression? {
+private fun SmlTemplateString.simplifyTemplateString(substitutions: ParameterSubstitutions): SmlConstantExpression? {
     val constExpressions = expressions.map {
-        it.simplify(substitutions) ?: return null
+        it.toConstantExpressionOrNull(substitutions) ?: return null
     }
 
     return SmlConstantString(constExpressions.joinToString(""))
 }
 
-private fun SmlCall.simplifyCall(substitutions: Substitutions): SmlSimplifiedExpression? {
-    val simpleReceiver = receiver.simplify(substitutions) as? SmlIntermediateCallable ?: return null
+private fun SmlCall.simplifyCall(substitutions: ParameterSubstitutions): SmlSimplifiedExpression? {
+    val simpleReceiver = simplifyReceiver(substitutions) ?: return null
+    val newSubstitutions = buildNewSubstitutions(simpleReceiver, substitutions)
 
-    println(simpleReceiver)
-//    val
-
-    when (val simpleReceiver = receiver.simplify(substitutions)) {
-        is SmlIntermediateBlockLambda -> null
-        is SmlIntermediateExpressionLambda -> null
-        is SmlIntermediateStep -> null
-        else -> null
-    }
-
-    return when (val simpleReceiver = receiver.simplify(substitutions)) {
-        is SmlIntermediateBlockLambda -> null
-        is SmlIntermediateExpressionLambda -> null
-        is SmlIntermediateStep -> null
-        else -> null
+    return when (simpleReceiver) {
+        is SmlIntermediateBlockLambda -> {
+            SmlIntermediateRecord(simpleReceiver.results.map {
+                it to it.simplifyAssignee(newSubstitutions)
+            })
+        }
+        is SmlIntermediateExpressionLambda -> simpleReceiver.result.simplify(newSubstitutions)
+        is SmlIntermediateStep -> {
+            SmlIntermediateRecord(simpleReceiver.yields.map {
+                it.result to it.simplifyAssignee(newSubstitutions)
+            })
+        }
     }
 }
 
-private fun SmlMemberAccess.simplifyMemberAccess(substitutions: Substitutions): SmlSimplifiedExpression? {
+private fun SmlCall.simplifyReceiver(substitutions: ParameterSubstitutions): SmlIntermediateCallable? {
+    return when (val simpleReceiver = receiver.simplify(substitutions)) {
+        is SmlIntermediateRecord -> simpleReceiver.unwrap() as? SmlIntermediateCallable
+        is SmlIntermediateCallable -> simpleReceiver
+        else -> return null
+    }
+}
+
+private fun SmlCall.buildNewSubstitutions(
+    simpleReceiver: SmlIntermediateCallable,
+    oldSubstitutions: ParameterSubstitutions
+): ParameterSubstitutions {
+
+    val substitutionsOnCreation = when (simpleReceiver) {
+        is SmlIntermediateBlockLambda -> simpleReceiver.substitutionsOnCreation
+        is SmlIntermediateExpressionLambda -> simpleReceiver.substitutionsOnCreation
+        else -> emptyMap()
+    }
+
+    val substitutionsOnCall = argumentsOrEmpty()
+        .mapNotNull {
+            when (val parameter = it.parameterOrNull()) {
+                null -> null
+                else -> parameter to it.simplify(oldSubstitutions)
+            }
+        }
+
+    return buildMap {
+        putAll(substitutionsOnCreation)
+        putAll(substitutionsOnCall)
+    }
+}
+
+private fun SmlMemberAccess.simplifyMemberAccess(substitutions: ParameterSubstitutions): SmlSimplifiedExpression? {
     if (member.declaration is SmlEnumVariant) {
         return member.simplifyReference(substitutions)
     }
@@ -288,12 +331,12 @@ private fun SmlMemberAccess.simplifyMemberAccess(substitutions: Substitutions): 
             isNullSafe -> SmlConstantNull
             else -> null
         }
-        is SmlSimplifiedRecord -> null // TODO implement + test
+        is SmlIntermediateRecord -> null // TODO implement + test
         else -> null
     }
 }
 
-private fun SmlReference.simplifyReference(substitutions: Substitutions): SmlSimplifiedExpression? {
+private fun SmlReference.simplifyReference(substitutions: ParameterSubstitutions): SmlSimplifiedExpression? {
     return when (val declaration = this.declaration) {
         is SmlEnumVariant -> when {
             declaration.parametersOrEmpty().isEmpty() -> SmlConstantEnumVariant(declaration)
@@ -306,14 +349,14 @@ private fun SmlReference.simplifyReference(substitutions: Substitutions): SmlSim
     }
 }
 
-private fun SmlAbstractAssignee.simplifyAssignee(substitutions: Substitutions): SmlSimplifiedExpression? {
+private fun SmlAbstractAssignee.simplifyAssignee(substitutions: ParameterSubstitutions): SmlSimplifiedExpression? {
     val simpleFullAssignedExpression = closestAncestorOrNull<SmlAssignment>()
         ?.expression
         ?.simplify(substitutions)
         ?: return null
 
     return when (simpleFullAssignedExpression) {
-        is SmlSimplifiedRecord -> null // TODO: test + access record by index - needs calls
+        is SmlIntermediateRecord -> null // TODO: test + access record by index - needs calls
         else -> when {
             indexOrNull() == 0 -> simpleFullAssignedExpression
             else -> null
@@ -321,7 +364,7 @@ private fun SmlAbstractAssignee.simplifyAssignee(substitutions: Substitutions): 
     }
 }
 
-private fun SmlParameter.simplifyParameter(substitutions: Substitutions): SmlSimplifiedExpression? {
+private fun SmlParameter.simplifyParameter(substitutions: ParameterSubstitutions): SmlSimplifiedExpression? {
     return when {
         this in substitutions -> substitutions[this]
         isOptional() -> defaultValue?.simplify(substitutions)

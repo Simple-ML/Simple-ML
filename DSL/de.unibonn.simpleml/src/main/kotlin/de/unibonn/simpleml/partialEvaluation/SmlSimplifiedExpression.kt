@@ -7,11 +7,12 @@ import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlYield
 
-typealias Substitutions = Map<SmlParameter, SmlSimplifiedExpression?>
+typealias ParameterSubstitutions = Map<SmlParameter, SmlSimplifiedExpression?>
+typealias ResultSubstitutions = Map<SmlAbstractResult, SmlSimplifiedExpression?>
 
 sealed interface SmlSimplifiedExpression
 
-internal sealed interface SmlIntermediateExpression: SmlSimplifiedExpression
+internal sealed interface SmlIntermediateExpression : SmlSimplifiedExpression
 
 internal sealed interface SmlIntermediateCallable : SmlIntermediateExpression {
     val parameters: List<SmlParameter>
@@ -20,13 +21,13 @@ internal sealed interface SmlIntermediateCallable : SmlIntermediateExpression {
 internal data class SmlIntermediateBlockLambda(
     override val parameters: List<SmlParameter>,
     val results: List<SmlBlockLambdaResult>,
-    val substitutionsDuringCreation: Substitutions
+    val substitutionsOnCreation: ParameterSubstitutions
 ) : SmlIntermediateCallable
 
 internal data class SmlIntermediateExpressionLambda(
     override val parameters: List<SmlParameter>,
     val result: SmlAbstractExpression,
-    val substitutionsDuringCreation: Substitutions
+    val substitutionsOnCreation: ParameterSubstitutions
 ) : SmlIntermediateCallable
 
 internal data class SmlIntermediateStep(
@@ -34,13 +35,23 @@ internal data class SmlIntermediateStep(
     val yields: List<SmlYield>
 ) : SmlIntermediateCallable
 
-class SmlSimplifiedRecord(
-    resultToValueEntries: List<Pair<SmlAbstractResult, SmlConstantExpression?>>
+class SmlIntermediateRecord(
+    resultSubstitutions: List<Pair<SmlAbstractResult, SmlSimplifiedExpression?>>
 ) : SmlIntermediateExpression {
-    val resultToValue = resultToValueEntries.toMap()
+    val resultSubstitutions = resultSubstitutions.toMap()
+
+    /**
+     * If the record contains exactly one substitution its value is returned. Otherwise, it returns `this`.
+     */
+    fun unwrap(): SmlSimplifiedExpression? {
+        return when (resultSubstitutions.size) {
+            1 -> resultSubstitutions.values.first()
+            else -> this
+        }
+    }
 
     override fun toString(): String {
-        return resultToValue.entries.joinToString(prefix = "{", postfix = "}") { (result, value) ->
+        return resultSubstitutions.entries.joinToString(prefix = "{", postfix = "}") { (result, value) ->
             "${result.name}=$value"
         }
     }
