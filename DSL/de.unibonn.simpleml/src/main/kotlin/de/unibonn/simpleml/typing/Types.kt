@@ -88,6 +88,6 @@ data class EnumVariantType(
     override fun toString() = super.toString()
 }
 
-object NothingType : Type() {
-    override fun toString() = "Nothing"
+object UnresolvedType : Type() {
+    override fun toString() = "Unresolved"
 }

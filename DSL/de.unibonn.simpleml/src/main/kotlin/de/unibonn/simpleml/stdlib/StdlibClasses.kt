@@ -12,5 +12,6 @@ object StdlibClasses {
     val Boolean: QualifiedName = StdlibPackages.lang.append("Boolean")
     val Float: QualifiedName = StdlibPackages.lang.append("Float")
     val Int: QualifiedName = StdlibPackages.lang.append("Int")
+    val Nothing: QualifiedName = StdlibPackages.lang.append("Nothing")
     val String: QualifiedName = StdlibPackages.lang.append("String")
 }
