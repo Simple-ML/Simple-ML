@@ -15,6 +15,7 @@ import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Or
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Plus
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Times
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Not
+import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
@@ -30,17 +31,19 @@ import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlNull
+import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlReference
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
 import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
 import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
-import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.utils.indexOrNull
+import de.unibonn.simpleml.utils.isResolved
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Minus as InfixMinus
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Minus as PrefixMinus
 
@@ -48,6 +51,12 @@ import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Minus as PrefixMi
  * Tries to evaluate this expression. On success a [SmlConstantExpression] is returned, otherwise `null`.
  */
 fun SmlAbstractExpression.toConstantExpressionOrNull(): SmlConstantExpression? {
+    return simplify(emptyMap()) as? SmlConstantExpression
+}
+
+internal fun SmlAbstractExpression.simplify(
+    parameterToValue: Map<SmlParameter, SmlSimplifiedExpression?>
+): SmlSimplifiedExpression? {
     return when (this) {
 
         // Base cases
@@ -59,98 +68,98 @@ fun SmlAbstractExpression.toConstantExpressionOrNull(): SmlConstantExpression? {
         is SmlTemplateStringStart -> SmlConstantString(value)
         is SmlTemplateStringInner -> SmlConstantString(value)
         is SmlTemplateStringEnd -> SmlConstantString(value)
-        is SmlBlockLambda -> null
-        is SmlExpressionLambda -> null
+        is SmlBlockLambda -> null // simplifyBlockLambda() TODO
+        is SmlExpressionLambda -> null // simplifyExpressionLambda()
 
         // Simple recursive cases
-        is SmlArgument -> value.toConstantExpressionOrNull()
-        is SmlInfixOperation -> convertInfixOperation()
-        is SmlParenthesizedExpression -> expression.toConstantExpressionOrNull()
-        is SmlPrefixOperation -> convertPrefixOperation()
-        is SmlTemplateString -> convertTemplateString()
+        is SmlArgument -> value.simplify(parameterToValue)
+        is SmlInfixOperation -> simplifyInfixOp(parameterToValue)
+        is SmlParenthesizedExpression -> expression.simplify(parameterToValue)
+        is SmlPrefixOperation -> simplifyPrefixOp(parameterToValue)
+        is SmlTemplateString -> simplifyTemplateString(parameterToValue)
 
         // Complex recursive cases
-        is SmlCall -> convertCall()
-        is SmlMemberAccess -> convertMemberAccess()
-        is SmlReference -> convertReference()
+        is SmlCall -> simplifyCall(parameterToValue)
+        is SmlMemberAccess -> simplifyMemberAccess(parameterToValue)
+        is SmlReference -> simplifyReference(parameterToValue)
 
         // Warn if case is missing
         else -> throw IllegalArgumentException("Missing case to handle $this.")
     }
 }
 
-private fun SmlInfixOperation.convertInfixOperation(): SmlConstantExpression? {
-    val constLeft = leftOperand.toConstantExpressionOrNull() ?: return null
-    val constRight = rightOperand.toConstantExpressionOrNull() ?: return null
+private fun SmlInfixOperation.simplifyInfixOp(parameterToValue: Map<SmlParameter, SmlSimplifiedExpression?>): SmlSimplifiedExpression? {
+    val simpleLeft = leftOperand.simplify(parameterToValue) ?: return null
+    val simpleRight = rightOperand.simplify(parameterToValue) ?: return null
 
     return when (operator) {
-        Or.operator -> convertLogicalOperation(constLeft, Boolean::or, constRight)
-        And.operator -> convertLogicalOperation(constLeft, Boolean::and, constRight)
-        Equals.operator -> SmlConstantBoolean(constLeft == constRight)
-        NotEquals.operator -> SmlConstantBoolean(constLeft != constRight)
-        IdenticalTo.operator -> SmlConstantBoolean(constLeft == constRight)
-        NotIdenticalTo.operator -> SmlConstantBoolean(constLeft != constRight)
-        LessThan.operator -> convertComparisonOperation(
-            constLeft,
+        Or.operator -> simplifyLogicalOp(simpleLeft, Boolean::or, simpleRight)
+        And.operator -> simplifyLogicalOp(simpleLeft, Boolean::and, simpleRight)
+        Equals.operator -> SmlConstantBoolean(simpleLeft == simpleRight)
+        NotEquals.operator -> SmlConstantBoolean(simpleLeft != simpleRight)
+        IdenticalTo.operator -> SmlConstantBoolean(simpleLeft == simpleRight)
+        NotIdenticalTo.operator -> SmlConstantBoolean(simpleLeft != simpleRight)
+        LessThan.operator -> simplifyComparisonOp(
+            simpleLeft,
             { a, b -> a < b },
             { a, b -> a < b },
-            constRight
+            simpleRight
         )
-        LessThanOrEquals.operator -> convertComparisonOperation(
-            constLeft,
+        LessThanOrEquals.operator -> simplifyComparisonOp(
+            simpleLeft,
             { a, b -> a <= b },
             { a, b -> a <= b },
-            constRight
+            simpleRight
         )
-        GreaterThanOrEquals.operator -> convertComparisonOperation(
-            constLeft,
+        GreaterThanOrEquals.operator -> simplifyComparisonOp(
+            simpleLeft,
             { a, b -> a >= b },
             { a, b -> a >= b },
-            constRight
+            simpleRight
         )
-        GreaterThan.operator -> convertComparisonOperation(
-            constLeft,
+        GreaterThan.operator -> simplifyComparisonOp(
+            simpleLeft,
             { a, b -> a > b },
             { a, b -> a > b },
-            constRight
+            simpleRight
         )
-        Plus.operator -> convertArithmeticOperation(
-            constLeft,
+        Plus.operator -> simplifyArithmeticOp(
+            simpleLeft,
             { a, b -> a + b },
             { a, b -> a + b },
-            constRight
+            simpleRight
         )
-        InfixMinus.operator -> convertArithmeticOperation(
-            constLeft,
+        InfixMinus.operator -> simplifyArithmeticOp(
+            simpleLeft,
             { a, b -> a - b },
             { a, b -> a - b },
-            constRight
+            simpleRight
         )
-        Times.operator -> convertArithmeticOperation(
-            constLeft,
+        Times.operator -> simplifyArithmeticOp(
+            simpleLeft,
             { a, b -> a * b },
             { a, b -> a * b },
-            constRight
+            simpleRight
         )
-        By.operator -> convertArithmeticOperation(
-            constLeft,
+        By.operator -> simplifyArithmeticOp(
+            simpleLeft,
             { a, b -> a / b },
             { a, b -> a / b },
-            constRight
+            simpleRight
         )
-        Elvis.operator -> when (constLeft) {
-            SmlConstantNull -> constRight
-            else -> constLeft
+        Elvis.operator -> when (simpleLeft) {
+            SmlConstantNull -> simpleRight
+            else -> simpleLeft
         }
         else -> throw IllegalArgumentException("Missing case to handle $this.")
     }
 }
 
-private fun convertLogicalOperation(
-    leftOperand: SmlConstantExpression,
+private fun simplifyLogicalOp(
+    leftOperand: SmlSimplifiedExpression,
     operation: (Boolean, Boolean) -> Boolean,
-    rightOperand: SmlConstantExpression,
-): SmlConstantExpression? {
+    rightOperand: SmlSimplifiedExpression,
+): SmlSimplifiedExpression? {
 
     return when {
         leftOperand is SmlConstantBoolean && rightOperand is SmlConstantBoolean -> {
@@ -160,12 +169,12 @@ private fun convertLogicalOperation(
     }
 }
 
-private fun convertComparisonOperation(
-    leftOperand: SmlConstantExpression,
+private fun simplifyComparisonOp(
+    leftOperand: SmlSimplifiedExpression,
     doubleOperation: (Double, Double) -> Boolean,
     intOperation: (Int, Int) -> Boolean,
-    rightOperand: SmlConstantExpression,
-): SmlConstantExpression? {
+    rightOperand: SmlSimplifiedExpression,
+): SmlSimplifiedExpression? {
 
     return when {
         leftOperand is SmlConstantInt && rightOperand is SmlConstantInt -> {
@@ -178,12 +187,12 @@ private fun convertComparisonOperation(
     }
 }
 
-private fun convertArithmeticOperation(
-    leftOperand: SmlConstantExpression,
+private fun simplifyArithmeticOp(
+    leftOperand: SmlSimplifiedExpression,
     doubleOperation: (Double, Double) -> Double,
     intOperation: (Int, Int) -> Int,
-    rightOperand: SmlConstantExpression,
-): SmlConstantExpression? {
+    rightOperand: SmlSimplifiedExpression,
+): SmlSimplifiedExpression? {
 
     return when {
         leftOperand is SmlConstantInt && rightOperand is SmlConstantInt -> {
@@ -196,8 +205,8 @@ private fun convertArithmeticOperation(
     }
 }
 
-private fun SmlPrefixOperation.convertPrefixOperation(): SmlConstantExpression? {
-    val constantOperand = operand.toConstantExpressionOrNull() ?: return null
+private fun SmlPrefixOperation.simplifyPrefixOp(parameterToValue: Map<SmlParameter, SmlSimplifiedExpression?>): SmlSimplifiedExpression? {
+    val constantOperand = operand.simplify(parameterToValue) ?: return null
 
     return when (operator) {
         Not.operator -> when (constantOperand) {
@@ -213,7 +222,7 @@ private fun SmlPrefixOperation.convertPrefixOperation(): SmlConstantExpression? 
     }
 }
 
-private fun SmlTemplateString.convertTemplateString(): SmlConstantExpression? {
+private fun SmlTemplateString.simplifyTemplateString(parameterToValue: Map<SmlParameter, SmlSimplifiedExpression?>): SmlSimplifiedExpression? {
     val constExpressions = expressions.map {
         it.toConstantExpressionOrNull() ?: return null
     }
@@ -223,21 +232,33 @@ private fun SmlTemplateString.convertTemplateString(): SmlConstantExpression? {
 
 // TODO: everything below (incl. tests) --------------------------------------------------------------------------------
 
-private fun SmlCall.convertCall(): SmlConstantExpression? {
+private fun SmlCall.simplifyCall(parameterToValue: Map<SmlParameter, SmlSimplifiedExpression?>): SmlSimplifiedExpression? {
     return null // TODO implement + test
 }
 
-private fun SmlMemberAccess.convertMemberAccess(): SmlConstantExpression? {
-    return null // TODO implement + test
+private fun SmlMemberAccess.simplifyMemberAccess(parameterToValue: Map<SmlParameter, SmlSimplifiedExpression?>): SmlSimplifiedExpression? {
+    if (member.declaration is SmlEnumVariant) {
+        return member.simplifyReference(parameterToValue)
+    }
+
+    return when (val constantReceiver = receiver.toConstantExpressionOrNull()) {
+        SmlConstantNull -> when {
+            isNullSafe && member.declaration.isResolved() -> SmlConstantNull
+            else -> null
+        }
+        else -> null
+    } // TODO implement + test
 }
 
-private fun SmlReference.convertReference(): SmlConstantExpression? {
+private fun SmlReference.simplifyReference(parameterToValue: Map<SmlParameter, SmlSimplifiedExpression?>): SmlSimplifiedExpression? {
     return when (val declaration = this.declaration) {
         is SmlEnumVariant -> when {
             declaration.parametersOrEmpty().isEmpty() -> SmlConstantEnumVariant(declaration)
             else -> null
         }
-        is SmlPlaceholder -> declaration.convertAssignee() // TODO
+        is SmlPlaceholder -> declaration.convertAssignee(parameterToValue) // TODO
+        is SmlParameter -> null // TODO
+        is SmlStep -> null // TODO
         else -> null
     }
 }
@@ -246,16 +267,16 @@ private fun SmlReference.convertReference(): SmlConstantExpression? {
 //  evaluate right side (record type if call)
 //  pick the value at the appropriate index
 
-private fun SmlAbstractAssignee.convertAssignee(): SmlConstantExpression? {
-    val constFullAssignedExpression = closestAncestorOrNull<SmlAssignment>()
+private fun SmlAbstractAssignee.convertAssignee(parameterToValue: Map<SmlParameter, SmlSimplifiedExpression?>): SmlSimplifiedExpression? {
+    val simpleFullAssignedExpression = closestAncestorOrNull<SmlAssignment>()
         ?.expression
-        ?.toConstantExpressionOrNull()
+        ?.simplify(parameterToValue)
         ?: return null
 
-    return when (constFullAssignedExpression) {
-        is SmlConstantRecord -> null // TODO: test + access record by index - needs calls
+    return when (simpleFullAssignedExpression) {
+        is SmlSimplifiedRecord -> null // TODO: test + access record by index - needs calls
         else -> when {
-            indexOrNull() == 0 -> constFullAssignedExpression
+            indexOrNull() == 0 -> simpleFullAssignedExpression
             else -> null
         }
     }

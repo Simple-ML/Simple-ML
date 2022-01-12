@@ -15,6 +15,7 @@
         <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractNamedTypeDeclaration" />
         <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractPackageMember" />
         <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractProtocolToken" />
+        <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractResult" />
         <genClasses ecoreClass="SimpleML.ecore#//SmlAnnotation">
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAnnotation/parameterList" />
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAnnotation/constraintList" />

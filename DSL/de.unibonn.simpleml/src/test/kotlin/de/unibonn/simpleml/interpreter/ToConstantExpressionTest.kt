@@ -5,14 +5,17 @@ import de.unibonn.simpleml.constant.SmlPrefixOperationOperator
 import de.unibonn.simpleml.emf.createSmlAnnotation
 import de.unibonn.simpleml.emf.createSmlArgument
 import de.unibonn.simpleml.emf.createSmlAssignment
+import de.unibonn.simpleml.emf.createSmlAttribute
 import de.unibonn.simpleml.emf.createSmlBlockLambda
 import de.unibonn.simpleml.emf.createSmlBoolean
 import de.unibonn.simpleml.emf.createSmlCall
+import de.unibonn.simpleml.emf.createSmlEnum
 import de.unibonn.simpleml.emf.createSmlEnumVariant
 import de.unibonn.simpleml.emf.createSmlExpressionLambda
 import de.unibonn.simpleml.emf.createSmlFloat
 import de.unibonn.simpleml.emf.createSmlInfixOperation
 import de.unibonn.simpleml.emf.createSmlInt
+import de.unibonn.simpleml.emf.createSmlMemberAccess
 import de.unibonn.simpleml.emf.createSmlNull
 import de.unibonn.simpleml.emf.createSmlParameter
 import de.unibonn.simpleml.emf.createSmlParenthesizedExpression
@@ -86,15 +89,27 @@ class ToConstantExpressionTest {
         }
 
         @Test
-        fun `should return null for block lambda`() {
+        fun `toConstantExpression should return null for block lambda`() {
             val testData = createSmlBlockLambda()
             testData.toConstantExpressionOrNull().shouldBeNull()
         }
 
         @Test
-        fun `should return null for expression lambda`() {
+        fun `simplify should return null for block lambda`() {
+            val testData = createSmlBlockLambda() // TODO  this + test case if lambda is not pure
+//            testData.simplify().shouldBeNull()
+        }
+
+        @Test
+        fun `toConstantExpression should return null for expression lambda`() {
             val testData = createSmlExpressionLambda(result = createSmlNull())
             testData.toConstantExpressionOrNull().shouldBeNull()
+        }
+
+        @Test
+        fun `simplify should return null for expression lambda`() {
+//            val testData = createSmlExpressionLambda() // TODO this + test case if lambda is not pure
+//            testData.simplify().shouldBeNull()
         }
     }
 
@@ -984,6 +999,83 @@ class ToConstantExpressionTest {
                 stringParts = listOf("start ", " end"),
                 templateExpressions = listOf(
                     createSmlCall(receiver = createSmlNull())
+                )
+            )
+
+            testData.toConstantExpressionOrNull().shouldBeNull()
+        }
+    }
+
+    @Nested
+    inner class MemberAccess {
+
+        @Test
+        fun `should return constant enum variant if referenced enum variant has no parameters`() {
+            val testEnumVariant = createSmlEnumVariant(name = "TestEnumVariant")
+            val testEnum = createSmlEnum(
+                name = "TestEnum",
+                variants = listOf(testEnumVariant)
+            )
+            val testData = createSmlMemberAccess(
+                receiver = createSmlReference(testEnum),
+                member = createSmlReference(testEnumVariant)
+            )
+
+            testData.toConstantExpressionOrNull() shouldBe SmlConstantEnumVariant(testEnumVariant)
+        }
+
+        @Test
+        fun `should return null if referenced enum variant has parameters`() {
+            val testEnumVariant = createSmlEnumVariant(
+                name = "TestEnumVariant",
+                parameters = listOf(
+                    createSmlParameter(name = "testParameter")
+                )
+            )
+            val testEnum = createSmlEnum(
+                name = "TestEnum",
+                variants = listOf(testEnumVariant)
+            )
+            val testData = createSmlMemberAccess(
+                receiver = createSmlReference(testEnum),
+                member = createSmlReference(testEnumVariant)
+            )
+
+            testData.toConstantExpressionOrNull().shouldBeNull()
+        }
+
+        @Test
+        fun `should return constant null if receiver is constant null and member access is null safe`() {
+            val testData = createSmlMemberAccess(
+                receiver = createSmlNull(),
+                member = createSmlReference(createSmlAttribute("testAttribute")),
+                isNullSafe = true
+            )
+
+            testData.toConstantExpressionOrNull() shouldBe SmlConstantNull
+        }
+
+        @Test
+        fun `should return null if receiver is constant null and member access is not null safe`() {
+            val testData = createSmlMemberAccess(
+                receiver = createSmlNull(),
+                member = createSmlReference(createSmlAttribute("testAttribute"))
+            )
+
+            testData.toConstantExpressionOrNull().shouldBeNull()
+        }
+
+        @Test
+        fun `should return null for other receivers`() {
+            val testData = createSmlMemberAccess(
+                receiver = createSmlInt(1),
+                member = createSmlReference(
+                    createSmlEnumVariant(
+                        name = "TestEnumVariant",
+                        parameters = listOf(
+                            createSmlParameter(name = "testParameter")
+                        )
+                    )
                 )
             )
 
