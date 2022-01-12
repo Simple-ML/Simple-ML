@@ -2,7 +2,7 @@ import asyncio
 
 import websockets
 
-from appServer import requestHandler
+from runtime.appServer import requestHandler
 
 if __name__ == "__main__":
     print('Runtime server started on localhost:6789')
