@@ -1368,6 +1368,28 @@ class ToConstantExpressionTest {
         }
 
         @Test
+        fun `should return value of placeholders inside valid assignment with call as expression`() {
+            val compilationUnit = parseHelper.parseResource("partialEvaluation/references.smltest")
+            compilationUnit.shouldNotBeNull()
+
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("successfulRecordAssignment")
+            val testData = workflow.expectedExpression()
+
+            testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
+        }
+
+        @Test
+        fun `should return null for references to placeholders inside invalid assignment with call as expression`() {
+            val compilationUnit = parseHelper.parseResource("partialEvaluation/references.smltest")
+            compilationUnit.shouldNotBeNull()
+
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("failedRecordAssignment")
+            val testData = workflow.expectedExpression()
+
+            testData.toConstantExpressionOrNull().shouldBeNull()
+        }
+
+        @Test
         fun `should return null for other declarations`() {
             val testData = createSmlReference(
                 declaration = createSmlAnnotation("TestAnnotation")

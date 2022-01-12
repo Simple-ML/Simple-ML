@@ -356,7 +356,7 @@ private fun SmlAbstractAssignee.simplifyAssignee(substitutions: ParameterSubstit
         ?: return null
 
     return when (simpleFullAssignedExpression) {
-        is SmlIntermediateRecord -> null // TODO: test + access record by index
+        is SmlIntermediateRecord -> simpleFullAssignedExpression.getSubstitutionByIndexOrNull(indexOrNull())
         else -> when {
             indexOrNull() == 0 -> simpleFullAssignedExpression
             else -> null

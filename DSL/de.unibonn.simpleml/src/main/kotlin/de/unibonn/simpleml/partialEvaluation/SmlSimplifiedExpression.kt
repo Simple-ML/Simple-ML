@@ -45,7 +45,10 @@ internal class SmlIntermediateRecord(
         return resultSubstitutions[result]
     }
 
-    fun getSubstitutionByIndexOrNull(index: Int): SmlSimplifiedExpression? {
+    fun getSubstitutionByIndexOrNull(index: Int?): SmlSimplifiedExpression? {
+        if (index == null) {
+            return null
+        }
         return resultSubstitutions.values.toList().getOrNull(index)
     }
 
