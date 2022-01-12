@@ -8,7 +8,6 @@ import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlYield
 
 typealias ParameterSubstitutions = Map<SmlParameter, SmlSimplifiedExpression?>
-typealias ResultSubstitutions = Map<SmlAbstractResult, SmlSimplifiedExpression?>
 
 sealed interface SmlSimplifiedExpression
 
@@ -38,7 +37,15 @@ internal data class SmlIntermediateStep(
 class SmlIntermediateRecord(
     resultSubstitutions: List<Pair<SmlAbstractResult, SmlSimplifiedExpression?>>
 ) : SmlIntermediateExpression {
-    val resultSubstitutions = resultSubstitutions.toMap()
+    private val resultSubstitutions = resultSubstitutions.toMap()
+
+    fun getSubstitutionByResultOrNull(result: SmlAbstractResult): SmlSimplifiedExpression? {
+        return resultSubstitutions[result]
+    }
+
+    fun getSubstitutionByIndexOrNull(index: Int): SmlSimplifiedExpression? {
+        return resultSubstitutions.values.toList().getOrNull(index)
+    }
 
     /**
      * If the record contains exactly one substitution its value is returned. Otherwise, it returns `this`.

@@ -337,7 +337,7 @@ fun SmlExpressionLambda.isInferredPure() = this.descendants<SmlCall>().none { it
 
 // Parameter -----------------------------------------------------------------------------------------------------------
 
-fun SmlParameter.isRequired() = this.defaultValue == null
+fun SmlParameter.isRequired() = this.defaultValue == null && !isVariadic
 fun SmlParameter.isOptional() = this.defaultValue != null
 
 fun SmlParameter.usesIn(obj: EObject) = obj.descendants<SmlReference>().filter { it.declaration == this }

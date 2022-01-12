@@ -1255,6 +1255,11 @@ class ToConstantExpressionTest {
         }
 
         @Test
+        fun `should access the result of a call by name`() {
+
+        }
+
+        @Test
         fun `should return null for other receivers`() {
             val testData = createSmlMemberAccess(
                 receiver = createSmlInt(1),
