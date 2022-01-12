@@ -16,6 +16,7 @@ import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Plus
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Times
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Not
 import de.unibonn.simpleml.emf.closestAncestorOrNull
+import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
@@ -43,6 +44,7 @@ import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
 import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
 import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
 import de.unibonn.simpleml.utils.indexOrNull
+import de.unibonn.simpleml.utils.isInferredPure
 import de.unibonn.simpleml.utils.isResolved
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Minus as InfixMinus
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Minus as PrefixMinus
@@ -68,8 +70,8 @@ internal fun SmlAbstractExpression.simplify(
         is SmlTemplateStringStart -> SmlConstantString(value)
         is SmlTemplateStringInner -> SmlConstantString(value)
         is SmlTemplateStringEnd -> SmlConstantString(value)
-        is SmlBlockLambda -> null // simplifyBlockLambda() TODO
-        is SmlExpressionLambda -> null // simplifyExpressionLambda()
+        is SmlBlockLambda -> simplifyBlockLambda()
+        is SmlExpressionLambda -> simplifyExpressionLambda()
 
         // Simple recursive cases
         is SmlArgument -> value.simplify(parameterToValue)
@@ -88,7 +90,29 @@ internal fun SmlAbstractExpression.simplify(
     }
 }
 
-private fun SmlInfixOperation.simplifyInfixOp(parameterToValue: Map<SmlParameter, SmlSimplifiedExpression?>): SmlSimplifiedExpression? {
+private fun SmlBlockLambda.simplifyBlockLambda(): SmlSimplifiedExpression? {
+    return when {
+        isInferredPure() -> SmlIntermediateBlockLambda(
+            parameters = parametersOrEmpty(),
+            results = lambdaResultsOrEmpty()
+        )
+        else -> null
+    }
+}
+
+private fun SmlExpressionLambda.simplifyExpressionLambda(): SmlSimplifiedExpression? {
+    return when {
+        isInferredPure() -> SmlIntermediateExpressionLambda(
+            parameters = parametersOrEmpty(),
+            result = result
+        )
+        else -> null
+    }
+}
+
+private fun SmlInfixOperation.simplifyInfixOp(
+    parameterToValue: Map<SmlParameter, SmlSimplifiedExpression?>
+): SmlSimplifiedExpression? {
     val simpleLeft = leftOperand.simplify(parameterToValue) ?: return null
     val simpleRight = rightOperand.simplify(parameterToValue) ?: return null
 
@@ -267,7 +291,9 @@ private fun SmlReference.simplifyReference(parameterToValue: Map<SmlParameter, S
 //  evaluate right side (record type if call)
 //  pick the value at the appropriate index
 
-private fun SmlAbstractAssignee.convertAssignee(parameterToValue: Map<SmlParameter, SmlSimplifiedExpression?>): SmlSimplifiedExpression? {
+private fun SmlAbstractAssignee.convertAssignee(
+    parameterToValue: Map<SmlParameter, SmlSimplifiedExpression?>
+): SmlSimplifiedExpression? {
     val simpleFullAssignedExpression = closestAncestorOrNull<SmlAssignment>()
         ?.expression
         ?.simplify(parameterToValue)

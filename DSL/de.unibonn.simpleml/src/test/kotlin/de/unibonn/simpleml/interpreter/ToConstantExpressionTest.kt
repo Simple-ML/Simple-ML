@@ -1,5 +1,6 @@
 package de.unibonn.simpleml.interpreter
 
+import com.google.inject.Inject
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator
 import de.unibonn.simpleml.emf.createSmlAnnotation
@@ -24,18 +25,65 @@ import de.unibonn.simpleml.emf.createSmlPrefixOperation
 import de.unibonn.simpleml.emf.createSmlReference
 import de.unibonn.simpleml.emf.createSmlString
 import de.unibonn.simpleml.emf.createSmlTemplateString
+import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.simpleML.SimpleMLFactory
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
+import de.unibonn.simpleml.simpleML.SmlBlockLambda
+import de.unibonn.simpleml.simpleML.SmlExpressionLambda
+import de.unibonn.simpleml.simpleML.SmlStep
+import de.unibonn.simpleml.testing.ParseHelper
+import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
+import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
+import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
+import org.eclipse.xtext.testing.InjectWith
+import org.eclipse.xtext.testing.extensions.InjectionExtension
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 
+@ExtendWith(InjectionExtension::class)
+@InjectWith(SimpleMLInjectorProvider::class)
 class ToConstantExpressionTest {
 
+    @Inject
+    private lateinit var parseHelper: ParseHelper
+
     private val factory = SimpleMLFactory.eINSTANCE
+
+    private lateinit var impureBlockLambda: SmlBlockLambda
+    private lateinit var pureBlockLambda: SmlBlockLambda
+    private lateinit var impureExpressionLambda: SmlExpressionLambda
+    private lateinit var pureExpressionLambda: SmlExpressionLambda
+    private lateinit var impureStep: SmlStep
+    private lateinit var pureStep: SmlStep
+
+    @BeforeEach
+    fun reset() {
+        val compilationUnit = parseHelper.parseResourceWithStdlib("interpreter/interpreter.smltest")
+        compilationUnit.shouldNotBeNull()
+
+        val blockLambdas = compilationUnit.descendants<SmlBlockLambda>().toList()
+        blockLambdas.shouldHaveSize(2)
+
+        impureBlockLambda = blockLambdas[0]
+        pureBlockLambda = blockLambdas[1]
+
+        val expressionLambdas = compilationUnit.descendants<SmlExpressionLambda>().toList()
+        expressionLambdas.shouldHaveSize(2)
+
+        impureExpressionLambda = expressionLambdas[0]
+        pureExpressionLambda = expressionLambdas[1]
+
+        impureStep = compilationUnit.findUniqueDeclarationOrFail("impureStep")
+        pureStep = compilationUnit.findUniqueDeclarationOrFail("pureStep")
+    }
 
     @Nested
     inner class BaseCases {
@@ -95,9 +143,13 @@ class ToConstantExpressionTest {
         }
 
         @Test
-        fun `simplify should return null for block lambda`() {
-            val testData = createSmlBlockLambda() // TODO  this + test case if lambda is not pure
-//            testData.simplify().shouldBeNull()
+        fun `simplify should return null for impure block lambda`() {
+            impureBlockLambda.simplify(emptyMap()).shouldBeNull()
+        }
+
+        @Test
+        fun `simplify should return intermediate block lambda for pure block lambda`() {
+            pureBlockLambda.simplify(emptyMap()).shouldBeInstanceOf<SmlIntermediateBlockLambda>()
         }
 
         @Test
@@ -107,9 +159,13 @@ class ToConstantExpressionTest {
         }
 
         @Test
-        fun `simplify should return null for expression lambda`() {
-//            val testData = createSmlExpressionLambda() // TODO this + test case if lambda is not pure
-//            testData.simplify().shouldBeNull()
+        fun `simplify should return null for impure expression lambda`() {
+            impureExpressionLambda.simplify(emptyMap()).shouldBeNull()
+        }
+
+        @Test
+        fun `simplify should return intermediate expression lambda for pure expression lambda`() {
+            pureExpressionLambda.simplify(emptyMap()).shouldBeInstanceOf<SmlIntermediateExpressionLambda>()
         }
     }
 

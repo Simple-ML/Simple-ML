@@ -33,6 +33,7 @@ import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
+import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
@@ -346,6 +347,7 @@ fun SmlImport.aliasName() = this.alias?.name
 // Lambda --------------------------------------------------------------------------------------------------------------
 
 fun SmlBlockLambda.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }
+fun SmlExpressionLambda.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }
 
 // Parameter -----------------------------------------------------------------------------------------------------------
 

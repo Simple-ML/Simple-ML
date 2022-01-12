@@ -2,34 +2,33 @@ package de.unibonn.simpleml.interpreter
 
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractResult
-import de.unibonn.simpleml.simpleML.SmlBlockLambda
+import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlParameter
-import de.unibonn.simpleml.simpleML.SmlStep
+import de.unibonn.simpleml.simpleML.SmlYield
 
 sealed interface SmlSimplifiedExpression
 
 internal sealed interface SmlIntermediateExpression: SmlSimplifiedExpression
 
-internal sealed interface SmlSimplifiedCallable : SmlIntermediateExpression {
+internal sealed interface SmlIntermediateCallable : SmlIntermediateExpression {
     val parameters: List<SmlParameter>
 }
 
-internal data class SmlSimplifiedBlockLambda(
+internal data class SmlIntermediateBlockLambda(
     override val parameters: List<SmlParameter>,
-//    val statements: List<Sml>
-    val lambda: SmlBlockLambda
-) : SmlSimplifiedCallable
+    val results: List<SmlBlockLambdaResult>
+) : SmlIntermediateCallable
 
-internal data class SmlSimplifiedExpressionLambda(
+internal data class SmlIntermediateExpressionLambda(
     override val parameters: List<SmlParameter>,
-    val expression: SmlAbstractExpression
-) : SmlSimplifiedCallable
+    val result: SmlAbstractExpression
+) : SmlIntermediateCallable
 
-internal data class SmlSimplifiedStep(
+internal data class SmlIntermediateStep(
     override val parameters: List<SmlParameter>,
-    val step: SmlStep
-) : SmlSimplifiedCallable
+    val yields: List<SmlYield>
+) : SmlIntermediateCallable
 
 class SmlSimplifiedRecord(
     resultToValueEntries: List<Pair<SmlAbstractResult, SmlConstantExpression?>>

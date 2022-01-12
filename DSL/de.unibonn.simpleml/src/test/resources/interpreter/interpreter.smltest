@@ -1,0 +1,30 @@
+package tests.interpreter
+
+@Impure
+fun impureFunction() -> result: Int
+
+@Pure
+fun pureFunction() -> result: Int
+
+workflow workflowWithImpureAndPureLambdas {
+    val impureBlockLambda = () {
+        impureFunction();
+    };
+
+    val pureBlockLambda = () {
+        pureFunction();
+    };
+
+    val impureExpressionLambda = () -> impureFunction();
+
+    val pureExpressionLambda = () -> pureFunction();
+}
+
+
+step impureStep() {
+    impureFunction();
+}
+
+step pureStep() {
+    pureFunction();
+}
