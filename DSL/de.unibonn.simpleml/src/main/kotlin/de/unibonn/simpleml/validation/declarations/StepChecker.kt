@@ -3,10 +3,13 @@ package de.unibonn.simpleml.validation.declarations
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
+import de.unibonn.simpleml.emf.yieldsOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlStep
+import de.unibonn.simpleml.utils.asResolvedOrNull
+import de.unibonn.simpleml.utils.duplicatesBy
+import de.unibonn.simpleml.utils.isResolved
 import de.unibonn.simpleml.utils.usesIn
-import de.unibonn.simpleml.utils.uniqueYieldOrNull
 import de.unibonn.simpleml.utils.yieldsOrEmpty
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
@@ -62,5 +65,19 @@ class StepChecker : AbstractSimpleMLChecker() {
                 )
             }
         }
+    }
+
+    @Check
+    fun duplicateResultAssignment(smlStep: SmlStep) {
+        smlStep.yieldsOrEmpty()
+            .duplicatesBy { it.result.asResolvedOrNull() }
+            .forEach {
+                error(
+                    "This result is assigned multiple times.",
+                    it,
+                    Literals.SML_YIELD__RESULT,
+                    ErrorCode.DuplicateResultAssignment
+                )
+            }
     }
 }
