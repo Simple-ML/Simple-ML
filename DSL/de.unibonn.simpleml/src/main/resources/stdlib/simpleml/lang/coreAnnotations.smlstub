@@ -26,13 +26,13 @@ enum AnnotationTarget {
     Workflow
 }
 
-@Description("The annotation can only be used once per declaration. This is the default behavior unless @MultiUse is used.")
+@Description("The annotation can only be called once per declaration. This is the default behavior unless @Repeatable is used.")
 @Target(AnnotationTarget.Annotation)
-annotation SingleUse
+annotation Unrepeatable
 
-@Description("The annotation can be used multiple times for the same declaration.")
+@Description("The annotation can be called multiple times for the same declaration.")
 @Target(AnnotationTarget.Annotation)
-annotation MultiUse
+annotation Repeatable
 
 @Description("The declaration should no longer be used.")
 @Target(

@@ -1,15 +1,15 @@
-package tests.validation.other.annotationUses.unnecessaryArgumentList
+package tests.validation.other.annotationCalls.unnecessaryArgumentList
 
-@MultiUse
+@Repeatable
 annotation AnnotationWithoutParameterList
 
-@MultiUse
+@Repeatable
 annotation AnnotationWithEmptyParameterList()
 
-@MultiUse
+@Repeatable
 annotation AnnotationWithoutRequiredParameters(a: Int or 0)
 
-@MultiUse
+@Repeatable
 annotation AnnotationWithRequiredParameters(a: Int)
 
 // semantic_info "Unnecessary argument list."

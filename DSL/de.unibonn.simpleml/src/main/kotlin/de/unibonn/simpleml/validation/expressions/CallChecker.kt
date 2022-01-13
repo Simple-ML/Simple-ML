@@ -162,7 +162,7 @@ class CallChecker : AbstractSimpleMLChecker() {
         if (callable.typeParametersOrEmpty().isEmpty() && callable.parametersOrEmpty().isEmpty()) {
             info(
                 "Unnecessary argument list.",
-                Literals.SML_CALL__ARGUMENT_LIST,
+                Literals.SML_ABSTRACT_CALL__ARGUMENT_LIST,
                 InfoCode.UnnecessaryArgumentList
             )
         }

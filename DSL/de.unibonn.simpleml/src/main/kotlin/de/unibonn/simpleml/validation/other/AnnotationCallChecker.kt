@@ -6,7 +6,7 @@ import de.unibonn.simpleml.emf.targetOrNull
 import de.unibonn.simpleml.naming.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
-import de.unibonn.simpleml.simpleML.SmlAnnotationUse
+import de.unibonn.simpleml.simpleML.SmlAnnotationCall
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlClass
@@ -23,7 +23,7 @@ import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.stdlib.StdlibAnnotations
 import de.unibonn.simpleml.stdlib.StdlibEnums.AnnotationTargetVariants
-import de.unibonn.simpleml.stdlib.uniqueAnnotationUseOrNull
+import de.unibonn.simpleml.stdlib.uniqueAnnotationCallOrNull
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.isRequired
 import de.unibonn.simpleml.utils.isResolved
@@ -34,16 +34,16 @@ import de.unibonn.simpleml.validation.codes.InfoCode
 import de.unibonn.simpleml.validation.codes.WarningCode
 import org.eclipse.xtext.validation.Check
 
-class AnnotationUseChecker : AbstractSimpleMLChecker() {
+class AnnotationCallChecker : AbstractSimpleMLChecker() {
 
     @Check
-    fun duplicateTargetInTargetAnnotation(smlAnnotationUse: SmlAnnotationUse) {
-        val annotation = smlAnnotationUse.annotation
+    fun duplicateTargetInTargetAnnotation(smlAnnotationCall: SmlAnnotationCall) {
+        val annotation = smlAnnotationCall.annotation
         if (!annotation.isResolved() || annotation.fullyQualifiedName() != StdlibAnnotations.Target) {
             return
         }
 
-        smlAnnotationUse
+        smlAnnotationCall
             .argumentsOrEmpty()
             .map { it.value }
             .filterIsInstance<SmlMemberAccess>()
@@ -59,39 +59,39 @@ class AnnotationUseChecker : AbstractSimpleMLChecker() {
     }
 
     @Check
-    fun missingArgumentList(smlAnnotationUse: SmlAnnotationUse) {
-        if (smlAnnotationUse.argumentList != null) {
+    fun missingArgumentList(smlAnnotationCall: SmlAnnotationCall) {
+        if (smlAnnotationCall.argumentList != null) {
             return
         }
 
-        val annotation = smlAnnotationUse.annotation
+        val annotation = smlAnnotationCall.annotation
         if (!annotation.isResolved()) {
             return
         }
 
-        val parameters = smlAnnotationUse.annotation.parametersOrEmpty()
+        val parameters = smlAnnotationCall.annotation.parametersOrEmpty()
         if (parameters.any { it.isRequired() }) {
             error(
                 "Missing argument list.",
-                Literals.SML_ANNOTATION_USE__ANNOTATION,
+                Literals.SML_ANNOTATION_CALL__ANNOTATION,
                 ErrorCode.MISSING_ARGUMENT_LIST
             )
         }
     }
 
     @Check
-    fun target(smlAnnotationUse: SmlAnnotationUse) {
+    fun target(smlAnnotationCall: SmlAnnotationCall) {
 
         // Get target of annotation use
-        val actualTarget = smlAnnotationUse.targetOrNull() ?: return
+        val actualTarget = smlAnnotationCall.targetOrNull() ?: return
 
         // Get legal targets of used annotation
-        val annotation = smlAnnotationUse.annotation
+        val annotation = smlAnnotationCall.annotation
         if (!annotation.isResolved()) {
             return
         }
 
-        val targetAnnotationUse = annotation.uniqueAnnotationUseOrNull(StdlibAnnotations.Target) ?: return
+        val targetAnnotationUse = annotation.uniqueAnnotationCallOrNull(StdlibAnnotations.Target) ?: return
         val legalTargets = targetAnnotationUse
             .argumentsOrEmpty()
             .asSequence()
@@ -158,16 +158,16 @@ class AnnotationUseChecker : AbstractSimpleMLChecker() {
     }
 
     @Check
-    fun unnecessaryArgumentList(smlAnnotationUse: SmlAnnotationUse) {
-        if (smlAnnotationUse.argumentList == null || smlAnnotationUse.argumentsOrEmpty().isNotEmpty()) {
+    fun unnecessaryArgumentList(smlAnnotationCall: SmlAnnotationCall) {
+        if (smlAnnotationCall.argumentList == null || smlAnnotationCall.argumentsOrEmpty().isNotEmpty()) {
             return
         }
 
-        val parametersOrNull = smlAnnotationUse.argumentList.parametersOrNull()
+        val parametersOrNull = smlAnnotationCall.argumentList.parametersOrNull()
         if (parametersOrNull != null && parametersOrNull.none { it.isRequired() }) {
             info(
                 "Unnecessary argument list.",
-                Literals.SML_ANNOTATION_USE__ARGUMENT_LIST,
+                Literals.SML_ABSTRACT_CALL__ARGUMENT_LIST,
                 InfoCode.UnnecessaryArgumentList
             )
         }

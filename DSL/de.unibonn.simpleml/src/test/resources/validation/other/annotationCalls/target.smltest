@@ -9,7 +9,7 @@
 // no_semantic_error "This annotation cannot be applied to a compilation unit."
 »@UnresolvedAnnotation«
 
-package tests.validation.other.annotationUses.target
+package tests.validation.other.annotationCalls.target
 
 @Target(AnnotationTarget.Annotation)
 annotation AnnotationForAnnotations

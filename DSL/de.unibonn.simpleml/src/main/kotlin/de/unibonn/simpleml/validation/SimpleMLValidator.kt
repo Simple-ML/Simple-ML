@@ -22,7 +22,7 @@ import de.unibonn.simpleml.validation.expressions.InfixOperationChecker
 import de.unibonn.simpleml.validation.expressions.LambdaChecker
 import de.unibonn.simpleml.validation.expressions.MemberAccessChecker
 import de.unibonn.simpleml.validation.expressions.TemplateStringChecker
-import de.unibonn.simpleml.validation.other.AnnotationUseChecker
+import de.unibonn.simpleml.validation.other.AnnotationCallChecker
 import de.unibonn.simpleml.validation.other.ArgumentListChecker
 import de.unibonn.simpleml.validation.other.DeprecationChecker
 import de.unibonn.simpleml.validation.other.ProtocolChecker
@@ -80,7 +80,7 @@ import org.eclipse.xtext.validation.ComposedChecks
         UnionTypeChecker::class,
 
         // Other
-        AnnotationUseChecker::class,
+        AnnotationCallChecker::class,
         ArgumentListChecker::class,
         DeprecationChecker::class,
         ProtocolChecker::class,

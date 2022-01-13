@@ -12,8 +12,8 @@ import de.unibonn.simpleml.simpleML.SmlAbstractProtocolTerm
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAnnotation
-import de.unibonn.simpleml.simpleML.SmlAnnotationUse
-import de.unibonn.simpleml.simpleML.SmlAnnotationUseHolder
+import de.unibonn.simpleml.simpleML.SmlAnnotationCall
+import de.unibonn.simpleml.simpleML.SmlAnnotationCallHolder
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
@@ -68,8 +68,8 @@ fun SmlAbstractCallable?.parametersOrEmpty(): List<SmlParameter> {
 
 // SmlAbstractDeclaration --------------------------------------------------------------------------
 
-fun SmlAbstractDeclaration?.annotationUsesOrEmpty(): List<SmlAnnotationUse> {
-    return this?.annotationUseHolder?.annotations ?: this?.annotations.orEmpty()
+fun SmlAbstractDeclaration?.annotationCallsOrEmpty(): List<SmlAnnotationCall> {
+    return this?.annotationCallHolder?.annotationCalls ?: this?.annotationCalls.orEmpty()
 }
 
 // SmlAnnotation -----------------------------------------------------------------------------------
@@ -78,9 +78,9 @@ fun SmlAnnotation?.constraintsOrEmpty(): List<SmlAbstractConstraint> {
     return this?.constraintList?.constraints.orEmpty()
 }
 
-// SmlAnnotationUse --------------------------------------------------------------------------------
+// SmlAnnotationCall -------------------------------------------------------------------------------
 
-fun SmlAnnotationUse?.argumentsOrEmpty(): List<SmlArgument> {
+fun SmlAnnotationCall?.argumentsOrEmpty(): List<SmlArgument> {
     return this?.argumentList?.arguments.orEmpty()
 }
 
@@ -312,9 +312,9 @@ fun EObject?.containingProtocolOrNull() = this?.closestAncestorOrNull<SmlProtoco
 fun EObject?.containingStepOrNull() = this?.closestAncestorOrNull<SmlStep>()
 fun EObject?.containingWorkflowOrNull() = this?.closestAncestorOrNull<SmlWorkflow>()
 
-fun SmlAnnotationUse?.targetOrNull(): SmlAbstractDeclaration? {
+fun SmlAnnotationCall?.targetOrNull(): SmlAbstractDeclaration? {
     return when (val declaration = this.containingDeclarationOrNull() ?: return null) {
-        is SmlAnnotationUseHolder -> declaration.containingDeclarationOrNull()
+        is SmlAnnotationCallHolder -> declaration.containingDeclarationOrNull()
         else -> declaration
     }
 }

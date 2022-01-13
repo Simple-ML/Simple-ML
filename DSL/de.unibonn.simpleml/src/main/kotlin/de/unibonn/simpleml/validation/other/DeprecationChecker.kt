@@ -3,7 +3,7 @@ package de.unibonn.simpleml.validation.other
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
-import de.unibonn.simpleml.simpleML.SmlAnnotationUse
+import de.unibonn.simpleml.simpleML.SmlAnnotationCall
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlParameter
@@ -21,12 +21,12 @@ import org.eclipse.xtext.validation.Check
 class DeprecationChecker : AbstractSimpleMLChecker() {
 
     @Check
-    fun annotationUseReferenceDeprecatedAnnotation(smlAnnotationUse: SmlAnnotationUse) {
-        val annotation = smlAnnotationUse.annotation ?: return
+    fun annotationUseReferenceDeprecatedAnnotation(smlAnnotationCall: SmlAnnotationCall) {
+        val annotation = smlAnnotationCall.annotation ?: return
         if (annotation.isDeprecated()) {
             warning(
                 "The used annotation is deprecated.",
-                Literals.SML_ANNOTATION_USE__ANNOTATION,
+                Literals.SML_ANNOTATION_CALL__ANNOTATION,
                 WarningCode.ReferencedDeclarationIsDeprecated
             )
         }

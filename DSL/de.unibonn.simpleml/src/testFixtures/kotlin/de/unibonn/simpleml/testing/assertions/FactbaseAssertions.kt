@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.testing.assertions
 
-import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
+import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationCallT
 import de.unibonn.simpleml.prolog_bridge.model.facts.DeclarationT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionT
 import de.unibonn.simpleml.prolog_bridge.model.facts.Node
@@ -116,11 +116,11 @@ inline fun <reified T : ProtocolTermT> PlFactbase.shouldBeNChildProtocolTermsOf(
     }
 }
 
-fun PlFactbase.shouldHaveNAnnotationUses(
+fun PlFactbase.shouldHaveNAnnotationCalls(
     declaration: DeclarationT,
     n: Int,
 ) {
-    val annotationUses = findFacts<AnnotationUseT> { it.parent == declaration.id }
+    val annotationUses = findFacts<AnnotationCallT> { it.parent == declaration.id }
     annotationUses shouldHaveSize n
-    annotationUses.forEach { shouldBeChildOf<AnnotationUseT>(it.id, declaration) }
+    annotationUses.forEach { shouldBeChildOf<AnnotationCallT>(it.id, declaration) }
 }

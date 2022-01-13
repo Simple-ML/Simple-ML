@@ -1,4 +1,4 @@
-package tests.validation.other.annotationUses.duplicateTarget
+package tests.validation.other.annotationCalls.duplicateTarget
 
 @Target(
     // semantic_warning "This annotation target is used multiple times."

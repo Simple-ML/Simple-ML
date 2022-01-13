@@ -1,11 +1,11 @@
 package de.unibonn.simpleml.validation.declarations
 
-import de.unibonn.simpleml.emf.annotationUsesOrEmpty
+import de.unibonn.simpleml.emf.annotationCallsOrEmpty
 import de.unibonn.simpleml.naming.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.stdlib.StdlibAnnotations
-import de.unibonn.simpleml.stdlib.isMultiUse
+import de.unibonn.simpleml.stdlib.isRepeatable
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.isRequired
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
@@ -16,8 +16,8 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun annotationCardinality(smlDeclaration: SmlAbstractDeclaration) {
-        smlDeclaration.annotationUsesOrEmpty()
-            .filter { it.annotation != null && !it.annotation.eIsProxy() && !it.annotation.isMultiUse() }
+        smlDeclaration.annotationCallsOrEmpty()
+            .filter { it.annotation != null && !it.annotation.eIsProxy() && !it.annotation.isRepeatable() }
             .duplicatesBy { it.annotation.fullyQualifiedName() }
             .forEach {
                 error(
@@ -32,7 +32,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
     @Check
     fun mustNotDeprecateRequiredParameter(smlParameter: SmlParameter) {
         if (smlParameter.isRequired()) {
-            val deprecatedAnnotationOrNull = smlParameter.annotationUsesOrEmpty().firstOrNull {
+            val deprecatedAnnotationOrNull = smlParameter.annotationCallsOrEmpty().firstOrNull {
                 it.annotation.fullyQualifiedName() == StdlibAnnotations.Deprecated
             }
 

@@ -2,11 +2,11 @@
 
 package de.unibonn.simpleml.stdlib
 
-import de.unibonn.simpleml.emf.annotationUsesOrEmpty
+import de.unibonn.simpleml.emf.annotationCallsOrEmpty
 import de.unibonn.simpleml.naming.fullyQualifiedName
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAnnotation
-import de.unibonn.simpleml.simpleML.SmlAnnotationUse
+import de.unibonn.simpleml.simpleML.SmlAnnotationCall
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.utils.uniqueOrNull
 import org.eclipse.xtext.naming.QualifiedName
@@ -26,9 +26,9 @@ object StdlibAnnotations {
     /**
      * The annotation can be used multiple times for the same declaration.
      *
-     * @see isMultiUse
+     * @see isRepeatable
      */
-    val MultiUse: QualifiedName = StdlibPackages.lang.append("MultiUse")
+    val Repeatable: QualifiedName = StdlibPackages.lang.append("Repeatable")
 
     /**
      * The function returns the same results for the same arguments and has no side effects.
@@ -46,8 +46,8 @@ object StdlibAnnotations {
 /**
  * Returns all uses of the annotation with the given fully qualified name.
  */
-fun SmlAbstractDeclaration.annotationUsesOrEmpty(fullyQualifiedName: QualifiedName): List<SmlAnnotationUse> {
-    return this.annotationUsesOrEmpty().filter {
+fun SmlAbstractDeclaration.annotationUsesOrEmpty(fullyQualifiedName: QualifiedName): List<SmlAnnotationCall> {
+    return this.annotationCallsOrEmpty().filter {
         it.annotation.fullyQualifiedName() == fullyQualifiedName
     }
 }
@@ -55,7 +55,7 @@ fun SmlAbstractDeclaration.annotationUsesOrEmpty(fullyQualifiedName: QualifiedNa
 /**
  * Returns the unique use of the annotation with the given fully qualified name or `null` if none or multiple exist.
  */
-fun SmlAbstractDeclaration.uniqueAnnotationUseOrNull(fullyQualifiedName: QualifiedName): SmlAnnotationUse? {
+fun SmlAbstractDeclaration.uniqueAnnotationCallOrNull(fullyQualifiedName: QualifiedName): SmlAnnotationCall? {
     return this.annotationUsesOrEmpty(fullyQualifiedName).uniqueOrNull()
 }
 
@@ -63,17 +63,17 @@ fun SmlAbstractDeclaration.uniqueAnnotationUseOrNull(fullyQualifiedName: Qualifi
  * Checks if the declaration is annotated with the `simpleml.lang.Deprecated` annotation.
  */
 fun SmlAbstractDeclaration.isDeprecated(): Boolean {
-    return this.annotationUsesOrEmpty().any {
+    return this.annotationCallsOrEmpty().any {
         it.annotation.fullyQualifiedName() == StdlibAnnotations.Deprecated
     }
 }
 
 /**
- * Checks if the annotation is annotated with the `simpleml.lang.MultiUse` annotation.
+ * Checks if the annotation is annotated with the `simpleml.lang.Repeatable` annotation.
  */
-fun SmlAnnotation.isMultiUse(): Boolean {
-    return this.annotationUsesOrEmpty().any {
-        it.annotation.fullyQualifiedName() == StdlibAnnotations.MultiUse
+fun SmlAnnotation.isRepeatable(): Boolean {
+    return this.annotationCallsOrEmpty().any {
+        it.annotation.fullyQualifiedName() == StdlibAnnotations.Repeatable
     }
 }
 
@@ -81,7 +81,7 @@ fun SmlAnnotation.isMultiUse(): Boolean {
  * Checks if the function is annotated with the `simpleml.lang.Pure` annotation.
  */
 fun SmlFunction.isPure(): Boolean {
-    return this.annotationUsesOrEmpty().any {
+    return this.annotationCallsOrEmpty().any {
         it.annotation.fullyQualifiedName() == StdlibAnnotations.Pure
     }
 }

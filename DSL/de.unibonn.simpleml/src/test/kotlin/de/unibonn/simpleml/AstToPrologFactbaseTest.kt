@@ -2,8 +2,8 @@ package de.unibonn.simpleml
 
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.prolog_bridge.Main
+import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationCallT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
-import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AssignmentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AttributeT
@@ -77,7 +77,7 @@ import de.unibonn.simpleml.testing.assertions.shouldBeCloseTo
 import de.unibonn.simpleml.testing.assertions.shouldBeNChildExpressionsOf
 import de.unibonn.simpleml.testing.assertions.shouldBeNChildProtocolTermsOf
 import de.unibonn.simpleml.testing.assertions.shouldBeNChildrenOf
-import de.unibonn.simpleml.testing.assertions.shouldHaveNAnnotationUses
+import de.unibonn.simpleml.testing.assertions.shouldHaveNAnnotationCalls
 import de.unibonn.simpleml.testing.getResourcePath
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -152,7 +152,7 @@ class AstToPrologFactbaseTest {
                     annotationT.constraints.shouldBeNull()
                 }
 
-                shouldHaveNAnnotationUses(annotationT, 0)
+                shouldHaveNAnnotationCalls(annotationT, 0)
             }
 
             @Test
@@ -170,7 +170,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val annotationT = findUniqueFactOrFail<AnnotationT> { it.name == "MyComplexAnnotation" }
-                shouldHaveNAnnotationUses(annotationT, 1)
+                shouldHaveNAnnotationCalls(annotationT, 1)
             }
 
             @Test
@@ -190,7 +190,7 @@ class AstToPrologFactbaseTest {
                     attributeT.type.shouldBeNull()
                 }
 
-                shouldHaveNAnnotationUses(attributeT, 0)
+                shouldHaveNAnnotationCalls(attributeT, 0)
             }
 
             @Test
@@ -210,7 +210,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val attributeT = findUniqueFactOrFail<AttributeT> { it.name == "myComplexAttribute" }
-                shouldHaveNAnnotationUses(attributeT, 1)
+                shouldHaveNAnnotationCalls(attributeT, 1)
             }
 
             @Test
@@ -233,7 +233,7 @@ class AstToPrologFactbaseTest {
                     classT.members.shouldBeNull()
                 }
 
-                shouldHaveNAnnotationUses(classT, 0)
+                shouldHaveNAnnotationCalls(classT, 0)
             }
 
             @Test
@@ -269,7 +269,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val classT = findUniqueFactOrFail<ClassT> { it.name == "MyComplexClass" }
-                shouldHaveNAnnotationUses(classT, 1)
+                shouldHaveNAnnotationCalls(classT, 1)
             }
 
             @Test
@@ -288,7 +288,7 @@ class AstToPrologFactbaseTest {
                     enumT.variants.shouldBeNull()
                 }
 
-                shouldHaveNAnnotationUses(enumT, 0)
+                shouldHaveNAnnotationCalls(enumT, 0)
             }
 
             @Test
@@ -300,7 +300,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val enumT = findUniqueFactOrFail<EnumT> { it.name == "MyComplexEnum" }
-                shouldHaveNAnnotationUses(enumT, 1)
+                shouldHaveNAnnotationCalls(enumT, 1)
             }
 
             @Test
@@ -315,13 +315,13 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should handle simple enum instances`() = withFactbaseFromFile("declarations") {
                 val enumVariantT = findUniqueFactOrFail<EnumVariantT> { it.name == "MySimpleVariant" }
-                shouldHaveNAnnotationUses(enumVariantT, 0)
+                shouldHaveNAnnotationCalls(enumVariantT, 0)
             }
 
             @Test
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val enumVariantT = findUniqueFactOrFail<EnumVariantT> { it.name == "MyComplexVariant" }
-                shouldHaveNAnnotationUses(enumVariantT, 1)
+                shouldHaveNAnnotationCalls(enumVariantT, 1)
             }
 
             @Test
@@ -362,7 +362,7 @@ class AstToPrologFactbaseTest {
                     functionT.constraints.shouldBeNull()
                 }
 
-                shouldHaveNAnnotationUses(functionT, 0)
+                shouldHaveNAnnotationCalls(functionT, 0)
             }
 
             @Test
@@ -400,7 +400,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val functionT = findUniqueFactOrFail<FunctionT> { it.name == "myComplexFunction" }
-                shouldHaveNAnnotationUses(functionT, 1)
+                shouldHaveNAnnotationCalls(functionT, 1)
             }
 
             @Test
@@ -484,7 +484,7 @@ class AstToPrologFactbaseTest {
                     parameterT.defaultValue.shouldBeNull()
                 }
 
-                shouldHaveNAnnotationUses(parameterT, 0)
+                shouldHaveNAnnotationCalls(parameterT, 0)
             }
 
             @Test
@@ -510,7 +510,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val parameterT = findUniqueFactOrFail<ParameterT> { it.name == "myComplexParameter" }
-                shouldHaveNAnnotationUses(parameterT, 1)
+                shouldHaveNAnnotationCalls(parameterT, 1)
             }
 
             @Test
@@ -529,7 +529,7 @@ class AstToPrologFactbaseTest {
                     resultT.type.shouldBeNull()
                 }
 
-                shouldHaveNAnnotationUses(resultT, 0)
+                shouldHaveNAnnotationCalls(resultT, 0)
             }
 
             @Test
@@ -541,7 +541,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val resultT = findUniqueFactOrFail<ResultT> { it.name == "myComplexResult" }
-                shouldHaveNAnnotationUses(resultT, 1)
+                shouldHaveNAnnotationCalls(resultT, 1)
             }
 
             @Test
@@ -560,7 +560,7 @@ class AstToPrologFactbaseTest {
                     typeParameterT.variance.shouldBeNull()
                 }
 
-                shouldHaveNAnnotationUses(typeParameterT, 0)
+                shouldHaveNAnnotationCalls(typeParameterT, 0)
             }
 
             @Test
@@ -574,7 +574,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val typeParameterT = findUniqueFactOrFail<TypeParameterT> { it.name == "MY_COMPLEX_TYPE_PARAMETER" }
-                shouldHaveNAnnotationUses(typeParameterT, 1)
+                shouldHaveNAnnotationCalls(typeParameterT, 1)
             }
 
             @Test
@@ -595,7 +595,7 @@ class AstToPrologFactbaseTest {
                     stepT.statements.shouldBeEmpty()
                 }
 
-                shouldHaveNAnnotationUses(stepT, 0)
+                shouldHaveNAnnotationCalls(stepT, 0)
             }
 
             @Test
@@ -619,7 +619,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val stepT = findUniqueFactOrFail<StepT> { it.name == "myComplexStep" }
-                shouldHaveNAnnotationUses(stepT, 1)
+                shouldHaveNAnnotationCalls(stepT, 1)
             }
 
             @Test
@@ -638,7 +638,7 @@ class AstToPrologFactbaseTest {
                     workflowT.statements.shouldBeEmpty()
                 }
 
-                shouldHaveNAnnotationUses(workflowT, 0)
+                shouldHaveNAnnotationCalls(workflowT, 0)
             }
 
             @Test
@@ -650,7 +650,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should store annotation uses`() = withFactbaseFromFile("declarations") {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myComplexWorkflow" }
-                shouldHaveNAnnotationUses(workflowT, 1)
+                shouldHaveNAnnotationCalls(workflowT, 1)
             }
 
             @Test
@@ -702,7 +702,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should store annotation uses`() = withFactbaseFromFile("statements") {
                 val blockLambdaResultT = findUniqueFactOrFail<BlockLambdaResultT> { it.name == "myComplexLambdaResult" }
-                shouldHaveNAnnotationUses(blockLambdaResultT, 1)
+                shouldHaveNAnnotationCalls(blockLambdaResultT, 1)
             }
 
             @Test
@@ -722,7 +722,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should store annotation uses`() = withFactbaseFromFile("statements") {
                 val placeholderT = findUniqueFactOrFail<PlaceholderT> { it.name == "myComplexPlaceholder" }
-                shouldHaveNAnnotationUses(placeholderT, 1)
+                shouldHaveNAnnotationCalls(placeholderT, 1)
             }
 
             @Test
@@ -1833,38 +1833,38 @@ class AstToPrologFactbaseTest {
     inner class Other {
 
         @Nested
-        inner class AnnotationUse {
+        inner class AnnotationCalls {
             @Test
-            fun `should handle simple annotation uses`() = withFactbaseFromFile("annotationUses") {
-                val classT = findUniqueFactOrFail<ClassT> { it.name == "MyClassWithSimpleAnnotationUse" }
-                val annotationUseT = findUniqueFactOrFail<AnnotationUseT> { it.parent == classT.id }
-                annotationUseT.asClue {
-                    annotationUseT.arguments.shouldBeNull()
+            fun `should handle simple annotation uses`() = withFactbaseFromFile("annotationCalls") {
+                val classT = findUniqueFactOrFail<ClassT> { it.name == "MyClassWithSimpleAnnotationCall" }
+                val annotationCallT = findUniqueFactOrFail<AnnotationCallT> { it.parent == classT.id }
+                annotationCallT.asClue {
+                    annotationCallT.arguments.shouldBeNull()
                 }
             }
 
             @Test
-            fun `should reference annotation if possible`() = withFactbaseFromFile("annotationUses") {
-                val classT = findUniqueFactOrFail<ClassT> { it.name == "MyClassWithSimpleAnnotationUse" }
-                val annotationUseT = findUniqueFactOrFail<AnnotationUseT> { it.parent == classT.id }
-                val annotationT = findUniqueFactOrFail<AnnotationT> { it.id == annotationUseT.annotation }
+            fun `should reference annotation if possible`() = withFactbaseFromFile("annotationCalls") {
+                val classT = findUniqueFactOrFail<ClassT> { it.name == "MyClassWithSimpleAnnotationCall" }
+                val annotationCallT = findUniqueFactOrFail<AnnotationCallT> { it.parent == classT.id }
+                val annotationT = findUniqueFactOrFail<AnnotationT> { it.id == annotationCallT.annotation }
                 annotationT.asClue {
                     annotationT.name shouldBe "MyAnnotation"
                 }
             }
 
             @Test
-            fun `should reference arguments`() = withFactbaseFromFile("annotationUses") {
-                val classT = findUniqueFactOrFail<ClassT> { it.name == "MyClassWithComplexAnnotationUse" }
-                val annotationUseT = findUniqueFactOrFail<AnnotationUseT> { it.parent == classT.id }
-                shouldBeNChildExpressionsOf<ExpressionT>(annotationUseT.arguments, annotationUseT, 2)
+            fun `should reference arguments`() = withFactbaseFromFile("annotationCalls") {
+                val classT = findUniqueFactOrFail<ClassT> { it.name == "MyClassWithComplexAnnotationCall" }
+                val annotationCallT = findUniqueFactOrFail<AnnotationCallT> { it.parent == classT.id }
+                shouldBeNChildExpressionsOf<ExpressionT>(annotationCallT.arguments, annotationCallT, 2)
             }
 
             @Test
-            fun `should store name for unresolvable annotations`() = withFactbaseFromFile("annotationUses") {
-                val classT = findUniqueFactOrFail<ClassT> { it.name == "MyClassWithUnresolvedAnnotationUse" }
-                val annotationUseT = findUniqueFactOrFail<AnnotationUseT> { it.parent == classT.id }
-                val unresolvedT = findUniqueFactOrFail<UnresolvedT> { it.id == annotationUseT.annotation }
+            fun `should store name for unresolvable annotations`() = withFactbaseFromFile("annotationCalls") {
+                val classT = findUniqueFactOrFail<ClassT> { it.name == "MyClassWithUnresolvedAnnotationCall" }
+                val annotationCallT = findUniqueFactOrFail<AnnotationCallT> { it.parent == classT.id }
+                val unresolvedT = findUniqueFactOrFail<UnresolvedT> { it.id == annotationCallT.annotation }
                 unresolvedT.asClue {
                     unresolvedT.name shouldBe "MyUnresolvedAnnotation"
                 }
@@ -1872,10 +1872,10 @@ class AstToPrologFactbaseTest {
 
             @Test
             fun `should store source location in separate relation`() =
-                withFactbaseFromFile("annotationUses") {
-                    val classT = findUniqueFactOrFail<ClassT> { it.name == "MyClassWithSimpleAnnotationUse" }
-                    val annotationUseT = findUniqueFactOrFail<AnnotationUseT> { it.parent == classT.id }
-                    findUniqueFactOrFail<SourceLocationS> { it.target == annotationUseT.id }
+                withFactbaseFromFile("annotationCalls") {
+                    val classT = findUniqueFactOrFail<ClassT> { it.name == "MyClassWithSimpleAnnotationCall" }
+                    val annotationCallT = findUniqueFactOrFail<AnnotationCallT> { it.parent == classT.id }
+                    findUniqueFactOrFail<SourceLocationS> { it.target == annotationCallT.id }
                 }
         }
 
