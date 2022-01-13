@@ -66,5 +66,7 @@ enum class ErrorCode {
 
     MissingTemplateExpression,
 
-    MissingSafeAccess
+    MissingSafeAccess,
+
+    UnassignedResult
 }
