@@ -226,14 +226,14 @@ fun SmlAbstractDeclaration.isInferredStatic(): Boolean {
 fun SmlAbstractDeclaration.isClassMember() = this.containingClassOrNull() != null
 fun SmlAbstractDeclaration.isCompilationUnitMember(): Boolean {
     return !isClassMember() &&
-            (
-                    this is SmlAnnotation ||
-                            this is SmlClass ||
-                            this is SmlEnum ||
-                            this is SmlFunction ||
-                            this is SmlWorkflow ||
-                            this is SmlStep
-                    )
+        (
+            this is SmlAnnotation ||
+                this is SmlClass ||
+                this is SmlEnum ||
+                this is SmlFunction ||
+                this is SmlWorkflow ||
+                this is SmlStep
+            )
 }
 
 @OptIn(ExperimentalContracts::class)
@@ -302,8 +302,8 @@ fun SmlAbstractExpression.hasSideEffects(): Boolean {
 
         val callable = this.callableOrNull()
         return callable is SmlFunction && !callable.isPure() ||
-                callable is SmlStep && !callable.isInferredPure() ||
-                callable is SmlBlockLambda && !callable.isInferredPure()
+            callable is SmlStep && !callable.isInferredPure() ||
+            callable is SmlBlockLambda && !callable.isInferredPure()
     }
 
     return false
