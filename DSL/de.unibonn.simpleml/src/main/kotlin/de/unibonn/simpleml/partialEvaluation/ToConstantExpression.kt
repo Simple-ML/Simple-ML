@@ -17,9 +17,9 @@ import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Times
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Not
 import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.closestAncestorOrNull
-import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
+import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlArgument
@@ -45,12 +45,11 @@ import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
 import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
 import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
-import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.indexOrNull
 import de.unibonn.simpleml.utils.isInferredPure
 import de.unibonn.simpleml.utils.isOptional
 import de.unibonn.simpleml.utils.parameterOrNull
-import de.unibonn.simpleml.utils.uniqueBy
+import de.unibonn.simpleml.utils.yieldOrNull
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Minus as InfixMinus
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Minus as PrefixMinus
 
@@ -284,8 +283,8 @@ private fun SmlCall.simplifyCall(substitutions: ParameterSubstitutions): SmlSimp
         is SmlIntermediateExpressionLambda -> simpleReceiver.result.simplify(newSubstitutions)
         is SmlIntermediateStep -> {
             SmlIntermediateRecord(
-                simpleReceiver.yields.map {
-                    it.result to it.simplifyAssignee(newSubstitutions)
+                simpleReceiver.results.map {
+                    it to it.yieldOrNull()?.simplifyAssignee(newSubstitutions)
                 }
             )
         }
@@ -380,7 +379,7 @@ private fun SmlStep.simplifyStep(): SmlIntermediateStep? {
     return when {
         isInferredPure() -> SmlIntermediateStep(
             parameters = parametersOrEmpty(),
-            yields = descendants<SmlYield>().toList().uniqueBy { it.result }
+            results = resultsOrEmpty()
         )
         else -> null
     }

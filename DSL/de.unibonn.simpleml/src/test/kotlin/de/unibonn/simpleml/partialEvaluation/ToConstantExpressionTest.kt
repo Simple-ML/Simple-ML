@@ -1392,6 +1392,43 @@ class ToConstantExpressionTest {
         }
 
         @Test
+        fun `should evaluate references to placeholders (assigned, called step has different yield order)`() {
+            val compilationUnit = parseHelper.parseResource("partialEvaluation/references.smltest")
+            compilationUnit.shouldNotBeNull()
+
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>(
+                "recordAssignmentWithDifferentYieldOrder"
+            )
+            val testData = workflow.expectedExpression()
+
+            testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
+        }
+
+        @Test
+        fun `should evaluate references to placeholders (assigned, called step has missing yield)`() {
+            val compilationUnit = parseHelper.parseResource("partialEvaluation/references.smltest")
+            compilationUnit.shouldNotBeNull()
+
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("recordAssignmentWithMissingYield")
+            val testData = workflow.expectedExpression()
+
+            testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
+        }
+
+        @Test
+        fun `should evaluate references to placeholders (assigned, called step has additional yield)`() {
+            val compilationUnit = parseHelper.parseResource("partialEvaluation/references.smltest")
+            compilationUnit.shouldNotBeNull()
+
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>(
+                "recordAssignmentWithAdditionalYield"
+            )
+            val testData = workflow.expectedExpression()
+
+            testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
+        }
+
+        @Test
         fun `should return null for other declarations`() {
             val testData = createSmlReference(
                 declaration = createSmlAnnotation("TestAnnotation")
