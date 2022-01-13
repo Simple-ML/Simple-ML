@@ -6,7 +6,7 @@ import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlReference
-import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.simpleML.SmlResult
 
 typealias ParameterSubstitutions = Map<SmlParameter, SmlSimplifiedExpression?>
 
@@ -32,7 +32,7 @@ internal data class SmlIntermediateExpressionLambda(
 
 internal data class SmlIntermediateStep(
     override val parameters: List<SmlParameter>,
-    val yields: List<SmlYield>
+    val results: List<SmlResult>
 ) : SmlIntermediateCallable
 
 internal class SmlIntermediateRecord(
