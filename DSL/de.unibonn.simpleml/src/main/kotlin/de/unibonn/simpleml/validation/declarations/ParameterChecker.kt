@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.validation.declarations
 
 import de.unibonn.simpleml.emf.closestAncestorOrNull
+import de.unibonn.simpleml.partialEvaluation.toConstantExpressionOrNull
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAbstractLambda
 import de.unibonn.simpleml.simpleML.SmlParameter
@@ -19,6 +20,18 @@ class ParameterChecker : AbstractSimpleMLChecker() {
                 "A parameter must have a type.",
                 Literals.SML_ABSTRACT_DECLARATION__NAME,
                 ErrorCode.ParameterMustHaveType
+            )
+        }
+    }
+
+    @Check
+    fun defaultValueMustBeConstant(smlParameter: SmlParameter) {
+        val defaultValue = smlParameter.defaultValue ?: return
+        if (defaultValue.toConstantExpressionOrNull() == null) {
+            error(
+                "Default values of parameters must be constant.",
+                Literals.SML_PARAMETER__DEFAULT_VALUE,
+                ErrorCode.MustBeConstant
             )
         }
     }

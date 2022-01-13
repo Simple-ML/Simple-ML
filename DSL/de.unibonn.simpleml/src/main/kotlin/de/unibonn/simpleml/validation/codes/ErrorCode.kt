@@ -70,4 +70,5 @@ enum class ErrorCode {
 
     UnassignedResult,
     DuplicateResultAssignment,
+    MustBeConstant,
 }
