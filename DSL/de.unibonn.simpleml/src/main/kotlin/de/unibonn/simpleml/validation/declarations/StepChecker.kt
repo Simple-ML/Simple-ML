@@ -8,7 +8,6 @@ import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.utils.asResolvedOrNull
 import de.unibonn.simpleml.utils.duplicatesBy
-import de.unibonn.simpleml.utils.isResolved
 import de.unibonn.simpleml.utils.usesIn
 import de.unibonn.simpleml.utils.yieldsOrEmpty
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
