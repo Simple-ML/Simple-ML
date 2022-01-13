@@ -220,7 +220,6 @@ class TypeComputer @Inject constructor(
                     }
                     else -> declarationType
                 }
-
             }
             this is SmlParenthesizedType -> {
                 this.type.inferType(isStatic)
