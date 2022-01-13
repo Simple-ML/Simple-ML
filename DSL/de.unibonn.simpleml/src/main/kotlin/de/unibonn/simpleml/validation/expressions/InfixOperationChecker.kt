@@ -23,8 +23,8 @@ class InfixOperationChecker @Inject constructor(
     }
 
     private fun checkElvisOperator(smlInfixOperation: SmlInfixOperation) {
-        val type = typeComputer.typeOf(smlInfixOperation.leftOperand)
-        if (!(type is NamedType && type.isNullable)) {
+        val leftType = typeComputer.typeOf(smlInfixOperation.leftOperand)
+        if (!(leftType is NamedType && leftType.isNullable)) {
             info(
                 "The left operand is never null so the elvis operator is unnecessary (keep left operand).",
                 null,
@@ -33,10 +33,23 @@ class InfixOperationChecker @Inject constructor(
             return
         }
 
-        val value = smlInfixOperation.leftOperand.toConstantExpressionOrNull()
-        if (value is SmlConstantNull) {
+        val leftValue = smlInfixOperation.leftOperand.toConstantExpressionOrNull()
+        val rightValue = smlInfixOperation.rightOperand.toConstantExpressionOrNull()
+        if (leftValue is SmlConstantNull && rightValue is SmlConstantNull) {
+            info(
+                "Both operands are always null so the elvis operator is unnecessary (replace with null).",
+                null,
+                InfoCode.UnnecessaryElvisOperator
+            )
+        } else if (leftValue is SmlConstantNull) {
             info(
                 "The left operand is always null so the elvis operator is unnecessary (keep right operand).",
+                null,
+                InfoCode.UnnecessaryElvisOperator
+            )
+        } else if (rightValue is SmlConstantNull) {
+            info(
+                "The right operand is always null so the elvis operator is unnecessary (keep left operand).",
                 null,
                 InfoCode.UnnecessaryElvisOperator
             )
