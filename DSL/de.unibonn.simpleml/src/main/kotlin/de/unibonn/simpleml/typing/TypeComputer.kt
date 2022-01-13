@@ -72,21 +72,21 @@ class TypeComputer @Inject constructor(
 
     private fun EObject.inferType(isStatic: Boolean): Type {
         return when {
-            this.eIsProxy() -> ANY
+            this.eIsProxy() -> Any
             this is SmlAbstractDeclaration -> this.inferType(isStatic)
             this is SmlAbstractExpression -> this.inferType(isStatic)
             this is SmlAbstractType -> this.inferType(isStatic)
             this is SmlYield -> {
-                val assigned = assignedOrNull() ?: return ANY
+                val assigned = assignedOrNull() ?: return Any
                 assigned.inferType(isStatic)
             }
-            else -> ANY
+            else -> Any
         }
     }
 
     private fun SmlAbstractDeclaration.inferType(isStatic: Boolean): Type {
         return when {
-            this.eIsProxy() -> ANY
+            this.eIsProxy() -> Any
             this is SmlAttribute -> type.inferType(isStatic = false)
             this is SmlClass -> ClassType(this, isNullable = false, isStatic = isStatic)
             this is SmlEnum -> EnumType(this, isNullable = false, isStatic = isStatic)
@@ -96,12 +96,12 @@ class TypeComputer @Inject constructor(
                 resultsOrEmpty().map { it.inferType(false) }
             )
             this is SmlBlockLambdaResult -> {
-                val assigned = assignedOrNull() ?: return ANY
+                val assigned = assignedOrNull() ?: return Any
                 assigned.inferType(isStatic = false)
             }
-            this is SmlParameter -> type?.inferType(isStatic = false) ?: ANY
+            this is SmlParameter -> type?.inferType(isStatic = false) ?: Any
             this is SmlPlaceholder -> {
-                val assigned = assignedOrNull() ?: return ANY
+                val assigned = assignedOrNull() ?: return Any
                 assigned.inferType(isStatic = false)
             }
             this is SmlResult -> type.inferType(isStatic = false)
@@ -109,17 +109,17 @@ class TypeComputer @Inject constructor(
                 parametersOrEmpty().map { it.inferType(false) },
                 resultsOrEmpty().map { it.inferType(false) }
             )
-            else -> ANY
+            else -> Any
         }
     }
 
     private fun SmlAbstractExpression.inferType(isStatic: Boolean): Type {
         return when {
-            this.eIsProxy() -> ANY
-            this is SmlBoolean -> BOOLEAN
-            this is SmlFloat -> FLOAT
-            this is SmlInt -> INT
-            this is SmlString -> STRING
+            this.eIsProxy() -> Any
+            this is SmlBoolean -> Boolean
+            this is SmlFloat -> Float
+            this is SmlInt -> Int
+            this is SmlString -> String
 
             this is SmlCall -> when (val callable = callableOrNull()) {
                 is SmlClass -> ClassType(callable, isNullable = false, isStatic = false)
@@ -151,19 +151,19 @@ class TypeComputer @Inject constructor(
                         else -> TupleType(results.map { it.inferType(false) })
                     }
                 }
-                else -> ANY
+                else -> Any
             }
             this is SmlInfixOperation -> when (operator) {
-                "<", "<=", ">=", ">" -> BOOLEAN
-                "==", "!=" -> BOOLEAN
-                "===", "!==" -> BOOLEAN
-                "or", "and" -> BOOLEAN
+                "<", "<=", ">=", ">" -> Boolean
+                "==", "!=" -> Boolean
+                "===", "!==" -> Boolean
+                "or", "and" -> Boolean
                 "+", "-", "*", "/" -> when {
-                    this.leftOperand.inferType(false) == INT && this.rightOperand.inferType(false) == INT -> INT
-                    else -> FLOAT
+                    this.leftOperand.inferType(false) == Int && this.rightOperand.inferType(false) == Int -> Int
+                    else -> Float
                 }
-                "?:" -> ANY // TODO
-                else -> NOTHING
+                "?:" -> Any // TODO
+                else -> Nothing
             }
             this is SmlBlockLambda -> CallableType(
                 parametersOrEmpty().map { it.inferType(false) },
@@ -173,7 +173,7 @@ class TypeComputer @Inject constructor(
 //            if (this.isNullable) {
 //                // TODO
 //            }
-                val member = this.member ?: return ANY
+                val member = this.member ?: return Any
                 member.inferType(isStatic = false)
             }
             this is SmlNull -> stdlibType(context, StdlibClasses.Any.toString(), isNullable = true)
@@ -181,50 +181,60 @@ class TypeComputer @Inject constructor(
                 this.expression.inferType(isStatic)
             }
             this is SmlPrefixOperation -> when (operator) {
-                "not" -> BOOLEAN
+                "not" -> Boolean
                 "-" -> when (this.operand.inferType(false)) {
-                    INT -> INT
-                    else -> FLOAT
+                    Int -> Int
+                    else -> Float
                 }
-                else -> NOTHING
+                else -> Nothing
             }
             this is SmlReference -> { // TODO
-                val declaration = this.declaration ?: return ANY
+                val declaration = this.declaration ?: return Any
                 declaration.inferType(isStatic = true)
             }
 
-            else -> ANY
+            else -> Any
         }
     }
 
     private fun SmlAbstractType.inferType(isStatic: Boolean): Type {
         return when {
-            this.eIsProxy() -> ANY
+            this.eIsProxy() -> Any
             this is SmlCallableType -> CallableType(
                 parametersOrEmpty().map { it.inferType(false) },
                 resultsOrEmpty().map { it.inferType(false) }
             )
             this is SmlMemberType -> {
-                val member = this.member ?: return ANY
+                val member = this.member ?: return Any
                 member.inferType(isStatic = false)
             }
             this is SmlNamedType -> {
-                val declaration = this.declaration ?: return ANY
-                declaration.inferType(isStatic = isStatic)
+                val declaration = this.declaration ?: return NullableAny
+                val declarationType = declaration.inferType(isStatic = isStatic)
+                when {
+                    this.isNullable -> when (declarationType) {
+                        is ClassType -> declarationType.copy(isNullable = true)
+                        is EnumType -> declarationType.copy(isNullable = true)
+                        is EnumVariantType -> declarationType.copy(isNullable = true)
+                        else -> NullableAny
+                    }
+                    else -> declarationType
+                }
             }
             this is SmlParenthesizedType -> {
                 this.type.inferType(isStatic)
             }
-            else -> ANY
+            else -> Any
         }
     }
 
-    private val ANY get() = stdlibType(context, StdlibClasses.Any.toString())
-    private val BOOLEAN get() = stdlibType(context, StdlibClasses.Boolean.toString())
-    private val FLOAT get() = stdlibType(context, StdlibClasses.Float.toString())
-    private val INT get() = stdlibType(context, StdlibClasses.Int.toString())
-    private val NOTHING get() = stdlibType(context, StdlibClasses.Nothing.toString())
-    private val STRING get() = stdlibType(context, StdlibClasses.String.toString())
+    private val NullableAny get() = stdlibType(context, StdlibClasses.Any.toString(), isNullable = true)
+    private val Any get() = stdlibType(context, StdlibClasses.Any.toString())
+    private val Boolean get() = stdlibType(context, StdlibClasses.Boolean.toString())
+    private val Float get() = stdlibType(context, StdlibClasses.Float.toString())
+    private val Int get() = stdlibType(context, StdlibClasses.Int.toString())
+    private val Nothing get() = stdlibType(context, StdlibClasses.Nothing.toString())
+    private val String get() = stdlibType(context, StdlibClasses.String.toString())
 
     fun stdlibType(context: EObject, qualifiedName: String, isNullable: Boolean = false): Type {
         return when (val smlClass = stdlib.getClass(context, qualifiedName)) {
