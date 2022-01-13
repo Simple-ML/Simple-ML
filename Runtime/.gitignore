@@ -1,10 +1,4 @@
-# IntelliJ
-.idea/
-
-# Generated stuff
+# Python
 *.egg-info/
-*.log
 __pycache__/
-.DS_Store/
-src-gen/
 venv/
