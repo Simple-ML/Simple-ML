@@ -49,7 +49,7 @@ import de.unibonn.simpleml.utils.indexOrNull
 import de.unibonn.simpleml.utils.isInferredPure
 import de.unibonn.simpleml.utils.isOptional
 import de.unibonn.simpleml.utils.parameterOrNull
-import de.unibonn.simpleml.utils.yieldOrNull
+import de.unibonn.simpleml.utils.uniqueYieldOrNull
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Minus as InfixMinus
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Minus as PrefixMinus
 
@@ -284,7 +284,7 @@ private fun SmlCall.simplifyCall(substitutions: ParameterSubstitutions): SmlSimp
         is SmlIntermediateStep -> {
             SmlIntermediateRecord(
                 simpleReceiver.results.map {
-                    it to it.yieldOrNull()?.simplifyAssignee(newSubstitutions)
+                    it to it.uniqueYieldOrNull()?.simplifyAssignee(newSubstitutions)
                 }
             )
         }

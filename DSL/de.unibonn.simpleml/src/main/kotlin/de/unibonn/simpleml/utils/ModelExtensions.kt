@@ -356,14 +356,22 @@ fun SmlPlaceholder.usesIn(obj: EObject): Sequence<SmlReference> {
 
 // Result --------------------------------------------------------------------------------------------------------------
 
-fun SmlResult.yieldOrNull(): SmlYield? {
-    val resultList = closestAncestorOrNull<SmlResultList>() ?: return null
-    val step = resultList.eContainer() as? SmlStep ?: return null
+fun SmlResult.uniqueYieldOrNull(): SmlYield? {
+    val yields = yieldsOrEmpty()
+    return when (yields.size) {
+        1 -> yields.first()
+        else -> null
+    }
+}
+
+fun SmlResult.yieldsOrEmpty(): List<SmlYield> {
+    val resultList = closestAncestorOrNull<SmlResultList>() ?: return emptyList()
+    val step = resultList.eContainer() as? SmlStep ?: return emptyList()
 
     return step
         .descendants<SmlYield>()
+        .filter { it.result == this }
         .toList()
-        .uniqueOrNull { it.result == this }
 }
 
 // Type ----------------------------------------------------------------------------------------------------------------

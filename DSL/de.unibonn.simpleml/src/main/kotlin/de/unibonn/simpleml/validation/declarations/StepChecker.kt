@@ -6,7 +6,9 @@ import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.utils.usesIn
+import de.unibonn.simpleml.utils.yieldsOrEmpty
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode
 import de.unibonn.simpleml.validation.codes.WarningCode
 import org.eclipse.xtext.validation.Check
@@ -44,6 +46,20 @@ class StepChecker : AbstractSimpleMLChecker() {
                 Literals.SML_STEP__RESULT_LIST,
                 InfoCode.UnnecessaryResultList
             )
+        }
+    }
+
+    @Check
+    fun unassignedResult(smlStep: SmlStep) {
+        smlStep.resultsOrEmpty().forEach {
+            if (it.yieldsOrEmpty().isEmpty()) {
+                error(
+                    "No value is assigned to this result.",
+                    it,
+                    Literals.SML_ABSTRACT_DECLARATION__NAME,
+                    ErrorCode.UnassignedResult
+                )
+            }
         }
     }
 }
