@@ -13,7 +13,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAbstractTypeArgumentValue
 import de.unibonn.simpleml.simpleML.SmlAnnotation
-import de.unibonn.simpleml.simpleML.SmlAnnotationUse
+import de.unibonn.simpleml.simpleML.SmlAnnotationCall
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlAttribute
@@ -864,7 +864,7 @@ sealed class ExpressionT(
 }
 
 /**
- * This Prolog fact represents arguments for annotation uses or calls.
+ * This Prolog fact represents arguments for annotation calls or calls.
  *
  * @param id
  * The ID of this fact.
@@ -873,7 +873,7 @@ sealed class ExpressionT(
  * The ID of the fact for the logical parent, e.g. a call.
  *
  * @param enclosing
- * The ID of the fact for closest ancestor that is not an expression. This is either a statement or an annotation use.
+ * The ID of the fact for closest ancestor that is not an expression. This is either a statement or an annotation call.
  *
  * @param parameter
  * If the argument is named, this is the ID of the parameterT fact for the referenced parameter or an unresolvedT
@@ -1657,7 +1657,7 @@ data class TypeParameterConstraintT(
  **********************************************************************************************************************/
 
 /**
- * This Prolog fact represents annotation uses.
+ * This Prolog fact represents annotation calls.
  *
  * @param id
  * The ID of this fact.
@@ -1671,16 +1671,16 @@ data class TypeParameterConstraintT(
  *
  * @param arguments
  * The list of arguments or null. Each element in the list is the ID of an argumentT fact for the respective argument.
- * Note that an empty list is used for an annotation use with an empty argument list, e.g. `@A()`, while null is used
- * for an annotation use without an argument list, like `@B`.
+ * Note that an empty list is used for an annotation call with an empty argument list, e.g. `@A()`, while null is used
+ * for an annotation call without an argument list, like `@B`.
  */
-data class AnnotationUseT(
-    override val id: Id<SmlAnnotationUse>,
+data class AnnotationCallT(
+    override val id: Id<SmlAnnotationCall>,
     override val parent: Id<SmlAbstractDeclaration>,
     val annotation: Id<SmlAnnotation>,
     val arguments: List<Id<SmlArgument>>?
 ) :
-    NodeWithParent("annotationUseT", id, parent, annotation, arguments) {
+    NodeWithParent("annotationCallT", id, parent, annotation, arguments) {
     override fun toString() = super.toString()
 }
 

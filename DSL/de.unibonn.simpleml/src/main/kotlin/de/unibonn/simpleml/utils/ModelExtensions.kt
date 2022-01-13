@@ -23,7 +23,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAnnotation
-import de.unibonn.simpleml.simpleML.SmlAnnotationUse
+import de.unibonn.simpleml.simpleML.SmlAnnotationCall
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlArgumentList
 import de.unibonn.simpleml.simpleML.SmlAssignment
@@ -87,7 +87,7 @@ fun SmlArgument.parameterOrNull(): SmlParameter? {
 
 fun SmlArgumentList.parametersOrNull(): List<SmlParameter>? {
     when (val parent = this.eContainer()) {
-        is SmlAnnotationUse -> {
+        is SmlAnnotationCall -> {
             if (parent.annotation.eIsProxy()) {
                 return null
             }

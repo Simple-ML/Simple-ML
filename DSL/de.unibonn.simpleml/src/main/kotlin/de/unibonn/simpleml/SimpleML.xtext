@@ -20,20 +20,20 @@ SmlCompilationUnit
     ;
 
 SmlCompilationUnitMember returns SmlAbstractAnnotatedObject
-    : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
+    : {SmlAnnotationCallHolder} annotationCalls+=SmlAnnotationCall*
 
-    ( {SmlPackage.annotationUseHolder=current}
+    ( {SmlPackage.annotationCallHolder=current}
           ( ('package' name=QualifiedName =>imports+=SmlImport*)
           | (imports+=SmlImport =>imports+=SmlImport*)
           )
           =>members+=SmlPackageMember*
 
-    | {SmlAnnotation.annotationUseHolder=current}
+    | {SmlAnnotation.annotationCallHolder=current}
           'annotation' name=ID
           parameterList=SmlParameterList?
           constraintList=SmlConstraintList?
 
-    | {SmlClass.annotationUseHolder=current}
+    | {SmlClass.annotationCallHolder=current}
           'class' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
@@ -41,24 +41,24 @@ SmlCompilationUnitMember returns SmlAbstractAnnotatedObject
           constraintList=SmlConstraintList?
           body=SmlClassBody?
 
-    | {SmlEnum.annotationUseHolder=current}
+    | {SmlEnum.annotationCallHolder=current}
           'enum' name=ID
           body=SmlEnumBody?
 
-    | {SmlFunction.annotationUseHolder=current}
+    | {SmlFunction.annotationCallHolder=current}
           'fun' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList
           resultList=SmlResultList?
           constraintList=SmlConstraintList?
 
-    | {SmlStep.annotationUseHolder=current}
+    | {SmlStep.annotationCallHolder=current}
           'step' name=ID
           parameterList=SmlParameterList
           resultList=SmlResultList?
           body=SmlBlock
 
-    | {SmlWorkflow.annotationUseHolder=current}
+    | {SmlWorkflow.annotationCallHolder=current}
           'workflow' name=ID
           body=SmlBlock
     )
@@ -73,14 +73,14 @@ SmlImportAlias
     ;
 
 SmlPackageMember returns SmlAbstractAnnotatedObject
-    : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
+    : {SmlAnnotationCallHolder} annotationCalls+=SmlAnnotationCall*
 
-    ( {SmlAnnotation.annotationUseHolder=current}
+    ( {SmlAnnotation.annotationCallHolder=current}
           'annotation' name=ID
           parameterList=SmlParameterList?
           constraintList=SmlConstraintList?
 
-    | {SmlClass.annotationUseHolder=current}
+    | {SmlClass.annotationCallHolder=current}
           'class' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
@@ -88,24 +88,24 @@ SmlPackageMember returns SmlAbstractAnnotatedObject
           constraintList=SmlConstraintList?
           body=SmlClassBody?
 
-    | {SmlEnum.annotationUseHolder=current}
+    | {SmlEnum.annotationCallHolder=current}
           'enum' name=ID
           body=SmlEnumBody?
 
-    | {SmlFunction.annotationUseHolder=current}
+    | {SmlFunction.annotationCallHolder=current}
           'fun' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList
           resultList=SmlResultList?
           constraintList=SmlConstraintList?
 
-    | {SmlStep.annotationUseHolder=current}
+    | {SmlStep.annotationCallHolder=current}
           'step' name=ID
           parameterList=SmlParameterList
           resultList=SmlResultList?
           body=SmlBlock
 
-    | {SmlWorkflow.annotationUseHolder=current}
+    | {SmlWorkflow.annotationCallHolder=current}
           'workflow' name=ID
           body=SmlBlock
     )
@@ -114,15 +114,15 @@ SmlPackageMember returns SmlAbstractAnnotatedObject
 
 // Annotations ---------------------------------------------------------------------------------------------------------
 
-SmlAnnotationUse
-    : '@' annotation=[SmlAnnotation] argumentList=SmlAnnotationUseArgumentList?
+SmlAnnotationCall
+    : '@' annotation=[SmlAnnotation] argumentList=SmlAnnotationCallArgumentList?
     ;
 
-SmlAnnotationUseArgumentList returns SmlArgumentList
-    : {SmlArgumentList} '(' (arguments+=SmlAnnotationUseArgument (',' arguments+=SmlAnnotationUseArgument)* ','?)? ')'
+SmlAnnotationCallArgumentList returns SmlArgumentList
+    : {SmlArgumentList} '(' (arguments+=SmlAnnotationCallArgument (',' arguments+=SmlAnnotationCallArgument)* ','?)? ')'
     ;
 
-SmlAnnotationUseArgument returns SmlArgument
+SmlAnnotationCallArgument returns SmlArgument
     : (parameter=[SmlParameter] '=')? value=SmlExpression
     ;
 
@@ -156,13 +156,13 @@ SmlClassMember returns SmlAbstractObject
     ;
 
 SmlAnnotatedClassMember returns SmlAbstractAnnotatedObject
-    : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
+    : {SmlAnnotationCallHolder} annotationCalls+=SmlAnnotationCall*
 
-    ( {SmlAttribute.annotationUseHolder=current}
+    ( {SmlAttribute.annotationCallHolder=current}
           static?='static'?
           'attr' name=ID (':' type=SmlType)?
 
-    | {SmlClass.annotationUseHolder=current}
+    | {SmlClass.annotationCallHolder=current}
           'class' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
@@ -170,11 +170,11 @@ SmlAnnotatedClassMember returns SmlAbstractAnnotatedObject
           constraintList=SmlConstraintList?
           body=SmlClassBody?
 
-    | {SmlEnum.annotationUseHolder=current}
+    | {SmlEnum.annotationCallHolder=current}
           'enum' name=ID
           body=SmlEnumBody?
 
-    | {SmlFunction.annotationUseHolder=current}
+    | {SmlFunction.annotationCallHolder=current}
           static?='static'?
           'fun' name=ID
           typeParameterList=SmlTypeParameterList?
@@ -281,7 +281,7 @@ SmlEnumBody
     ;
 
 SmlEnumVariant
-    : annotations+=SmlAnnotationUse*
+    : annotationCalls+=SmlAnnotationCall*
       name=ID
       typeParameterList=SmlTypeParameterList?
       parameterList=SmlParameterList?
@@ -296,7 +296,7 @@ SmlParameterList
     ;
 
 SmlParameter
-    : annotations+=SmlAnnotationUse*
+    : annotationCalls+=SmlAnnotationCall*
       variadic?='vararg'?
       name=ID (':' type=SmlType)?
       ('or' defaultValue=SmlExpression)?
@@ -311,7 +311,7 @@ SmlResultList
     ;
 
 SmlResult
-    : annotations+=SmlAnnotationUse*
+    : annotationCalls+=SmlAnnotationCall*
       name=ID (':' type=SmlType)?
     ;
 
@@ -342,7 +342,7 @@ SmlAssigneeList
     ;
 
 SmlAssignee returns SmlAbstractAssignee
-    : {SmlPlaceholder} annotations+=SmlAnnotationUse* 'val' name=ID
+    : {SmlPlaceholder} annotationCalls+=SmlAnnotationCall* 'val' name=ID
     | {SmlWildcard}    '_'
     | {SmlYield}       'yield' result=[SmlResult]
     ;
@@ -538,9 +538,9 @@ SmlBlockLambdaAssigneeList returns SmlAssigneeList
 SmlBlockLambdaAssignee returns SmlAbstractAnnotatedObject
     : {SmlWildcard} '_'
     |
-    ( {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
-        ( {SmlPlaceholder.annotationUseHolder=current} 'val' name=ID
-        | {SmlBlockLambdaResult.annotationUseHolder=current} 'yield' name=ID
+    ( {SmlAnnotationCallHolder} annotationCalls+=SmlAnnotationCall*
+        ( {SmlPlaceholder.annotationCallHolder=current} 'val' name=ID
+        | {SmlBlockLambdaResult.annotationCallHolder=current} 'yield' name=ID
         )
     )
     ;
@@ -631,7 +631,7 @@ SmlTypeParameterList
     ;
 
 SmlTypeParameter
-    : annotations+=SmlAnnotationUse*
+    : annotationCalls+=SmlAnnotationCall*
       variance=SmlTypeParameterVariance?
       name=ID
     ;
