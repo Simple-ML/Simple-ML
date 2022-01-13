@@ -68,5 +68,6 @@ enum class ErrorCode {
 
     MissingSafeAccess,
 
-    UnassignedResult
+    UnassignedResult,
+    DuplicateResultAssignment,
 }

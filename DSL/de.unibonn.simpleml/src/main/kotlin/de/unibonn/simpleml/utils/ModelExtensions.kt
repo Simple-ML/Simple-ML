@@ -16,6 +16,7 @@ import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.emf.variantsOrEmpty
+import de.unibonn.simpleml.emf.yieldsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractCallable
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
@@ -236,6 +237,13 @@ fun SmlAbstractDeclaration.isCompilationUnitMember(): Boolean {
             )
 }
 
+fun SmlAbstractDeclaration?.asResolvedOrNull(): SmlAbstractDeclaration? {
+    return when {
+        isResolved() -> this
+        else -> null
+    }
+}
+
 @OptIn(ExperimentalContracts::class)
 fun SmlAbstractDeclaration?.isResolved(): Boolean {
     contract {
@@ -368,11 +376,12 @@ fun SmlResult.yieldsOrEmpty(): List<SmlYield> {
     val resultList = closestAncestorOrNull<SmlResultList>() ?: return emptyList()
     val step = resultList.eContainer() as? SmlStep ?: return emptyList()
 
-    return step
-        .descendants<SmlYield>()
-        .filter { it.result == this }
-        .toList()
+    return step.yieldsOrEmpty().filter { it.result == this }
 }
+
+// Step ----------------------------------------------------------------------------------------------------------------
+
+fun SmlStep.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }
 
 // Type ----------------------------------------------------------------------------------------------------------------
 
@@ -456,5 +465,3 @@ fun SmlTypeArgumentList.typeParametersOrNull(): List<SmlTypeParameter>? {
 
     return null
 }
-
-fun SmlStep.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }

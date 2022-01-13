@@ -295,6 +295,12 @@ fun SmlStep?.statementsOrEmpty(): List<SmlAbstractStatement> {
     return this?.body?.statements.orEmpty()
 }
 
+fun SmlStep?.yieldsOrEmpty(): List<SmlYield> {
+    return this.statementsOrEmpty()
+        .filterIsInstance<SmlAssignment>()
+        .flatMap { it.yieldsOrEmpty() }
+}
+
 /* ********************************************************************************************************************
  * Accessing ancestors                                                                                                *
  * ********************************************************************************************************************/
