@@ -1,0 +1,12 @@
+package tests.validation.parameters.defaultValueMustBeConstant
+
+fun f() -> value: Int
+
+fun myFunction(
+    // no_semantic_error "Default values of parameters must be constant."
+    param1: Int or »1«,
+    // no_semantic_error "Default values of parameters must be constant."
+    param2: Int or »1 + 2«,
+    // semantic_error "Default values of parameters must be constant."
+    param3: Int or »f()«
+)
