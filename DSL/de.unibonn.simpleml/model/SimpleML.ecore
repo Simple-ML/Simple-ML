@@ -2,11 +2,14 @@
 <ecore:EPackage xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmi:version="2.0" name="simpleML" nsURI="http://www.unibonn.de/simpleml/SimpleML" nsPrefix="simpleML">
     <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractObject" abstract="true"/>
     <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractAnnotatedObject" abstract="true" eSuperTypes="#//SmlAbstractObject">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="annotations" upperBound="-1" eType="#//SmlAnnotationUse" containment="true" />
+        <eStructuralFeatures xsi:type="ecore:EReference" name="annotationCalls" upperBound="-1" eType="#//SmlAnnotationCall" containment="true" />
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractDeclaration" abstract="true" eSuperTypes="#//SmlAbstractAnnotatedObject">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="annotationUseHolder" eType="#//SmlAnnotationUseHolder" containment="true" />
+        <eStructuralFeatures xsi:type="ecore:EReference" name="annotationCallHolder" eType="#//SmlAnnotationCallHolder" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" />
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractCall" abstract="true" eSuperTypes="#//SmlAbstractObject">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="argumentList" eType="#//SmlArgumentList" containment="true" />
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractCallable" abstract="true" eSuperTypes="#//SmlAbstractObject">
         <eStructuralFeatures xsi:type="ecore:EReference" name="parameterList" eType="#//SmlParameterList" containment="true" />
@@ -21,10 +24,9 @@
     <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotation" eSuperTypes="#//SmlAbstractCallable #//SmlAbstractCompilationUnitMember #//SmlAbstractPackageMember">
         <eStructuralFeatures xsi:type="ecore:EReference" name="constraintList" eType="#//SmlConstraintList" containment="true" />
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotationUseHolder" eSuperTypes="#//SmlAbstractAnnotatedObject" />
-    <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotationUse" eSuperTypes="#//SmlAbstractObject">
+    <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotationCallHolder" eSuperTypes="#//SmlAbstractAnnotatedObject" />
+    <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotationCall" eSuperTypes="#//SmlAbstractCall">
         <eStructuralFeatures xsi:type="ecore:EReference" name="annotation" eType="#//SmlAnnotation" />
-        <eStructuralFeatures xsi:type="ecore:EReference" name="argumentList" eType="#//SmlArgumentList" containment="true" />
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlAttribute" eSuperTypes="#//SmlAbstractClassMember #//SmlAbstractProtocolToken">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="static" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" />
@@ -201,8 +203,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractChainedExpression" abstract="true" eSuperTypes="#//SmlAbstractExpression">
         <eStructuralFeatures xsi:type="ecore:EReference" name="receiver" eType="#//SmlAbstractExpression" containment="true" />
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SmlCall" eSuperTypes="#//SmlAbstractChainedExpression">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="argumentList" eType="#//SmlArgumentList" containment="true" />
+    <eClassifiers xsi:type="ecore:EClass" name="SmlCall" eSuperTypes="#//SmlAbstractCall #//SmlAbstractChainedExpression">
         <eStructuralFeatures xsi:type="ecore:EReference" name="typeArgumentList" eType="#//SmlTypeArgumentList" containment="true" />
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlArgumentList" eSuperTypes="#//SmlAbstractObject">

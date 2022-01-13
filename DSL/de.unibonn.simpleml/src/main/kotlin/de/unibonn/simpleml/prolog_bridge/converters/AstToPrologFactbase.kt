@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.prolog_bridge.converters
 
-import de.unibonn.simpleml.emf.annotationUsesOrEmpty
+import de.unibonn.simpleml.emf.annotationCallsOrEmpty
 import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.emf.constraintsOrEmpty
@@ -17,7 +17,7 @@ import de.unibonn.simpleml.emf.typeArgumentsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.emf.variantsOrEmpty
 import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationT
-import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationUseT
+import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationCallT
 import de.unibonn.simpleml.prolog_bridge.model.facts.ArgumentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AssignmentT
 import de.unibonn.simpleml.prolog_bridge.model.facts.AttributeT
@@ -90,7 +90,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAbstractTypeArgumentValue
 import de.unibonn.simpleml.simpleML.SmlAnnotation
-import de.unibonn.simpleml.simpleML.SmlAnnotationUse
+import de.unibonn.simpleml.simpleML.SmlAnnotationCall
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlAttribute
@@ -191,7 +191,7 @@ class AstToPrologFactbase {
     }
 
     private fun PlFactbase.visitDeclaration(obj: SmlAbstractDeclaration, parentId: Id<SmlAbstractObject>) {
-        obj.annotationUsesOrEmpty().forEach { visitAnnotationUse(it, obj.id) }
+        obj.annotationCallsOrEmpty().forEach { visitAnnotationCall(it, obj.id) }
 
         when (obj) {
             is SmlAnnotation -> {
@@ -320,11 +320,11 @@ class AstToPrologFactbase {
         visitSourceLocation(obj)
     }
 
-    private fun PlFactbase.visitAnnotationUse(obj: SmlAnnotationUse, parentId: Id<SmlAbstractDeclaration>) {
-        visitCrossReference(obj, SimpleMLPackage.Literals.SML_ANNOTATION_USE__ANNOTATION, obj.annotation)
+    private fun PlFactbase.visitAnnotationCall(obj: SmlAnnotationCall, parentId: Id<SmlAbstractDeclaration>) {
+        visitCrossReference(obj, SimpleMLPackage.Literals.SML_ANNOTATION_CALL__ANNOTATION, obj.annotation)
         obj.argumentsOrEmpty().forEach { visitExpression(it, obj.id, obj.id) }
 
-        +AnnotationUseT(obj.id, parentId, obj.annotation.id, obj.argumentList?.arguments?.map { it.id })
+        +AnnotationCallT(obj.id, parentId, obj.annotation.id, obj.argumentList?.arguments?.map { it.id })
         visitSourceLocation(obj)
     }
 
@@ -429,12 +429,12 @@ class AstToPrologFactbase {
     private fun PlFactbase.visitAssignee(obj: SmlAbstractAssignee, parentId: Id<SmlAssignment>) {
         when (obj) {
             is SmlBlockLambdaResult -> {
-                obj.annotationUsesOrEmpty().forEach { visitAnnotationUse(it, obj.id) }
+                obj.annotationCallsOrEmpty().forEach { visitAnnotationCall(it, obj.id) }
 
                 +BlockLambdaResultT(obj.id, parentId, obj.name)
             }
             is SmlPlaceholder -> {
-                obj.annotationUsesOrEmpty().forEach { visitAnnotationUse(it, obj.id) }
+                obj.annotationCallsOrEmpty().forEach { visitAnnotationCall(it, obj.id) }
 
                 +PlaceholderT(obj.id, parentId, obj.name)
             }

@@ -1,4 +1,4 @@
-package tests.languageTests.scoping.annotationUse2
+package tests.languageTests.scoping.annotationCall2
 
 annotation AnnotationInOtherPackage1
 annotation AnnotationInOtherPackage2

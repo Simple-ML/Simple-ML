@@ -2,11 +2,11 @@ package de.unibonn.simpleml
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.constant.SmlFileExtension
-import de.unibonn.simpleml.emf.annotationUsesOrEmpty
+import de.unibonn.simpleml.emf.annotationCallsOrEmpty
 import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAnnotation
-import de.unibonn.simpleml.simpleML.SmlAnnotationUse
+import de.unibonn.simpleml.simpleML.SmlAnnotationCall
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
@@ -45,7 +45,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
-private const val ANNOTATION_USE = "annotationUse"
+private const val ANNOTATION_CALL = "annotationCall"
 private const val ARGUMENT = "argument"
 private const val IMPORT_WITH_ALIAS = "importWithAlias"
 private const val NAMED_TYPE = "namedType"
@@ -63,59 +63,59 @@ class ScopingTest {
     private lateinit var parseHelper: ParseHelper
 
     @Nested
-    inner class AnnotationUse {
+    inner class AnnotationCall {
 
         @Test
-        fun `should resolve annotations in same file`() = withResource(ANNOTATION_USE) {
-            val annotationUses = this.descendants<SmlAnnotationUse>().toList()
-            annotationUses.shouldHaveSize(6)
+        fun `should resolve annotations in same file`() = withResource(ANNOTATION_CALL) {
+            val annotationCalls = this.descendants<SmlAnnotationCall>().toList()
+            annotationCalls.shouldHaveSize(6)
 
             val annotationInSameFile = findUniqueDeclarationOrFail<SmlAnnotation>("AnnotationInSameFile")
 
-            val referencedAnnotation = annotationUses[0].annotation
+            val referencedAnnotation = annotationCalls[0].annotation
             referencedAnnotation.shouldBeResolved()
             referencedAnnotation.shouldBe(annotationInSameFile)
         }
 
         @Test
-        fun `should resolve annotations in same package`() = withResource(ANNOTATION_USE) {
-            val annotationUses = this.descendants<SmlAnnotationUse>().toList()
-            annotationUses.shouldHaveSize(6)
+        fun `should resolve annotations in same package`() = withResource(ANNOTATION_CALL) {
+            val annotationCalls = this.descendants<SmlAnnotationCall>().toList()
+            annotationCalls.shouldHaveSize(6)
 
-            val annotation = annotationUses[1].annotation
+            val annotation = annotationCalls[1].annotation
             annotation.shouldBeResolved()
             annotation.name.shouldBe("AnnotationInSamePackage")
         }
 
         @Test
-        fun `should resolve annotations in another package if imported`() = withResource(ANNOTATION_USE) {
-            val annotationUses = this.descendants<SmlAnnotationUse>().toList()
-            annotationUses.shouldHaveSize(6)
+        fun `should resolve annotations in another package if imported`() = withResource(ANNOTATION_CALL) {
+            val annotationCalls = this.descendants<SmlAnnotationCall>().toList()
+            annotationCalls.shouldHaveSize(6)
 
-            val annotation = annotationUses[2].annotation
+            val annotation = annotationCalls[2].annotation
             annotation.shouldBeResolved()
             annotation.name.shouldBe("AnnotationInOtherPackage1")
         }
 
         @Test
-        fun `should not resolve annotations in another package if not imported`() = withResource(ANNOTATION_USE) {
-            val annotationUses = this.descendants<SmlAnnotationUse>().toList()
-            annotationUses.shouldHaveSize(6)
-            annotationUses[3].annotation.shouldNotBeResolved()
+        fun `should not resolve annotations in another package if not imported`() = withResource(ANNOTATION_CALL) {
+            val annotationCalls = this.descendants<SmlAnnotationCall>().toList()
+            annotationCalls.shouldHaveSize(6)
+            annotationCalls[3].annotation.shouldNotBeResolved()
         }
 
         @Test
-        fun `should not resolve unknown declaration`() = withResource(ANNOTATION_USE) {
-            val annotationUses = this.descendants<SmlAnnotationUse>().toList()
-            annotationUses.shouldHaveSize(6)
-            annotationUses[4].annotation.shouldNotBeResolved()
+        fun `should not resolve unknown declaration`() = withResource(ANNOTATION_CALL) {
+            val annotationCalls = this.descendants<SmlAnnotationCall>().toList()
+            annotationCalls.shouldHaveSize(6)
+            annotationCalls[4].annotation.shouldNotBeResolved()
         }
 
         @Test
-        fun `should not resolve something that is not an annotation`() = withResource(ANNOTATION_USE) {
-            val annotationUses = this.descendants<SmlAnnotationUse>().toList()
-            annotationUses.shouldHaveSize(6)
-            annotationUses[5].annotation.shouldNotBeResolved()
+        fun `should not resolve something that is not an annotation`() = withResource(ANNOTATION_CALL) {
+            val annotationCalls = this.descendants<SmlAnnotationCall>().toList()
+            annotationCalls.shouldHaveSize(6)
+            annotationCalls[5].annotation.shouldNotBeResolved()
         }
     }
 
@@ -1525,7 +1525,7 @@ class ScopingTest {
                 val enumVariantInSameFile =
                     findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameFile")
 
-                val annotations = step.annotationUsesOrEmpty()
+                val annotations = step.annotationCallsOrEmpty()
                 annotations.shouldHaveSize(1)
 
                 val references = annotations[0].descendants<SmlReference>().toList()
@@ -1543,7 +1543,7 @@ class ScopingTest {
                 val enumVariantInSameFile =
                     findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameFile")
 
-                val annotations = parameter.annotationUsesOrEmpty()
+                val annotations = parameter.annotationCallsOrEmpty()
                 annotations.shouldHaveSize(1)
 
                 val references = annotations[0].descendants<SmlReference>().toList()
@@ -1560,7 +1560,7 @@ class ScopingTest {
                 val enumVariantInSameFile =
                     findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameClass")
 
-                val annotations = parameter.annotationUsesOrEmpty()
+                val annotations = parameter.annotationCallsOrEmpty()
                 annotations.shouldHaveSize(2)
 
                 val references = annotations[0].descendants<SmlReference>().toList()
@@ -1577,7 +1577,7 @@ class ScopingTest {
                 val enumVariantInSameClass =
                     findUniqueDeclarationOrFail<SmlEnumVariant>("EnumVariantInSameFile")
 
-                val annotations = parameter.annotationUsesOrEmpty()
+                val annotations = parameter.annotationCallsOrEmpty()
                 annotations.shouldHaveSize(2)
 
                 val references = annotations[1].descendants<SmlReference>().toList()

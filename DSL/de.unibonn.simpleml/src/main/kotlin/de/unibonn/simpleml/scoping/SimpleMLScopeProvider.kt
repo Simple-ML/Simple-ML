@@ -20,7 +20,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractNamedTypeDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractProtocolToken
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAnnotation
-import de.unibonn.simpleml.simpleML.SmlAnnotationUse
+import de.unibonn.simpleml.simpleML.SmlAnnotationCall
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlArgumentList
 import de.unibonn.simpleml.simpleML.SmlAssignment
@@ -77,7 +77,7 @@ class SimpleMLScopeProvider @Inject constructor(
             is SmlReference -> scopeForReferenceDeclaration(context)
             is SmlTypeArgument -> scopeForTypeArgumentTypeParameter(context)
             is SmlTypeParameterConstraint -> scopeForTypeParameterConstraintLeftOperand(context)
-            is SmlAnnotationUse, is SmlYield -> {
+            is SmlAnnotationCall, is SmlYield -> {
                 super.getScope(context, reference)
             }
             else -> IScope.NULLSCOPE

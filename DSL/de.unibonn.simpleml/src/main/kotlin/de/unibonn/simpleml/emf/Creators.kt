@@ -25,8 +25,8 @@ import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAbstractTypeArgumentValue
 import de.unibonn.simpleml.simpleML.SmlAnnotation
-import de.unibonn.simpleml.simpleML.SmlAnnotationUse
-import de.unibonn.simpleml.simpleML.SmlAnnotationUseHolder
+import de.unibonn.simpleml.simpleML.SmlAnnotationCall
+import de.unibonn.simpleml.simpleML.SmlAnnotationCallHolder
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlArgumentList
 import de.unibonn.simpleml.simpleML.SmlAssigneeList
@@ -135,12 +135,12 @@ fun createSmlDummyResource(
  */
 fun createSmlAnnotation(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     parameters: List<SmlParameter> = emptyList()
 ): SmlAnnotation {
     return factory.createSmlAnnotation().apply {
         this.name = name
-        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
+        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
         this.parameterList = createSmlParameterList(parameters.ifEmpty { null })
     }
 }
@@ -150,10 +150,10 @@ fun createSmlAnnotation(
  */
 fun SmlCompilationUnit.smlAnnotation(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     parameters: List<SmlParameter> = emptyList()
 ) {
-    this.addMember(createSmlAnnotation(name, annotations, parameters))
+    this.addMember(createSmlAnnotation(name, annotationCalls, parameters))
 }
 
 /**
@@ -161,38 +161,44 @@ fun SmlCompilationUnit.smlAnnotation(
  */
 fun SmlPackage.smlAnnotation(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     parameters: List<SmlParameter> = emptyList()
 ) {
-    this.addMember(createSmlAnnotation(name, annotations, parameters))
+    this.addMember(createSmlAnnotation(name, annotationCalls, parameters))
 }
 
 /**
- * Returns a new object of class [SmlAnnotationUse].
+ * Returns a new object of class [SmlAnnotationCall].
  */
-fun createSmlAnnotationUse(annotation: SmlAnnotation, arguments: List<SmlArgument> = emptyList()): SmlAnnotationUse {
-    return factory.createSmlAnnotationUse().apply {
+fun createSmlAnnotationCall(
+    annotation: SmlAnnotation,
+    arguments: List<SmlArgument> = emptyList()
+): SmlAnnotationCall {
+    return factory.createSmlAnnotationCall().apply {
         this.annotation = annotation
         this.argumentList = createSmlArgumentList(arguments.ifEmpty { null })
     }
 }
 
 /**
- * Returns a new object of class [SmlAnnotationUse] that points to an annotation with the given name.
+ * Returns a new object of class [SmlAnnotationCall] that points to an annotation with the given name.
  */
-fun createSmlAnnotationUse(annotationName: String, arguments: List<SmlArgument> = emptyList()): SmlAnnotationUse {
-    return createSmlAnnotationUse(
+fun createSmlAnnotationCall(
+    annotationName: String,
+    arguments: List<SmlArgument> = emptyList()
+): SmlAnnotationCall {
+    return createSmlAnnotationCall(
         createSmlAnnotation(annotationName),
         arguments
     )
 }
 
 /**
- * Returns a new object of class [SmlAnnotationUseHolder].
+ * Returns a new object of class [SmlAnnotationCallHolder].
  */
-private fun createSmlAnnotationUseHolder(annotations: List<SmlAnnotationUse>): SmlAnnotationUseHolder {
-    return factory.createSmlAnnotationUseHolder().apply {
-        this.annotations += annotations
+private fun createSmlAnnotationCallHolder(annotationCalls: List<SmlAnnotationCall>): SmlAnnotationCallHolder {
+    return factory.createSmlAnnotationCallHolder().apply {
+        this.annotationCalls += annotationCalls
     }
 }
 
@@ -280,13 +286,13 @@ fun SmlStep.smlAssignment(assignees: List<SmlAbstractAssignee>, expression: SmlA
  */
 fun createSmlAttribute(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     isStatic: Boolean = false,
     type: SmlAbstractType? = null
 ): SmlAttribute {
     return factory.createSmlAttribute().apply {
         this.name = name
-        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
+        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
         this.isStatic = isStatic
         this.type = type
     }
@@ -297,11 +303,11 @@ fun createSmlAttribute(
  */
 fun SmlClass.smlAttribute(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     isStatic: Boolean = false,
     type: SmlAbstractType? = null
 ) {
-    this.addMember(createSmlAttribute(name, annotations, isStatic, type))
+    this.addMember(createSmlAttribute(name, annotationCalls, isStatic, type))
 }
 
 /**
@@ -334,10 +340,13 @@ private fun SmlBlockLambda.addStatement(statement: SmlAbstractStatement) {
 /**
  * Returns a new object of class [SmlBlockLambdaResult].
  */
-fun createSmlBlockLambdaResult(name: String, annotations: List<SmlAnnotationUse> = emptyList()): SmlBlockLambdaResult {
+fun createSmlBlockLambdaResult(
+    name: String,
+    annotationCalls: List<SmlAnnotationCall> = emptyList()
+): SmlBlockLambdaResult {
     return factory.createSmlBlockLambdaResult().apply {
         this.name = name
-        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
+        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
     }
 }
 
@@ -380,7 +389,7 @@ fun createSmlCallableType(parameters: List<SmlParameter>, results: List<SmlResul
  */
 fun createSmlClass(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null, // null and emptyList() are semantically different
     parentTypes: List<SmlAbstractType> = emptyList(),
@@ -391,7 +400,7 @@ fun createSmlClass(
 ): SmlClass {
     return factory.createSmlClass().apply {
         this.name = name
-        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
+        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
         this.typeParameterList = createSmlTypeParameterList(typeParameters)
         this.parameterList = createSmlParameterList(parameters)
         this.parentTypeList = createSmlParentTypeList(parentTypes)
@@ -407,7 +416,7 @@ fun createSmlClass(
  */
 fun SmlClass.smlClass(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType> = emptyList(),
@@ -419,7 +428,7 @@ fun SmlClass.smlClass(
     this.addMember(
         createSmlClass(
             name,
-            annotations,
+            annotationCalls,
             typeParameters,
             parameters,
             parentTypes,
@@ -436,7 +445,7 @@ fun SmlClass.smlClass(
  */
 fun SmlCompilationUnit.smlClass(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType> = emptyList(),
@@ -448,7 +457,7 @@ fun SmlCompilationUnit.smlClass(
     this.addMember(
         createSmlClass(
             name,
-            annotations,
+            annotationCalls,
             typeParameters,
             parameters,
             parentTypes,
@@ -465,7 +474,7 @@ fun SmlCompilationUnit.smlClass(
  */
 fun SmlPackage.smlClass(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null,
     parentTypes: List<SmlAbstractType> = emptyList(),
@@ -477,7 +486,7 @@ fun SmlPackage.smlClass(
     this.addMember(
         createSmlClass(
             name,
-            annotations,
+            annotationCalls,
             typeParameters,
             parameters,
             parentTypes,
@@ -538,13 +547,13 @@ private fun createSmlConstraintList(constraints: List<SmlAbstractConstraint>): S
  */
 fun createSmlEnum(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     variants: List<SmlEnumVariant> = emptyList(),
     init: SmlEnum.() -> Unit = {}
 ): SmlEnum {
     return factory.createSmlEnum().apply {
         this.name = name
-        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
+        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
         variants.forEach { addVariant(it) }
         this.init()
     }
@@ -555,11 +564,11 @@ fun createSmlEnum(
  */
 fun SmlClass.smlEnum(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     variants: List<SmlEnumVariant> = emptyList(),
     init: SmlEnum.() -> Unit = {}
 ) {
-    this.addMember(createSmlEnum(name, annotations, variants, init))
+    this.addMember(createSmlEnum(name, annotationCalls, variants, init))
 }
 
 /**
@@ -567,11 +576,11 @@ fun SmlClass.smlEnum(
  */
 fun SmlCompilationUnit.smlEnum(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     variants: List<SmlEnumVariant> = emptyList(),
     init: SmlEnum.() -> Unit = {}
 ) {
-    this.addMember(createSmlEnum(name, annotations, variants, init))
+    this.addMember(createSmlEnum(name, annotationCalls, variants, init))
 }
 
 /**
@@ -579,11 +588,11 @@ fun SmlCompilationUnit.smlEnum(
  */
 fun SmlPackage.smlEnum(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     variants: List<SmlEnumVariant> = emptyList(),
     init: SmlEnum.() -> Unit = {}
 ) {
-    this.addMember(createSmlEnum(name, annotations, variants, init))
+    this.addMember(createSmlEnum(name, annotationCalls, variants, init))
 }
 
 /**
@@ -602,14 +611,14 @@ private fun SmlEnum.addVariant(variant: SmlEnumVariant) {
  */
 fun createSmlEnumVariant(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null, // null and emptyList() are semantically different
     constraints: List<SmlAbstractConstraint> = emptyList()
 ): SmlEnumVariant {
     return factory.createSmlEnumVariant().apply {
         this.name = name
-        this.annotations += annotations
+        this.annotationCalls += annotationCalls
         this.typeParameterList = createSmlTypeParameterList(typeParameters)
         this.parameterList = createSmlParameterList(parameters)
         this.constraintList = createSmlConstraintList(constraints)
@@ -621,12 +630,12 @@ fun createSmlEnumVariant(
  */
 fun SmlEnum.smlEnumVariant(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter>? = null,
     constraints: List<SmlAbstractConstraint> = emptyList()
 ) {
-    this.addVariant(createSmlEnumVariant(name, annotations, typeParameters, parameters, constraints))
+    this.addVariant(createSmlEnumVariant(name, annotationCalls, typeParameters, parameters, constraints))
 }
 
 /**
@@ -692,7 +701,7 @@ fun createSmlFloat(value: Double): SmlAbstractExpression {
  */
 fun createSmlFunction(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     isStatic: Boolean = false,
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
@@ -701,7 +710,7 @@ fun createSmlFunction(
 ): SmlFunction {
     return factory.createSmlFunction().apply {
         this.name = name
-        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
+        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
         this.isStatic = isStatic
         this.typeParameterList = createSmlTypeParameterList(typeParameters)
         this.parameterList = createSmlParameterList(parameters)
@@ -715,7 +724,7 @@ fun createSmlFunction(
  */
 fun SmlClass.smlFunction(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     isStatic: Boolean = false,
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
@@ -725,7 +734,7 @@ fun SmlClass.smlFunction(
     this.addMember(
         createSmlFunction(
             name,
-            annotations,
+            annotationCalls,
             isStatic,
             typeParameters,
             parameters,
@@ -740,7 +749,7 @@ fun SmlClass.smlFunction(
  */
 fun SmlCompilationUnit.smlFunction(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     isStatic: Boolean = false,
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
@@ -750,7 +759,7 @@ fun SmlCompilationUnit.smlFunction(
     this.addMember(
         createSmlFunction(
             name,
-            annotations,
+            annotationCalls,
             isStatic,
             typeParameters,
             parameters,
@@ -765,7 +774,7 @@ fun SmlCompilationUnit.smlFunction(
  */
 fun SmlPackage.smlFunction(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     isStatic: Boolean = false,
     typeParameters: List<SmlTypeParameter> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
@@ -775,7 +784,7 @@ fun SmlPackage.smlFunction(
     this.addMember(
         createSmlFunction(
             name,
-            annotations,
+            annotationCalls,
             isStatic,
             typeParameters,
             parameters,
@@ -890,14 +899,14 @@ fun createSmlNull(): SmlNull {
  */
 fun createSmlPackage(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     imports: List<SmlImport> = emptyList(),
     members: List<SmlAbstractPackageMember> = emptyList(),
     init: SmlPackage.() -> Unit = {}
 ): SmlPackage {
     return factory.createSmlPackage().apply {
         this.name = name
-        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
+        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
         this.imports += imports
         members.forEach { addMember(it) }
         this.init()
@@ -909,12 +918,12 @@ fun createSmlPackage(
  */
 fun SmlCompilationUnit.smlPackage(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     imports: List<SmlImport> = emptyList(),
     members: List<SmlAbstractPackageMember> = emptyList(),
     init: SmlPackage.() -> Unit = {}
 ) {
-    this.addMember(createSmlPackage(name, annotations, imports, members, init))
+    this.addMember(createSmlPackage(name, annotationCalls, imports, members, init))
 }
 
 /**
@@ -929,14 +938,14 @@ private fun SmlPackage.addMember(member: SmlAbstractPackageMember) {
  */
 fun createSmlParameter(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     isVariadic: Boolean = false,
     type: SmlAbstractType? = null,
     defaultValue: SmlAbstractExpression? = null
 ): SmlParameter {
     return factory.createSmlParameter().apply {
         this.name = name
-        this.annotations += annotations
+        this.annotationCalls += annotationCalls
         this.isVariadic = isVariadic
         this.type = type
         this.defaultValue = defaultValue
@@ -990,10 +999,13 @@ private fun createSmlParentTypeList(parentTypes: List<SmlAbstractType>): SmlPare
 /**
  * Returns a new object of class [SmlPlaceholder].
  */
-fun createSmlPlaceholder(name: String, annotations: List<SmlAnnotationUse> = emptyList()): SmlPlaceholder {
+fun createSmlPlaceholder(
+    name: String,
+    annotationCalls: List<SmlAnnotationCall> = emptyList()
+): SmlPlaceholder {
     return factory.createSmlPlaceholder().apply {
         this.name = name
-        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
+        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
     }
 }
 
@@ -1174,12 +1186,12 @@ fun createSmlReference(declaration: SmlAbstractDeclaration): SmlReference {
  */
 fun createSmlResult(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     type: SmlAbstractType? = null
 ): SmlResult {
     return factory.createSmlResult().apply {
         this.name = name
-        this.annotations += annotations
+        this.annotationCalls += annotationCalls
         this.type = type
     }
 }
@@ -1209,7 +1221,7 @@ fun createSmlStarProjection(): SmlStarProjection {
  */
 fun createSmlStep(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
     results: List<SmlResult> = emptyList(),
     statements: List<SmlAbstractStatement> = emptyList(),
@@ -1217,7 +1229,7 @@ fun createSmlStep(
 ): SmlStep {
     return factory.createSmlStep().apply {
         this.name = name
-        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
+        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
         this.parameterList = createSmlParameterList(parameters)
         this.resultList = createSmlResultList(results.ifEmpty { null })
         this.body = factory.createSmlBlock()
@@ -1231,13 +1243,13 @@ fun createSmlStep(
  */
 fun SmlCompilationUnit.smlStep(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
     results: List<SmlResult> = emptyList(),
     statements: List<SmlAbstractStatement> = emptyList(),
     init: SmlStep.() -> Unit = {}
 ) {
-    this.addMember(createSmlStep(name, annotations, parameters, results, statements, init))
+    this.addMember(createSmlStep(name, annotationCalls, parameters, results, statements, init))
 }
 
 /**
@@ -1245,13 +1257,13 @@ fun SmlCompilationUnit.smlStep(
  */
 fun SmlPackage.smlStep(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     parameters: List<SmlParameter> = emptyList(),
     results: List<SmlResult> = emptyList(),
     statements: List<SmlAbstractStatement> = emptyList(),
     init: SmlStep.() -> Unit = {}
 ) {
-    this.addMember(createSmlStep(name, annotations, parameters, results, statements, init))
+    this.addMember(createSmlStep(name, annotationCalls, parameters, results, statements, init))
 }
 
 /**
@@ -1372,12 +1384,12 @@ private fun createSmlTypeArgumentList(typeArguments: List<SmlTypeArgument>): Sml
  */
 fun createSmlTypeParameter(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     variance: SmlVariance = SmlVariance.Invariant
 ): SmlTypeParameter {
     return factory.createSmlTypeParameter().apply {
         this.name = name
-        this.annotations += annotations
+        this.annotationCalls += annotationCalls
         this.variance = variance.variance
     }
 }
@@ -1462,13 +1474,13 @@ fun createSmlWildcard(): SmlWildcard {
  */
 fun createSmlWorkflow(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     statements: List<SmlAbstractStatement> = emptyList(),
     init: SmlWorkflow.() -> Unit = {}
 ): SmlWorkflow {
     return factory.createSmlWorkflow().apply {
         this.name = name
-        this.annotationUseHolder = createSmlAnnotationUseHolder(annotations)
+        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
         this.body = factory.createSmlBlock()
         statements.forEach { addStatement(it) }
         this.init()
@@ -1480,11 +1492,11 @@ fun createSmlWorkflow(
  */
 fun SmlCompilationUnit.smlWorkflow(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     statements: List<SmlAbstractStatement> = emptyList(),
     init: SmlWorkflow.() -> Unit = {}
 ) {
-    this.addMember(createSmlWorkflow(name, annotations, statements, init))
+    this.addMember(createSmlWorkflow(name, annotationCalls, statements, init))
 }
 
 /**
@@ -1492,11 +1504,11 @@ fun SmlCompilationUnit.smlWorkflow(
  */
 fun SmlPackage.smlWorkflow(
     name: String,
-    annotations: List<SmlAnnotationUse> = emptyList(),
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
     statements: List<SmlAbstractStatement> = emptyList(),
     init: SmlWorkflow.() -> Unit = {}
 ) {
-    this.addMember(createSmlWorkflow(name, annotations, statements, init))
+    this.addMember(createSmlWorkflow(name, annotationCalls, statements, init))
 }
 
 /**
