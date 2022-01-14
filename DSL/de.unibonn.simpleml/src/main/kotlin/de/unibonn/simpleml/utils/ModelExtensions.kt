@@ -53,7 +53,7 @@ import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlYield
-import de.unibonn.simpleml.stdlib.isPure
+import de.unibonn.simpleml.stdlibAccess.isPure
 import org.eclipse.emf.ecore.EObject
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract

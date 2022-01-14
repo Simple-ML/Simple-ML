@@ -10,7 +10,7 @@ import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlWildcard
-import de.unibonn.simpleml.stdlib.isDeprecated
+import de.unibonn.simpleml.stdlibAccess.isDeprecated
 import de.unibonn.simpleml.utils.assignedOrNull
 import de.unibonn.simpleml.utils.parameterOrNull
 import de.unibonn.simpleml.utils.typeParameterOrNull

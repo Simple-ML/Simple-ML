@@ -3,7 +3,7 @@ package de.unibonn.simpleml.validation.other
 import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.targetOrNull
-import de.unibonn.simpleml.naming.fullyQualifiedName
+import de.unibonn.simpleml.naming.fullyQualifiedNameOrNull
 import de.unibonn.simpleml.partialEvaluation.toConstantExpressionOrNull
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
@@ -22,9 +22,9 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.stdlib.StdlibAnnotations
-import de.unibonn.simpleml.stdlib.StdlibEnums.AnnotationTargetVariants
-import de.unibonn.simpleml.stdlib.uniqueAnnotationCallOrNull
+import de.unibonn.simpleml.stdlibAccess.StdlibAnnotations
+import de.unibonn.simpleml.stdlibAccess.StdlibEnums.AnnotationTarget
+import de.unibonn.simpleml.stdlibAccess.validTargets
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.isRequired
 import de.unibonn.simpleml.utils.isResolved
@@ -40,7 +40,7 @@ class AnnotationCallChecker : AbstractSimpleMLChecker() {
     @Check
     fun duplicateTargetInTargetAnnotation(smlAnnotationCall: SmlAnnotationCall) {
         val annotation = smlAnnotationCall.annotation
-        if (!annotation.isResolved() || annotation.fullyQualifiedName() != StdlibAnnotations.Target) {
+        if (!annotation.isResolved() || annotation.fullyQualifiedNameOrNull() != StdlibAnnotations.Target) {
             return
         }
 
@@ -48,7 +48,7 @@ class AnnotationCallChecker : AbstractSimpleMLChecker() {
             .argumentsOrEmpty()
             .map { it.value }
             .filterIsInstance<SmlMemberAccess>()
-            .duplicatesBy { it.member.declaration.fullyQualifiedName() }
+            .duplicatesBy { it.member.declaration.fullyQualifiedNameOrNull() }
             .forEach {
                 warning(
                     "This annotation target is used multiple times.",
@@ -92,57 +92,50 @@ class AnnotationCallChecker : AbstractSimpleMLChecker() {
             return
         }
 
-        val targetAnnotationUse = annotation.uniqueAnnotationCallOrNull(StdlibAnnotations.Target) ?: return
-        val legalTargets = targetAnnotationUse
-            .argumentsOrEmpty()
-            .asSequence()
-            .map { it.value }
-            .filterIsInstance<SmlMemberAccess>()
-            .mapNotNull { it.member.declaration.fullyQualifiedName() }
-            .toSet()
+        val legalTargets = annotation.validTargets()
 
         // Compare actual and legal targets
         val wrongTarget: String? = when {
-            actualTarget is SmlAnnotation && AnnotationTargetVariants.Annotation !in legalTargets -> {
+            actualTarget is SmlAnnotation && AnnotationTarget.Annotation !in legalTargets -> {
                 "an annotation"
             }
-            actualTarget is SmlAttribute && AnnotationTargetVariants.Attribute !in legalTargets -> {
+            actualTarget is SmlAttribute && AnnotationTarget.Attribute !in legalTargets -> {
                 "an attribute"
             }
-            actualTarget is SmlClass && AnnotationTargetVariants.Class !in legalTargets -> {
+            actualTarget is SmlClass && AnnotationTarget.Class !in legalTargets -> {
                 "a class"
             }
-            actualTarget is SmlPackage && AnnotationTargetVariants.CompilationUnit !in legalTargets -> {
+            actualTarget is SmlPackage && AnnotationTarget.CompilationUnit !in legalTargets -> {
                 "a compilation unit"
             }
-            actualTarget is SmlEnum && AnnotationTargetVariants.Enum !in legalTargets -> {
+            actualTarget is SmlEnum && AnnotationTarget.Enum !in legalTargets -> {
                 "an enum"
             }
-            actualTarget is SmlEnumVariant && AnnotationTargetVariants.EnumVariant !in legalTargets -> {
+            actualTarget is SmlEnumVariant && AnnotationTarget.EnumVariant !in legalTargets -> {
                 "an enum variant"
             }
-            actualTarget is SmlFunction && AnnotationTargetVariants.Function !in legalTargets -> {
+            actualTarget is SmlFunction && AnnotationTarget.Function !in legalTargets -> {
                 "a function"
             }
-            actualTarget is SmlBlockLambdaResult && AnnotationTargetVariants.LambdaResult !in legalTargets -> {
+            actualTarget is SmlBlockLambdaResult && AnnotationTarget.LambdaResult !in legalTargets -> {
                 "a lambda result"
             }
-            actualTarget is SmlParameter && AnnotationTargetVariants.Parameter !in legalTargets -> {
+            actualTarget is SmlParameter && AnnotationTarget.Parameter !in legalTargets -> {
                 "a parameter"
             }
-            actualTarget is SmlPlaceholder && AnnotationTargetVariants.Placeholder !in legalTargets -> {
+            actualTarget is SmlPlaceholder && AnnotationTarget.Placeholder !in legalTargets -> {
                 "a placeholder"
             }
-            actualTarget is SmlResult && AnnotationTargetVariants.Result !in legalTargets -> {
+            actualTarget is SmlResult && AnnotationTarget.Result !in legalTargets -> {
                 "a result"
             }
-            actualTarget is SmlTypeParameter && AnnotationTargetVariants.TypeParameter !in legalTargets -> {
+            actualTarget is SmlTypeParameter && AnnotationTarget.TypeParameter !in legalTargets -> {
                 "a type parameter"
             }
-            actualTarget is SmlWorkflow && AnnotationTargetVariants.Workflow !in legalTargets -> {
+            actualTarget is SmlWorkflow && AnnotationTarget.Workflow !in legalTargets -> {
                 "a workflow"
             }
-            actualTarget is SmlStep && AnnotationTargetVariants.Step !in legalTargets -> {
+            actualTarget is SmlStep && AnnotationTarget.Step !in legalTargets -> {
                 "a step"
             }
             else -> null

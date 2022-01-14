@@ -1,10 +1,10 @@
-package de.unibonn.simpleml.prolog_bridge
+package de.unibonn.simpleml.prologBridge
 
 import com.google.inject.Inject
 import com.google.inject.Provider
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
-import de.unibonn.simpleml.prolog_bridge.converters.AstToPrologFactbase
-import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
+import de.unibonn.simpleml.prologBridge.converters.AstToPrologFactbase
+import de.unibonn.simpleml.prologBridge.model.facts.PlFactbase
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.utils.SimpleMLStdlib
 import org.eclipse.emf.common.util.URI

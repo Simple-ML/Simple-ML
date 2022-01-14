@@ -1,14 +1,14 @@
 package de.unibonn.simpleml.testing.assertions
 
-import de.unibonn.simpleml.prolog_bridge.model.facts.AnnotationCallT
-import de.unibonn.simpleml.prolog_bridge.model.facts.DeclarationT
-import de.unibonn.simpleml.prolog_bridge.model.facts.ExpressionT
-import de.unibonn.simpleml.prolog_bridge.model.facts.Node
-import de.unibonn.simpleml.prolog_bridge.model.facts.NodeWithParent
-import de.unibonn.simpleml.prolog_bridge.model.facts.PlFact
-import de.unibonn.simpleml.prolog_bridge.model.facts.PlFactbase
-import de.unibonn.simpleml.prolog_bridge.model.facts.ProtocolTermT
-import de.unibonn.simpleml.prolog_bridge.utils.Id
+import de.unibonn.simpleml.prologBridge.model.facts.AnnotationCallT
+import de.unibonn.simpleml.prologBridge.model.facts.DeclarationT
+import de.unibonn.simpleml.prologBridge.model.facts.ExpressionT
+import de.unibonn.simpleml.prologBridge.model.facts.Node
+import de.unibonn.simpleml.prologBridge.model.facts.NodeWithParent
+import de.unibonn.simpleml.prologBridge.model.facts.PlFact
+import de.unibonn.simpleml.prologBridge.model.facts.PlFactbase
+import de.unibonn.simpleml.prologBridge.model.facts.ProtocolTermT
+import de.unibonn.simpleml.prologBridge.utils.Id
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractProtocolTerm
 import io.kotest.assertions.asClue

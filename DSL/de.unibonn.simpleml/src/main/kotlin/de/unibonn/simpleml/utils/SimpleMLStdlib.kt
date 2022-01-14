@@ -49,10 +49,13 @@ class SimpleMLStdlib @Inject constructor(
             var fileSystem: FileSystem? = null
             val stdlibBase = when (resourcesUri.scheme) {
 
-                // Without this code Maven tests fail with a FileSystemNotFoundException since stdlib resources are in a jar
+                // Without this code tests fail with a FileSystemNotFoundException since stdlib resources are in a jar
                 "jar" -> {
-                    fileSystem =
-                        FileSystems.newFileSystem(resourcesUri, emptyMap<String, String>(), null)
+                    fileSystem = FileSystems.newFileSystem(
+                        resourcesUri,
+                        emptyMap<String, String>(),
+                        null
+                    )
                     fileSystem.getPath("stdlib")
                 }
                 else -> Paths.get(resourcesUri)
