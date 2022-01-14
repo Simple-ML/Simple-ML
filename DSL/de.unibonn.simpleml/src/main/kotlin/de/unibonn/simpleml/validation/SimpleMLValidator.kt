@@ -21,6 +21,7 @@ import de.unibonn.simpleml.validation.expressions.CallChecker
 import de.unibonn.simpleml.validation.expressions.InfixOperationChecker
 import de.unibonn.simpleml.validation.expressions.LambdaChecker
 import de.unibonn.simpleml.validation.expressions.MemberAccessChecker
+import de.unibonn.simpleml.validation.expressions.ReferenceChecker
 import de.unibonn.simpleml.validation.expressions.TemplateStringChecker
 import de.unibonn.simpleml.validation.other.AnnotationCallChecker
 import de.unibonn.simpleml.validation.other.ArgumentListChecker
@@ -68,6 +69,7 @@ import org.eclipse.xtext.validation.ComposedChecks
         InfixOperationChecker::class,
         LambdaChecker::class,
         MemberAccessChecker::class,
+        ReferenceChecker::class,
         TemplateStringChecker::class,
 
         // Statements
