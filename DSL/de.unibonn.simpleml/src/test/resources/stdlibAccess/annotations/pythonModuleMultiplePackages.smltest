@@ -1,0 +1,5 @@
+@PythonModule("python_module_1")
+package compilationUnitWithMultiplePackages1
+
+@PythonModule("python_module_2")
+package compilationUnitWithMultiplePackages2

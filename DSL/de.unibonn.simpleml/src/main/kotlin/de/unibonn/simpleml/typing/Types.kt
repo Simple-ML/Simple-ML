@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.typing
 
-import de.unibonn.simpleml.naming.fullyQualifiedName
+import de.unibonn.simpleml.naming.fullyQualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlEnum
@@ -41,7 +41,7 @@ class CallableType(val parameters: List<Type>, val results: List<Type>) : Type()
 
 sealed class NamedType(smlDeclaration: SmlAbstractDeclaration) : Type() {
     val simpleName: String = smlDeclaration.name
-    val qualifiedName: QualifiedName = smlDeclaration.fullyQualifiedName()!!
+    val qualifiedName: QualifiedName = smlDeclaration.fullyQualifiedNameOrNull()!!
 
     abstract val isNullable: Boolean
     abstract val isStatic: Boolean

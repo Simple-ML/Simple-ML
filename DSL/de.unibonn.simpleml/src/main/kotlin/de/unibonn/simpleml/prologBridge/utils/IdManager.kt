@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.prolog_bridge.utils
+package de.unibonn.simpleml.prologBridge.utils
 
 /**
  * The ID of a Prolog fact.
@@ -45,7 +45,7 @@ class IdManager<UPPER : Any> {
     /**
      * Returns the next available ID.
      */
-    private fun <T: Any> nextId() = Id<T>(nextId++)
+    private fun <T : Any> nextId() = Id<T>(nextId++)
 
     /**
      * Returns the object with the given ID or null if the ID was not assigned yet.

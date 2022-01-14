@@ -33,7 +33,7 @@ class QualifiedNameProviderTest {
                 }
             }
 
-            myClass.fullyQualifiedName() shouldBe "tests.MyClass".toQualifiedName()
+            myClass.fullyQualifiedNameOrNull() shouldBe "tests.MyClass".toQualifiedName()
         }
 
         @Test
@@ -49,7 +49,7 @@ class QualifiedNameProviderTest {
                 }
             }
 
-            myClass.fullyQualifiedName() shouldBe "`tests`.`MyClass`".toQualifiedName()
+            myClass.fullyQualifiedNameOrNull() shouldBe "`tests`.`MyClass`".toQualifiedName()
         }
     }
 

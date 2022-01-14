@@ -5,7 +5,7 @@ import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.stdlib.StdlibClasses
+import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 
 class ClassHierarchy @Inject constructor(
     private val stdlib: SimpleMLStdlib

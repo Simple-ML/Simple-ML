@@ -1,9 +1,5 @@
 package simpleml.lang
 
-@Description("The annotation can target any declaration type. This is the default behavior unless @Target is used.")
-@Target(AnnotationTarget.Annotation)
-annotation AnyTarget
-
 @Description("The annotation can target these declaration types. If the @Target annotation is not used any declaration type can be targeted.")
 @Target(AnnotationTarget.Annotation)
 annotation Target(vararg targets: AnnotationTarget)
@@ -25,10 +21,6 @@ enum AnnotationTarget {
     TypeParameter
     Workflow
 }
-
-@Description("The annotation can only be called once per declaration. This is the default behavior unless @Repeatable is used.")
-@Target(AnnotationTarget.Annotation)
-annotation Unrepeatable
 
 @Description("The annotation can be called multiple times for the same declaration.")
 @Target(AnnotationTarget.Annotation)
@@ -64,7 +56,3 @@ annotation Deprecated(
 @Description("The function returns the same results for the same arguments and has no side effects.")
 @Target(AnnotationTarget.Function)
 annotation Pure
-
-@Description("The function can return different results for the same arguments or has side effects. This is the default assumption unless @Pure is used.")
-@Target(AnnotationTarget.Function)
-annotation Impure
