@@ -12,7 +12,6 @@ import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import kotlin.streams.toList
 
 class SimpleMLStdlib @Inject constructor(
     private val indexExtensions: SimpleMLIndexExtensions
