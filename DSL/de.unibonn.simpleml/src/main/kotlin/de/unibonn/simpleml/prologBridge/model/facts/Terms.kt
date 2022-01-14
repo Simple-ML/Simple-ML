@@ -40,7 +40,6 @@ sealed class PlTerm {
                 }
             }
         }
-
     }
 }
 
