@@ -71,4 +71,7 @@ enum class ErrorCode {
     UnassignedResult,
     DuplicateResultAssignment,
     MustBeConstant,
+
+    MustNotStaticallyReferenceClass,
+    MustNotStaticallyReferenceEnum,
 }
