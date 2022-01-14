@@ -45,6 +45,10 @@ sourceSets {
 
 // Tasks ---------------------------------------------------------------------------------------------------------------
 
+val koverExcludes = listOf(
+    "de.unibonn.simpleml.ide.contentassist.antlr.*"
+)
+
 tasks {
     processResources {
         val generateXtextLanguage = rootProject.tasks.named("generateXtextLanguage")
@@ -55,17 +59,24 @@ tasks {
         useJUnitPlatform()
 
         extensions.configure(kotlinx.kover.api.KoverTaskExtension::class) {
-            excludes = listOf(
-                "de.unibonn.simpleml.ide.contentassist.antlr.*",
-            )
+            excludes = koverExcludes
         }
     }
 
-    koverProjectVerify {
+    koverHtmlReport {
+        excludes = koverExcludes
+    }
+
+    koverXmlReport {
+        excludes = koverExcludes
+    }
+
+    koverVerify {
+        excludes = koverExcludes
         rule {
             name = "Minimal line coverage rate in percents"
             bound {
-                minValue = 0
+                minValue = 33
             }
         }
     }

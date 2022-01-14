@@ -27,7 +27,7 @@ plugins {
 
     base
     idea
-    id("org.jetbrains.kotlinx.kover") version "0.5.0-RC"
+    id("org.jetbrains.kotlinx.kover") version "0.5.0-RC2"
 }
 
 repositories {
@@ -42,12 +42,20 @@ idea {
 
 kover {
     coverageEngine.set(kotlinx.kover.api.CoverageEngine.INTELLIJ)
-    generateReportOnCheck.set(true)
     this.disabledProjects = setOf(
         "Simple-ML.DSL",
-        "de.unibonn.simpleml.vscode"
+        "de.unibonn.simpleml.vscode",
+        "de.unibonn.simpleml.web"
     )
 }
+
+val koverExcludes = listOf(
+    "de.unibonn.simpleml.parser.antlr.*",
+    "de.unibonn.simpleml.services.*",
+    "de.unibonn.simpleml.simpleML.*",
+    "de.unibonn.simpleml.testing.*",
+    "de.unibonn.simpleml.ide.contentassist.antlr.*"
+)
 
 // Variables -----------------------------------------------------------------------------------------------------------
 
@@ -95,7 +103,6 @@ tasks.register("generateXtextLanguage") {
     )
 
     doFirst {
-
         workflow {
             standaloneSetup {
                 setPlatformUri(rootPath)
@@ -212,5 +219,25 @@ tasks.register("generateXtextLanguage") {
                 include("**/*.xtend")
             }
         )
+    }
+}
+
+tasks {
+    koverMergedHtmlReport {
+        excludes = koverExcludes
+    }
+
+    koverMergedXmlReport {
+        excludes = koverExcludes
+    }
+
+    koverMergedVerify {
+        excludes = koverExcludes
+        rule {
+            name = "Minimal line coverage rate in percents"
+            bound {
+                minValue = 80
+            }
+        }
     }
 }
