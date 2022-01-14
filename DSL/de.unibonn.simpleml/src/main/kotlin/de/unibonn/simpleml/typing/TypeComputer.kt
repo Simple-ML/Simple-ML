@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
-import de.unibonn.simpleml.naming.fullyQualifiedName
+import de.unibonn.simpleml.naming.fullyQualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractType
@@ -61,7 +61,7 @@ class TypeComputer @Inject constructor(
             return false
         }
 
-        val qualifiedName = type.smlClass.fullyQualifiedName()
+        val qualifiedName = type.smlClass.fullyQualifiedNameOrNull()
         return qualifiedName in setOf(
             StdlibClasses.Boolean,
             StdlibClasses.Float,
