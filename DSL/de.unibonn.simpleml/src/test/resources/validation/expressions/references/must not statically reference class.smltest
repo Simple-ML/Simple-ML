@@ -1,0 +1,35 @@
+package tests.validation.references.mustNotStaticallyReferenceClass
+
+class ClassWithConstructor()
+
+class ClassWithoutConstructor
+
+class ClassWithStaticMembers {
+    static attr myAttribute: Int
+
+    class InnerClassWithConstructor() {
+        static attr myAttribute: Int
+    }
+}
+
+workflow test {
+    // semantic_error "Must not statically reference class."
+    »ClassWithConstructor«;    
+    // no_semantic_error "Must not statically reference class."
+    »ClassWithoutConstructor«();
+    // no_semantic_error "Must not statically reference class."
+    »ClassWithConstructor«();
+    // no_semantic_error "Must not statically reference class."
+    »ClassWithStaticMembers«.myAttribute;    
+    // no_semantic_error "Must not statically reference class."
+    »ClassWithStaticMembers«.unresolved;
+    // no_semantic_error "Must not statically reference class."
+    // semantic_error "Must not statically reference class."
+    »ClassWithStaticMembers«.»InnerClassWithConstructor«;
+    // no_semantic_error "Must not statically reference class."
+    // no_semantic_error "Must not statically reference class."
+    »ClassWithStaticMembers«.»InnerClassWithConstructor«();    
+    // no_semantic_error "Must not statically reference class."
+    // no_semantic_error "Must not statically reference class."
+    »ClassWithStaticMembers«.»InnerClassWithConstructor«.myAttribute;
+}
