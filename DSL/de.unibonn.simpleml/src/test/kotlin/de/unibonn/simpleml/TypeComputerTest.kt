@@ -3,7 +3,7 @@ package de.unibonn.simpleml
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
-import de.unibonn.simpleml.stdlib.StdlibClasses
+import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.getResourcePath
 import de.unibonn.simpleml.typing.Type

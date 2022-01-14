@@ -1,6 +1,6 @@
 @file:Suppress("MemberVisibilityCanBePrivate")
 
-package de.unibonn.simpleml.stdlib
+package de.unibonn.simpleml.stdlibAccess
 
 import org.eclipse.xtext.naming.QualifiedName
 

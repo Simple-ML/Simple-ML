@@ -4,8 +4,8 @@ import de.unibonn.simpleml.emf.annotationCallsOrEmpty
 import de.unibonn.simpleml.naming.fullyQualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlParameter
-import de.unibonn.simpleml.stdlib.StdlibAnnotations
-import de.unibonn.simpleml.stdlib.isRepeatable
+import de.unibonn.simpleml.stdlibAccess.StdlibAnnotations
+import de.unibonn.simpleml.stdlibAccess.isRepeatable
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.isRequired
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker

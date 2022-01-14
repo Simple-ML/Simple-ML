@@ -35,7 +35,7 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlYield
-import de.unibonn.simpleml.stdlib.StdlibClasses
+import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.utils.SimpleMLStdlib
 import de.unibonn.simpleml.utils.assignedOrNull
 import de.unibonn.simpleml.utils.callableOrNull

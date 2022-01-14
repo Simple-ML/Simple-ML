@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.prolog_bridge.utils
+package de.unibonn.simpleml.prologBridge.utils
 
 /**
  * The ID of a Prolog fact.

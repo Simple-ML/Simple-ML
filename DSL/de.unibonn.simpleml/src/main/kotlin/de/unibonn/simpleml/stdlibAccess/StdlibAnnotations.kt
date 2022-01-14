@@ -1,6 +1,6 @@
 @file:Suppress("MemberVisibilityCanBePrivate")
 
-package de.unibonn.simpleml.stdlib
+package de.unibonn.simpleml.stdlibAccess
 
 import de.unibonn.simpleml.emf.annotationCallsOrEmpty
 import de.unibonn.simpleml.emf.argumentsOrEmpty
@@ -15,8 +15,7 @@ import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationCall
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.stdlib.StdlibEnums.AnnotationTarget
-import de.unibonn.simpleml.stdlib.StdlibEnums.AnnotationTarget.Companion
+import de.unibonn.simpleml.stdlibAccess.StdlibEnums.AnnotationTarget
 import de.unibonn.simpleml.utils.parameterOrNull
 import de.unibonn.simpleml.utils.uniqueOrNull
 import org.eclipse.xtext.naming.QualifiedName
@@ -78,7 +77,7 @@ object StdlibAnnotations {
     /**
      * The annotation can target only a subset of declaration types.
      *
-     * @see targets
+     * @see validTargets
      */
     val Target: QualifiedName = StdlibPackages.lang.append("Target")
 }
@@ -161,7 +160,7 @@ fun SmlAbstractDeclaration.sinceVersionOrNull(): String? {
 /**
  * Returns the possible targets of this annotation.
  */
-fun SmlAnnotation.targets(): List<AnnotationTarget> {
+fun SmlAnnotation.validTargets(): List<AnnotationTarget> {
     val targetAnnotationCall = uniqueAnnotationCallOrNull(StdlibAnnotations.Target)
         ?: return AnnotationTarget.values().toList()
 

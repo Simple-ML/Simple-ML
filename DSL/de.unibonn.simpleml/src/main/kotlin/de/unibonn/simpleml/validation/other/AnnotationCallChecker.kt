@@ -22,9 +22,9 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.stdlib.StdlibAnnotations
-import de.unibonn.simpleml.stdlib.StdlibEnums.AnnotationTarget
-import de.unibonn.simpleml.stdlib.targets
+import de.unibonn.simpleml.stdlibAccess.StdlibAnnotations
+import de.unibonn.simpleml.stdlibAccess.StdlibEnums.AnnotationTarget
+import de.unibonn.simpleml.stdlibAccess.validTargets
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.isRequired
 import de.unibonn.simpleml.utils.isResolved
@@ -92,7 +92,7 @@ class AnnotationCallChecker : AbstractSimpleMLChecker() {
             return
         }
 
-        val legalTargets = annotation.targets()
+        val legalTargets = annotation.validTargets()
 
         // Compare actual and legal targets
         val wrongTarget: String? = when {
