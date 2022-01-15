@@ -179,12 +179,18 @@ private fun SmlInfixOperation.simplifyInfixOp(substitutions: ParameterSubstituti
             { a, b -> a * b },
             constantRight
         )
-        By.operator -> simplifyArithmeticOp(
-            constantLeft,
-            { a, b -> a / b },
-            { a, b -> a / b },
-            constantRight
-        )
+        By.operator -> {
+            if (constantRight == SmlConstantFloat(0.0) || constantRight == SmlConstantInt(0)) {
+                return null
+            }
+
+            simplifyArithmeticOp(
+                constantLeft,
+                { a, b -> a / b },
+                { a, b -> a / b },
+                constantRight
+            )
+        }
         Elvis.operator -> when (constantLeft) {
             SmlConstantNull -> constantRight
             else -> constantLeft
