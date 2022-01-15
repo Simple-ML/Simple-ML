@@ -1,8 +1,8 @@
 @file:Suppress("unused")
 
 /**
- * Contains shortcuts that simplify working with the EMF model. Since all of these are very straightforward, unit tests
- * are not required.
+ * Contains shortcuts that simplify working with the EMF model. Since most of these are very straightforward, unit tests
+ * are usually not required.
  */
 
 package de.unibonn.simpleml.emf
@@ -234,6 +234,16 @@ fun SmlFunction?.constraintsOrEmpty(): List<SmlAbstractConstraint> {
 
 fun SmlImport.aliasNameOrNull(): String? {
     return this.alias?.name
+}
+
+fun SmlImport.importedNameOrNull(): String? {
+    return when (alias) {
+        null -> when {
+            isQualified() -> importedNamespace.split(".").last()
+            else -> null
+        }
+        else -> aliasNameOrNull()
+    }
 }
 
 // SmlNamedType ------------------------------------------------------------------------------------

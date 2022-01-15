@@ -3,9 +3,9 @@ package de.unibonn.simpleml.validation.other
 import de.unibonn.simpleml.emf.isNamed
 import de.unibonn.simpleml.emf.isPositional
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
+import de.unibonn.simpleml.staticAnalysis.typeParameterOrNull
+import de.unibonn.simpleml.staticAnalysis.typeParametersOrNull
 import de.unibonn.simpleml.utils.duplicatesBy
-import de.unibonn.simpleml.utils.typeParameterOrNull
-import de.unibonn.simpleml.utils.typeParametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.validation.Check

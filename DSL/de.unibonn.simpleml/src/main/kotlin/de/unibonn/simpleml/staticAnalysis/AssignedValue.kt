@@ -7,7 +7,6 @@ import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlCall
-import de.unibonn.simpleml.utils.resultsOrNull
 import org.eclipse.emf.ecore.EObject
 
 fun SmlAbstractAssignee.assignedOrNull(): EObject? {

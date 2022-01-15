@@ -12,7 +12,7 @@ import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.staticAnalysis.AssignedResult
 import de.unibonn.simpleml.staticAnalysis.hasSideEffects
 import de.unibonn.simpleml.staticAnalysis.maybeAssigned
-import de.unibonn.simpleml.utils.resultsOrNull
+import de.unibonn.simpleml.staticAnalysis.resultsOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode

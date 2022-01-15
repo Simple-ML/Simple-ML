@@ -9,7 +9,6 @@ import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
-import de.unibonn.simpleml.utils.resultsOrNull
 import org.eclipse.emf.ecore.EObject
 
 fun SmlCall.callableOrNull(): SmlAbstractCallable? {
