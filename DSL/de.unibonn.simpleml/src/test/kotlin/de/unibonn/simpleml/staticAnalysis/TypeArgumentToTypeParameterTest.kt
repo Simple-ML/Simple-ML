@@ -157,7 +157,7 @@ class TypeArgumentToTypeParameterTest {
         fun `should return null if the type argument list cannot be resolved`() {
             val typeArgumentList = createSmlTypeArgumentList(listOf(positionalTypeArgument))
 
-            typeArgumentList!!.typeParametersOrNull().shouldBeNull()
+            typeArgumentList.typeParametersOrNull().shouldBeNull()
         }
     }
 }

@@ -182,7 +182,7 @@ class ArgumentToParameterTest {
         fun `should return null if the argument list cannot be resolved`() {
             val argumentList = createSmlArgumentList(emptyList())
 
-            argumentList!!.parametersOrNull().shouldBeNull()
+            argumentList.parametersOrNull().shouldBeNull()
         }
     }
 }
