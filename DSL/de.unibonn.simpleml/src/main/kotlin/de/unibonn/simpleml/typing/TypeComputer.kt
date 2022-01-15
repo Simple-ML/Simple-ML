@@ -90,7 +90,7 @@ class TypeComputer @Inject constructor(
             this is SmlAttribute -> type.inferType(isStatic = false)
             this is SmlClass -> ClassType(this, isNullable = false, isStatic = isStatic)
             this is SmlEnum -> EnumType(this, isNullable = false, isStatic = isStatic)
-            this is SmlEnumVariant -> EnumVariantType(this, isNullable = false, isStatic = isStatic)
+            this is SmlEnumVariant -> EnumVariantType(this, isNullable = false, isStatic = isStatic) // TODO: should be enum type if it has no parameters
             this is SmlFunction -> CallableType(
                 parametersOrEmpty().map { it.inferType(false) },
                 resultsOrEmpty().map { it.inferType(false) }
