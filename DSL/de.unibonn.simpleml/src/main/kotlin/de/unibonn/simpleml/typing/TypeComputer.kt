@@ -236,7 +236,7 @@ class TypeComputer @Inject constructor(
     private val Nothing get() = stdlibType(context, StdlibClasses.Nothing.toString())
     private val String get() = stdlibType(context, StdlibClasses.String.toString())
 
-    fun stdlibType(context: EObject, qualifiedName: String, isNullable: Boolean = false): Type {
+    internal fun stdlibType(context: EObject, qualifiedName: String, isNullable: Boolean = false): Type {
         return when (val smlClass = stdlib.getClass(context, qualifiedName)) {
             null -> UnresolvedType
             else -> ClassType(smlClass, isNullable, isStatic = false)

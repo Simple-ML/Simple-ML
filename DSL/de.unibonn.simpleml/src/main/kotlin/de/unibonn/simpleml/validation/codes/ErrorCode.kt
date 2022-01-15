@@ -75,5 +75,7 @@ enum class ErrorCode {
     MustNotStaticallyReferenceClass,
     MustNotStaticallyReferenceEnum,
 
-    DivisionByZero
+    DivisionByZero,
+
+    UnsupportedAnnotationParameterType,
 }

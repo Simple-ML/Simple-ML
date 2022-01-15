@@ -1,13 +1,22 @@
 package de.unibonn.simpleml.validation.declarations
 
+import com.google.inject.Inject
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
+import de.unibonn.simpleml.stdlibAccess.StdlibClasses
+import de.unibonn.simpleml.typing.ClassType
+import de.unibonn.simpleml.typing.EnumType
+import de.unibonn.simpleml.typing.TypeComputer
+import de.unibonn.simpleml.utils.isConstant
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode
 import org.eclipse.xtext.validation.Check
 
-class AnnotationChecker : AbstractSimpleMLChecker() {
+class AnnotationChecker @Inject constructor(
+    private val typeComputer: TypeComputer
+) : AbstractSimpleMLChecker() {
 
     @Check
     fun uniqueNames(smlAnnotation: SmlAnnotation) {
@@ -24,6 +33,33 @@ class AnnotationChecker : AbstractSimpleMLChecker() {
                 Literals.SML_ABSTRACT_CALLABLE__PARAMETER_LIST,
                 InfoCode.UnnecessaryParameterList
             )
+        }
+    }
+
+    private val validParameterTypes = setOf(
+        StdlibClasses.Boolean,
+        StdlibClasses.Float,
+        StdlibClasses.Int,
+        StdlibClasses.String,
+    )
+
+    @Check
+    fun parameterTypes(smlAnnotation: SmlAnnotation) {
+        smlAnnotation.parametersOrEmpty().forEach {
+            val isValid = when (val parameterType = typeComputer.typeOf(it)) {
+                is ClassType -> parameterType.fullyQualifiedName in validParameterTypes
+                is EnumType -> parameterType.smlEnum.isConstant()
+                else -> false
+            }
+
+            if (!isValid) {
+                error(
+                    "Parameters of annotations must have type Boolean, Float, Int, String, or a constant enum.",
+                    it,
+                    Literals.SML_PARAMETER__TYPE,
+                    ErrorCode.UnsupportedAnnotationParameterType
+                )
+            }
         }
     }
 }
