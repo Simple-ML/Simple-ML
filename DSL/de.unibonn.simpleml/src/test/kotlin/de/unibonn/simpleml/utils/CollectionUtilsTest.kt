@@ -29,22 +29,6 @@ class CollectionUtilsTest {
     }
 
     @Nested
-    inner class OuterZipBy {
-
-        @Test
-        fun `should zip the two lists while padding the shorter list with nulls at the end (left shorter)`() {
-            val actualResult = outerZipBy(listOf(3), listOf(1, 2)) { a, b -> a to b }
-            actualResult.shouldContainExactly(3 to 1, null to 2)
-        }
-
-        @Test
-        fun `should zip the two lists while padding the shorter list with nulls at the end (right shorter)`() {
-            val actualResult = outerZipBy(listOf(1, 2), listOf(3)) { a, b -> a to b }
-            actualResult.shouldContainExactly(1 to 3, 2 to null)
-        }
-    }
-
-    @Nested
     inner class UniqueOrNull {
 
         @Test
@@ -75,6 +59,36 @@ class CollectionUtilsTest {
         @Test
         fun `should return null if multiple elements match the filter`() {
             listOf(1, 2).uniqueOrNull { true }.shouldBeNull()
+        }
+    }
+
+    @Nested
+    inner class NullIfEmptyElse {
+
+        @Test
+        fun `should return null if the list is empty`() {
+            emptyList<Int>().nullIfEmptyElse { it }.shouldBeNull()
+        }
+
+        @Test
+        fun `should call the initializer if the list is not empty`() {
+            listOf(1, 2, 3).nullIfEmptyElse { list -> list.map { it + 1 } }.shouldContainExactly(2, 3, 4)
+        }
+    }
+
+    @Nested
+    inner class OuterZipBy {
+
+        @Test
+        fun `should zip the two lists while padding the shorter list with nulls at the end (left shorter)`() {
+            val actualResult = outerZipBy(listOf(3), listOf(1, 2)) { a, b -> a to b }
+            actualResult.shouldContainExactly(3 to 1, null to 2)
+        }
+
+        @Test
+        fun `should zip the two lists while padding the shorter list with nulls at the end (right shorter)`() {
+            val actualResult = outerZipBy(listOf(1, 2), listOf(3)) { a, b -> a to b }
+            actualResult.shouldContainExactly(1 to 3, 2 to null)
         }
     }
 }
