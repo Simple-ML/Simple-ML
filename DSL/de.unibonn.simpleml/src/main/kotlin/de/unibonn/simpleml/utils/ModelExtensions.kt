@@ -2,12 +2,16 @@
 
 package de.unibonn.simpleml.utils
 
+import de.unibonn.simpleml.emf.aliasNameOrNull
 import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.containingBlockLambdaOrNull
-import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.containingStepOrNull
 import de.unibonn.simpleml.emf.descendants
+import de.unibonn.simpleml.emf.isClassMember
+import de.unibonn.simpleml.emf.isNamed
+import de.unibonn.simpleml.emf.isQualified
+import de.unibonn.simpleml.emf.isResolved
 import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
@@ -15,7 +19,6 @@ import de.unibonn.simpleml.emf.parentTypesOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
-import de.unibonn.simpleml.emf.variantsOrEmpty
 import de.unibonn.simpleml.emf.yieldsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractCallable
@@ -23,7 +26,6 @@ import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
-import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationCall
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlArgumentList
@@ -51,17 +53,11 @@ import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
-import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.stdlibAccess.isPure
 import org.eclipse.emf.ecore.EObject
-import kotlin.contracts.ExperimentalContracts
-import kotlin.contracts.contract
 
 // Argument ------------------------------------------------------------------------------------------------------------
-
-fun SmlArgument.isNamed() = this.parameter != null
-fun SmlArgument.isPositional() = this.parameter == null
 
 fun SmlArgument.parameterOrNull(): SmlParameter? {
     when {
@@ -154,28 +150,6 @@ fun SmlCall.maybeCallable(): CallableResult {
     return CallableResult.Unresolvable
 }
 
-fun SmlCall.isRecursive(): Boolean {
-    val containingWorkflowStep = this.containingStepOrNull() ?: return false
-    val containingLambda = this.containingBlockLambdaOrNull()
-
-    val origin = mutableSetOf<EObject>(containingWorkflowStep)
-    if (containingLambda != null) {
-        origin.add(containingLambda)
-    }
-
-    return this.isRecursive(origin, emptySet())
-}
-
-private fun SmlCall.isRecursive(origin: Set<EObject>, visited: Set<EObject>): Boolean {
-    return when (val callable = this.callableOrNull()) {
-        is SmlStep -> callable in origin || callable !in visited && callable.descendants<SmlCall>()
-            .any { it.isRecursive(origin, visited + callable) }
-        is SmlBlockLambda -> callable in origin || callable !in visited && callable.descendants<SmlCall>()
-            .any { it.isRecursive(origin, visited + callable) }
-        else -> false
-    }
-}
-
 fun SmlCall.parametersOrNull(): List<SmlParameter>? {
     return callableOrNull()?.parametersOrEmpty()
 }
@@ -210,47 +184,6 @@ fun SmlClass?.parentClassOrNull(): SmlClass? {
         1 -> resolvedParentClasses.first()
         else -> null
     }
-}
-
-// Declaration ---------------------------------------------------------------------------------------------------------
-
-fun SmlAbstractDeclaration.isInferredStatic(): Boolean {
-    return when {
-        !this.isClassMember() -> false
-        this is SmlClass || this is SmlEnum -> true
-        this is SmlAttribute && this.isStatic -> true
-        this is SmlFunction && this.isStatic -> true
-        else -> false
-    }
-}
-
-fun SmlAbstractDeclaration.isClassMember() = this.containingClassOrNull() != null
-fun SmlAbstractDeclaration.isCompilationUnitMember(): Boolean {
-    return !isClassMember() &&
-        (
-            this is SmlAnnotation ||
-                this is SmlClass ||
-                this is SmlEnum ||
-                this is SmlFunction ||
-                this is SmlWorkflow ||
-                this is SmlStep
-            )
-}
-
-fun SmlAbstractDeclaration?.asResolvedOrNull(): SmlAbstractDeclaration? {
-    return when {
-        isResolved() -> this
-        else -> null
-    }
-}
-
-@OptIn(ExperimentalContracts::class)
-fun SmlAbstractDeclaration?.isResolved(): Boolean {
-    contract {
-        returns(true) implies (this@isResolved != null)
-    }
-
-    return (this != null) && !this.eIsProxy()
 }
 
 // Assignee ------------------------------------------------------------------------------------------------------------
@@ -296,31 +229,6 @@ fun SmlAbstractAssignee.indexOrNull(): Int? {
     return assignment.assigneesOrEmpty().indexOf(this)
 }
 
-// Enum ----------------------------------------------------------------------------------------------------------------
-
-fun SmlEnum?.isConstant() = this.variantsOrEmpty().all { it.parameterList == null }
-
-// Expression ----------------------------------------------------------------------------------------------------------
-
-fun SmlAbstractExpression.hasSideEffects(): Boolean {
-    if (this is SmlCall) {
-        if (this.isRecursive()) {
-            return true
-        }
-
-        val callable = this.callableOrNull()
-        return callable is SmlFunction && !callable.isPure() ||
-            callable is SmlStep && !callable.isInferredPure() ||
-            callable is SmlBlockLambda && !callable.isInferredPure()
-    }
-
-    return false
-}
-
-// Function ------------------------------------------------------------------------------------------------------------
-
-fun SmlFunction.isMethod() = this.containingClassOrNull() != null
-
 // Import --------------------------------------------------------------------------------------------------------------
 
 fun SmlImport.importedNameOrNull(): String? {
@@ -331,22 +239,9 @@ fun SmlImport.importedNameOrNull(): String? {
             null
         }
     } else {
-        this.aliasName()
+        this.aliasNameOrNull()
     }
 }
-
-fun SmlImport.isQualified() = !this.importedNamespace.endsWith(".*")
-fun SmlImport.aliasName() = this.alias?.name
-
-// Lambda --------------------------------------------------------------------------------------------------------------
-
-fun SmlBlockLambda.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }
-fun SmlExpressionLambda.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }
-
-// Parameter -----------------------------------------------------------------------------------------------------------
-
-fun SmlParameter.isRequired() = this.defaultValue == null && !isVariadic
-fun SmlParameter.isOptional() = this.defaultValue != null
 
 fun SmlParameter.usesIn(obj: EObject) = obj.descendants<SmlReference>().filter { it.declaration == this }
 
@@ -417,12 +312,7 @@ fun SmlAbstractType?.classOrNull(): SmlClass? {
     }
 }
 
-fun SmlAbstractType?.resolveToFunctionTypeOrNull() = this as? SmlCallableType
-
 // TypeArgument --------------------------------------------------------------------------------------------------------
-
-fun SmlTypeArgument.isNamed() = this.typeParameter != null
-fun SmlTypeArgument.isPositional() = this.typeParameter == null
 
 fun SmlTypeArgument.typeParameterOrNull(): SmlTypeParameter? {
     when {
@@ -465,3 +355,64 @@ fun SmlTypeArgumentList.typeParametersOrNull(): List<SmlTypeParameter>? {
 
     return null
 }
+
+// SmlAbstractDeclaration --------------------------------------------------------------------------
+
+fun SmlAbstractDeclaration.isInferredStatic(): Boolean {
+    return when {
+        !this.isClassMember() -> false
+        this is SmlClass || this is SmlEnum -> true
+        this is SmlAttribute && this.isStatic -> true
+        this is SmlFunction && this.isStatic -> true
+        else -> false
+    }
+}
+
+fun SmlCall.isRecursive(): Boolean {
+    val containingWorkflowStep = this.containingStepOrNull() ?: return false
+    val containingLambda = this.containingBlockLambdaOrNull()
+
+    val origin = mutableSetOf<EObject>(containingWorkflowStep)
+    if (containingLambda != null) {
+        origin.add(containingLambda)
+    }
+
+    return this.isRecursive(origin, emptySet())
+}
+
+// SmlBlockLambda ----------------------------------------------------------------------------------
+
+fun SmlBlockLambda.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }
+
+// SmlCall -----------------------------------------------------------------------------------------
+
+private fun SmlCall.isRecursive(origin: Set<EObject>, visited: Set<EObject>): Boolean {
+    return when (val callable = this.callableOrNull()) {
+        is SmlStep -> callable in origin || callable !in visited && callable.descendants<SmlCall>()
+            .any { it.isRecursive(origin, visited + callable) }
+        is SmlBlockLambda -> callable in origin || callable !in visited && callable.descendants<SmlCall>()
+            .any { it.isRecursive(origin, visited + callable) }
+        else -> false
+    }
+}
+
+// SmlExpression -----------------------------------------------------------------------------------
+
+fun SmlAbstractExpression.hasSideEffects(): Boolean {
+    if (this is SmlCall) {
+        if (this.isRecursive()) {
+            return true
+        }
+
+        val callable = this.callableOrNull()
+        return callable is SmlFunction && !callable.isPure() ||
+                callable is SmlStep && !callable.isInferredPure() ||
+                callable is SmlBlockLambda && !callable.isInferredPure()
+    }
+
+    return false
+}
+
+// SmlExpressionLambda -----------------------------------------------------------------------------
+
+fun SmlExpressionLambda.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }

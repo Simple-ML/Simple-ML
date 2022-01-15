@@ -1,10 +1,10 @@
 package de.unibonn.simpleml.validation.other
 
+import de.unibonn.simpleml.emf.isNamed
+import de.unibonn.simpleml.emf.isPositional
+import de.unibonn.simpleml.emf.isRequired
 import de.unibonn.simpleml.simpleML.SmlArgumentList
 import de.unibonn.simpleml.utils.duplicatesBy
-import de.unibonn.simpleml.utils.isNamed
-import de.unibonn.simpleml.utils.isPositional
-import de.unibonn.simpleml.utils.isRequired
 import de.unibonn.simpleml.utils.parameterOrNull
 import de.unibonn.simpleml.utils.parametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker

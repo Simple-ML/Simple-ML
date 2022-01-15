@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.validation.declarations
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.emf.isConstant
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
@@ -8,7 +9,6 @@ import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.typing.ClassType
 import de.unibonn.simpleml.typing.EnumType
 import de.unibonn.simpleml.typing.TypeComputer
-import de.unibonn.simpleml.utils.isConstant
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode

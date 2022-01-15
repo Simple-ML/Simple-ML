@@ -1,11 +1,12 @@
 package de.unibonn.simpleml.validation.declarations
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.emf.aliasNameOrNull
+import de.unibonn.simpleml.emf.isQualified
+import de.unibonn.simpleml.emf.isWildcard
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.utils.SimpleMLIndexExtensions
-import de.unibonn.simpleml.utils.aliasName
-import de.unibonn.simpleml.utils.isQualified
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.naming.QualifiedName
@@ -48,7 +49,7 @@ class ImportChecker @Inject constructor(
 
     @Check
     fun wildcardImportWithAlias(smlImport: SmlImport) {
-        if (!smlImport.isQualified() && smlImport.aliasName() != null) {
+        if (smlImport.isWildcard() && smlImport.aliasNameOrNull() != null) {
             error(
                 "A wildcard import must not have an alias.",
                 Literals.SML_IMPORT__ALIAS,

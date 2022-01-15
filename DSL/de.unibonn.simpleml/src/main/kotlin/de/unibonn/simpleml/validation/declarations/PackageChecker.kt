@@ -3,6 +3,7 @@ package de.unibonn.simpleml.validation.declarations
 import com.google.inject.Inject
 import de.unibonn.simpleml.constant.isInStubFile
 import de.unibonn.simpleml.constant.isInTestFile
+import de.unibonn.simpleml.emf.isQualified
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlImport
@@ -12,7 +13,6 @@ import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.utils.SimpleMLIndexExtensions
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.importedNameOrNull
-import de.unibonn.simpleml.utils.isQualified
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.naming.IQualifiedNameProvider

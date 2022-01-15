@@ -1,5 +1,6 @@
 package de.unibonn.simpleml.prologBridge.converters
 
+import de.unibonn.simpleml.emf.aliasNameOrNull
 import de.unibonn.simpleml.emf.annotationCallsOrEmpty
 import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.assigneesOrEmpty
@@ -146,7 +147,6 @@ import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlYield
-import de.unibonn.simpleml.utils.aliasName
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.EcoreUtil2
@@ -329,7 +329,7 @@ class AstToPrologFactbase {
     }
 
     private fun PlFactbase.visitImport(obj: SmlImport, parentId: Id<SmlPackage>) {
-        +ImportT(obj.id, parentId, obj.importedNamespace, obj.aliasName())
+        +ImportT(obj.id, parentId, obj.importedNamespace, obj.aliasNameOrNull())
         visitSourceLocation(obj)
     }
 

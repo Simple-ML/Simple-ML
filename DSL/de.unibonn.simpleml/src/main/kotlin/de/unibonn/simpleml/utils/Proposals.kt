@@ -2,6 +2,8 @@ package de.unibonn.simpleml.utils
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.containingClassOrNull
+import de.unibonn.simpleml.emf.isClassMember
+import de.unibonn.simpleml.emf.isCompilationUnitMember
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlClass

@@ -1,9 +1,15 @@
 @file:Suppress("unused")
 
+/**
+ * Contains shortcuts that simplify working with the EMF model. Since all of these are very straightforward, unit tests
+ * are not required.
+ */
+
 package de.unibonn.simpleml.emf
 
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractCallable
+import de.unibonn.simpleml.simpleML.SmlAbstractCompilationUnitMember
 import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractLocalVariable
@@ -27,6 +33,7 @@ import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
@@ -46,6 +53,8 @@ import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.uniqueOrNull
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 /* ********************************************************************************************************************
  * Accessing descendants                                                                                              *
@@ -53,8 +62,8 @@ import org.eclipse.emf.ecore.resource.Resource
 
 // Resource ----------------------------------------------------------------------------------------
 
-fun Resource?.compilationUnitOrNull(): SmlCompilationUnit? {
-    return this?.allContents
+fun Resource.compilationUnitOrNull(): SmlCompilationUnit? {
+    return this.allContents
         ?.asSequence()
         ?.filterIsInstance<SmlCompilationUnit>()
         ?.firstOrNull()
@@ -104,6 +113,28 @@ fun SmlAssignment?.yieldsOrEmpty(): List<SmlYield> {
     return this.assigneesOrEmpty().filterIsInstance<SmlYield>()
 }
 
+// SmlBlockLambda ----------------------------------------------------------------------------------
+
+fun SmlBlockLambda?.lambdaResultsOrEmpty(): List<SmlBlockLambdaResult> {
+    return this.statementsOrEmpty()
+        .filterIsInstance<SmlAssignment>()
+        .flatMap { it.lambdaResultsOrEmpty() }
+}
+
+fun SmlBlockLambda?.localVariablesOrEmpty(): List<SmlAbstractLocalVariable> {
+    return this.parametersOrEmpty() + this.placeholdersOrEmpty()
+}
+
+fun SmlBlockLambda?.placeholdersOrEmpty(): List<SmlPlaceholder> {
+    return this.statementsOrEmpty()
+        .filterIsInstance<SmlAssignment>()
+        .flatMap { it.placeholdersOrEmpty() }
+}
+
+fun SmlBlockLambda?.statementsOrEmpty(): List<SmlAbstractStatement> {
+    return this?.body?.statements.orEmpty()
+}
+
 // SmlCall -----------------------------------------------------------------------------------------
 
 fun SmlCall?.argumentsOrEmpty(): List<SmlArgument> {
@@ -150,7 +181,7 @@ fun SmlClass?.protocolsOrEmpty(): List<SmlProtocol> {
         .orEmpty()
 }
 
-fun SmlClass?.uniqueProtocolOrNull(): SmlProtocol? {
+fun SmlClass.uniqueProtocolOrNull(): SmlProtocol? {
     return this.protocolsOrEmpty().uniqueOrNull()
 }
 
@@ -165,8 +196,8 @@ fun SmlCompilationUnit?.memberDeclarationsOrEmpty(): List<SmlAbstractDeclaration
 /**
  * Returns the unique package declaration contained in the compilation unit or `null` if none or multiple exist.
  */
-fun SmlCompilationUnit?.uniquePackageOrNull(): SmlPackage? {
-    return this?.members?.filterIsInstance<SmlPackage>()?.uniqueOrNull()
+fun SmlCompilationUnit.uniquePackageOrNull(): SmlPackage? {
+    return this.members?.filterIsInstance<SmlPackage>()?.uniqueOrNull()
 }
 
 // SmlEnum -----------------------------------------------------------------------------------------
@@ -199,26 +230,10 @@ fun SmlFunction?.constraintsOrEmpty(): List<SmlAbstractConstraint> {
     return this?.constraintList?.constraints.orEmpty()
 }
 
-// SmlBlockLambda ----------------------------------------------------------------------------------
+// SmlImport ---------------------------------------------------------------------------------------
 
-fun SmlBlockLambda?.lambdaResultsOrEmpty(): List<SmlBlockLambdaResult> {
-    return this.statementsOrEmpty()
-        .filterIsInstance<SmlAssignment>()
-        .flatMap { it.lambdaResultsOrEmpty() }
-}
-
-fun SmlBlockLambda?.localVariablesOrEmpty(): List<SmlAbstractLocalVariable> {
-    return this.parametersOrEmpty() + this.placeholdersOrEmpty()
-}
-
-fun SmlBlockLambda?.placeholdersOrEmpty(): List<SmlPlaceholder> {
-    return this.statementsOrEmpty()
-        .filterIsInstance<SmlAssignment>()
-        .flatMap { it.placeholdersOrEmpty() }
-}
-
-fun SmlBlockLambda?.statementsOrEmpty(): List<SmlAbstractStatement> {
-    return this?.body?.statements.orEmpty()
+fun SmlImport.aliasNameOrNull(): String? {
+    return this.alias?.name
 }
 
 // SmlNamedType ------------------------------------------------------------------------------------
@@ -241,8 +256,8 @@ fun SmlProtocol?.subtermsOrEmpty(): List<SmlProtocolSubterm> {
     return this?.body.subtermsOrEmpty()
 }
 
-fun SmlProtocol?.termOrNull(): SmlAbstractProtocolTerm? {
-    return this?.body?.term
+fun SmlProtocol.termOrNull(): SmlAbstractProtocolTerm? {
+    return this.body?.term
 }
 
 // SmlProtocolBody ---------------------------------------------------------------------------------
@@ -305,20 +320,20 @@ fun SmlStep?.yieldsOrEmpty(): List<SmlYield> {
  * Accessing ancestors                                                                                                *
  * ********************************************************************************************************************/
 
-fun EObject?.containingBlockLambdaOrNull() = this?.closestAncestorOrNull<SmlBlockLambda>()
-fun EObject?.containingCallableOrNull() = this?.closestAncestorOrNull<SmlAbstractCallable>()
-fun EObject?.containingClassOrNull() = this?.closestAncestorOrNull<SmlClass>()
-fun EObject?.containingCompilationUnitOrNull() = this?.closestAncestorOrNull<SmlCompilationUnit>()
-fun EObject?.containingDeclarationOrNull() = this?.closestAncestorOrNull<SmlAbstractDeclaration>()
-fun EObject?.containingEnumOrNull() = this?.closestAncestorOrNull<SmlEnum>()
-fun EObject?.containingExpressionLambdaOrNull() = this?.closestAncestorOrNull<SmlExpressionLambda>()
-fun EObject?.containingFunctionOrNull() = this?.closestAncestorOrNull<SmlFunction>()
-fun EObject?.containingPackageOrNull() = this?.closestAncestorOrNull<SmlPackage>()
-fun EObject?.containingProtocolOrNull() = this?.closestAncestorOrNull<SmlProtocol>()
-fun EObject?.containingStepOrNull() = this?.closestAncestorOrNull<SmlStep>()
-fun EObject?.containingWorkflowOrNull() = this?.closestAncestorOrNull<SmlWorkflow>()
+fun EObject.containingBlockLambdaOrNull() = this.closestAncestorOrNull<SmlBlockLambda>()
+fun EObject.containingCallableOrNull() = this.closestAncestorOrNull<SmlAbstractCallable>()
+fun EObject.containingClassOrNull() = this.closestAncestorOrNull<SmlClass>()
+fun EObject.containingCompilationUnitOrNull() = this.closestAncestorOrNull<SmlCompilationUnit>()
+fun EObject.containingDeclarationOrNull() = this.closestAncestorOrNull<SmlAbstractDeclaration>()
+fun EObject.containingEnumOrNull() = this.closestAncestorOrNull<SmlEnum>()
+fun EObject.containingExpressionLambdaOrNull() = this.closestAncestorOrNull<SmlExpressionLambda>()
+fun EObject.containingFunctionOrNull() = this.closestAncestorOrNull<SmlFunction>()
+fun EObject.containingPackageOrNull() = this.closestAncestorOrNull<SmlPackage>()
+fun EObject.containingProtocolOrNull() = this.closestAncestorOrNull<SmlProtocol>()
+fun EObject.containingStepOrNull() = this.closestAncestorOrNull<SmlStep>()
+fun EObject.containingWorkflowOrNull() = this.closestAncestorOrNull<SmlWorkflow>()
 
-fun SmlAnnotationCall?.targetOrNull(): SmlAbstractDeclaration? {
+fun SmlAnnotationCall.targetOrNull(): SmlAbstractDeclaration? {
     return when (val declaration = this.containingDeclarationOrNull() ?: return null) {
         is SmlAnnotationCallHolder -> declaration.containingDeclarationOrNull()
         else -> declaration
@@ -334,6 +349,72 @@ fun SmlConstraintList.typeParametersOrNull(): List<SmlTypeParameter>? {
         is SmlClass -> parent.typeParametersOrEmpty()
         is SmlEnumVariant -> return parent.typeParametersOrEmpty()
         is SmlFunction -> parent.typeParametersOrEmpty()
+        else -> null
+    }
+}
+
+/* ********************************************************************************************************************
+ * Checks                                                                                                             *
+ * ********************************************************************************************************************/
+
+// SmlAbstractDeclaration --------------------------------------------------------------------------
+
+fun SmlAbstractDeclaration.isClassMember(): Boolean {
+    return containingClassOrNull() != null
+}
+
+fun SmlAbstractDeclaration.isCompilationUnitMember(): Boolean {
+    return !isClassMember() && this is SmlAbstractCompilationUnitMember
+}
+
+@OptIn(ExperimentalContracts::class)
+fun SmlAbstractDeclaration?.isResolved(): Boolean {
+    contract {
+        returns(true) implies (this@isResolved != null)
+    }
+
+    return (this != null) && !this.eIsProxy()
+}
+
+// SmlArgument -------------------------------------------------------------------------------------
+
+fun SmlArgument.isNamed() = parameter != null
+fun SmlArgument.isPositional() = parameter == null
+
+// SmlEnum -----------------------------------------------------------------------------------------
+
+fun SmlEnum.isConstant(): Boolean {
+    return variantsOrEmpty().all { it.parametersOrEmpty().isEmpty() }
+}
+
+// SmlFunction -----------------------------------------------------------------------------------
+
+fun SmlFunction.isMethod() = containingClassOrNull() != null
+
+// SmlImport ---------------------------------------------------------------------------------------
+
+fun SmlImport.isQualified() = !importedNamespace.endsWith(".*")
+fun SmlImport.isWildcard() = importedNamespace.endsWith(".*")
+
+// SmlParameter ------------------------------------------------------------------------------------
+
+fun SmlParameter.isRequired() = defaultValue == null && !isVariadic
+fun SmlParameter.isOptional() = defaultValue != null
+
+// SmlTypeArgument ---------------------------------------------------------------------------------
+
+fun SmlTypeArgument.isNamed() = typeParameter != null
+fun SmlTypeArgument.isPositional() = typeParameter == null
+
+/* ********************************************************************************************************************
+ * Conversions                                                                                                        *
+ * ********************************************************************************************************************/
+
+// SmlAbstractDeclaration --------------------------------------------------------------------------
+
+fun SmlAbstractDeclaration.asResolvedOrNull(): SmlAbstractDeclaration? {
+    return when {
+        isResolved() -> this
         else -> null
     }
 }

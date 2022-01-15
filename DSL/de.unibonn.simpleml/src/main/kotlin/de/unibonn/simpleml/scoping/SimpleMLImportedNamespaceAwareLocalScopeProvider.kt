@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.scoping
 
 import de.unibonn.simpleml.simpleML.SmlPackage
-import de.unibonn.simpleml.utils.aliasName
+import de.unibonn.simpleml.emf.aliasNameOrNull
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.scoping.impl.ImportNormalizer
@@ -34,7 +34,7 @@ class SimpleMLImportedNamespaceAwareLocalScopeProvider : ImportedNamespaceAwareL
 
         // Resolve imports - including aliases
         val resolvers = context.imports.mapNotNull {
-            createImportedNamespaceResolver(it.importedNamespace, it.aliasName(), ignoreCase)
+            createImportedNamespaceResolver(it.importedNamespace, it.aliasNameOrNull(), ignoreCase)
         }.toMutableList()
 
         // Implicitly import declarations in same package
