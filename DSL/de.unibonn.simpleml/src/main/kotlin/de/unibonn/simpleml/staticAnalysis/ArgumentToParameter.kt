@@ -1,5 +1,6 @@
 package de.unibonn.simpleml.staticAnalysis
 
+import de.unibonn.simpleml.emf.asResolvedOrNull
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.isNamed
 import de.unibonn.simpleml.emf.parametersOrEmpty
@@ -9,11 +10,14 @@ import de.unibonn.simpleml.simpleML.SmlArgumentList
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlParameter
 
+/**
+ * Returns the [SmlParameter] that corresponds to this [SmlArgument] or `null` if it cannot be resolved.
+ */
 fun SmlArgument.parameterOrNull(): SmlParameter? {
-    when {
-        this.isNamed() -> return this.parameter
+    return when {
+        isNamed() -> parameter.asResolvedOrNull()
         else -> {
-            val argumentList = this.closestAncestorOrNull<SmlArgumentList>() ?: return null
+            val argumentList = closestAncestorOrNull<SmlArgumentList>() ?: return null
 
             val firstNamedArgumentIndex = argumentList.arguments.indexOfFirst { it.isNamed() }
             val thisIndex = argumentList.arguments.indexOf(this)
@@ -30,17 +34,14 @@ fun SmlArgument.parameterOrNull(): SmlParameter? {
     }
 }
 
+/**
+ * Returns the list of [SmlParameter]s that corresponds to this list of [SmlArgument]s or `null` if it cannot not be
+ * resolved.
+ */
 fun SmlArgumentList.parametersOrNull(): List<SmlParameter>? {
-    when (val parent = this.eContainer()) {
-        is SmlAnnotationCall -> {
-            if (parent.annotation.eIsProxy()) {
-                return null
-            }
-
-            return parent.annotation.parametersOrEmpty()
-        }
-        is SmlCall -> return parent.parametersOrNull()
+    return when (val parent = this.eContainer()) {
+        is SmlAnnotationCall -> parent.annotation.asResolvedOrNull()?.parametersOrEmpty()
+        is SmlCall -> parent.parametersOrNull()
+        else -> null
     }
-
-    return emptyList()
 }

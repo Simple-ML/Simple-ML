@@ -2,7 +2,7 @@ package de.unibonn.simpleml.typing
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.closestAncestorOrNull
-import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
+import de.unibonn.simpleml.emf.classMembersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAttribute
@@ -39,7 +39,7 @@ class ClassHierarchy @Inject constructor(
     }
 
     fun superClassMembers(smlClass: SmlClass) =
-        superClasses(smlClass).flatMap { it.memberDeclarationsOrEmpty().asSequence() }
+        superClasses(smlClass).flatMap { it.classMembersOrEmpty().asSequence() }
 
     // Function --------------------------------------------------------------------------------------------------------
 
@@ -54,7 +54,7 @@ class ClassHierarchy @Inject constructor(
 fun SmlClass?.inheritedNonStaticMembersOrEmpty(): Set<SmlAbstractDeclaration> {
     return this?.parentTypesOrEmpty()
         ?.mapNotNull { it.classOrNull() }
-        ?.flatMap { it.memberDeclarationsOrEmpty() }
+        ?.flatMap { it.classMembersOrEmpty() }
         ?.filter { it is SmlAttribute && !it.isStatic || it is SmlFunction && !it.isStatic }
         ?.toSet()
         .orEmpty()

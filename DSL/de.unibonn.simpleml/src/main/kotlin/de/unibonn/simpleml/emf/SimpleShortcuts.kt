@@ -9,11 +9,13 @@ package de.unibonn.simpleml.emf
 
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractCallable
+import de.unibonn.simpleml.simpleML.SmlAbstractClassMember
 import de.unibonn.simpleml.simpleML.SmlAbstractCompilationUnitMember
 import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractLocalVariable
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
+import de.unibonn.simpleml.simpleML.SmlAbstractPackageMember
 import de.unibonn.simpleml.simpleML.SmlAbstractProtocolTerm
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
@@ -165,13 +167,13 @@ fun SmlClass?.constraintsOrEmpty(): List<SmlAbstractConstraint> {
     return this?.constraintList?.constraints.orEmpty()
 }
 
-fun SmlClass?.membersOrEmpty(): List<SmlAbstractObject> {
+fun SmlClass?.objectsInBodyOrEmpty(): List<SmlAbstractObject> {
     return this?.body?.members.orEmpty()
 }
 
-fun SmlClass?.memberDeclarationsOrEmpty(): List<SmlAbstractDeclaration> {
+fun SmlClass?.classMembersOrEmpty(): List<SmlAbstractClassMember> {
     return this?.body?.members
-        ?.filterIsInstance<SmlAbstractDeclaration>()
+        ?.filterIsInstance<SmlAbstractClassMember>()
         .orEmpty()
 }
 
@@ -187,9 +189,9 @@ fun SmlClass.uniqueProtocolOrNull(): SmlProtocol? {
 
 // SmlCompilationUnit ------------------------------------------------------------------------------
 
-fun SmlCompilationUnit?.memberDeclarationsOrEmpty(): List<SmlAbstractDeclaration> {
+fun SmlCompilationUnit?.compilationUnitMembersOrEmpty(): List<SmlAbstractCompilationUnitMember> {
     return this?.members
-        ?.filterIsInstance<SmlAbstractDeclaration>()
+        ?.filterIsInstance<SmlAbstractCompilationUnitMember>()
         .orEmpty()
 }
 
@@ -254,9 +256,9 @@ fun SmlNamedType?.typeArgumentsOrEmpty(): List<SmlTypeArgument> {
 
 // SmlPackage --------------------------------------------------------------------------------------
 
-fun SmlPackage?.memberDeclarationsOrEmpty(): List<SmlAbstractDeclaration> {
+fun SmlPackage?.packageMembersOrEmpty(): List<SmlAbstractPackageMember> {
     return this?.members
-        ?.filterIsInstance<SmlAbstractDeclaration>()
+        ?.filterIsInstance<SmlAbstractPackageMember>()
         .orEmpty()
 }
 
@@ -370,7 +372,7 @@ fun SmlConstraintList.typeParametersOrNull(): List<SmlTypeParameter>? {
 // SmlAbstractDeclaration --------------------------------------------------------------------------
 
 fun SmlAbstractDeclaration.isClassMember(): Boolean {
-    return containingClassOrNull() != null
+    return this is SmlAbstractClassMember && containingClassOrNull() != null
 }
 
 fun SmlAbstractDeclaration.isCompilationUnitMember(): Boolean {
@@ -422,7 +424,7 @@ fun SmlTypeArgument.isPositional() = typeParameter == null
 
 // SmlAbstractDeclaration --------------------------------------------------------------------------
 
-fun SmlAbstractDeclaration.asResolvedOrNull(): SmlAbstractDeclaration? {
+fun <T: SmlAbstractDeclaration> T.asResolvedOrNull(): T? {
     return when {
         isResolved() -> this
         else -> null

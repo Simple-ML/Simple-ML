@@ -6,7 +6,7 @@ import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingCallableOrNull
 import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.containingProtocolOrNull
-import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
+import de.unibonn.simpleml.emf.classMembersOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.subtermsOrEmpty
@@ -146,7 +146,7 @@ class SimpleMLScopeProvider @Inject constructor(
             type.isNullable && !context.isNullSafe -> resultScope
             type is ClassType -> {
                 val members =
-                    type.smlClass.memberDeclarationsOrEmpty().filter { it.isInferredStatic() == type.isStatic }
+                    type.smlClass.classMembersOrEmpty().filter { it.isInferredStatic() == type.isStatic }
                 val superTypeMembers = classHierarchy.superClassMembers(type.smlClass)
                     .filter { it.isInferredStatic() == type.isStatic }
                     .toList()
@@ -202,10 +202,10 @@ class SimpleMLScopeProvider @Inject constructor(
     private fun classMembers(context: SmlClass, parentScope: IScope): IScope {
         return when (val containingClassOrNull = context.containingClassOrNull()) {
             is SmlClass -> Scopes.scopeFor(
-                context.memberDeclarationsOrEmpty(),
+                context.classMembersOrEmpty(),
                 classMembers(containingClassOrNull, parentScope)
             )
-            else -> Scopes.scopeFor(context.memberDeclarationsOrEmpty(), parentScope)
+            else -> Scopes.scopeFor(context.classMembersOrEmpty(), parentScope)
         }
     }
 
@@ -263,7 +263,7 @@ class SimpleMLScopeProvider @Inject constructor(
             type.isNullable -> IScope.NULLSCOPE
             type is ClassType -> {
                 val members =
-                    type.smlClass.memberDeclarationsOrEmpty().filterIsInstance<SmlAbstractNamedTypeDeclaration>()
+                    type.smlClass.classMembersOrEmpty().filterIsInstance<SmlAbstractNamedTypeDeclaration>()
                 val superTypeMembers = classHierarchy.superClassMembers(type.smlClass)
                     .filterIsInstance<SmlAbstractNamedTypeDeclaration>()
                     .toList()
@@ -281,7 +281,7 @@ class SimpleMLScopeProvider @Inject constructor(
         val containingSubtermOrNull = context.closestAncestorOrNull<SmlProtocolSubterm>()
 
         // Own & inherited class members
-        val members = containingClass.memberDeclarationsOrEmpty().filterIsInstance<SmlAbstractProtocolToken>()
+        val members = containingClass.classMembersOrEmpty().filterIsInstance<SmlAbstractProtocolToken>()
         val superTypeMembers = classHierarchy.superClassMembers(containingClass)
             .filterIsInstance<SmlAbstractProtocolToken>()
             .toList()
