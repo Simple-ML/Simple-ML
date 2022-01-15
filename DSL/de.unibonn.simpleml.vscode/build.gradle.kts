@@ -9,7 +9,7 @@ plugins {
 }
 
 node {
-    version.set("16.10.0")
+    version.set("16.13.2")
     download.set(true)
 }
 
@@ -50,6 +50,7 @@ tasks.register<NpxTask>("vsCodeExtension") {
     dependsOn("npmInstall")
 
     inputs.dir("icons")
+    inputs.dir("ls")
     inputs.dir("src")
     inputs.dir("syntaxes")
     inputs.files(
@@ -86,9 +87,9 @@ tasks.register<Exec>("launchVSCode") {
     dependsOn("installExtension")
 
     if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-        commandLine("powershell", "code", "-n", "../de.unibonn.simpleml/stdlib/stubs")
+        commandLine("powershell", "code", "-n", "../de.unibonn.simpleml/src/main/resources/stdlib")
     } else {
-        commandLine("code", "-n", "../de.unibonn.simpleml/stdlib/stubs")
+        commandLine("code", "-n", "../de.unibonn.simpleml/src/main/resources/stdlib")
     }
 }
 
