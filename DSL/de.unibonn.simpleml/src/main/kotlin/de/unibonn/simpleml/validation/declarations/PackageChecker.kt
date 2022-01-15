@@ -59,6 +59,7 @@ class PackageChecker @Inject constructor(
             when (it) {
                 is SmlImport -> it.importedNameOrNull()
                 is SmlAbstractDeclaration -> it.name
+                // Should never happen
                 else -> throw AssertionError("$it is neither an import nor a declaration.")
             }
         }.forEach {
