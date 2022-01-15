@@ -23,7 +23,8 @@ enum class ErrorCode {
     UNRESOLVED_IMPORTED_NAMESPACE,
     WILDCARD_IMPORT_WITH_ALIAS,
 
-    NO_REQUIRED_PARAMETERS_AFTER_FIRST_OPTIONAL_PARAMETER,
+    NoRequiredParametersAfterFirstOptionalParameter,
+    NoMoreParametersAfterVariadicParameter,
 
     NO_YIELD_IN_WORKFLOW,
 
