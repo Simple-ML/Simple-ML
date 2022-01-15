@@ -35,15 +35,15 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.staticAnalysis.callableOrNull
+import de.unibonn.simpleml.stdlibAccess.StdlibAccess
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
-import de.unibonn.simpleml.utils.SimpleMLStdlib
 import de.unibonn.simpleml.utils.assignedOrNull
-import de.unibonn.simpleml.utils.callableOrNull
 import org.eclipse.emf.ecore.EObject
 
 @Suppress("PrivatePropertyName")
 class TypeComputer @Inject constructor(
-    private val stdlib: SimpleMLStdlib
+    private val stdlib: StdlibAccess
 ) {
 
     private lateinit var context: EObject

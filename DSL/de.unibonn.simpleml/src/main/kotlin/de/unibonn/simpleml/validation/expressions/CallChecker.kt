@@ -12,10 +12,10 @@ import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
-import de.unibonn.simpleml.utils.CallableResult
-import de.unibonn.simpleml.utils.callableOrNull
-import de.unibonn.simpleml.utils.isRecursive
-import de.unibonn.simpleml.utils.maybeCallable
+import de.unibonn.simpleml.staticAnalysis.CallableResult
+import de.unibonn.simpleml.staticAnalysis.callableOrNull
+import de.unibonn.simpleml.staticAnalysis.isRecursive
+import de.unibonn.simpleml.staticAnalysis.maybeCallable
 import de.unibonn.simpleml.utils.resultsOrNull
 import de.unibonn.simpleml.utils.typeParametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker

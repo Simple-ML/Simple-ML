@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.utils
+package de.unibonn.simpleml.ide.editor.contentassist
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.uniquePackageOrNull

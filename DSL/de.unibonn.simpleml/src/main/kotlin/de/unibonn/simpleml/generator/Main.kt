@@ -3,7 +3,7 @@ package de.unibonn.simpleml.generator
 import com.google.inject.Inject
 import com.google.inject.Provider
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
-import de.unibonn.simpleml.utils.SimpleMLStdlib
+import de.unibonn.simpleml.stdlibAccess.StdlibAccess
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtext.diagnostics.Severity
@@ -17,11 +17,11 @@ import java.lang.IllegalArgumentException
 
 @Suppress("unused")
 class Main @Inject constructor(
-        private val fileAccess: JavaIoFileSystemAccess,
-        private val generator: GeneratorDelegate,
-        private val resourceSetProvider: Provider<ResourceSet>,
-        private val stdlib: SimpleMLStdlib,
-        private val validator: IResourceValidator
+    private val fileAccess: JavaIoFileSystemAccess,
+    private val generator: GeneratorDelegate,
+    private val resourceSetProvider: Provider<ResourceSet>,
+    private val stdlib: StdlibAccess,
+    private val validator: IResourceValidator
 ) {
 
     fun runGenerator(files: List<String>) {

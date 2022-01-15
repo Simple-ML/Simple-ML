@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.utils
+package de.unibonn.simpleml.staticAnalysis
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.closestAncestorOrNull
@@ -6,9 +6,11 @@ import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
+import de.unibonn.simpleml.stdlibAccess.StdlibAccess
+import de.unibonn.simpleml.utils.parentClassOrNull
 
 class ClassHierarchy @Inject constructor(
-    private val stdlib: SimpleMLStdlib
+    private val stdlib: StdlibAccess
 ) {
 
     // ClassOrInterface ------------------------------------------------------------------------------------------------

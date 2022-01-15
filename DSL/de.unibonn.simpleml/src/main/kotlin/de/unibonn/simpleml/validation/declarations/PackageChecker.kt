@@ -10,7 +10,7 @@ import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.utils.SimpleMLIndexExtensions
+import de.unibonn.simpleml.scoping.SimpleMLIndexExtensions
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.utils.importedNameOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker

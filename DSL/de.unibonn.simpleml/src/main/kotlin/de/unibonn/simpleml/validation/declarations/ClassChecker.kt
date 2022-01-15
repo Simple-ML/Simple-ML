@@ -9,7 +9,7 @@ import de.unibonn.simpleml.emf.protocolsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.utils.ClassHierarchy
+import de.unibonn.simpleml.staticAnalysis.ClassHierarchy
 import de.unibonn.simpleml.utils.ClassResult
 import de.unibonn.simpleml.utils.classOrNull
 import de.unibonn.simpleml.utils.duplicatesBy
