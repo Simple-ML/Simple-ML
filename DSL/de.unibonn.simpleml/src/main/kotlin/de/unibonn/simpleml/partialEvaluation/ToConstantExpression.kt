@@ -17,6 +17,7 @@ import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Times
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Not
 import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.closestAncestorOrNull
+import de.unibonn.simpleml.emf.isOptional
 import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
@@ -45,11 +46,10 @@ import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
 import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
 import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
-import de.unibonn.simpleml.utils.indexOrNull
-import de.unibonn.simpleml.utils.isInferredPure
-import de.unibonn.simpleml.utils.isOptional
-import de.unibonn.simpleml.utils.parameterOrNull
-import de.unibonn.simpleml.utils.uniqueYieldOrNull
+import de.unibonn.simpleml.staticAnalysis.indexOrNull
+import de.unibonn.simpleml.staticAnalysis.isInferredPure
+import de.unibonn.simpleml.staticAnalysis.parameterOrNull
+import de.unibonn.simpleml.staticAnalysis.uniqueYieldOrNull
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Minus as InfixMinus
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Minus as PrefixMinus
 
@@ -375,6 +375,7 @@ private fun SmlAbstractAssignee.simplifyAssignee(substitutions: ParameterSubstit
 
 private fun SmlParameter.simplifyParameter(substitutions: ParameterSubstitutions): SmlSimplifiedExpression? {
     return when {
+        isVariadic -> null
         this in substitutions -> substitutions[this]
         isOptional() -> defaultValue?.simplify(substitutions)
         else -> null

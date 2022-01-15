@@ -1,6 +1,8 @@
 package de.unibonn.simpleml.validation.other
 
 import de.unibonn.simpleml.emf.argumentsOrEmpty
+import de.unibonn.simpleml.emf.isRequired
+import de.unibonn.simpleml.emf.isResolved
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.targetOrNull
 import de.unibonn.simpleml.naming.fullyQualifiedNameOrNull
@@ -22,13 +24,11 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
+import de.unibonn.simpleml.staticAnalysis.parametersOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibAnnotations
 import de.unibonn.simpleml.stdlibAccess.StdlibEnums.AnnotationTarget
 import de.unibonn.simpleml.stdlibAccess.validTargets
 import de.unibonn.simpleml.utils.duplicatesBy
-import de.unibonn.simpleml.utils.isRequired
-import de.unibonn.simpleml.utils.isResolved
-import de.unibonn.simpleml.utils.parametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode

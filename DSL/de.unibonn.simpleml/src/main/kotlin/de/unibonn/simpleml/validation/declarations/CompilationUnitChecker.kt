@@ -2,7 +2,7 @@ package de.unibonn.simpleml.validation.declarations
 
 import de.unibonn.simpleml.constant.isInStubFile
 import de.unibonn.simpleml.constant.isInTestFile
-import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
+import de.unibonn.simpleml.emf.compilationUnitMembersOrEmpty
 import de.unibonn.simpleml.emf.uniquePackageOrNull
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
@@ -19,7 +19,7 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
     @Check
     fun members(smlCompilationUnit: SmlCompilationUnit) {
         if (smlCompilationUnit.isInStubFile()) {
-            smlCompilationUnit.memberDeclarationsOrEmpty()
+            smlCompilationUnit.compilationUnitMembersOrEmpty()
                 .filter { it is SmlWorkflow || it is SmlStep }
                 .forEach {
                     error(
@@ -30,7 +30,7 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
                     )
                 }
         } else if (!smlCompilationUnit.isInTestFile()) {
-            smlCompilationUnit.memberDeclarationsOrEmpty()
+            smlCompilationUnit.compilationUnitMembersOrEmpty()
                 .filter { it !is SmlPackage && it !is SmlWorkflow && it !is SmlStep }
                 .forEach {
                     error(
@@ -88,7 +88,7 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun uniqueNames(smlCompilationUnit: SmlCompilationUnit) {
-        smlCompilationUnit.memberDeclarationsOrEmpty()
+        smlCompilationUnit.compilationUnitMembersOrEmpty()
             .duplicatesBy { it.name }
             .forEach {
                 error(

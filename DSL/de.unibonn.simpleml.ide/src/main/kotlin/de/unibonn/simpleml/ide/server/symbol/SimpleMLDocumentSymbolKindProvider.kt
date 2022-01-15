@@ -1,8 +1,8 @@
 package de.unibonn.simpleml.ide.server.symbol
 
+import de.unibonn.simpleml.emf.isClassMember
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.utils.isClassMember
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.lsp4j.SymbolKind

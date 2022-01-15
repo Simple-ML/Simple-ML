@@ -51,6 +51,8 @@ kover {
 
 val koverExcludes = listOf(
     "de.unibonn.simpleml.parser.antlr.*",
+    "de.unibonn.simpleml.serializer.AbstractSimpleMLSemanticSequencer",
+    "de.unibonn.simpleml.serializer.AbstractSimpleMLSyntacticSequencer",
     "de.unibonn.simpleml.services.*",
     "de.unibonn.simpleml.simpleML.*",
     "de.unibonn.simpleml.testing.*",

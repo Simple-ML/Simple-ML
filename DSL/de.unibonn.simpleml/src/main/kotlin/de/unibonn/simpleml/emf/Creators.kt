@@ -89,6 +89,7 @@ import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.utils.nullIfEmptyElse
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.resource.XtextResource
@@ -141,7 +142,7 @@ fun createSmlAnnotation(
     return factory.createSmlAnnotation().apply {
         this.name = name
         this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
-        this.parameterList = createSmlParameterList(parameters.ifEmpty { null })
+        this.parameterList = parameters.nullIfEmptyElse(::createSmlParameterList)
     }
 }
 
@@ -176,7 +177,7 @@ fun createSmlAnnotationCall(
 ): SmlAnnotationCall {
     return factory.createSmlAnnotationCall().apply {
         this.annotation = annotation
-        this.argumentList = createSmlArgumentList(arguments.ifEmpty { null })
+        this.argumentList = arguments.nullIfEmptyElse(::createSmlArgumentList)
     }
 }
 
@@ -223,13 +224,9 @@ fun createSmlArgument(value: SmlAbstractExpression, parameterName: String): SmlA
 }
 
 /**
- * Returns a new object of class [SmlArgumentList] or `null` if the parameter is `null`.
+ * Returns a new object of class [SmlArgumentList].
  */
-private fun createSmlArgumentList(arguments: List<SmlArgument>?): SmlArgumentList? {
-    if (arguments == null) {
-        return null
-    }
-
+fun createSmlArgumentList(arguments: List<SmlArgument>): SmlArgumentList {
     return factory.createSmlArgumentList().apply {
         this.arguments += arguments
     }
@@ -238,7 +235,7 @@ private fun createSmlArgumentList(arguments: List<SmlArgument>?): SmlArgumentLis
 /**
  * Returns a new object of class [SmlAssigneeList].
  */
-private fun createSmlAssigneeList(assignees: List<SmlAbstractAssignee>): SmlAssigneeList {
+fun createSmlAssigneeList(assignees: List<SmlAbstractAssignee>): SmlAssigneeList {
     return factory.createSmlAssigneeList().apply {
         this.assignees += assignees
     }
@@ -319,7 +316,7 @@ fun createSmlBlockLambda(
     init: SmlBlockLambda.() -> Unit = {}
 ): SmlBlockLambda {
     return factory.createSmlBlockLambda().apply {
-        this.parameterList = createSmlParameterList(parameters.ifEmpty { null })
+        this.parameterList = parameters.nullIfEmptyElse(::createSmlParameterList)
         this.body = factory.createSmlBlock()
         statements.forEach { addStatement(it) }
         this.init()
@@ -369,7 +366,7 @@ fun createSmlCall(
 ): SmlCall {
     return factory.createSmlCall().apply {
         this.receiver = receiver
-        this.typeArgumentList = createSmlTypeArgumentList(typeArguments)
+        this.typeArgumentList = typeArguments.nullIfEmptyElse(::createSmlTypeArgumentList)
         this.argumentList = createSmlArgumentList(arguments)
     }
 }
@@ -401,10 +398,10 @@ fun createSmlClass(
     return factory.createSmlClass().apply {
         this.name = name
         this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
-        this.typeParameterList = createSmlTypeParameterList(typeParameters)
-        this.parameterList = createSmlParameterList(parameters)
-        this.parentTypeList = createSmlParentTypeList(parentTypes)
-        this.constraintList = createSmlConstraintList(constraints)
+        this.typeParameterList = typeParameters.nullIfEmptyElse(::createSmlTypeParameterList)
+        this.parameterList = parameters?.nullIfEmptyElse(::createSmlParameterList)
+        this.parentTypeList = parentTypes.nullIfEmptyElse(::createSmlParentTypeList)
+        this.constraintList = constraints.nullIfEmptyElse(::createSmlConstraintList)
         protocol?.let { addMember(it) }
         members.forEach { addMember(it) }
         this.init()
@@ -530,13 +527,9 @@ private fun SmlCompilationUnit.addMember(member: SmlAbstractCompilationUnitMembe
 }
 
 /**
- * Returns a new object of class [SmlConstraintList] or `null` if the list of constraints is empty.
+ * Returns a new object of class [SmlConstraintList].
  */
-private fun createSmlConstraintList(constraints: List<SmlAbstractConstraint>): SmlConstraintList? {
-    if (constraints.isEmpty()) {
-        return null
-    }
-
+fun createSmlConstraintList(constraints: List<SmlAbstractConstraint>): SmlConstraintList {
     return factory.createSmlConstraintList().apply {
         this.constraints += constraints
     }
@@ -613,15 +606,15 @@ fun createSmlEnumVariant(
     name: String,
     annotationCalls: List<SmlAnnotationCall> = emptyList(),
     typeParameters: List<SmlTypeParameter> = emptyList(),
-    parameters: List<SmlParameter>? = null, // null and emptyList() are semantically different
+    parameters: List<SmlParameter> = emptyList(),
     constraints: List<SmlAbstractConstraint> = emptyList()
 ): SmlEnumVariant {
     return factory.createSmlEnumVariant().apply {
         this.name = name
         this.annotationCalls += annotationCalls
-        this.typeParameterList = createSmlTypeParameterList(typeParameters)
-        this.parameterList = createSmlParameterList(parameters)
-        this.constraintList = createSmlConstraintList(constraints)
+        this.typeParameterList = typeParameters.nullIfEmptyElse(::createSmlTypeParameterList)
+        this.parameterList = parameters.nullIfEmptyElse(::createSmlParameterList)
+        this.constraintList = constraints.nullIfEmptyElse(::createSmlConstraintList)
     }
 }
 
@@ -632,7 +625,7 @@ fun SmlEnum.smlEnumVariant(
     name: String,
     annotationCalls: List<SmlAnnotationCall> = emptyList(),
     typeParameters: List<SmlTypeParameter> = emptyList(),
-    parameters: List<SmlParameter>? = null,
+    parameters: List<SmlParameter> = emptyList(),
     constraints: List<SmlAbstractConstraint> = emptyList()
 ) {
     this.addVariant(createSmlEnumVariant(name, annotationCalls, typeParameters, parameters, constraints))
@@ -712,10 +705,10 @@ fun createSmlFunction(
         this.name = name
         this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
         this.isStatic = isStatic
-        this.typeParameterList = createSmlTypeParameterList(typeParameters)
+        this.typeParameterList = typeParameters.nullIfEmptyElse(::createSmlTypeParameterList)
         this.parameterList = createSmlParameterList(parameters)
-        this.resultList = createSmlResultList(results.ifEmpty { null })
-        this.constraintList = createSmlConstraintList(constraints)
+        this.resultList = results.nullIfEmptyElse(::createSmlResultList)
+        this.constraintList = constraints.nullIfEmptyElse(::createSmlConstraintList)
     }
 }
 
@@ -882,7 +875,7 @@ fun createSmlNamedType(
 ): SmlNamedType {
     return factory.createSmlNamedType().apply {
         this.declaration = declaration
-        this.typeArgumentList = createSmlTypeArgumentList(typeArguments)
+        this.typeArgumentList = typeArguments.nullIfEmptyElse(::createSmlTypeArgumentList)
         this.isNullable = isNullable
     }
 }
@@ -953,13 +946,9 @@ fun createSmlParameter(
 }
 
 /**
- * Returns a new object of class [SmlParameterList] or `null` if the parameter is `null`.
+ * Returns a new object of class [SmlParameterList].
  */
-private fun createSmlParameterList(parameters: List<SmlParameter>?): SmlParameterList? {
-    if (parameters == null) {
-        return null
-    }
-
+fun createSmlParameterList(parameters: List<SmlParameter>): SmlParameterList {
     return factory.createSmlParameterList().apply {
         this.parameters += parameters
     }
@@ -984,13 +973,9 @@ fun createSmlParenthesizedType(type: SmlAbstractType): SmlParenthesizedType {
 }
 
 /**
- * Returns a new object of class [SmlParentTypeList] or `null` if the list of parent type is empty.
+ * Returns a new object of class [SmlParentTypeList].
  */
-private fun createSmlParentTypeList(parentTypes: List<SmlAbstractType>): SmlParentTypeList? {
-    if (parentTypes.isEmpty()) {
-        return null
-    }
-
+fun createSmlParentTypeList(parentTypes: List<SmlAbstractType>): SmlParentTypeList {
     return factory.createSmlParentTypeList().apply {
         this.parentTypes += parentTypes
     }
@@ -1083,7 +1068,7 @@ fun createSmlProtocolComplement(
 ): SmlProtocolComplement {
     return factory.createSmlProtocolComplement().apply {
         this.universe = universe
-        this.referenceList = createSmlProtocolReferenceList(references)
+        this.referenceList = references.nullIfEmptyElse(::createSmlProtocolReferenceList)
     }
 }
 
@@ -1119,13 +1104,9 @@ fun createSmlProtocolReference(token: SmlAbstractProtocolToken): SmlProtocolRefe
 }
 
 /**
- * Returns a new object of class [SmlProtocolReferenceList] or `null` if the list of protocols is empty.
+ * Returns a new object of class [SmlProtocolReferenceList].
  */
-private fun createSmlProtocolReferenceList(references: List<SmlProtocolReference>): SmlProtocolReferenceList? {
-    if (references.isEmpty()) {
-        return null
-    }
-
+fun createSmlProtocolReferenceList(references: List<SmlProtocolReference>): SmlProtocolReferenceList {
     return factory.createSmlProtocolReferenceList().apply {
         this.references += references
     }
@@ -1197,13 +1178,9 @@ fun createSmlResult(
 }
 
 /**
- * Returns a new object of class [SmlResultList] or `null` if the parameter is `null`.
+ * Returns a new object of class [SmlResultList].
  */
-private fun createSmlResultList(results: List<SmlResult>?): SmlResultList? {
-    if (results == null) {
-        return null
-    }
-
+fun createSmlResultList(results: List<SmlResult>): SmlResultList {
     return factory.createSmlResultList().apply {
         this.results += results
     }
@@ -1231,7 +1208,7 @@ fun createSmlStep(
         this.name = name
         this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
         this.parameterList = createSmlParameterList(parameters)
-        this.resultList = createSmlResultList(results.ifEmpty { null })
+        this.resultList = results.nullIfEmptyElse(::createSmlResultList)
         this.body = factory.createSmlBlock()
         statements.forEach { addStatement(it) }
         this.init()
@@ -1367,13 +1344,9 @@ fun createSmlTypeArgument(
 }
 
 /**
- * Returns a new object of class [SmlTypeArgumentList] or `null` if the list of type arguments is empty.
+ * Returns a new object of class [SmlTypeArgumentList].
  */
-private fun createSmlTypeArgumentList(typeArguments: List<SmlTypeArgument>): SmlTypeArgumentList? {
-    if (typeArguments.isEmpty()) {
-        return null
-    }
-
+fun createSmlTypeArgumentList(typeArguments: List<SmlTypeArgument>): SmlTypeArgumentList {
     return factory.createSmlTypeArgumentList().apply {
         this.typeArguments += typeArguments
     }
@@ -1395,13 +1368,9 @@ fun createSmlTypeParameter(
 }
 
 /**
- * Returns a new object of class [SmlTypeParameterList] or `null` if the list of type parameters is empty.
+ * Returns a new object of class [SmlTypeParameterList].
  */
-private fun createSmlTypeParameterList(typeParameters: List<SmlTypeParameter>): SmlTypeParameterList? {
-    if (typeParameters.isEmpty()) {
-        return null
-    }
-
+fun createSmlTypeParameterList(typeParameters: List<SmlTypeParameter>): SmlTypeParameterList {
     return factory.createSmlTypeParameterList().apply {
         this.typeParameters += typeParameters
     }

@@ -1,11 +1,13 @@
 package de.unibonn.simpleml.prologBridge.converters
 
+import de.unibonn.simpleml.emf.aliasNameOrNull
 import de.unibonn.simpleml.emf.annotationCallsOrEmpty
 import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.assigneesOrEmpty
+import de.unibonn.simpleml.emf.compilationUnitMembersOrEmpty
 import de.unibonn.simpleml.emf.constraintsOrEmpty
-import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
-import de.unibonn.simpleml.emf.membersOrEmpty
+import de.unibonn.simpleml.emf.objectsInBodyOrEmpty
+import de.unibonn.simpleml.emf.packageMembersOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
 import de.unibonn.simpleml.emf.referencesOrEmpty
@@ -146,7 +148,6 @@ import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlYield
-import de.unibonn.simpleml.utils.aliasName
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.EcoreUtil2
@@ -180,11 +181,11 @@ class AstToPrologFactbase {
     // ****************************************************************************************************************/
 
     private fun PlFactbase.visitCompilationUnit(obj: SmlCompilationUnit) {
-        obj.memberDeclarationsOrEmpty().forEach { this.visitDeclaration(it, obj.id) }
+        obj.compilationUnitMembersOrEmpty().forEach { this.visitDeclaration(it, obj.id) }
 
         +CompilationUnitT(
             obj.id,
-            obj.memberDeclarationsOrEmpty().map { it.id }
+            obj.compilationUnitMembersOrEmpty().map { it.id }
         )
         +ResourceS(obj.id, obj.eResource().uri.toString())
         visitSourceLocation(obj)
@@ -216,7 +217,7 @@ class AstToPrologFactbase {
                 obj.parametersOrEmpty().forEach { visitDeclaration(it, obj.id) }
                 obj.parentTypesOrEmpty().forEach { visitType(it, obj.id) }
                 obj.constraintsOrEmpty().forEach { visitConstraint(it, obj.id) }
-                obj.membersOrEmpty().forEach { visitClassMember(it, obj.id) }
+                obj.objectsInBodyOrEmpty().forEach { visitClassMember(it, obj.id) }
 
                 +ClassT(
                     obj.id,
@@ -267,14 +268,14 @@ class AstToPrologFactbase {
             }
             is SmlPackage -> {
                 obj.imports.forEach { this.visitImport(it, obj.id) }
-                obj.memberDeclarationsOrEmpty().forEach { this.visitDeclaration(it, obj.id) }
+                obj.packageMembersOrEmpty().forEach { this.visitDeclaration(it, obj.id) }
 
                 +PackageT(
                     obj.id,
                     parentId,
                     obj.name,
                     obj.imports.map { it.id },
-                    obj.memberDeclarationsOrEmpty().map { it.id }
+                    obj.packageMembersOrEmpty().map { it.id }
                 )
             }
             is SmlParameter -> {
@@ -329,7 +330,7 @@ class AstToPrologFactbase {
     }
 
     private fun PlFactbase.visitImport(obj: SmlImport, parentId: Id<SmlPackage>) {
-        +ImportT(obj.id, parentId, obj.importedNamespace, obj.aliasName())
+        +ImportT(obj.id, parentId, obj.importedNamespace, obj.aliasNameOrNull())
         visitSourceLocation(obj)
     }
 

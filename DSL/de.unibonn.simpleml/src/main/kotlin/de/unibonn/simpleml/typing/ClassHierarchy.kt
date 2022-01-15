@@ -1,14 +1,19 @@
-package de.unibonn.simpleml.utils
+package de.unibonn.simpleml.typing
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.emf.classMembersOrEmpty
 import de.unibonn.simpleml.emf.closestAncestorOrNull
-import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
+import de.unibonn.simpleml.emf.parentTypesOrEmpty
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
+import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.staticAnalysis.classOrNull
+import de.unibonn.simpleml.stdlibAccess.StdlibAccess
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 
 class ClassHierarchy @Inject constructor(
-    private val stdlib: SimpleMLStdlib
+    private val stdlib: StdlibAccess
 ) {
 
     // ClassOrInterface ------------------------------------------------------------------------------------------------
@@ -34,7 +39,7 @@ class ClassHierarchy @Inject constructor(
     }
 
     fun superClassMembers(smlClass: SmlClass) =
-        superClasses(smlClass).flatMap { it.memberDeclarationsOrEmpty().asSequence() }
+        superClasses(smlClass).flatMap { it.classMembersOrEmpty().asSequence() }
 
     // Function --------------------------------------------------------------------------------------------------------
 
@@ -43,5 +48,23 @@ class ClassHierarchy @Inject constructor(
         return superClassMembers(containingClassOrInterface)
             .filterIsInstance<SmlFunction>()
             .firstOrNull { it.name == smlFunction.name }
+    }
+}
+
+fun SmlClass?.inheritedNonStaticMembersOrEmpty(): Set<SmlAbstractDeclaration> {
+    return this?.parentTypesOrEmpty()
+        ?.mapNotNull { it.classOrNull() }
+        ?.flatMap { it.classMembersOrEmpty() }
+        ?.filter { it is SmlAttribute && !it.isStatic || it is SmlFunction && !it.isStatic }
+        ?.toSet()
+        .orEmpty()
+}
+
+fun SmlClass?.parentClassesOrEmpty() = this.parentTypesOrEmpty().mapNotNull { it.classOrNull() }
+fun SmlClass?.parentClassOrNull(): SmlClass? {
+    val resolvedParentClasses = this.parentClassesOrEmpty()
+    return when (resolvedParentClasses.size) {
+        1 -> resolvedParentClasses.first()
+        else -> null
     }
 }
