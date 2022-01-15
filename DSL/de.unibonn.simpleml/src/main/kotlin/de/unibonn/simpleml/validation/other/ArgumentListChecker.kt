@@ -86,7 +86,13 @@ class ArgumentListChecker : AbstractSimpleMLChecker() {
     @Check
     fun uniqueParameters(smlArgumentList: SmlArgumentList) {
         smlArgumentList.arguments
-            .duplicatesBy { it.parameterOrNull()?.name }
+            .duplicatesBy {
+                val parameter = it.parameterOrNull() ?: return@duplicatesBy null
+                when {
+                    parameter.isVariadic -> null
+                    else -> parameter.name
+                }
+            }
             .forEach {
                 error(
                     "The parameter '${it.parameterOrNull()?.name}' is already set.",
