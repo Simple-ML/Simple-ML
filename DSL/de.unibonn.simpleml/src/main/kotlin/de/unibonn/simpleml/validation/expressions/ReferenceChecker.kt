@@ -15,7 +15,8 @@ class ReferenceChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun mustNotStaticallyReferenceClass(smlReference: SmlReference) {
-        if (smlReference.declaration !is SmlClass) {
+        val declaration = smlReference.declaration
+        if (declaration !is SmlClass || declaration.parameterList != null) {
             return
         }
 
