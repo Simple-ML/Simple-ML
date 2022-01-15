@@ -7,7 +7,7 @@ import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.stdlibAccess.isPure
-import de.unibonn.simpleml.staticAnalysis.ClassHierarchy
+import de.unibonn.simpleml.typing.ClassHierarchy
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode

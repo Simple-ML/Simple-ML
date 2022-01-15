@@ -2,15 +2,16 @@ package de.unibonn.simpleml.validation.statements
 
 import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlYield
-import de.unibonn.simpleml.utils.AssignedResult
-import de.unibonn.simpleml.utils.hasSideEffects
-import de.unibonn.simpleml.utils.maybeAssigned
+import de.unibonn.simpleml.staticAnalysis.AssignedResult
+import de.unibonn.simpleml.staticAnalysis.hasSideEffects
+import de.unibonn.simpleml.staticAnalysis.maybeAssigned
 import de.unibonn.simpleml.utils.resultsOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
@@ -47,7 +48,9 @@ class AssignmentChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun hasNoEffect(smlAssignment: SmlAssignment) {
-        if (smlAssignment.assigneesOrEmpty().any { it is SmlPlaceholder || it is SmlYield || it is SmlBlockLambdaResult }) {
+        if (smlAssignment.assigneesOrEmpty()
+                .any { it is SmlPlaceholder || it is SmlYield || it is SmlBlockLambdaResult }
+        ) {
             return
         }
 
@@ -67,13 +70,15 @@ class AssignmentChecker : AbstractSimpleMLChecker() {
             val results = (expression.resultsOrNull() ?: listOf())
             val unassignedResults = results.drop(smlAssignment.assigneesOrEmpty().size)
 
-            unassignedResults.forEach {
-                warning(
-                    "The result '${it.name}' is implicitly ignored.",
-                    Literals.SML_ASSIGNMENT__ASSIGNEE_LIST,
-                    WarningCode.ImplicitlyIgnoredResultOfCall
-                )
-            }
+            unassignedResults
+                .filterIsInstance<SmlAbstractDeclaration>()
+                .forEach {
+                    warning(
+                        "The result '${it.name}' is implicitly ignored.",
+                        Literals.SML_ASSIGNMENT__ASSIGNEE_LIST,
+                        WarningCode.ImplicitlyIgnoredResultOfCall
+                    )
+                }
         }
     }
 }

@@ -1,13 +1,16 @@
-package de.unibonn.simpleml.staticAnalysis
+package de.unibonn.simpleml.typing
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
+import de.unibonn.simpleml.emf.parentTypesOrEmpty
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
+import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.stdlibAccess.StdlibAccess
-import de.unibonn.simpleml.utils.parentClassOrNull
+import de.unibonn.simpleml.stdlibAccess.StdlibClasses
+import de.unibonn.simpleml.utils.classOrNull
 
 class ClassHierarchy @Inject constructor(
     private val stdlib: StdlibAccess
@@ -17,7 +20,7 @@ class ClassHierarchy @Inject constructor(
 
     fun isSubtypeOf(smlClass: SmlClass, other: SmlClass) =
         smlClass == stdlib.getClass(smlClass, StdlibClasses.Nothing.toString()) ||
-            smlClass == other || other in superClasses(smlClass)
+                smlClass == other || other in superClasses(smlClass)
 
     fun superClasses(smlClass: SmlClass) = sequence<SmlClass> {
         val visited = mutableSetOf<SmlClass>()
@@ -45,5 +48,23 @@ class ClassHierarchy @Inject constructor(
         return superClassMembers(containingClassOrInterface)
             .filterIsInstance<SmlFunction>()
             .firstOrNull { it.name == smlFunction.name }
+    }
+}
+
+fun SmlClass?.inheritedNonStaticMembersOrEmpty(): Set<SmlAbstractDeclaration> {
+    return this?.parentTypesOrEmpty()
+        ?.mapNotNull { it.classOrNull() }
+        ?.flatMap { it.memberDeclarationsOrEmpty() }
+        ?.filter { it is SmlAttribute && !it.isStatic || it is SmlFunction && !it.isStatic }
+        ?.toSet()
+        .orEmpty()
+}
+
+fun SmlClass?.parentClassesOrEmpty() = this.parentTypesOrEmpty().mapNotNull { it.classOrNull() }
+fun SmlClass?.parentClassOrNull(): SmlClass? {
+    val resolvedParentClasses = this.parentClassesOrEmpty()
+    return when (resolvedParentClasses.size) {
+        1 -> resolvedParentClasses.first()
+        else -> null
     }
 }

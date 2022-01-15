@@ -2,12 +2,9 @@
 
 package de.unibonn.simpleml.utils
 
-import de.unibonn.simpleml.staticAnalysis.callableOrNull
 import de.unibonn.simpleml.emf.aliasNameOrNull
 import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.emf.closestAncestorOrNull
-import de.unibonn.simpleml.emf.containingBlockLambdaOrNull
-import de.unibonn.simpleml.emf.containingStepOrNull
 import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.isClassMember
 import de.unibonn.simpleml.emf.isNamed
@@ -24,6 +21,7 @@ import de.unibonn.simpleml.emf.yieldsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
+import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAnnotationCall
@@ -52,6 +50,7 @@ import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.staticAnalysis.callableOrNull
 import de.unibonn.simpleml.staticAnalysis.isRecursive
 import de.unibonn.simpleml.stdlibAccess.isPure
 import org.eclipse.emf.ecore.EObject
@@ -102,79 +101,17 @@ fun SmlCall.parametersOrNull(): List<SmlParameter>? {
     return callableOrNull()?.parametersOrEmpty()
 }
 
-fun SmlCall.resultsOrNull(): List<SmlAbstractDeclaration>? {
+fun SmlCall.resultsOrNull(): List<SmlAbstractObject>? {
     return when (val callable = this.callableOrNull()) {
         is SmlClass -> listOf(callable)
         is SmlEnumVariant -> listOf(callable)
         is SmlFunction -> callable.resultsOrEmpty()
         is SmlCallableType -> callable.resultsOrEmpty()
         is SmlBlockLambda -> callable.lambdaResultsOrEmpty()
+        is SmlExpressionLambda -> listOf(callable.result)
         is SmlStep -> callable.resultsOrEmpty()
         else -> null
     }
-}
-
-// Class ---------------------------------------------------------------------------------------------------------------
-
-fun SmlClass?.inheritedNonStaticMembersOrEmpty(): Set<SmlAbstractDeclaration> {
-    return this?.parentTypesOrEmpty()
-        ?.mapNotNull { it.classOrNull() }
-        ?.flatMap { it.memberDeclarationsOrEmpty() }
-        ?.filter { it is SmlAttribute && !it.isStatic || it is SmlFunction && !it.isStatic }
-        ?.toSet()
-        .orEmpty()
-}
-
-fun SmlClass?.parentClassesOrEmpty() = this.parentTypesOrEmpty().mapNotNull { it.classOrNull() }
-fun SmlClass?.parentClassOrNull(): SmlClass? {
-    val resolvedParentClasses = this.parentClassesOrEmpty()
-    return when (resolvedParentClasses.size) {
-        1 -> resolvedParentClasses.first()
-        else -> null
-    }
-}
-
-// Assignee ------------------------------------------------------------------------------------------------------------
-
-fun SmlAbstractAssignee.assignedOrNull(): EObject? {
-    return when (val maybeAssigned = this.maybeAssigned()) {
-        is AssignedResult.Assigned -> maybeAssigned.assigned
-        else -> null
-    }
-}
-
-sealed interface AssignedResult {
-    object Unresolved : AssignedResult
-    object NotAssigned : AssignedResult
-    sealed class Assigned : AssignedResult {
-        abstract val assigned: EObject
-    }
-
-    class AssignedExpression(override val assigned: SmlAbstractExpression) : Assigned()
-    class AssignedDeclaration(override val assigned: SmlAbstractDeclaration) : Assigned()
-}
-
-fun SmlAbstractAssignee.maybeAssigned(): AssignedResult {
-    val assignment = this.closestAncestorOrNull<SmlAssignment>() ?: return AssignedResult.Unresolved
-    val expression = assignment.expression ?: return AssignedResult.NotAssigned
-
-    val thisIndex = assignment.assigneeList.assignees.indexOf(this)
-    return when (expression) {
-        is SmlCall -> {
-            val results = expression.resultsOrNull() ?: return AssignedResult.Unresolved
-            val result = results.getOrNull(thisIndex) ?: return AssignedResult.NotAssigned
-            AssignedResult.AssignedDeclaration(result)
-        }
-        else -> when (thisIndex) {
-            0 -> AssignedResult.AssignedExpression(expression)
-            else -> AssignedResult.NotAssigned
-        }
-    }
-}
-
-fun SmlAbstractAssignee.indexOrNull(): Int? {
-    val assignment = closestAncestorOrNull<SmlAssignment>() ?: return null
-    return assignment.assigneesOrEmpty().indexOf(this)
 }
 
 // Import --------------------------------------------------------------------------------------------------------------
@@ -189,20 +126,6 @@ fun SmlImport.importedNameOrNull(): String? {
     } else {
         this.aliasNameOrNull()
     }
-}
-
-fun SmlParameter.usesIn(obj: EObject) = obj.descendants<SmlReference>().filter { it.declaration == this }
-
-// Placeholder ---------------------------------------------------------------------------------------------------------
-
-fun SmlPlaceholder.usesIn(obj: EObject): Sequence<SmlReference> {
-    return obj.descendants<SmlAbstractStatement>()
-        .dropWhile { it !is SmlAssignment || this !in it.placeholdersOrEmpty() }
-        .drop(1)
-        .flatMap { statement ->
-            statement.descendants<SmlReference>()
-                .filter { it.declaration == this }
-        }
 }
 
 // Result --------------------------------------------------------------------------------------------------------------
@@ -221,10 +144,6 @@ fun SmlResult.yieldsOrEmpty(): List<SmlYield> {
 
     return step.yieldsOrEmpty().filter { it.result == this }
 }
-
-// Step ----------------------------------------------------------------------------------------------------------------
-
-fun SmlStep.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }
 
 // Type ----------------------------------------------------------------------------------------------------------------
 
@@ -315,29 +234,3 @@ fun SmlAbstractDeclaration.isInferredStatic(): Boolean {
         else -> false
     }
 }
-
-// SmlBlockLambda ----------------------------------------------------------------------------------
-
-fun SmlBlockLambda.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }
-
-
-// SmlExpression -----------------------------------------------------------------------------------
-
-fun SmlAbstractExpression.hasSideEffects(): Boolean {
-    if (this is SmlCall) {
-        if (this.isRecursive()) {
-            return true
-        }
-
-        val callable = this.callableOrNull()
-        return callable is SmlFunction && !callable.isPure() ||
-                callable is SmlStep && !callable.isInferredPure() ||
-                callable is SmlBlockLambda && !callable.isInferredPure()
-    }
-
-    return false
-}
-
-// SmlExpressionLambda -----------------------------------------------------------------------------
-
-fun SmlExpressionLambda.isInferredPure() = this.descendants<SmlCall>().none { it.hasSideEffects() }

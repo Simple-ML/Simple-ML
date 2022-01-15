@@ -46,8 +46,8 @@ import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
 import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
 import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
-import de.unibonn.simpleml.utils.indexOrNull
-import de.unibonn.simpleml.utils.isInferredPure
+import de.unibonn.simpleml.staticAnalysis.indexOrNull
+import de.unibonn.simpleml.staticAnalysis.isInferredPure
 import de.unibonn.simpleml.utils.parameterOrNull
 import de.unibonn.simpleml.utils.uniqueYieldOrNull
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Minus as InfixMinus

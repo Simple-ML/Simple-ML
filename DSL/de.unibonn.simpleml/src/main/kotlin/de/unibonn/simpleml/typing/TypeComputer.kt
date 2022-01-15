@@ -35,10 +35,10 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.staticAnalysis.assignedOrNull
 import de.unibonn.simpleml.staticAnalysis.callableOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibAccess
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
-import de.unibonn.simpleml.utils.assignedOrNull
 import org.eclipse.emf.ecore.EObject
 
 @Suppress("PrivatePropertyName")

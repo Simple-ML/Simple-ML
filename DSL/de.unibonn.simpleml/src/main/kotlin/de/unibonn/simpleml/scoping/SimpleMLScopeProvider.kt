@@ -41,12 +41,12 @@ import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.typing.ClassHierarchy
 import de.unibonn.simpleml.typing.ClassType
 import de.unibonn.simpleml.typing.EnumType
 import de.unibonn.simpleml.typing.EnumVariantType
 import de.unibonn.simpleml.typing.NamedType
 import de.unibonn.simpleml.typing.TypeComputer
-import de.unibonn.simpleml.staticAnalysis.ClassHierarchy
 import de.unibonn.simpleml.utils.isInferredStatic
 import de.unibonn.simpleml.utils.parametersOrNull
 import de.unibonn.simpleml.utils.resultsOrNull

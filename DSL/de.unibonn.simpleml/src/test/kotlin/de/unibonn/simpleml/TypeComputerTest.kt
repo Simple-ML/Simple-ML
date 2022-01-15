@@ -3,12 +3,12 @@ package de.unibonn.simpleml
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.staticAnalysis.assignedOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.getResourcePath
 import de.unibonn.simpleml.typing.Type
 import de.unibonn.simpleml.typing.TypeComputer
-import de.unibonn.simpleml.utils.assignedOrNull
 import io.kotest.matchers.shouldBe
 import org.eclipse.emf.ecore.EObject
 import org.junit.jupiter.api.Nested
