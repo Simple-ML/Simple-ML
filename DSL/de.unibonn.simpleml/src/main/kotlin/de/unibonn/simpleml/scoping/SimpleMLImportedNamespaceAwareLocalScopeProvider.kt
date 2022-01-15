@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.scoping
 
-import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.emf.aliasNameOrNull
+import de.unibonn.simpleml.simpleML.SmlPackage
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.scoping.impl.ImportNormalizer

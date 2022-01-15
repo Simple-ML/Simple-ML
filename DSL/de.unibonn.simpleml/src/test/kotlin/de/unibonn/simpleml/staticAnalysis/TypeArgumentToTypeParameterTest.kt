@@ -1,6 +1,5 @@
 package de.unibonn.simpleml.staticAnalysis
 
-
 import de.unibonn.simpleml.emf.createSmlCall
 import de.unibonn.simpleml.emf.createSmlClass
 import de.unibonn.simpleml.emf.createSmlFunction

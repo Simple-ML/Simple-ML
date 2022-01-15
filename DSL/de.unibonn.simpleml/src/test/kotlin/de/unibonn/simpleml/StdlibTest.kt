@@ -2,10 +2,10 @@ package de.unibonn.simpleml
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.OriginalFilePath
+import de.unibonn.simpleml.stdlibAccess.StdlibAccess
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.shouldHaveNoErrorsOrWarnings
-import de.unibonn.simpleml.stdlibAccess.StdlibAccess
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.eclipse.xtext.testing.validation.ValidationTestHelper

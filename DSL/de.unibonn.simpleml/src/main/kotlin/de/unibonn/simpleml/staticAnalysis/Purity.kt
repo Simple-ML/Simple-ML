@@ -18,8 +18,8 @@ fun SmlAbstractExpression.hasSideEffects(): Boolean {
 
         val callable = this.callableOrNull()
         return callable is SmlFunction && !callable.isPure() ||
-                callable is SmlStep && !callable.isInferredPure() ||
-                callable is SmlBlockLambda && !callable.isInferredPure()
+            callable is SmlStep && !callable.isInferredPure() ||
+            callable is SmlBlockLambda && !callable.isInferredPure()
     }
 
     return false

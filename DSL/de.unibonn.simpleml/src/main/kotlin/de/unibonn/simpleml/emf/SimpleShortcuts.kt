@@ -458,7 +458,7 @@ fun SmlTypeArgument.isPositional() = typeParameter == null
  *
  * @see isResolved
  */
-fun <T: SmlAbstractDeclaration> T.asResolvedOrNull(): T? {
+fun <T : SmlAbstractDeclaration> T.asResolvedOrNull(): T? {
     return when {
         isResolved() -> this
         else -> null

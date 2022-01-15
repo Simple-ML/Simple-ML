@@ -49,7 +49,7 @@ class AssignmentChecker : AbstractSimpleMLChecker() {
     @Check
     fun hasNoEffect(smlAssignment: SmlAssignment) {
         if (smlAssignment.assigneesOrEmpty()
-                .any { it is SmlPlaceholder || it is SmlYield || it is SmlBlockLambdaResult }
+            .any { it is SmlPlaceholder || it is SmlYield || it is SmlBlockLambdaResult }
         ) {
             return
         }

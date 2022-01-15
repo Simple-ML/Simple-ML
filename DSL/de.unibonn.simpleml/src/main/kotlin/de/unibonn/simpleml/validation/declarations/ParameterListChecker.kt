@@ -3,7 +3,6 @@ package de.unibonn.simpleml.validation.declarations
 import de.unibonn.simpleml.emf.isOptional
 import de.unibonn.simpleml.emf.isRequired
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
-import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlParameterList
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode

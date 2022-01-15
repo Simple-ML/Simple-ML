@@ -4,9 +4,9 @@ import com.google.inject.Inject
 import de.unibonn.simpleml.emf.aliasNameOrNull
 import de.unibonn.simpleml.emf.isQualified
 import de.unibonn.simpleml.emf.isWildcard
+import de.unibonn.simpleml.scoping.SimpleMLIndexExtensions
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlImport
-import de.unibonn.simpleml.scoping.SimpleMLIndexExtensions
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.naming.QualifiedName

@@ -4,10 +4,10 @@ import de.unibonn.simpleml.emf.aliasNameOrNull
 import de.unibonn.simpleml.emf.annotationCallsOrEmpty
 import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.assigneesOrEmpty
-import de.unibonn.simpleml.emf.constraintsOrEmpty
-import de.unibonn.simpleml.emf.packageMembersOrEmpty
 import de.unibonn.simpleml.emf.compilationUnitMembersOrEmpty
+import de.unibonn.simpleml.emf.constraintsOrEmpty
 import de.unibonn.simpleml.emf.objectsInBodyOrEmpty
+import de.unibonn.simpleml.emf.packageMembersOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
 import de.unibonn.simpleml.emf.referencesOrEmpty

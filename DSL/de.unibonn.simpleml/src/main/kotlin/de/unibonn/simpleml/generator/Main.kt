@@ -30,7 +30,7 @@ class Main @Inject constructor(
         val set = resourceSetProvider.get()
         files.forEach {
             set.getResource(URI.createFileURI(it), true)
-                    ?: throw IllegalArgumentException("Could not create resource for $it.")
+                ?: throw IllegalArgumentException("Could not create resource for $it.")
         }
 
         // Load the library
