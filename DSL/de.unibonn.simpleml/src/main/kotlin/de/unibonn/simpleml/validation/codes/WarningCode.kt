@@ -2,16 +2,16 @@ package de.unibonn.simpleml.validation.codes
 
 enum class WarningCode {
 
-    // Name conventions
-    NameShouldBeLowerCamelCase,
-    NameShouldBeUpperCamelCase,
-    SegmentsShouldBeLowerCamelCase,
-
     // Deprecation
     AssignedDeclarationIsDeprecated,
     CorrespondingParameterIsDeprecated,
     CorrespondingTypeParameterIsDeprecated,
     ReferencedDeclarationIsDeprecated,
+
+    // Name conventions
+    NameShouldBeLowerCamelCase,
+    NameShouldBeUpperCamelCase,
+    SegmentsShouldBeLowerCamelCase,
 
     // Unused declarations
     UnusedParameter,
