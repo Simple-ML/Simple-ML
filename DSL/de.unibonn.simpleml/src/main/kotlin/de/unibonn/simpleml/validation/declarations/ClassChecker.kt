@@ -1,20 +1,20 @@
 package de.unibonn.simpleml.validation.declarations
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
-import de.unibonn.simpleml.emf.membersOrEmpty
+import de.unibonn.simpleml.emf.classMembersOrEmpty
+import de.unibonn.simpleml.emf.objectsInBodyOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
 import de.unibonn.simpleml.emf.protocolsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.utils.ClassHierarchy
-import de.unibonn.simpleml.utils.ClassResult
-import de.unibonn.simpleml.utils.classOrNull
+import de.unibonn.simpleml.staticAnalysis.ClassResult
+import de.unibonn.simpleml.staticAnalysis.classOrNull
+import de.unibonn.simpleml.staticAnalysis.maybeClass
+import de.unibonn.simpleml.typing.ClassHierarchy
+import de.unibonn.simpleml.typing.inheritedNonStaticMembersOrEmpty
 import de.unibonn.simpleml.utils.duplicatesBy
-import de.unibonn.simpleml.utils.inheritedNonStaticMembersOrEmpty
-import de.unibonn.simpleml.utils.maybeClass
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode
@@ -43,7 +43,7 @@ class ClassChecker @Inject constructor(
 
     @Check
     fun body(smlClass: SmlClass) {
-        if (smlClass.body != null && smlClass.membersOrEmpty().isEmpty()) {
+        if (smlClass.body != null && smlClass.objectsInBodyOrEmpty().isEmpty()) {
             info(
                 "Unnecessary class body.",
                 Literals.SML_CLASS__BODY,
@@ -86,7 +86,7 @@ class ClassChecker @Inject constructor(
         smlClass.parametersOrEmpty()
             .reportDuplicateNames { "A parameter with name '${it.name}' exists already in this class." }
 
-        smlClass.memberDeclarationsOrEmpty()
+        smlClass.classMembersOrEmpty()
             .reportDuplicateNames { "A declaration with name '${it.name}' exists already in this class." }
     }
 

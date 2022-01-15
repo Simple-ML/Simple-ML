@@ -15,8 +15,8 @@ import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationCall
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.staticAnalysis.parameterOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibEnums.AnnotationTarget
-import de.unibonn.simpleml.utils.parameterOrNull
 import de.unibonn.simpleml.utils.uniqueOrNull
 import org.eclipse.xtext.naming.QualifiedName
 

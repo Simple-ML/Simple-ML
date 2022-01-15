@@ -1,12 +1,12 @@
 package de.unibonn.simpleml.validation.other
 
+import de.unibonn.simpleml.emf.isNamed
+import de.unibonn.simpleml.emf.isPositional
+import de.unibonn.simpleml.emf.isRequired
 import de.unibonn.simpleml.simpleML.SmlArgumentList
+import de.unibonn.simpleml.staticAnalysis.parameterOrNull
+import de.unibonn.simpleml.staticAnalysis.parametersOrNull
 import de.unibonn.simpleml.utils.duplicatesBy
-import de.unibonn.simpleml.utils.isNamed
-import de.unibonn.simpleml.utils.isPositional
-import de.unibonn.simpleml.utils.isRequired
-import de.unibonn.simpleml.utils.parameterOrNull
-import de.unibonn.simpleml.utils.parametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.validation.Check
@@ -86,7 +86,13 @@ class ArgumentListChecker : AbstractSimpleMLChecker() {
     @Check
     fun uniqueParameters(smlArgumentList: SmlArgumentList) {
         smlArgumentList.arguments
-            .duplicatesBy { it.parameterOrNull()?.name }
+            .duplicatesBy {
+                val parameter = it.parameterOrNull() ?: return@duplicatesBy null
+                when {
+                    parameter.isVariadic -> null
+                    else -> parameter.name
+                }
+            }
             .forEach {
                 error(
                     "The parameter '${it.parameterOrNull()?.name}' is already set.",

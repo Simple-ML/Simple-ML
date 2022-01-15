@@ -1,8 +1,11 @@
-package de.unibonn.simpleml.utils
+package de.unibonn.simpleml.ide.editor.contentassist
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.containingClassOrNull
+import de.unibonn.simpleml.emf.isClassMember
+import de.unibonn.simpleml.emf.isGlobal
 import de.unibonn.simpleml.emf.parametersOrEmpty
+import de.unibonn.simpleml.scoping.SimpleMLIndexExtensions
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
@@ -71,7 +74,7 @@ class Proposals @Inject constructor(
                         }
                     }
                     is SmlFunction -> {
-                        obj.isCompilationUnitMember() && obj.parametersOrEmpty().all {
+                        obj.isGlobal() && obj.parametersOrEmpty().all {
                             typeComputer.hasPrimitiveType(it)
                         }
                     }

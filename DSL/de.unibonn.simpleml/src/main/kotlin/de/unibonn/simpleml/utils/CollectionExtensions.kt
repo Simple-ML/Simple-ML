@@ -29,17 +29,6 @@ fun <I, K> Iterable<I>.uniqueBy(labeler: (I) -> K): List<I> {
 }
 
 /**
- * Maps corresponding elements of the left and right list using the given zipper. The shorter list is padded with
- * `null`s at the end, so the resulting list has the same length as the longer list.
- */
-fun <L, R, O> outerZipBy(left: List<L>, right: List<R>, zipper: (L?, R?) -> O): List<O> {
-    val maxSize = max(left.size, right.size)
-    return (0 until maxSize).map { i ->
-        zipper(left.getOrNull(i), right.getOrNull(i))
-    }
-}
-
-/**
  * Returns the unique element in the iterable that matches the filter or `null` if none or multiple exist.
  */
 fun <I> Iterable<I>.uniqueOrNull(filter: (I) -> Boolean = { true }): I? {
@@ -47,5 +36,23 @@ fun <I> Iterable<I>.uniqueOrNull(filter: (I) -> Boolean = { true }): I? {
     return when (candidates.size) {
         1 -> candidates[0]
         else -> null
+    }
+}
+
+/**
+ * Returns `null` if this [List] is empty. Otherwise, calls [init] on the list.
+ */
+fun <I, O> List<I>.nullIfEmptyElse(init: (List<I>) -> O): O? {
+    return ifEmpty { null }?.let { init(it) }
+}
+
+/**
+ * Maps corresponding elements of the left and right list using the given zipper. The shorter list is padded with
+ * `null`s at the end, so the resulting list has the same length as the longer list.
+ */
+fun <L, R, O> outerZipBy(left: List<L>, right: List<R>, zipper: (L?, R?) -> O): List<O> {
+    val maxSize = max(left.size, right.size)
+    return (0 until maxSize).map { i ->
+        zipper(left.getOrNull(i), right.getOrNull(i))
     }
 }

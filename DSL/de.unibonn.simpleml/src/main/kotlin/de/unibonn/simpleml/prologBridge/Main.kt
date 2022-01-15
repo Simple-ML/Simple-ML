@@ -6,7 +6,7 @@ import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import de.unibonn.simpleml.prologBridge.converters.AstToPrologFactbase
 import de.unibonn.simpleml.prologBridge.model.facts.PlFactbase
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
-import de.unibonn.simpleml.utils.SimpleMLStdlib
+import de.unibonn.simpleml.stdlibAccess.StdlibAccess
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtext.util.CancelIndicator
@@ -20,7 +20,7 @@ import java.nio.file.Paths
 class Main @Inject constructor(
     private val prologVisitor: AstToPrologFactbase,
     private val resourceSetProvider: Provider<ResourceSet>,
-    private val stdlib: SimpleMLStdlib,
+    private val stdlib: StdlibAccess,
     private val validator: IResourceValidator
 ) {
 

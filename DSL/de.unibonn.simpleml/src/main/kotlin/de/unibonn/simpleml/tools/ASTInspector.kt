@@ -3,9 +3,8 @@ package de.unibonn.simpleml.tools
 import com.google.inject.Inject
 import com.google.inject.Provider
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
-import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
-import de.unibonn.simpleml.utils.SimpleMLStdlib
+import de.unibonn.simpleml.stdlibAccess.StdlibAccess
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
@@ -15,9 +14,9 @@ import org.eclipse.xtext.validation.IResourceValidator
 import org.eclipse.xtext.validation.Issue
 
 class ASTInspector @Inject constructor(
-        private val resourceSetProvider: Provider<ResourceSet>,
-        private val stdlib: SimpleMLStdlib,
-        private val validator: IResourceValidator
+    private val resourceSetProvider: Provider<ResourceSet>,
+    private val stdlib: StdlibAccess,
+    private val validator: IResourceValidator
 ) {
 
     fun inspectAST(file: String): String {

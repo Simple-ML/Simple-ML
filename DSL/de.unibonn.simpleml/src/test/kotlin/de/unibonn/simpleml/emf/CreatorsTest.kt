@@ -377,6 +377,15 @@ class CreatorsTest {
     }
 
     @Test
+    fun `createSmlEnumVariant should omit empty parameter list`() {
+        val enum = createSmlEnumVariant(
+            "Test",
+            parameters = emptyList()
+        )
+        enum.parameterList.shouldBeNull()
+    }
+
+    @Test
     fun `createSmlEnumVariant should omit empty constraint list`() {
         val enum = createSmlEnumVariant(
             "Test",

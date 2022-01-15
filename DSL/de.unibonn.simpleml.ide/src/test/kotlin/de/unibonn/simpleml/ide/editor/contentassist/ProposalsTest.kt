@@ -1,4 +1,4 @@
-package de.unibonn.simpleml
+package de.unibonn.simpleml.ide.editor.contentassist
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.uniquePackageOrNull
@@ -8,7 +8,6 @@ import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
-import de.unibonn.simpleml.utils.Proposals
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.maps.shouldContainValue
 import io.kotest.matchers.maps.shouldContainValues

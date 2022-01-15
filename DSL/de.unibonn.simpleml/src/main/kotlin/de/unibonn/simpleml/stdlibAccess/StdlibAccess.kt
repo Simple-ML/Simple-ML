@@ -1,7 +1,8 @@
-package de.unibonn.simpleml.utils
+package de.unibonn.simpleml.stdlibAccess
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.constant.SmlFileExtension
+import de.unibonn.simpleml.scoping.SimpleMLIndexExtensions
 import de.unibonn.simpleml.simpleML.SmlClass
 import org.eclipse.core.runtime.FileLocator
 import org.eclipse.emf.common.util.URI
@@ -13,7 +14,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-class SimpleMLStdlib @Inject constructor(
+class StdlibAccess @Inject constructor(
     private val indexExtensions: SimpleMLIndexExtensions
 ) {
 
