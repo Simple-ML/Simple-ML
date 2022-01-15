@@ -1,16 +1,16 @@
 package de.unibonn.simpleml.typing
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.classMembersOrEmpty
+import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.staticAnalysis.classOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibAccess
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
-import de.unibonn.simpleml.utils.classOrNull
 
 class ClassHierarchy @Inject constructor(
     private val stdlib: StdlibAccess

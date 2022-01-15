@@ -92,6 +92,8 @@ import de.unibonn.simpleml.simpleML.SmlYield
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.resource.XtextResource
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 import kotlin.math.absoluteValue
 
 private val factory = SimpleMLFactory.eINSTANCE
@@ -225,7 +227,13 @@ fun createSmlArgument(value: SmlAbstractExpression, parameterName: String): SmlA
 /**
  * Returns a new object of class [SmlArgumentList] or `null` if the parameter is `null`.
  */
-private fun createSmlArgumentList(arguments: List<SmlArgument>?): SmlArgumentList? {
+@OptIn(ExperimentalContracts::class)
+fun createSmlArgumentList(arguments: List<SmlArgument>?): SmlArgumentList? {
+    contract {
+        returns(null) implies (arguments == null)
+        returnsNotNull() implies (arguments != null)
+    }
+
     if (arguments == null) {
         return null
     }
@@ -238,7 +246,7 @@ private fun createSmlArgumentList(arguments: List<SmlArgument>?): SmlArgumentLis
 /**
  * Returns a new object of class [SmlAssigneeList].
  */
-private fun createSmlAssigneeList(assignees: List<SmlAbstractAssignee>): SmlAssigneeList {
+fun createSmlAssigneeList(assignees: List<SmlAbstractAssignee>): SmlAssigneeList {
     return factory.createSmlAssigneeList().apply {
         this.assignees += assignees
     }
@@ -532,7 +540,7 @@ private fun SmlCompilationUnit.addMember(member: SmlAbstractCompilationUnitMembe
 /**
  * Returns a new object of class [SmlConstraintList] or `null` if the list of constraints is empty.
  */
-private fun createSmlConstraintList(constraints: List<SmlAbstractConstraint>): SmlConstraintList? {
+fun createSmlConstraintList(constraints: List<SmlAbstractConstraint>): SmlConstraintList? {
     if (constraints.isEmpty()) {
         return null
     }
@@ -955,7 +963,7 @@ fun createSmlParameter(
 /**
  * Returns a new object of class [SmlParameterList] or `null` if the parameter is `null`.
  */
-private fun createSmlParameterList(parameters: List<SmlParameter>?): SmlParameterList? {
+fun createSmlParameterList(parameters: List<SmlParameter>?): SmlParameterList? {
     if (parameters == null) {
         return null
     }
@@ -986,7 +994,7 @@ fun createSmlParenthesizedType(type: SmlAbstractType): SmlParenthesizedType {
 /**
  * Returns a new object of class [SmlParentTypeList] or `null` if the list of parent type is empty.
  */
-private fun createSmlParentTypeList(parentTypes: List<SmlAbstractType>): SmlParentTypeList? {
+fun createSmlParentTypeList(parentTypes: List<SmlAbstractType>): SmlParentTypeList? {
     if (parentTypes.isEmpty()) {
         return null
     }
@@ -1121,7 +1129,7 @@ fun createSmlProtocolReference(token: SmlAbstractProtocolToken): SmlProtocolRefe
 /**
  * Returns a new object of class [SmlProtocolReferenceList] or `null` if the list of protocols is empty.
  */
-private fun createSmlProtocolReferenceList(references: List<SmlProtocolReference>): SmlProtocolReferenceList? {
+fun createSmlProtocolReferenceList(references: List<SmlProtocolReference>): SmlProtocolReferenceList? {
     if (references.isEmpty()) {
         return null
     }
@@ -1199,7 +1207,7 @@ fun createSmlResult(
 /**
  * Returns a new object of class [SmlResultList] or `null` if the parameter is `null`.
  */
-private fun createSmlResultList(results: List<SmlResult>?): SmlResultList? {
+fun createSmlResultList(results: List<SmlResult>?): SmlResultList? {
     if (results == null) {
         return null
     }
@@ -1369,7 +1377,7 @@ fun createSmlTypeArgument(
 /**
  * Returns a new object of class [SmlTypeArgumentList] or `null` if the list of type arguments is empty.
  */
-private fun createSmlTypeArgumentList(typeArguments: List<SmlTypeArgument>): SmlTypeArgumentList? {
+fun createSmlTypeArgumentList(typeArguments: List<SmlTypeArgument>): SmlTypeArgumentList? {
     if (typeArguments.isEmpty()) {
         return null
     }
@@ -1397,7 +1405,7 @@ fun createSmlTypeParameter(
 /**
  * Returns a new object of class [SmlTypeParameterList] or `null` if the list of type parameters is empty.
  */
-private fun createSmlTypeParameterList(typeParameters: List<SmlTypeParameter>): SmlTypeParameterList? {
+fun createSmlTypeParameterList(typeParameters: List<SmlTypeParameter>): SmlTypeParameterList? {
     if (typeParameters.isEmpty()) {
         return null
     }

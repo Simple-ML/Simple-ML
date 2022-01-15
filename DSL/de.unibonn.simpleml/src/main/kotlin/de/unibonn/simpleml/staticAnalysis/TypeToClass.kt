@@ -1,6 +1,4 @@
-@file:Suppress("unused")
-
-package de.unibonn.simpleml.utils
+package de.unibonn.simpleml.staticAnalysis
 
 import de.unibonn.simpleml.emf.isResolved
 import de.unibonn.simpleml.simpleML.SmlAbstractType
