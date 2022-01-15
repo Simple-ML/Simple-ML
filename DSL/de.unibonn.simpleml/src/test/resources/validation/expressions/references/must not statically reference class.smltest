@@ -10,25 +10,32 @@ class ClassWithStaticMembers {
     class InnerClassWithConstructor() {
         static attr myAttribute: Int
     }
+    
+    class InnerClassWithoutConstructor
 }
 
 workflow test {
+    // no_semantic_error "Must not statically reference class."
+    »ClassWithConstructor«;
     // semantic_error "Must not statically reference class."
-    »ClassWithConstructor«;    
+    »ClassWithoutConstructor«;
     // no_semantic_error "Must not statically reference class."
     »ClassWithoutConstructor«();
     // no_semantic_error "Must not statically reference class."
     »ClassWithConstructor«();
     // no_semantic_error "Must not statically reference class."
-    »ClassWithStaticMembers«.myAttribute;    
+    »ClassWithStaticMembers«.myAttribute;
     // no_semantic_error "Must not statically reference class."
     »ClassWithStaticMembers«.unresolved;
     // no_semantic_error "Must not statically reference class."
-    // semantic_error "Must not statically reference class."
+    // no_semantic_error "Must not statically reference class."
     »ClassWithStaticMembers«.»InnerClassWithConstructor«;
     // no_semantic_error "Must not statically reference class."
+    // semantic_error "Must not statically reference class."
+    »ClassWithStaticMembers«.»InnerClassWithoutConstructor«;
     // no_semantic_error "Must not statically reference class."
-    »ClassWithStaticMembers«.»InnerClassWithConstructor«();    
+    // no_semantic_error "Must not statically reference class."
+    »ClassWithStaticMembers«.»InnerClassWithConstructor«();
     // no_semantic_error "Must not statically reference class."
     // no_semantic_error "Must not statically reference class."
     »ClassWithStaticMembers«.»InnerClassWithConstructor«.myAttribute;
