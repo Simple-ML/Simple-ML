@@ -74,4 +74,6 @@ enum class ErrorCode {
 
     MustNotStaticallyReferenceClass,
     MustNotStaticallyReferenceEnum,
+
+    DivisionByZero
 }

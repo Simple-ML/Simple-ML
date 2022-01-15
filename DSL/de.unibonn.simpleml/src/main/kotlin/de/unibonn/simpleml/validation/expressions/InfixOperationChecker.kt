@@ -1,13 +1,18 @@
 package de.unibonn.simpleml.validation.expressions
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.constant.SmlInfixOperationOperator.By
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Elvis
+import de.unibonn.simpleml.partialEvaluation.SmlConstantFloat
+import de.unibonn.simpleml.partialEvaluation.SmlConstantInt
 import de.unibonn.simpleml.partialEvaluation.SmlConstantNull
 import de.unibonn.simpleml.partialEvaluation.toConstantExpressionOrNull
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
+import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.typing.NamedType
 import de.unibonn.simpleml.typing.TypeComputer
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode
 import org.eclipse.xtext.validation.Check
 
@@ -18,7 +23,24 @@ class InfixOperationChecker @Inject constructor(
     @Check
     fun dispatchCheckInfixOperation(smlInfixOperation: SmlInfixOperation) {
         when (smlInfixOperation.operator) {
+            By.operator -> checkByOperator(smlInfixOperation)
             Elvis.operator -> checkElvisOperator(smlInfixOperation)
+        }
+    }
+
+    private fun checkByOperator(smlInfixOperation: SmlInfixOperation) {
+        val leftType = typeComputer.typeOf(smlInfixOperation.leftOperand)
+        if (!(leftType is NamedType && leftType.fullyQualifiedName in setOf(StdlibClasses.Float, StdlibClasses.Int))) {
+            return
+        }
+
+        val rightValue = smlInfixOperation.rightOperand.toConstantExpressionOrNull()
+        if (rightValue in setOf(SmlConstantFloat(0.0), SmlConstantFloat(-0.0), SmlConstantInt(0))) {
+            error(
+                "Division by zero.",
+                null,
+                ErrorCode.DivisionByZero
+            )
         }
     }
 

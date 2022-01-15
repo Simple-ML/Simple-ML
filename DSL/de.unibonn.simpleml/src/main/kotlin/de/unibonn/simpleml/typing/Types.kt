@@ -41,13 +41,13 @@ class CallableType(val parameters: List<Type>, val results: List<Type>) : Type()
 
 sealed class NamedType(smlDeclaration: SmlAbstractDeclaration) : Type() {
     val simpleName: String = smlDeclaration.name
-    val qualifiedName: QualifiedName = smlDeclaration.fullyQualifiedNameOrNull()!!
+    val fullyQualifiedName: QualifiedName = smlDeclaration.fullyQualifiedNameOrNull()!!
 
     abstract val isNullable: Boolean
     abstract val isStatic: Boolean
 
     override fun toString() = buildString {
-        append(qualifiedName)
+        append(fullyQualifiedName)
         if (isNullable) {
             append("?")
         }

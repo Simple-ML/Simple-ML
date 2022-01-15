@@ -915,6 +915,39 @@ class ToConstantExpressionTest {
 
                 testData.toConstantExpressionOrNull().shouldBeNull()
             }
+
+            @Test
+            fun `should return null if the right operand is constant integer 0`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlInt(1),
+                    operator = SmlInfixOperationOperator.By,
+                    rightOperand = createSmlInt(0)
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
+
+            @Test
+            fun `should return null if the right operand is constant float 0`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlInt(1),
+                    operator = SmlInfixOperationOperator.By,
+                    rightOperand = createSmlFloat(0.0)
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
+
+            @Test
+            fun `should return null if the right operand is constant float -0`() {
+                val testData = createSmlInfixOperation(
+                    leftOperand = createSmlInt(1),
+                    operator = SmlInfixOperationOperator.By,
+                    rightOperand = createSmlFloat(-0.0)
+                )
+
+                testData.toConstantExpressionOrNull().shouldBeNull()
+            }
         }
 
         @Nested
