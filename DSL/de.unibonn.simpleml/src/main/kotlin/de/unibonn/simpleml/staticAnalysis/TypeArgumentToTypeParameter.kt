@@ -2,6 +2,7 @@ package de.unibonn.simpleml.staticAnalysis
 
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.isNamed
+import de.unibonn.simpleml.emf.isResolved
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlClass
@@ -12,42 +13,51 @@ import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 
+/**
+ * Returns the [SmlTypeParameter] that corresponds to this [SmlTypeArgument] or `null` if it cannot be resolved.
+ */
 fun SmlTypeArgument.typeParameterOrNull(): SmlTypeParameter? {
-    when {
-        this.isNamed() -> return this.typeParameter
+    return when {
+        this.isNamed() -> typeParameter
         else -> {
-            val typeArgumentList = this.closestAncestorOrNull<SmlTypeArgumentList>() ?: return null
+            val typeArgumentList = closestAncestorOrNull<SmlTypeArgumentList>() ?: return null
 
+            // Cannot match positional type argument if it is preceded by named type arguments
             val firstNamedTypeArgumentIndex = typeArgumentList.typeArguments.indexOfFirst { it.isNamed() }
             val thisIndex = typeArgumentList.typeArguments.indexOf(this)
             if (firstNamedTypeArgumentIndex != -1 && thisIndex > firstNamedTypeArgumentIndex) {
                 return null
             }
 
-            return typeArgumentList.typeParametersOrNull()?.getOrNull(thisIndex)
+            typeArgumentList.typeParametersOrNull()?.getOrNull(thisIndex)
         }
     }
 }
 
+/**
+ * Returns the list of [SmlTypeParameter]s that corresponds to this list of [SmlTypeArgument]s or `null` if it cannot
+ * not be resolved.
+ */
 fun SmlTypeArgumentList.typeParametersOrNull(): List<SmlTypeParameter>? {
-    when (val parent = this.eContainer()) {
+    return when (val parent = eContainer()) {
         is SmlCall -> {
             when (val callable = parent.callableOrNull()) {
-                is SmlClass -> return callable.typeParametersOrEmpty()
-                is SmlEnumVariant -> return callable.typeParametersOrEmpty()
-                is SmlFunction -> return callable.typeParametersOrEmpty()
+                is SmlClass -> callable.typeParametersOrEmpty()
+                is SmlEnumVariant -> callable.typeParametersOrEmpty()
+                is SmlFunction -> callable.typeParametersOrEmpty()
+                else -> null
             }
         }
         is SmlNamedType -> {
             val declaration = parent.declaration
             when {
-                declaration.eIsProxy() -> return null
-                declaration is SmlClass -> return declaration.typeParametersOrEmpty()
-                declaration is SmlEnumVariant -> return declaration.typeParametersOrEmpty()
-                declaration is SmlFunction -> return declaration.typeParametersOrEmpty()
+                !declaration.isResolved() -> null
+                declaration is SmlClass -> declaration.typeParametersOrEmpty()
+                declaration is SmlEnumVariant -> declaration.typeParametersOrEmpty()
+                declaration is SmlFunction -> declaration.typeParametersOrEmpty()
+                else -> null
             }
         }
+        else -> null
     }
-
-    return null
 }

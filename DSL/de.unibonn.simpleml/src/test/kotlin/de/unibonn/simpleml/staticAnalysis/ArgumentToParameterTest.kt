@@ -117,7 +117,7 @@ class ArgumentToParameterTest {
         }
 
         @Test
-        fun `should return null if named parameters precede positional parameter (function call)`() {
+        fun `should return null if named arguments precede positional arguments (function call)`() {
             function.parameterList = createSmlParameterList(listOf(normalParameter))
             call.argumentList = createSmlArgumentList(listOf(namedArgument, positionalArgument))
 
@@ -125,7 +125,7 @@ class ArgumentToParameterTest {
         }
 
         @Test
-        fun `should return null if named parameters precede positional parameter (annotation call)`() {
+        fun `should return null if named arguments precede positional arguments (annotation call)`() {
             annotation.parameterList = createSmlParameterList(listOf(normalParameter))
             annotationCall.argumentList = createSmlArgumentList(listOf(namedArgument, positionalArgument))
 
@@ -154,7 +154,7 @@ class ArgumentToParameterTest {
         }
 
         @Test
-        fun `should return null for positional parameters that are not in an annotation list`() {
+        fun `should return null for positional arguments that are not in an argument list`() {
             positionalArgument.parameterOrNull().shouldBeNull()
         }
     }

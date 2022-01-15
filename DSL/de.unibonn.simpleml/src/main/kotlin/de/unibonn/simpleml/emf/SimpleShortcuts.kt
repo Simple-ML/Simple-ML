@@ -24,6 +24,7 @@ import de.unibonn.simpleml.simpleML.SmlAnnotationCall
 import de.unibonn.simpleml.simpleML.SmlAnnotationCallHolder
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlAssignment
+import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlCall
@@ -369,16 +370,40 @@ fun SmlConstraintList.typeParametersOrNull(): List<SmlTypeParameter>? {
  * Checks                                                                                                             *
  * ********************************************************************************************************************/
 
+// SmlAbstractClassMember --------------------------------------------------------------------------
+
+/**
+ * Returns whether this [SmlAbstractClassMember] is truly contained in a class and static.
+ */
+fun SmlAbstractClassMember.isStatic(): Boolean {
+    return when {
+        !this.isClassMember() -> false
+        this is SmlClass || this is SmlEnum -> true
+        this is SmlAttribute && this.isStatic -> true
+        this is SmlFunction && this.isStatic -> true
+        else -> false
+    }
+}
+
 // SmlAbstractDeclaration --------------------------------------------------------------------------
 
+/**
+ * Returns whether this [SmlAbstractDeclaration] is contained in a class.
+ */
 fun SmlAbstractDeclaration.isClassMember(): Boolean {
     return this is SmlAbstractClassMember && containingClassOrNull() != null
 }
 
-fun SmlAbstractDeclaration.isCompilationUnitMember(): Boolean {
+/**
+ * Returns whether this [SmlAbstractDeclaration] is a global declaration.
+ */
+fun SmlAbstractDeclaration.isGlobal(): Boolean {
     return !isClassMember() && this is SmlAbstractCompilationUnitMember
 }
 
+/**
+ * Returns whether this [SmlAbstractDeclaration] is resolved, i.e. not a proxy.
+ */
 @OptIn(ExperimentalContracts::class)
 fun SmlAbstractDeclaration?.isResolved(): Boolean {
     contract {
@@ -395,6 +420,10 @@ fun SmlArgument.isPositional() = parameter == null
 
 // SmlEnum -----------------------------------------------------------------------------------------
 
+/**
+ * Returns whether no [SmlEnumVariant]s of this [SmlEnum] have non-empty parameter list. Only those enums can be
+ * processed by the compiler, so non-constant [SmlEnum]s cannot be used as the type of parameters of annotations.
+ */
 fun SmlEnum.isConstant(): Boolean {
     return variantsOrEmpty().all { it.parametersOrEmpty().isEmpty() }
 }
@@ -424,6 +453,11 @@ fun SmlTypeArgument.isPositional() = typeParameter == null
 
 // SmlAbstractDeclaration --------------------------------------------------------------------------
 
+/**
+ * Returns this [SmlAbstractDeclaration] if it is resolved, otherwise `null`.
+ *
+ * @see isResolved
+ */
 fun <T: SmlAbstractDeclaration> T.asResolvedOrNull(): T? {
     return when {
         isResolved() -> this

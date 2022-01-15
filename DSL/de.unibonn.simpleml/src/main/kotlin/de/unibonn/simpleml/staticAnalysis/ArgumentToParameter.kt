@@ -31,7 +31,7 @@ fun SmlArgument.parameterOrNull(): SmlParameter? {
             val parameterAtIndex = parameters.getOrNull(thisIndex)
             val lastParameter = parameters.lastOrNull()
 
-            return when {
+            when {
                 parameterAtIndex != null -> parameterAtIndex
                 lastParameter != null && lastParameter.isVariadic -> lastParameter
                 else -> null

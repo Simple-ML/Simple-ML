@@ -963,7 +963,13 @@ fun createSmlParameter(
 /**
  * Returns a new object of class [SmlParameterList] or `null` if the parameter is `null`.
  */
+@OptIn(ExperimentalContracts::class)
 fun createSmlParameterList(parameters: List<SmlParameter>?): SmlParameterList? {
+    contract {
+        returns(null) implies (parameters == null)
+        returnsNotNull() implies (parameters != null)
+    }
+
     if (parameters == null) {
         return null
     }
@@ -1207,7 +1213,13 @@ fun createSmlResult(
 /**
  * Returns a new object of class [SmlResultList] or `null` if the parameter is `null`.
  */
+@OptIn(ExperimentalContracts::class)
 fun createSmlResultList(results: List<SmlResult>?): SmlResultList? {
+    contract {
+        returns(null) implies (results == null)
+        returnsNotNull() implies (results != null)
+    }
+
     if (results == null) {
         return null
     }

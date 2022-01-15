@@ -5,7 +5,7 @@ import de.unibonn.simpleml.constant.isFlowFile
 import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingCompilationUnitOrNull
-import de.unibonn.simpleml.emf.isCompilationUnitMember
+import de.unibonn.simpleml.emf.isGlobal
 import de.unibonn.simpleml.emf.isNamed
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
@@ -147,7 +147,7 @@ class SimpleMLGenerator @Inject constructor(
             .asSequence()
             .filterIsInstance<SmlReference>()
             .map { it.declaration }
-            .filter { it.isCompilationUnitMember() && it.containingCompilationUnitOrNull() != compilationUnit }
+            .filter { it.isGlobal() && it.containingCompilationUnitOrNull() != compilationUnit }
             .mapNotNull {
                 val importPath = qualifiedNameProvider.getFullyQualifiedName(it).toString()
                     .split(".")

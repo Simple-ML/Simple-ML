@@ -6,13 +6,10 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlResultList
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.utils.uniqueOrNull
 
 fun SmlResult.uniqueYieldOrNull(): SmlYield? {
-    val yields = yieldsOrEmpty()
-    return when (yields.size) {
-        1 -> yields.first()
-        else -> null
-    }
+    return yieldsOrEmpty().uniqueOrNull()
 }
 
 fun SmlResult.yieldsOrEmpty(): List<SmlYield> {
