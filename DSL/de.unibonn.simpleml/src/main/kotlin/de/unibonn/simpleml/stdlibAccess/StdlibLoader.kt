@@ -28,7 +28,8 @@ fun ResourceSet.loadStdlib() {
     val context = resources.firstNotNullOfOrNull { it.contents.firstOrNull() }
         ?: throw IllegalStateException("All loaded stdlib resources are empty.")
 
-    loadStdlibClasses(context)
+    context.loadStdlibAnnotations()
+    context.loadStdlibClasses()
 }
 
 fun listStdlibFiles(): Sequence<Pair<Path, URI>> {
@@ -64,18 +65,14 @@ fun listStdlibFiles(): Sequence<Pair<Path, URI>> {
     }
 }
 
-internal inline fun <reified T : SmlAbstractDeclaration> getStdlibDeclaration(
-    context: EObject,
-    qualifiedName: QualifiedName
-): T {
-
-    val description = context.visibleGlobalDeclarationDescriptions()
+internal inline fun <reified T : SmlAbstractDeclaration> EObject.getStdlibDeclaration(qualifiedName: QualifiedName): T {
+    val description = visibleGlobalDeclarationDescriptions()
         .find { it.qualifiedName == qualifiedName }
         ?: throw IllegalStateException("Failed to load stdlib declaration '$qualifiedName'.")
 
     var eObject = description.eObjectOrProxy
     if (eObject != null && eObject.eIsProxy()) {
-        eObject = context.eResource().resourceSet.getEObject(description.eObjectURI, true)
+        eObject = eResource().resourceSet.getEObject(description.eObjectURI, true)
     }
 
     return when (eObject) {

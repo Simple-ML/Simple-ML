@@ -25,7 +25,7 @@ import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.staticAnalysis.linking.parametersOrNull
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
-import de.unibonn.simpleml.stdlibAccess.StdlibAnnotations
+import de.unibonn.simpleml.stdlibAccess.StdlibAnnotation
 import de.unibonn.simpleml.stdlibAccess.StdlibEnums.AnnotationTarget
 import de.unibonn.simpleml.stdlibAccess.validTargets
 import de.unibonn.simpleml.utils.duplicatesBy
@@ -40,7 +40,7 @@ class AnnotationCallChecker : AbstractSimpleMLChecker() {
     @Check
     fun duplicateTargetInTargetAnnotation(smlAnnotationCall: SmlAnnotationCall) {
         val annotation = smlAnnotationCall.annotation
-        if (!annotation.isResolved() || annotation.qualifiedNameOrNull() != StdlibAnnotations.Target) {
+        if (!annotation.isResolved() || annotation != StdlibAnnotation.Target) {
             return
         }
 

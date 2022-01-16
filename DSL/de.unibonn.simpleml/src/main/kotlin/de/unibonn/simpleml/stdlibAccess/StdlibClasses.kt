@@ -2,7 +2,6 @@ package de.unibonn.simpleml.stdlibAccess
 
 import de.unibonn.simpleml.simpleML.SmlClass
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtext.naming.QualifiedName
 
 /**
  * Important classes in the standard library.
@@ -17,25 +16,13 @@ object StdlibClass {
 }
 
 /**
- * Loads the stdlib classes.
+ * Loads the important classes in the standard library.
  */
-internal fun loadStdlibClasses(context: EObject) {
-    StdlibClass.Any = getStdlibDeclaration(context, StdlibClassQualifiedNames.Any)
-    StdlibClass.Boolean = getStdlibDeclaration(context, StdlibClassQualifiedNames.Boolean)
-    StdlibClass.Float = getStdlibDeclaration(context, StdlibClassQualifiedNames.Float)
-    StdlibClass.Int = getStdlibDeclaration(context, StdlibClassQualifiedNames.Int)
-    StdlibClass.Nothing = getStdlibDeclaration(context, StdlibClassQualifiedNames.Nothing)
-    StdlibClass.String = getStdlibDeclaration(context, StdlibClassQualifiedNames.String)
-}
-
-/**
- * Qualified names of important classes in the standard library.
- */
-private object StdlibClassQualifiedNames {
-    val Any: QualifiedName = StdlibPackages.lang.append("Any")
-    val Boolean: QualifiedName = StdlibPackages.lang.append("Boolean")
-    val Float: QualifiedName = StdlibPackages.lang.append("Float")
-    val Int: QualifiedName = StdlibPackages.lang.append("Int")
-    val Nothing: QualifiedName = StdlibPackages.lang.append("Nothing")
-    val String: QualifiedName = StdlibPackages.lang.append("String")
+internal fun EObject.loadStdlibClasses() {
+    StdlibClass.Any = getStdlibDeclaration(StdlibPackages.lang.append("Any"))
+    StdlibClass.Boolean = getStdlibDeclaration(StdlibPackages.lang.append("Boolean"))
+    StdlibClass.Float = getStdlibDeclaration(StdlibPackages.lang.append("Float"))
+    StdlibClass.Int = getStdlibDeclaration(StdlibPackages.lang.append("Int"))
+    StdlibClass.Nothing = getStdlibDeclaration(StdlibPackages.lang.append("Nothing"))
+    StdlibClass.String = getStdlibDeclaration(StdlibPackages.lang.append("String"))
 }

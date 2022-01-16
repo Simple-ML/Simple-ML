@@ -18,91 +18,27 @@ import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantString
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibEnums.AnnotationTarget
 import de.unibonn.simpleml.utils.uniqueOrNull
-import org.eclipse.xtext.naming.QualifiedName
+import org.eclipse.emf.ecore.EObject
 
 /**
- * Important annotations in the standard library.
+ * Returns all calls of the given annotation.
  */
-object StdlibAnnotations {
-
-    /**
-     * The declaration should no longer be used.
-     *
-     * @see isDeprecated
-     */
-    val Deprecated: QualifiedName = StdlibPackages.lang.append("Deprecated")
-
-    /**
-     * The purpose of a declaration.
-     *
-     * @see descriptionOrNull
-     */
-    val Description: QualifiedName = StdlibPackages.lang.append("Description")
-
-    /**
-     * The qualified name of the corresponding module in Python.
-     *
-     * @see pythonModuleOrNull
-     */
-    val PythonModule: QualifiedName = StdlibPackages.lang.append("PythonModule")
-
-    /**
-     * The name of the corresponding API element in Python.
-     *
-     * @see pythonNameOrNull
-     */
-    val PythonName: QualifiedName = StdlibPackages.lang.append("PythonName")
-
-    /**
-     * The function returns the same results for the same arguments and has no side effects.
-     *
-     * @see isPure
-     */
-    val Pure: QualifiedName = StdlibPackages.lang.append("Pure")
-
-    /**
-     * The annotation can be used multiple times for the same declaration.
-     *
-     * @see isRepeatable
-     */
-    val Repeatable: QualifiedName = StdlibPackages.lang.append("Repeatable")
-
-    /**
-     * The version in which a declaration was added.
-     *
-     * @see sinceVersionOrNull
-     */
-    val Since: QualifiedName = StdlibPackages.lang.append("Since")
-
-    /**
-     * The annotation can target only a subset of declaration types.
-     *
-     * @see validTargets
-     */
-    val Target: QualifiedName = StdlibPackages.lang.append("Target")
+fun SmlAbstractDeclaration.annotationCallsOrEmpty(annotation: SmlAnnotation): List<SmlAnnotationCall> {
+    return this.annotationCallsOrEmpty().filter { it.annotation == annotation }
 }
 
 /**
- * Returns all calls of the annotation with the given fully qualified name.
+ * Returns the unique use of the given annotation or `null` if none or multiple exist.
  */
-fun SmlAbstractDeclaration.annotationCallsOrEmpty(qualifiedName: QualifiedName): List<SmlAnnotationCall> {
-    return this.annotationCallsOrEmpty().filter {
-        it.annotation.qualifiedNameOrNull() == qualifiedName
-    }
-}
-
-/**
- * Returns the unique use of the annotation with the given fully qualified name or `null` if none or multiple exist.
- */
-fun SmlAbstractDeclaration.uniqueAnnotationCallOrNull(qualifiedName: QualifiedName): SmlAnnotationCall? {
-    return this.annotationCallsOrEmpty(qualifiedName).uniqueOrNull()
+fun SmlAbstractDeclaration.uniqueAnnotationCallOrNull(annotation: SmlAnnotation): SmlAnnotationCall? {
+    return this.annotationCallsOrEmpty(annotation).uniqueOrNull()
 }
 
 /**
  * Returns the description attached to the declaration with a `simpleml.lang.Description` annotation.
  */
 fun SmlAbstractDeclaration.descriptionOrNull(): String? {
-    val value = annotationCallArgumentValueOrNull(StdlibAnnotations.Description, "description")
+    val value = annotationCallArgumentValueOrNull(StdlibAnnotation.Description, "description")
     return (value as? SmlConstantString)?.value
 }
 
@@ -110,21 +46,21 @@ fun SmlAbstractDeclaration.descriptionOrNull(): String? {
  * Checks if the declaration is annotated with the `simpleml.lang.Deprecated` annotation.
  */
 fun SmlAbstractDeclaration.isDeprecated(): Boolean {
-    return hasAnnotationCallTo(StdlibAnnotations.Deprecated)
+    return hasAnnotationCallTo(StdlibAnnotation.Deprecated)
 }
 
 /**
  * Checks if the function is annotated with the `simpleml.lang.Pure` annotation.
  */
 fun SmlFunction.isPure(): Boolean {
-    return hasAnnotationCallTo(StdlibAnnotations.Pure)
+    return hasAnnotationCallTo(StdlibAnnotation.Pure)
 }
 
 /**
  * Checks if the annotation is annotated with the `simpleml.lang.Repeatable` annotation.
  */
 fun SmlAnnotation.isRepeatable(): Boolean {
-    return hasAnnotationCallTo(StdlibAnnotations.Repeatable)
+    return hasAnnotationCallTo(StdlibAnnotation.Repeatable)
 }
 
 /**
@@ -133,7 +69,7 @@ fun SmlAnnotation.isRepeatable(): Boolean {
  */
 fun SmlCompilationUnit.pythonModuleOrNull(): String? {
     val value = uniquePackageOrNull()?.annotationCallArgumentValueOrNull(
-        StdlibAnnotations.PythonModule,
+        StdlibAnnotation.PythonModule,
         "qualifiedName"
     )
     return (value as? SmlConstantString)?.value
@@ -144,7 +80,7 @@ fun SmlCompilationUnit.pythonModuleOrNull(): String? {
  * with a `simpleml.lang.PythonName` annotation.
  */
 fun SmlAbstractDeclaration.pythonNameOrNull(): String? {
-    val value = annotationCallArgumentValueOrNull(StdlibAnnotations.PythonName, "name")
+    val value = annotationCallArgumentValueOrNull(StdlibAnnotation.PythonName, "name")
     return (value as? SmlConstantString)?.value
 }
 
@@ -153,7 +89,7 @@ fun SmlAbstractDeclaration.pythonNameOrNull(): String? {
  * annotation.
  */
 fun SmlAbstractDeclaration.sinceVersionOrNull(): String? {
-    val value = annotationCallArgumentValueOrNull(StdlibAnnotations.Since, "version")
+    val value = annotationCallArgumentValueOrNull(StdlibAnnotation.Since, "version")
     return (value as? SmlConstantString)?.value
 }
 
@@ -161,7 +97,7 @@ fun SmlAbstractDeclaration.sinceVersionOrNull(): String? {
  * Returns the possible targets of this annotation.
  */
 fun SmlAnnotation.validTargets(): List<AnnotationTarget> {
-    val targetAnnotationCall = uniqueAnnotationCallOrNull(StdlibAnnotations.Target)
+    val targetAnnotationCall = uniqueAnnotationCallOrNull(StdlibAnnotation.Target)
         ?: return AnnotationTarget.values().toList()
 
     return targetAnnotationCall
@@ -176,25 +112,97 @@ fun SmlAnnotation.validTargets(): List<AnnotationTarget> {
 }
 
 /**
- * Returns whether this [SmlAbstractDeclaration] has at least one annotation call to the annotation with the given
- * qualified name.
+ * Returns whether this [SmlAbstractDeclaration] has at least one call to the given annotation.
  */
-private fun SmlAbstractDeclaration.hasAnnotationCallTo(qualifiedName: QualifiedName): Boolean {
-    return annotationCallsOrEmpty().any {
-        it.annotation.qualifiedNameOrNull() == qualifiedName
-    }
+private fun SmlAbstractDeclaration.hasAnnotationCallTo(annotation: SmlAnnotation): Boolean {
+    return annotationCallsOrEmpty().any { it.annotation == annotation }
 }
 
 /**
- * Finds the unique call to a declaration with the given fully qualified name and looks up the value assigned to the
- * parameter with the given name.
+ * Finds the unique call to the given annotation and looks up the value assigned to the parameter with the given name.
  */
 private fun SmlAbstractDeclaration.annotationCallArgumentValueOrNull(
-    qualifiedName: QualifiedName,
+    annotation: SmlAnnotation,
     parameterName: String
 ): SmlConstantExpression? {
-    return uniqueAnnotationCallOrNull(qualifiedName)
+    return uniqueAnnotationCallOrNull(annotation)
         .argumentsOrEmpty()
         .uniqueOrNull { it.parameterOrNull()?.name == parameterName }
         ?.toConstantExpressionOrNull()
+}
+
+/**
+ * Important annotations in the standard library.
+ */
+object StdlibAnnotation {
+
+    /**
+     * The declaration should no longer be used.
+     *
+     * @see isDeprecated
+     */
+    lateinit var Deprecated: SmlAnnotation
+
+    /**
+     * The purpose of a declaration.
+     *
+     * @see descriptionOrNull
+     */
+    lateinit var Description: SmlAnnotation
+
+    /**
+     * The qualified name of the corresponding module in Python.
+     *
+     * @see pythonModuleOrNull
+     */
+    lateinit var PythonModule: SmlAnnotation
+
+    /**
+     * The name of the corresponding API element in Python.
+     *
+     * @see pythonNameOrNull
+     */
+    lateinit var PythonName: SmlAnnotation
+
+    /**
+     * The function returns the same results for the same arguments and has no side effects.
+     *
+     * @see isPure
+     */
+    lateinit var Pure: SmlAnnotation
+
+    /**
+     * The annotation can be used multiple times for the same declaration.
+     *
+     * @see isRepeatable
+     */
+    lateinit var Repeatable: SmlAnnotation
+
+    /**
+     * The version in which a declaration was added.
+     *
+     * @see sinceVersionOrNull
+     */
+    lateinit var Since: SmlAnnotation
+
+    /**
+     * The annotation can target only a subset of declaration types.
+     *
+     * @see validTargets
+     */
+    lateinit var Target: SmlAnnotation
+}
+
+/**
+ * Loads the important annotations in the standard library.
+ */
+internal fun EObject.loadStdlibAnnotations() {
+    StdlibAnnotation.Deprecated = getStdlibDeclaration(StdlibPackages.lang.append("Deprecated"))
+    StdlibAnnotation.Description = getStdlibDeclaration(StdlibPackages.lang.append("Description"))
+    StdlibAnnotation.PythonModule = getStdlibDeclaration(StdlibPackages.lang.append("PythonModule"))
+    StdlibAnnotation.PythonName = getStdlibDeclaration(StdlibPackages.lang.append("PythonName"))
+    StdlibAnnotation.Pure = getStdlibDeclaration(StdlibPackages.lang.append("Pure"))
+    StdlibAnnotation.Repeatable = getStdlibDeclaration(StdlibPackages.lang.append("Repeatable"))
+    StdlibAnnotation.Since = getStdlibDeclaration(StdlibPackages.lang.append("Since"))
+    StdlibAnnotation.Target = getStdlibDeclaration(StdlibPackages.lang.append("Target"))
 }
