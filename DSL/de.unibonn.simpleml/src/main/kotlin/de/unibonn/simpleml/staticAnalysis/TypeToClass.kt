@@ -5,6 +5,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
+import de.unibonn.simpleml.simpleML.SmlParenthesizedType
 
 sealed interface ClassResult {
     object Unresolvable : ClassResult
@@ -12,27 +13,24 @@ sealed interface ClassResult {
     class Class(val `class`: SmlClass) : ClassResult
 }
 
-fun SmlAbstractType?.maybeClass(): ClassResult {
+fun SmlAbstractType.asClass(): ClassResult {
     return when (this) {
         is SmlNamedType -> {
             val declaration = this.declaration
-            if (declaration.isResolved()) {
-                if (declaration is SmlClass) {
-                    ClassResult.Class(declaration)
-                } else {
-                    ClassResult.NotAClass
-                }
-            } else {
-                ClassResult.Unresolvable
+            when {
+                !declaration.isResolved() -> ClassResult.Unresolvable
+                declaration is SmlClass -> ClassResult.Class(declaration)
+                else -> ClassResult.NotAClass
             }
         }
-        is SmlMemberType -> this.member.maybeClass()
-        else -> ClassResult.Unresolvable
+        is SmlMemberType -> this.member.asClass()
+        is SmlParenthesizedType -> this.type.asClass()
+        else -> ClassResult.NotAClass
     }
 }
 
-fun SmlAbstractType?.classOrNull(): SmlClass? {
-    return when (val result = this.maybeClass()) {
+fun SmlAbstractType.asClassOrNull(): SmlClass? {
+    return when (val result = this.asClass()) {
         is ClassResult.Class -> result.`class`
         else -> null
     }

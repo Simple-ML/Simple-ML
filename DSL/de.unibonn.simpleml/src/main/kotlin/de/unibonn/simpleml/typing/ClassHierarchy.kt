@@ -8,7 +8,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.staticAnalysis.classOrNull
+import de.unibonn.simpleml.staticAnalysis.asClassOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibAccess
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 
@@ -53,14 +53,14 @@ class ClassHierarchy @Inject constructor(
 
 fun SmlClass?.inheritedNonStaticMembersOrEmpty(): Set<SmlAbstractDeclaration> {
     return this?.parentTypesOrEmpty()
-        ?.mapNotNull { it.classOrNull() }
+        ?.mapNotNull { it.asClassOrNull() }
         ?.flatMap { it.classMembersOrEmpty() }
         ?.filter { it is SmlAttribute && !it.isStatic || it is SmlFunction && !it.isStatic }
         ?.toSet()
         .orEmpty()
 }
 
-fun SmlClass?.parentClassesOrEmpty() = this.parentTypesOrEmpty().mapNotNull { it.classOrNull() }
+fun SmlClass?.parentClassesOrEmpty() = this.parentTypesOrEmpty().mapNotNull { it.asClassOrNull() }
 fun SmlClass?.parentClassOrNull(): SmlClass? {
     val resolvedParentClasses = this.parentClassesOrEmpty()
     return when (resolvedParentClasses.size) {

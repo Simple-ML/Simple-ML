@@ -10,8 +10,8 @@ import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.staticAnalysis.ClassResult
-import de.unibonn.simpleml.staticAnalysis.classOrNull
-import de.unibonn.simpleml.staticAnalysis.maybeClass
+import de.unibonn.simpleml.staticAnalysis.asClassOrNull
+import de.unibonn.simpleml.staticAnalysis.asClass
 import de.unibonn.simpleml.typing.ClassHierarchy
 import de.unibonn.simpleml.typing.inheritedNonStaticMembersOrEmpty
 import de.unibonn.simpleml.utils.duplicatesBy
@@ -28,7 +28,7 @@ class ClassChecker @Inject constructor(
     fun acyclicSuperTypes(smlClass: SmlClass) {
         smlClass.parentTypesOrEmpty()
             .filter {
-                val resolvedClass = it.classOrNull()
+                val resolvedClass = it.asClassOrNull()
                 resolvedClass != null && classHierarchy.isSubtypeOf(resolvedClass, smlClass)
             }
             .forEach {
@@ -55,7 +55,7 @@ class ClassChecker @Inject constructor(
     @Check
     fun mustInheritOnlyClasses(smlClass: SmlClass) {
         smlClass.parentTypesOrEmpty()
-            .filter { it.maybeClass() is ClassResult.NotAClass }
+            .filter { it.asClass() is ClassResult.NotAClass }
             .forEach {
                 error(
                     "A class must only inherit classes.",
@@ -93,8 +93,8 @@ class ClassChecker @Inject constructor(
     @Check
     fun uniqueParentTypes(smlClass: SmlClass) {
         smlClass.parentTypesOrEmpty()
-            .filter { it.classOrNull() != null }
-            .duplicatesBy { it.classOrNull()?.name }
+            .filter { it.asClassOrNull() != null }
+            .duplicatesBy { it.asClassOrNull()?.name }
             .forEach {
                 error(
                     "Parent types must be unique.",
