@@ -1,10 +1,11 @@
 package de.unibonn.simpleml.validation.declarations
 
-import com.google.inject.Inject
 import de.unibonn.simpleml.constant.isInStubFile
 import de.unibonn.simpleml.constant.isInTestFile
 import de.unibonn.simpleml.emf.importedNameOrNull
 import de.unibonn.simpleml.emf.isQualified
+import de.unibonn.simpleml.emf.packageMembersOrEmpty
+import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.scoping.visibleExternalGlobalDeclarationDescriptions
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
@@ -15,13 +16,10 @@ import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
-import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.validation.CheckType
 
-class PackageChecker @Inject constructor(
-    private val qualifiedNameProvider: IQualifiedNameProvider
-) : AbstractSimpleMLChecker() {
+class PackageChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun members(smlPackage: SmlPackage) {
@@ -102,8 +100,8 @@ class PackageChecker @Inject constructor(
 
         val externalGlobalDeclarations = smlPackage.visibleExternalGlobalDeclarationDescriptions()
 
-        smlPackage.members.forEach {
-            val qualifiedName = qualifiedNameProvider.getFullyQualifiedName(it)
+        smlPackage.packageMembersOrEmpty().forEach {
+            val qualifiedName = it.qualifiedNameOrNull()
             if (qualifiedName in externalGlobalDeclarations) {
                 error(
                     "A declaration with qualified name '$qualifiedName' exists already.",

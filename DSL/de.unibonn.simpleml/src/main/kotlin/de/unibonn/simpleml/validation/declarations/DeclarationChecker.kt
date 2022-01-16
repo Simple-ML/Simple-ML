@@ -2,7 +2,7 @@ package de.unibonn.simpleml.validation.declarations
 
 import de.unibonn.simpleml.emf.annotationCallsOrEmpty
 import de.unibonn.simpleml.emf.isRequired
-import de.unibonn.simpleml.naming.fullyQualifiedNameOrNull
+import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.stdlibAccess.StdlibAnnotations
@@ -18,7 +18,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
     fun annotationCardinality(smlDeclaration: SmlAbstractDeclaration) {
         smlDeclaration.annotationCallsOrEmpty()
             .filter { it.annotation != null && !it.annotation.eIsProxy() && !it.annotation.isRepeatable() }
-            .duplicatesBy { it.annotation.fullyQualifiedNameOrNull() }
+            .duplicatesBy { it.annotation.qualifiedNameOrNull() }
             .forEach {
                 error(
                     "This annotation can only be used once.",
@@ -33,7 +33,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
     fun mustNotDeprecateRequiredParameter(smlParameter: SmlParameter) {
         if (smlParameter.isRequired()) {
             val deprecatedAnnotationOrNull = smlParameter.annotationCallsOrEmpty().firstOrNull {
-                it.annotation.fullyQualifiedNameOrNull() == StdlibAnnotations.Deprecated
+                it.annotation.qualifiedNameOrNull() == StdlibAnnotations.Deprecated
             }
 
             if (deprecatedAnnotationOrNull != null) {

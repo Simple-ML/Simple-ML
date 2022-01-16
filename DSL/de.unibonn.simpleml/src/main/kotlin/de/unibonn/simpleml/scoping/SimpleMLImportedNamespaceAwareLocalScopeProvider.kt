@@ -95,10 +95,10 @@ data class ImportWithAliasNormalizer(
      * Converts a fully qualified name to the simple alias that can be used to refer to a declaration. If this
      * normalizer is not responsible for the given fully qualified name, null is returned instead.
      */
-    override fun deresolve(fullyQualifiedName: QualifiedName): QualifiedName? {
+    override fun deresolve(qualifiedName: QualifiedName): QualifiedName? {
         return when {
-            ignoreCase && fullyQualifiedName.equalsIgnoreCase(importedNamespacePrefix) -> alias
-            !ignoreCase && fullyQualifiedName == importedNamespacePrefix -> alias
+            ignoreCase && qualifiedName.equalsIgnoreCase(importedNamespacePrefix) -> alias
+            !ignoreCase && qualifiedName == importedNamespacePrefix -> alias
             else -> null
         }
     }

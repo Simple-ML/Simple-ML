@@ -1,5 +1,3 @@
-@file:Suppress("ClassName")
-
 package de.unibonn.simpleml.naming
 
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
@@ -18,7 +16,7 @@ class QualifiedNameProviderTest {
     private val factory = SimpleMLPackage.eINSTANCE.simpleMLFactory
 
     @Nested
-    inner class fullyQualifiedName {
+    inner class QualifiedNameOrNull {
 
         @Test
         fun `should handle declarations with simple names`() {
@@ -33,7 +31,7 @@ class QualifiedNameProviderTest {
                 }
             }
 
-            myClass.fullyQualifiedNameOrNull() shouldBe "tests.MyClass".toQualifiedName()
+            myClass.qualifiedNameOrNull() shouldBe "tests.MyClass".toQualifiedName()
         }
 
         @Test
@@ -49,12 +47,12 @@ class QualifiedNameProviderTest {
                 }
             }
 
-            myClass.fullyQualifiedNameOrNull() shouldBe "`tests`.`MyClass`".toQualifiedName()
+            myClass.qualifiedNameOrNull() shouldBe "`tests`.`MyClass`".toQualifiedName()
         }
     }
 
     @Nested
-    inner class toQualifiedName {
+    inner class ToQualifiedName {
 
         @Test
         fun `should convert string to qualified name`() {
