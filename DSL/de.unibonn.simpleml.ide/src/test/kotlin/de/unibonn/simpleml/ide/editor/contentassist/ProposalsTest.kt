@@ -23,9 +23,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 class ProposalsTest {
 
     @Inject
-    private lateinit var proposals: Proposals
-
-    @Inject
     private lateinit var parseHelper: ParseHelper
 
     private val testProgram = """
@@ -67,7 +64,7 @@ class ProposalsTest {
             .toList()
         steps.shouldHaveSize(5)
 
-        val descriptions = proposals.listCallables(context, emptyList())
+        val descriptions = listCallables(context, emptyList())
         descriptions.shouldContainValues(*steps.toTypedArray())
     }
 
@@ -80,7 +77,7 @@ class ProposalsTest {
         val workflowStepA = context.findUniqueDeclarationOrFail<SmlStep>("matching_a")
         val workflowStepB = context.findUniqueDeclarationOrFail<SmlStep>("matching_b")
 
-        val descriptions = proposals.listCallables(context, listOf(placeholder))
+        val descriptions = listCallables(context, listOf(placeholder))
         descriptions.shouldContainValue(workflowStepA)
         descriptions.shouldNotContainValue(workflowStepB)
     }
@@ -94,7 +91,7 @@ class ProposalsTest {
         val workflowStepA = context.findUniqueDeclarationOrFail<SmlStep>("matching_a")
         val workflowStepB = context.findUniqueDeclarationOrFail<SmlStep>("matching_b")
 
-        val descriptions = proposals.listCallables(context, listOf(result))
+        val descriptions = listCallables(context, listOf(result))
         descriptions.shouldContainValue(workflowStepA)
         descriptions.shouldNotContainValue(workflowStepB)
     }
@@ -108,7 +105,7 @@ class ProposalsTest {
         val matchingWorkflow = context.findUniqueDeclarationOrFail<SmlStep>("matching_multiple_c")
         val nonMatchingWorkflow = context.findUniqueDeclarationOrFail<SmlStep>("not_matching_multiple_c")
 
-        val descriptions = proposals.listCallables(context, listOf(result, result))
+        val descriptions = listCallables(context, listOf(result, result))
         descriptions.shouldContainValue(matchingWorkflow)
         descriptions.shouldNotContainValue(nonMatchingWorkflow)
     }
@@ -124,7 +121,7 @@ class ProposalsTest {
         val matchingWorkflow2 = context.findUniqueDeclarationOrFail<SmlStep>("matching_multiple_d_c")
 
         // Inverse order of placeholder and result than (3)
-        val descriptions = proposals.listCallables(context, listOf(result, placeholder))
+        val descriptions = listCallables(context, listOf(result, placeholder))
         descriptions.shouldContainValue(matchingWorkflow1)
         descriptions.shouldContainValue(matchingWorkflow2)
     }
@@ -140,7 +137,7 @@ class ProposalsTest {
         val matchingWorkflow2 = context.findUniqueDeclarationOrFail<SmlStep>("matching_multiple_d_c")
 
         // Inverse order of placeholder and result than (2)
-        val descriptions = proposals.listCallables(context, listOf(placeholder, result))
+        val descriptions = listCallables(context, listOf(placeholder, result))
         descriptions.shouldContainValue(matchingWorkflow1)
         descriptions.shouldContainValue(matchingWorkflow2)
     }
