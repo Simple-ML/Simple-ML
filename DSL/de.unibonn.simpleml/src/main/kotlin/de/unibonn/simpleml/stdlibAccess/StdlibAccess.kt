@@ -1,8 +1,7 @@
 package de.unibonn.simpleml.stdlibAccess
 
-import com.google.inject.Inject
 import de.unibonn.simpleml.constant.SmlFileExtension
-import de.unibonn.simpleml.scoping.SimpleMLIndexExtensions
+import de.unibonn.simpleml.scoping.visibleGlobalDeclarationDescriptions
 import de.unibonn.simpleml.simpleML.SmlClass
 import org.eclipse.core.runtime.FileLocator
 import org.eclipse.emf.common.util.URI
@@ -14,15 +13,13 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-class StdlibAccess @Inject constructor(
-    private val indexExtensions: SimpleMLIndexExtensions
-) {
+class StdlibAccess {
 
     private val cache = mutableMapOf<String, SmlClass?>()
 
     fun getClass(context: EObject, qualifiedName: String): SmlClass? {
         return cache.computeIfAbsent(qualifiedName) {
-            val description = indexExtensions.visibleGlobalDeclarationDescriptions(context)
+            val description = context.visibleGlobalDeclarationDescriptions()
                 .find { it.qualifiedName.toString() == qualifiedName }
                 ?: return@computeIfAbsent null
 

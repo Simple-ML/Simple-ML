@@ -5,7 +5,7 @@ import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.isClassMember
 import de.unibonn.simpleml.emf.isGlobal
 import de.unibonn.simpleml.emf.parametersOrEmpty
-import de.unibonn.simpleml.scoping.SimpleMLIndexExtensions
+import de.unibonn.simpleml.scoping.visibleGlobalDeclarationDescriptions
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
@@ -17,7 +17,6 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 
 class Proposals @Inject constructor(
-    private val index: SimpleMLIndexExtensions,
     private val typeComputer: TypeComputer,
 ) {
 
@@ -137,7 +136,7 @@ class Proposals @Inject constructor(
     }
 
     private fun listAllReachableDeclarations(context: EObject): Map<URI, EObject> {
-        return index.visibleGlobalDeclarationDescriptions(context).associate {
+        return context.visibleGlobalDeclarationDescriptions().associate {
             it.eObjectURI to it.eObjectOrProxy
         }
     }
