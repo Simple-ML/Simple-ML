@@ -23,44 +23,36 @@ internal object ClassHierarchyInjectionTarget {
     lateinit var typeComputer: TypeComputer
 }
 
-class ClassHierarchy @Inject constructor(
-    private val stdlib: StdlibAccess
-) {
+fun SmlClass.isSubtypeOf(other: SmlClass) =
+    this == ClassHierarchyInjectionTarget.stdlib.getClass(this, StdlibClasses.Nothing.toString()) ||
+            this == other || other in superClasses()
 
-    // ClassOrInterface ------------------------------------------------------------------------------------------------
+private fun SmlClass.superClasses() = sequence<SmlClass> {
+    val visited = mutableSetOf<SmlClass>()
 
-    fun isSubtypeOf(smlClass: SmlClass, other: SmlClass) =
-        smlClass == stdlib.getClass(smlClass, StdlibClasses.Nothing.toString()) ||
-                smlClass == other || other in superClasses(smlClass)
-
-    private fun superClasses(smlClass: SmlClass) = sequence<SmlClass> {
-        val visited = mutableSetOf<SmlClass>()
-
-        // TODO: multiple parent classes
-        var current = smlClass.parentClassOrNull()
-        while (current != null && current !in visited) {
-            yield(current)
-            visited += current
-            current = current.parentClassOrNull()
-        }
-
-        val anyClass = stdlib.getClass(smlClass, StdlibClasses.Any.toString())
-        if (anyClass != null && smlClass != anyClass && visited.lastOrNull() != anyClass) {
-            yield(anyClass)
-        }
+    // TODO: multiple parent classes
+    var current = parentClassOrNull()
+    while (current != null && current !in visited) {
+        yield(current)
+        visited += current
+        current = current.parentClassOrNull()
     }
 
-    fun superClassMembers(smlClass: SmlClass) =
-        superClasses(smlClass).flatMap { it.classMembersOrEmpty().asSequence() }
-
-    // Function --------------------------------------------------------------------------------------------------------
-
-    fun hiddenFunction(smlFunction: SmlFunction): SmlFunction? {
-        val containingClassOrInterface = smlFunction.closestAncestorOrNull<SmlClass>() ?: return null
-        return superClassMembers(containingClassOrInterface)
-            .filterIsInstance<SmlFunction>()
-            .firstOrNull { it.name == smlFunction.name }
+    val anyClass = ClassHierarchyInjectionTarget.stdlib.getClass(this@superClasses, StdlibClasses.Any.toString())
+    if (anyClass != null && this@superClasses != anyClass && visited.lastOrNull() != anyClass) {
+        yield(anyClass)
     }
+}
+
+fun SmlClass.superClassMembers() =
+    this.superClasses().flatMap { it.classMembersOrEmpty().asSequence() }
+
+// TODO only static methods can be hidden
+fun SmlFunction.hiddenFunction(): SmlFunction? {
+    val containingClassOrInterface = closestAncestorOrNull<SmlClass>() ?: return null
+    return containingClassOrInterface.superClassMembers()
+        .filterIsInstance<SmlFunction>()
+        .firstOrNull { it.name == name }
 }
 
 fun SmlClass?.inheritedNonStaticMembersOrEmpty(): Set<SmlAbstractDeclaration> {

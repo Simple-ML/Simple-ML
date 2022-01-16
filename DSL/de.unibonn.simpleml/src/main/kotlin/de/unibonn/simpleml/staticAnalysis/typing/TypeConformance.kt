@@ -1,12 +1,9 @@
 package de.unibonn.simpleml.staticAnalysis.typing
 
-import com.google.inject.Inject
 import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.staticAnalysis.classHierarchy.ClassHierarchy
+import de.unibonn.simpleml.staticAnalysis.classHierarchy.isSubtypeOf
 
-class TypeConformance @Inject constructor(
-    private val classHierarchy: ClassHierarchy
-) {
+class TypeConformance {
     fun isSubstitutableFor(type1: Type, type2: Type): Boolean {
         return when (type2) {
             is ClassType -> isSubstitutableFor(type1, type2.smlClass)
@@ -16,7 +13,7 @@ class TypeConformance @Inject constructor(
 
     fun isSubstitutableFor(type1: Type, smlClass: SmlClass): Boolean {
         return when (type1) {
-            is ClassType -> classHierarchy.isSubtypeOf(type1.smlClass, smlClass)
+            is ClassType -> type1.smlClass.isSubtypeOf(smlClass)
             else -> false
         }
     }

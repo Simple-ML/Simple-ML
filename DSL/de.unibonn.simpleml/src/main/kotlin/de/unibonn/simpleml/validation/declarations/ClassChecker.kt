@@ -9,11 +9,11 @@ import de.unibonn.simpleml.emf.protocolsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.staticAnalysis.classHierarchy.ClassHierarchy
+import de.unibonn.simpleml.staticAnalysis.classHierarchy.inheritedNonStaticMembersOrEmpty
+import de.unibonn.simpleml.staticAnalysis.classHierarchy.isSubtypeOf
 import de.unibonn.simpleml.staticAnalysis.typing.ClassType
 import de.unibonn.simpleml.staticAnalysis.typing.TypeComputer
 import de.unibonn.simpleml.staticAnalysis.typing.UnresolvedType
-import de.unibonn.simpleml.staticAnalysis.classHierarchy.inheritedNonStaticMembersOrEmpty
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
@@ -21,7 +21,6 @@ import de.unibonn.simpleml.validation.codes.InfoCode
 import org.eclipse.xtext.validation.Check
 
 class ClassChecker @Inject constructor(
-    private val classHierarchy: ClassHierarchy,
     private val typeComputer: TypeComputer
 ) : AbstractSimpleMLChecker() {
 
@@ -30,7 +29,7 @@ class ClassChecker @Inject constructor(
         smlClass.parentTypesOrEmpty()
             .filter {
                 val resolvedClass = (typeComputer.typeOf(it) as? ClassType)?.smlClass
-                resolvedClass != null && classHierarchy.isSubtypeOf(resolvedClass, smlClass)
+                resolvedClass != null && resolvedClass.isSubtypeOf(smlClass)
             }
             .forEach {
                 error(
