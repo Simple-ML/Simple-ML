@@ -5,7 +5,7 @@ import de.unibonn.simpleml.constant.isInStubFile
 import de.unibonn.simpleml.constant.isInTestFile
 import de.unibonn.simpleml.emf.importedNameOrNull
 import de.unibonn.simpleml.emf.isQualified
-import de.unibonn.simpleml.scoping.SimpleMLIndexExtensions
+import de.unibonn.simpleml.scoping.visibleExternalGlobalDeclarationDescriptions
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlImport
@@ -20,7 +20,6 @@ import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.validation.CheckType
 
 class PackageChecker @Inject constructor(
-    private val indexExtensions: SimpleMLIndexExtensions,
     private val qualifiedNameProvider: IQualifiedNameProvider
 ) : AbstractSimpleMLChecker() {
 
@@ -59,6 +58,7 @@ class PackageChecker @Inject constructor(
             when (it) {
                 is SmlImport -> it.importedNameOrNull()
                 is SmlAbstractDeclaration -> it.name
+                // Should never happen
                 else -> throw AssertionError("$it is neither an import nor a declaration.")
             }
         }.forEach {
@@ -100,8 +100,7 @@ class PackageChecker @Inject constructor(
             return
         }
 
-        val externalGlobalDeclarations =
-            indexExtensions.visibleExternalGlobalDeclarationDescriptions(smlPackage)
+        val externalGlobalDeclarations = smlPackage.visibleExternalGlobalDeclarationDescriptions()
 
         smlPackage.members.forEach {
             val qualifiedName = qualifiedNameProvider.getFullyQualifiedName(it)

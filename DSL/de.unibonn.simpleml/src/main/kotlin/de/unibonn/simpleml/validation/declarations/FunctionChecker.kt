@@ -1,26 +1,23 @@
 package de.unibonn.simpleml.validation.declarations
 
-import com.google.inject.Inject
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.staticAnalysis.classHierarchy.hiddenFunction
 import de.unibonn.simpleml.stdlibAccess.isPure
-import de.unibonn.simpleml.typing.ClassHierarchy
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode
 import org.eclipse.xtext.validation.Check
 
-class FunctionChecker @Inject constructor(
-    private val classHierarchy: ClassHierarchy
-) : AbstractSimpleMLChecker() {
+class FunctionChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun nonStaticPropagates(smlFunction: SmlFunction) {
         if (smlFunction.isStatic) {
-            val hiddenFunction = classHierarchy.hiddenFunction(smlFunction)
+            val hiddenFunction = smlFunction.hiddenFunction()
             if (hiddenFunction != null && !hiddenFunction.isStatic) {
                 error(
                     "One of the supertypes of this class declares a non-static function with this name, so this must be non-static as well.",
@@ -34,7 +31,7 @@ class FunctionChecker @Inject constructor(
     @Check
     fun purePropagates(smlFunction: SmlFunction) {
         if (!smlFunction.isPure()) {
-            val hiddenFunction = classHierarchy.hiddenFunction(smlFunction)
+            val hiddenFunction = smlFunction.hiddenFunction()
             if (hiddenFunction != null && hiddenFunction.isPure()) {
                 error(
                     "One of the supertypes of this class declares a pure function with this name, so this must be pure as well.",
@@ -48,7 +45,7 @@ class FunctionChecker @Inject constructor(
     @Check
     fun staticPropagates(smlFunction: SmlFunction) {
         if (!smlFunction.isStatic) {
-            val hiddenFunction = classHierarchy.hiddenFunction(smlFunction)
+            val hiddenFunction = smlFunction.hiddenFunction()
             if (hiddenFunction != null && hiddenFunction.isStatic) {
                 error(
                     "One of the supertypes of this class declares a static function with this name, so this must be static as well.",

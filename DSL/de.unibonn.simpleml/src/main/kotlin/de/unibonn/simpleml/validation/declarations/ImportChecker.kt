@@ -1,10 +1,9 @@
 package de.unibonn.simpleml.validation.declarations
 
-import com.google.inject.Inject
 import de.unibonn.simpleml.emf.aliasNameOrNull
 import de.unibonn.simpleml.emf.isQualified
 import de.unibonn.simpleml.emf.isWildcard
-import de.unibonn.simpleml.scoping.SimpleMLIndexExtensions
+import de.unibonn.simpleml.scoping.visibleGlobalDeclarationDescriptions
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
@@ -13,14 +12,11 @@ import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.validation.CheckType
 
-class ImportChecker @Inject constructor(
-    private val indexExtensions: SimpleMLIndexExtensions
-) : AbstractSimpleMLChecker() {
+class ImportChecker : AbstractSimpleMLChecker() {
 
     @Check(CheckType.NORMAL)
     fun unresolvedNamespace(smlImport: SmlImport) {
-        val availableNamespaces =
-            indexExtensions.visibleGlobalDeclarationDescriptions(smlImport).map { it.qualifiedName }
+        val availableNamespaces = smlImport.visibleGlobalDeclarationDescriptions().map { it.qualifiedName }
 
         if (smlImport.isQualified()) {
             val importedNamespace = QualifiedName.create(
