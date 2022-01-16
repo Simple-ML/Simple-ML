@@ -7,8 +7,8 @@ import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.yieldsOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlStep
+import de.unibonn.simpleml.staticAnalysis.linking.yieldsOrEmpty
 import de.unibonn.simpleml.staticAnalysis.usesIn
-import de.unibonn.simpleml.staticAnalysis.yieldsOrEmpty
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode

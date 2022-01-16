@@ -17,7 +17,6 @@ import de.unibonn.simpleml.staticAnalysis.callableOrNull
 import de.unibonn.simpleml.staticAnalysis.isRecursive
 import de.unibonn.simpleml.staticAnalysis.maybeCallable
 import de.unibonn.simpleml.staticAnalysis.resultsOrNull
-import de.unibonn.simpleml.staticAnalysis.typeParametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode
@@ -43,22 +42,6 @@ class CallChecker : AbstractSimpleMLChecker() {
                 "Missing type argument list.",
                 Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
                 ErrorCode.MISSING_TYPE_ARGUMENT_LIST
-            )
-        }
-    }
-
-    @Check
-    fun unnecessaryTypeArgumentList(smlCall: SmlCall) {
-        if (smlCall.typeArgumentList == null) {
-            return
-        }
-
-        val typeParametersOrNull = smlCall.typeArgumentList.typeParametersOrNull()
-        if (typeParametersOrNull != null && typeParametersOrNull.isEmpty()) {
-            info(
-                "Unnecessary type argument list.",
-                Literals.SML_CALL__TYPE_ARGUMENT_LIST,
-                InfoCode.UnnecessaryTypeArgumentList
             )
         }
     }

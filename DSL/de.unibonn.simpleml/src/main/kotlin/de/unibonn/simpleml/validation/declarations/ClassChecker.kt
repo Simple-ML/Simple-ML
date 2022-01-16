@@ -1,6 +1,5 @@
 package de.unibonn.simpleml.validation.declarations
 
-import com.google.inject.Inject
 import de.unibonn.simpleml.emf.classMembersOrEmpty
 import de.unibonn.simpleml.emf.objectsInBodyOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
@@ -9,27 +8,25 @@ import de.unibonn.simpleml.emf.protocolsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.staticAnalysis.ClassResult
-import de.unibonn.simpleml.staticAnalysis.classOrNull
-import de.unibonn.simpleml.staticAnalysis.maybeClass
-import de.unibonn.simpleml.typing.ClassHierarchy
-import de.unibonn.simpleml.typing.inheritedNonStaticMembersOrEmpty
+import de.unibonn.simpleml.staticAnalysis.classHierarchy.inheritedNonStaticMembersOrEmpty
+import de.unibonn.simpleml.staticAnalysis.classHierarchy.isSubtypeOf
+import de.unibonn.simpleml.staticAnalysis.typing.ClassType
+import de.unibonn.simpleml.staticAnalysis.typing.UnresolvedType
+import de.unibonn.simpleml.staticAnalysis.typing.type
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode
 import org.eclipse.xtext.validation.Check
 
-class ClassChecker @Inject constructor(
-    private val classHierarchy: ClassHierarchy
-) : AbstractSimpleMLChecker() {
+class ClassChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun acyclicSuperTypes(smlClass: SmlClass) {
         smlClass.parentTypesOrEmpty()
             .filter {
-                val resolvedClass = it.classOrNull()
-                resolvedClass != null && classHierarchy.isSubtypeOf(resolvedClass, smlClass)
+                val resolvedClass = (it.type() as? ClassType)?.smlClass
+                resolvedClass != null && resolvedClass.isSubtypeOf(smlClass)
             }
             .forEach {
                 error(
@@ -55,7 +52,10 @@ class ClassChecker @Inject constructor(
     @Check
     fun mustInheritOnlyClasses(smlClass: SmlClass) {
         smlClass.parentTypesOrEmpty()
-            .filter { it.maybeClass() is ClassResult.NotAClass }
+            .filterNot {
+                val type = it.type()
+                type is ClassType || type is UnresolvedType
+            }
             .forEach {
                 error(
                     "A class must only inherit classes.",
@@ -93,8 +93,7 @@ class ClassChecker @Inject constructor(
     @Check
     fun uniqueParentTypes(smlClass: SmlClass) {
         smlClass.parentTypesOrEmpty()
-            .filter { it.classOrNull() != null }
-            .duplicatesBy { it.classOrNull()?.name }
+            .duplicatesBy { (it.type() as? ClassType)?.smlClass }
             .forEach {
                 error(
                     "Parent types must be unique.",

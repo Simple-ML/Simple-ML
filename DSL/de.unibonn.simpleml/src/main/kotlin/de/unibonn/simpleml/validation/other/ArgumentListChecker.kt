@@ -4,8 +4,8 @@ import de.unibonn.simpleml.emf.isNamed
 import de.unibonn.simpleml.emf.isPositional
 import de.unibonn.simpleml.emf.isRequired
 import de.unibonn.simpleml.simpleML.SmlArgumentList
-import de.unibonn.simpleml.staticAnalysis.parameterOrNull
-import de.unibonn.simpleml.staticAnalysis.parametersOrNull
+import de.unibonn.simpleml.staticAnalysis.linking.parameterOrNull
+import de.unibonn.simpleml.staticAnalysis.linking.parametersOrNull
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode

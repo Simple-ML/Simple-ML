@@ -7,8 +7,9 @@ import de.unibonn.simpleml.conversion.SimpleMLQualifiedNameValueConverter
 import de.unibonn.simpleml.conversion.SimpleMLSTRINGValueConverter
 import de.unibonn.simpleml.conversion.SimpleMLValueConverterService
 import de.unibonn.simpleml.naming.QualifiedNameProviderInjectionTarget
-import de.unibonn.simpleml.resource.SimpleMLResourceDescriptionStrategy
+import de.unibonn.simpleml.scoping.IndexExtensionsInjectionTarget
 import de.unibonn.simpleml.scoping.SimpleMLImportedNamespaceAwareLocalScopeProvider
+import de.unibonn.simpleml.scoping.SimpleMLResourceDescriptionStrategy
 import de.unibonn.simpleml.serializer.SerializerExtensionsInjectionTarget
 import de.unibonn.simpleml.serializer.SimpleMLCrossReferenceSerializer
 import de.unibonn.simpleml.serializer.SimpleMLHiddenTokenSequencer
@@ -68,6 +69,7 @@ open class SimpleMLRuntimeModule : AbstractSimpleMLRuntimeModule() {
     }
 
     override fun configure(binder: Binder) {
+        binder.requestStaticInjection(IndexExtensionsInjectionTarget::class.java)
         binder.requestStaticInjection(SerializerExtensionsInjectionTarget::class.java)
         binder.requestStaticInjection(QualifiedNameProviderInjectionTarget::class.java)
 

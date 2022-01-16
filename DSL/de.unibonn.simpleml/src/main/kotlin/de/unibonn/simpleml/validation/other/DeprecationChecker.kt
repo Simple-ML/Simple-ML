@@ -11,8 +11,8 @@ import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.staticAnalysis.assignedOrNull
-import de.unibonn.simpleml.staticAnalysis.parameterOrNull
-import de.unibonn.simpleml.staticAnalysis.typeParameterOrNull
+import de.unibonn.simpleml.staticAnalysis.linking.parameterOrNull
+import de.unibonn.simpleml.staticAnalysis.linking.typeParameterOrNull
 import de.unibonn.simpleml.stdlibAccess.isDeprecated
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.WarningCode

@@ -12,6 +12,8 @@ internal object SerializerExtensionsInjectionTarget {
     lateinit var serializer: Serializer
 }
 
+private val WithFormatting = SaveOptions.newBuilder().format().options
+
 /**
  * Serializes a subtree of the EMF model and applies the formatter to it. This only works if the [EObject] is part of a
  * [Resource].
@@ -20,20 +22,13 @@ internal object SerializerExtensionsInjectionTarget {
  * @return A result object indicating success or failure.
  */
 fun EObject.serializeToFormattedString(): SerializationResult {
-    return serializeToStringWithSaveOptions(WithFormatting)
-}
-
-private val WithoutFormatting = SaveOptions.defaultOptions()
-private val WithFormatting = SaveOptions.newBuilder().format().options
-
-private fun EObject.serializeToStringWithSaveOptions(options: SaveOptions): SerializationResult {
     if (this.eResource() == null) {
         return SerializationResult.NotInResourceFailure
     }
 
     return try {
         val code = SerializerExtensionsInjectionTarget.serializer
-            .serialize(this, options)
+            .serialize(this, WithFormatting)
             .trim()
             .replace(System.lineSeparator(), "\n")
 
@@ -44,7 +39,7 @@ private fun EObject.serializeToStringWithSaveOptions(options: SaveOptions): Seri
 }
 
 /**
- * Result of calling [serializeToString] or [serializeToFormattedString].
+ * Result of calling [serializeToFormattedString].
  */
 sealed interface SerializationResult {
 

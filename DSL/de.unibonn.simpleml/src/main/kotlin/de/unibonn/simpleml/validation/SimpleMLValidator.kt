@@ -42,7 +42,6 @@ import org.eclipse.xtext.validation.ComposedChecks
  */
 @ComposedChecks(
     validators = [
-        PrologChecker::class,
 
         // Declarations
         AnnotationChecker::class,
