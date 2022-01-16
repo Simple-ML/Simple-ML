@@ -17,7 +17,6 @@ import de.unibonn.simpleml.staticAnalysis.callableOrNull
 import de.unibonn.simpleml.staticAnalysis.isRecursive
 import de.unibonn.simpleml.staticAnalysis.maybeCallable
 import de.unibonn.simpleml.staticAnalysis.resultsOrNull
-import de.unibonn.simpleml.staticAnalysis.linking.typeParametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode

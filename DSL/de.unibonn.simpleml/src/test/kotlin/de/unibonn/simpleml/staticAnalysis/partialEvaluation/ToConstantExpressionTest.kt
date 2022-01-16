@@ -36,17 +36,6 @@ import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantBoolean
-import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantEnumVariant
-import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantFloat
-import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantInt
-import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantNull
-import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantString
-import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlIntermediateBlockLambda
-import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlIntermediateExpressionLambda
-import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlIntermediateStep
-import de.unibonn.simpleml.staticAnalysis.partialEvaluation.simplify
-import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail

@@ -6,7 +6,6 @@ import de.unibonn.simpleml.emf.isResolved
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.targetOrNull
 import de.unibonn.simpleml.naming.fullyQualifiedNameOrNull
-import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationCall
@@ -25,6 +24,7 @@ import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.staticAnalysis.linking.parametersOrNull
+import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibAnnotations
 import de.unibonn.simpleml.stdlibAccess.StdlibEnums.AnnotationTarget
 import de.unibonn.simpleml.stdlibAccess.validTargets

@@ -21,8 +21,8 @@ fun SmlAbstractExpression.hasSideEffects(): Boolean {
         return callable is SmlFunction && !callable.isPure() ||
             callable is SmlStep && !callable.isInferredPure() ||
             callable is SmlBlockLambda && !callable.isInferredPure() ||
-                callable is SmlExpressionLambda && !callable.isInferredPure() ||
-                callable is SmlCallableType
+            callable is SmlExpressionLambda && !callable.isInferredPure() ||
+            callable is SmlCallableType
     }
 
     return false

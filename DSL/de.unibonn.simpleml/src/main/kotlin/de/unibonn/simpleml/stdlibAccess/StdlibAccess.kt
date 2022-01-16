@@ -15,7 +15,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 private val cache = mutableMapOf<QualifiedName, SmlClass?>()
-private val classLoader = object{}.javaClass.classLoader
+private val classLoader = object {}.javaClass.classLoader
 
 fun getStdlibClass(context: EObject, qualifiedName: QualifiedName): SmlClass? {
     return cache.computeIfAbsent(qualifiedName) {

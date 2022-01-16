@@ -15,7 +15,7 @@ import de.unibonn.simpleml.utils.uniqueOrNull
 
 fun SmlClass.isSubtypeOf(other: SmlClass) =
     this == getStdlibClass(this, StdlibClasses.Nothing) ||
-            this == other || other in superClasses()
+        this == other || other in superClasses()
 
 private fun SmlClass.superClasses() = sequence<SmlClass> {
     val visited = mutableSetOf<SmlClass>()

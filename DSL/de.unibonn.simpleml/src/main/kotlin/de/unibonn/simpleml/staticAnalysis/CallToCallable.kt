@@ -106,6 +106,6 @@ fun SmlCall.resultsOrNull(): List<SmlAbstractObject>? {
 }
 
 sealed interface ResultsResult {
-    object Unresolved: ResultsResult
-    object NotCallable: ResultsResult
+    object Unresolved : ResultsResult
+    object NotCallable : ResultsResult
 }
