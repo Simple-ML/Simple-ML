@@ -1,32 +1,31 @@
-package de.unibonn.simpleml
+package de.unibonn.simpleml.staticAnalysis.typing
 
+import com.google.inject.Inject
 import de.unibonn.simpleml.constant.SmlFileExtension
+import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.staticAnalysis.assignedOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.testing.ParseHelper
+import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.getResourcePath
-import de.unibonn.simpleml.staticAnalysis.typing.Type
-import de.unibonn.simpleml.staticAnalysis.typing.TypeComputer
 import io.kotest.matchers.shouldBe
-import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.testing.InjectWith
+import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import java.nio.file.Files
 import java.nio.file.Path
 
 @Suppress("PrivatePropertyName")
+@ExtendWith(InjectionExtension::class)
+@InjectWith(SimpleMLInjectorProvider::class)
 class TypeComputerTest {
-    private val parseHelper: ParseHelper
-    private val typeComputer: TypeComputer
 
-    init {
-        SimpleMLStandaloneSetup().createInjectorAndDoEMFRegistration().apply {
-            parseHelper = getInstance(ParseHelper::class.java)
-            typeComputer = getInstance(TypeComputer::class.java)
-        }
-    }
+    @Inject
+    private lateinit var parseHelper: ParseHelper
 
     private val testRoot = javaClass.classLoader.getResourcePath("typeComputer").toString()
 
@@ -165,11 +164,11 @@ class TypeComputerTest {
     // Helpers
     // ****************************************************************************************************************/
 
-    infix fun EObject.shouldHaveType(expectedType: Type) {
-        typeComputer.typeOf(this).shouldBe(expectedType)
+    infix fun SmlAbstractObject.shouldHaveType(expectedType: Type) {
+        this.type().shouldBe(expectedType)
     }
 
-    private fun SmlPlaceholder.assignedValueOrFail(): EObject {
+    private fun SmlPlaceholder.assignedValueOrFail(): SmlAbstractObject {
         return this.assignedOrNull()
             ?: throw IllegalArgumentException("No value is assigned to placeholder with name '$name'.")
     }
@@ -193,9 +192,9 @@ class TypeComputerTest {
         compilationUnit.apply(lambda)
     }
 
-    private val SmlCompilationUnit.ANY get() = typeComputer.stdlibType(this, StdlibClasses.Any.toString())
-    private val SmlCompilationUnit.BOOLEAN get() = typeComputer.stdlibType(this, StdlibClasses.Boolean.toString())
-    private val SmlCompilationUnit.FLOAT get() = typeComputer.stdlibType(this, StdlibClasses.Float.toString())
-    private val SmlCompilationUnit.INT get() = typeComputer.stdlibType(this, StdlibClasses.Int.toString())
-    private val SmlCompilationUnit.STRING get() = typeComputer.stdlibType(this, StdlibClasses.String.toString())
+    private val SmlCompilationUnit.ANY get() = stdlibType(this, StdlibClasses.Any)
+    private val SmlCompilationUnit.BOOLEAN get() = stdlibType(this, StdlibClasses.Boolean)
+    private val SmlCompilationUnit.FLOAT get() = stdlibType(this, StdlibClasses.Float)
+    private val SmlCompilationUnit.INT get() = stdlibType(this, StdlibClasses.Int)
+    private val SmlCompilationUnit.STRING get() = stdlibType(this, StdlibClasses.String)
 }

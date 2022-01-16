@@ -1,7 +1,7 @@
-package de.unibonn.simpleml
+package de.unibonn.simpleml.prologBridge
 
+import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import de.unibonn.simpleml.constant.SmlFileExtension
-import de.unibonn.simpleml.prologBridge.Main
 import de.unibonn.simpleml.prologBridge.model.facts.AnnotationCallT
 import de.unibonn.simpleml.prologBridge.model.facts.AnnotationT
 import de.unibonn.simpleml.prologBridge.model.facts.ArgumentT

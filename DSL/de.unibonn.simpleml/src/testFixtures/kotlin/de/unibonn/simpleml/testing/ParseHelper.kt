@@ -5,7 +5,7 @@ package de.unibonn.simpleml.testing
 import com.google.inject.Inject
 import com.google.inject.Provider
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
-import de.unibonn.simpleml.stdlibAccess.StdlibAccess
+import de.unibonn.simpleml.stdlibAccess.loadStdlib
 import org.eclipse.core.runtime.FileLocator
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.ResourceSet
@@ -17,8 +17,7 @@ typealias ResourceName = String
 
 class ParseHelper @Inject constructor(
     private val parseHelper: ParseHelper<SmlCompilationUnit>,
-    private val resourceSetProvider: Provider<ResourceSet>,
-    private val stdlib: StdlibAccess
+    private val resourceSetProvider: Provider<ResourceSet>
 ) {
 
     fun parseProgramText(programText: String): SmlCompilationUnit? {
@@ -31,7 +30,7 @@ class ParseHelper @Inject constructor(
 
     fun parseProgramTextWithStdlib(programText: String): SmlCompilationUnit? {
         val resourceSet = resourceSetProvider.get()
-        stdlib.load(resourceSet)
+        resourceSet.loadStdlib()
         return parseHelper.parse(programText, resourceSet)
     }
 

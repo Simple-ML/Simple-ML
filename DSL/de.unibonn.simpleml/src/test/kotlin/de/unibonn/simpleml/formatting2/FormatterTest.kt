@@ -1,4 +1,4 @@
-package de.unibonn.simpleml
+package de.unibonn.simpleml.formatting2
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.testing.CategorizedTest

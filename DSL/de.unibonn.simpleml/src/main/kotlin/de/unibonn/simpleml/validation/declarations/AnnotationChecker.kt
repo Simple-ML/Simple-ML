@@ -1,22 +1,19 @@
 package de.unibonn.simpleml.validation.declarations
 
-import com.google.inject.Inject
 import de.unibonn.simpleml.emf.isConstant
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
-import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.staticAnalysis.typing.ClassType
 import de.unibonn.simpleml.staticAnalysis.typing.EnumType
-import de.unibonn.simpleml.staticAnalysis.typing.TypeComputer
+import de.unibonn.simpleml.staticAnalysis.typing.type
+import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode
 import org.eclipse.xtext.validation.Check
 
-class AnnotationChecker @Inject constructor(
-    private val typeComputer: TypeComputer
-) : AbstractSimpleMLChecker() {
+class AnnotationChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun uniqueNames(smlAnnotation: SmlAnnotation) {
@@ -46,7 +43,7 @@ class AnnotationChecker @Inject constructor(
     @Check
     fun parameterTypes(smlAnnotation: SmlAnnotation) {
         smlAnnotation.parametersOrEmpty().forEach {
-            val isValid = when (val parameterType = typeComputer.typeOf(it)) {
+            val isValid = when (val parameterType = it.type()) {
                 is ClassType -> parameterType.fullyQualifiedName in validParameterTypes
                 is EnumType -> parameterType.smlEnum.isConstant()
                 else -> false

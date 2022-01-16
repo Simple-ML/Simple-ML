@@ -2,7 +2,7 @@ package de.unibonn.simpleml
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.OriginalFilePath
-import de.unibonn.simpleml.stdlibAccess.StdlibAccess
+import de.unibonn.simpleml.stdlibAccess.listStdlibFiles
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.shouldHaveNoErrorsOrWarnings
@@ -28,12 +28,9 @@ class StdlibTest {
     @Inject
     private lateinit var validationHelper: ValidationTestHelper
 
-    @Inject
-    private lateinit var stdlib: StdlibAccess
-
     @TestFactory
     fun `should not have syntax or semantic errors`(): Stream<out DynamicNode> {
-        return stdlib.listStdlibFiles()
+        return listStdlibFiles()
             .map { (filePath, _) ->
                 val program = Files.readString(filePath)
                 DynamicTest.dynamicTest(filePath.toString(), filePath.toUri()) {

@@ -1,6 +1,5 @@
 package de.unibonn.simpleml.validation.declarations
 
-import com.google.inject.Inject
 import de.unibonn.simpleml.emf.classMembersOrEmpty
 import de.unibonn.simpleml.emf.objectsInBodyOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
@@ -12,23 +11,21 @@ import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.staticAnalysis.classHierarchy.inheritedNonStaticMembersOrEmpty
 import de.unibonn.simpleml.staticAnalysis.classHierarchy.isSubtypeOf
 import de.unibonn.simpleml.staticAnalysis.typing.ClassType
-import de.unibonn.simpleml.staticAnalysis.typing.TypeComputer
 import de.unibonn.simpleml.staticAnalysis.typing.UnresolvedType
+import de.unibonn.simpleml.staticAnalysis.typing.type
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode
 import org.eclipse.xtext.validation.Check
 
-class ClassChecker @Inject constructor(
-    private val typeComputer: TypeComputer
-) : AbstractSimpleMLChecker() {
+class ClassChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun acyclicSuperTypes(smlClass: SmlClass) {
         smlClass.parentTypesOrEmpty()
             .filter {
-                val resolvedClass = (typeComputer.typeOf(it) as? ClassType)?.smlClass
+                val resolvedClass = (it.type() as? ClassType)?.smlClass
                 resolvedClass != null && resolvedClass.isSubtypeOf(smlClass)
             }
             .forEach {
@@ -56,7 +53,7 @@ class ClassChecker @Inject constructor(
     fun mustInheritOnlyClasses(smlClass: SmlClass) {
         smlClass.parentTypesOrEmpty()
             .filterNot {
-                val type = typeComputer.typeOf(it)
+                val type = it.type()
                 type is ClassType || type is UnresolvedType
             }
             .forEach {
@@ -96,7 +93,7 @@ class ClassChecker @Inject constructor(
     @Check
     fun uniqueParentTypes(smlClass: SmlClass) {
         smlClass.parentTypesOrEmpty()
-            .duplicatesBy { (typeComputer.typeOf(it) as? ClassType)?.smlClass }
+            .duplicatesBy { (it.type() as? ClassType)?.smlClass }
             .forEach {
                 error(
                     "Parent types must be unique.",

@@ -14,7 +14,6 @@ import de.unibonn.simpleml.serializer.SerializerExtensionsInjectionTarget
 import de.unibonn.simpleml.serializer.SimpleMLCrossReferenceSerializer
 import de.unibonn.simpleml.serializer.SimpleMLHiddenTokenSequencer
 import de.unibonn.simpleml.services.SimpleMLGrammarAccess
-import de.unibonn.simpleml.staticAnalysis.classHierarchy.ClassHierarchyInjectionTarget
 import org.eclipse.xtext.IGrammarAccess
 import org.eclipse.xtext.conversion.IValueConverterService
 import org.eclipse.xtext.conversion.impl.IDValueConverter
@@ -70,7 +69,6 @@ open class SimpleMLRuntimeModule : AbstractSimpleMLRuntimeModule() {
     }
 
     override fun configure(binder: Binder) {
-        binder.requestStaticInjection(ClassHierarchyInjectionTarget::class.java)
         binder.requestStaticInjection(IndexExtensionsInjectionTarget::class.java)
         binder.requestStaticInjection(SerializerExtensionsInjectionTarget::class.java)
         binder.requestStaticInjection(QualifiedNameProviderInjectionTarget::class.java)

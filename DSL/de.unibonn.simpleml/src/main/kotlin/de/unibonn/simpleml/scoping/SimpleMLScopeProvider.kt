@@ -1,6 +1,5 @@
 package de.unibonn.simpleml.scoping
 
-import com.google.inject.Inject
 import de.unibonn.simpleml.emf.classMembersOrEmpty
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.compilationUnitOrNull
@@ -50,7 +49,7 @@ import de.unibonn.simpleml.staticAnalysis.typing.ClassType
 import de.unibonn.simpleml.staticAnalysis.typing.EnumType
 import de.unibonn.simpleml.staticAnalysis.typing.EnumVariantType
 import de.unibonn.simpleml.staticAnalysis.typing.NamedType
-import de.unibonn.simpleml.staticAnalysis.typing.TypeComputer
+import de.unibonn.simpleml.staticAnalysis.typing.type
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.Resource
@@ -64,9 +63,7 @@ import org.eclipse.xtext.scoping.impl.FilteringScope
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#scoping
  * on how and when to use it.
  */
-class SimpleMLScopeProvider @Inject constructor(
-    private val typeComputer: TypeComputer
-) : AbstractSimpleMLScopeProvider() {
+class SimpleMLScopeProvider : AbstractSimpleMLScopeProvider() {
 
     override fun getScope(context: EObject, reference: EReference): IScope {
         return when (context) {
@@ -139,7 +136,7 @@ class SimpleMLScopeProvider @Inject constructor(
         }
 
         // Members
-        val type = (typeComputer.typeOf(receiver) as? NamedType) ?: return resultScope
+        val type = (receiver.type() as? NamedType) ?: return resultScope
 
         return when {
             type.isNullable && !context.isNullSafe -> resultScope
@@ -256,7 +253,7 @@ class SimpleMLScopeProvider @Inject constructor(
     }
 
     private fun scopeForMemberTypeDeclaration(context: SmlMemberType): IScope {
-        val type = (typeComputer.typeOf(context.receiver) as? NamedType) ?: return IScope.NULLSCOPE
+        val type = (context.receiver.type() as? NamedType) ?: return IScope.NULLSCOPE
 
         return when {
             type.isNullable -> IScope.NULLSCOPE

@@ -1,6 +1,5 @@
 package de.unibonn.simpleml.validation.expressions
 
-import com.google.inject.Inject
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
@@ -9,15 +8,13 @@ import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.staticAnalysis.typing.NamedType
-import de.unibonn.simpleml.staticAnalysis.typing.TypeComputer
+import de.unibonn.simpleml.staticAnalysis.typing.type
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode
 import org.eclipse.xtext.validation.Check
 
-class MemberAccessChecker @Inject constructor(
-    private val typeComputer: TypeComputer
-) : AbstractSimpleMLChecker() {
+class MemberAccessChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun mustBeCalled(smlMemberAccess: SmlMemberAccess) {
@@ -47,7 +44,7 @@ class MemberAccessChecker @Inject constructor(
 
     @Check
     fun unnecessarySafeAccess(smlMemberAccess: SmlMemberAccess) {
-        val type = typeComputer.typeOf(smlMemberAccess.receiver)
+        val type = smlMemberAccess.receiver.type()
 
         if (smlMemberAccess.isNullSafe) {
             if (!(type is NamedType && type.isNullable)) {

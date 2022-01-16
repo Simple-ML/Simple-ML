@@ -6,7 +6,7 @@ import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import de.unibonn.simpleml.prologBridge.converters.AstToPrologFactbase
 import de.unibonn.simpleml.prologBridge.model.facts.PlFactbase
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
-import de.unibonn.simpleml.stdlibAccess.StdlibAccess
+import de.unibonn.simpleml.stdlibAccess.loadStdlib
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtext.util.CancelIndicator
@@ -20,7 +20,6 @@ import java.nio.file.Paths
 class Main @Inject constructor(
     private val prologVisitor: AstToPrologFactbase,
     private val resourceSetProvider: Provider<ResourceSet>,
-    private val stdlib: StdlibAccess,
     private val validator: IResourceValidator
 ) {
 
@@ -28,7 +27,7 @@ class Main @Inject constructor(
 
         // Load resource and library
         val set = resourceSetProvider.get()
-        stdlib.load(set)
+        set.loadStdlib()
 
         val resource = set.getResource(URI.createFileURI(file), true)
         require(resource != null) { "Could not create resource for $file." }

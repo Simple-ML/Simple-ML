@@ -1,4 +1,4 @@
-package de.unibonn.simpleml
+package de.unibonn.simpleml.scoping
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.constant.SmlFileExtension

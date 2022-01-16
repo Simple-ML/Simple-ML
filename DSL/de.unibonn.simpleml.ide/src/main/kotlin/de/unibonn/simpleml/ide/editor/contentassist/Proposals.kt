@@ -1,6 +1,5 @@
 package de.unibonn.simpleml.ide.editor.contentassist
 
-import com.google.inject.Inject
 import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.isClassMember
 import de.unibonn.simpleml.emf.isGlobal
@@ -11,14 +10,13 @@ import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.staticAnalysis.typing.Type
-import de.unibonn.simpleml.staticAnalysis.typing.TypeComputer
+import de.unibonn.simpleml.staticAnalysis.typing.hasPrimitiveType
 import de.unibonn.simpleml.staticAnalysis.typing.isSubstitutableFor
+import de.unibonn.simpleml.staticAnalysis.typing.type
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 
-class Proposals @Inject constructor(
-    private val typeComputer: TypeComputer,
-) {
+class Proposals {
 
     /**
      * @param context
@@ -68,17 +66,17 @@ class Proposals @Inject constructor(
                 val res = when (obj) {
                     is SmlClass -> {
                         obj.parameterList != null && obj.parametersOrEmpty().all {
-                            typeComputer.hasPrimitiveType(it)
+                            it.hasPrimitiveType()
                         }
                     }
                     is SmlFunction -> {
                         obj.isGlobal() && obj.parametersOrEmpty().all {
-                            typeComputer.hasPrimitiveType(it)
+                            it.hasPrimitiveType()
                         }
                     }
                     is SmlStep -> {
                         obj.parametersOrEmpty().all {
-                            typeComputer.hasPrimitiveType(it)
+                            it.hasPrimitiveType()
                         }
                     }
                     else -> false
@@ -92,24 +90,24 @@ class Proposals @Inject constructor(
         context: EObject,
         declarations: List<SmlAbstractDeclaration>
     ): Map<URI, EObject> {
-        val requiredTypes = declarations.map { typeComputer.typeOf(it) }
+        val requiredTypes = declarations.map { it.type() }
 
         return listAllReachableDeclarations(context)
             .filterValues { obj ->
                 val availableTypes = when (obj) {
                     is SmlClass -> {
-                        obj.parametersOrEmpty().map { typeComputer.typeOf(it) }
+                        obj.parametersOrEmpty().map { it.type() }
                     }
                     is SmlFunction -> {
-                        val parameterTypes = obj.parametersOrEmpty().map { typeComputer.typeOf(it) }
+                        val parameterTypes = obj.parametersOrEmpty().map { it.type() }
                         if (obj.isClassMember()) {
-                            parameterTypes + typeComputer.typeOf(obj.containingClassOrNull()!!)
+                            parameterTypes + obj.containingClassOrNull()!!.type()
                         } else {
                             parameterTypes
                         }
                     }
                     is SmlStep -> {
-                        obj.parametersOrEmpty().map { typeComputer.typeOf(it) }
+                        obj.parametersOrEmpty().map { it.type() }
                     }
                     else -> return@filterValues false
                 }

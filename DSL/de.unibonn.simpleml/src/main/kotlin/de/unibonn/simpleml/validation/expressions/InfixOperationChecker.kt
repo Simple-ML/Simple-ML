@@ -1,24 +1,21 @@
 package de.unibonn.simpleml.validation.expressions
 
-import com.google.inject.Inject
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.By
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Elvis
+import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantFloat
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantInt
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantNull
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
-import de.unibonn.simpleml.simpleML.SmlInfixOperation
-import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.staticAnalysis.typing.NamedType
-import de.unibonn.simpleml.staticAnalysis.typing.TypeComputer
+import de.unibonn.simpleml.staticAnalysis.typing.type
+import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode
 import org.eclipse.xtext.validation.Check
 
-class InfixOperationChecker @Inject constructor(
-    private val typeComputer: TypeComputer
-) : AbstractSimpleMLChecker() {
+class InfixOperationChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun dispatchCheckInfixOperation(smlInfixOperation: SmlInfixOperation) {
@@ -29,7 +26,7 @@ class InfixOperationChecker @Inject constructor(
     }
 
     private fun checkByOperator(smlInfixOperation: SmlInfixOperation) {
-        val leftType = typeComputer.typeOf(smlInfixOperation.leftOperand)
+        val leftType = smlInfixOperation.leftOperand.type()
         if (!(leftType is NamedType && leftType.fullyQualifiedName in setOf(StdlibClasses.Float, StdlibClasses.Int))) {
             return
         }
@@ -45,7 +42,7 @@ class InfixOperationChecker @Inject constructor(
     }
 
     private fun checkElvisOperator(smlInfixOperation: SmlInfixOperation) {
-        val leftType = typeComputer.typeOf(smlInfixOperation.leftOperand)
+        val leftType = smlInfixOperation.leftOperand.type()
         if (!(leftType is NamedType && leftType.isNullable)) {
             info(
                 "The left operand is never null so the elvis operator is unnecessary (keep left operand).",
