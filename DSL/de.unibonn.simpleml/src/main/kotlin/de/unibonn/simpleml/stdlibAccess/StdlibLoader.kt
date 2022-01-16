@@ -2,7 +2,7 @@ package de.unibonn.simpleml.stdlibAccess
 
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.scoping.visibleGlobalDeclarationDescriptions
-import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import org.eclipse.core.runtime.FileLocator
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
@@ -14,28 +14,21 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-private val cache = mutableMapOf<QualifiedName, SmlClass?>()
 private val classLoader = object {}.javaClass.classLoader
-
-fun getStdlibClass(context: EObject, qualifiedName: QualifiedName): SmlClass? {
-    return cache.computeIfAbsent(qualifiedName) {
-        val description = context.visibleGlobalDeclarationDescriptions()
-            .find { it.qualifiedName == qualifiedName }
-            ?: return@computeIfAbsent null
-
-        var eObject = description.eObjectOrProxy
-        if (eObject != null && eObject.eIsProxy()) {
-            eObject = context.eResource().resourceSet.getEObject(description.eObjectURI, true)
-        }
-
-        eObject as? SmlClass
-    }
-}
 
 fun ResourceSet.loadStdlib() {
     listStdlibFiles().forEach { (path, uri) ->
         createResource(uri).load(Files.newInputStream(path), loadOptions)
     }
+
+    if (resources.isEmpty()) {
+        throw IllegalStateException("Failed to load stdlib resources.")
+    }
+
+    val context = resources.firstNotNullOfOrNull { it.contents.firstOrNull() }
+        ?: throw IllegalStateException("All loaded stdlib resources are empty.")
+
+    loadStdlibClasses(context)
 }
 
 fun listStdlibFiles(): Sequence<Pair<Path, URI>> {
@@ -68,5 +61,25 @@ fun listStdlibFiles(): Sequence<Pair<Path, URI>> {
         }
 
         fileSystem?.close()
+    }
+}
+
+internal inline fun <reified T : SmlAbstractDeclaration> getStdlibDeclaration(
+    context: EObject,
+    qualifiedName: QualifiedName
+): T {
+
+    val description = context.visibleGlobalDeclarationDescriptions()
+        .find { it.qualifiedName == qualifiedName }
+        ?: throw IllegalStateException("Failed to load stdlib declaration '$qualifiedName'.")
+
+    var eObject = description.eObjectOrProxy
+    if (eObject != null && eObject.eIsProxy()) {
+        eObject = context.eResource().resourceSet.getEObject(description.eObjectURI, true)
+    }
+
+    return when (eObject) {
+        is T -> eObject
+        else -> throw IllegalStateException("Stdlib declaration '$qualifiedName' is not an ${T::class.simpleName}.")
     }
 }

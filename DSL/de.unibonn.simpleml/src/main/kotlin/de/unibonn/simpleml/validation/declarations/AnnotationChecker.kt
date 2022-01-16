@@ -7,7 +7,7 @@ import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.staticAnalysis.typing.ClassType
 import de.unibonn.simpleml.staticAnalysis.typing.EnumType
 import de.unibonn.simpleml.staticAnalysis.typing.type
-import de.unibonn.simpleml.stdlibAccess.StdlibClasses
+import de.unibonn.simpleml.stdlibAccess.StdlibClass
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode
@@ -33,18 +33,18 @@ class AnnotationChecker : AbstractSimpleMLChecker() {
         }
     }
 
-    private val validParameterTypes = setOf(
-        StdlibClasses.Boolean,
-        StdlibClasses.Float,
-        StdlibClasses.Int,
-        StdlibClasses.String,
-    )
-
     @Check
     fun parameterTypes(smlAnnotation: SmlAnnotation) {
+        val validParameterTypes = setOf(
+            StdlibClass.Boolean,
+            StdlibClass.Float,
+            StdlibClass.Int,
+            StdlibClass.String,
+        )
+
         smlAnnotation.parametersOrEmpty().forEach {
             val isValid = when (val parameterType = it.type()) {
-                is ClassType -> parameterType.fullyQualifiedName in validParameterTypes
+                is ClassType -> parameterType.smlClass in validParameterTypes
                 is EnumType -> parameterType.smlEnum.isConstant()
                 else -> false
             }

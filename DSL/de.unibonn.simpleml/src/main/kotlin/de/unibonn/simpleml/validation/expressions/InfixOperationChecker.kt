@@ -7,9 +7,10 @@ import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantFloat
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantInt
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantNull
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
+import de.unibonn.simpleml.staticAnalysis.typing.ClassType
 import de.unibonn.simpleml.staticAnalysis.typing.NamedType
 import de.unibonn.simpleml.staticAnalysis.typing.type
-import de.unibonn.simpleml.stdlibAccess.StdlibClasses
+import de.unibonn.simpleml.stdlibAccess.StdlibClass
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode
@@ -27,7 +28,7 @@ class InfixOperationChecker : AbstractSimpleMLChecker() {
 
     private fun checkByOperator(smlInfixOperation: SmlInfixOperation) {
         val leftType = smlInfixOperation.leftOperand.type()
-        if (!(leftType is NamedType && leftType.fullyQualifiedName in setOf(StdlibClasses.Float, StdlibClasses.Int))) {
+        if (!(leftType is ClassType && leftType.smlClass in setOf(StdlibClass.Float, StdlibClass.Int))) {
             return
         }
 

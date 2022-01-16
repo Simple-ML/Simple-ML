@@ -7,6 +7,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlStep
+import de.unibonn.simpleml.stdlibAccess.getStdlibDeclaration
 
 fun SmlCall.isRecursive(): Boolean {
     val containingWorkflowStep = this.containingStepOrNull() ?: return false

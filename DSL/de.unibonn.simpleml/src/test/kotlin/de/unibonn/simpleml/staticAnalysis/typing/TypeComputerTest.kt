@@ -6,7 +6,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.staticAnalysis.assignedOrNull
-import de.unibonn.simpleml.stdlibAccess.StdlibClasses
+import de.unibonn.simpleml.stdlibAccess.StdlibClass
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.getResourcePath
@@ -41,28 +41,28 @@ class TypeComputerTest {
         @Test
         fun `boolean literals should have type Boolean`() {
             withCompilationUnitFromFile("expressions/literals") {
-                placeholderWithName("booleanLiteral").assignedValueOrFail() shouldHaveType BOOLEAN
+                placeholderWithName("booleanLiteral").assignedValueOrFail() shouldHaveType Boolean
             }
         }
 
         @Test
         fun `float literals should have type Float`() {
             withCompilationUnitFromFile("expressions/literals") {
-                placeholderWithName("floatLiteral").assignedValueOrFail() shouldHaveType FLOAT
+                placeholderWithName("floatLiteral").assignedValueOrFail() shouldHaveType Float
             }
         }
 
         @Test
         fun `int literals should have type Int`() {
             withCompilationUnitFromFile("expressions/literals") {
-                placeholderWithName("intLiteral").assignedValueOrFail() shouldHaveType INT
+                placeholderWithName("intLiteral").assignedValueOrFail() shouldHaveType Int
             }
         }
 
         @Test
         fun `string literals should have type String`() {
             withCompilationUnitFromFile("expressions/literals") {
-                placeholderWithName("stringLiteral").assignedValueOrFail() shouldHaveType STRING
+                placeholderWithName("stringLiteral").assignedValueOrFail() shouldHaveType String
             }
         }
     }
@@ -82,7 +82,7 @@ class TypeComputerTest {
                     "divisionIntInt",
                     "negationInt"
                 ).forEach {
-                    placeholderWithName(it).assignedValueOrFail() shouldHaveType INT
+                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Int
                 }
             }
         }
@@ -102,7 +102,7 @@ class TypeComputerTest {
                     "divisionInvalid",
                     "negationInvalid"
                 ).forEach {
-                    placeholderWithName(it).assignedValueOrFail() shouldHaveType FLOAT
+                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Float
                 }
             }
         }
@@ -120,7 +120,7 @@ class TypeComputerTest {
                     "greaterThanOrEqualsInvalid",
                     "greaterThanInvalid"
                 ).forEach {
-                    placeholderWithName(it).assignedValueOrFail() shouldHaveType BOOLEAN
+                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Boolean
                 }
             }
         }
@@ -129,7 +129,7 @@ class TypeComputerTest {
         fun `equality operations should have type Boolean`() {
             withCompilationUnitFromFile("expressions/operations/equality") {
                 listOf("equals", "notEquals").forEach {
-                    placeholderWithName(it).assignedValueOrFail() shouldHaveType BOOLEAN
+                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Boolean
                 }
             }
         }
@@ -138,7 +138,7 @@ class TypeComputerTest {
         fun `strict equality operations should have type Boolean`() {
             withCompilationUnitFromFile("expressions/operations/strictEquality") {
                 listOf("strictlyEquals", "notStrictlyEquals").forEach {
-                    placeholderWithName(it).assignedValueOrFail() shouldHaveType BOOLEAN
+                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Boolean
                 }
             }
         }
@@ -154,7 +154,7 @@ class TypeComputerTest {
                     "disjunctionInvalid",
                     "negationInvalid"
                 ).forEach {
-                    placeholderWithName(it).assignedValueOrFail() shouldHaveType BOOLEAN
+                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Boolean
                 }
             }
         }
@@ -192,9 +192,10 @@ class TypeComputerTest {
         compilationUnit.apply(lambda)
     }
 
-    private val SmlCompilationUnit.ANY get() = stdlibType(this, StdlibClasses.Any)
-    private val SmlCompilationUnit.BOOLEAN get() = stdlibType(this, StdlibClasses.Boolean)
-    private val SmlCompilationUnit.FLOAT get() = stdlibType(this, StdlibClasses.Float)
-    private val SmlCompilationUnit.INT get() = stdlibType(this, StdlibClasses.Int)
-    private val SmlCompilationUnit.STRING get() = stdlibType(this, StdlibClasses.String)
+    private val Any get() = ClassType(StdlibClass.Any)
+    private val Boolean get() = ClassType(StdlibClass.Boolean)
+    private val Float get() = ClassType(StdlibClass.Float)
+    private val Int get() = ClassType(StdlibClass.Int)
+    private val Nothing get() = ClassType(StdlibClass.Nothing)
+    private val String get() = ClassType(StdlibClass.String)
 }

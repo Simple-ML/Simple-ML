@@ -5,7 +5,6 @@ package de.unibonn.simpleml.staticAnalysis.typing
 import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
-import de.unibonn.simpleml.naming.fullyQualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
@@ -39,10 +38,8 @@ import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.staticAnalysis.assignedOrNull
 import de.unibonn.simpleml.staticAnalysis.callableOrNull
-import de.unibonn.simpleml.stdlibAccess.StdlibClasses
-import de.unibonn.simpleml.stdlibAccess.getStdlibClass
+import de.unibonn.simpleml.stdlibAccess.StdlibClass
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtext.naming.QualifiedName
 
 fun SmlAbstractObject.type(): Type {
     return inferType(isStatic = false, this)
@@ -54,32 +51,32 @@ fun SmlAbstractObject.hasPrimitiveType(): Boolean {
         return false
     }
 
-    val qualifiedName = type.smlClass.fullyQualifiedNameOrNull()
+    val qualifiedName = type.smlClass
     return qualifiedName in setOf(
-        StdlibClasses.Boolean,
-        StdlibClasses.Float,
-        StdlibClasses.Int,
-        StdlibClasses.String
+        StdlibClass.Boolean,
+        StdlibClass.Float,
+        StdlibClass.Int,
+        StdlibClass.String
     )
 }
 
 private fun EObject.inferType(isStatic: Boolean, context: EObject): Type {
     return when {
-        this.eIsProxy() -> Any(context)
+        this.eIsProxy() -> Any
         this is SmlAbstractDeclaration -> this.inferType(isStatic, context)
         this is SmlAbstractExpression -> this.inferType(isStatic, context)
         this is SmlAbstractType -> this.inferType(isStatic, context)
         this is SmlYield -> {
-            val assigned = assignedOrNull() ?: return Any(context)
+            val assigned = assignedOrNull() ?: return Any
             assigned.inferType(isStatic, context)
         }
-        else -> Any(context)
+        else -> Any
     }
 }
 
 private fun SmlAbstractDeclaration.inferType(isStatic: Boolean, context: EObject): Type {
     return when {
-        this.eIsProxy() -> Any(context)
+        this.eIsProxy() -> Any
         this is SmlAttribute -> type.inferType(isStatic = false, context)
         this is SmlClass -> ClassType(this, isNullable = false, isStatic = isStatic)
         this is SmlEnum -> EnumType(this, isNullable = false, isStatic = isStatic)
@@ -93,12 +90,12 @@ private fun SmlAbstractDeclaration.inferType(isStatic: Boolean, context: EObject
             resultsOrEmpty().map { it.inferType(false, context) }
         )
         this is SmlBlockLambdaResult -> {
-            val assigned = assignedOrNull() ?: return Any(context)
+            val assigned = assignedOrNull() ?: return Any
             assigned.inferType(isStatic = false, context)
         }
-        this is SmlParameter -> type?.inferType(isStatic = false, context) ?: Any(context)
+        this is SmlParameter -> type?.inferType(isStatic = false, context) ?: Any
         this is SmlPlaceholder -> {
-            val assigned = assignedOrNull() ?: return Any(context)
+            val assigned = assignedOrNull() ?: return Any
             assigned.inferType(isStatic = false, context)
         }
         this is SmlResult -> type.inferType(isStatic = false, context)
@@ -106,17 +103,17 @@ private fun SmlAbstractDeclaration.inferType(isStatic: Boolean, context: EObject
             parametersOrEmpty().map { it.inferType(false, context) },
             resultsOrEmpty().map { it.inferType(false, context) }
         )
-        else -> Any(context)
+        else -> Any
     }
 }
 
 private fun SmlAbstractExpression.inferType(isStatic: Boolean, context: EObject): Type {
     return when {
-        this.eIsProxy() -> Any(context)
-        this is SmlBoolean -> Boolean(context)
-        this is SmlFloat -> Float(context)
-        this is SmlInt -> Int(context)
-        this is SmlString -> String(context)
+        this.eIsProxy() -> Any
+        this is SmlBoolean -> Boolean
+        this is SmlFloat -> Float
+        this is SmlInt -> Int
+        this is SmlString -> String
 
         this is SmlCall -> when (val callable = callableOrNull()) {
             is SmlClass -> ClassType(callable, isNullable = false, isStatic = false)
@@ -148,22 +145,22 @@ private fun SmlAbstractExpression.inferType(isStatic: Boolean, context: EObject)
                     else -> TupleType(results.map { it.inferType(false, context) })
                 }
             }
-            else -> Any(context)
+            else -> Any
         }
         this is SmlInfixOperation -> when (operator) {
-            "<", "<=", ">=", ">" -> Boolean(context)
-            "==", "!=" -> Boolean(context)
-            "===", "!==" -> Boolean(context)
-            "or", "and" -> Boolean(context)
+            "<", "<=", ">=", ">" -> Boolean
+            "==", "!=" -> Boolean
+            "===", "!==" -> Boolean
+            "or", "and" -> Boolean
             "+", "-", "*", "/" -> when {
-                this.leftOperand.inferType(false, context) == Int(context) && this.rightOperand.inferType(
+                this.leftOperand.inferType(false, context) == Int && this.rightOperand.inferType(
                     false,
                     context
-                ) == Int(context) -> Int(context)
-                else -> Float(context)
+                ) == Int -> Int
+                else -> Float
             }
-            "?:" -> Any(context) // TODO
-            else -> Nothing(context)
+            "?:" -> Any // TODO
+            else -> Nothing
         }
         this is SmlBlockLambda -> CallableType(
             parametersOrEmpty().map { it.inferType(false, context) },
@@ -173,50 +170,50 @@ private fun SmlAbstractExpression.inferType(isStatic: Boolean, context: EObject)
 //            if (this.isNullable) {
 //                // TODO
 //            }
-            val member = this.member ?: return Any(context)
+            val member = this.member ?: return Any
             member.inferType(isStatic = false, context)
         }
-        this is SmlNull -> stdlibType(context, StdlibClasses.Any, isNullable = true)
+        this is SmlNull -> ClassType(StdlibClass.Nothing, isNullable = true)
         this is SmlParenthesizedExpression -> {
             this.expression.inferType(isStatic, context)
         }
         this is SmlPrefixOperation -> when (operator) {
-            "not" -> Boolean(context)
+            "not" -> Boolean
             "-" -> when (this.operand.inferType(false, context)) {
-                Int(context) -> Int(context)
-                else -> Float(context)
+                Int -> Int
+                else -> Float
             }
-            else -> Nothing(context)
+            else -> Nothing
         }
         this is SmlReference -> { // TODO
-            val declaration = this.declaration ?: return Any(context)
+            val declaration = this.declaration ?: return Any
             declaration.inferType(isStatic = true, context)
         }
 
-        else -> Any(context)
+        else -> Any
     }
 }
 
 private fun SmlAbstractType.inferType(isStatic: Boolean, context: EObject): Type {
     return when {
-        this.eIsProxy() -> Any(context)
+        this.eIsProxy() -> Any
         this is SmlCallableType -> CallableType(
             parametersOrEmpty().map { it.inferType(false, context) },
             resultsOrEmpty().map { it.inferType(false, context) }
         )
         this is SmlMemberType -> {
-            val member = this.member ?: return Any(context)
+            val member = this.member ?: return Any
             member.inferType(isStatic = false, context)
         }
         this is SmlNamedType -> {
-            val declaration = this.declaration ?: return NullableAny(context)
+            val declaration = this.declaration ?: return NullableAny
             val declarationType = declaration.inferType(isStatic = isStatic, context)
             when {
                 this.isNullable -> when (declarationType) {
                     is ClassType -> declarationType.copy(isNullable = true)
                     is EnumType -> declarationType.copy(isNullable = true)
                     is EnumVariantType -> declarationType.copy(isNullable = true)
-                    else -> NullableAny(context)
+                    else -> NullableAny
                 }
                 else -> declarationType
             }
@@ -224,21 +221,14 @@ private fun SmlAbstractType.inferType(isStatic: Boolean, context: EObject): Type
         this is SmlParenthesizedType -> {
             this.type.inferType(isStatic, context)
         }
-        else -> Any(context)
+        else -> Any
     }
 }
 
-private fun NullableAny(context: EObject) = stdlibType(context, StdlibClasses.Any, isNullable = true)
-private fun Any(context: EObject) = stdlibType(context, StdlibClasses.Any)
-private fun Boolean(context: EObject) = stdlibType(context, StdlibClasses.Boolean)
-private fun Float(context: EObject) = stdlibType(context, StdlibClasses.Float)
-private fun Int(context: EObject) = stdlibType(context, StdlibClasses.Int)
-private fun Nothing(context: EObject) = stdlibType(context, StdlibClasses.Nothing)
-private fun String(context: EObject) = stdlibType(context, StdlibClasses.String)
-
-internal fun stdlibType(context: EObject, qualifiedName: QualifiedName, isNullable: Boolean = false): Type {
-    return when (val smlClass = getStdlibClass(context, qualifiedName)) {
-        null -> UnresolvedType
-        else -> ClassType(smlClass, isNullable, isStatic = false)
-    }
-}
+private val NullableAny get() = ClassType(StdlibClass.Any, isNullable = true)
+private val Any get() = ClassType(StdlibClass.Any)
+private val Boolean get() = ClassType(StdlibClass.Boolean)
+private val Float get() = ClassType(StdlibClass.Float)
+private val Int get() = ClassType(StdlibClass.Int)
+private val Nothing get() = ClassType(StdlibClass.Nothing)
+private val String get() = ClassType(StdlibClass.String)

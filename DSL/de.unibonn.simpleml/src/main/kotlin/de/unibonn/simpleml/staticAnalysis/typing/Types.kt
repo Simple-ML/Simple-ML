@@ -63,8 +63,8 @@ sealed class NamedType(smlDeclaration: SmlAbstractDeclaration) : Type() {
 
 data class ClassType(
     val smlClass: SmlClass,
-    override val isNullable: Boolean,
-    override val isStatic: Boolean
+    override val isNullable: Boolean = false,
+    override val isStatic: Boolean = false
 ) : NamedType(smlClass) {
 
     override fun toString() = super.toString()
