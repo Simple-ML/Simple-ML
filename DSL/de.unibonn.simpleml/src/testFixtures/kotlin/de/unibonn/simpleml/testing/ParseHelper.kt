@@ -20,26 +20,19 @@ class ParseHelper @Inject constructor(
     private val resourceSetProvider: Provider<ResourceSet>
 ) {
 
-    fun parseProgramText(programText: String): SmlCompilationUnit? {
-        return parseHelper.parse(programText)
-    }
-
-    fun parseResource(resourceName: ResourceName): SmlCompilationUnit? {
-        return readProgramTextFromResource(resourceName)?.let { parseProgramText(it) }
-    }
-
     fun parseProgramTextWithStdlib(programText: String): SmlCompilationUnit? {
         val resourceSet = resourceSetProvider.get()
         resourceSet.loadStdlib()
         return parseHelper.parse(programText, resourceSet)
     }
 
-    fun parseResourceWithStdlib(resourceName: ResourceName): SmlCompilationUnit? {
+    fun parseResource(resourceName: ResourceName): SmlCompilationUnit? {
         return readProgramTextFromResource(resourceName)?.let { parseProgramTextWithStdlib(it) }
     }
 
     fun parseProgramTextWithContext(programText: String, context: List<ResourceName>): SmlCompilationUnit? {
         val resourceSet = createResourceSetFromContext(context)
+        resourceSet.loadStdlib()
         return parseHelper.parse(programText, resourceSet)
     }
 

@@ -1,3 +1,5 @@
+@file:Suppress("TestFunctionName")
+
 package de.unibonn.simpleml.staticAnalysis.typing
 
 import com.google.inject.Inject
@@ -11,6 +13,7 @@ import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.getResourcePath
 import io.kotest.matchers.shouldBe
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.junit.jupiter.api.Nested
@@ -41,28 +44,28 @@ class TypeComputerTest {
         @Test
         fun `boolean literals should have type Boolean`() {
             withCompilationUnitFromFile("expressions/literals") {
-                placeholderWithName("booleanLiteral").assignedValueOrFail() shouldHaveType Boolean
+                placeholderWithName("booleanLiteral").assignedValueOrFail() shouldHaveType Boolean(this)
             }
         }
 
         @Test
         fun `float literals should have type Float`() {
             withCompilationUnitFromFile("expressions/literals") {
-                placeholderWithName("floatLiteral").assignedValueOrFail() shouldHaveType Float
+                placeholderWithName("floatLiteral").assignedValueOrFail() shouldHaveType Float(this)
             }
         }
 
         @Test
         fun `int literals should have type Int`() {
             withCompilationUnitFromFile("expressions/literals") {
-                placeholderWithName("intLiteral").assignedValueOrFail() shouldHaveType Int
+                placeholderWithName("intLiteral").assignedValueOrFail() shouldHaveType Int(this)
             }
         }
 
         @Test
         fun `string literals should have type String`() {
             withCompilationUnitFromFile("expressions/literals") {
-                placeholderWithName("stringLiteral").assignedValueOrFail() shouldHaveType String
+                placeholderWithName("stringLiteral").assignedValueOrFail() shouldHaveType String(this)
             }
         }
     }
@@ -82,7 +85,7 @@ class TypeComputerTest {
                     "divisionIntInt",
                     "negationInt"
                 ).forEach {
-                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Int
+                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Int(this)
                 }
             }
         }
@@ -102,7 +105,7 @@ class TypeComputerTest {
                     "divisionInvalid",
                     "negationInvalid"
                 ).forEach {
-                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Float
+                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Float(this)
                 }
             }
         }
@@ -120,7 +123,7 @@ class TypeComputerTest {
                     "greaterThanOrEqualsInvalid",
                     "greaterThanInvalid"
                 ).forEach {
-                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Boolean
+                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Boolean(this)
                 }
             }
         }
@@ -129,7 +132,7 @@ class TypeComputerTest {
         fun `equality operations should have type Boolean`() {
             withCompilationUnitFromFile("expressions/operations/equality") {
                 listOf("equals", "notEquals").forEach {
-                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Boolean
+                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Boolean(this)
                 }
             }
         }
@@ -138,7 +141,7 @@ class TypeComputerTest {
         fun `strict equality operations should have type Boolean`() {
             withCompilationUnitFromFile("expressions/operations/strictEquality") {
                 listOf("strictlyEquals", "notStrictlyEquals").forEach {
-                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Boolean
+                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Boolean(this)
                 }
             }
         }
@@ -154,7 +157,7 @@ class TypeComputerTest {
                     "disjunctionInvalid",
                     "negationInvalid"
                 ).forEach {
-                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Boolean
+                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Boolean(this)
                 }
             }
         }
@@ -192,10 +195,10 @@ class TypeComputerTest {
         compilationUnit.apply(lambda)
     }
 
-    private val Any get() = ClassType(StdlibClass.Any)
-    private val Boolean get() = ClassType(StdlibClass.Boolean)
-    private val Float get() = ClassType(StdlibClass.Float)
-    private val Int get() = ClassType(StdlibClass.Int)
-    private val Nothing get() = ClassType(StdlibClass.Nothing)
-    private val String get() = ClassType(StdlibClass.String)
+    private fun Any(context: EObject) = ClassType(StdlibClass.Any(context))
+    private fun Boolean(context: EObject) = ClassType(StdlibClass.Boolean(context))
+    private fun Float(context: EObject) = ClassType(StdlibClass.Float(context))
+    private fun Int(context: EObject) = ClassType(StdlibClass.Int(context))
+    private fun Nothing(context: EObject) = ClassType(StdlibClass.Nothing(context))
+    private fun String(context: EObject) = ClassType(StdlibClass.String(context))
 }

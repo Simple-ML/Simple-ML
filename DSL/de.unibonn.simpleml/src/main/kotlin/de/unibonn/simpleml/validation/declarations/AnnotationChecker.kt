@@ -36,10 +36,10 @@ class AnnotationChecker : AbstractSimpleMLChecker() {
     @Check
     fun parameterTypes(smlAnnotation: SmlAnnotation) {
         val validParameterTypes = setOf(
-            StdlibClass.Boolean,
-            StdlibClass.Float,
-            StdlibClass.Int,
-            StdlibClass.String,
+            StdlibClass.Boolean(smlAnnotation),
+            StdlibClass.Float(smlAnnotation),
+            StdlibClass.Int(smlAnnotation),
+            StdlibClass.String(smlAnnotation),
         )
 
         smlAnnotation.parametersOrEmpty().forEach {

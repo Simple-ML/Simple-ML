@@ -33,7 +33,7 @@ class DeclarationChecker : AbstractSimpleMLChecker() {
     fun mustNotDeprecateRequiredParameter(smlParameter: SmlParameter) {
         if (smlParameter.isRequired()) {
             val deprecatedAnnotationOrNull = smlParameter.annotationCallsOrEmpty().firstOrNull {
-                it.annotation == StdlibAnnotation.Deprecated
+                it.annotation == StdlibAnnotation.Deprecated(smlParameter)
             }
 
             if (deprecatedAnnotationOrNull != null) {

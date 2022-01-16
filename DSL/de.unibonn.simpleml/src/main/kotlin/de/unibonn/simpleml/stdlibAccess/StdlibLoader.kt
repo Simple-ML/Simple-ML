@@ -14,6 +14,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
+private val cache = mutableMapOf<ResourceSet, MutableMap<QualifiedName, EObject?>>()
 private val classLoader = object {}.javaClass.classLoader
 
 fun ResourceSet.loadStdlib() {
@@ -24,13 +25,6 @@ fun ResourceSet.loadStdlib() {
     if (resources.isEmpty()) {
         throw IllegalStateException("Failed to load stdlib resources.")
     }
-
-    val context = resources.firstNotNullOfOrNull { it.contents.firstOrNull() }
-        ?: throw IllegalStateException("All loaded stdlib resources are empty.")
-
-    context.loadStdlibAnnotations()
-    context.loadStdlibClasses()
-    context.loadStdlibEnum()
 }
 
 fun listStdlibFiles(): Sequence<Pair<Path, URI>> {
@@ -67,13 +61,18 @@ fun listStdlibFiles(): Sequence<Pair<Path, URI>> {
 }
 
 internal inline fun <reified T : SmlAbstractDeclaration> EObject.getStdlibDeclaration(qualifiedName: QualifiedName): T {
-    val description = visibleGlobalDeclarationDescriptions()
-        .find { it.qualifiedName == qualifiedName }
-        ?: throw IllegalStateException("Failed to load stdlib declaration '$qualifiedName'.")
+    val cacheForResourceSet = cache.getOrPut(this.eResource().resourceSet) { mutableMapOf() }
+    val eObject = cacheForResourceSet.computeIfAbsent(qualifiedName) {
+        val description = visibleGlobalDeclarationDescriptions()
+            .find { it.qualifiedName == qualifiedName }
+            ?: throw IllegalStateException("Failed to load stdlib declaration '$qualifiedName'.")
 
-    var eObject = description.eObjectOrProxy
-    if (eObject != null && eObject.eIsProxy()) {
-        eObject = eResource().resourceSet.getEObject(description.eObjectURI, true)
+        var eObject = description.eObjectOrProxy
+        if (eObject != null && eObject.eIsProxy()) {
+            eObject = eResource().resourceSet.getEObject(description.eObjectURI, true)
+        }
+
+        eObject
     }
 
     return when (eObject) {

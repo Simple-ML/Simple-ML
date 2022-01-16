@@ -40,7 +40,7 @@ class AnnotationCallChecker : AbstractSimpleMLChecker() {
     @Check
     fun duplicateTargetInTargetAnnotation(smlAnnotationCall: SmlAnnotationCall) {
         val annotation = smlAnnotationCall.annotation
-        if (!annotation.isResolved() || annotation != StdlibAnnotation.Target) {
+        if (!annotation.isResolved() || annotation != StdlibAnnotation.Target(smlAnnotationCall)) {
             return
         }
 
@@ -96,46 +96,46 @@ class AnnotationCallChecker : AbstractSimpleMLChecker() {
 
         // Compare actual and legal targets
         val wrongTarget: String? = when {
-            actualTarget is SmlAnnotation && AnnotationTarget.Annotation !in validTargets -> {
+            actualTarget is SmlAnnotation && AnnotationTarget.Annotation(smlAnnotationCall) !in validTargets -> {
                 "an annotation"
             }
-            actualTarget is SmlAttribute && AnnotationTarget.Attribute !in validTargets -> {
+            actualTarget is SmlAttribute && AnnotationTarget.Attribute(smlAnnotationCall) !in validTargets -> {
                 "an attribute"
             }
-            actualTarget is SmlClass && AnnotationTarget.Class !in validTargets -> {
+            actualTarget is SmlClass && AnnotationTarget.Class(smlAnnotationCall) !in validTargets -> {
                 "a class"
             }
-            actualTarget is SmlPackage && AnnotationTarget.CompilationUnit !in validTargets -> {
+            actualTarget is SmlPackage && AnnotationTarget.CompilationUnit(smlAnnotationCall) !in validTargets -> {
                 "a compilation unit"
             }
-            actualTarget is SmlEnum && AnnotationTarget.Enum !in validTargets -> {
+            actualTarget is SmlEnum && AnnotationTarget.Enum(smlAnnotationCall) !in validTargets -> {
                 "an enum"
             }
-            actualTarget is SmlEnumVariant && AnnotationTarget.EnumVariant !in validTargets -> {
+            actualTarget is SmlEnumVariant && AnnotationTarget.EnumVariant(smlAnnotationCall) !in validTargets -> {
                 "an enum variant"
             }
-            actualTarget is SmlFunction && AnnotationTarget.Function !in validTargets -> {
+            actualTarget is SmlFunction && AnnotationTarget.Function(smlAnnotationCall) !in validTargets -> {
                 "a function"
             }
-            actualTarget is SmlBlockLambdaResult && AnnotationTarget.LambdaResult !in validTargets -> {
+            actualTarget is SmlBlockLambdaResult && AnnotationTarget.LambdaResult(smlAnnotationCall) !in validTargets -> {
                 "a lambda result"
             }
-            actualTarget is SmlParameter && AnnotationTarget.Parameter !in validTargets -> {
+            actualTarget is SmlParameter && AnnotationTarget.Parameter(smlAnnotationCall) !in validTargets -> {
                 "a parameter"
             }
-            actualTarget is SmlPlaceholder && AnnotationTarget.Placeholder !in validTargets -> {
+            actualTarget is SmlPlaceholder && AnnotationTarget.Placeholder(smlAnnotationCall) !in validTargets -> {
                 "a placeholder"
             }
-            actualTarget is SmlResult && AnnotationTarget.Result !in validTargets -> {
+            actualTarget is SmlResult && AnnotationTarget.Result(smlAnnotationCall) !in validTargets -> {
                 "a result"
             }
-            actualTarget is SmlTypeParameter && AnnotationTarget.TypeParameter !in validTargets -> {
+            actualTarget is SmlTypeParameter && AnnotationTarget.TypeParameter(smlAnnotationCall) !in validTargets -> {
                 "a type parameter"
             }
-            actualTarget is SmlWorkflow && AnnotationTarget.Workflow !in validTargets -> {
+            actualTarget is SmlWorkflow && AnnotationTarget.Workflow(smlAnnotationCall) !in validTargets -> {
                 "a workflow"
             }
-            actualTarget is SmlStep && AnnotationTarget.Step !in validTargets -> {
+            actualTarget is SmlStep && AnnotationTarget.Step(smlAnnotationCall) !in validTargets -> {
                 "a step"
             }
             else -> null

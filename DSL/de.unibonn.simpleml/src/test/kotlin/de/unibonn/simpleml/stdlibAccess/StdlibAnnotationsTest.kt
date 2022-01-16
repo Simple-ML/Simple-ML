@@ -178,26 +178,26 @@ class StdlibAnnotationsTest {
         @Test
         fun `should return targets if it exists and is unique`() = withCompilationUnit("target") {
             val testData = findUniqueDeclarationOrFail<SmlAnnotation>("AnnotationWithUniqueTarget")
-            testData.validTargets().shouldContainExactly(AnnotationTarget.Class)
+            testData.validTargets().shouldContainExactly(AnnotationTarget.Class(this))
         }
 
         @Test
         fun `should return all possible targets if targets is not unique`() = withCompilationUnit("target") {
             val testData = findUniqueDeclarationOrFail<SmlAnnotation>("AnnotationWithoutTarget")
-            testData.validTargets() shouldBe AnnotationTarget.variants
+            testData.validTargets() shouldBe AnnotationTarget.variants(this)
         }
 
         @Test
         fun `should return all possible targets if annotation does not restrict its targets`() =
             withCompilationUnit("target") {
                 val testData = findUniqueDeclarationOrFail<SmlAnnotation>("AnnotationWithMultipleTargets")
-                testData.validTargets() shouldBe AnnotationTarget.variants
+                testData.validTargets() shouldBe AnnotationTarget.variants(this)
             }
     }
 
     private fun withCompilationUnit(resourceName: String, check: SmlCompilationUnit.() -> Unit) {
         parseHelper
-            .parseResourceWithStdlib("$testRoot/$resourceName.${SmlFileExtension.Test}")
+            .parseResource("$testRoot/$resourceName.${SmlFileExtension.Test}")
             .shouldNotBeNull()
             .check()
     }

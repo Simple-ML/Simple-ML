@@ -1,11 +1,10 @@
-@file:Suppress("MemberVisibilityCanBePrivate")
+@file:Suppress("MemberVisibilityCanBePrivate", "FunctionName")
 
 package de.unibonn.simpleml.stdlibAccess
 
 import de.unibonn.simpleml.emf.annotationCallsOrEmpty
 import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.uniquePackageOrNull
-import de.unibonn.simpleml.emf.variantsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationCall
@@ -30,70 +29,72 @@ object StdlibAnnotation {
      *
      * @see isDeprecated
      */
-    lateinit var Deprecated: SmlAnnotation
+    fun Deprecated(context: EObject): SmlAnnotation {
+        return context.getStdlibDeclaration(StdlibPackages.lang.append("Deprecated"))
+    }
 
     /**
      * The purpose of a declaration.
      *
      * @see descriptionOrNull
      */
-    lateinit var Description: SmlAnnotation
+    fun Description(context: EObject): SmlAnnotation {
+        return context.getStdlibDeclaration(StdlibPackages.lang.append("Description"))
+    }
 
     /**
      * The qualified name of the corresponding module in Python.
      *
      * @see pythonModuleOrNull
      */
-    lateinit var PythonModule: SmlAnnotation
+    fun PythonModule(context: EObject): SmlAnnotation {
+        return context.getStdlibDeclaration(StdlibPackages.lang.append("PythonModule"))
+    }
 
     /**
      * The name of the corresponding API element in Python.
      *
      * @see pythonNameOrNull
      */
-    lateinit var PythonName: SmlAnnotation
+    fun PythonName(context: EObject): SmlAnnotation {
+        return context.getStdlibDeclaration(StdlibPackages.lang.append("PythonName"))
+    }
 
     /**
      * The function returns the same results for the same arguments and has no side effects.
      *
      * @see isPure
      */
-    lateinit var Pure: SmlAnnotation
+    fun Pure(context: EObject): SmlAnnotation {
+        return context.getStdlibDeclaration(StdlibPackages.lang.append("Pure"))
+    }
 
     /**
      * The annotation can be used multiple times for the same declaration.
      *
      * @see isRepeatable
      */
-    lateinit var Repeatable: SmlAnnotation
+    fun Repeatable(context: EObject): SmlAnnotation {
+        return context.getStdlibDeclaration(StdlibPackages.lang.append("Repeatable"))
+    }
 
     /**
      * The version in which a declaration was added.
      *
      * @see sinceVersionOrNull
      */
-    lateinit var Since: SmlAnnotation
+    fun Since(context: EObject): SmlAnnotation {
+        return context.getStdlibDeclaration(StdlibPackages.lang.append("Since"))
+    }
 
     /**
      * The annotation can target only a subset of declaration types.
      *
      * @see validTargets
      */
-    lateinit var Target: SmlAnnotation
-}
-
-/**
- * Loads the important annotations in the standard library.
- */
-internal fun EObject.loadStdlibAnnotations() {
-    StdlibAnnotation.Deprecated = getStdlibDeclaration(StdlibPackages.lang.append("Deprecated"))
-    StdlibAnnotation.Description = getStdlibDeclaration(StdlibPackages.lang.append("Description"))
-    StdlibAnnotation.PythonModule = getStdlibDeclaration(StdlibPackages.lang.append("PythonModule"))
-    StdlibAnnotation.PythonName = getStdlibDeclaration(StdlibPackages.lang.append("PythonName"))
-    StdlibAnnotation.Pure = getStdlibDeclaration(StdlibPackages.lang.append("Pure"))
-    StdlibAnnotation.Repeatable = getStdlibDeclaration(StdlibPackages.lang.append("Repeatable"))
-    StdlibAnnotation.Since = getStdlibDeclaration(StdlibPackages.lang.append("Since"))
-    StdlibAnnotation.Target = getStdlibDeclaration(StdlibPackages.lang.append("Target"))
+    fun Target(context: EObject): SmlAnnotation {
+        return context.getStdlibDeclaration(StdlibPackages.lang.append("Target"))
+    }
 }
 
 /**
@@ -114,7 +115,7 @@ fun SmlAbstractDeclaration.uniqueAnnotationCallOrNull(annotation: SmlAnnotation)
  * Returns the description attached to the declaration with a `simpleml.lang.Description` annotation.
  */
 fun SmlAbstractDeclaration.descriptionOrNull(): String? {
-    val value = annotationCallArgumentValueOrNull(StdlibAnnotation.Description, "description")
+    val value = annotationCallArgumentValueOrNull(StdlibAnnotation.Description(this), "description")
     return (value as? SmlConstantString)?.value
 }
 
@@ -122,21 +123,21 @@ fun SmlAbstractDeclaration.descriptionOrNull(): String? {
  * Checks if the declaration is annotated with the `simpleml.lang.Deprecated` annotation.
  */
 fun SmlAbstractDeclaration.isDeprecated(): Boolean {
-    return hasAnnotationCallTo(StdlibAnnotation.Deprecated)
+    return hasAnnotationCallTo(StdlibAnnotation.Deprecated(this))
 }
 
 /**
  * Checks if the function is annotated with the `simpleml.lang.Pure` annotation.
  */
 fun SmlFunction.isPure(): Boolean {
-    return hasAnnotationCallTo(StdlibAnnotation.Pure)
+    return hasAnnotationCallTo(StdlibAnnotation.Pure(this))
 }
 
 /**
  * Checks if the annotation is annotated with the `simpleml.lang.Repeatable` annotation.
  */
 fun SmlAnnotation.isRepeatable(): Boolean {
-    return hasAnnotationCallTo(StdlibAnnotation.Repeatable)
+    return hasAnnotationCallTo(StdlibAnnotation.Repeatable(this))
 }
 
 /**
@@ -145,7 +146,7 @@ fun SmlAnnotation.isRepeatable(): Boolean {
  */
 fun SmlCompilationUnit.pythonModuleOrNull(): String? {
     val value = uniquePackageOrNull()?.annotationCallArgumentValueOrNull(
-        StdlibAnnotation.PythonModule,
+        StdlibAnnotation.PythonModule(this),
         "qualifiedName"
     )
     return (value as? SmlConstantString)?.value
@@ -156,7 +157,7 @@ fun SmlCompilationUnit.pythonModuleOrNull(): String? {
  * with a `simpleml.lang.PythonName` annotation.
  */
 fun SmlAbstractDeclaration.pythonNameOrNull(): String? {
-    val value = annotationCallArgumentValueOrNull(StdlibAnnotation.PythonName, "name")
+    val value = annotationCallArgumentValueOrNull(StdlibAnnotation.PythonName(this), "name")
     return (value as? SmlConstantString)?.value
 }
 
@@ -165,7 +166,7 @@ fun SmlAbstractDeclaration.pythonNameOrNull(): String? {
  * annotation.
  */
 fun SmlAbstractDeclaration.sinceVersionOrNull(): String? {
-    val value = annotationCallArgumentValueOrNull(StdlibAnnotation.Since, "version")
+    val value = annotationCallArgumentValueOrNull(StdlibAnnotation.Since(this), "version")
     return (value as? SmlConstantString)?.value
 }
 
@@ -173,8 +174,8 @@ fun SmlAbstractDeclaration.sinceVersionOrNull(): String? {
  * Returns the possible targets of this annotation.
  */
 fun SmlAnnotation.validTargets(): List<SmlEnumVariant> {
-    val targetAnnotationCall = uniqueAnnotationCallOrNull(StdlibAnnotation.Target)
-        ?: return StdlibEnum.AnnotationTarget.variants
+    val targetAnnotationCall = uniqueAnnotationCallOrNull(StdlibAnnotation.Target(this))
+        ?: return StdlibEnum.AnnotationTarget.variants(this)
 
     return targetAnnotationCall
         .argumentsOrEmpty()
@@ -182,7 +183,7 @@ fun SmlAnnotation.validTargets(): List<SmlEnumVariant> {
         .mapNotNull { it.value.toConstantExpressionOrNull() }
         .filterIsInstance<SmlConstantEnumVariant>()
         .map { it.value }
-        .filter { it in StdlibEnum.AnnotationTarget.variants }
+        .filter { it in StdlibEnum.AnnotationTarget.variants(this) }
         .toList()
 }
 

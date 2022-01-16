@@ -13,7 +13,7 @@ import de.unibonn.simpleml.stdlibAccess.StdlibClass
 import de.unibonn.simpleml.utils.uniqueOrNull
 
 fun SmlClass.isSubtypeOf(other: SmlClass) =
-    this == StdlibClass.Nothing || this == other || other in superClasses()
+    this == StdlibClass.Nothing(this) || this == other || other in superClasses()
 
 private fun SmlClass.superClasses() = sequence<SmlClass> {
     val visited = mutableSetOf<SmlClass>()
@@ -26,7 +26,7 @@ private fun SmlClass.superClasses() = sequence<SmlClass> {
         current = current.parentClassOrNull()
     }
 
-    val anyClass = StdlibClass.Any
+    val anyClass = StdlibClass.Any(this@superClasses)
     if (this@superClasses != anyClass && visited.lastOrNull() != anyClass) {
         yield(anyClass)
     }
