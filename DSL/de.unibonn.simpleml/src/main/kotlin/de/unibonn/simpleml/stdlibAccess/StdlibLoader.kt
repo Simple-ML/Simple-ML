@@ -30,6 +30,7 @@ fun ResourceSet.loadStdlib() {
 
     context.loadStdlibAnnotations()
     context.loadStdlibClasses()
+    context.loadStdlibEnum()
 }
 
 fun listStdlibFiles(): Sequence<Pair<Path, URI>> {

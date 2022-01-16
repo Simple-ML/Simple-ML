@@ -26,7 +26,7 @@ import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.staticAnalysis.linking.parametersOrNull
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibAnnotation
-import de.unibonn.simpleml.stdlibAccess.StdlibEnums.AnnotationTarget
+import de.unibonn.simpleml.stdlibAccess.StdlibEnum.AnnotationTarget
 import de.unibonn.simpleml.stdlibAccess.validTargets
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
@@ -92,50 +92,50 @@ class AnnotationCallChecker : AbstractSimpleMLChecker() {
             return
         }
 
-        val legalTargets = annotation.validTargets()
+        val validTargets = annotation.validTargets()
 
         // Compare actual and legal targets
         val wrongTarget: String? = when {
-            actualTarget is SmlAnnotation && AnnotationTarget.Annotation !in legalTargets -> {
+            actualTarget is SmlAnnotation && AnnotationTarget.Annotation !in validTargets -> {
                 "an annotation"
             }
-            actualTarget is SmlAttribute && AnnotationTarget.Attribute !in legalTargets -> {
+            actualTarget is SmlAttribute && AnnotationTarget.Attribute !in validTargets -> {
                 "an attribute"
             }
-            actualTarget is SmlClass && AnnotationTarget.Class !in legalTargets -> {
+            actualTarget is SmlClass && AnnotationTarget.Class !in validTargets -> {
                 "a class"
             }
-            actualTarget is SmlPackage && AnnotationTarget.CompilationUnit !in legalTargets -> {
+            actualTarget is SmlPackage && AnnotationTarget.CompilationUnit !in validTargets -> {
                 "a compilation unit"
             }
-            actualTarget is SmlEnum && AnnotationTarget.Enum !in legalTargets -> {
+            actualTarget is SmlEnum && AnnotationTarget.Enum !in validTargets -> {
                 "an enum"
             }
-            actualTarget is SmlEnumVariant && AnnotationTarget.EnumVariant !in legalTargets -> {
+            actualTarget is SmlEnumVariant && AnnotationTarget.EnumVariant !in validTargets -> {
                 "an enum variant"
             }
-            actualTarget is SmlFunction && AnnotationTarget.Function !in legalTargets -> {
+            actualTarget is SmlFunction && AnnotationTarget.Function !in validTargets -> {
                 "a function"
             }
-            actualTarget is SmlBlockLambdaResult && AnnotationTarget.LambdaResult !in legalTargets -> {
+            actualTarget is SmlBlockLambdaResult && AnnotationTarget.LambdaResult !in validTargets -> {
                 "a lambda result"
             }
-            actualTarget is SmlParameter && AnnotationTarget.Parameter !in legalTargets -> {
+            actualTarget is SmlParameter && AnnotationTarget.Parameter !in validTargets -> {
                 "a parameter"
             }
-            actualTarget is SmlPlaceholder && AnnotationTarget.Placeholder !in legalTargets -> {
+            actualTarget is SmlPlaceholder && AnnotationTarget.Placeholder !in validTargets -> {
                 "a placeholder"
             }
-            actualTarget is SmlResult && AnnotationTarget.Result !in legalTargets -> {
+            actualTarget is SmlResult && AnnotationTarget.Result !in validTargets -> {
                 "a result"
             }
-            actualTarget is SmlTypeParameter && AnnotationTarget.TypeParameter !in legalTargets -> {
+            actualTarget is SmlTypeParameter && AnnotationTarget.TypeParameter !in validTargets -> {
                 "a type parameter"
             }
-            actualTarget is SmlWorkflow && AnnotationTarget.Workflow !in legalTargets -> {
+            actualTarget is SmlWorkflow && AnnotationTarget.Workflow !in validTargets -> {
                 "a workflow"
             }
-            actualTarget is SmlStep && AnnotationTarget.Step !in legalTargets -> {
+            actualTarget is SmlStep && AnnotationTarget.Step !in validTargets -> {
                 "a step"
             }
             else -> null

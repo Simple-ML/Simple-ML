@@ -5,6 +5,7 @@ import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.stdlibAccess.StdlibEnum.AnnotationTarget
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
@@ -177,20 +178,20 @@ class StdlibAnnotationsTest {
         @Test
         fun `should return targets if it exists and is unique`() = withCompilationUnit("target") {
             val testData = findUniqueDeclarationOrFail<SmlAnnotation>("AnnotationWithUniqueTarget")
-            testData.validTargets().shouldContainExactly(StdlibEnums.AnnotationTarget.Class)
+            testData.validTargets().shouldContainExactly(AnnotationTarget.Class)
         }
 
         @Test
         fun `should return all possible targets if targets is not unique`() = withCompilationUnit("target") {
             val testData = findUniqueDeclarationOrFail<SmlAnnotation>("AnnotationWithoutTarget")
-            testData.validTargets() shouldBe StdlibEnums.AnnotationTarget.values()
+            testData.validTargets() shouldBe AnnotationTarget.variants
         }
 
         @Test
         fun `should return all possible targets if annotation does not restrict its targets`() =
             withCompilationUnit("target") {
                 val testData = findUniqueDeclarationOrFail<SmlAnnotation>("AnnotationWithMultipleTargets")
-                testData.validTargets() shouldBe StdlibEnums.AnnotationTarget.values()
+                testData.validTargets() shouldBe AnnotationTarget.variants
             }
     }
 

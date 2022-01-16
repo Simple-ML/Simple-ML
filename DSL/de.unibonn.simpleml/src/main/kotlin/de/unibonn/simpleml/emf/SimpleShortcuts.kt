@@ -205,6 +205,12 @@ fun SmlCompilationUnit.uniquePackageOrNull(): SmlPackage? {
 
 // SmlEnum -----------------------------------------------------------------------------------------
 
+fun SmlEnum.uniqueVariantOrNull(name: String): SmlEnumVariant? {
+    return this.body?.variants
+        ?.filter { it.name == name }
+        ?.uniqueOrNull()
+}
+
 fun SmlEnum?.variantsOrEmpty(): List<SmlEnumVariant> {
     return this?.body?.variants.orEmpty()
 }
