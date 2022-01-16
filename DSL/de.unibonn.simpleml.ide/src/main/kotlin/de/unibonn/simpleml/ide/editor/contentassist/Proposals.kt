@@ -12,14 +12,13 @@ import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.staticAnalysis.typing.Type
 import de.unibonn.simpleml.staticAnalysis.typing.TypeComputer
-import de.unibonn.simpleml.staticAnalysis.typing.TypeConformance
+import de.unibonn.simpleml.staticAnalysis.typing.isSubstitutableFor
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 
 class Proposals @Inject constructor(
     private val index: SimpleMLIndexExtensions,
     private val typeComputer: TypeComputer,
-    private val typeConformance: TypeConformance,
 ) {
 
     /**
@@ -127,7 +126,7 @@ class Proposals @Inject constructor(
 
         val requiredType = requiredTypes.first()
 
-        val matchingAvailableTypes = availableTypes.filter { typeConformance.isSubstitutableFor(requiredType, it) }
+        val matchingAvailableTypes = availableTypes.filter { requiredType.isSubstitutableFor(it) }
         if (matchingAvailableTypes.isEmpty()) {
             return false
         }

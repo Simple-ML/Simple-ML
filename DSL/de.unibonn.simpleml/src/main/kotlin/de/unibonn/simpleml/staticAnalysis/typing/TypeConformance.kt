@@ -3,18 +3,16 @@ package de.unibonn.simpleml.staticAnalysis.typing
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.staticAnalysis.classHierarchy.isSubtypeOf
 
-class TypeConformance {
-    fun isSubstitutableFor(type1: Type, type2: Type): Boolean {
-        return when (type2) {
-            is ClassType -> isSubstitutableFor(type1, type2.smlClass)
-            else -> false
-        }
+fun Type.isSubstitutableFor(other: Type): Boolean {
+    return when (other) {
+        is ClassType -> this.isSubstitutableFor(other.smlClass)
+        else -> false
     }
+}
 
-    fun isSubstitutableFor(type1: Type, smlClass: SmlClass): Boolean {
-        return when (type1) {
-            is ClassType -> type1.smlClass.isSubtypeOf(smlClass)
-            else -> false
-        }
+fun Type.isSubstitutableFor(`class`: SmlClass): Boolean {
+    return when (this) {
+        is ClassType -> this.smlClass.isSubtypeOf(`class`)
+        else -> false
     }
 }
