@@ -55,7 +55,6 @@ fun SmlTypeArgumentList.typeParametersOrNull(): List<SmlTypeParameter>? {
                 !declaration.isResolved() -> null
                 declaration is SmlClass -> declaration.typeParametersOrEmpty()
                 declaration is SmlEnumVariant -> declaration.typeParametersOrEmpty()
-                declaration is SmlFunction -> declaration.typeParametersOrEmpty()
                 else -> null
             }
         }

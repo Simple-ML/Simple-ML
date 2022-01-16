@@ -37,20 +37,4 @@ class NamedTypeChecker : AbstractSimpleMLChecker() {
             )
         }
     }
-
-    @Check
-    fun unnecessaryTypeArgumentList(smlNamedType: SmlNamedType) {
-        if (smlNamedType.typeArgumentList == null) {
-            return
-        }
-
-        val typeParametersOrNull = smlNamedType.typeArgumentList.typeParametersOrNull()
-        if (typeParametersOrNull != null && typeParametersOrNull.isEmpty()) {
-            info(
-                "Unnecessary type argument list.",
-                SimpleMLPackage.Literals.SML_NAMED_TYPE__TYPE_ARGUMENT_LIST,
-                InfoCode.UnnecessaryTypeArgumentList
-            )
-        }
-    }
 }

@@ -8,6 +8,7 @@ import de.unibonn.simpleml.staticAnalysis.linking.typeParametersOrNull
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
+import de.unibonn.simpleml.validation.codes.InfoCode
 import org.eclipse.xtext.validation.Check
 
 class TypeArgumentListChecker : AbstractSimpleMLChecker() {
@@ -86,5 +87,17 @@ class TypeArgumentListChecker : AbstractSimpleMLChecker() {
                     ErrorCode.UniqueTypeParameters
                 )
             }
+    }
+
+    @Check
+    fun unnecessaryTypeArgumentList(smlTypeArgumentList: SmlTypeArgumentList) {
+        val typeParametersOrNull = smlTypeArgumentList.typeParametersOrNull()
+        if (typeParametersOrNull != null && typeParametersOrNull.isEmpty()) {
+            info(
+                "Unnecessary type argument list.",
+                null,
+                InfoCode.UnnecessaryTypeArgumentList
+            )
+        }
     }
 }

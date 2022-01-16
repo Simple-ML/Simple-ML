@@ -48,22 +48,6 @@ class CallChecker : AbstractSimpleMLChecker() {
     }
 
     @Check
-    fun unnecessaryTypeArgumentList(smlCall: SmlCall) {
-        if (smlCall.typeArgumentList == null) {
-            return
-        }
-
-        val typeParametersOrNull = smlCall.typeArgumentList.typeParametersOrNull()
-        if (typeParametersOrNull != null && typeParametersOrNull.isEmpty()) {
-            info(
-                "Unnecessary type argument list.",
-                Literals.SML_CALL__TYPE_ARGUMENT_LIST,
-                InfoCode.UnnecessaryTypeArgumentList
-            )
-        }
-    }
-
-    @Check
     fun context(smlCall: SmlCall) {
         val results = smlCall.resultsOrNull() ?: return
         val source = when (smlCall.receiver) {
