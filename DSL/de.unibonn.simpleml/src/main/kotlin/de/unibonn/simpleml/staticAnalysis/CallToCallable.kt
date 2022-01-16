@@ -1,14 +1,26 @@
 package de.unibonn.simpleml.staticAnalysis
 
+import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
+import de.unibonn.simpleml.emf.parametersOrEmpty
+import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractCallable
+import de.unibonn.simpleml.simpleML.SmlAbstractExpression
+import de.unibonn.simpleml.simpleML.SmlAbstractObject
+import de.unibonn.simpleml.simpleML.SmlBlockLambda
+import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCallableType
+import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
+import de.unibonn.simpleml.simpleML.SmlExpressionLambda
+import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
+import de.unibonn.simpleml.simpleML.SmlStep
 import org.eclipse.emf.ecore.EObject
 
 fun SmlCall.callableOrNull(): SmlAbstractCallable? {
@@ -60,4 +72,40 @@ fun SmlCall.maybeCallable(): CallableResult {
     }
 
     return CallableResult.Unresolvable
+}
+
+/**
+ * Returns the list of [SmlParameter]s of the called callable or `null` if it cannot be resolved.
+ */
+fun SmlCall.parametersOrNull(): List<SmlParameter>? {
+    return callableOrNull()?.parametersOrEmpty()
+}
+
+/**
+ * Returns the list of [SmlAbstractObject]s that are returned by the called callable or `null` if it cannot be resolved.
+ * Possible types depend on the called callable:
+ * - [SmlBlockLambda] -> [SmlBlockLambdaResult]
+ * - [SmlCallableType] -> [SmlResult]
+ * - [SmlClass] -> [SmlClass]
+ * - [SmlEnumVariant] -> [SmlEnumVariant]
+ * - [SmlExpressionLambda] -> [SmlAbstractExpression]
+ * - [SmlFunction] -> [SmlResult]
+ * - [SmlStep] -> [SmlResult]
+ */
+fun SmlCall.resultsOrNull(): List<SmlAbstractObject>? {
+    return when (val callable = this.callableOrNull()) {
+        is SmlBlockLambda -> callable.lambdaResultsOrEmpty()
+        is SmlCallableType -> callable.resultsOrEmpty()
+        is SmlClass -> listOf(callable)
+        is SmlEnumVariant -> listOf(callable)
+        is SmlExpressionLambda -> listOf(callable.result)
+        is SmlFunction -> callable.resultsOrEmpty()
+        is SmlStep -> callable.resultsOrEmpty()
+        else -> null
+    }
+}
+
+sealed interface ResultsResult {
+    object Unresolved: ResultsResult
+    object NotCallable: ResultsResult
 }

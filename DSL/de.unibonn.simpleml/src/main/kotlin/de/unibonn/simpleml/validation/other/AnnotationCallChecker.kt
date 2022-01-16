@@ -24,7 +24,7 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.staticAnalysis.parametersOrNull
+import de.unibonn.simpleml.staticAnalysis.linking.parametersOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibAnnotations
 import de.unibonn.simpleml.stdlibAccess.StdlibEnums.AnnotationTarget
 import de.unibonn.simpleml.stdlibAccess.validTargets

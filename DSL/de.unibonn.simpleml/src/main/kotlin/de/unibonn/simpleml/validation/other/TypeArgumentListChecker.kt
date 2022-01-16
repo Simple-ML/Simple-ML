@@ -3,8 +3,8 @@ package de.unibonn.simpleml.validation.other
 import de.unibonn.simpleml.emf.isNamed
 import de.unibonn.simpleml.emf.isPositional
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
-import de.unibonn.simpleml.staticAnalysis.typeParameterOrNull
-import de.unibonn.simpleml.staticAnalysis.typeParametersOrNull
+import de.unibonn.simpleml.staticAnalysis.linking.typeParameterOrNull
+import de.unibonn.simpleml.staticAnalysis.linking.typeParametersOrNull
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode

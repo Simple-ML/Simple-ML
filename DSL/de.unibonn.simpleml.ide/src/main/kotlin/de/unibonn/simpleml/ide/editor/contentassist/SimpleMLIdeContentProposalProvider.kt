@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import de.unibonn.simpleml.services.SimpleMLGrammarAccess
 import de.unibonn.simpleml.simpleML.SmlArgumentList
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
-import de.unibonn.simpleml.staticAnalysis.parametersOrNull
+import de.unibonn.simpleml.staticAnalysis.linking.parametersOrNull
 import de.unibonn.simpleml.typing.ClassHierarchy
 import org.eclipse.xtext.Assignment
 import org.eclipse.xtext.Keyword

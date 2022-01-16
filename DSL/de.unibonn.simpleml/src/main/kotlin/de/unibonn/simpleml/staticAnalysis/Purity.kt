@@ -5,6 +5,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractCallable
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlCall
+import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlStep
@@ -19,7 +20,9 @@ fun SmlAbstractExpression.hasSideEffects(): Boolean {
         val callable = this.callableOrNull()
         return callable is SmlFunction && !callable.isPure() ||
             callable is SmlStep && !callable.isInferredPure() ||
-            callable is SmlBlockLambda && !callable.isInferredPure()
+            callable is SmlBlockLambda && !callable.isInferredPure() ||
+                callable is SmlExpressionLambda && !callable.isInferredPure() ||
+                callable is SmlCallableType
     }
 
     return false

@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.staticAnalysis
+package de.unibonn.simpleml.staticAnalysis.linking
 
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.isNamed
@@ -12,6 +12,7 @@ import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
+import de.unibonn.simpleml.staticAnalysis.callableOrNull
 
 /**
  * Returns the [SmlTypeParameter] that corresponds to this [SmlTypeArgument] or `null` if it cannot be resolved.

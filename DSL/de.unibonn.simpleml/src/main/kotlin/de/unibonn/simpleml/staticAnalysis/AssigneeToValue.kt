@@ -7,9 +7,8 @@ import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlCall
-import org.eclipse.emf.ecore.EObject
 
-fun SmlAbstractAssignee.assignedOrNull(): EObject? {
+fun SmlAbstractAssignee.assignedOrNull(): SmlAbstractObject? {
     return when (val maybeAssigned = this.maybeAssigned()) {
         is AssignedResult.Assigned -> maybeAssigned.assigned
         else -> null
@@ -20,7 +19,7 @@ sealed interface AssignedResult {
     object Unresolved : AssignedResult
     object NotAssigned : AssignedResult
     sealed class Assigned : AssignedResult {
-        abstract val assigned: EObject
+        abstract val assigned: SmlAbstractObject
     }
 
     class AssignedExpression(override val assigned: SmlAbstractExpression) : Assigned()

@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.staticAnalysis
+package de.unibonn.simpleml.staticAnalysis.linking
 
 import de.unibonn.simpleml.emf.asResolvedOrNull
 import de.unibonn.simpleml.emf.closestAncestorOrNull
@@ -9,6 +9,7 @@ import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlArgumentList
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.staticAnalysis.parametersOrNull
 
 /**
  * Returns the [SmlParameter] that corresponds to this [SmlArgument] or `null` if it cannot be resolved.
@@ -41,7 +42,7 @@ fun SmlArgument.parameterOrNull(): SmlParameter? {
 }
 
 /**
- * Returns the list of [SmlParameter]s that corresponds to this list of [SmlArgument]s or `null` if it cannot not be
+ * Returns the list of [SmlParameter]s that corresponds to this list of [SmlArgument]s or `null` if it cannot be
  * resolved.
  */
 fun SmlArgumentList.parametersOrNull(): List<SmlParameter>? {

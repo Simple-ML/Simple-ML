@@ -42,9 +42,9 @@ import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlYield
-import de.unibonn.simpleml.staticAnalysis.parametersOrNull
+import de.unibonn.simpleml.staticAnalysis.linking.parametersOrNull
 import de.unibonn.simpleml.staticAnalysis.resultsOrNull
-import de.unibonn.simpleml.staticAnalysis.typeParametersOrNull
+import de.unibonn.simpleml.staticAnalysis.linking.typeParametersOrNull
 import de.unibonn.simpleml.typing.ClassHierarchy
 import de.unibonn.simpleml.typing.ClassType
 import de.unibonn.simpleml.typing.EnumType

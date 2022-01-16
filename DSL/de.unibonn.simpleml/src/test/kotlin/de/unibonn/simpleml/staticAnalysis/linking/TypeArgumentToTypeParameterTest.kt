@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.staticAnalysis
+package de.unibonn.simpleml.staticAnalysis.linking
 
 import de.unibonn.simpleml.emf.createSmlCall
 import de.unibonn.simpleml.emf.createSmlClass
