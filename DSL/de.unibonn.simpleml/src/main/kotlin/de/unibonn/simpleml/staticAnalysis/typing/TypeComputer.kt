@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.typing
+package de.unibonn.simpleml.staticAnalysis.typing
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.lambdaResultsOrEmpty

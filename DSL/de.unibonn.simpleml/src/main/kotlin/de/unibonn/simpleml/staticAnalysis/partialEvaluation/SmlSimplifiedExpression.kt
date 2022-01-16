@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.partialEvaluation
+package de.unibonn.simpleml.staticAnalysis.partialEvaluation
 
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractResult

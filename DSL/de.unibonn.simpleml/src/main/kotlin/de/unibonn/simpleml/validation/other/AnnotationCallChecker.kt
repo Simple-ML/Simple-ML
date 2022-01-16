@@ -6,7 +6,7 @@ import de.unibonn.simpleml.emf.isResolved
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.targetOrNull
 import de.unibonn.simpleml.naming.fullyQualifiedNameOrNull
-import de.unibonn.simpleml.partialEvaluation.toConstantExpressionOrNull
+import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationCall

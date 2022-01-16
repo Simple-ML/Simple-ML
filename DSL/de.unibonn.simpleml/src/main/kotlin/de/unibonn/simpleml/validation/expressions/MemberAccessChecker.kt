@@ -8,8 +8,8 @@ import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
-import de.unibonn.simpleml.typing.NamedType
-import de.unibonn.simpleml.typing.TypeComputer
+import de.unibonn.simpleml.staticAnalysis.typing.NamedType
+import de.unibonn.simpleml.staticAnalysis.typing.TypeComputer
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode

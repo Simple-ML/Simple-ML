@@ -6,10 +6,10 @@ import de.unibonn.simpleml.emf.annotationCallsOrEmpty
 import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.uniquePackageOrNull
 import de.unibonn.simpleml.naming.fullyQualifiedNameOrNull
-import de.unibonn.simpleml.partialEvaluation.SmlConstantEnumVariant
-import de.unibonn.simpleml.partialEvaluation.SmlConstantExpression
-import de.unibonn.simpleml.partialEvaluation.SmlConstantString
-import de.unibonn.simpleml.partialEvaluation.toConstantExpressionOrNull
+import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantEnumVariant
+import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantExpression
+import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantString
+import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationCall

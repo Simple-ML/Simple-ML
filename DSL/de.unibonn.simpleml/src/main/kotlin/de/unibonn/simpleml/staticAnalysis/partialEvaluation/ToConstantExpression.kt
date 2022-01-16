@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.partialEvaluation
+package de.unibonn.simpleml.staticAnalysis.partialEvaluation
 
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.And
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.By

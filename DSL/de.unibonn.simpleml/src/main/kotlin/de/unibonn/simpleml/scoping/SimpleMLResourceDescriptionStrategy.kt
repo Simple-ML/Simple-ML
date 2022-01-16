@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.resource
+package de.unibonn.simpleml.scoping
 
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAttribute

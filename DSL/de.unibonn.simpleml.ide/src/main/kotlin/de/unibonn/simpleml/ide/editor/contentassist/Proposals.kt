@@ -10,9 +10,9 @@ import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlStep
-import de.unibonn.simpleml.typing.Type
-import de.unibonn.simpleml.typing.TypeComputer
-import de.unibonn.simpleml.typing.TypeConformance
+import de.unibonn.simpleml.staticAnalysis.typing.Type
+import de.unibonn.simpleml.staticAnalysis.typing.TypeComputer
+import de.unibonn.simpleml.staticAnalysis.typing.TypeConformance
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 

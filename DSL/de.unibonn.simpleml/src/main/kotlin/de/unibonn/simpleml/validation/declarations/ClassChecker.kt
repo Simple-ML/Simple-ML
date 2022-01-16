@@ -9,11 +9,11 @@ import de.unibonn.simpleml.emf.protocolsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.staticAnalysis.ClassResult
-import de.unibonn.simpleml.staticAnalysis.asClassOrNull
-import de.unibonn.simpleml.staticAnalysis.asClass
-import de.unibonn.simpleml.typing.ClassHierarchy
-import de.unibonn.simpleml.typing.inheritedNonStaticMembersOrEmpty
+import de.unibonn.simpleml.staticAnalysis.classHierarchy.ClassHierarchy
+import de.unibonn.simpleml.staticAnalysis.typing.ClassType
+import de.unibonn.simpleml.staticAnalysis.typing.TypeComputer
+import de.unibonn.simpleml.staticAnalysis.typing.UnresolvedType
+import de.unibonn.simpleml.staticAnalysis.classHierarchy.inheritedNonStaticMembersOrEmpty
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
@@ -21,14 +21,15 @@ import de.unibonn.simpleml.validation.codes.InfoCode
 import org.eclipse.xtext.validation.Check
 
 class ClassChecker @Inject constructor(
-    private val classHierarchy: ClassHierarchy
+    private val classHierarchy: ClassHierarchy,
+    private val typeComputer: TypeComputer
 ) : AbstractSimpleMLChecker() {
 
     @Check
     fun acyclicSuperTypes(smlClass: SmlClass) {
         smlClass.parentTypesOrEmpty()
             .filter {
-                val resolvedClass = it.asClassOrNull()
+                val resolvedClass = (typeComputer.typeOf(it) as? ClassType)?.smlClass
                 resolvedClass != null && classHierarchy.isSubtypeOf(resolvedClass, smlClass)
             }
             .forEach {
@@ -55,7 +56,10 @@ class ClassChecker @Inject constructor(
     @Check
     fun mustInheritOnlyClasses(smlClass: SmlClass) {
         smlClass.parentTypesOrEmpty()
-            .filter { it.asClass() is ClassResult.NotAClass }
+            .filterNot {
+                val type = typeComputer.typeOf(it)
+                type is ClassType || type is UnresolvedType
+            }
             .forEach {
                 error(
                     "A class must only inherit classes.",
@@ -93,8 +97,7 @@ class ClassChecker @Inject constructor(
     @Check
     fun uniqueParentTypes(smlClass: SmlClass) {
         smlClass.parentTypesOrEmpty()
-            .filter { it.asClassOrNull() != null }
-            .duplicatesBy { it.asClassOrNull()?.name }
+            .duplicatesBy { (typeComputer.typeOf(it) as? ClassType)?.smlClass }
             .forEach {
                 error(
                     "Parent types must be unique.",

@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.validation.declarations
 
 import de.unibonn.simpleml.emf.closestAncestorOrNull
-import de.unibonn.simpleml.partialEvaluation.toConstantExpressionOrNull
+import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAbstractLambda
 import de.unibonn.simpleml.simpleML.SmlParameter

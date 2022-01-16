@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.typing
+package de.unibonn.simpleml.staticAnalysis.typing
 
 import de.unibonn.simpleml.naming.fullyQualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration

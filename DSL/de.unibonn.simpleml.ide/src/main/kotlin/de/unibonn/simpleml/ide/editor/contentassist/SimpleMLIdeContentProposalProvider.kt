@@ -5,7 +5,7 @@ import de.unibonn.simpleml.services.SimpleMLGrammarAccess
 import de.unibonn.simpleml.simpleML.SmlArgumentList
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.staticAnalysis.linking.parametersOrNull
-import de.unibonn.simpleml.typing.ClassHierarchy
+import de.unibonn.simpleml.staticAnalysis.classHierarchy.ClassHierarchy
 import org.eclipse.xtext.Assignment
 import org.eclipse.xtext.Keyword
 import org.eclipse.xtext.RuleCall

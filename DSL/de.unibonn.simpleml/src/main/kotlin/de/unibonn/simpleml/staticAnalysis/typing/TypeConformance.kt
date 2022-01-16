@@ -1,7 +1,8 @@
-package de.unibonn.simpleml.typing
+package de.unibonn.simpleml.staticAnalysis.typing
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.staticAnalysis.classHierarchy.ClassHierarchy
 
 class TypeConformance @Inject constructor(
     private val classHierarchy: ClassHierarchy

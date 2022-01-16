@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.typing
+package de.unibonn.simpleml.staticAnalysis.classHierarchy
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.emf.classMembersOrEmpty
@@ -8,9 +8,20 @@ import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.staticAnalysis.asClassOrNull
+import de.unibonn.simpleml.staticAnalysis.typing.ClassType
+import de.unibonn.simpleml.staticAnalysis.typing.TypeComputer
 import de.unibonn.simpleml.stdlibAccess.StdlibAccess
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
+import de.unibonn.simpleml.utils.uniqueOrNull
+
+internal object ClassHierarchyInjectionTarget {
+
+    @Inject
+    lateinit var stdlib: StdlibAccess
+
+    @Inject
+    lateinit var typeComputer: TypeComputer
+}
 
 class ClassHierarchy @Inject constructor(
     private val stdlib: StdlibAccess
@@ -20,11 +31,12 @@ class ClassHierarchy @Inject constructor(
 
     fun isSubtypeOf(smlClass: SmlClass, other: SmlClass) =
         smlClass == stdlib.getClass(smlClass, StdlibClasses.Nothing.toString()) ||
-            smlClass == other || other in superClasses(smlClass)
+                smlClass == other || other in superClasses(smlClass)
 
-    fun superClasses(smlClass: SmlClass) = sequence<SmlClass> {
+    private fun superClasses(smlClass: SmlClass) = sequence<SmlClass> {
         val visited = mutableSetOf<SmlClass>()
 
+        // TODO: multiple parent classes
         var current = smlClass.parentClassOrNull()
         while (current != null && current !in visited) {
             yield(current)
@@ -52,19 +64,19 @@ class ClassHierarchy @Inject constructor(
 }
 
 fun SmlClass?.inheritedNonStaticMembersOrEmpty(): Set<SmlAbstractDeclaration> {
-    return this?.parentTypesOrEmpty()
-        ?.mapNotNull { it.asClassOrNull() }
+    return this?.parentClassesOrEmpty()
         ?.flatMap { it.classMembersOrEmpty() }
         ?.filter { it is SmlAttribute && !it.isStatic || it is SmlFunction && !it.isStatic }
         ?.toSet()
         .orEmpty()
 }
 
-fun SmlClass?.parentClassesOrEmpty() = this.parentTypesOrEmpty().mapNotNull { it.asClassOrNull() }
-fun SmlClass?.parentClassOrNull(): SmlClass? {
-    val resolvedParentClasses = this.parentClassesOrEmpty()
-    return when (resolvedParentClasses.size) {
-        1 -> resolvedParentClasses.first()
-        else -> null
+fun SmlClass?.parentClassesOrEmpty(): List<SmlClass> {
+    return this.parentTypesOrEmpty().mapNotNull {
+        (ClassHierarchyInjectionTarget.typeComputer.typeOf(it) as? ClassType)?.smlClass
     }
+}
+
+fun SmlClass?.parentClassOrNull(): SmlClass? {
+    return this.parentClassesOrEmpty().uniqueOrNull()
 }
