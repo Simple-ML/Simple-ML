@@ -40,7 +40,7 @@ class RecursionTest {
             .shouldNotBeNull()
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "isRecursive should return {1} for all calls in {0}")
     @MethodSource("stepSource")
     fun `should mark exactly calls that trigger recursion as recursive`(
         stepName: String,

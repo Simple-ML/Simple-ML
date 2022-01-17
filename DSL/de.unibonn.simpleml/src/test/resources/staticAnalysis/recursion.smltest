@@ -7,8 +7,9 @@ annotation CallsShouldBeRecursive
 // Direct recursion
 
 @CallsShouldBeRecursive
-step directRecursion() {
+step directRecursion(a: Any or directRecursion()) {
     directRecursion();
+    1 + directRecursion();
     val a = directRecursion();
     val b = (() { directRecursion(); })();
     val c = (() -> directRecursion())();

@@ -2,11 +2,11 @@ package tests.validation.expressions.calls.recursion
 
 
 workflow w {
-    // no_semantic_error "Recursive calls are not allowed."
+    // semantic_error "Recursive calls are not allowed."
     »a«();
-    // no_semantic_error "Recursive calls are not allowed."
+    // semantic_error "Recursive calls are not allowed."
     »b«();
-    // no_semantic_error "Recursive calls are not allowed."
+    // semantic_error "Recursive calls are not allowed."
     »c«();
     // no_semantic_error "Recursive calls are not allowed."
     »d«();
@@ -17,9 +17,9 @@ workflow w {
 step a() {
     // semantic_error "Recursive calls are not allowed."
     »a«();
-    // no_semantic_error "Recursive calls are not allowed."
+    // semantic_error "Recursive calls are not allowed."
     »b«();
-    // no_semantic_error "Recursive calls are not allowed."
+    // semantic_error "Recursive calls are not allowed."
     »c«();
     // no_semantic_error "Recursive calls are not allowed."
     »d«();
@@ -27,11 +27,11 @@ step a() {
     »f«();
 
     () {
-        // no_semantic_error "Recursive calls are not allowed."
+        // semantic_error "Recursive calls are not allowed."
         »a«();
-        // no_semantic_error "Recursive calls are not allowed."
+        // semantic_error "Recursive calls are not allowed."
         »b«();
-        // no_semantic_error "Recursive calls are not allowed."
+        // semantic_error "Recursive calls are not allowed."
         »c«();
         // no_semantic_error "Recursive calls are not allowed."
         »d«();
