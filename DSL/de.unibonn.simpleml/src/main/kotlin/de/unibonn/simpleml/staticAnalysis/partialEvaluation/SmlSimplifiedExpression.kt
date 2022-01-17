@@ -96,5 +96,5 @@ object SmlConstantNull : SmlConstantExpression {
 }
 
 data class SmlConstantString(val value: String) : SmlConstantExpression {
-    override fun toString(): String = value
+    override fun toString(): String = "\"$value\""
 }

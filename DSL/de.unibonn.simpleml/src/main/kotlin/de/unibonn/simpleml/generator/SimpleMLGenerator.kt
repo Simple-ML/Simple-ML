@@ -1,10 +1,10 @@
 package de.unibonn.simpleml.generator
 
-import com.google.inject.Inject
 import de.unibonn.simpleml.constant.isFlowFile
 import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingCompilationUnitOrNull
+import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.isGlobal
 import de.unibonn.simpleml.emf.isNamed
 import de.unibonn.simpleml.emf.parametersOrEmpty
@@ -23,6 +23,7 @@ import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
+import de.unibonn.simpleml.simpleML.SmlNull
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
@@ -31,20 +32,24 @@ import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantBoolean
+import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantEnumVariant
+import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantFloat
+import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantInt
+import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantNull
+import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantString
+import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
-import org.eclipse.xtext.naming.IQualifiedNameProvider
 
 /**
  * Generates code from your model files on save.
  *
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
-class SimpleMLGenerator @Inject constructor(
-    private val qualifiedNameProvider: IQualifiedNameProvider
-) : AbstractGenerator() {
+class SimpleMLGenerator : AbstractGenerator() {
 
     private val indent = "    "
 
@@ -117,20 +122,20 @@ class SimpleMLGenerator @Inject constructor(
         }
 
         // Steps
-        val stepString = compilationUnit.members
-            .filterIsInstance<SmlStep>()
+        val stepString = compilationUnit
+            .descendants<SmlStep>()
             .sortedBy { it.name }
             .joinToString("\n") {
                 compileWorkflowSteps(it)
             }
         if (stepString.isNotBlank()) {
-            appendLine("# Steps --------------------------------------------------------------------\n")
+            appendLine("# Steps ------------------------------------------------------------------------\n")
             appendLine(stepString)
         }
 
         // Workflows
-        val workflowString = compilationUnit.members
-            .filterIsInstance<SmlWorkflow>()
+        val workflowString = compilationUnit
+            .descendants<SmlWorkflow>()
             .sortedBy { it.name }
             .joinToString("\n") {
                 compileWorkflow(it)
@@ -144,9 +149,8 @@ class SimpleMLGenerator @Inject constructor(
     private fun compileImports(compilationUnit: SmlCompilationUnit) = buildString {
         // TODO split this into a function that gets all external references inside an arbitrary eObject
 
-        compilationUnit.eAllContents()
-            .asSequence()
-            .filterIsInstance<SmlReference>()
+        compilationUnit
+            .descendants<SmlReference>()
             .map { it.declaration }
             .filter { it.isGlobal() && it.containingCompilationUnitOrNull() != compilationUnit }
             .mapNotNull {
@@ -245,19 +249,6 @@ class SimpleMLGenerator @Inject constructor(
                     "False"
                 }
             }
-            is SmlFloat -> {
-                expr.value.toString()
-            }
-            is SmlInfixOperation -> {
-                "(${compileExpression(expr.leftOperand)}) ${expr.operator} (${compileExpression(expr.rightOperand)})"
-            }
-            is SmlInt -> {
-                expr.value.toString()
-            }
-            is SmlMemberAccess -> {
-                val receiver = compileExpression(expr.receiver)
-                "$receiver.${expr.member.declaration.name}"
-            }
             is SmlCall -> {
                 val receiver = compileExpression(expr.receiver)
                 val arguments = expr.argumentList.arguments.joinToString {
@@ -268,6 +259,22 @@ class SimpleMLGenerator @Inject constructor(
                     }
                 }
                 "$receiver($arguments)"
+            }
+            is SmlFloat -> {
+                expr.value.toString()
+            }
+            is SmlInfixOperation -> {
+                "(${compileExpression(expr.leftOperand)}) ${expr.operator} (${compileExpression(expr.rightOperand)})"
+            }
+            is SmlInt -> {
+                expr.value.toString()
+            }
+            is SmlNull -> {
+                "None"
+            }
+            is SmlMemberAccess -> {
+                val receiver = compileExpression(expr.receiver)
+                "$receiver.${expr.member.declaration.name}"
             }
             is SmlParenthesizedExpression -> {
                 "(${expr.expression})"
