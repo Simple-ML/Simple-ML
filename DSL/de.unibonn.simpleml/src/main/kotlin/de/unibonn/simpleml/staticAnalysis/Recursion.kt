@@ -3,16 +3,20 @@ package de.unibonn.simpleml.staticAnalysis
 import de.unibonn.simpleml.emf.containingBlockLambdaOrNull
 import de.unibonn.simpleml.emf.containingStepOrNull
 import de.unibonn.simpleml.emf.descendants
+import de.unibonn.simpleml.simpleML.SmlAbstractCallable
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlStep
 
+/**
+ * Returns whether this call might lead to recursion.
+ */
 fun SmlCall.isRecursive(): Boolean {
     val containingWorkflowStep = this.containingStepOrNull() ?: return false
     val containingLambda = this.containingBlockLambdaOrNull()
 
-    val origin = mutableSetOf<SmlAbstractObject>(containingWorkflowStep)
+    val origin = mutableSetOf<SmlAbstractCallable>(containingWorkflowStep)
     if (containingLambda != null) {
         origin += containingLambda
     }
@@ -20,7 +24,10 @@ fun SmlCall.isRecursive(): Boolean {
     return isRecursive(origin, emptySet())
 }
 
-private fun SmlCall.isRecursive(origin: Set<SmlAbstractObject>, visited: Set<SmlAbstractObject>): Boolean {
+/**
+ * Returns whether this call might lead to recursion.
+ */
+private fun SmlCall.isRecursive(origin: Set<SmlAbstractCallable>, visited: Set<SmlAbstractObject>): Boolean {
     return when (val callable = this.callableOrNull()) {
         // TODO: calls must be in body, not in nested lambda
         // TODO: handle expression lambda

@@ -26,9 +26,8 @@ step a() {
     // no_semantic_error "Recursive calls are not allowed."
     »f«();
 
-    /* For now we still want to treat this as an error even though the lambda is never run */
     () {
-        // semantic_error "Recursive calls are not allowed."
+        // no_semantic_error "Recursive calls are not allowed."
         »a«();
         // no_semantic_error "Recursive calls are not allowed."
         »b«();

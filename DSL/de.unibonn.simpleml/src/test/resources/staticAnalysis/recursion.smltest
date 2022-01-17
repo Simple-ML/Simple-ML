@@ -1,0 +1,76 @@
+package tests.staticAnalysis.recursion
+
+// Positive examples -----------------------------------------------------------
+
+annotation CallsShouldBeRecursive
+
+// Direct recursion
+
+@CallsShouldBeRecursive
+step directRecursion() {
+    directRecursion();
+    val a = directRecursion();
+    val b = (() { directRecursion(); })();
+    val c = (() -> directRecursion())();
+}
+
+// Transitive recursion
+
+@CallsShouldBeRecursive
+step transitiveRecursion1() {
+    transitiveRecursion2();
+    val a = transitiveRecursion2();
+}
+
+@CallsShouldBeRecursive
+step transitiveRecursion2() {
+    transitiveRecursion3();
+    val a = transitiveRecursion3();
+}
+
+@CallsShouldBeRecursive
+step transitiveRecursion3() {
+    transitiveRecursion2();
+    val a = transitiveRecursion2();
+}
+
+// Negative examples -----------------------------------------------------------
+
+annotation CallsShouldNotBeRecursive
+
+// Normal calls
+
+@CallsShouldNotBeRecursive
+step normalCall(f: () -> ()) {
+    f();
+    (() {})();
+    (() -> null)();
+
+    MyClass();
+    MyEnum.Variant();
+    myFun();
+    myStep();
+}
+
+class MyClass()
+enum MyEnum {
+    Variant()
+}
+fun myFun()
+step myStep() {}
+
+// Uncalled lambda
+
+@CallsShouldNotBeRecursive
+step uncalledLambda() {
+    () { uncalledLambda(); };
+    () -> uncalledLambda();
+}
+
+// Lambda recursion (already handled by scoping)
+
+@CallsShouldNotBeRecursive
+step lambdaRecursion() {
+    val a = () { a(); };
+    val b = () -> b();
+}
