@@ -80,7 +80,7 @@ private fun EObject.inferType(context: EObject): Type {
 private fun SmlAbstractDeclaration.inferType(context: EObject): Type {
     return when {
         this.eIsProxy() -> Any(context)
-        this is SmlAttribute -> type.inferType( context)
+        this is SmlAttribute -> type.inferType(context)
         this is SmlClass -> ClassType(this, isNullable = false)
         this is SmlEnum -> EnumType(this, isNullable = false)
         this is SmlEnumVariant -> EnumVariantType(
@@ -156,7 +156,7 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
             "or", "and" -> Boolean(context)
             "+", "-", "*", "/" -> when {
                 this.leftOperand.inferType(context) == Int(context) &&
-                        this.rightOperand.inferType(context) == Int(context) -> Int(context)
+                    this.rightOperand.inferType(context) == Int(context) -> Int(context)
                 else -> Float(context)
             }
             "?:" -> Any(context) // TODO

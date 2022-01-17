@@ -15,12 +15,12 @@ class RecordType(resultToType: List<Pair<String, Type>>) : Type() {
     private val resultToType = resultToType.toMap()
 
     override fun toString(): String {
-        val types = resultToType.entries.joinToString { (name, type) -> "$name: $type"}
+        val types = resultToType.entries.joinToString { (name, type) -> "$name: $type" }
         return "($types)"
     }
 
     override fun toSimpleString(): String {
-        val types = resultToType.entries.joinToString { (name, type) -> "$name: ${type.toSimpleString()}"}
+        val types = resultToType.entries.joinToString { (name, type) -> "$name: ${type.toSimpleString()}" }
         return "($types)"
     }
 }
