@@ -1,9 +1,8 @@
 package de.unibonn.simpleml.staticAnalysis
 
 import de.unibonn.simpleml.emf.containingCallableOrNull
-import de.unibonn.simpleml.emf.descendants
+import de.unibonn.simpleml.emf.immediateCalls
 import de.unibonn.simpleml.simpleML.SmlAbstractCallable
-import de.unibonn.simpleml.simpleML.SmlAbstractLambda
 import de.unibonn.simpleml.simpleML.SmlCall
 
 /**
@@ -26,17 +25,10 @@ fun SmlCall.isRecursive(): Boolean {
 private fun SmlCall.isRecursive(visited: Set<SmlAbstractCallable>): Boolean {
     return when (val callable = this.callableOrNull()) {
         is SmlAbstractCallable -> {
-            callable in visited || callable.executedCalls().any {
+            callable in visited || callable.immediateCalls().any {
                 it.isRecursive(visited + callable)
             }
         }
         else -> false
     }
-}
-
-/**
- * Returns all calls that are actually executed immediately when this [SmlAbstractCallable] is called.
- */
-private fun SmlAbstractCallable.executedCalls(): Sequence<SmlCall> {
-    return this.descendants { it is SmlAbstractLambda }
 }

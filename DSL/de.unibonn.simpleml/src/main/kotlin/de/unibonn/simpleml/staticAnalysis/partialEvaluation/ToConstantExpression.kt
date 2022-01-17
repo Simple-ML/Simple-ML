@@ -47,7 +47,7 @@ import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
 import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
 import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
 import de.unibonn.simpleml.staticAnalysis.indexOrNull
-import de.unibonn.simpleml.staticAnalysis.isInferredPure
+import de.unibonn.simpleml.staticAnalysis.isPureCallable
 import de.unibonn.simpleml.staticAnalysis.linking.parameterOrNull
 import de.unibonn.simpleml.staticAnalysis.linking.uniqueYieldOrNull
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Minus as InfixMinus
@@ -102,7 +102,7 @@ internal fun SmlAbstractExpression.simplify(substitutions: ParameterSubstitution
 
 private fun SmlBlockLambda.simplifyBlockLambda(substitutions: ParameterSubstitutions): SmlIntermediateBlockLambda? {
     return when {
-        isInferredPure() -> SmlIntermediateBlockLambda(
+        isPureCallable(resultIfUnknown = true) -> SmlIntermediateBlockLambda(
             parameters = parametersOrEmpty(),
             results = lambdaResultsOrEmpty(),
             substitutionsOnCreation = substitutions
@@ -115,7 +115,7 @@ private fun SmlExpressionLambda.simplifyExpressionLambda(
     substitutions: ParameterSubstitutions
 ): SmlIntermediateExpressionLambda? {
     return when {
-        isInferredPure() -> SmlIntermediateExpressionLambda(
+        isPureCallable(resultIfUnknown = true) -> SmlIntermediateExpressionLambda(
             parameters = parametersOrEmpty(),
             result = result,
             substitutionsOnCreation = substitutions
@@ -384,7 +384,7 @@ private fun SmlParameter.simplifyParameter(substitutions: ParameterSubstitutions
 
 private fun SmlStep.simplifyStep(): SmlIntermediateStep? {
     return when {
-        isInferredPure() -> SmlIntermediateStep(
+        isPureCallable(resultIfUnknown = true) -> SmlIntermediateStep(
             parameters = parametersOrEmpty(),
             results = resultsOrEmpty()
         )

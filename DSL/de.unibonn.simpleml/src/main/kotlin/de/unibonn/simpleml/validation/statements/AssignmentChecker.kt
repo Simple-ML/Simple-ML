@@ -10,7 +10,7 @@ import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.staticAnalysis.AssignedResult
-import de.unibonn.simpleml.staticAnalysis.hasSideEffects
+import de.unibonn.simpleml.staticAnalysis.isPureExpression
 import de.unibonn.simpleml.staticAnalysis.maybeAssigned
 import de.unibonn.simpleml.staticAnalysis.resultsOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
@@ -54,7 +54,7 @@ class AssignmentChecker : AbstractSimpleMLChecker() {
             return
         }
 
-        if (!smlAssignment.expression.hasSideEffects()) {
+        if (smlAssignment.expression.isPureExpression()) {
             warning(
                 "This statement does nothing.",
                 null,

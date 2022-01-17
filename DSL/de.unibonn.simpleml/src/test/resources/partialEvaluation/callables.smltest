@@ -2,7 +2,6 @@ package tests.partialEvaluation.callables
 
 // Preparation -----------------------------------------------------------------
 
-@Impure
 fun impureFunction() -> result: Int
 
 @Pure

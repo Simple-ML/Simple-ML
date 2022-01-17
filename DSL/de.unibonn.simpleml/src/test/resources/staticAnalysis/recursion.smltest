@@ -11,8 +11,6 @@ step directRecursion(a: Any or directRecursion()) {
     directRecursion();
     1 + directRecursion();
     val a = directRecursion();
-    val b = (() { directRecursion(); })();
-    val c = (() -> directRecursion())();
 }
 
 // Transitive recursion
@@ -33,6 +31,14 @@ step transitiveRecursion2() {
 step transitiveRecursion3() {
     transitiveRecursion2();
     val a = transitiveRecursion2();
+}
+
+// Deferred recursion in lambda
+
+@CallsShouldBeRecursive
+step deferredRecursionInLambda() {
+    (() { directRecursion(); })();
+    (() -> directRecursion())();
 }
 
 // Negative examples -----------------------------------------------------------
@@ -74,4 +80,11 @@ step uncalledLambda() {
 step lambdaRecursion() {
     val a = () { a(); };
     val b = () -> b();
+}
+
+// Unresolved callable
+
+@CallsShouldNotBeRecursive
+step unresolvedCallable() {
+    unresolved();
 }
