@@ -12,6 +12,9 @@ import org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider
 
 internal object IndexExtensionsInjectionTarget {
 
+//    @Inject
+//    lateinit var scope: AbstractSimpleMLScopeProvider
+
     @Inject
     lateinit var containerManager: IContainer.Manager
 

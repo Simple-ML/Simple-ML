@@ -2,6 +2,7 @@ package de.unibonn.simpleml.stdlibAccess
 
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.scoping.visibleGlobalDeclarationDescriptions
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlClass
 import org.eclipse.core.runtime.FileLocator
 import org.eclipse.emf.common.util.URI
@@ -13,24 +14,10 @@ import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.util.WeakHashMap
 
-private val cache = mutableMapOf<QualifiedName, SmlClass?>()
+private val cache = WeakHashMap<ResourceSet, WeakHashMap<QualifiedName, EObject?>>()
 private val classLoader = object {}.javaClass.classLoader
-
-fun getStdlibClass(context: EObject, qualifiedName: QualifiedName): SmlClass? {
-    return cache.computeIfAbsent(qualifiedName) {
-        val description = context.visibleGlobalDeclarationDescriptions()
-            .find { it.qualifiedName == qualifiedName }
-            ?: return@computeIfAbsent null
-
-        var eObject = description.eObjectOrProxy
-        if (eObject != null && eObject.eIsProxy()) {
-            eObject = context.eResource().resourceSet.getEObject(description.eObjectURI, true)
-        }
-
-        eObject as? SmlClass
-    }
-}
 
 fun ResourceSet.loadStdlib() {
     listStdlibFiles().forEach { (path, uri) ->
@@ -68,5 +55,42 @@ fun listStdlibFiles(): Sequence<Pair<Path, URI>> {
         }
 
         fileSystem?.close()
+    }
+}
+
+fun getStdlibClass(context: EObject, qualifiedName: QualifiedName): SmlClass? {
+    return context.getStdlibDeclarationOrNull(qualifiedName)
+}
+
+internal inline fun <reified T : SmlAbstractDeclaration> EObject.getStdlibDeclaration(qualifiedName: QualifiedName): T {
+    val resourceSet = eResource().resourceSet ?: throw IllegalStateException("This EObject is not in a resource set.")
+    val cacheForResourceSet = cache.getOrPut(resourceSet) { WeakHashMap() }
+    val eObject = cacheForResourceSet.computeIfAbsent(qualifiedName) {
+        val description = visibleGlobalDeclarationDescriptions()
+            .find { it.qualifiedName == qualifiedName }
+            ?: throw IllegalStateException("Failed to load stdlib declaration '$qualifiedName'.")
+
+        var eObject = description.eObjectOrProxy
+        if (eObject != null && eObject.eIsProxy()) {
+            eObject = eResource().resourceSet.getEObject(description.eObjectURI, true)
+        }
+
+        eObject
+    }
+
+    return when (eObject) {
+        is T -> eObject
+        else -> throw IllegalStateException("Stdlib declaration '$qualifiedName' is not an ${T::class.simpleName}.")
+    }
+}
+
+internal inline fun <reified T : SmlAbstractDeclaration> EObject.getStdlibDeclarationOrNull(
+    qualifiedName: QualifiedName
+): T? {
+
+    return try {
+        getStdlibDeclaration(qualifiedName)
+    } catch (e: java.lang.IllegalStateException) {
+        null
     }
 }
