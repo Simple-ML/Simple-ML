@@ -13,6 +13,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractClassMember
 import de.unibonn.simpleml.simpleML.SmlAbstractCompilationUnitMember
 import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractLambda
 import de.unibonn.simpleml.simpleML.SmlAbstractLocalVariable
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlAbstractPackageMember
@@ -83,6 +84,13 @@ fun Resource.compilationUnitOrNull(): SmlCompilationUnit? {
 
 fun SmlAbstractCallable?.parametersOrEmpty(): List<SmlParameter> {
     return this?.parameterList?.parameters.orEmpty()
+}
+
+/**
+ * Returns all calls that are actually executed immediately when this [SmlAbstractCallable] is called.
+ */
+fun SmlAbstractCallable.immediateCalls(): List<SmlCall> {
+    return descendants<SmlCall> { it is SmlAbstractLambda }.toList()
 }
 
 // SmlAbstractDeclaration --------------------------------------------------------------------------

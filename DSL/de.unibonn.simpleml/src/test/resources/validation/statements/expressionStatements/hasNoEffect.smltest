@@ -1,7 +1,6 @@
 package tests.validation.statements.expressionStatements.hasNoEffect
 
 fun impureFunction()
-@Impure fun explicitlyImpureFunction()
 @Pure fun pureFunction() -> a: Int
 
 class MyClass() {
@@ -35,8 +34,6 @@ step myStep() {
 
     // no_semantic_warning "This statement does nothing."
     »impureFunction();«
-    // no_semantic_warning "This statement does nothing."
-    »explicitlyImpureFunction();«
     // no_semantic_warning "This statement does nothing."
     »MyClass().impureFunction();«
 

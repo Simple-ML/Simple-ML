@@ -4,9 +4,18 @@ import org.eclipse.emf.ecore.EObject
 
 /**
  * Returns all descendants of this [EObject] with the given type.
+ *
+ * @param prune Whether the subtree with the current object as root should be pruned.
  */
-inline fun <reified T : EObject> EObject.descendants(): Sequence<T> {
-    return this.eAllContents().asSequence().filterIsInstance<T>()
+inline fun <reified T : EObject> EObject.descendants(crossinline prune: (EObject) -> Boolean = { false }) = sequence {
+    val iterator = this@descendants.eAllContents()
+    for (obj in iterator) {
+        if (prune(obj)) {
+            iterator.prune()
+        } else if (obj is T) {
+            yield(obj)
+        }
+    }
 }
 
 /**

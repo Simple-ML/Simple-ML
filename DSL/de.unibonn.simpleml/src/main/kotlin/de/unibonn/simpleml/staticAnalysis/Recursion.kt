@@ -1,33 +1,34 @@
 package de.unibonn.simpleml.staticAnalysis
 
-import de.unibonn.simpleml.emf.containingBlockLambdaOrNull
-import de.unibonn.simpleml.emf.containingStepOrNull
-import de.unibonn.simpleml.emf.descendants
-import de.unibonn.simpleml.simpleML.SmlAbstractObject
-import de.unibonn.simpleml.simpleML.SmlBlockLambda
+import de.unibonn.simpleml.emf.containingCallableOrNull
+import de.unibonn.simpleml.emf.immediateCalls
+import de.unibonn.simpleml.simpleML.SmlAbstractCallable
 import de.unibonn.simpleml.simpleML.SmlCall
-import de.unibonn.simpleml.simpleML.SmlStep
 
+/**
+ * Returns whether this call might lead to recursion.
+ */
 fun SmlCall.isRecursive(): Boolean {
-    val containingWorkflowStep = this.containingStepOrNull() ?: return false
-    val containingLambda = this.containingBlockLambdaOrNull()
-
-    val origin = mutableSetOf<SmlAbstractObject>(containingWorkflowStep)
-    if (containingLambda != null) {
-        origin += containingLambda
+    val visited = buildSet {
+        val containingCallable = containingCallableOrNull()
+        if (containingCallable != null) {
+            add(containingCallable)
+        }
     }
 
-    return isRecursive(origin, emptySet())
+    return isRecursive(visited)
 }
 
-private fun SmlCall.isRecursive(origin: Set<SmlAbstractObject>, visited: Set<SmlAbstractObject>): Boolean {
+/**
+ * Returns whether this call might lead to recursion.
+ */
+private fun SmlCall.isRecursive(visited: Set<SmlAbstractCallable>): Boolean {
     return when (val callable = this.callableOrNull()) {
-        // TODO: calls must be in body, not in nested lambda
-        // TODO: handle expression lambda
-        is SmlStep -> callable in origin || callable !in visited && callable.descendants<SmlCall>()
-            .any { it.isRecursive(origin, visited + callable) }
-        is SmlBlockLambda -> callable in origin || callable !in visited && callable.descendants<SmlCall>()
-            .any { it.isRecursive(origin, visited + callable) }
+        is SmlAbstractCallable -> {
+            callable in visited || callable.immediateCalls().any {
+                it.isRecursive(visited + callable)
+            }
+        }
         else -> false
     }
 }
