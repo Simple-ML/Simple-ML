@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.stdlibAccess
 
 import de.unibonn.simpleml.constant.SmlFileExtension
+import de.unibonn.simpleml.emf.resourceSetOrNull
 import de.unibonn.simpleml.scoping.allGlobalDeclarations
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlClass
@@ -19,12 +20,18 @@ import java.util.WeakHashMap
 private val cache = WeakHashMap<ResourceSet, WeakHashMap<QualifiedName, EObject?>>()
 private val classLoader = object {}.javaClass.classLoader
 
+/**
+ * Loads the standard library into this resource set.
+ */
 fun ResourceSet.loadStdlib() {
     listStdlibFiles().forEach { (path, uri) ->
         createResource(uri).load(Files.newInputStream(path), loadOptions)
     }
 }
 
+/**
+ * Lists all files that comprise the standard library.
+ */
 fun listStdlibFiles(): Sequence<Pair<Path, URI>> {
     val resourcesUrl = classLoader.getResource("stdlib") ?: return emptySequence()
     val resourcesUri = FileLocator.resolve(resourcesUrl).toURI()
@@ -58,12 +65,43 @@ fun listStdlibFiles(): Sequence<Pair<Path, URI>> {
     }
 }
 
+/**
+ * Returns the [SmlClass] with the given [QualifiedName] within this context. If the declaration cannot be found, `null`
+ * is returned.
+ *
+ * @receiver The context for the search.
+ */
 fun EObject.getStdlibClassOrNull(qualifiedName: QualifiedName): SmlClass? {
     return getStdlibDeclarationOrNull(qualifiedName)
 }
 
-internal inline fun <reified T : SmlAbstractDeclaration> EObject.getStdlibDeclaration(qualifiedName: QualifiedName): T {
-    val resourceSet = eResource().resourceSet ?: throw IllegalStateException("This EObject is not in a resource set.")
+/**
+ * Returns the declaration with the given [QualifiedName] within this context. If the declaration cannot be found,
+ * `null` is returned.
+ *
+ * @receiver The context for the search.
+ */
+private inline fun <reified T : SmlAbstractDeclaration> EObject.getStdlibDeclarationOrNull(
+    qualifiedName: QualifiedName
+): T? {
+    return try {
+        getStdlibDeclaration(qualifiedName)
+    } catch (e: IllegalStateException) {
+        null
+    }
+}
+
+/**
+ * Returns the declaration with the given [QualifiedName] within this context. If the declaration cannot be found an
+ * exception is thrown.
+ *
+ * @receiver The context for the search.
+ * @throws IllegalStateException If the context is not in a resource set.
+ * @throws IllegalStateException If no declaration with the qualified name exists in the resource set.
+ * @throws IllegalStateException If the declaration with the qualified name does not have the desired type.
+ */
+private inline fun <reified T : SmlAbstractDeclaration> EObject.getStdlibDeclaration(qualifiedName: QualifiedName): T {
+    val resourceSet = resourceSetOrNull() ?: throw IllegalStateException("This context is not in a resource set.")
     val cacheForResourceSet = cache.getOrPut(resourceSet) { WeakHashMap() }
 
     val eObject = cacheForResourceSet.computeIfAbsent(qualifiedName) {
@@ -82,15 +120,5 @@ internal inline fun <reified T : SmlAbstractDeclaration> EObject.getStdlibDeclar
     return when (eObject) {
         is T -> eObject
         else -> throw IllegalStateException("Stdlib declaration '$qualifiedName' is not an ${T::class.simpleName}.")
-    }
-}
-
-internal inline fun <reified T : SmlAbstractDeclaration> EObject.getStdlibDeclarationOrNull(
-    qualifiedName: QualifiedName
-): T? {
-    return try {
-        getStdlibDeclaration(qualifiedName)
-    } catch (e: java.lang.IllegalStateException) {
-        null
     }
 }
