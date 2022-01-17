@@ -5,7 +5,7 @@ package de.unibonn.simpleml.staticAnalysis.typing
 import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
-import de.unibonn.simpleml.naming.fullyQualifiedNameOrNull
+import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
@@ -40,7 +40,7 @@ import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.staticAnalysis.assignedOrNull
 import de.unibonn.simpleml.staticAnalysis.callableOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
-import de.unibonn.simpleml.stdlibAccess.getStdlibClass
+import de.unibonn.simpleml.stdlibAccess.getStdlibClassOrNull
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.naming.QualifiedName
 
@@ -54,7 +54,7 @@ fun SmlAbstractObject.hasPrimitiveType(): Boolean {
         return false
     }
 
-    val qualifiedName = type.smlClass.fullyQualifiedNameOrNull()
+    val qualifiedName = type.smlClass.qualifiedNameOrNull()
     return qualifiedName in setOf(
         StdlibClasses.Boolean,
         StdlibClasses.Float,
@@ -237,7 +237,7 @@ private fun Nothing(context: EObject) = stdlibType(context, StdlibClasses.Nothin
 private fun String(context: EObject) = stdlibType(context, StdlibClasses.String)
 
 internal fun stdlibType(context: EObject, qualifiedName: QualifiedName, isNullable: Boolean = false): Type {
-    return when (val smlClass = getStdlibClass(context, qualifiedName)) {
+    return when (val smlClass = context.getStdlibClassOrNull(qualifiedName)) {
         null -> UnresolvedType
         else -> ClassType(smlClass, isNullable, isStatic = false)
     }

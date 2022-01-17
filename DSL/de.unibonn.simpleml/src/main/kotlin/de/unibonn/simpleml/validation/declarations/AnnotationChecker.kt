@@ -44,7 +44,7 @@ class AnnotationChecker : AbstractSimpleMLChecker() {
     fun parameterTypes(smlAnnotation: SmlAnnotation) {
         smlAnnotation.parametersOrEmpty().forEach {
             val isValid = when (val parameterType = it.type()) {
-                is ClassType -> parameterType.fullyQualifiedName in validParameterTypes
+                is ClassType -> parameterType.qualifiedName in validParameterTypes
                 is EnumType -> parameterType.smlEnum.isConstant()
                 else -> false
             }

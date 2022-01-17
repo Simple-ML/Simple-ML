@@ -27,7 +27,7 @@ class InfixOperationChecker : AbstractSimpleMLChecker() {
 
     private fun checkByOperator(smlInfixOperation: SmlInfixOperation) {
         val leftType = smlInfixOperation.leftOperand.type()
-        if (!(leftType is NamedType && leftType.fullyQualifiedName in setOf(StdlibClasses.Float, StdlibClasses.Int))) {
+        if (!(leftType is NamedType && leftType.qualifiedName in setOf(StdlibClasses.Float, StdlibClasses.Int))) {
             return
         }
 

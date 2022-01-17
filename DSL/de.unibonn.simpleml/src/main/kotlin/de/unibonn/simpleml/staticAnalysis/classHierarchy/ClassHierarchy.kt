@@ -10,11 +10,11 @@ import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.staticAnalysis.typing.ClassType
 import de.unibonn.simpleml.staticAnalysis.typing.type
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
-import de.unibonn.simpleml.stdlibAccess.getStdlibClass
+import de.unibonn.simpleml.stdlibAccess.getStdlibClassOrNull
 import de.unibonn.simpleml.utils.uniqueOrNull
 
 fun SmlClass.isSubtypeOf(other: SmlClass) =
-    this == getStdlibClass(this, StdlibClasses.Nothing) ||
+    this == this.getStdlibClassOrNull(StdlibClasses.Nothing) ||
         this == other || other in superClasses()
 
 private fun SmlClass.superClasses() = sequence<SmlClass> {
@@ -28,7 +28,7 @@ private fun SmlClass.superClasses() = sequence<SmlClass> {
         current = current.parentClassOrNull()
     }
 
-    val anyClass = getStdlibClass(this@superClasses, StdlibClasses.Any)
+    val anyClass = this@superClasses.getStdlibClassOrNull(StdlibClasses.Any)
     if (anyClass != null && this@superClasses != anyClass && visited.lastOrNull() != anyClass) {
         yield(anyClass)
     }

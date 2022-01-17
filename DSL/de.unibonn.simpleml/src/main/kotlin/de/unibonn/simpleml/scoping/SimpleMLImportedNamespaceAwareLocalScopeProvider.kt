@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.scoping
 
 import de.unibonn.simpleml.emf.aliasNameOrNull
+import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SmlPackage
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.naming.QualifiedName
@@ -38,7 +39,7 @@ class SimpleMLImportedNamespaceAwareLocalScopeProvider : ImportedNamespaceAwareL
         }.toMutableList()
 
         // Implicitly import declarations in same package
-        qualifiedNameProvider.getFullyQualifiedName(context)?.let {
+        context.qualifiedNameOrNull()?.let {
             resolvers += ImportNormalizer(
                 it,
                 true,
