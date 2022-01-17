@@ -18,7 +18,7 @@ class QualifiedNameProviderTest {
     private val factory = SimpleMLPackage.eINSTANCE.simpleMLFactory
 
     @Nested
-    inner class fullyQualifiedName {
+    inner class QualifiedNameOrNull {
 
         @Test
         fun `should handle declarations with simple names`() {
@@ -33,7 +33,7 @@ class QualifiedNameProviderTest {
                 }
             }
 
-            myClass.fullyQualifiedNameOrNull() shouldBe "tests.MyClass".toQualifiedName()
+            myClass.qualifiedNameOrNull() shouldBe "tests.MyClass".toQualifiedName()
         }
 
         @Test
@@ -49,7 +49,7 @@ class QualifiedNameProviderTest {
                 }
             }
 
-            myClass.fullyQualifiedNameOrNull() shouldBe "`tests`.`MyClass`".toQualifiedName()
+            myClass.qualifiedNameOrNull() shouldBe "`tests`.`MyClass`".toQualifiedName()
         }
     }
 

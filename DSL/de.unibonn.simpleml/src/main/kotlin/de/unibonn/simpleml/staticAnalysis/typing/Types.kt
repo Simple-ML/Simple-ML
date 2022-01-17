@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.staticAnalysis.typing
 
-import de.unibonn.simpleml.naming.fullyQualifiedNameOrNull
+import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlEnum
@@ -41,13 +41,13 @@ class CallableType(val parameters: List<Type>, val results: List<Type>) : Type()
 
 sealed class NamedType(smlDeclaration: SmlAbstractDeclaration) : Type() {
     val simpleName: String = smlDeclaration.name
-    val fullyQualifiedName: QualifiedName = smlDeclaration.fullyQualifiedNameOrNull()!!
+    val qualifiedName: QualifiedName = smlDeclaration.qualifiedNameOrNull()!!
 
     abstract val isNullable: Boolean
     abstract val isStatic: Boolean
 
     override fun toString() = buildString {
-        append(fullyQualifiedName)
+        append(qualifiedName)
         if (isNullable) {
             append("?")
         }

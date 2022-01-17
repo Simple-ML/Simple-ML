@@ -5,7 +5,7 @@ import de.unibonn.simpleml.emf.isRequired
 import de.unibonn.simpleml.emf.isResolved
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.targetOrNull
-import de.unibonn.simpleml.naming.fullyQualifiedNameOrNull
+import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationCall
@@ -40,7 +40,7 @@ class AnnotationCallChecker : AbstractSimpleMLChecker() {
     @Check
     fun duplicateTargetInTargetAnnotation(smlAnnotationCall: SmlAnnotationCall) {
         val annotation = smlAnnotationCall.annotation
-        if (!annotation.isResolved() || annotation.fullyQualifiedNameOrNull() != StdlibAnnotations.Target) {
+        if (!annotation.isResolved() || annotation.qualifiedNameOrNull() != StdlibAnnotations.Target) {
             return
         }
 
@@ -48,7 +48,7 @@ class AnnotationCallChecker : AbstractSimpleMLChecker() {
             .argumentsOrEmpty()
             .map { it.value }
             .filterIsInstance<SmlMemberAccess>()
-            .duplicatesBy { it.member.declaration.fullyQualifiedNameOrNull() }
+            .duplicatesBy { it.member.declaration.qualifiedNameOrNull() }
             .forEach {
                 warning(
                     "This annotation target is used multiple times.",

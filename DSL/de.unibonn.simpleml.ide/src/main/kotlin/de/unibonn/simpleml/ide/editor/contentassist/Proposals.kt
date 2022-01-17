@@ -4,7 +4,7 @@ import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.emf.isClassMember
 import de.unibonn.simpleml.emf.isGlobal
 import de.unibonn.simpleml.emf.parametersOrEmpty
-import de.unibonn.simpleml.scoping.visibleGlobalDeclarationDescriptions
+import de.unibonn.simpleml.scoping.allGlobalDeclarations
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
@@ -109,7 +109,7 @@ private fun typesMatch(requiredTypes: List<Type>, availableTypes: List<Type>): B
 }
 
 private fun listAllReachableDeclarations(context: EObject): Map<URI, EObject> {
-    return context.visibleGlobalDeclarationDescriptions().associate {
+    return context.allGlobalDeclarations().associate {
         it.eObjectURI to it.eObjectOrProxy
     }
 }

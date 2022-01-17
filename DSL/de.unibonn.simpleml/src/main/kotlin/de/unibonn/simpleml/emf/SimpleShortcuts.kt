@@ -56,12 +56,19 @@ import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.utils.uniqueOrNull
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.resource.ResourceSet
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
 /* ********************************************************************************************************************
  * Accessing descendants                                                                                              *
  * ********************************************************************************************************************/
+
+// EObject -----------------------------------------------------------------------------------------
+
+fun EObject.resourceSetOrNull(): ResourceSet? {
+    return eResource()?.resourceSet
+}
 
 // Resource ----------------------------------------------------------------------------------------
 

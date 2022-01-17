@@ -3,7 +3,7 @@ package de.unibonn.simpleml.validation.declarations
 import de.unibonn.simpleml.emf.aliasNameOrNull
 import de.unibonn.simpleml.emf.isQualified
 import de.unibonn.simpleml.emf.isWildcard
-import de.unibonn.simpleml.scoping.visibleGlobalDeclarationDescriptions
+import de.unibonn.simpleml.scoping.allGlobalDeclarations
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
@@ -16,13 +16,16 @@ class ImportChecker : AbstractSimpleMLChecker() {
 
     @Check(CheckType.NORMAL)
     fun unresolvedNamespace(smlImport: SmlImport) {
-        val availableNamespaces = smlImport.visibleGlobalDeclarationDescriptions().map { it.qualifiedName }
-
         if (smlImport.isQualified()) {
             val importedNamespace = QualifiedName.create(
                 smlImport.importedNamespace.split(".")
             )
-            if (availableNamespaces.none { it == importedNamespace }) {
+
+            val isUnresolved = smlImport
+                .allGlobalDeclarations()
+                .none { it.qualifiedName == importedNamespace }
+
+            if (isUnresolved) {
                 error(
                     "No declaration with qualified name '$importedNamespace' exists.",
                     Literals.SML_IMPORT__IMPORTED_NAMESPACE,
@@ -33,7 +36,12 @@ class ImportChecker : AbstractSimpleMLChecker() {
             val importedNamespace = QualifiedName.create(
                 smlImport.importedNamespace.removeSuffix(".*").split(".")
             )
-            if (availableNamespaces.none { it.startsWith(importedNamespace) }) {
+
+            val isUnresolved = smlImport
+                .allGlobalDeclarations()
+                .none { it.qualifiedName.startsWith(importedNamespace) }
+
+            if (isUnresolved) {
                 error(
                     "No package with qualified name '$importedNamespace' exists.",
                     Literals.SML_IMPORT__IMPORTED_NAMESPACE,
