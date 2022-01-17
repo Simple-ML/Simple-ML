@@ -5,7 +5,9 @@ import de.unibonn.simpleml.constant.isInStubFile
 import de.unibonn.simpleml.constant.isInTestFile
 import de.unibonn.simpleml.emf.importedNameOrNull
 import de.unibonn.simpleml.emf.isQualified
-import de.unibonn.simpleml.scoping.visibleExternalGlobalDeclarationDescriptions
+import de.unibonn.simpleml.emf.packageMembersOrEmpty
+import de.unibonn.simpleml.naming.qualifiedNameOrNull
+import de.unibonn.simpleml.scoping.externalGlobalDeclarations
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlImport
@@ -100,14 +102,13 @@ class PackageChecker @Inject constructor(
             return
         }
 
-        val externalGlobalDeclarations = smlPackage.visibleExternalGlobalDeclarationDescriptions()
-
-        smlPackage.members.forEach {
-            val qualifiedName = qualifiedNameProvider.getFullyQualifiedName(it)
-            if (qualifiedName in externalGlobalDeclarations) {
+        val externalGlobalDeclarations = smlPackage.externalGlobalDeclarations()
+        smlPackage.packageMembersOrEmpty().forEach { member ->
+            val qualifiedName = member.qualifiedNameOrNull()
+            if (externalGlobalDeclarations.any { it.qualifiedName == qualifiedName }) {
                 error(
                     "A declaration with qualified name '$qualifiedName' exists already.",
-                    it,
+                    member,
                     Literals.SML_ABSTRACT_DECLARATION__NAME,
                     ErrorCode.REDECLARATION_IN_OTHER_FILE
                 )

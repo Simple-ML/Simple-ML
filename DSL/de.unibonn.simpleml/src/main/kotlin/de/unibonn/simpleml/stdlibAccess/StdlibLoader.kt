@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.stdlibAccess
 
 import de.unibonn.simpleml.constant.SmlFileExtension
-import de.unibonn.simpleml.scoping.visibleGlobalDeclarationDescriptions
+import de.unibonn.simpleml.scoping.allGlobalDeclarations
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlClass
 import org.eclipse.core.runtime.FileLocator
@@ -58,15 +58,16 @@ fun listStdlibFiles(): Sequence<Pair<Path, URI>> {
     }
 }
 
-fun getStdlibClass(context: EObject, qualifiedName: QualifiedName): SmlClass? {
-    return context.getStdlibDeclarationOrNull(qualifiedName)
+fun EObject.getStdlibClassOrNull(qualifiedName: QualifiedName): SmlClass? {
+    return getStdlibDeclarationOrNull(qualifiedName)
 }
 
 internal inline fun <reified T : SmlAbstractDeclaration> EObject.getStdlibDeclaration(qualifiedName: QualifiedName): T {
     val resourceSet = eResource().resourceSet ?: throw IllegalStateException("This EObject is not in a resource set.")
     val cacheForResourceSet = cache.getOrPut(resourceSet) { WeakHashMap() }
+
     val eObject = cacheForResourceSet.computeIfAbsent(qualifiedName) {
-        val description = visibleGlobalDeclarationDescriptions()
+        val description = allGlobalDeclarations()
             .find { it.qualifiedName == qualifiedName }
             ?: throw IllegalStateException("Failed to load stdlib declaration '$qualifiedName'.")
 
@@ -87,7 +88,6 @@ internal inline fun <reified T : SmlAbstractDeclaration> EObject.getStdlibDeclar
 internal inline fun <reified T : SmlAbstractDeclaration> EObject.getStdlibDeclarationOrNull(
     qualifiedName: QualifiedName
 ): T? {
-
     return try {
         getStdlibDeclaration(qualifiedName)
     } catch (e: java.lang.IllegalStateException) {

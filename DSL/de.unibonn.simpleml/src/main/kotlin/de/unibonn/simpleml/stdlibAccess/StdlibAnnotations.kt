@@ -5,7 +5,7 @@ package de.unibonn.simpleml.stdlibAccess
 import de.unibonn.simpleml.emf.annotationCallsOrEmpty
 import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.uniquePackageOrNull
-import de.unibonn.simpleml.naming.fullyQualifiedNameOrNull
+import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationCall
@@ -83,19 +83,19 @@ object StdlibAnnotations {
 }
 
 /**
- * Returns all calls of the annotation with the given fully qualified name.
+ * Returns all calls of the annotation with the given qualified name.
  */
-fun SmlAbstractDeclaration.annotationCallsOrEmpty(fullyQualifiedName: QualifiedName): List<SmlAnnotationCall> {
+fun SmlAbstractDeclaration.annotationCallsOrEmpty(qualifiedName: QualifiedName): List<SmlAnnotationCall> {
     return this.annotationCallsOrEmpty().filter {
-        it.annotation.fullyQualifiedNameOrNull() == fullyQualifiedName
+        it.annotation.qualifiedNameOrNull() == qualifiedName
     }
 }
 
 /**
- * Returns the unique use of the annotation with the given fully qualified name or `null` if none or multiple exist.
+ * Returns the unique use of the annotation with the given qualified name or `null` if none or multiple exist.
  */
-fun SmlAbstractDeclaration.uniqueAnnotationCallOrNull(fullyQualifiedName: QualifiedName): SmlAnnotationCall? {
-    return this.annotationCallsOrEmpty(fullyQualifiedName).uniqueOrNull()
+fun SmlAbstractDeclaration.uniqueAnnotationCallOrNull(qualifiedName: QualifiedName): SmlAnnotationCall? {
+    return this.annotationCallsOrEmpty(qualifiedName).uniqueOrNull()
 }
 
 /**
@@ -169,8 +169,8 @@ fun SmlAnnotation.validTargets(): List<AnnotationTarget> {
         .asSequence()
         .mapNotNull { it.value.toConstantExpressionOrNull() }
         .filterIsInstance<SmlConstantEnumVariant>()
-        .mapNotNull { it.value.fullyQualifiedNameOrNull() }
-        .filter { it.segmentCount == 4 && it.skipLast(1) == AnnotationTarget.fullyQualifiedName }
+        .mapNotNull { it.value.qualifiedNameOrNull() }
+        .filter { it.segmentCount == 4 && it.skipLast(1) == AnnotationTarget.enum }
         .mapNotNull { AnnotationTarget.valueOfOrNull(it.lastSegment) }
         .toList()
 }
@@ -179,21 +179,21 @@ fun SmlAnnotation.validTargets(): List<AnnotationTarget> {
  * Returns whether this [SmlAbstractDeclaration] has at least one annotation call to the annotation with the given
  * qualified name.
  */
-private fun SmlAbstractDeclaration.hasAnnotationCallTo(fullyQualifiedName: QualifiedName): Boolean {
+private fun SmlAbstractDeclaration.hasAnnotationCallTo(qualifiedName: QualifiedName): Boolean {
     return annotationCallsOrEmpty().any {
-        it.annotation.fullyQualifiedNameOrNull() == fullyQualifiedName
+        it.annotation.qualifiedNameOrNull() == qualifiedName
     }
 }
 
 /**
- * Finds the unique call to a declaration with the given fully qualified name and looks up the value assigned to the
- * parameter with the given name.
+ * Finds the unique call to a declaration with the given qualified name and looks up the value assigned to the parameter
+ * with the given name.
  */
 private fun SmlAbstractDeclaration.annotationCallArgumentValueOrNull(
-    fullyQualifiedName: QualifiedName,
+    qualifiedName: QualifiedName,
     parameterName: String
 ): SmlConstantExpression? {
-    return uniqueAnnotationCallOrNull(fullyQualifiedName)
+    return uniqueAnnotationCallOrNull(qualifiedName)
         .argumentsOrEmpty()
         .uniqueOrNull { it.parameterOrNull()?.name == parameterName }
         ?.toConstantExpressionOrNull()

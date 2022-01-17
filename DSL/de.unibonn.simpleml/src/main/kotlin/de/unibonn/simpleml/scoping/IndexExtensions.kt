@@ -1,64 +1,101 @@
 package de.unibonn.simpleml.scoping
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.scoping.IndexExtensionsInjectionTarget.containerManager
+import de.unibonn.simpleml.scoping.IndexExtensionsInjectionTarget.resourceDescriptionsProvider
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtext.naming.QualifiedName
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtext.resource.IContainer
 import org.eclipse.xtext.resource.IEObjectDescription
 import org.eclipse.xtext.resource.IResourceDescription
 import org.eclipse.xtext.resource.IResourceDescriptions
-import org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider
+import org.eclipse.xtext.resource.IResourceDescriptionsProvider
 
 internal object IndexExtensionsInjectionTarget {
-
-//    @Inject
-//    lateinit var scope: AbstractSimpleMLScopeProvider
 
     @Inject
     lateinit var containerManager: IContainer.Manager
 
     @Inject
-    lateinit var resourceDescriptionsProvider: ResourceDescriptionsProvider
+    lateinit var resourceDescriptionsProvider: IResourceDescriptionsProvider
 }
 
-fun EObject.visibleExternalGlobalDeclarationDescriptions(): Map<QualifiedName, List<IEObjectDescription>> {
-    val allVisibleGlobalDeclarationDescriptions = visibleGlobalDeclarationDescriptions()
-    val exportedGlobalDeclarationDescriptions = exportedGlobalDeclarationDescriptions()
-    val difference = allVisibleGlobalDeclarationDescriptions - exportedGlobalDeclarationDescriptions.toSet()
-
-    return difference.groupBy { it.qualifiedName }
+/**
+ * Returns all global declarations that are visible from this context. If this [EObject] is not in a [Resource] or the
+ * [Resource] not in a [ResourceSet] and empty list is returned.
+ */
+fun EObject.allGlobalDeclarations(): List<IEObjectDescription> {
+    return eResource()
+        ?.visibleContainers()
+        ?.asSequence()
+        ?.map { it.exportedObjects }
+        ?.flatten()
+        ?.filter { it.isGlobalDeclaration() }
+        ?.toList()
+        .orEmpty()
 }
 
-private fun EObject.exportedGlobalDeclarationDescriptions(): List<IEObjectDescription> =
-    this.exportedEObjectDescriptions().filter { it.isGlobalDeclaration() }
+/**
+ * Returns all global declarations that are visible from this context and in the same [Resource]. If this [EObject] is
+ * not in a [Resource] or the [Resource] not in a [ResourceSet] and empty list is returned.
+ */
+fun EObject.ownGlobalDeclarations(): List<IEObjectDescription> {
+    return eResource()
+        ?.resourceDescriptionOrNull()
+        ?.exportedObjects
+        ?.asSequence()
+        ?.filter { it.isGlobalDeclaration() }
+        ?.toList()
+        .orEmpty()
+}
 
-private fun EObject.exportedEObjectDescriptions(): List<IEObjectDescription> =
-    this.eObjectDescription().exportedObjects.toList()
+/**
+ * Returns all global declarations that are visible from this context but in another [Resource]. If this [EObject] is
+ * not in a [Resource] or the [Resource] not in a [ResourceSet] and empty list is returned.
+ */
+fun EObject.externalGlobalDeclarations(): List<IEObjectDescription> {
+    return allGlobalDeclarations() - ownGlobalDeclarations().toSet()
+}
 
-fun EObject.visibleGlobalDeclarationDescriptions(): List<IEObjectDescription> =
-    visibleEObjectDescriptions().filter { it.isGlobalDeclaration() }
+/**
+ * Returns a list of [IContainer]s that are visible from this [Resource], including this [Resource]. If this [Resource]
+ * is not in a [ResourceSet], an empty list is returned. An [IContainer] describes [Resource]s that should be treated
+ * as visible on the same level during the scoping stage.
+ */
+private fun Resource.visibleContainers(): List<IContainer> {
+    val resourceSet = this.resourceSet ?: return emptyList()
 
-private fun EObject.visibleEObjectDescriptions(): List<IEObjectDescription> =
-    this.visibleContainers().map { it.exportedObjects }.flatten()
-
-private fun EObject.visibleContainers(): List<IContainer> =
-    IndexExtensionsInjectionTarget.containerManager.getVisibleContainers(
-        this.eObjectDescription(),
-        this.resourceDescriptions()
+    return containerManager.getVisibleContainers(
+        resourceDescriptionOrNull(),
+        resourceSet.resourceDescriptions()
     )
+}
 
-private fun EObject.eObjectDescription(): IResourceDescription =
-    this.resourceDescriptions().getResourceDescription(this.eResource().uri)
+/**
+ * Returns information about this [Resource] or `null` if the [Resource] is not in a [ResourceSet].
+ */
+private fun Resource.resourceDescriptionOrNull(): IResourceDescription? {
+    return resourceSet?.resourceDescriptions()?.getResourceDescription(uri)
+}
 
-private fun EObject.resourceDescriptions(): IResourceDescriptions =
-    IndexExtensionsInjectionTarget.resourceDescriptionsProvider.getResourceDescriptions(this.eResource())
+/**
+ * Returns the information about the [Resource]s in this [ResourceSet].
+ */
+private fun ResourceSet.resourceDescriptions(): IResourceDescriptions {
+    return resourceDescriptionsProvider.getResourceDescriptions(this)
+}
 
-private fun IEObjectDescription.isGlobalDeclaration(): Boolean =
-    this.eClass in setOf(
+/**
+ * Returns whether this [IEObjectDescription] should be available in other [Resource]s.
+ */
+private fun IEObjectDescription.isGlobalDeclaration(): Boolean {
+    return this.eClass in setOf(
         Literals.SML_ANNOTATION,
         Literals.SML_CLASS,
         Literals.SML_ENUM,
         Literals.SML_FUNCTION,
         Literals.SML_STEP
     )
+}

@@ -11,6 +11,7 @@ import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.statementsOrEmpty
+import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAssignment
@@ -149,7 +150,7 @@ class SimpleMLGenerator @Inject constructor(
             .map { it.declaration }
             .filter { it.isGlobal() && it.containingCompilationUnitOrNull() != compilationUnit }
             .mapNotNull {
-                val importPath = qualifiedNameProvider.getFullyQualifiedName(it).toString()
+                val importPath = it.qualifiedNameOrNull().toString()
                     .split(".")
                     .dropLast(1)
                     .toMutableList()

@@ -29,7 +29,7 @@ object StdlibEnums {
         Workflow;
 
         companion object {
-            val fullyQualifiedName: QualifiedName = QualifiedName.create("simpleml", "lang", "AnnotationTarget")
+            val enum: QualifiedName = QualifiedName.create("simpleml", "lang", "AnnotationTarget")
 
             fun valueOfOrNull(name: String): AnnotationTarget? {
                 return values().firstOrNull { it.name == name }
