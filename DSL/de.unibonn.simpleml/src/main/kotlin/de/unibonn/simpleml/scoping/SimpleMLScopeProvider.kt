@@ -14,7 +14,6 @@ import de.unibonn.simpleml.emf.typeParametersOrNull
 import de.unibonn.simpleml.emf.uniquePackageOrNull
 import de.unibonn.simpleml.emf.variantsOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
-import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractLambda
 import de.unibonn.simpleml.simpleML.SmlAbstractNamedTypeDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractProtocolToken
@@ -28,6 +27,7 @@ import de.unibonn.simpleml.simpleML.SmlBlock
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlConstraintList
+import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -124,6 +124,28 @@ class SimpleMLScopeProvider : AbstractSimpleMLScopeProvider() {
     private fun scopeForMemberAccessDeclaration(context: SmlMemberAccess): IScope {
         val receiver = context.receiver
 
+        // Static access
+        val receiverDeclaration = when (receiver) {
+            is SmlReference -> receiver.declaration
+            is SmlMemberAccess -> receiver.member.declaration
+            else -> null
+        }
+        if (receiverDeclaration != null) {
+            when (receiverDeclaration) {
+                is SmlClass -> {
+                    val members = receiverDeclaration.classMembersOrEmpty().filter { it.isStatic() }
+                    val superTypeMembers = receiverDeclaration.superClassMembers()
+                        .filter { it.isStatic() }
+                        .toList()
+
+                    return Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers))
+                }
+                is SmlEnum -> {
+                    return Scopes.scopeFor(receiverDeclaration.variantsOrEmpty())
+                }
+            }
+        }
+
         // Call results
         var resultScope = IScope.NULLSCOPE
         if (receiver is SmlCall) {
@@ -141,20 +163,10 @@ class SimpleMLScopeProvider : AbstractSimpleMLScopeProvider() {
         return when {
             type.isNullable && !context.isNullSafe -> resultScope
             type is ClassType -> {
-                val members =
-                    type.smlClass.classMembersOrEmpty().filter { it.isStatic() == type.isStatic }
+                val members = type.smlClass.classMembersOrEmpty().filter { !it.isStatic() }
                 val superTypeMembers = type.smlClass.superClassMembers()
-                    .filter { it.isStatic() == type.isStatic }
+                    .filter { !it.isStatic() }
                     .toList()
-
-                Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers, resultScope))
-            }
-            type is EnumType -> {
-                val members = when {
-                    type.isStatic -> type.smlEnum.variantsOrEmpty()
-                    else -> emptyList()
-                }
-                val superTypeMembers = emptyList<SmlAbstractDeclaration>()
 
                 Scopes.scopeFor(members, Scopes.scopeFor(superTypeMembers, resultScope))
             }
