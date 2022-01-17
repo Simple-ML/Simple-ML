@@ -11,14 +11,16 @@ sealed class Type {
     open fun toSimpleString() = toString()
 }
 
-class TupleType(val types: List<Type>) : Type() {
+class RecordType(resultToType: List<Pair<String, Type>>) : Type() {
+    private val resultToType = resultToType.toMap()
+
     override fun toString(): String {
-        val types = types.joinToString()
+        val types = resultToType.entries.joinToString { (name, type) -> "$name: $type"}
         return "($types)"
     }
 
     override fun toSimpleString(): String {
-        val types = types.joinToString { it.toSimpleString() }
+        val types = resultToType.entries.joinToString { (name, type) -> "$name: ${type.toSimpleString()}"}
         return "($types)"
     }
 }

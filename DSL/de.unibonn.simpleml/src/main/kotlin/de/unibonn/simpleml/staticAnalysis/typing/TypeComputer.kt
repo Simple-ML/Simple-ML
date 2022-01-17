@@ -124,28 +124,28 @@ private fun SmlAbstractExpression.inferType(isStatic: Boolean, context: EObject)
                 val results = callable.resultsOrEmpty()
                 when (results.size) {
                     1 -> results.first().inferType(false, context)
-                    else -> TupleType(results.map { it.inferType(false, context) })
+                    else -> RecordType(results.map { it.name to it.inferType(false, context) })
                 }
             }
             is SmlFunction -> {
                 val results = callable.resultsOrEmpty()
                 when (results.size) {
                     1 -> results.first().inferType(false, context)
-                    else -> TupleType(results.map { it.inferType(false, context) })
+                    else -> RecordType(results.map { it.name to  it.inferType(false, context) })
                 }
             }
             is SmlBlockLambda -> {
                 val results = callable.lambdaResultsOrEmpty()
                 when (results.size) {
                     1 -> results.first().inferType(false, context)
-                    else -> TupleType(results.map { it.inferType(false, context) })
+                    else -> RecordType(results.map { it.name to it.inferType(false, context) })
                 }
             }
             is SmlStep -> {
                 val results = callable.resultsOrEmpty()
                 when (results.size) {
                     1 -> results.first().inferType(false, context)
-                    else -> TupleType(results.map { it.inferType(false, context) })
+                    else -> RecordType(results.map { it.name to  it.inferType(false, context) })
                 }
             }
             else -> Any(context)
