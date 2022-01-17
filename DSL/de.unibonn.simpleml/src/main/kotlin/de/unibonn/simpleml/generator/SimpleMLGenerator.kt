@@ -241,6 +241,18 @@ class SimpleMLGenerator : AbstractGenerator() {
     }
 
     private fun compileExpression(expr: SmlAbstractExpression): String {
+        val constantExpr = expr.toConstantExpressionOrNull()
+        if (constantExpr != null) {
+            return when (constantExpr) {
+                is SmlConstantBoolean -> if (constantExpr.value) "True" else "False"
+                is SmlConstantEnumVariant -> TODO()
+                SmlConstantNull -> "None"
+                is SmlConstantFloat -> constantExpr.value.toString()
+                is SmlConstantInt -> constantExpr.value.toString()
+                is SmlConstantString -> "'${constantExpr.value}'"
+            }
+        }
+
         return when (expr) {
             is SmlBoolean -> {
                 if (expr.isTrue) {
