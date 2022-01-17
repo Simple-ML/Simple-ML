@@ -46,7 +46,6 @@ sealed class NamedType(smlDeclaration: SmlAbstractDeclaration) : Type() {
     val qualifiedName: QualifiedName = smlDeclaration.qualifiedNameOrNull()!!
 
     abstract val isNullable: Boolean
-    abstract val isStatic: Boolean
 
     override fun toString() = buildString {
         append(qualifiedName)
@@ -65,8 +64,7 @@ sealed class NamedType(smlDeclaration: SmlAbstractDeclaration) : Type() {
 
 data class ClassType(
     val smlClass: SmlClass,
-    override val isNullable: Boolean,
-    override val isStatic: Boolean
+    override val isNullable: Boolean
 ) : NamedType(smlClass) {
 
     override fun toString() = super.toString()
@@ -74,8 +72,7 @@ data class ClassType(
 
 data class EnumType(
     val smlEnum: SmlEnum,
-    override val isNullable: Boolean,
-    override val isStatic: Boolean
+    override val isNullable: Boolean
 ) : NamedType(smlEnum) {
 
     override fun toString() = super.toString()
@@ -83,8 +80,7 @@ data class EnumType(
 
 data class EnumVariantType(
     val smlEnumVariant: SmlEnumVariant,
-    override val isNullable: Boolean,
-    override val isStatic: Boolean
+    override val isNullable: Boolean
 ) : NamedType(smlEnumVariant) {
 
     override fun toString() = super.toString()
