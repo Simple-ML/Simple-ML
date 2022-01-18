@@ -9,6 +9,7 @@ import de.unibonn.simpleml.emf.createSmlFloat
 import de.unibonn.simpleml.emf.createSmlInfixOperation
 import de.unibonn.simpleml.emf.createSmlInt
 import de.unibonn.simpleml.emf.createSmlNull
+import de.unibonn.simpleml.emf.createSmlParenthesizedExpression
 import de.unibonn.simpleml.emf.createSmlPrefixOperation
 import de.unibonn.simpleml.emf.createSmlString
 import de.unibonn.simpleml.emf.createSmlTemplateString
@@ -206,7 +207,7 @@ class ToInlinedExpressionTest {
     inner class Argument {
 
         @Test
-        fun `should return inlined value for arguments`() {
+        fun `should return inlined value for argument`() {
             val value = createSmlNull()
             val testData = createSmlArgument(value = value)
             testData.toInlinedExpressionOrNull() shouldBe value
@@ -216,11 +217,12 @@ class ToInlinedExpressionTest {
     @Nested
     inner class ParenthesizedExpression {
 
-//        @Test
-//        fun `should return expression as constant expression for parenthesized expressions`() {
-//            val testData = createSmlParenthesizedExpression(createSmlNull())
-//            testData.toConstantExpressionOrNull() shouldBe SmlConstantNull
-//        }
+        @Test
+        fun `should return inlined value for expression`() {
+            val expression = createSmlNull()
+            val testData = createSmlParenthesizedExpression(expression = expression)
+            testData.toInlinedExpressionOrNull() shouldBe expression
+        }
     }
 
     @Nested

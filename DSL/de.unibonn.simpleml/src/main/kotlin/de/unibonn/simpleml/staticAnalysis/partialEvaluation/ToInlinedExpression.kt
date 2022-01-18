@@ -1,11 +1,13 @@
 package de.unibonn.simpleml.staticAnalysis.partialEvaluation
 
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
+import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlBoolean
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlNull
+import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlTemplateString
@@ -24,8 +26,10 @@ fun SmlAbstractExpression.toInlinedExpressionOrNull(): SmlAbstractExpression? {
     }
 }
 
-private fun SmlAbstractExpression.toInlinedExpressionOrNull(substitutions: ParameterSubstitutions): SmlAbstractExpression? {
+private tailrec fun SmlAbstractExpression.toInlinedExpressionOrNull(substitutions: ParameterSubstitutions): SmlAbstractExpression? {
     return when (this) {
+
+        // Base cases
         is SmlBoolean -> this
         is SmlFloat -> this
         is SmlInfixOperation -> this
@@ -37,6 +41,11 @@ private fun SmlAbstractExpression.toInlinedExpressionOrNull(substitutions: Param
         is SmlTemplateStringStart -> this
         is SmlTemplateStringInner -> this
         is SmlTemplateStringEnd -> this
+
+        // Simple recursive cases
+        is SmlArgument -> value.toInlinedExpressionOrNull(substitutions)
+        is SmlParenthesizedExpression -> expression.toInlinedExpressionOrNull(substitutions)
+
         else -> throw IllegalArgumentException("Missing case to handle $this.")
     }
 }
