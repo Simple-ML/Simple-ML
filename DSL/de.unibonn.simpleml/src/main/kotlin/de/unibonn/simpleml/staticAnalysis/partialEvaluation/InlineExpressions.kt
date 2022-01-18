@@ -14,8 +14,8 @@ import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.utils.uniqueOrNull
 
 typealias ParameterSubstitutions = Map<SmlParameter, SmlInlinedExpression?>
-typealias ResultSubstitutions = Map<SmlResult, SmlInlinedExpression?>
-typealias ResultSubstitution = Pair<SmlResult, SmlInlinedExpression?>
+typealias ResultSubstitutions = Map<SmlAbstractResult, SmlInlinedExpression?>
+typealias ResultSubstitution = Pair<SmlAbstractResult, SmlInlinedExpression?>
 
 /**
  * Possible result of [toInlinedExpressionOrNull].
