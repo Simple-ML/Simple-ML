@@ -43,15 +43,15 @@ fun SmlAbstractExpression.toInlinedExpressionOrNull(traverseImpureCallables: Boo
     return doInline.invoke(FrameData(this, emptyMap(), traverseImpureCallables))
 }
 
-private data class FrameData(
-    val current: SmlAbstractExpression,
+private data class FrameData<T: SmlAbstractExpression>(
+    val current: T,
     val substitutions: ParameterSubstitutions,
     val traverseImpureCallables: Boolean
 )
 
 @OptIn(ExperimentalStdlibApi::class)
 private val doInline =
-    DeepRecursiveFunction<FrameData, SmlInlinedExpression?> { data ->
+    DeepRecursiveFunction<FrameData<SmlAbstractExpression>, SmlInlinedExpression?> { data ->
         when (data.current) {
 
             // Base cases
@@ -80,13 +80,65 @@ private val doInline =
             is SmlParenthesizedExpression -> callRecursive(data.copy(current = data.current.expression))
 
             // Complex recursive cases
-//            is SmlCall -> simplifyCall(data.substitutions, data.traverseImpureCallables)
-//            is SmlMemberAccess -> simplifyMemberAccess(data.substitutions, data.traverseImpureCallables)
-//            is SmlReference -> simplifyReference(data.substitutions, data.traverseImpureCallables)
+            is SmlCall -> doInlineCall.callRecursive(
+                FrameData(
+                    data.current,
+                    data.substitutions,
+                    data.traverseImpureCallables
+                )
+            )
+            is SmlMemberAccess -> doInlineMemberAccess.callRecursive(
+                FrameData(
+                    data.current,
+                    data.substitutions,
+                    data.traverseImpureCallables
+                )
+            )
+            is SmlReference -> doInlineReference.callRecursive(
+                FrameData(
+                    data.current,
+                    data.substitutions,
+                    data.traverseImpureCallables
+                )
+            )
 
             else -> throw IllegalArgumentException("Missing case to handle $this.")
         }
     }
+
+@OptIn(ExperimentalStdlibApi::class)
+private val doInlineCall =
+    DeepRecursiveFunction<FrameData<SmlCall>, SmlInlinedExpression?> { data ->
+        SmlInlinedOtherExpression(data.current)
+    }
+
+@OptIn(ExperimentalStdlibApi::class)
+private val doInlineMemberAccess =
+    DeepRecursiveFunction<FrameData<SmlMemberAccess>, SmlInlinedExpression?> { data ->
+        SmlInlinedOtherExpression(data.current)
+    }
+
+@OptIn(ExperimentalStdlibApi::class)
+private val doInlineReference =
+    DeepRecursiveFunction<FrameData<SmlReference>, SmlInlinedExpression?> { data ->
+        SmlInlinedOtherExpression(data.current)
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //private fun SmlCall.simplifyCall(
 //    substitutions: ParameterSubstitutions,
