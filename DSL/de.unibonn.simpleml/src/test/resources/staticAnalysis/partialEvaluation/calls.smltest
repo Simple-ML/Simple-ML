@@ -18,8 +18,8 @@ workflow callToStep {
     myStep1(1);
 }
 
-step myStep2(vararg params: Int) -> result: Int {
-    yield result = params;
+step myStep2(first: Int, vararg other: Int) -> result: Int {
+    yield result = first;
 }
 
 workflow callToStepWithVariadicParameter {

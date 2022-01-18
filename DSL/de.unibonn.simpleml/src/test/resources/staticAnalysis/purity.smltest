@@ -75,6 +75,13 @@ step pureFunctionAsResult() {
     (() -> pureFunction)()();
 }
 
+// Function as parameter
+
+@CallsShouldBePure
+step pureFunctionAsParameter() {
+    ((f) -> f())(pureFunction);
+}
+
 // Negative examples -----------------------------------------------------------
 
 annotation CallsShouldNotBePure
@@ -138,6 +145,5 @@ step unresolvedCallable() {
 
 @CallsShouldNotBePure
 step impureFunctionAsParameter() {
-    ((f) -> f())(pureFunction); // This is actually pure, but we match in a conservative manner. Can be improved later.
     ((f) -> f())(impureFunction);
 }

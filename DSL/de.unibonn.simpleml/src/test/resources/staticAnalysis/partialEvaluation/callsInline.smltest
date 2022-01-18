@@ -13,6 +13,14 @@ step impureStep(param: Int) -> result: Int {
     yield result = param;
 }
 
+step variadicStep(first: Int, vararg other: Int) -> result: Int {
+    yield result = first;
+}
+
+step higherOrderStep(param: Int) -> f: () -> (result: Int) {
+    yield f = () -> param;
+}
+
 
 // Tests -----------------------------------------------------------------------
 
@@ -46,31 +54,22 @@ workflow callToImpureStep {
     impureStep(1);
 }
 
-// TODO
-
-
-
-step myStep2(vararg params: Int) -> result: Int {
-    yield result = params;
-}
-
 workflow callToStepWithVariadicParameter {
-    myStep2(1);
+    variadicStep(1);
 }
 
-workflow parameterAssignedDuringCall {
-    ((a, b) { 
-        val d = b;
-        yield result = ((b, c) -> a + b + c + d)(1, 2);
-    })(3, 4);
+workflow parameterAssignedDuringCallOfBlockLambda {
+    ((a) {
+        yield result = -a;
+    })(1);
 }
 
-step myStep3(param: Int) -> f: () -> (result: Int) {
-    yield f = () -> param;
+workflow parameterAssignedDuringCallOfExpressionLambda {
+    ((a) -> -a)(1);
 }
 
 workflow parameterAssignedDuringCreationOfLambda {
-    myStep3(1)();
+    higherOrderStep(1)();
 }
 
 workflow lambdaAsParameter {
