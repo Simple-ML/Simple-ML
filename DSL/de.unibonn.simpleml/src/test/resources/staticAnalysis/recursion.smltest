@@ -13,24 +13,24 @@ step directRecursion(a: Any or directRecursion()) {
     val a = directRecursion();
 }
 
-// Transitive recursion
+// Mutual recursion
 
 @CallsShouldBeRecursive
-step transitiveRecursion1() {
-    transitiveRecursion2();
-    val a = transitiveRecursion2();
+step mutualRecursion1() {
+    mutualRecursion2();
+    val a = mutualRecursion2();
 }
 
 @CallsShouldBeRecursive
-step transitiveRecursion2() {
-    transitiveRecursion3();
-    val a = transitiveRecursion3();
+step mutualRecursion2() {
+    mutualRecursion3();
+    val a = mutualRecursion3();
 }
 
 @CallsShouldBeRecursive
-step transitiveRecursion3() {
-    transitiveRecursion2();
-    val a = transitiveRecursion2();
+step mutualRecursion3() {
+    mutualRecursion2();
+    val a = mutualRecursion2();
 }
 
 // Deferred recursion in lambda

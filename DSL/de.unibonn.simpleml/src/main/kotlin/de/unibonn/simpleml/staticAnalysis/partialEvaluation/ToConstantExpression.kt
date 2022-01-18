@@ -57,10 +57,14 @@ import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Minus as PrefixMi
  * Tries to evaluate this expression. On success a [SmlConstantExpression] is returned, otherwise `null`.
  */
 fun SmlAbstractExpression.toConstantExpressionOrNull(): SmlConstantExpression? {
-    return toConstantExpressionOrNull(emptyMap())
+    return try {
+        toConstantExpressionOrNull(emptyMap())
+    } catch (e: StackOverflowError) {
+        null
+    }
 }
 
-internal fun SmlAbstractExpression.toConstantExpressionOrNull(substitutions: ParameterSubstitutions): SmlConstantExpression? {
+private fun SmlAbstractExpression.toConstantExpressionOrNull(substitutions: ParameterSubstitutions): SmlConstantExpression? {
     return when (val simplifiedExpression = simplify(substitutions)) {
         is SmlConstantExpression? -> simplifiedExpression
         is SmlIntermediateRecord -> simplifiedExpression.unwrap() as? SmlConstantExpression
@@ -68,7 +72,7 @@ internal fun SmlAbstractExpression.toConstantExpressionOrNull(substitutions: Par
     }
 }
 
-internal fun SmlAbstractExpression.simplify(substitutions: ParameterSubstitutions): SmlSimplifiedExpression? {
+internal tailrec fun SmlAbstractExpression.simplify(substitutions: ParameterSubstitutions): SmlSimplifiedExpression? {
     return when (this) {
 
         // Base cases
