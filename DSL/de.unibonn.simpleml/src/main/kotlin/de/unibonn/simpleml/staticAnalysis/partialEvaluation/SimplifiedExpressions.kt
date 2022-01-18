@@ -20,9 +20,9 @@ typealias ParameterSubstitutions = Map<SmlParameter, SmlSimplifiedExpression?>
 
 sealed interface SmlSimplifiedExpression
 
-internal sealed interface SmlIntermediateExpression : SmlSimplifiedExpression
+sealed interface SmlInlinedExpression : SmlSimplifiedExpression
 
-internal sealed interface SmlIntermediateCallable : SmlIntermediateExpression {
+sealed interface SmlInlinedCallable : SmlInlinedExpression {
     val callable: SmlAbstractCallable
     val substitutionsOnCreation: ParameterSubstitutions
 
@@ -33,25 +33,25 @@ internal sealed interface SmlIntermediateCallable : SmlIntermediateExpression {
         get() = callable.isPureCallable()
 }
 
-internal data class SmlIntermediateBlockLambda(
+data class SmlInlinedBlockLambda(
     override val callable: SmlBlockLambda,
     override val substitutionsOnCreation: ParameterSubstitutions
-) : SmlIntermediateCallable {
+) : SmlInlinedCallable {
     val results: List<SmlBlockLambdaResult>
         get() = callable.lambdaResultsOrEmpty()
 }
 
-internal data class SmlIntermediateExpressionLambda(
+data class SmlInlinedExpressionLambda(
     override val callable: SmlExpressionLambda,
     override val substitutionsOnCreation: ParameterSubstitutions
-) : SmlIntermediateCallable {
+) : SmlInlinedCallable {
     val result: SmlAbstractExpression
         get() = callable.result
 }
 
-internal data class SmlIntermediateStep(
+data class SmlInlinedStep(
     override val callable: SmlStep
-) : SmlIntermediateCallable {
+) : SmlInlinedCallable {
     override val substitutionsOnCreation: ParameterSubstitutions
         get() = emptyMap()
 
@@ -59,9 +59,9 @@ internal data class SmlIntermediateStep(
         get() = callable.resultsOrEmpty()
 }
 
-internal class SmlIntermediateRecord(
+class SmlInlinedRecord(
     resultSubstitutions: List<Pair<SmlAbstractResult, SmlSimplifiedExpression?>>
-) : SmlIntermediateExpression {
+) : SmlInlinedExpression {
     private val resultSubstitutions = resultSubstitutions.toMap()
 
     fun getSubstitutionByReferenceOrNull(reference: SmlReference): SmlSimplifiedExpression? {
@@ -93,7 +93,7 @@ internal class SmlIntermediateRecord(
     }
 }
 
-data class SmlIntermediateInlineExpression(val expression: SmlAbstractExpression) : SmlIntermediateExpression
+data class SmlInlinedOtherExpression(val expression: SmlAbstractExpression) : SmlInlinedExpression
 
 sealed interface SmlConstantExpression : SmlSimplifiedExpression
 

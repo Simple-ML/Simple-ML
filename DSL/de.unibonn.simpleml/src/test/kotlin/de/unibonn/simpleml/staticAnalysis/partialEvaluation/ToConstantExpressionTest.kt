@@ -74,8 +74,9 @@ class ToConstantExpressionTest {
 
     @BeforeEach
     fun reset() {
-        val compilationUnit = parseHelper.parseResourceWithStdlib("partialEvaluation/callables.smltest")
-        compilationUnit.shouldNotBeNull()
+        val compilationUnit = parseHelper
+            .parseResourceWithStdlib("staticAnalysis/partialEvaluation/callables.smltest")
+            .shouldNotBeNull()
 
         val blockLambdas = compilationUnit.descendants<SmlBlockLambda>().toList()
         blockLambdas.shouldHaveSize(3)
@@ -160,7 +161,7 @@ class ToConstantExpressionTest {
 
         @Test
         fun `simplify should return intermediate block lambda for pure block lambda`() {
-            pureBlockLambda.simplify(emptyMap()).shouldBeInstanceOf<SmlIntermediateBlockLambda>()
+            pureBlockLambda.simplify(emptyMap()).shouldBeInstanceOf<SmlInlinedBlockLambda>()
         }
 
         @Test
@@ -181,7 +182,7 @@ class ToConstantExpressionTest {
 
         @Test
         fun `simplify should return intermediate expression lambda for pure expression lambda`() {
-            pureExpressionLambda.simplify(emptyMap()).shouldBeInstanceOf<SmlIntermediateExpressionLambda>()
+            pureExpressionLambda.simplify(emptyMap()).shouldBeInstanceOf<SmlInlinedExpressionLambda>()
         }
 
         @Test
@@ -1125,13 +1126,15 @@ class ToConstantExpressionTest {
 
         @BeforeEach
         fun reset() {
-            compilationUnit = parseHelper.parseResourceWithStdlib("partialEvaluation/calls.smltest")!!
+            compilationUnit = parseHelper
+                .parseResourceWithStdlib("staticAnalysis/partialEvaluation/calls.smltest")
+                .shouldNotBeNull()
         }
 
         @Test
         fun `should evaluate calls of block lambdas`() {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToBlockLambda")
-            val testData = workflow.expectedExpression()
+            val testData = workflow.testExpression()
 
             testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
         }
@@ -1139,7 +1142,7 @@ class ToConstantExpressionTest {
         @Test
         fun `should evaluate calls of expression lambdas`() {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToExpressionLambda")
-            val testData = workflow.expectedExpression()
+            val testData = workflow.testExpression()
 
             testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
         }
@@ -1147,7 +1150,7 @@ class ToConstantExpressionTest {
         @Test
         fun `should evaluate calls of steps`() {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToStep")
-            val testData = workflow.expectedExpression()
+            val testData = workflow.testExpression()
 
             testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
         }
@@ -1155,7 +1158,7 @@ class ToConstantExpressionTest {
         @Test
         fun `should evaluate calls of steps with variadic parameter`() {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToStepWithVariadicParameter")
-            val testData = workflow.expectedExpression()
+            val testData = workflow.testExpression()
 
             testData.toConstantExpressionOrNull().shouldBeNull()
         }
@@ -1165,7 +1168,7 @@ class ToConstantExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>(
                 "parameterAssignedDuringCall"
             )
-            val testData = workflow.expectedExpression()
+            val testData = workflow.testExpression()
 
             testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(10)
         }
@@ -1175,7 +1178,7 @@ class ToConstantExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>(
                 "parameterAssignedDuringCreationOfLambda"
             )
-            val testData = workflow.expectedExpression()
+            val testData = workflow.testExpression()
 
             testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
         }
@@ -1183,7 +1186,7 @@ class ToConstantExpressionTest {
         @Test
         fun `should evaluate calls with lambda as parameter`() {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("lambdaAsParameter")
-            val testData = workflow.expectedExpression()
+            val testData = workflow.testExpression()
 
             testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
         }
@@ -1256,22 +1259,24 @@ class ToConstantExpressionTest {
 
         @Test
         fun `should access the result of a call by name if result exists`() {
-            val compilationUnit = parseHelper.parseResource("partialEvaluation/memberAccesses.smltest")
-            compilationUnit.shouldNotBeNull()
+            val compilationUnit = parseHelper
+                .parseResource("staticAnalysis/partialEvaluation/memberAccesses.smltest")
+                .shouldNotBeNull()
 
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("successfulResultAccess")
-            val testData = workflow.expectedExpression()
+            val testData = workflow.testExpression()
 
             testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
         }
 
         @Test
         fun `should return null if accessed result does not exist`() {
-            val compilationUnit = parseHelper.parseResource("partialEvaluation/memberAccesses.smltest")
-            compilationUnit.shouldNotBeNull()
+            val compilationUnit = parseHelper
+                .parseResource("staticAnalysis/partialEvaluation/memberAccesses.smltest")
+                .shouldNotBeNull()
 
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("failedResultAccess")
-            val testData = workflow.expectedExpression()
+            val testData = workflow.testExpression()
 
             testData.toConstantExpressionOrNull().shouldBeNull()
         }
@@ -1393,7 +1398,7 @@ class ToConstantExpressionTest {
         @Test
         fun `simplify should return intermediate step if referenced step is pure`() {
             val testData = createSmlReference(pureStep)
-            testData.simplify(emptyMap()).shouldBeInstanceOf<SmlIntermediateStep>()
+            testData.simplify(emptyMap()).shouldBeInstanceOf<SmlInlinedStep>()
         }
 
         @Test
@@ -1404,59 +1409,64 @@ class ToConstantExpressionTest {
 
         @Test
         fun `should return value of placeholders inside valid assignment with call as expression`() {
-            val compilationUnit = parseHelper.parseResource("partialEvaluation/references.smltest")
-            compilationUnit.shouldNotBeNull()
+            val compilationUnit = parseHelper
+                .parseResource("staticAnalysis/partialEvaluation/references.smltest")
+                .shouldNotBeNull()
 
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("successfulRecordAssignment")
-            val testData = workflow.expectedExpression()
+            val testData = workflow.testExpression()
 
             testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
         }
 
         @Test
         fun `should return null for references to placeholders inside invalid assignment with call as expression`() {
-            val compilationUnit = parseHelper.parseResource("partialEvaluation/references.smltest")
-            compilationUnit.shouldNotBeNull()
+            val compilationUnit = parseHelper
+                .parseResource("staticAnalysis/partialEvaluation/references.smltest")
+                .shouldNotBeNull()
 
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("failedRecordAssignment")
-            val testData = workflow.expectedExpression()
+            val testData = workflow.testExpression()
 
             testData.toConstantExpressionOrNull().shouldBeNull()
         }
 
         @Test
         fun `should evaluate references to placeholders (assigned, called step has different yield order)`() {
-            val compilationUnit = parseHelper.parseResource("partialEvaluation/references.smltest")
-            compilationUnit.shouldNotBeNull()
+            val compilationUnit = parseHelper
+                .parseResource("staticAnalysis/partialEvaluation/references.smltest")
+                .shouldNotBeNull()
 
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>(
                 "recordAssignmentWithDifferentYieldOrder"
             )
-            val testData = workflow.expectedExpression()
+            val testData = workflow.testExpression()
 
             testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
         }
 
         @Test
         fun `should evaluate references to placeholders (assigned, called step has missing yield)`() {
-            val compilationUnit = parseHelper.parseResource("partialEvaluation/references.smltest")
-            compilationUnit.shouldNotBeNull()
+            val compilationUnit = parseHelper
+                .parseResource("staticAnalysis/partialEvaluation/references.smltest")
+                .shouldNotBeNull()
 
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("recordAssignmentWithMissingYield")
-            val testData = workflow.expectedExpression()
+            val testData = workflow.testExpression()
 
             testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
         }
 
         @Test
         fun `should evaluate references to placeholders (assigned, called step has additional yield)`() {
-            val compilationUnit = parseHelper.parseResource("partialEvaluation/references.smltest")
-            compilationUnit.shouldNotBeNull()
+            val compilationUnit = parseHelper
+                .parseResource("staticAnalysis/partialEvaluation/references.smltest")
+                .shouldNotBeNull()
 
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>(
                 "recordAssignmentWithAdditionalYield"
             )
-            val testData = workflow.expectedExpression()
+            val testData = workflow.testExpression()
 
             testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
         }
@@ -1483,8 +1493,10 @@ private fun Double.toSmlNumber(): SmlAbstractExpression {
  * Helper method for tests loaded from a resource that returns the expression of the first expression statement in the
  * workflow.
  */
-private fun SmlWorkflow.expectedExpression() = statementsOrEmpty()
-    .filterIsInstance<SmlExpressionStatement>()
-    .firstOrNull()
-    .shouldNotBeNull()
-    .expression
+private fun SmlWorkflow.testExpression(): SmlAbstractExpression {
+    return statementsOrEmpty()
+        .filterIsInstance<SmlExpressionStatement>()
+        .firstOrNull()
+        .shouldNotBeNull()
+        .expression
+}

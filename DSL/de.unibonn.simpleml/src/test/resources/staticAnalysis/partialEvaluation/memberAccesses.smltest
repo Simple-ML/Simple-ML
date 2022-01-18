@@ -1,4 +1,4 @@
-package tests.partialEvaluation.memberAccesses
+package tests.staticAnalysis.partialEvaluation.memberAccesses
 
 workflow successfulResultAccess {
     val lambda = () {

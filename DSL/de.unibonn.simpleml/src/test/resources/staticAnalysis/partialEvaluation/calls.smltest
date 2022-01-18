@@ -1,4 +1,4 @@
-package tests.partialEvaluation.higherOrder
+package tests.staticAnalysis.partialEvaluation.calls
 
 workflow callToBlockLambda {
     val lambda = (a) { yield result = a; };

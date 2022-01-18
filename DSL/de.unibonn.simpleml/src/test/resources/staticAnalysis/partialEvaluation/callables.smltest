@@ -1,4 +1,4 @@
-package tests.partialEvaluation.callables
+package tests.staticAnalysis.partialEvaluation.callables
 
 // Preparation -----------------------------------------------------------------
 

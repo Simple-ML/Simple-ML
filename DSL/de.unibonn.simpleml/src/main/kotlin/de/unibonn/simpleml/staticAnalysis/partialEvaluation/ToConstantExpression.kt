@@ -18,9 +18,7 @@ import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Not
 import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.isOptional
-import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
-import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlArgument
@@ -67,7 +65,7 @@ fun SmlAbstractExpression.toConstantExpressionOrNull(): SmlConstantExpression? {
 private fun SmlAbstractExpression.toConstantExpressionOrNull(substitutions: ParameterSubstitutions): SmlConstantExpression? {
     return when (val simplifiedExpression = simplify(substitutions)) {
         is SmlConstantExpression? -> simplifiedExpression
-        is SmlIntermediateRecord -> simplifiedExpression.unwrap() as? SmlConstantExpression
+        is SmlInlinedRecord -> simplifiedExpression.unwrap() as? SmlConstantExpression
         else -> null
     }
 }
@@ -104,9 +102,9 @@ internal tailrec fun SmlAbstractExpression.simplify(substitutions: ParameterSubs
     }
 }
 
-private fun SmlBlockLambda.simplifyBlockLambda(substitutions: ParameterSubstitutions): SmlIntermediateBlockLambda? {
+private fun SmlBlockLambda.simplifyBlockLambda(substitutions: ParameterSubstitutions): SmlInlinedBlockLambda? {
     return when {
-        isPureCallable(resultIfUnknown = true) -> SmlIntermediateBlockLambda(
+        isPureCallable(resultIfUnknown = true) -> SmlInlinedBlockLambda(
             callable = this,
             substitutionsOnCreation = substitutions
         )
@@ -116,9 +114,9 @@ private fun SmlBlockLambda.simplifyBlockLambda(substitutions: ParameterSubstitut
 
 private fun SmlExpressionLambda.simplifyExpressionLambda(
     substitutions: ParameterSubstitutions
-): SmlIntermediateExpressionLambda? {
+): SmlInlinedExpressionLambda? {
     return when {
-        isPureCallable(resultIfUnknown = true) -> SmlIntermediateExpressionLambda(
+        isPureCallable(resultIfUnknown = true) -> SmlInlinedExpressionLambda(
             callable = this,
             substitutionsOnCreation = substitutions
         )
@@ -281,16 +279,16 @@ private fun SmlCall.simplifyCall(substitutions: ParameterSubstitutions): SmlSimp
     val newSubstitutions = buildNewSubstitutions(simpleReceiver, substitutions)
 
     return when (simpleReceiver) {
-        is SmlIntermediateBlockLambda -> {
-            SmlIntermediateRecord(
+        is SmlInlinedBlockLambda -> {
+            SmlInlinedRecord(
                 simpleReceiver.results.map {
                     it to it.simplifyAssignee(newSubstitutions)
                 }
             )
         }
-        is SmlIntermediateExpressionLambda -> simpleReceiver.result.simplify(newSubstitutions)
-        is SmlIntermediateStep -> {
-            SmlIntermediateRecord(
+        is SmlInlinedExpressionLambda -> simpleReceiver.result.simplify(newSubstitutions)
+        is SmlInlinedStep -> {
+            SmlInlinedRecord(
                 simpleReceiver.results.map {
                     it to it.uniqueYieldOrNull()?.simplifyAssignee(newSubstitutions)
                 }
@@ -299,24 +297,20 @@ private fun SmlCall.simplifyCall(substitutions: ParameterSubstitutions): SmlSimp
     }
 }
 
-private fun SmlCall.simplifyReceiver(substitutions: ParameterSubstitutions): SmlIntermediateCallable? {
+private fun SmlCall.simplifyReceiver(substitutions: ParameterSubstitutions): SmlInlinedCallable? {
     return when (val simpleReceiver = receiver.simplify(substitutions)) {
-        is SmlIntermediateRecord -> simpleReceiver.unwrap() as? SmlIntermediateCallable
-        is SmlIntermediateCallable -> simpleReceiver
+        is SmlInlinedRecord -> simpleReceiver.unwrap() as? SmlInlinedCallable
+        is SmlInlinedCallable -> simpleReceiver
         else -> return null
     }
 }
 
 private fun SmlCall.buildNewSubstitutions(
-    simpleReceiver: SmlIntermediateCallable,
+    simpleReceiver: SmlInlinedCallable,
     oldSubstitutions: ParameterSubstitutions
 ): ParameterSubstitutions {
 
-    val substitutionsOnCreation = when (simpleReceiver) {
-        is SmlIntermediateBlockLambda -> simpleReceiver.substitutionsOnCreation
-        is SmlIntermediateExpressionLambda -> simpleReceiver.substitutionsOnCreation
-        else -> emptyMap()
-    }
+    val substitutionsOnCreation = simpleReceiver.substitutionsOnCreation
 
     val substitutionsOnCall = argumentsOrEmpty()
         .mapNotNull {
@@ -342,7 +336,7 @@ private fun SmlMemberAccess.simplifyMemberAccess(substitutions: ParameterSubstit
             isNullSafe -> SmlConstantNull
             else -> null
         }
-        is SmlIntermediateRecord -> simpleReceiver.getSubstitutionByReferenceOrNull(member)
+        is SmlInlinedRecord -> simpleReceiver.getSubstitutionByReferenceOrNull(member)
         else -> null
     }
 }
@@ -367,7 +361,7 @@ private fun SmlAbstractAssignee.simplifyAssignee(substitutions: ParameterSubstit
         ?: return null
 
     return when (simpleFullAssignedExpression) {
-        is SmlIntermediateRecord -> simpleFullAssignedExpression.getSubstitutionByIndexOrNull(indexOrNull())
+        is SmlInlinedRecord -> simpleFullAssignedExpression.getSubstitutionByIndexOrNull(indexOrNull())
         else -> when {
             indexOrNull() == 0 -> simpleFullAssignedExpression
             else -> null
@@ -384,9 +378,9 @@ private fun SmlParameter.simplifyParameter(substitutions: ParameterSubstitutions
     }
 }
 
-private fun SmlStep.simplifyStep(): SmlIntermediateStep? {
+private fun SmlStep.simplifyStep(): SmlInlinedStep? {
     return when {
-        isPureCallable(resultIfUnknown = true) -> SmlIntermediateStep(
+        isPureCallable(resultIfUnknown = true) -> SmlInlinedStep(
             callable = this
         )
         else -> null

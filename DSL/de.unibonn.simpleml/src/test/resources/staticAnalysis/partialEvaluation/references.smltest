@@ -1,4 +1,4 @@
-package tests.partialEvaluation.references
+package tests.staticAnalysis.partialEvaluation.references
 
 workflow successfulRecordAssignment {
     val lambda = () {
