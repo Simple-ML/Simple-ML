@@ -28,9 +28,7 @@ import de.unibonn.simpleml.emf.createSmlString
 import de.unibonn.simpleml.emf.createSmlTemplateString
 import de.unibonn.simpleml.emf.statementsOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLFactory
-import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
-import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlNull
@@ -59,12 +57,6 @@ class ToInlinedExpressionTest {
 
     private val factory = SimpleMLFactory.eINSTANCE
 
-    private lateinit var impureBlockLambda: SmlBlockLambda
-    private lateinit var pureBlockLambda: SmlBlockLambda
-    private lateinit var recursiveBlockLambda: SmlBlockLambda
-    private lateinit var impureExpressionLambda: SmlExpressionLambda
-    private lateinit var pureExpressionLambda: SmlExpressionLambda
-    private lateinit var recursiveExpressionLambda: SmlExpressionLambda
     private lateinit var impureStep: SmlStep
     private lateinit var pureStep: SmlStep
     private lateinit var recursiveStep: SmlStep
@@ -154,13 +146,19 @@ class ToInlinedExpressionTest {
         @Test
         fun `should wrap block lambda in bound block lambda`() {
             val testData = createSmlBlockLambda { }
-            testData.toInlinedExpressionOrNull().shouldBeInstanceOf<SmlBoundBlockLambda>()
+            testData.toInlinedExpressionOrNull() shouldBe SmlBoundBlockLambda(
+                lambda = testData,
+                substitutionsOnCreation = emptyMap()
+            )
         }
 
         @Test
         fun `should wrap expression lambda in bound expression lambda`() {
             val testData = createSmlExpressionLambda(result = createSmlNull())
-            testData.toInlinedExpressionOrNull().shouldBeInstanceOf<SmlBoundExpressionLambda>()
+            testData.toInlinedExpressionOrNull() shouldBe SmlBoundExpressionLambda(
+                lambda = testData,
+                substitutionsOnCreation = emptyMap()
+            )
         }
     }
 
@@ -296,19 +294,58 @@ class ToInlinedExpressionTest {
                 .shouldBe(SmlInlinedOtherExpression(testData))
         }
 
+        @Test
+        fun `should evaluate calls of pure steps if traverseImpureCallables is true`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToPureStep")
+
+            val testData = workflow.testExpression()
+            testData.toInlinedExpressionOrNull(traverseImpureCallables = true)
+                .shouldBeInstanceOf<SmlInlinedOtherExpression>()
+                .expression
+                .shouldBeInstanceOf<SmlInt>()
+                .value
+                .shouldBe(1)
+        }
+
+        @Test
+        fun `should evaluate calls of pure steps if traverseImpureCallables is false`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToPureStep")
+
+            val testData = workflow.testExpression()
+            testData.toInlinedExpressionOrNull(traverseImpureCallables = false)
+                .shouldBeInstanceOf<SmlInlinedOtherExpression>()
+                .expression
+                .shouldBeInstanceOf<SmlInt>()
+                .value
+                .shouldBe(1)
+        }
+
+        @Test
+        fun `should evaluate calls of impure steps if traverseImpureCallables is true`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToImpureStep")
+
+            val testData = workflow.testExpression()
+            testData.toInlinedExpressionOrNull(traverseImpureCallables = true)
+                .shouldBeInstanceOf<SmlInlinedOtherExpression>()
+                .expression
+                .shouldBeInstanceOf<SmlInt>()
+                .value
+                .shouldBe(1)
+        }
+
+        @Test
+        fun `should not evaluate calls of impure steps if traverseImpureCallables is false`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToImpureStep")
+
+            val testData = workflow.testExpression()
+            testData
+                .toInlinedExpressionOrNull(traverseImpureCallables = false)
+                .shouldBe(SmlInlinedOtherExpression(testData))
+        }
+
 
         // ---------------------------
 
-
-        @Test
-        fun `should evaluate calls of steps`() { // TODO
-            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToStep")
-            val testData = workflow.testExpression()
-
-            val result = testData.toInlinedExpressionOrNull()
-            result.shouldBeInstanceOf<SmlInt>()
-            result.value shouldBe 1
-        }
 
         @Test
         fun `should evaluate calls of steps with variadic parameter`() { // TODO
@@ -553,27 +590,10 @@ class ToInlinedExpressionTest {
         }
 
         @Test
-        fun `should return null if step is referenced`() { // TODO
-            val testData = createSmlReference(createSmlStep("testStep"))
-            testData.toInlinedExpressionOrNull().shouldBeNull()
-        }
-
-        @Test
-        fun `should return null if referenced step is impure`() { // TODO
-            val testData = createSmlReference(impureStep)
-            testData.toInlinedExpressionOrNull().shouldBeNull()
-        }
-
-        @Test
-        fun `should return inline step if referenced step is pure`() { // TODO
-            val testData = createSmlReference(pureStep)
-            testData.toInlinedExpressionOrNull().shouldBeInstanceOf<SmlBoundStepReference>()
-        }
-
-        @Test
-        fun `should return null if referenced step has recursive calls`() { // TODO
-            val testData = createSmlReference(recursiveStep)
-            testData.toInlinedExpressionOrNull().shouldBeNull()
+        fun `should wrap step in bound step`() {
+            val step = createSmlStep("testStep")
+            val testData = createSmlReference(step)
+            testData.toInlinedExpressionOrNull() shouldBe SmlBoundStepReference(step)
         }
 
         @Test

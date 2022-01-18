@@ -196,7 +196,6 @@ private data class BuildNewSubstitutionsFrameData(
 private val buildNewSubstitutions: DeepRecursiveFunction<BuildNewSubstitutionsFrameData, ParameterSubstitutions> =
     DeepRecursiveFunction { data ->
         val substitutionsOnCreation = data.receiver.substitutionsOnCreation
-
         val substitutionsOnCall = data.call.argumentsOrEmpty()
             .mapNotNull {
                 when (val parameter = it.parameterOrNull()) {
@@ -220,26 +219,21 @@ private val buildNewSubstitutions: DeepRecursiveFunction<BuildNewSubstitutionsFr
 @OptIn(ExperimentalStdlibApi::class)
 private val inlineMemberAccess: DeepRecursiveFunction<FrameData<SmlMemberAccess>, SmlInlinedExpression?> =
     DeepRecursiveFunction { data ->
-        SmlInlinedOtherExpression(data.current)
-    }
 
-//private fun SmlMemberAccess.simplifyMemberAccess(
-//    substitutions: ParameterSubstitutions,
-//    traverseImpureCallables: Boolean
-//): SmlInlinedExpression? {
-//    if (member.declaration is SmlEnumVariant) {
-//        return member.simplifyReference(substitutions, traverseImpureCallables)
-//    }
-//
-//    return when (val simpleReceiver = receiver.toInlinedExpressionOrNull(substitutions, traverseImpureCallables)) {
-////        SmlConstantNull -> when {
-////            isNullSafe -> SmlConstantNull
-////            else -> null
-////        }
-//        is SmlInlinedRecord -> simpleReceiver.getSubstitutionByReferenceOrNull(member) as? SmlInlinedExpression
-//        else -> null
-//    }
-//}
+        // Inline receiver
+        val receiver = inline.callRecursive(
+            FrameData(
+                current = data.current.receiver,
+                substitutions = data.substitutions,
+                traverseImpureCallables = data.traverseImpureCallables
+            )
+        )
+
+        when (receiver) {
+            is SmlInlinedRecord -> receiver.getSubstitutionByReferenceOrNull(data.current.member)
+            else -> SmlInlinedOtherExpression(data.current)
+        }
+    }
 
 @OptIn(ExperimentalStdlibApi::class)
 private val inlineReference: DeepRecursiveFunction<FrameData<SmlReference>, SmlInlinedExpression?> =
