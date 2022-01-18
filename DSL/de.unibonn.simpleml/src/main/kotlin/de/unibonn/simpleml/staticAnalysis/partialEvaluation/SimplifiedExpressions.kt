@@ -1,12 +1,20 @@
 package de.unibonn.simpleml.staticAnalysis.partialEvaluation
 
+import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
+import de.unibonn.simpleml.emf.parametersOrEmpty
+import de.unibonn.simpleml.emf.resultsOrEmpty
+import de.unibonn.simpleml.simpleML.SmlAbstractCallable
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractResult
+import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
+import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
+import de.unibonn.simpleml.simpleML.SmlStep
+import de.unibonn.simpleml.staticAnalysis.isPureCallable
 
 typealias ParameterSubstitutions = Map<SmlParameter, SmlSimplifiedExpression?>
 
@@ -15,25 +23,41 @@ sealed interface SmlSimplifiedExpression
 internal sealed interface SmlIntermediateExpression : SmlSimplifiedExpression
 
 internal sealed interface SmlIntermediateCallable : SmlIntermediateExpression {
+    val callable: SmlAbstractCallable
+    val substitutionsOnCreation: ParameterSubstitutions
+
     val parameters: List<SmlParameter>
+        get() = callable.parametersOrEmpty()
+
+    val isPure: Boolean
+        get() = callable.isPureCallable()
 }
 
 internal data class SmlIntermediateBlockLambda(
-    override val parameters: List<SmlParameter>,
-    val results: List<SmlBlockLambdaResult>,
-    val substitutionsOnCreation: ParameterSubstitutions
-) : SmlIntermediateCallable
+    override val callable: SmlBlockLambda,
+    override val substitutionsOnCreation: ParameterSubstitutions
+) : SmlIntermediateCallable {
+    val results: List<SmlBlockLambdaResult>
+        get() = callable.lambdaResultsOrEmpty()
+}
 
 internal data class SmlIntermediateExpressionLambda(
-    override val parameters: List<SmlParameter>,
-    val result: SmlAbstractExpression,
-    val substitutionsOnCreation: ParameterSubstitutions
-) : SmlIntermediateCallable
+    override val callable: SmlExpressionLambda,
+    override val substitutionsOnCreation: ParameterSubstitutions
+) : SmlIntermediateCallable {
+    val result: SmlAbstractExpression
+        get() = callable.result
+}
 
 internal data class SmlIntermediateStep(
-    override val parameters: List<SmlParameter>,
+    override val callable: SmlStep
+) : SmlIntermediateCallable {
+    override val substitutionsOnCreation: ParameterSubstitutions
+        get() = emptyMap()
+
     val results: List<SmlResult>
-) : SmlIntermediateCallable
+        get() = callable.resultsOrEmpty()
+}
 
 internal class SmlIntermediateRecord(
     resultSubstitutions: List<Pair<SmlAbstractResult, SmlSimplifiedExpression?>>
@@ -68,6 +92,8 @@ internal class SmlIntermediateRecord(
         }
     }
 }
+
+data class SmlIntermediateInlineExpression(val expression: SmlAbstractExpression) : SmlIntermediateExpression
 
 sealed interface SmlConstantExpression : SmlSimplifiedExpression
 

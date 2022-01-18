@@ -25,9 +25,12 @@ import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.junit.jupiter.api.BeforeEach
@@ -159,48 +162,54 @@ class ToInlinedExpressionTest {
             val testData = factory.createSmlTemplateStringEnd().apply { value = "test" }
             testData.toInlinedExpressionOrNull() shouldBe testData
         }
-//
-//        @Test
-//        fun `toConstantExpression should return null for block lambda`() {
-//            val testData = createSmlBlockLambda()
-//            testData.toConstantExpressionOrNull().shouldBeNull()
-//        }
-//
-//        @Test
-//        fun `simplify should return null for impure block lambda`() {
-//            impureBlockLambda.simplify(emptyMap()).shouldBeNull()
-//        }
-//
-//        @Test
-//        fun `simplify should return intermediate block lambda for pure block lambda`() {
-//            pureBlockLambda.simplify(emptyMap()).shouldBeInstanceOf<SmlIntermediateBlockLambda>()
-//        }
-//
-//        @Test
-//        fun `simplify should return null for block lambda with recursive call`() {
-//            recursiveBlockLambda.simplify(emptyMap()).shouldBeNull()
-//        }
-//
-//        @Test
-//        fun `toConstantExpression should return null for expression lambda`() {
-//            val testData = createSmlExpressionLambda(result = createSmlNull())
-//            testData.toConstantExpressionOrNull().shouldBeNull()
-//        }
-//
-//        @Test
-//        fun `simplify should return null for impure expression lambda`() {
-//            impureExpressionLambda.simplify(emptyMap()).shouldBeNull()
-//        }
-//
-//        @Test
-//        fun `simplify should return intermediate expression lambda for pure expression lambda`() {
-//            pureExpressionLambda.simplify(emptyMap()).shouldBeInstanceOf<SmlIntermediateExpressionLambda>()
-//        }
-//
-//        @Test
-//        fun `simplify should return null for expression lambda with recursive call`() {
-//            recursiveExpressionLambda.simplify(emptyMap()).shouldBeNull()
-//        }
+
+        @Test
+        fun `should store whether block lambda is pure (pure to true)`() {
+            val testData = pureBlockLambda
+                .toInlinedExpressionOrNull(emptyMap(), traverseImpureCallables = false)
+                .shouldBeInstanceOf<SmlIntermediateBlockLambda>()
+            testData.isPure.shouldBeTrue()
+        }
+
+        @Test
+        fun `should store whether block lambda is pure (impure to false)`() {
+            val testData = impureBlockLambda
+                .toInlinedExpressionOrNull(emptyMap(), traverseImpureCallables = false)
+                .shouldBeInstanceOf<SmlIntermediateBlockLambda>()
+            testData.isPure.shouldBeFalse()
+        }
+
+        @Test
+        fun `should store whether block lambda is pure (recursive to false)`() {
+            val testData = recursiveBlockLambda
+                .toInlinedExpressionOrNull(emptyMap(), traverseImpureCallables = false)
+                .shouldBeInstanceOf<SmlIntermediateBlockLambda>()
+            testData.isPure.shouldBeFalse()
+        }
+
+        @Test
+        fun `should store whether expression lambda is pure (pure to true)`() {
+            val testData = pureExpressionLambda
+                .toInlinedExpressionOrNull(emptyMap(), traverseImpureCallables = false)
+                .shouldBeInstanceOf<SmlIntermediateExpressionLambda>()
+            testData.isPure.shouldBeTrue()
+        }
+
+        @Test
+        fun `should store whether expression lambda is pure (impure to false)`() {
+            val testData = impureExpressionLambda
+                .toInlinedExpressionOrNull(emptyMap(), traverseImpureCallables = false)
+                .shouldBeInstanceOf<SmlIntermediateExpressionLambda>()
+            testData.isPure.shouldBeFalse()
+        }
+
+        @Test
+        fun `should store whether expression lambda is pure (recursive to false)`() {
+            val testData = recursiveExpressionLambda
+                .toInlinedExpressionOrNull(emptyMap(), traverseImpureCallables = false)
+                .shouldBeInstanceOf<SmlIntermediateExpressionLambda>()
+            testData.isPure.shouldBeFalse()
+        }
     }
 
     @Nested

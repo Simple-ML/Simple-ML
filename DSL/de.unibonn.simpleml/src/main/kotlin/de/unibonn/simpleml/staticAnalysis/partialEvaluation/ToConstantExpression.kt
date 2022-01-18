@@ -107,8 +107,7 @@ internal tailrec fun SmlAbstractExpression.simplify(substitutions: ParameterSubs
 private fun SmlBlockLambda.simplifyBlockLambda(substitutions: ParameterSubstitutions): SmlIntermediateBlockLambda? {
     return when {
         isPureCallable(resultIfUnknown = true) -> SmlIntermediateBlockLambda(
-            parameters = parametersOrEmpty(),
-            results = lambdaResultsOrEmpty(),
+            callable = this,
             substitutionsOnCreation = substitutions
         )
         else -> null
@@ -120,8 +119,7 @@ private fun SmlExpressionLambda.simplifyExpressionLambda(
 ): SmlIntermediateExpressionLambda? {
     return when {
         isPureCallable(resultIfUnknown = true) -> SmlIntermediateExpressionLambda(
-            parameters = parametersOrEmpty(),
-            result = result,
+            callable = this,
             substitutionsOnCreation = substitutions
         )
         else -> null
@@ -389,8 +387,7 @@ private fun SmlParameter.simplifyParameter(substitutions: ParameterSubstitutions
 private fun SmlStep.simplifyStep(): SmlIntermediateStep? {
     return when {
         isPureCallable(resultIfUnknown = true) -> SmlIntermediateStep(
-            parameters = parametersOrEmpty(),
-            results = resultsOrEmpty()
+            callable = this
         )
         else -> null
     }

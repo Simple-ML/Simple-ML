@@ -2,7 +2,9 @@ package de.unibonn.simpleml.staticAnalysis.partialEvaluation
 
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlArgument
+import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlBoolean
+import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
@@ -16,35 +18,54 @@ import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
 import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
 
 /**
- * Tries to inline this expression. On success a [SmlAbstractExpression] is returned, otherwise `null`.
+ * Tries to inline this expression. On success a [SmlAbstractExpression] is returned, if any reference cannot be
+ * resolved `null`.
+ *
+ * @param traverseImpureCallables If `false`, calls to impure callable are not traversed further but returned unchanged.
  */
-fun SmlAbstractExpression.toInlinedExpressionOrNull(): SmlAbstractExpression? {
+fun SmlAbstractExpression.toInlinedExpressionOrNull(traverseImpureCallables: Boolean = false): SmlAbstractExpression? {
     return try {
-        toInlinedExpressionOrNull(emptyMap())
+        when (val inlineExpression = toInlinedExpressionOrNull(emptyMap(), traverseImpureCallables)) {
+            is SmlIntermediateInlineExpression -> inlineExpression.expression
+            is SmlIntermediateBlockLambda -> inlineExpression.callable
+            is SmlIntermediateExpressionLambda -> inlineExpression.callable
+            else -> null
+        }
     } catch (e: StackOverflowError) {
         null
     }
 }
 
-private tailrec fun SmlAbstractExpression.toInlinedExpressionOrNull(substitutions: ParameterSubstitutions): SmlAbstractExpression? {
+internal tailrec fun SmlAbstractExpression.toInlinedExpressionOrNull(
+    substitutions: ParameterSubstitutions,
+    traverseImpureCallables: Boolean
+): SmlIntermediateExpression? {
     return when (this) {
 
         // Base cases
-        is SmlBoolean -> this
-        is SmlFloat -> this
-        is SmlInfixOperation -> this
-        is SmlInt -> this
-        is SmlNull -> this
-        is SmlPrefixOperation -> this
-        is SmlString -> this
-        is SmlTemplateString -> this
-        is SmlTemplateStringStart -> this
-        is SmlTemplateStringInner -> this
-        is SmlTemplateStringEnd -> this
+        is SmlBoolean -> SmlIntermediateInlineExpression(this)
+        is SmlFloat -> SmlIntermediateInlineExpression(this)
+        is SmlInfixOperation -> SmlIntermediateInlineExpression(this)
+        is SmlInt -> SmlIntermediateInlineExpression(this)
+        is SmlNull -> SmlIntermediateInlineExpression(this)
+        is SmlPrefixOperation -> SmlIntermediateInlineExpression(this)
+        is SmlString -> SmlIntermediateInlineExpression(this)
+        is SmlTemplateString -> SmlIntermediateInlineExpression(this)
+        is SmlTemplateStringStart -> SmlIntermediateInlineExpression(this)
+        is SmlTemplateStringInner -> SmlIntermediateInlineExpression(this)
+        is SmlTemplateStringEnd -> SmlIntermediateInlineExpression(this)
+        is SmlBlockLambda -> SmlIntermediateBlockLambda(
+            callable = this,
+            substitutionsOnCreation = substitutions
+        )
+        is SmlExpressionLambda -> SmlIntermediateExpressionLambda(
+            callable = this,
+            substitutionsOnCreation = substitutions
+        )
 
         // Simple recursive cases
-        is SmlArgument -> value.toInlinedExpressionOrNull(substitutions)
-        is SmlParenthesizedExpression -> expression.toInlinedExpressionOrNull(substitutions)
+        is SmlArgument -> value.toInlinedExpressionOrNull(substitutions, traverseImpureCallables)
+        is SmlParenthesizedExpression -> expression.toInlinedExpressionOrNull(substitutions, traverseImpureCallables)
 
         else -> throw IllegalArgumentException("Missing case to handle $this.")
     }
@@ -52,25 +73,6 @@ private tailrec fun SmlAbstractExpression.toInlinedExpressionOrNull(substitution
 
 //internal tailrec fun SmlAbstractExpression.simplify(substitutions: ParameterSubstitutions): SmlSimplifiedExpression? {
 //    return when (this) {
-//
-//        // Base cases
-//        is SmlBoolean -> SmlConstantBoolean(isTrue)
-//        is SmlFloat -> SmlConstantFloat(value)
-//        is SmlInt -> SmlConstantInt(value)
-//        is SmlNull -> SmlConstantNull
-//        is SmlString -> SmlConstantString(value)
-//        is SmlTemplateStringStart -> SmlConstantString(value)
-//        is SmlTemplateStringInner -> SmlConstantString(value)
-//        is SmlTemplateStringEnd -> SmlConstantString(value)
-//        is SmlBlockLambda -> simplifyBlockLambda(substitutions)
-//        is SmlExpressionLambda -> simplifyExpressionLambda(substitutions)
-//
-//        // Simple recursive cases
-//        is SmlArgument -> value.simplify(substitutions)
-//        is SmlInfixOperation -> simplifyInfixOp(substitutions)
-//        is SmlParenthesizedExpression -> expression.simplify(substitutions)
-//        is SmlPrefixOperation -> simplifyPrefixOp(substitutions)
-//        is SmlTemplateString -> simplifyTemplateString(substitutions)
 //
 //        // Complex recursive cases
 //        is SmlCall -> simplifyCall(substitutions)
@@ -81,31 +83,7 @@ private tailrec fun SmlAbstractExpression.toInlinedExpressionOrNull(substitution
 //        else -> throw IllegalArgumentException("Missing case to handle $this.")
 //    }
 //}
-//
-//private fun SmlBlockLambda.simplifyBlockLambda(substitutions: ParameterSubstitutions): SmlIntermediateBlockLambda? {
-//    return when {
-//        isPureCallable(resultIfUnknown = true) -> SmlIntermediateBlockLambda(
-//            parameters = parametersOrEmpty(),
-//            results = lambdaResultsOrEmpty(),
-//            substitutionsOnCreation = substitutions
-//        )
-//        else -> null
-//    }
-//}
-//
-//private fun SmlExpressionLambda.simplifyExpressionLambda(
-//    substitutions: ParameterSubstitutions
-//): SmlIntermediateExpressionLambda? {
-//    return when {
-//        isPureCallable(resultIfUnknown = true) -> SmlIntermediateExpressionLambda(
-//            parameters = parametersOrEmpty(),
-//            result = result,
-//            substitutionsOnCreation = substitutions
-//        )
-//        else -> null
-//    }
-//}
-//
+
 //private fun SmlInfixOperation.simplifyInfixOp(substitutions: ParameterSubstitutions): SmlConstantExpression? {
 //
 //    // By design none of the operators are short-circuited
