@@ -161,7 +161,7 @@ class ToConstantExpressionTest {
 
         @Test
         fun `simplify should return intermediate block lambda for pure block lambda`() {
-            pureBlockLambda.simplify(emptyMap()).shouldBeInstanceOf<SmlInlinedBlockLambda>()
+            pureBlockLambda.simplify(emptyMap()).shouldBeInstanceOf<SmlIntermediateBlockLambda>()
         }
 
         @Test
@@ -182,7 +182,7 @@ class ToConstantExpressionTest {
 
         @Test
         fun `simplify should return intermediate expression lambda for pure expression lambda`() {
-            pureExpressionLambda.simplify(emptyMap()).shouldBeInstanceOf<SmlInlinedExpressionLambda>()
+            pureExpressionLambda.simplify(emptyMap()).shouldBeInstanceOf<SmlIntermediateExpressionLambda>()
         }
 
         @Test
@@ -1398,7 +1398,7 @@ class ToConstantExpressionTest {
         @Test
         fun `simplify should return intermediate step if referenced step is pure`() {
             val testData = createSmlReference(pureStep)
-            testData.simplify(emptyMap()).shouldBeInstanceOf<SmlInlinedStep>()
+            testData.simplify(emptyMap()).shouldBeInstanceOf<SmlIntermediateStep>()
         }
 
         @Test

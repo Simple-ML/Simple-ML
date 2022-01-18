@@ -181,48 +181,48 @@ class ToInlinedExpressionTest {
         @Test
         fun `should store whether block lambda is pure (pure to true)`() {
             val testData = pureBlockLambda
-                .toInlinedExpressionOrNull(emptyMap(), traverseImpureCallables = false)
-                .shouldBeInstanceOf<SmlInlinedBlockLambda>()
+                .toInlinedExpressionOrNull()
+                .shouldBeInstanceOf<SmlIntermediateBlockLambda>()
             testData.isPure.shouldBeTrue()
         }
 
         @Test
         fun `should store whether block lambda is pure (impure to false)`() {
             val testData = impureBlockLambda
-                .toInlinedExpressionOrNull(emptyMap(), traverseImpureCallables = false)
-                .shouldBeInstanceOf<SmlInlinedBlockLambda>()
+                .toInlinedExpressionOrNull()
+                .shouldBeInstanceOf<SmlIntermediateBlockLambda>()
             testData.isPure.shouldBeFalse()
         }
 
         @Test
         fun `should store whether block lambda is pure (recursive to false)`() {
             val testData = recursiveBlockLambda
-                .toInlinedExpressionOrNull(emptyMap(), traverseImpureCallables = false)
-                .shouldBeInstanceOf<SmlInlinedBlockLambda>()
+                .toInlinedExpressionOrNull()
+                .shouldBeInstanceOf<SmlIntermediateBlockLambda>()
             testData.isPure.shouldBeFalse()
         }
 
         @Test
         fun `should store whether expression lambda is pure (pure to true)`() {
             val testData = pureExpressionLambda
-                .toInlinedExpressionOrNull(emptyMap(), traverseImpureCallables = false)
-                .shouldBeInstanceOf<SmlInlinedExpressionLambda>()
+                .toInlinedExpressionOrNull()
+                .shouldBeInstanceOf<SmlIntermediateExpressionLambda>()
             testData.isPure.shouldBeTrue()
         }
 
         @Test
         fun `should store whether expression lambda is pure (impure to false)`() {
             val testData = impureExpressionLambda
-                .toInlinedExpressionOrNull(emptyMap(), traverseImpureCallables = false)
-                .shouldBeInstanceOf<SmlInlinedExpressionLambda>()
+                .toInlinedExpressionOrNull()
+                .shouldBeInstanceOf<SmlIntermediateExpressionLambda>()
             testData.isPure.shouldBeFalse()
         }
 
         @Test
         fun `should store whether expression lambda is pure (recursive to false)`() {
             val testData = recursiveExpressionLambda
-                .toInlinedExpressionOrNull(emptyMap(), traverseImpureCallables = false)
-                .shouldBeInstanceOf<SmlInlinedExpressionLambda>()
+                .toInlinedExpressionOrNull()
+                .shouldBeInstanceOf<SmlIntermediateExpressionLambda>()
             testData.isPure.shouldBeFalse()
         }
     }
@@ -505,10 +505,7 @@ class ToInlinedExpressionTest {
                 declaration = testParameter
             )
 
-            val result = testData.toInlinedExpressionOrNull(
-                mapOf(testParameter to SmlInlinedOtherExpression(createSmlNull())),
-                traverseImpureCallables = false
-            )
+            val result = testData.toInlinedExpressionOrNull()
             result.shouldBeInstanceOf<SmlNull>()
         }
 
@@ -522,7 +519,7 @@ class ToInlinedExpressionTest {
                 declaration = testParameter
             )
 
-            val result = testData.toInlinedExpressionOrNull(emptyMap(), traverseImpureCallables = false)
+            val result = testData.toInlinedExpressionOrNull()
             result.shouldBeInstanceOf<SmlNull>()
         }
 
@@ -533,7 +530,7 @@ class ToInlinedExpressionTest {
                 declaration = testParameter
             )
 
-            testData.toInlinedExpressionOrNull(emptyMap(), traverseImpureCallables = false).shouldBeNull()
+            testData.toInlinedExpressionOrNull().shouldBeNull()
         }
 
         @Test
@@ -545,19 +542,19 @@ class ToInlinedExpressionTest {
         @Test
         fun `should return null if referenced step is impure`() { // TODO
             val testData = createSmlReference(impureStep)
-            testData.toInlinedExpressionOrNull(emptyMap(), traverseImpureCallables = false).shouldBeNull()
+            testData.toInlinedExpressionOrNull().shouldBeNull()
         }
 
         @Test
         fun `should return intermediate step if referenced step is pure`() { // TODO
             val testData = createSmlReference(pureStep)
-            testData.toInlinedExpressionOrNull(emptyMap(), traverseImpureCallables = false).shouldBeInstanceOf<SmlInlinedStep>()
+            testData.toInlinedExpressionOrNull().shouldBeInstanceOf<SmlIntermediateStep>()
         }
 
         @Test
         fun `should return null if referenced step has recursive calls`() { // TODO
             val testData = createSmlReference(recursiveStep)
-            testData.toInlinedExpressionOrNull(emptyMap(), traverseImpureCallables = false).shouldBeNull()
+            testData.toInlinedExpressionOrNull().shouldBeNull()
         }
 
         @Test

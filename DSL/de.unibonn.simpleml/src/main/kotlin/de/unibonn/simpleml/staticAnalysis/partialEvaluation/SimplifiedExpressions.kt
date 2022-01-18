@@ -16,15 +16,15 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.staticAnalysis.isPureCallable
 
-typealias ParameterSubstitutions = Map<SmlParameter, SmlSimplifiedExpression?>
+typealias ParameterSubstitutions2 = Map<SmlParameter, SmlSimplifiedExpression?>
 
 sealed interface SmlSimplifiedExpression
 
-sealed interface SmlInlinedExpression : SmlSimplifiedExpression
+sealed interface SmlIntermediateExpression : SmlSimplifiedExpression
 
-sealed interface SmlInlinedCallable : SmlInlinedExpression {
+sealed interface SmlIntermediateCallable : SmlIntermediateExpression {
     val callable: SmlAbstractCallable
-    val substitutionsOnCreation: ParameterSubstitutions
+    val substitutionsOnCreation: ParameterSubstitutions2
 
     val parameters: List<SmlParameter>
         get() = callable.parametersOrEmpty()
@@ -33,35 +33,35 @@ sealed interface SmlInlinedCallable : SmlInlinedExpression {
         get() = callable.isPureCallable()
 }
 
-data class SmlInlinedBlockLambda(
+data class SmlIntermediateBlockLambda(
     override val callable: SmlBlockLambda,
-    override val substitutionsOnCreation: ParameterSubstitutions
-) : SmlInlinedCallable {
+    override val substitutionsOnCreation: ParameterSubstitutions2
+) : SmlIntermediateCallable {
     val results: List<SmlBlockLambdaResult>
         get() = callable.lambdaResultsOrEmpty()
 }
 
-data class SmlInlinedExpressionLambda(
+data class SmlIntermediateExpressionLambda(
     override val callable: SmlExpressionLambda,
-    override val substitutionsOnCreation: ParameterSubstitutions
-) : SmlInlinedCallable {
+    override val substitutionsOnCreation: ParameterSubstitutions2
+) : SmlIntermediateCallable {
     val result: SmlAbstractExpression
         get() = callable.result
 }
 
-data class SmlInlinedStep(
+data class SmlIntermediateStep(
     override val callable: SmlStep
-) : SmlInlinedCallable {
-    override val substitutionsOnCreation: ParameterSubstitutions
+) : SmlIntermediateCallable {
+    override val substitutionsOnCreation: ParameterSubstitutions2
         get() = emptyMap()
 
     val results: List<SmlResult>
         get() = callable.resultsOrEmpty()
 }
 
-class SmlInlinedRecord(
+class SmlIntermediateRecord(
     resultSubstitutions: List<Pair<SmlAbstractResult, SmlSimplifiedExpression?>>
-) : SmlInlinedExpression {
+) : SmlIntermediateExpression {
     private val resultSubstitutions = resultSubstitutions.toMap()
 
     fun getSubstitutionByReferenceOrNull(reference: SmlReference): SmlSimplifiedExpression? {
@@ -93,7 +93,7 @@ class SmlInlinedRecord(
     }
 }
 
-data class SmlInlinedOtherExpression(val expression: SmlAbstractExpression) : SmlInlinedExpression
+data class SmlIntermediateOtherExpression(val expression: SmlAbstractExpression) : SmlIntermediateExpression
 
 sealed interface SmlConstantExpression : SmlSimplifiedExpression
 
