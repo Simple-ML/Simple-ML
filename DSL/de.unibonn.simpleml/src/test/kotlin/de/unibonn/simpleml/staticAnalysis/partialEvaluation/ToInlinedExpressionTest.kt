@@ -7,10 +7,12 @@ import de.unibonn.simpleml.emf.createSmlAnnotation
 import de.unibonn.simpleml.emf.createSmlArgument
 import de.unibonn.simpleml.emf.createSmlAssignment
 import de.unibonn.simpleml.emf.createSmlAttribute
+import de.unibonn.simpleml.emf.createSmlBlockLambda
 import de.unibonn.simpleml.emf.createSmlBoolean
 import de.unibonn.simpleml.emf.createSmlCall
 import de.unibonn.simpleml.emf.createSmlEnum
 import de.unibonn.simpleml.emf.createSmlEnumVariant
+import de.unibonn.simpleml.emf.createSmlExpressionLambda
 import de.unibonn.simpleml.emf.createSmlFloat
 import de.unibonn.simpleml.emf.createSmlInfixOperation
 import de.unibonn.simpleml.emf.createSmlInt
@@ -24,7 +26,6 @@ import de.unibonn.simpleml.emf.createSmlReference
 import de.unibonn.simpleml.emf.createSmlStep
 import de.unibonn.simpleml.emf.createSmlString
 import de.unibonn.simpleml.emf.createSmlTemplateString
-import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.statementsOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLFactory
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
@@ -38,7 +39,6 @@ import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
-import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -68,31 +68,6 @@ class ToInlinedExpressionTest {
     private lateinit var impureStep: SmlStep
     private lateinit var pureStep: SmlStep
     private lateinit var recursiveStep: SmlStep
-
-    @BeforeEach
-    fun reset() {
-        val compilationUnit = parseHelper
-            .parseResourceWithStdlib("staticAnalysis/partialEvaluation/callables.smltest")
-            .shouldNotBeNull()
-
-        val blockLambdas = compilationUnit.descendants<SmlBlockLambda>().toList()
-        blockLambdas.shouldHaveSize(3)
-
-        impureBlockLambda = blockLambdas[0]
-        pureBlockLambda = blockLambdas[1]
-        recursiveBlockLambda = blockLambdas[2]
-
-        val expressionLambdas = compilationUnit.descendants<SmlExpressionLambda>().toList()
-        expressionLambdas.shouldHaveSize(3)
-
-        impureExpressionLambda = expressionLambdas[0]
-        pureExpressionLambda = expressionLambdas[1]
-        recursiveExpressionLambda = expressionLambdas[2]
-
-        impureStep = compilationUnit.findUniqueDeclarationOrFail("impureStep")
-        pureStep = compilationUnit.findUniqueDeclarationOrFail("pureStep")
-        recursiveStep = compilationUnit.findUniqueDeclarationOrFail("recursiveStep")
-    }
 
     @Nested
     inner class BaseCases {
@@ -178,16 +153,14 @@ class ToInlinedExpressionTest {
 
         @Test
         fun `should wrap block lambda in bound block lambda`() {
-            pureBlockLambda
-                .toInlinedExpressionOrNull()
-                .shouldBeInstanceOf<SmlBoundBlockLambda>()
+            val testData = createSmlBlockLambda { }
+            testData.toInlinedExpressionOrNull().shouldBeInstanceOf<SmlBoundBlockLambda>()
         }
 
         @Test
         fun `should wrap expression lambda in bound expression lambda`() {
-            pureExpressionLambda
-                .toInlinedExpressionOrNull()
-                .shouldBeInstanceOf<SmlBoundExpressionLambda>()
+            val testData = createSmlExpressionLambda(result = createSmlNull())
+            testData.toInlinedExpressionOrNull().shouldBeInstanceOf<SmlBoundExpressionLambda>()
         }
     }
 
@@ -198,7 +171,7 @@ class ToInlinedExpressionTest {
         fun `should return inlined value`() {
             val value = createSmlNull()
             val testData = createSmlArgument(value = value)
-            testData.toInlinedExpressionOrNull() shouldBe value.toInlinedExpressionOrNull()
+            testData.toInlinedExpressionOrNull() shouldBe SmlInlinedOtherExpression(value)
         }
     }
 
@@ -209,7 +182,7 @@ class ToInlinedExpressionTest {
         fun `should return inlined expression`() {
             val expression = createSmlNull()
             val testData = createSmlParenthesizedExpression(expression = expression)
-            testData.toInlinedExpressionOrNull() shouldBe expression.toInlinedExpressionOrNull()
+            testData.toInlinedExpressionOrNull() shouldBe SmlInlinedOtherExpression(expression)
         }
     }
 
@@ -221,29 +194,111 @@ class ToInlinedExpressionTest {
         @BeforeEach
         fun reset() {
             compilationUnit = parseHelper
-                .parseResourceWithStdlib("staticAnalysis/partialEvaluation/calls.smltest")
+                .parseResourceWithStdlib("staticAnalysis/partialEvaluation/callsInline.smltest")
                 .shouldNotBeNull()
         }
 
         @Test
-        fun `should evaluate calls of block lambdas`() { // TODO
-            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToBlockLambda")
-            val testData = workflow.testExpression()
+        fun `should evaluate calls of pure block lambdas if traverseImpureCallables is true`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToPureBlockLambda")
 
-            val result = testData.toInlinedExpressionOrNull()
-            result.shouldBeInstanceOf<SmlInt>()
-            result.value shouldBe 1
+            val testData = workflow.testExpression()
+            testData.toInlinedExpressionOrNull(traverseImpureCallables = true)
+                .shouldBeInstanceOf<SmlInlinedOtherExpression>()
+                .expression
+                .shouldBeInstanceOf<SmlInt>()
+                .value
+                .shouldBe(1)
         }
 
         @Test
-        fun `should evaluate calls of expression lambdas`() { // TODO
-            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToExpressionLambda")
-            val testData = workflow.testExpression()
+        fun `should evaluate calls of pure block lambdas if traverseImpureCallables is false`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToPureBlockLambda")
 
-            val result = testData.toInlinedExpressionOrNull()
-            result.shouldBeInstanceOf<SmlInt>()
-            result.value shouldBe 1
+            val testData = workflow.testExpression()
+            testData.toInlinedExpressionOrNull(traverseImpureCallables = false)
+                .shouldBeInstanceOf<SmlInlinedOtherExpression>()
+                .expression
+                .shouldBeInstanceOf<SmlInt>()
+                .value
+                .shouldBe(1)
         }
+
+        @Test
+        fun `should evaluate calls of impure block lambdas if traverseImpureCallables is true`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToImpureBlockLambda")
+
+            val testData = workflow.testExpression()
+            testData.toInlinedExpressionOrNull(traverseImpureCallables = true)
+                .shouldBeInstanceOf<SmlInlinedOtherExpression>()
+                .expression
+                .shouldBeInstanceOf<SmlInt>()
+                .value
+                .shouldBe(1)
+        }
+
+        @Test
+        fun `should not evaluate calls of impure block lambdas if traverseImpureCallables is false`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToImpureBlockLambda")
+
+            val testData = workflow.testExpression()
+            testData
+                .toInlinedExpressionOrNull(traverseImpureCallables = false)
+                .shouldBe(SmlInlinedOtherExpression(testData))
+        }
+
+        @Test
+        fun `should evaluate calls of pure expression lambdas if traverseImpureCallables is true`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToPureExpressionLambda")
+
+            val testData = workflow.testExpression()
+            testData.toInlinedExpressionOrNull(traverseImpureCallables = true)
+                .shouldBeInstanceOf<SmlInlinedOtherExpression>()
+                .expression
+                .shouldBeInstanceOf<SmlInt>()
+                .value
+                .shouldBe(1)
+        }
+
+        @Test
+        fun `should evaluate calls of pure expression lambdas if traverseImpureCallables is false`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToPureExpressionLambda")
+
+            val testData = workflow.testExpression()
+            testData.toInlinedExpressionOrNull(traverseImpureCallables = false)
+                .shouldBeInstanceOf<SmlInlinedOtherExpression>()
+                .expression
+                .shouldBeInstanceOf<SmlInt>()
+                .value
+                .shouldBe(1)
+        }
+
+        @Test
+        fun `should evaluate calls of impure expression lambdas if traverseImpureCallables is true`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToImpureExpressionLambda")
+
+            val testData = workflow.testExpression()
+            testData.toInlinedExpressionOrNull(traverseImpureCallables = true)
+                .shouldBeInstanceOf<SmlInlinedOtherExpression>()
+                .expression
+                .shouldBeInstanceOf<SmlInt>()
+                .value
+                .shouldBe(1)
+        }
+
+        @Test
+        fun `should not evaluate calls of impure expression lambdas if traverseImpureCallables is false`() {
+            val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToImpureExpressionLambda")
+
+            val testData = workflow.testExpression()
+            testData
+                .toInlinedExpressionOrNull(traverseImpureCallables = false)
+                .shouldBe(SmlInlinedOtherExpression(testData))
+        }
+
+
+        // ---------------------------
+
 
         @Test
         fun `should evaluate calls of steps`() { // TODO

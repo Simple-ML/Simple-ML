@@ -1,0 +1,73 @@
+package tests.staticAnalysis.partialEvaluation.callsInline
+
+// Helpers ---------------------------------------------------------------------
+
+fun impureFunction()
+
+step impureStep(param: Int) -> result: Int {
+    impureFunction();
+    yield result = param;
+}
+
+// Tests -----------------------------------------------------------------------
+
+workflow callToPureBlockLambda {
+    val lambda = (a) { yield result = a; };
+    lambda(1);
+}
+
+workflow callToImpureBlockLambda {
+    val lambda = (a) { 
+        yield result = impureStep(a);
+    };
+    lambda(1);
+}
+
+workflow callToPureExpressionLambda {
+    val lambda = (a) -> a;
+    lambda(1);
+}
+
+workflow callToImpureExpressionLambda {
+    val lambda = (a) -> impureStep(a);
+    lambda(1);
+}
+
+// TODO
+
+step myStep1(a: Int) -> result: Int {
+    yield result = a;
+}
+
+workflow callToStep {
+    myStep1(1);
+}
+
+step myStep2(vararg params: Int) -> result: Int {
+    yield result = params;
+}
+
+workflow callToStepWithVariadicParameter {
+    myStep2(1);
+}
+
+workflow parameterAssignedDuringCall {
+    ((a, b) { 
+        val d = b;
+        yield result = ((b, c) -> a + b + c + d)(1, 2);
+    })(3, 4);
+}
+
+step myStep3(param: Int) -> f: () -> (result: Int) {
+    yield f = () -> param;
+}
+
+workflow parameterAssignedDuringCreationOfLambda {
+    myStep3(1)();
+}
+
+workflow lambdaAsParameter {
+    val apply = (f) -> f();
+
+    apply(() -> 1);
+}

@@ -1,34 +1,25 @@
 package de.unibonn.simpleml.staticAnalysis.partialEvaluation
 
 import de.unibonn.simpleml.emf.argumentsOrEmpty
-import de.unibonn.simpleml.emf.closestAncestorOrNull
-import de.unibonn.simpleml.emf.isOptional
-import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlArgument
-import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlBoolean
 import de.unibonn.simpleml.simpleML.SmlCall
-import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlNull
-import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
-import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlReference
-import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
 import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
 import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
-import de.unibonn.simpleml.staticAnalysis.indexOrNull
 import de.unibonn.simpleml.staticAnalysis.linking.parameterOrNull
 import de.unibonn.simpleml.staticAnalysis.linking.uniqueYieldOrNull
 
@@ -40,18 +31,18 @@ import de.unibonn.simpleml.staticAnalysis.linking.uniqueYieldOrNull
  */
 @OptIn(ExperimentalStdlibApi::class)
 fun SmlAbstractExpression.toInlinedExpressionOrNull(traverseImpureCallables: Boolean = false): SmlInlinedExpression? {
-    return doInline.invoke(FrameData(this, emptyMap(), traverseImpureCallables))
+    return inline.invoke(FrameData(this, emptyMap(), traverseImpureCallables))
 }
 
-private data class FrameData<T: SmlAbstractExpression>(
+private data class FrameData<T : SmlAbstractExpression>(
     val current: T,
     val substitutions: ParameterSubstitutions,
     val traverseImpureCallables: Boolean
 )
 
 @OptIn(ExperimentalStdlibApi::class)
-private val doInline =
-    DeepRecursiveFunction<FrameData<SmlAbstractExpression>, SmlInlinedExpression?> { data ->
+private val inline: DeepRecursiveFunction<FrameData<SmlAbstractExpression>, SmlInlinedExpression?>  =
+    DeepRecursiveFunction { data ->
         when (data.current) {
 
             // Base cases
@@ -80,21 +71,21 @@ private val doInline =
             is SmlParenthesizedExpression -> callRecursive(data.copy(current = data.current.expression))
 
             // Complex recursive cases
-            is SmlCall -> doInlineCall.callRecursive(
+            is SmlCall -> inlineCall.callRecursive(
                 FrameData(
                     data.current,
                     data.substitutions,
                     data.traverseImpureCallables
                 )
             )
-            is SmlMemberAccess -> doInlineMemberAccess.callRecursive(
+            is SmlMemberAccess -> inlineMemberAccess.callRecursive(
                 FrameData(
                     data.current,
                     data.substitutions,
                     data.traverseImpureCallables
                 )
             )
-            is SmlReference -> doInlineReference.callRecursive(
+            is SmlReference -> inlineReference.callRecursive(
                 FrameData(
                     data.current,
                     data.substitutions,
@@ -107,85 +98,52 @@ private val doInline =
     }
 
 @OptIn(ExperimentalStdlibApi::class)
-private val doInlineCall =
-    DeepRecursiveFunction<FrameData<SmlCall>, SmlInlinedExpression?> { data ->
-        SmlInlinedOtherExpression(data.current)
+private val inlineCall: DeepRecursiveFunction<FrameData<SmlCall>, SmlInlinedExpression?> =
+    DeepRecursiveFunction { data ->
+        val receiver = inline.callRecursive(
+            FrameData(
+                current = data.current.receiver,
+                substitutions = data.substitutions,
+                traverseImpureCallables = data.traverseImpureCallables
+            )
+        )
+
+        when (receiver) {
+            null -> null
+            is SmlBoundCallable -> {
+                SmlInlinedOtherExpression(data.current) // TODO
+            }
+            else -> SmlInlinedOtherExpression(data.current)
+        }
     }
 
-@OptIn(ExperimentalStdlibApi::class)
-private val doInlineMemberAccess =
-    DeepRecursiveFunction<FrameData<SmlMemberAccess>, SmlInlinedExpression?> { data ->
-        SmlInlinedOtherExpression(data.current)
-    }
-
-@OptIn(ExperimentalStdlibApi::class)
-private val doInlineReference =
-    DeepRecursiveFunction<FrameData<SmlReference>, SmlInlinedExpression?> { data ->
-        SmlInlinedOtherExpression(data.current)
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//private fun SmlCall.simplifyCall(
-//    substitutions: ParameterSubstitutions,
-//    traverseImpureCallables: Boolean
-//): SmlInlinedExpression? {
-//    val simpleReceiver = simplifyReceiver(substitutions, traverseImpureCallables)
-//        ?: return SmlInlinedOtherExpression(this)
-//    val newSubstitutions = buildNewSubstitutions(simpleReceiver, substitutions, traverseImpureCallables)
+//private fun SmlCall.simplifyCall(substitutions: ParameterSubstitutions2): SmlSimplifiedExpression? {
+//    val simpleReceiver = inlineReceiver(substitutions) ?: return null
+//    val newSubstitutions = buildNewSubstitutions(simpleReceiver, substitutions)
 //
 //    return when (simpleReceiver) {
-//        is SmlInlineBlockLambda -> {
-//            SmlInlinedRecord(
+//        is SmlIntermediateBlockLambda -> {
+//            SmlIntermediateRecord(
 //                simpleReceiver.results.map {
-//                    it to it.simplifyAssignee(newSubstitutions, traverseImpureCallables)
+//                    it to it.simplifyAssignee(newSubstitutions)
 //                }
 //            )
 //        }
-//        is SmlInlineExpressionLambda -> simpleReceiver.result.toInlinedExpressionOrNull(
-//            newSubstitutions,
-//            traverseImpureCallables
-//        )
-//        is SmlInlineStep -> {
-//            SmlInlinedRecord(
+//        is SmlIntermediateExpressionLambda -> simpleReceiver.result.simplify(newSubstitutions)
+//        is SmlIntermediateStep -> {
+//            SmlIntermediateRecord(
 //                simpleReceiver.results.map {
-//                    it to it.uniqueYieldOrNull()?.simplifyAssignee(newSubstitutions, traverseImpureCallables)
+//                    it to it.uniqueYieldOrNull()?.simplifyAssignee(newSubstitutions)
 //                }
 //            )
 //        }
 //    }
 //}
-//
-//private fun SmlCall.simplifyReceiver(
-//    substitutions: ParameterSubstitutions,
-//    traverseImpureCallables: Boolean
-//): SmlInlineCallable? {
-//    return when (val simpleReceiver = receiver.toInlinedExpressionOrNull(substitutions, traverseImpureCallables)) {
-//        is SmlInlinedRecord -> simpleReceiver.unwrap() as? SmlInlineCallable
-//        is SmlInlineCallable -> simpleReceiver
-//        else -> return null
-//    }
-//}
-//
+
 //private fun SmlCall.buildNewSubstitutions(
-//    simpleReceiver: SmlInlineCallable,
-//    oldSubstitutions: ParameterSubstitutions,
-//    traverseImpureCallables: Boolean
-//): ParameterSubstitutions {
+//    simpleReceiver: SmlIntermediateCallable,
+//    oldSubstitutions: ParameterSubstitutions2
+//): ParameterSubstitutions2 {
 //
 //    val substitutionsOnCreation = simpleReceiver.substitutionsOnCreation
 //
@@ -193,7 +151,7 @@ private val doInlineReference =
 //        .mapNotNull {
 //            when (val parameter = it.parameterOrNull()) {
 //                null -> null
-//                else -> parameter to it.toInlinedExpressionOrNull(oldSubstitutions, traverseImpureCallables)
+//                else -> parameter to it.simplify(oldSubstitutions)
 //            }
 //        }
 //
@@ -202,7 +160,20 @@ private val doInlineReference =
 //        putAll(substitutionsOnCall)
 //    }
 //}
-//
+
+@OptIn(ExperimentalStdlibApi::class)
+private val inlineMemberAccess: DeepRecursiveFunction<FrameData<SmlMemberAccess>, SmlInlinedExpression?> =
+    DeepRecursiveFunction { data ->
+        SmlInlinedOtherExpression(data.current)
+    }
+
+@OptIn(ExperimentalStdlibApi::class)
+private val inlineReference: DeepRecursiveFunction<FrameData<SmlReference>, SmlInlinedExpression?> =
+    DeepRecursiveFunction { data ->
+        SmlInlinedOtherExpression(data.current)
+    }
+
+
 //private fun SmlMemberAccess.simplifyMemberAccess(
 //    substitutions: ParameterSubstitutions,
 //    traverseImpureCallables: Boolean
