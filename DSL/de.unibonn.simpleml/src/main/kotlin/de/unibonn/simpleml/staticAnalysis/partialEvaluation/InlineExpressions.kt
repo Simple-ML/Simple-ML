@@ -1,5 +1,6 @@
 package de.unibonn.simpleml.staticAnalysis.partialEvaluation
 
+import de.unibonn.simpleml.emf.createSmlReference
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractCallable
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
@@ -10,6 +11,7 @@ import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
+import de.unibonn.simpleml.utils.uniqueOrNull
 
 typealias ParameterSubstitutions = Map<SmlParameter, SmlInlinedExpression?>
 typealias ResultSubstitutions = Map<SmlResult, SmlInlinedExpression?>
@@ -18,7 +20,14 @@ typealias ResultSubstitution = Pair<SmlResult, SmlInlinedExpression?>
 /**
  * Possible result of [toInlinedExpressionOrNull].
  */
-sealed interface SmlInlinedExpression
+sealed interface SmlInlinedExpression {
+
+    /**
+     * Returns an [SmlAbstractExpression] that corresponds to this [SmlInlinedExpression] or `null` if the conversion is
+     * not possible.
+     */
+    fun toSmlAbstractExpressionOrNull(): SmlAbstractExpression?
+}
 
 /**
  * Stores an [SmlAbstractCallable] and the [SmlInlinedExpression]s for its [SmlParameter]s at the time of its creation.
@@ -50,6 +59,10 @@ data class SmlBoundBlockLambda(
     override val substitutionsOnCreation: ParameterSubstitutions
 ) : SmlBoundCallable {
     override val callable = lambda
+
+    override fun toSmlAbstractExpressionOrNull(): SmlAbstractExpression {
+        return lambda
+    }
 }
 
 /**
@@ -60,6 +73,10 @@ data class SmlBoundExpressionLambda(
     override val substitutionsOnCreation: ParameterSubstitutions
 ) : SmlBoundCallable {
     override val callable = lambda
+
+    override fun toSmlAbstractExpressionOrNull(): SmlAbstractExpression {
+        return lambda
+    }
 }
 
 /**
@@ -68,6 +85,10 @@ data class SmlBoundExpressionLambda(
 data class SmlBoundStepReference(val step: SmlStep) : SmlBoundCallable {
     override val callable = step
     override val substitutionsOnCreation: ParameterSubstitutions = emptyMap()
+
+    override fun toSmlAbstractExpressionOrNull(): SmlAbstractExpression {
+        return createSmlReference(callable)
+    }
 }
 
 /**
@@ -110,6 +131,10 @@ class SmlInlinedRecord(substitutions: List<ResultSubstitution>) : SmlInlinedExpr
         }
     }
 
+    override fun toSmlAbstractExpressionOrNull(): SmlAbstractExpression? {
+        return substitutions.values.uniqueOrNull()?.toSmlAbstractExpressionOrNull()
+    }
+
     override fun toString(): String {
         return substitutions.entries.joinToString(prefix = "{", postfix = "}") { (result, value) ->
             "${result.name}=$value"
@@ -120,4 +145,8 @@ class SmlInlinedRecord(substitutions: List<ResultSubstitution>) : SmlInlinedExpr
 /**
  * Catch-all case so any [SmlAbstractExpression] can be represented as a [SmlInlinedExpression].
  */
-data class SmlInlinedOtherExpression(val expression: SmlAbstractExpression) : SmlInlinedExpression
+data class SmlInlinedOtherExpression(val expression: SmlAbstractExpression) : SmlInlinedExpression {
+    override fun toSmlAbstractExpressionOrNull(): SmlAbstractExpression {
+        return expression
+    }
+}

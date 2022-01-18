@@ -38,8 +38,6 @@ import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
-import io.kotest.matchers.booleans.shouldBeFalse
-import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -100,130 +98,96 @@ class ToInlinedExpressionTest {
     inner class BaseCases {
 
         @Test
-        fun `should return this expression for boolean literal`() {
+        fun `should wrap this expression for boolean literal`() {
             val testData = createSmlBoolean(true)
-            testData.toInlinedExpressionOrNull() shouldBe testData
+            testData.toInlinedExpressionOrNull() shouldBe SmlInlinedOtherExpression(testData)
         }
 
         @Test
-        fun `should return this expression for float literal`() {
+        fun `should wrap this expression for float literal`() {
             val testData = createSmlFloat(1.0)
-            testData.toInlinedExpressionOrNull() shouldBe testData
+            testData.toInlinedExpressionOrNull() shouldBe SmlInlinedOtherExpression(testData)
         }
 
         @Test
-        fun `should return this expression for infix operations`() {
+        fun `should wrap this expression for infix operations`() {
             val testData = createSmlInfixOperation(
                 leftOperand = createSmlNull(),
                 operator = SmlInfixOperationOperator.Elvis,
                 rightOperand = createSmlNull()
             )
 
-            testData.toInlinedExpressionOrNull() shouldBe testData
+            testData.toInlinedExpressionOrNull() shouldBe SmlInlinedOtherExpression(testData)
         }
 
         @Test
-        fun `should return this expression for int literal`() {
+        fun `should wrap this expression for int literal`() {
             val testData = createSmlInt(1)
-            testData.toInlinedExpressionOrNull() shouldBe testData
+            testData.toInlinedExpressionOrNull() shouldBe SmlInlinedOtherExpression(testData)
         }
 
         @Test
-        fun `should return this expression for null literal`() {
+        fun `should wrap this expression for null literal`() {
             val testData = createSmlNull()
-            testData.toInlinedExpressionOrNull() shouldBe testData
+            testData.toInlinedExpressionOrNull() shouldBe SmlInlinedOtherExpression(testData)
         }
 
         @Test
-        fun `should return this expression for prefix operation`() {
+        fun `should wrap this expression for prefix operation`() {
             val testData = createSmlPrefixOperation(
                 operator = SmlPrefixOperationOperator.Minus,
                 operand = createSmlInt(1)
             )
 
-            testData.toInlinedExpressionOrNull() shouldBe testData
+            testData.toInlinedExpressionOrNull() shouldBe SmlInlinedOtherExpression(testData)
         }
 
         @Test
-        fun `should return value of for string literal`() {
+        fun `should wrap this expression for string literal`() {
             val testData = createSmlString("test")
-            testData.toInlinedExpressionOrNull() shouldBe testData
+            testData.toInlinedExpressionOrNull() shouldBe SmlInlinedOtherExpression(testData)
         }
 
         @Test
-        fun `should return this expression for template strings`() {
+        fun `should wrap this expression for template strings`() {
             val testData = createSmlTemplateString(
                 stringParts = listOf("start", "end"),
                 templateExpressions = listOf(createSmlNull())
             )
 
-            testData.toInlinedExpressionOrNull() shouldBe testData
+            testData.toInlinedExpressionOrNull() shouldBe SmlInlinedOtherExpression(testData)
         }
 
         @Test
-        fun `should return value of template string start`() {
+        fun `should wrap this expression for template string start`() {
             val testData = factory.createSmlTemplateStringStart().apply { value = "test" }
-            testData.toInlinedExpressionOrNull() shouldBe testData
+            testData.toInlinedExpressionOrNull() shouldBe SmlInlinedOtherExpression(testData)
         }
 
         @Test
-        fun `should return value of template string inner`() {
+        fun `should wrap this expression for template string inner`() {
             val testData = factory.createSmlTemplateStringInner().apply { value = "test" }
-            testData.toInlinedExpressionOrNull() shouldBe testData
+            testData.toInlinedExpressionOrNull() shouldBe SmlInlinedOtherExpression(testData)
         }
 
         @Test
-        fun `should return value of template string end`() {
+        fun `should wrap this expression for template string end`() {
             val testData = factory.createSmlTemplateStringEnd().apply { value = "test" }
-            testData.toInlinedExpressionOrNull() shouldBe testData
+            testData.toInlinedExpressionOrNull() shouldBe SmlInlinedOtherExpression(testData)
         }
 
         @Test
-        fun `should store whether block lambda is pure (pure to true)`() {
-            val testData = pureBlockLambda
+        fun `should wrap block lambda in bound block lambda`() {
+            pureBlockLambda
                 .toInlinedExpressionOrNull()
-                .shouldBeInstanceOf<SmlIntermediateBlockLambda>()
-            testData.isPure.shouldBeTrue()
+                .shouldBeInstanceOf<SmlBoundBlockLambda>()
         }
 
         @Test
-        fun `should store whether block lambda is pure (impure to false)`() {
-            val testData = impureBlockLambda
+        fun `should wrap expression lambda in bound expression lambda`() {
+            pureExpressionLambda
                 .toInlinedExpressionOrNull()
-                .shouldBeInstanceOf<SmlIntermediateBlockLambda>()
-            testData.isPure.shouldBeFalse()
-        }
-
-        @Test
-        fun `should store whether block lambda is pure (recursive to false)`() {
-            val testData = recursiveBlockLambda
-                .toInlinedExpressionOrNull()
-                .shouldBeInstanceOf<SmlIntermediateBlockLambda>()
-            testData.isPure.shouldBeFalse()
-        }
-
-        @Test
-        fun `should store whether expression lambda is pure (pure to true)`() {
-            val testData = pureExpressionLambda
-                .toInlinedExpressionOrNull()
-                .shouldBeInstanceOf<SmlIntermediateExpressionLambda>()
-            testData.isPure.shouldBeTrue()
-        }
-
-        @Test
-        fun `should store whether expression lambda is pure (impure to false)`() {
-            val testData = impureExpressionLambda
-                .toInlinedExpressionOrNull()
-                .shouldBeInstanceOf<SmlIntermediateExpressionLambda>()
-            testData.isPure.shouldBeFalse()
-        }
-
-        @Test
-        fun `should store whether expression lambda is pure (recursive to false)`() {
-            val testData = recursiveExpressionLambda
-                .toInlinedExpressionOrNull()
-                .shouldBeInstanceOf<SmlIntermediateExpressionLambda>()
-            testData.isPure.shouldBeFalse()
+                .shouldBeInstanceOf<SmlBoundExpressionLambda>()
         }
     }
 
@@ -231,10 +195,10 @@ class ToInlinedExpressionTest {
     inner class Argument {
 
         @Test
-        fun `should return inlined value for argument`() {
+        fun `should return inlined value`() {
             val value = createSmlNull()
             val testData = createSmlArgument(value = value)
-            testData.toInlinedExpressionOrNull() shouldBe value
+            testData.toInlinedExpressionOrNull() shouldBe value.toInlinedExpressionOrNull()
         }
     }
 
@@ -242,10 +206,10 @@ class ToInlinedExpressionTest {
     inner class ParenthesizedExpression {
 
         @Test
-        fun `should return inlined value for expression`() {
+        fun `should return inlined expression`() {
             val expression = createSmlNull()
             val testData = createSmlParenthesizedExpression(expression = expression)
-            testData.toInlinedExpressionOrNull() shouldBe expression
+            testData.toInlinedExpressionOrNull() shouldBe expression.toInlinedExpressionOrNull()
         }
     }
 
@@ -546,9 +510,9 @@ class ToInlinedExpressionTest {
         }
 
         @Test
-        fun `should return intermediate step if referenced step is pure`() { // TODO
+        fun `should return inline step if referenced step is pure`() { // TODO
             val testData = createSmlReference(pureStep)
-            testData.toInlinedExpressionOrNull().shouldBeInstanceOf<SmlIntermediateStep>()
+            testData.toInlinedExpressionOrNull().shouldBeInstanceOf<SmlBoundStepReference>()
         }
 
         @Test
