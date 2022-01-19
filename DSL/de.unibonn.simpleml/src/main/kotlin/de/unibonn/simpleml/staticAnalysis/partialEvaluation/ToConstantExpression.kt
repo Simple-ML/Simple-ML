@@ -393,7 +393,6 @@ private fun SmlAbstractAssignee.simplifyAssignee(substitutions: ParameterSubstit
 
 private fun SmlParameter.simplifyParameter(substitutions: ParameterSubstitutions2): SmlSimplifiedExpression? {
     return when {
-        isVariadic -> null
         this in substitutions -> substitutions[this]
         isOptional() -> defaultValue?.simplify(substitutions)
         else -> null
