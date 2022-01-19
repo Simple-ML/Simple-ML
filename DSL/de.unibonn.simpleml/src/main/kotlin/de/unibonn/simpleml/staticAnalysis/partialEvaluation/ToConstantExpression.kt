@@ -31,6 +31,7 @@ import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlFloat
+import de.unibonn.simpleml.simpleML.SmlIndexedAccess
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
@@ -92,6 +93,7 @@ internal fun SmlAbstractExpression.simplify(substitutions: ParameterSubstitution
 
         // Complex recursive cases
         is SmlCall -> simplifyCall(substitutions)
+        is SmlIndexedAccess -> null // TODO
         is SmlMemberAccess -> simplifyMemberAccess(substitutions)
         is SmlReference -> simplifyReference(substitutions)
 

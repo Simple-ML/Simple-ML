@@ -44,6 +44,7 @@ import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlImportAlias
+import de.unibonn.simpleml.simpleML.SmlIndexedAccess
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
@@ -871,6 +872,20 @@ class SimpleMLFormatter : AbstractFormatter2() {
 
                 // EObject "result"
                 doc.formatObject(obj.result, oneSpace, null)
+            }
+            is SmlIndexedAccess -> {
+
+                // EObject "receiver"
+                doc.formatObject(obj.receiver, null, noSpace)
+
+                // Keyword "["
+                doc.formatKeyword(obj, "[", noSpace, noSpace)
+
+                // EObject "index"
+                doc.formatObject(obj.index, noSpace, noSpace)
+
+                // Keyword "]"
+                doc.formatKeyword(obj, "]", noSpace, null)
             }
             is SmlInfixOperation -> {
 
