@@ -1164,6 +1164,15 @@ class ToConstantExpressionTest {
         }
 
         @Test
+        fun `should evaluate calls of steps with indexed variadic parameter`() {
+            val workflow = compilationUnit
+                .findUniqueDeclarationOrFail<SmlWorkflow>("callToStepWithIndexedVariadicParameter")
+            val testData = workflow.expectedExpression()
+
+            testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
+        }
+
+        @Test
         fun `should substitute parameters that were bound at call of a lambda`() {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>(
                 "parameterAssignedDuringCall"

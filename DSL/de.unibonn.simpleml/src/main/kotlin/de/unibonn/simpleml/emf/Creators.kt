@@ -48,6 +48,7 @@ import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlImportAlias
+import de.unibonn.simpleml.simpleML.SmlIndexedAccess
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
@@ -807,6 +808,17 @@ private fun createSmlImportAlias(name: String?): SmlImportAlias? {
 
     return factory.createSmlImportAlias().apply {
         this.name = name
+    }
+}
+
+/**
+ * Returns a new object of class [SmlIndexedAccess].
+ */
+fun createSmlIndexedAccess(
+    index: SmlAbstractExpression
+): SmlIndexedAccess {
+    return factory.createSmlIndexedAccess().apply {
+        this.index = index
     }
 }
 

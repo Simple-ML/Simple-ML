@@ -89,6 +89,17 @@ class SmlIntermediateRecord(
     }
 }
 
+data class SmlIntermediateVariadicArguments(
+    private val arguments: List<SmlSimplifiedExpression?>
+) : SmlSimplifiedExpression {
+    fun getArgumentByIndexOrNull(index: Int?): SmlSimplifiedExpression? {
+        if (index == null) {
+            return null
+        }
+        return arguments.getOrNull(index)
+    }
+}
+
 sealed interface SmlConstantExpression : SmlSimplifiedExpression
 
 data class SmlConstantBoolean(val value: Boolean) : SmlConstantExpression {

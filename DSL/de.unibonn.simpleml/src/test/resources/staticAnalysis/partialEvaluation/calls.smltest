@@ -26,6 +26,14 @@ workflow callToStepWithVariadicParameter {
     myStep2(1);
 }
 
+step myStep3(vararg params: Int) -> result: Int {
+    yield result = params[0];
+}
+
+workflow callToStepWithIndexedVariadicParameter {
+    myStep3(1);
+}
+
 workflow parameterAssignedDuringCall {
     ((a, b) { 
         val d = b;
@@ -33,12 +41,12 @@ workflow parameterAssignedDuringCall {
     })(3, 4);
 }
 
-step myStep3(param: Int) -> f: () -> (result: Int) {
+step myStep4(param: Int) -> f: () -> (result: Int) {
     yield f = () -> param;
 }
 
 workflow parameterAssignedDuringCreationOfLambda {
-    myStep3(1)();
+    myStep4(1)();
 }
 
 workflow lambdaAsParameter {

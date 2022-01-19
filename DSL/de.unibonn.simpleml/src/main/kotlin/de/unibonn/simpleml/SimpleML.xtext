@@ -431,6 +431,7 @@ SmlUnaryOperation returns SmlAbstractExpression
 SmlChainedExpression returns SmlAbstractExpression
     : SmlPrimaryExpression =>(
           {SmlCall.receiver=current}          typeArgumentList=SmlTypeArgumentList? argumentList=SmlCallArgumentList
+        | {SmlIndexedAccess.receiver=current} '[' index=SmlExpression ']'
         | {SmlMemberAccess.receiver=current}  (nullSafe?='?')? '.' member=SmlReference
     )*
     ;

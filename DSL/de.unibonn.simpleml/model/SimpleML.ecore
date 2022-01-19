@@ -213,6 +213,9 @@
         <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" eType="#//SmlParameter" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//SmlAbstractExpression" containment="true" />
     </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SmlIndexedAccess" eSuperTypes="#//SmlAbstractChainedExpression">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//SmlAbstractExpression" containment="true" />
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlMemberAccess" eSuperTypes="#//SmlAbstractChainedExpression">
         <eStructuralFeatures xsi:type="ecore:EReference" name="member" eType="#//SmlReference" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="nullSafe" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" />

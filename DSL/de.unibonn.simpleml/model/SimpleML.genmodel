@@ -214,6 +214,9 @@
             <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlArgument/parameter" />
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlArgument/value" />
         </genClasses>
+        <genClasses ecoreClass="SimpleML.ecore#//SmlIndexedAccess">
+            <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlIndexedAccess/index" />
+        </genClasses>
         <genClasses ecoreClass="SimpleML.ecore#//SmlMemberAccess">
             <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlMemberAccess/member" />
             <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlMemberAccess/nullSafe" />
