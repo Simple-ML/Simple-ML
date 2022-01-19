@@ -1,9 +1,9 @@
 package de.unibonn.simpleml.staticAnalysis
 
 import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
-import de.unibonn.simpleml.emf.memberDeclarationOrNull
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
+import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractCallable
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
@@ -17,12 +17,11 @@ import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
-import de.unibonn.simpleml.staticAnalysis.dataflow.SmlBoundCallable
-import de.unibonn.simpleml.staticAnalysis.dataflow.SmlBoundOtherExpression
-import de.unibonn.simpleml.staticAnalysis.dataflow.toSourceExpressionOrNull
+import org.eclipse.emf.ecore.EObject
 
 fun SmlCall.callableOrNull(): SmlAbstractCallable? {
     return when (val maybeCallable = this.maybeCallable()) {
@@ -38,59 +37,59 @@ sealed interface CallableResult {
 }
 
 fun SmlCall.maybeCallable(): CallableResult {
-    println(receiver.toSourceExpressionOrNull())
-    return when (val source = receiver.toSourceExpressionOrNull()) {
-        null -> CallableResult.Unresolvable
-        is SmlBoundCallable -> CallableResult.Callable(source.callable)
-        is SmlBoundOtherExpression -> when (val expression = source.expression) {
-            is SmlReference -> when (val declaration = expression.declaration) {
-                is SmlAbstractCallable -> CallableResult.Callable(declaration)
+//    println(receiver.toSourceExpressionOrNull())
+//    return when (val source = receiver.toSourceExpressionOrNull()) {
+//        null -> CallableResult.Unresolvable
+//        is SmlBoundCallable -> CallableResult.Callable(source.callable)
+//        is SmlBoundOtherExpression -> when (val expression = source.expression) {
+//            is SmlReference -> when (val declaration = expression.declaration) {
+//                is SmlAbstractCallable -> CallableResult.Callable(declaration)
+//                else -> CallableResult.NotCallable
+//            }
+//            is SmlMemberAccess -> when (val declaration = expression.memberDeclarationOrNull()) {
+//                is SmlAbstractCallable -> CallableResult.Callable(declaration)
+//                else -> CallableResult.NotCallable
+//            }
+//            else -> CallableResult.NotCallable
+//        }
+//        else -> CallableResult.NotCallable
+//    }
+
+    val visited = mutableSetOf<EObject>()
+    var current: EObject? = this.receiver
+    while (current != null && current !in visited) {
+        visited += current
+
+        current = when {
+            current.eIsProxy() -> return CallableResult.Unresolvable
+            current is SmlAbstractCallable -> return CallableResult.Callable(current)
+            current is SmlCall -> {
+                val results = current.resultsOrNull()
+                if (results == null || results.size != 1) {
+                    return CallableResult.Unresolvable
+                }
+
+                results.first()
+            }
+            current is SmlAbstractAssignee -> current.assignedOrNull()
+            current is SmlMemberAccess -> current.member.declaration
+            current is SmlParameter -> return when (val typeOrNull = current.type) {
+                null -> CallableResult.Unresolvable
+                is SmlCallableType -> CallableResult.Callable(typeOrNull)
                 else -> CallableResult.NotCallable
             }
-            is SmlMemberAccess -> when (val declaration = expression.memberDeclarationOrNull()) {
-                is SmlAbstractCallable -> CallableResult.Callable(declaration)
+            current is SmlParenthesizedExpression -> current.expression
+            current is SmlReference -> current.declaration
+            current is SmlResult -> return when (val typeOrNull = current.type) {
+                null -> CallableResult.Unresolvable
+                is SmlCallableType -> CallableResult.Callable(typeOrNull)
                 else -> CallableResult.NotCallable
             }
-            else -> CallableResult.NotCallable
+            else -> return CallableResult.NotCallable
         }
-        else -> CallableResult.NotCallable
     }
 
-//    val visited = mutableSetOf<EObject>()
-//    var current: EObject? = this.receiver
-//    while (current != null && current !in visited) {
-//        visited += current
-//
-//        current = when {
-//            current.eIsProxy() -> return CallableResult.Unresolvable
-//            current is SmlAbstractCallable -> return CallableResult.Callable(current)
-//            current is SmlCall -> {
-//                val results = current.resultsOrNull()
-//                if (results == null || results.size != 1) {
-//                    return CallableResult.Unresolvable
-//                }
-//
-//                results.first()
-//            }
-//            current is SmlAbstractAssignee -> current.assignedOrNull()
-//            current is SmlMemberAccess -> current.member.declaration
-//            current is SmlParameter -> return when (val typeOrNull = current.type) {
-//                null -> CallableResult.Unresolvable
-//                is SmlCallableType -> CallableResult.Callable(typeOrNull)
-//                else -> CallableResult.NotCallable
-//            }
-//            current is SmlParenthesizedExpression -> current.expression
-//            current is SmlReference -> current.declaration
-//            current is SmlResult -> return when (val typeOrNull = current.type) {
-//                null -> CallableResult.Unresolvable
-//                is SmlCallableType -> CallableResult.Callable(typeOrNull)
-//                else -> CallableResult.NotCallable
-//            }
-//            else -> return CallableResult.NotCallable
-//        }
-//    }
-//
-//    return CallableResult.Unresolvable
+    return CallableResult.Unresolvable
 }
 
 /**
