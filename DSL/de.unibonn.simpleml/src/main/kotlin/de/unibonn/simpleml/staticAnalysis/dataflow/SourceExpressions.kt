@@ -146,7 +146,7 @@ class SmlResultRecord(resultSubstitutions: List<ResultSubstitution>) : SmlSource
 /**
  * Catch-all case so any [SmlAbstractExpression] can be represented as a [SmlSourceExpression].
  */
-data class SmlBoundExpression(
+data class SmlBoundOtherExpression(
     val expression: SmlAbstractExpression,
     override val substitutionsOnCreation: ParameterSubstitutions
 ) : SmlSourceExpression {

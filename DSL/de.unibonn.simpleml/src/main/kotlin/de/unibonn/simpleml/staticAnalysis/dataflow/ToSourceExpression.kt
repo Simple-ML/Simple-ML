@@ -73,17 +73,17 @@ private val inline: DeepRecursiveFunction<FrameData<SmlAbstractExpression>, SmlS
         when (data.current) {
 
             // Base cases
-            is SmlBoolean -> SmlBoundExpression(data.current, emptyMap())
-            is SmlFloat -> SmlBoundExpression(data.current, emptyMap())
-            is SmlInt -> SmlBoundExpression(data.current, emptyMap())
-            is SmlNull -> SmlBoundExpression(data.current, emptyMap())
-            is SmlString -> SmlBoundExpression(data.current, emptyMap())
-            is SmlTemplateStringStart -> SmlBoundExpression(data.current, emptyMap())
-            is SmlTemplateStringInner -> SmlBoundExpression(data.current, emptyMap())
-            is SmlTemplateStringEnd -> SmlBoundExpression(data.current, emptyMap())
-            is SmlInfixOperation -> SmlBoundExpression(data.current, data.substitutions)
-            is SmlPrefixOperation -> SmlBoundExpression(data.current, data.substitutions)
-            is SmlTemplateString -> SmlBoundExpression(data.current, data.substitutions)
+            is SmlBoolean -> SmlBoundOtherExpression(data.current, emptyMap())
+            is SmlFloat -> SmlBoundOtherExpression(data.current, emptyMap())
+            is SmlInt -> SmlBoundOtherExpression(data.current, emptyMap())
+            is SmlNull -> SmlBoundOtherExpression(data.current, emptyMap())
+            is SmlString -> SmlBoundOtherExpression(data.current, emptyMap())
+            is SmlTemplateStringStart -> SmlBoundOtherExpression(data.current, emptyMap())
+            is SmlTemplateStringInner -> SmlBoundOtherExpression(data.current, emptyMap())
+            is SmlTemplateStringEnd -> SmlBoundOtherExpression(data.current, emptyMap())
+            is SmlInfixOperation -> SmlBoundOtherExpression(data.current, data.substitutions)
+            is SmlPrefixOperation -> SmlBoundOtherExpression(data.current, data.substitutions)
+            is SmlTemplateString -> SmlBoundOtherExpression(data.current, data.substitutions)
             is SmlBlockLambda -> SmlBoundBlockLambda(
                 lambda = data.current,
                 substitutionsOnCreation = data.substitutions
@@ -172,7 +172,7 @@ private val inlineCall: DeepRecursiveFunction<FrameData<SmlCall>, SmlSourceExpre
 
                 // Check purity
                 if (data.stopAtImpureCall && !receiver.callable.isPureCallable()) {
-                    return@DeepRecursiveFunction SmlBoundExpression(data.current, data.substitutions)
+                    return@DeepRecursiveFunction SmlBoundOtherExpression(data.current, data.substitutions)
                 }
 
                 // TODO: must never traverse recursive stuff -> pass visited elements in data frame
@@ -220,7 +220,7 @@ private val inlineCall: DeepRecursiveFunction<FrameData<SmlCall>, SmlSourceExpre
                     }
                 }
             }
-            else -> SmlBoundExpression(data.current, data.substitutions)
+            else -> SmlBoundOtherExpression(data.current, data.substitutions)
         }
     }
 
@@ -274,7 +274,7 @@ private val inlineMemberAccess: DeepRecursiveFunction<FrameData<SmlMemberAccess>
         when (receiver) {
             null -> null
             is SmlResultRecord -> receiver.getSubstitutionByReferenceOrNull(data.current.member)
-            else -> SmlBoundExpression(data.current, data.substitutions)
+            else -> SmlBoundOtherExpression(data.current, data.substitutions)
         }
     }
 
@@ -305,7 +305,7 @@ private val inlineReference: DeepRecursiveFunction<FrameData<SmlReference>, SmlS
                 )
             }
             declaration is SmlStep -> SmlBoundStepReference(step = declaration)
-            else -> SmlBoundExpression(data.current, data.substitutions)
+            else -> SmlBoundOtherExpression(data.current, data.substitutions)
         }
     }
 

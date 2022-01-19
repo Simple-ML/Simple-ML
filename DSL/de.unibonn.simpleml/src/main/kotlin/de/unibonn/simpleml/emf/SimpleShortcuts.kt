@@ -15,6 +15,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractLambda
 import de.unibonn.simpleml.simpleML.SmlAbstractLocalVariable
+import de.unibonn.simpleml.simpleML.SmlAbstractNamedTypeDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlAbstractPackageMember
 import de.unibonn.simpleml.simpleML.SmlAbstractProtocolTerm
@@ -38,6 +39,8 @@ import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
+import de.unibonn.simpleml.simpleML.SmlMemberAccess
+import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
@@ -262,6 +265,18 @@ fun SmlImport.importedNameOrNull(): String? {
         }
         else -> aliasNameOrNull()
     }
+}
+
+// SmlMemberAccess ---------------------------------------------------------------------------------
+
+fun SmlMemberAccess.memberDeclarationOrNull(): SmlAbstractDeclaration? {
+    return this.member?.declaration
+}
+
+// SmlMemberType -----------------------------------------------------------------------------------
+
+fun SmlMemberType.memberDeclarationOrNull(): SmlAbstractNamedTypeDeclaration? {
+    return this.member?.declaration
 }
 
 // SmlNamedType ------------------------------------------------------------------------------------

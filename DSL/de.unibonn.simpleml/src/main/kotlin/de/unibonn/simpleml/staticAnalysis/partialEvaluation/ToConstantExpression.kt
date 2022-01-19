@@ -309,13 +309,13 @@ private fun SmlCall.buildNewSubstitutions(
     simpleReceiver: SmlIntermediateCallable,
     oldSubstitutions: ParameterSubstitutions2
 ): ParameterSubstitutions2 {
-
     val substitutionsOnCreation = simpleReceiver.substitutionsOnCreation
-
     val substitutionsOnCall = argumentsOrEmpty()
         .mapNotNull {
-            when (val parameter = it.parameterOrNull()) {
-                null -> null
+            val parameter = it.parameterOrNull()
+            when  {
+                parameter == null -> null
+                parameter.isVariadic -> null
                 else -> parameter to it.simplify(oldSubstitutions)
             }
         }

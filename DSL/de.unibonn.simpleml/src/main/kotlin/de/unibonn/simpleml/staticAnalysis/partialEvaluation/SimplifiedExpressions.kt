@@ -14,7 +14,6 @@ import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
-import de.unibonn.simpleml.staticAnalysis.isPureCallable
 
 typealias ParameterSubstitutions2 = Map<SmlParameter, SmlSimplifiedExpression?>
 
@@ -28,9 +27,6 @@ sealed interface SmlIntermediateCallable : SmlIntermediateExpression {
 
     val parameters: List<SmlParameter>
         get() = callable.parametersOrEmpty()
-
-    val isPure: Boolean
-        get() = callable.isPureCallable()
 }
 
 data class SmlIntermediateBlockLambda(
@@ -92,8 +88,6 @@ class SmlIntermediateRecord(
         }
     }
 }
-
-data class SmlIntermediateOtherExpression(val expression: SmlAbstractExpression) : SmlIntermediateExpression
 
 sealed interface SmlConstantExpression : SmlSimplifiedExpression
 

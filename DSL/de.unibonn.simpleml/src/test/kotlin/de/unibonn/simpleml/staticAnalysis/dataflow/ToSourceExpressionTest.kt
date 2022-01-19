@@ -64,13 +64,13 @@ class ToSourceExpressionTest {
         @Test
         fun `should wrap this expression for boolean literal`() {
             val testData = createSmlBoolean(true)
-            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundOtherExpression(testData, emptyMap())
         }
 
         @Test
         fun `should wrap this expression for float literal`() {
             val testData = createSmlFloat(1.0)
-            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundOtherExpression(testData, emptyMap())
         }
 
         @Test
@@ -81,19 +81,19 @@ class ToSourceExpressionTest {
                 rightOperand = createSmlNull()
             )
 
-            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundOtherExpression(testData, emptyMap())
         }
 
         @Test
         fun `should wrap this expression for int literal`() {
             val testData = createSmlInt(1)
-            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundOtherExpression(testData, emptyMap())
         }
 
         @Test
         fun `should wrap this expression for null literal`() {
             val testData = createSmlNull()
-            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundOtherExpression(testData, emptyMap())
         }
 
         @Test
@@ -103,13 +103,13 @@ class ToSourceExpressionTest {
                 operand = createSmlInt(1)
             )
 
-            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundOtherExpression(testData, emptyMap())
         }
 
         @Test
         fun `should wrap this expression for string literal`() {
             val testData = createSmlString("test")
-            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundOtherExpression(testData, emptyMap())
         }
 
         @Test
@@ -119,25 +119,25 @@ class ToSourceExpressionTest {
                 templateExpressions = listOf(createSmlNull())
             )
 
-            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundOtherExpression(testData, emptyMap())
         }
 
         @Test
         fun `should wrap this expression for template string start`() {
             val testData = factory.createSmlTemplateStringStart().apply { value = "test" }
-            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundOtherExpression(testData, emptyMap())
         }
 
         @Test
         fun `should wrap this expression for template string inner`() {
             val testData = factory.createSmlTemplateStringInner().apply { value = "test" }
-            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundOtherExpression(testData, emptyMap())
         }
 
         @Test
         fun `should wrap this expression for template string end`() {
             val testData = factory.createSmlTemplateStringEnd().apply { value = "test" }
-            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundOtherExpression(testData, emptyMap())
         }
 
         @Test
@@ -166,7 +166,7 @@ class ToSourceExpressionTest {
         fun `should return inlined value`() {
             val value = createSmlNull()
             val testData = createSmlArgument(value = value)
-            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(value, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundOtherExpression(value, emptyMap())
         }
     }
 
@@ -177,7 +177,7 @@ class ToSourceExpressionTest {
         fun `should return inlined expression`() {
             val expression = createSmlNull()
             val testData = createSmlParenthesizedExpression(expression = expression)
-            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(expression, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundOtherExpression(expression, emptyMap())
         }
     }
 
@@ -199,7 +199,7 @@ class ToSourceExpressionTest {
 
             val testData = workflow.testExpression()
             testData.toSourceExpressionOrNull(stopAtImpureCall = false)
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
                 .value
@@ -212,7 +212,7 @@ class ToSourceExpressionTest {
 
             val testData = workflow.testExpression()
             testData.toSourceExpressionOrNull(stopAtImpureCall = true)
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
                 .value
@@ -225,7 +225,7 @@ class ToSourceExpressionTest {
 
             val testData = workflow.testExpression()
             testData.toSourceExpressionOrNull(stopAtImpureCall = false)
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
                 .value
@@ -239,7 +239,7 @@ class ToSourceExpressionTest {
             val testData = workflow.testExpression()
             testData
                 .toSourceExpressionOrNull(stopAtImpureCall = true)
-                .shouldBe(SmlBoundExpression(testData, emptyMap()))
+                .shouldBe(SmlBoundOtherExpression(testData, emptyMap()))
         }
 
         @Test
@@ -248,7 +248,7 @@ class ToSourceExpressionTest {
 
             val testData = workflow.testExpression()
             testData.toSourceExpressionOrNull(stopAtImpureCall = false)
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
                 .value
@@ -261,7 +261,7 @@ class ToSourceExpressionTest {
 
             val testData = workflow.testExpression()
             testData.toSourceExpressionOrNull(stopAtImpureCall = true)
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
                 .value
@@ -274,7 +274,7 @@ class ToSourceExpressionTest {
 
             val testData = workflow.testExpression()
             testData.toSourceExpressionOrNull(stopAtImpureCall = false)
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
                 .value
@@ -288,7 +288,7 @@ class ToSourceExpressionTest {
             val testData = workflow.testExpression()
             testData
                 .toSourceExpressionOrNull(stopAtImpureCall = true)
-                .shouldBe(SmlBoundExpression(testData, emptyMap()))
+                .shouldBe(SmlBoundOtherExpression(testData, emptyMap()))
         }
 
         @Test
@@ -297,7 +297,7 @@ class ToSourceExpressionTest {
 
             val testData = workflow.testExpression()
             testData.toSourceExpressionOrNull(stopAtImpureCall = false)
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
                 .value
@@ -310,7 +310,7 @@ class ToSourceExpressionTest {
 
             val testData = workflow.testExpression()
             testData.toSourceExpressionOrNull(stopAtImpureCall = true)
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
                 .value
@@ -323,7 +323,7 @@ class ToSourceExpressionTest {
 
             val testData = workflow.testExpression()
             testData.toSourceExpressionOrNull(stopAtImpureCall = false)
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
                 .value
@@ -337,7 +337,7 @@ class ToSourceExpressionTest {
             val testData = workflow.testExpression()
             testData
                 .toSourceExpressionOrNull(stopAtImpureCall = true)
-                .shouldBe(SmlBoundExpression(testData, emptyMap()))
+                .shouldBe(SmlBoundOtherExpression(testData, emptyMap()))
         }
 
         @Test
@@ -346,7 +346,7 @@ class ToSourceExpressionTest {
 
             val testData = workflow.testExpression()
             testData.toSourceExpressionOrNull()
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
                 .value
@@ -361,7 +361,7 @@ class ToSourceExpressionTest {
             val parameter = workflow.findUniqueDeclarationOrFail<SmlParameter>("a")
 
             val testData = workflow.testExpression()
-            val result = testData.toSourceExpressionOrNull().shouldBeInstanceOf<SmlBoundExpression>()
+            val result = testData.toSourceExpressionOrNull().shouldBeInstanceOf<SmlBoundOtherExpression>()
 
             val expression = result.expression.shouldBeInstanceOf<SmlPrefixOperation>()
             expression.operator shouldBe SmlPrefixOperationOperator.Minus.operator
@@ -381,7 +381,7 @@ class ToSourceExpressionTest {
             val parameter = workflow.findUniqueDeclarationOrFail<SmlParameter>("a")
 
             val testData = workflow.testExpression()
-            val result = testData.toSourceExpressionOrNull().shouldBeInstanceOf<SmlBoundExpression>()
+            val result = testData.toSourceExpressionOrNull().shouldBeInstanceOf<SmlBoundOtherExpression>()
 
             val expression = result.expression.shouldBeInstanceOf<SmlPrefixOperation>()
             expression.operator shouldBe SmlPrefixOperationOperator.Minus.operator
@@ -401,7 +401,7 @@ class ToSourceExpressionTest {
             val testData = workflow.testExpression()
 
             testData.toSourceExpressionOrNull()
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
                 .value
@@ -414,7 +414,7 @@ class ToSourceExpressionTest {
             val testData = workflow.testExpression()
 
             testData.toSourceExpressionOrNull()
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
                 .value
@@ -424,7 +424,7 @@ class ToSourceExpressionTest {
         @Test
         fun `should return call if receiver is not callable`() {
             val testData = createSmlCall(receiver = createSmlNull())
-            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundOtherExpression(testData, emptyMap())
         }
 
         @Test
@@ -447,7 +447,7 @@ class ToSourceExpressionTest {
             val testData = workflow.testExpression()
 
             testData.toSourceExpressionOrNull()
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
                 .value
@@ -469,7 +469,7 @@ class ToSourceExpressionTest {
         @Test
         fun `should return member access if receiver is not call result`() {
             val testData = createSmlMemberAccess(receiver = createSmlNull(), member = factory.createSmlReference())
-            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundOtherExpression(testData, emptyMap())
         }
 
         @Test
@@ -497,7 +497,7 @@ class ToSourceExpressionTest {
             )
 
             testData.toSourceExpressionOrNull()
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlNull>()
         }
@@ -522,7 +522,7 @@ class ToSourceExpressionTest {
             )
 
             testData.toSourceExpressionOrNull()
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlNull>()
         }
@@ -554,7 +554,7 @@ class ToSourceExpressionTest {
             val testData = workflow.testExpression()
 
             testData.toSourceExpressionOrNull()
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
                 .value
@@ -585,7 +585,7 @@ class ToSourceExpressionTest {
             val testData = workflow.testExpression()
 
             testData.toSourceExpressionOrNull()
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
                 .value
@@ -602,7 +602,7 @@ class ToSourceExpressionTest {
             val testData = workflow.testExpression()
 
             testData.toSourceExpressionOrNull()
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
                 .value
@@ -621,7 +621,7 @@ class ToSourceExpressionTest {
             val testData = workflow.testExpression()
 
             testData.toSourceExpressionOrNull()
-                .shouldBeInstanceOf<SmlBoundExpression>()
+                .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
                 .value
@@ -634,7 +634,7 @@ class ToSourceExpressionTest {
                 declaration = createSmlAnnotation("TestAnnotation")
             )
 
-            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundOtherExpression(testData, emptyMap())
         }
     }
 }
