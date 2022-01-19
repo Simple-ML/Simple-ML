@@ -1192,6 +1192,15 @@ class ToConstantExpressionTest {
         }
 
         @Test
+        fun `should evaluate calls with lambda as parameter and another parameter`() {
+            val workflow = compilationUnit
+                .findUniqueDeclarationOrFail<SmlWorkflow>("lambdaAsParameterWithAnotherParameter")
+            val testData = workflow.testExpression()
+
+            testData.toConstantExpressionOrNull() shouldBe SmlConstantInt(1)
+        }
+
+        @Test
         fun `should return null otherwise`() {
             val testData = createSmlCall(receiver = createSmlNull())
             testData.toConstantExpressionOrNull().shouldBeNull()

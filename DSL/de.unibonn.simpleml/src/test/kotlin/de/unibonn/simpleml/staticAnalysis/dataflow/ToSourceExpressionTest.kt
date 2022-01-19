@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.staticAnalysis.partialEvaluation
+package de.unibonn.simpleml.staticAnalysis.dataflow
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator
@@ -36,6 +36,7 @@ import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlWorkflow
+import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantEnumVariant
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
@@ -53,7 +54,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(InjectionExtension::class)
 @InjectWith(SimpleMLInjectorProvider::class)
-class ToInlinedExpressionTest {
+class ToSourceExpressionTest {
 
     @Inject
     private lateinit var parseHelper: ParseHelper
@@ -66,13 +67,13 @@ class ToInlinedExpressionTest {
         @Test
         fun `should wrap this expression for boolean literal`() {
             val testData = createSmlBoolean(true)
-            testData.toInlinedExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
         }
 
         @Test
         fun `should wrap this expression for float literal`() {
             val testData = createSmlFloat(1.0)
-            testData.toInlinedExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
         }
 
         @Test
@@ -83,19 +84,19 @@ class ToInlinedExpressionTest {
                 rightOperand = createSmlNull()
             )
 
-            testData.toInlinedExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
         }
 
         @Test
         fun `should wrap this expression for int literal`() {
             val testData = createSmlInt(1)
-            testData.toInlinedExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
         }
 
         @Test
         fun `should wrap this expression for null literal`() {
             val testData = createSmlNull()
-            testData.toInlinedExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
         }
 
         @Test
@@ -105,13 +106,13 @@ class ToInlinedExpressionTest {
                 operand = createSmlInt(1)
             )
 
-            testData.toInlinedExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
         }
 
         @Test
         fun `should wrap this expression for string literal`() {
             val testData = createSmlString("test")
-            testData.toInlinedExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
         }
 
         @Test
@@ -121,31 +122,31 @@ class ToInlinedExpressionTest {
                 templateExpressions = listOf(createSmlNull())
             )
 
-            testData.toInlinedExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
         }
 
         @Test
         fun `should wrap this expression for template string start`() {
             val testData = factory.createSmlTemplateStringStart().apply { value = "test" }
-            testData.toInlinedExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
         }
 
         @Test
         fun `should wrap this expression for template string inner`() {
             val testData = factory.createSmlTemplateStringInner().apply { value = "test" }
-            testData.toInlinedExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
         }
 
         @Test
         fun `should wrap this expression for template string end`() {
             val testData = factory.createSmlTemplateStringEnd().apply { value = "test" }
-            testData.toInlinedExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
         }
 
         @Test
         fun `should wrap block lambda in bound block lambda`() {
             val testData = createSmlBlockLambda { }
-            testData.toInlinedExpressionOrNull() shouldBe SmlBoundBlockLambda(
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundBlockLambda(
                 lambda = testData,
                 substitutionsOnCreation = emptyMap()
             )
@@ -154,7 +155,7 @@ class ToInlinedExpressionTest {
         @Test
         fun `should wrap expression lambda in bound expression lambda`() {
             val testData = createSmlExpressionLambda(result = createSmlNull())
-            testData.toInlinedExpressionOrNull() shouldBe SmlBoundExpressionLambda(
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpressionLambda(
                 lambda = testData,
                 substitutionsOnCreation = emptyMap()
             )
@@ -168,7 +169,7 @@ class ToInlinedExpressionTest {
         fun `should return inlined value`() {
             val value = createSmlNull()
             val testData = createSmlArgument(value = value)
-            testData.toInlinedExpressionOrNull() shouldBe SmlBoundExpression(value, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(value, emptyMap())
         }
     }
 
@@ -179,7 +180,7 @@ class ToInlinedExpressionTest {
         fun `should return inlined expression`() {
             val expression = createSmlNull()
             val testData = createSmlParenthesizedExpression(expression = expression)
-            testData.toInlinedExpressionOrNull() shouldBe SmlBoundExpression(expression, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(expression, emptyMap())
         }
     }
 
@@ -200,7 +201,7 @@ class ToInlinedExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToPureBlockLambda")
 
             val testData = workflow.testExpression()
-            testData.toInlinedExpressionOrNull(traverseImpureCallables = true)
+            testData.toSourceExpressionOrNull(traverseImpureCallables = true)
                 .shouldBeInstanceOf<SmlBoundExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -213,7 +214,7 @@ class ToInlinedExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToPureBlockLambda")
 
             val testData = workflow.testExpression()
-            testData.toInlinedExpressionOrNull(traverseImpureCallables = false)
+            testData.toSourceExpressionOrNull(traverseImpureCallables = false)
                 .shouldBeInstanceOf<SmlBoundExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -226,7 +227,7 @@ class ToInlinedExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToImpureBlockLambda")
 
             val testData = workflow.testExpression()
-            testData.toInlinedExpressionOrNull(traverseImpureCallables = true)
+            testData.toSourceExpressionOrNull(traverseImpureCallables = true)
                 .shouldBeInstanceOf<SmlBoundExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -240,7 +241,7 @@ class ToInlinedExpressionTest {
 
             val testData = workflow.testExpression()
             testData
-                .toInlinedExpressionOrNull(traverseImpureCallables = false)
+                .toSourceExpressionOrNull(traverseImpureCallables = false)
                 .shouldBe(SmlBoundExpression(testData, emptyMap()))
         }
 
@@ -249,7 +250,7 @@ class ToInlinedExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToPureExpressionLambda")
 
             val testData = workflow.testExpression()
-            testData.toInlinedExpressionOrNull(traverseImpureCallables = true)
+            testData.toSourceExpressionOrNull(traverseImpureCallables = true)
                 .shouldBeInstanceOf<SmlBoundExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -262,7 +263,7 @@ class ToInlinedExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToPureExpressionLambda")
 
             val testData = workflow.testExpression()
-            testData.toInlinedExpressionOrNull(traverseImpureCallables = false)
+            testData.toSourceExpressionOrNull(traverseImpureCallables = false)
                 .shouldBeInstanceOf<SmlBoundExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -275,7 +276,7 @@ class ToInlinedExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToImpureExpressionLambda")
 
             val testData = workflow.testExpression()
-            testData.toInlinedExpressionOrNull(traverseImpureCallables = true)
+            testData.toSourceExpressionOrNull(traverseImpureCallables = true)
                 .shouldBeInstanceOf<SmlBoundExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -289,7 +290,7 @@ class ToInlinedExpressionTest {
 
             val testData = workflow.testExpression()
             testData
-                .toInlinedExpressionOrNull(traverseImpureCallables = false)
+                .toSourceExpressionOrNull(traverseImpureCallables = false)
                 .shouldBe(SmlBoundExpression(testData, emptyMap()))
         }
 
@@ -298,7 +299,7 @@ class ToInlinedExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToPureStep")
 
             val testData = workflow.testExpression()
-            testData.toInlinedExpressionOrNull(traverseImpureCallables = true)
+            testData.toSourceExpressionOrNull(traverseImpureCallables = true)
                 .shouldBeInstanceOf<SmlBoundExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -311,7 +312,7 @@ class ToInlinedExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToPureStep")
 
             val testData = workflow.testExpression()
-            testData.toInlinedExpressionOrNull(traverseImpureCallables = false)
+            testData.toSourceExpressionOrNull(traverseImpureCallables = false)
                 .shouldBeInstanceOf<SmlBoundExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -324,7 +325,7 @@ class ToInlinedExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToImpureStep")
 
             val testData = workflow.testExpression()
-            testData.toInlinedExpressionOrNull(traverseImpureCallables = true)
+            testData.toSourceExpressionOrNull(traverseImpureCallables = true)
                 .shouldBeInstanceOf<SmlBoundExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -338,7 +339,7 @@ class ToInlinedExpressionTest {
 
             val testData = workflow.testExpression()
             testData
-                .toInlinedExpressionOrNull(traverseImpureCallables = false)
+                .toSourceExpressionOrNull(traverseImpureCallables = false)
                 .shouldBe(SmlBoundExpression(testData, emptyMap()))
         }
 
@@ -347,7 +348,7 @@ class ToInlinedExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToStepWithVariadicParameter")
 
             val testData = workflow.testExpression()
-            testData.toInlinedExpressionOrNull()
+            testData.toSourceExpressionOrNull()
                 .shouldBeInstanceOf<SmlBoundExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -363,7 +364,7 @@ class ToInlinedExpressionTest {
             val parameter = workflow.findUniqueDeclarationOrFail<SmlParameter>("a")
 
             val testData = workflow.testExpression()
-            val result = testData.toInlinedExpressionOrNull().shouldBeInstanceOf<SmlBoundExpression>()
+            val result = testData.toSourceExpressionOrNull().shouldBeInstanceOf<SmlBoundExpression>()
 
             val expression = result.expression.shouldBeInstanceOf<SmlPrefixOperation>()
             expression.operator shouldBe SmlPrefixOperationOperator.Minus.operator
@@ -383,7 +384,7 @@ class ToInlinedExpressionTest {
             val parameter = workflow.findUniqueDeclarationOrFail<SmlParameter>("a")
 
             val testData = workflow.testExpression()
-            val result = testData.toInlinedExpressionOrNull().shouldBeInstanceOf<SmlBoundExpression>()
+            val result = testData.toSourceExpressionOrNull().shouldBeInstanceOf<SmlBoundExpression>()
 
             val expression = result.expression.shouldBeInstanceOf<SmlPrefixOperation>()
             expression.operator shouldBe SmlPrefixOperationOperator.Minus.operator
@@ -402,7 +403,7 @@ class ToInlinedExpressionTest {
             )
             val testData = workflow.testExpression()
 
-            testData.toInlinedExpressionOrNull()
+            testData.toSourceExpressionOrNull()
                 .shouldBeInstanceOf<SmlBoundExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -415,7 +416,7 @@ class ToInlinedExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("lambdaAsParameter")
             val testData = workflow.testExpression()
 
-            testData.toInlinedExpressionOrNull(traverseImpureCallables = true) // TODO: set to false once purity check works
+            testData.toSourceExpressionOrNull(traverseImpureCallables = true) // TODO: set to false once purity check works
                 .shouldBeInstanceOf<SmlBoundExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -426,13 +427,13 @@ class ToInlinedExpressionTest {
         @Test
         fun `should return call if receiver is not callable`() {
             val testData = createSmlCall(receiver = createSmlNull())
-            testData.toInlinedExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
         }
 
         @Test
         fun `should return if receiver cannot be resolved`() {
             val testData = createSmlCall(receiver = factory.createSmlReference())
-            testData.toInlinedExpressionOrNull().shouldBeNull()
+            testData.toSourceExpressionOrNull().shouldBeNull()
         }
     }
 
@@ -451,7 +452,7 @@ class ToInlinedExpressionTest {
                 member = createSmlReference(testEnumVariant)
             )
 
-            testData.toInlinedExpressionOrNull() shouldBe SmlConstantEnumVariant(testEnumVariant)
+            testData.toSourceExpressionOrNull() shouldBe SmlConstantEnumVariant(testEnumVariant)
         }
 
         @Test
@@ -471,7 +472,7 @@ class ToInlinedExpressionTest {
                 member = createSmlReference(testEnumVariant)
             )
 
-            testData.toInlinedExpressionOrNull().shouldBeNull()
+            testData.toSourceExpressionOrNull().shouldBeNull()
         }
 
         @Test
@@ -482,7 +483,7 @@ class ToInlinedExpressionTest {
                 isNullSafe = true
             )
 
-            val result = testData.toInlinedExpressionOrNull()
+            val result = testData.toSourceExpressionOrNull()
             result.shouldBeInstanceOf<SmlNull>()
         }
 
@@ -493,7 +494,7 @@ class ToInlinedExpressionTest {
                 member = createSmlReference(createSmlAttribute("testAttribute"))
             )
 
-            testData.toInlinedExpressionOrNull().shouldBeNull()
+            testData.toSourceExpressionOrNull().shouldBeNull()
         }
 
         @Test
@@ -505,7 +506,7 @@ class ToInlinedExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("successfulResultAccess")
             val testData = workflow.testExpression()
 
-            val result = testData.toInlinedExpressionOrNull()
+            val result = testData.toSourceExpressionOrNull()
             result.shouldBeInstanceOf<SmlInt>()
             result.value shouldBe 1
         }
@@ -519,7 +520,7 @@ class ToInlinedExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("failedResultAccess")
             val testData = workflow.testExpression()
 
-            testData.toInlinedExpressionOrNull().shouldBeNull()
+            testData.toSourceExpressionOrNull().shouldBeNull()
         }
 
         @Test
@@ -536,7 +537,7 @@ class ToInlinedExpressionTest {
                 )
             )
 
-            testData.toInlinedExpressionOrNull().shouldBeNull()
+            testData.toSourceExpressionOrNull().shouldBeNull()
         }
     }
 
@@ -550,7 +551,7 @@ class ToInlinedExpressionTest {
                 declaration = testEnumVariant
             )
 
-            testData.toInlinedExpressionOrNull() shouldBe SmlConstantEnumVariant(testEnumVariant)
+            testData.toSourceExpressionOrNull() shouldBe SmlConstantEnumVariant(testEnumVariant)
         }
 
         @Test
@@ -565,7 +566,7 @@ class ToInlinedExpressionTest {
                 declaration = testEnumVariant
             )
 
-            testData.toInlinedExpressionOrNull().shouldBeNull()
+            testData.toSourceExpressionOrNull().shouldBeNull()
         }
 
         @Test
@@ -579,7 +580,7 @@ class ToInlinedExpressionTest {
                 declaration = testPlaceholder
             )
 
-            val result = testData.toInlinedExpressionOrNull()
+            val result = testData.toSourceExpressionOrNull()
             result.shouldBeInstanceOf<SmlNull>()
         }
 
@@ -589,7 +590,7 @@ class ToInlinedExpressionTest {
                 declaration = createSmlPlaceholder("testPlaceholder")
             )
 
-            testData.toInlinedExpressionOrNull().shouldBeNull()
+            testData.toSourceExpressionOrNull().shouldBeNull()
         }
 
         @Test
@@ -599,7 +600,7 @@ class ToInlinedExpressionTest {
                 declaration = testParameter
             )
 
-            val result = testData.toInlinedExpressionOrNull()
+            val result = testData.toSourceExpressionOrNull()
             result.shouldBeInstanceOf<SmlNull>()
         }
 
@@ -613,7 +614,7 @@ class ToInlinedExpressionTest {
                 declaration = testParameter
             )
 
-            val result = testData.toInlinedExpressionOrNull()
+            val result = testData.toSourceExpressionOrNull()
             result.shouldBeInstanceOf<SmlNull>()
         }
 
@@ -624,14 +625,14 @@ class ToInlinedExpressionTest {
                 declaration = testParameter
             )
 
-            testData.toInlinedExpressionOrNull().shouldBeNull()
+            testData.toSourceExpressionOrNull().shouldBeNull()
         }
 
         @Test
         fun `should wrap step in bound step`() {
             val step = createSmlStep("testStep")
             val testData = createSmlReference(step)
-            testData.toInlinedExpressionOrNull() shouldBe SmlBoundStepReference(step)
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundStepReference(step)
         }
 
         @Test
@@ -643,7 +644,7 @@ class ToInlinedExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("successfulRecordAssignment")
             val testData = workflow.testExpression()
 
-            val result = testData.toInlinedExpressionOrNull()
+            val result = testData.toSourceExpressionOrNull()
             result.shouldBeInstanceOf<SmlInt>()
             result.value shouldBe 1
         }
@@ -657,7 +658,7 @@ class ToInlinedExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("failedRecordAssignment")
             val testData = workflow.testExpression()
 
-            testData.toInlinedExpressionOrNull().shouldBeNull()
+            testData.toSourceExpressionOrNull().shouldBeNull()
         }
 
         @Test
@@ -671,7 +672,7 @@ class ToInlinedExpressionTest {
             )
             val testData = workflow.testExpression()
 
-            val result = testData.toInlinedExpressionOrNull()
+            val result = testData.toSourceExpressionOrNull()
             result.shouldBeInstanceOf<SmlInt>()
             result.value shouldBe 1
         }
@@ -685,7 +686,7 @@ class ToInlinedExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("recordAssignmentWithMissingYield")
             val testData = workflow.testExpression()
 
-            val result = testData.toInlinedExpressionOrNull()
+            val result = testData.toSourceExpressionOrNull()
             result.shouldBeInstanceOf<SmlInt>()
             result.value shouldBe 1
         }
@@ -701,7 +702,7 @@ class ToInlinedExpressionTest {
             )
             val testData = workflow.testExpression()
 
-            val result = testData.toInlinedExpressionOrNull()
+            val result = testData.toSourceExpressionOrNull()
             result.shouldBeInstanceOf<SmlInt>()
             result.value shouldBe 1
         }
@@ -712,7 +713,7 @@ class ToInlinedExpressionTest {
                 declaration = createSmlAnnotation("TestAnnotation")
             )
 
-            testData.toInlinedExpressionOrNull().shouldBeNull()
+            testData.toSourceExpressionOrNull().shouldBeNull()
         }
     }
 }

@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.staticAnalysis.partialEvaluation
+package de.unibonn.simpleml.staticAnalysis.dataflow
 
 import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.closestAncestorOrNull
@@ -37,13 +37,13 @@ import de.unibonn.simpleml.staticAnalysis.linking.parameterOrNull
 import de.unibonn.simpleml.staticAnalysis.linking.uniqueYieldOrNull
 
 /**
- * Tries to inline this expression by partially evaluating assignments, calls, member accesses, and references. On
- * success a [SmlInlinedExpression] is returned, if any reference cannot be resolved `null`.
+ * Tries to find the source of this expression by partially evaluating assignments, calls, member accesses, and
+ * references. On success a [SmlSourceExpression] is returned, if any reference cannot be resolved `null`.
  *
  * @param traverseImpureCallables If `false`, calls to impure callable are not traversed further but returned unchanged.
  */
 @OptIn(ExperimentalStdlibApi::class)
-fun SmlAbstractExpression.toInlinedExpressionOrNull(traverseImpureCallables: Boolean = false): SmlInlinedExpression? {
+fun SmlAbstractExpression.toSourceExpressionOrNull(traverseImpureCallables: Boolean = false): SmlSourceExpression? {
     return inline.invoke(FrameData(this, emptyMap(), traverseImpureCallables))
 }
 
@@ -54,7 +54,7 @@ private data class FrameData<T : SmlAbstractObject?>(
 )
 
 @OptIn(ExperimentalStdlibApi::class)
-private val inline: DeepRecursiveFunction<FrameData<SmlAbstractExpression>, SmlInlinedExpression?> =
+private val inline: DeepRecursiveFunction<FrameData<SmlAbstractExpression>, SmlSourceExpression?> =
     DeepRecursiveFunction { data ->
         when (data.current) {
 
@@ -111,7 +111,7 @@ private val inline: DeepRecursiveFunction<FrameData<SmlAbstractExpression>, SmlI
     }
 
 @OptIn(ExperimentalStdlibApi::class)
-private val inlineCall: DeepRecursiveFunction<FrameData<SmlCall>, SmlInlinedExpression?> =
+private val inlineCall: DeepRecursiveFunction<FrameData<SmlCall>, SmlSourceExpression?> =
     DeepRecursiveFunction { data ->
 
         // Inline receiver
@@ -141,6 +141,9 @@ private val inlineCall: DeepRecursiveFunction<FrameData<SmlCall>, SmlInlinedExpr
                 if (!data.traverseImpureCallables && !receiver.callable.isPureCallable()) {
                     return@DeepRecursiveFunction SmlBoundExpression(data.current, data.substitutions)
                 }
+
+                // TODO: must never traverse recursive stuff -> pass visited elements in data frame
+                // TODO: test this
 
                 // Run the call
                 when (receiver) {
@@ -217,7 +220,7 @@ private val buildNewSubstitutions: DeepRecursiveFunction<BuildNewSubstitutionsFr
     }
 
 @OptIn(ExperimentalStdlibApi::class)
-private val inlineMemberAccess: DeepRecursiveFunction<FrameData<SmlMemberAccess>, SmlInlinedExpression?> =
+private val inlineMemberAccess: DeepRecursiveFunction<FrameData<SmlMemberAccess>, SmlSourceExpression?> =
     DeepRecursiveFunction { data ->
 
         // Inline receiver
@@ -236,7 +239,7 @@ private val inlineMemberAccess: DeepRecursiveFunction<FrameData<SmlMemberAccess>
     }
 
 @OptIn(ExperimentalStdlibApi::class)
-private val inlineReference: DeepRecursiveFunction<FrameData<SmlReference>, SmlInlinedExpression?> =
+private val inlineReference: DeepRecursiveFunction<FrameData<SmlReference>, SmlSourceExpression?> =
     DeepRecursiveFunction { data ->
         val declaration = data.current.declaration
         when {
@@ -265,7 +268,7 @@ private val inlineReference: DeepRecursiveFunction<FrameData<SmlReference>, SmlI
     }
 
 @OptIn(ExperimentalStdlibApi::class)
-private val inlineAssignee: DeepRecursiveFunction<FrameData<SmlAbstractAssignee?>, SmlInlinedExpression?> =
+private val inlineAssignee: DeepRecursiveFunction<FrameData<SmlAbstractAssignee?>, SmlSourceExpression?> =
     DeepRecursiveFunction { data ->
         val assignmentRHS = data.current
             ?.closestAncestorOrNull<SmlAssignment>()
@@ -291,7 +294,7 @@ private val inlineAssignee: DeepRecursiveFunction<FrameData<SmlAbstractAssignee?
     }
 
 @OptIn(ExperimentalStdlibApi::class)
-private val inlineParameter: DeepRecursiveFunction<FrameData<SmlParameter>, SmlInlinedExpression?> =
+private val inlineParameter: DeepRecursiveFunction<FrameData<SmlParameter>, SmlSourceExpression?> =
     DeepRecursiveFunction { data ->
         when {
             data.current.isVariadic -> null

@@ -1,4 +1,4 @@
-package de.unibonn.simpleml.staticAnalysis.partialEvaluation
+package de.unibonn.simpleml.staticAnalysis.dataflow
 
 import de.unibonn.simpleml.emf.createSmlReference
 import de.unibonn.simpleml.emf.parametersOrEmpty
@@ -13,31 +13,31 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.utils.uniqueOrNull
 
-typealias ParameterSubstitutions = Map<SmlParameter, SmlInlinedExpression?>
-typealias ResultSubstitutions = Map<SmlAbstractResult, SmlInlinedExpression?>
-typealias ResultSubstitution = Pair<SmlAbstractResult, SmlInlinedExpression?>
+typealias ParameterSubstitutions = Map<SmlParameter, SmlSourceExpression?>
+typealias ResultSubstitutions = Map<SmlAbstractResult, SmlSourceExpression?>
+typealias ResultSubstitution = Pair<SmlAbstractResult, SmlSourceExpression?>
 
 /**
- * Possible result of [toInlinedExpressionOrNull].
+ * Possible result of [toSourceExpressionOrNull].
  */
-sealed interface SmlInlinedExpression {
+sealed interface SmlSourceExpression {
 
     /**
-     * Map of [SmlParameter] to the corresponding [SmlInlinedExpression] at the time of creation of the callable.
+     * Map of [SmlParameter] to the corresponding [SmlSourceExpression] at the time of creation of the callable.
      */
     val substitutionsOnCreation: ParameterSubstitutions
 
     /**
-     * Returns an [SmlAbstractExpression] that corresponds to this [SmlInlinedExpression] or `null` if the conversion is
+     * Returns an [SmlAbstractExpression] that corresponds to this [SmlSourceExpression] or `null` if the conversion is
      * not possible.
      */
     fun toSmlAbstractExpressionOrNull(): SmlAbstractExpression?
 }
 
 /**
- * Stores an [SmlAbstractCallable] and the [SmlInlinedExpression]s for its [SmlParameter]s at the time of its creation.
+ * Stores an [SmlAbstractCallable] and the [SmlSourceExpression]s for its [SmlParameter]s at the time of its creation.
  */
-sealed interface SmlBoundCallable : SmlInlinedExpression {
+sealed interface SmlBoundCallable : SmlSourceExpression {
 
     /**
      * The bound callable.
@@ -92,30 +92,30 @@ data class SmlBoundStepReference(val step: SmlStep) : SmlBoundCallable {
 }
 
 /**
- * Maps [SmlResult]s to the corresponding [SmlInlinedExpression].
+ * Maps [SmlResult]s to the corresponding [SmlSourceExpression].
  */
-class SmlResultRecord(resultSubstitutions: List<ResultSubstitution>) : SmlInlinedExpression {
+class SmlResultRecord(resultSubstitutions: List<ResultSubstitution>) : SmlSourceExpression {
     override val substitutionsOnCreation: ParameterSubstitutions = emptyMap()
 
     /**
-     * Map of [SmlResult] to the corresponding [SmlInlinedExpression].
+     * Map of [SmlResult] to the corresponding [SmlSourceExpression].
      */
     private val resultSubstitutions: ResultSubstitutions = resultSubstitutions.toMap()
 
     /**
-     * Returns the [SmlInlinedExpression] that is substituted for the declaration referenced by the [reference] or
+     * Returns the [SmlSourceExpression] that is substituted for the declaration referenced by the [reference] or
      * `null` if no substitution exists
      */
-    fun getSubstitutionByReferenceOrNull(reference: SmlReference): SmlInlinedExpression? {
+    fun getSubstitutionByReferenceOrNull(reference: SmlReference): SmlSourceExpression? {
         val result = reference.declaration as? SmlAbstractResult ?: return null
         return resultSubstitutions[result]
     }
 
     /**
-     * Returns the [SmlInlinedExpression] at the given [index] or `null` if the [index] is `null` or no entry exists at
+     * Returns the [SmlSourceExpression] at the given [index] or `null` if the [index] is `null` or no entry exists at
      * this [index].
      */
-    fun getSubstitutionByIndexOrNull(index: Int?): SmlInlinedExpression? {
+    fun getSubstitutionByIndexOrNull(index: Int?): SmlSourceExpression? {
         if (index == null) {
             return null
         }
@@ -125,7 +125,7 @@ class SmlResultRecord(resultSubstitutions: List<ResultSubstitution>) : SmlInline
     /**
      * If the record contains exactly one substitution its value is returned. Otherwise, it returns `this`.
      */
-    fun unwrap(): SmlInlinedExpression? {
+    fun unwrap(): SmlSourceExpression? {
         return when (resultSubstitutions.size) {
             1 -> resultSubstitutions.values.first()
             else -> this
@@ -144,12 +144,12 @@ class SmlResultRecord(resultSubstitutions: List<ResultSubstitution>) : SmlInline
 }
 
 /**
- * Catch-all case so any [SmlAbstractExpression] can be represented as a [SmlInlinedExpression].
+ * Catch-all case so any [SmlAbstractExpression] can be represented as a [SmlSourceExpression].
  */
 data class SmlBoundExpression(
     val expression: SmlAbstractExpression,
     override val substitutionsOnCreation: ParameterSubstitutions
-) : SmlInlinedExpression {
+) : SmlSourceExpression {
 
     override fun toSmlAbstractExpressionOrNull(): SmlAbstractExpression {
         return expression

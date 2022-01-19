@@ -46,3 +46,10 @@ workflow lambdaAsParameter {
 
     apply(() -> 1);
 }
+
+workflow lambdaAsParameterWithAnotherParameter {
+    val id = (x) -> x;
+    val apply = (f, param) -> f(param);
+
+    apply(id, 1);
+}
