@@ -23,6 +23,7 @@ import de.unibonn.simpleml.prologBridge.model.facts.ExpressionT
 import de.unibonn.simpleml.prologBridge.model.facts.FloatT
 import de.unibonn.simpleml.prologBridge.model.facts.FunctionT
 import de.unibonn.simpleml.prologBridge.model.facts.ImportT
+import de.unibonn.simpleml.prologBridge.model.facts.IndexedAccessT
 import de.unibonn.simpleml.prologBridge.model.facts.InfixOperationT
 import de.unibonn.simpleml.prologBridge.model.facts.IntT
 import de.unibonn.simpleml.prologBridge.model.facts.MemberAccessT
@@ -996,6 +997,30 @@ class AstToPrologFactbaseTest {
                 val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithLiterals" }
                 val floatT = findUniqueFactOrFail<FloatT> { isContainedIn(it, workflowT) }
                 findUniqueFactOrFail<SourceLocationS> { it.target == floatT.id }
+            }
+        }
+
+        @Nested
+        inner class IndexedAccess {
+            @Test
+            fun `should reference receiver`() = withFactbaseFromFile("expressions") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithIndexedAccess" }
+                val indexedAccessT = findUniqueFactOrFail<IndexedAccessT> { isContainedIn(it, workflowT) }
+                shouldBeChildExpressionOf<ExpressionT>(indexedAccessT.receiver, indexedAccessT)
+            }
+
+            @Test
+            fun `should reference index`() = withFactbaseFromFile("expressions") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithIndexedAccess" }
+                val indexedAccessT = findUniqueFactOrFail<IndexedAccessT> { isContainedIn(it, workflowT) }
+                shouldBeChildExpressionOf<IntT>(indexedAccessT.index, indexedAccessT)
+            }
+
+            @Test
+            fun `should store source location in separate relation`() = withFactbaseFromFile("expressions") {
+                val workflowT = findUniqueFactOrFail<WorkflowT> { it.name == "myWorkflowWithIndexedAccess" }
+                val indexedAccessT = findUniqueFactOrFail<IndexedAccessT> { isContainedIn(it, workflowT) }
+                findUniqueFactOrFail<SourceLocationS> { it.target == indexedAccessT.id }
             }
         }
 

@@ -31,6 +31,7 @@ import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlFloat
+import de.unibonn.simpleml.simpleML.SmlIndexedAccess
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
@@ -50,6 +51,7 @@ import de.unibonn.simpleml.staticAnalysis.indexOrNull
 import de.unibonn.simpleml.staticAnalysis.isPureCallable
 import de.unibonn.simpleml.staticAnalysis.linking.parameterOrNull
 import de.unibonn.simpleml.staticAnalysis.linking.uniqueYieldOrNull
+import de.unibonn.simpleml.utils.uniqueOrNull
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Minus as InfixMinus
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Minus as PrefixMinus
 
@@ -92,6 +94,7 @@ internal fun SmlAbstractExpression.simplify(substitutions: ParameterSubstitution
 
         // Complex recursive cases
         is SmlCall -> simplifyCall(substitutions)
+        is SmlIndexedAccess -> simplifyIndexedAccess(substitutions)
         is SmlMemberAccess -> simplifyMemberAccess(substitutions)
         is SmlReference -> simplifyReference(substitutions)
 
@@ -317,17 +320,32 @@ private fun SmlCall.buildNewSubstitutions(
     }
 
     val substitutionsOnCall = argumentsOrEmpty()
-        .mapNotNull {
-            when (val parameter = it.parameterOrNull()) {
-                null -> null
-                else -> parameter to it.simplify(oldSubstitutions)
+        .groupBy { it.parameterOrNull() }
+        .mapValues { (parameter, arguments) ->
+            when {
+                parameter == null -> null
+                parameter.isVariadic -> SmlIntermediateVariadicArguments(
+                    arguments.map { it.simplify(oldSubstitutions) }
+                )
+                else -> arguments.uniqueOrNull()?.simplify(oldSubstitutions)
             }
         }
 
     return buildMap {
         putAll(substitutionsOnCreation)
-        putAll(substitutionsOnCall)
+        substitutionsOnCall.entries.forEach { (parameter, argument) ->
+            if (parameter != null) {
+                put(parameter, argument)
+            }
+        }
     }
+}
+
+private fun SmlIndexedAccess.simplifyIndexedAccess(substitutions: ParameterSubstitutions): SmlSimplifiedExpression? {
+    val simpleReceiver = receiver.simplify(substitutions) as? SmlIntermediateVariadicArguments ?: return null
+    val simpleIndex = index.simplify(substitutions) as? SmlConstantInt ?: return null
+
+    return simpleReceiver.getArgumentByIndexOrNull(simpleIndex.value)
 }
 
 private fun SmlMemberAccess.simplifyMemberAccess(substitutions: ParameterSubstitutions): SmlSimplifiedExpression? {
@@ -375,7 +393,6 @@ private fun SmlAbstractAssignee.simplifyAssignee(substitutions: ParameterSubstit
 
 private fun SmlParameter.simplifyParameter(substitutions: ParameterSubstitutions): SmlSimplifiedExpression? {
     return when {
-        isVariadic -> null
         this in substitutions -> substitutions[this]
         isOptional() -> defaultValue?.simplify(substitutions)
         else -> null
