@@ -31,6 +31,7 @@ import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
+import de.unibonn.simpleml.simpleML.SmlIndexedAccess
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
@@ -1055,6 +1056,41 @@ data class FloatT(
     val value: Double
 ) :
     ExpressionT("floatT", id, parent, enclosing, value) {
+    override fun toString() = super.toString()
+}
+
+/**
+ * This Prolog fact represents member accesses.
+ *
+ * @param id
+ * The ID of this fact.
+ *
+ * @param parent
+ * The ID of the fact for the logical parent, e.g. a call.
+ *
+ * @param enclosing
+ * The ID of the fact for closest ancestor that is not an expression.
+ *
+ * @param receiver
+ * The ID of the fact for the receiver of the indexed access.
+ *
+ * @param index
+ * The accessed index.
+ */
+data class IndexedAccessT(
+    override val id: Id<SmlIndexedAccess>,
+    override val parent: Id<SmlAbstractObject>,
+    override val enclosing: Id<SmlAbstractObject>,
+    val receiver: Id<SmlAbstractExpression>,
+    val index: Id<SmlAbstractExpression>
+) : ExpressionT(
+    "indexedAccessT",
+    id,
+    parent,
+    enclosing,
+    receiver,
+    index
+) {
     override fun toString() = super.toString()
 }
 
