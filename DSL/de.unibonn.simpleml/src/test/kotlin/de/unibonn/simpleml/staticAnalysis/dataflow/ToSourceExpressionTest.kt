@@ -441,41 +441,6 @@ class ToSourceExpressionTest {
     inner class MemberAccess {
 
         @Test
-        fun `should return constant enum variant if referenced enum variant has no parameters`() { // TODO
-            val testEnumVariant = createSmlEnumVariant(name = "TestEnumVariant")
-            val testEnum = createSmlEnum(
-                name = "TestEnum",
-                variants = listOf(testEnumVariant)
-            )
-            val testData = createSmlMemberAccess(
-                receiver = createSmlReference(testEnum),
-                member = createSmlReference(testEnumVariant)
-            )
-
-            testData.toSourceExpressionOrNull() shouldBe SmlConstantEnumVariant(testEnumVariant)
-        }
-
-        @Test
-        fun `should return null if referenced enum variant has parameters`() { // TODO
-            val testEnumVariant = createSmlEnumVariant(
-                name = "TestEnumVariant",
-                parameters = listOf(
-                    createSmlParameter(name = "testParameter")
-                )
-            )
-            val testEnum = createSmlEnum(
-                name = "TestEnum",
-                variants = listOf(testEnumVariant)
-            )
-            val testData = createSmlMemberAccess(
-                receiver = createSmlReference(testEnum),
-                member = createSmlReference(testEnumVariant)
-            )
-
-            testData.toSourceExpressionOrNull().shouldBeNull()
-        }
-
-        @Test
         fun `should return constant null if receiver is constant null and member access is null safe`() { // TODO
             val testData = createSmlMemberAccess(
                 receiver = createSmlNull(),
