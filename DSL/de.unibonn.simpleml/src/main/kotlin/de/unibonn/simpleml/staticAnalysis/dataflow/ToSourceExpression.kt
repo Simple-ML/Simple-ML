@@ -106,21 +106,21 @@ private val inline: DeepRecursiveFunction<FrameData<SmlAbstractExpression>, SmlS
             )
 
             // Complex recursive cases
-            is SmlCall -> inlineCall.callRecursive(
+            is SmlCall -> callToSource.callRecursive(
                 FrameData(
                     data.current,
                     data.visited,
                     data.substitutions
                 )
             )
-            is SmlMemberAccess -> inlineMemberAccess.callRecursive(
+            is SmlMemberAccess -> memberAccessToSource.callRecursive(
                 FrameData(
                     data.current,
                     data.visited,
                     data.substitutions
                 )
             )
-            is SmlReference -> inlineReference.callRecursive(
+            is SmlReference -> referenceToSource.callRecursive(
                 FrameData(
                     data.current,
                     data.visited,
@@ -133,7 +133,7 @@ private val inline: DeepRecursiveFunction<FrameData<SmlAbstractExpression>, SmlS
     }
 
 @OptIn(ExperimentalStdlibApi::class)
-private val inlineCall: DeepRecursiveFunction<FrameData<SmlCall>, SmlSourceExpression?> =
+private val callToSource: DeepRecursiveFunction<FrameData<SmlCall>, SmlSourceExpression?> =
     DeepRecursiveFunction { data ->
 
         // Inline receiver
@@ -164,7 +164,7 @@ private val inlineCall: DeepRecursiveFunction<FrameData<SmlCall>, SmlSourceExpre
                     is SmlBoundBlockLambda -> {
                         SmlResultRecord(
                             receiver.lambda.lambdaResultsOrEmpty().map {
-                                it to inlineAssignee.callRecursive(
+                                it to assigneeToSource.callRecursive(
                                     FrameData(
                                         current = it,
                                         visited = data.visited,
@@ -186,7 +186,7 @@ private val inlineCall: DeepRecursiveFunction<FrameData<SmlCall>, SmlSourceExpre
                     is SmlBoundStepReference -> {
                         SmlResultRecord(
                             receiver.step.resultsOrEmpty().map {
-                                it to inlineAssignee.callRecursive(
+                                it to assigneeToSource.callRecursive(
                                     FrameData(
                                         current = it.uniqueYieldOrNull(),
                                         visited = data.visited,
@@ -234,7 +234,7 @@ private val buildNewSubstitutions: DeepRecursiveFunction<BuildNewSubstitutionsFr
     }
 
 @OptIn(ExperimentalStdlibApi::class)
-private val inlineMemberAccess: DeepRecursiveFunction<FrameData<SmlMemberAccess>, SmlSourceExpression?> =
+private val memberAccessToSource: DeepRecursiveFunction<FrameData<SmlMemberAccess>, SmlSourceExpression?> =
     DeepRecursiveFunction { data ->
 
         // Inline receiver
@@ -254,13 +254,13 @@ private val inlineMemberAccess: DeepRecursiveFunction<FrameData<SmlMemberAccess>
     }
 
 @OptIn(ExperimentalStdlibApi::class)
-private val inlineReference: DeepRecursiveFunction<FrameData<SmlReference>, SmlSourceExpression?> =
+private val referenceToSource: DeepRecursiveFunction<FrameData<SmlReference>, SmlSourceExpression?> =
     DeepRecursiveFunction { data ->
         val declaration = data.current.declaration
         when {
             !declaration.isResolved() -> null
             declaration is SmlPlaceholder -> {
-                inlineAssignee.callRecursive(
+                assigneeToSource.callRecursive(
                     FrameData(
                         current = declaration,
                         visited = data.visited,
@@ -269,7 +269,7 @@ private val inlineReference: DeepRecursiveFunction<FrameData<SmlReference>, SmlS
                 )
             }
             declaration is SmlParameter -> {
-                inlineParameter.callRecursive(
+                parameterToSource.callRecursive(
                     FrameData(
                         current = declaration,
                         visited = data.visited,
@@ -283,7 +283,7 @@ private val inlineReference: DeepRecursiveFunction<FrameData<SmlReference>, SmlS
     }
 
 @OptIn(ExperimentalStdlibApi::class)
-private val inlineAssignee: DeepRecursiveFunction<FrameData<SmlAbstractAssignee?>, SmlSourceExpression?> =
+private val assigneeToSource: DeepRecursiveFunction<FrameData<SmlAbstractAssignee?>, SmlSourceExpression?> =
     DeepRecursiveFunction { data ->
         val assignmentRHS = data.current
             ?.closestAncestorOrNull<SmlAssignment>()
@@ -309,7 +309,7 @@ private val inlineAssignee: DeepRecursiveFunction<FrameData<SmlAbstractAssignee?
     }
 
 @OptIn(ExperimentalStdlibApi::class)
-private val inlineParameter: DeepRecursiveFunction<FrameData<SmlParameter>, SmlSourceExpression?> =
+private val parameterToSource: DeepRecursiveFunction<FrameData<SmlParameter>, SmlSourceExpression?> =
     DeepRecursiveFunction { data ->
         when {
             data.current.isVariadic -> null
