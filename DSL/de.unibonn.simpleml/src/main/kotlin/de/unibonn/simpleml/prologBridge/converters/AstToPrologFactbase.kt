@@ -37,6 +37,7 @@ import de.unibonn.simpleml.prologBridge.model.facts.ExpressionStatementT
 import de.unibonn.simpleml.prologBridge.model.facts.FloatT
 import de.unibonn.simpleml.prologBridge.model.facts.FunctionT
 import de.unibonn.simpleml.prologBridge.model.facts.ImportT
+import de.unibonn.simpleml.prologBridge.model.facts.IndexedAccessT
 import de.unibonn.simpleml.prologBridge.model.facts.InfixOperationT
 import de.unibonn.simpleml.prologBridge.model.facts.IntT
 import de.unibonn.simpleml.prologBridge.model.facts.MemberAccessT
@@ -110,6 +111,7 @@ import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
+import de.unibonn.simpleml.simpleML.SmlIndexedAccess
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
@@ -511,6 +513,12 @@ class AstToPrologFactbase {
             }
             is SmlFloat -> {
                 +FloatT(obj.id, parentId, enclosingId, obj.value)
+            }
+            is SmlIndexedAccess -> {
+                visitExpression(obj.receiver, obj.id, enclosingId)
+                visitExpression(obj.index, obj.id, enclosingId)
+
+                +IndexedAccessT(obj.id, parentId, enclosingId, obj.receiver.id, obj.index.id)
             }
             is SmlInfixOperation -> {
                 visitExpression(obj.leftOperand, obj.id, enclosingId)
