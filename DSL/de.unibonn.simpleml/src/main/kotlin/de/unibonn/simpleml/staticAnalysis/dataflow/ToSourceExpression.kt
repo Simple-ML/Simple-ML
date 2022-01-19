@@ -271,9 +271,9 @@ private val inlineMemberAccess: DeepRecursiveFunction<FrameData<SmlMemberAccess>
             )
         )
 
-        when {
-            data.current.member.declaration.isResolved() -> null
-            receiver is SmlResultRecord -> receiver.getSubstitutionByReferenceOrNull(data.current.member)
+        when (receiver) {
+            null -> null
+            is SmlResultRecord -> receiver.getSubstitutionByReferenceOrNull(data.current.member)
             else -> SmlBoundExpression(data.current, data.substitutions)
         }
     }

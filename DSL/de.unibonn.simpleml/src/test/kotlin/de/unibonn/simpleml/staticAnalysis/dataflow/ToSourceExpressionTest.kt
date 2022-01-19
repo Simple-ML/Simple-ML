@@ -10,7 +10,6 @@ import de.unibonn.simpleml.emf.createSmlAttribute
 import de.unibonn.simpleml.emf.createSmlBlockLambda
 import de.unibonn.simpleml.emf.createSmlBoolean
 import de.unibonn.simpleml.emf.createSmlCall
-import de.unibonn.simpleml.emf.createSmlEnum
 import de.unibonn.simpleml.emf.createSmlEnumVariant
 import de.unibonn.simpleml.emf.createSmlExpressionLambda
 import de.unibonn.simpleml.emf.createSmlFloat
@@ -431,7 +430,7 @@ class ToSourceExpressionTest {
         }
 
         @Test
-        fun `should return if receiver cannot be resolved`() {
+        fun `should return null if receiver cannot be resolved`() {
             val testData = createSmlCall(receiver = factory.createSmlReference())
             testData.toSourceExpressionOrNull().shouldBeNull()
         }
@@ -441,29 +440,7 @@ class ToSourceExpressionTest {
     inner class MemberAccess {
 
         @Test
-        fun `should return constant null if receiver is constant null and member access is null safe`() { // TODO
-            val testData = createSmlMemberAccess(
-                receiver = createSmlNull(),
-                member = createSmlReference(createSmlAttribute("testAttribute")),
-                isNullSafe = true
-            )
-
-            val result = testData.toSourceExpressionOrNull()
-            result.shouldBeInstanceOf<SmlNull>()
-        }
-
-        @Test
-        fun `should return null if receiver is constant null and member access is not null safe`() { // TODO
-            val testData = createSmlMemberAccess(
-                receiver = createSmlNull(),
-                member = createSmlReference(createSmlAttribute("testAttribute"))
-            )
-
-            testData.toSourceExpressionOrNull().shouldBeNull()
-        }
-
-        @Test
-        fun `should access the result of a call by name if result exists`() { // TODO
+        fun `should access the result of a call by name if result exists`() {
             val compilationUnit = parseHelper
                 .parseResource("staticAnalysis/partialEvaluation/memberAccesses.smltest")
                 .shouldNotBeNull()
@@ -471,13 +448,16 @@ class ToSourceExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("successfulResultAccess")
             val testData = workflow.testExpression()
 
-            val result = testData.toSourceExpressionOrNull()
-            result.shouldBeInstanceOf<SmlInt>()
-            result.value shouldBe 1
+            testData.toSourceExpressionOrNull()
+                .shouldBeInstanceOf<SmlBoundExpression>()
+                .expression
+                .shouldBeInstanceOf<SmlInt>()
+                .value
+                .shouldBe(1)
         }
 
         @Test
-        fun `should return null if accessed result does not exist`() { // TODO
+        fun `should return null if accessed result does not exist`() {
             val compilationUnit = parseHelper
                 .parseResource("staticAnalysis/partialEvaluation/memberAccesses.smltest")
                 .shouldNotBeNull()
@@ -489,19 +469,17 @@ class ToSourceExpressionTest {
         }
 
         @Test
-        fun `should return null for other receivers`() { // TODO
-            val testData = createSmlMemberAccess(
-                receiver = createSmlInt(1),
-                member = createSmlReference(
-                    createSmlEnumVariant(
-                        name = "TestEnumVariant",
-                        parameters = listOf(
-                            createSmlParameter(name = "testParameter")
-                        )
-                    )
-                )
-            )
+        fun `should return member access if receiver is not call result`() {
+            val testData = createSmlMemberAccess(receiver = createSmlNull(), member = factory.createSmlReference())
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
+        }
 
+        @Test
+        fun `should return null if receiver cannot be resolved`() {
+            val testData = createSmlMemberAccess(
+                receiver = factory.createSmlReference(),
+                member = createSmlReference(createSmlAttribute("attribute"))
+            )
             testData.toSourceExpressionOrNull().shouldBeNull()
         }
     }
