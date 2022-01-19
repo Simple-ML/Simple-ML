@@ -32,6 +32,8 @@ fun SmlAbstractExpression.isPureExpression(resultIfUnknown: Boolean = false): Bo
  * still always assumed to be impure unless they are marked with `@Pure`.
  */
 fun SmlAbstractCallable?.isPureCallable(resultIfUnknown: Boolean = false): Boolean {
+    // TODO build a proper call graph
+
     return when (this) {
         null -> resultIfUnknown
 

@@ -4,7 +4,6 @@ import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.memberDeclarationOrNull
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
-import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractCallable
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
@@ -18,14 +17,12 @@ import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlParameter
-import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.staticAnalysis.dataflow.SmlBoundCallable
 import de.unibonn.simpleml.staticAnalysis.dataflow.SmlBoundOtherExpression
 import de.unibonn.simpleml.staticAnalysis.dataflow.toSourceExpressionOrNull
-import org.eclipse.emf.ecore.EObject
 
 fun SmlCall.callableOrNull(): SmlAbstractCallable? {
     return when (val maybeCallable = this.maybeCallable()) {
@@ -41,8 +38,8 @@ sealed interface CallableResult {
 }
 
 fun SmlCall.maybeCallable(): CallableResult {
-    println(receiver.toSourceExpressionOrNull(stopAtImpureCall = false))
-    return when (val source = receiver.toSourceExpressionOrNull(stopAtImpureCall = false)) {
+    println(receiver.toSourceExpressionOrNull())
+    return when (val source = receiver.toSourceExpressionOrNull()) {
         null -> CallableResult.Unresolvable
         is SmlBoundCallable -> CallableResult.Callable(source.callable)
         is SmlBoundOtherExpression -> when (val expression = source.expression) {

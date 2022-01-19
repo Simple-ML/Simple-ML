@@ -12,6 +12,7 @@ import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.utils.uniqueOrNull
+import org.eclipse.xtext.EcoreUtil2
 
 typealias ParameterSubstitutions = Map<SmlParameter, SmlSourceExpression?>
 typealias ResultSubstitutions = Map<SmlAbstractResult, SmlSourceExpression?>
@@ -76,6 +77,10 @@ data class SmlBoundExpressionLambda(
 
     override fun toSmlAbstractExpressionOrNull(): SmlAbstractExpression {
         return lambda
+        // TODO substitute references to parameters with the substitutions on creation
+//        if (substitutionsOnCreation.isEmpty()) {
+//            val clonedLambda =  EcoreUtil2.cloneIfContained(lambda)
+//        }
     }
 }
 

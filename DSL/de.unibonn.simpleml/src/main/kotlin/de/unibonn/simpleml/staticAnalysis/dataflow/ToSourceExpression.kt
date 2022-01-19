@@ -32,26 +32,22 @@ import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
 import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
 import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
 import de.unibonn.simpleml.staticAnalysis.indexOrNull
-import de.unibonn.simpleml.staticAnalysis.isPureCallable
 import de.unibonn.simpleml.staticAnalysis.linking.parameterOrNull
 import de.unibonn.simpleml.staticAnalysis.linking.uniqueYieldOrNull
 
 /**
  * Tries to find the source of this expression by partially evaluating assignments, calls, member accesses, and
  * references. On success a [SmlSourceExpression] is returned, if any reference cannot be resolved `null`.
- *
- * @param stopAtImpureCall If `true`, calls to impure callable are not traversed further but returned unchanged.
  */
 @OptIn(ExperimentalStdlibApi::class)
-fun SmlAbstractExpression.toSourceExpressionOrNull(stopAtImpureCall: Boolean = true): SmlSourceExpression? {
-    return inlineAndUnwrap(FrameData(this, emptySet(), emptyMap(), stopAtImpureCall))
+fun SmlAbstractExpression.toSourceExpressionOrNull(): SmlSourceExpression? {
+    return inlineAndUnwrap(FrameData(this, emptySet(), emptyMap()))
 }
 
 private data class FrameData<T : SmlAbstractObject?>(
     val current: T,
     val visited: Set<SmlAbstractObject>,
-    val substitutions: ParameterSubstitutions,
-    val stopAtImpureCall: Boolean
+    val substitutions: ParameterSubstitutions
 )
 
 @OptIn(ExperimentalStdlibApi::class)
@@ -98,16 +94,14 @@ private val inline: DeepRecursiveFunction<FrameData<SmlAbstractExpression>, SmlS
                 FrameData(
                     current = data.current.value,
                     visited = data.visited + data.current,
-                    substitutions = data.substitutions,
-                    stopAtImpureCall = data.stopAtImpureCall
+                    substitutions = data.substitutions
                 )
             )
             is SmlParenthesizedExpression -> callRecursive(
                 FrameData(
                     current = data.current.expression,
                     visited = data.visited + data.current,
-                    substitutions = data.substitutions,
-                    stopAtImpureCall = data.stopAtImpureCall
+                    substitutions = data.substitutions
                 )
             )
 
@@ -116,24 +110,21 @@ private val inline: DeepRecursiveFunction<FrameData<SmlAbstractExpression>, SmlS
                 FrameData(
                     data.current,
                     data.visited,
-                    data.substitutions,
-                    data.stopAtImpureCall
+                    data.substitutions
                 )
             )
             is SmlMemberAccess -> inlineMemberAccess.callRecursive(
                 FrameData(
                     data.current,
                     data.visited,
-                    data.substitutions,
-                    data.stopAtImpureCall
+                    data.substitutions
                 )
             )
             is SmlReference -> inlineReference.callRecursive(
                 FrameData(
                     data.current,
                     data.visited,
-                    data.substitutions,
-                    data.stopAtImpureCall
+                    data.substitutions
                 )
             )
 
@@ -150,8 +141,7 @@ private val inlineCall: DeepRecursiveFunction<FrameData<SmlCall>, SmlSourceExpre
             FrameData(
                 current = data.current.receiver,
                 visited = data.visited,
-                substitutions = data.substitutions,
-                stopAtImpureCall = data.stopAtImpureCall
+                substitutions = data.substitutions
             )
         )
 
@@ -165,18 +155,9 @@ private val inlineCall: DeepRecursiveFunction<FrameData<SmlCall>, SmlSourceExpre
                         receiver = receiver,
                         call = data.current,
                         visited = data.visited,
-                        oldSubstitutions = data.substitutions,
-                        stopAtImpureCall = data.stopAtImpureCall
+                        oldSubstitutions = data.substitutions
                     )
                 )
-
-                // Check purity
-                if (data.stopAtImpureCall && !receiver.callable.isPureCallable()) {
-                    return@DeepRecursiveFunction SmlBoundOtherExpression(data.current, data.substitutions)
-                }
-
-                // TODO: must never traverse recursive stuff -> pass visited elements in data frame
-                // TODO: test this
 
                 // Run the call
                 when (receiver) {
@@ -187,8 +168,7 @@ private val inlineCall: DeepRecursiveFunction<FrameData<SmlCall>, SmlSourceExpre
                                     FrameData(
                                         current = it,
                                         visited = data.visited,
-                                        substitutions = newSubstitutions,
-                                        stopAtImpureCall = data.stopAtImpureCall
+                                        substitutions = newSubstitutions
                                     )
                                 )
                             }
@@ -199,8 +179,7 @@ private val inlineCall: DeepRecursiveFunction<FrameData<SmlCall>, SmlSourceExpre
                             FrameData(
                                 current = receiver.lambda.result,
                                 visited = data.visited,
-                                substitutions = newSubstitutions,
-                                stopAtImpureCall = data.stopAtImpureCall
+                                substitutions = newSubstitutions
                             )
                         )
                     }
@@ -211,8 +190,7 @@ private val inlineCall: DeepRecursiveFunction<FrameData<SmlCall>, SmlSourceExpre
                                     FrameData(
                                         current = it.uniqueYieldOrNull(),
                                         visited = data.visited,
-                                        substitutions = newSubstitutions,
-                                        stopAtImpureCall = data.stopAtImpureCall
+                                        substitutions = newSubstitutions
                                     )
                                 )
                             }
@@ -228,8 +206,7 @@ private data class BuildNewSubstitutionsFrameData(
     val receiver: SmlBoundCallable,
     val call: SmlCall,
     val visited: Set<SmlAbstractObject>,
-    val oldSubstitutions: ParameterSubstitutions,
-    val stopAtImpureCall: Boolean
+    val oldSubstitutions: ParameterSubstitutions
 )
 
 @OptIn(ExperimentalStdlibApi::class)
@@ -244,8 +221,7 @@ private val buildNewSubstitutions: DeepRecursiveFunction<BuildNewSubstitutionsFr
                         FrameData(
                             current = it,
                             visited = data.visited,
-                            substitutions = data.oldSubstitutions,
-                            stopAtImpureCall = data.stopAtImpureCall
+                            substitutions = data.oldSubstitutions
                         )
                     )
                 }
@@ -266,8 +242,7 @@ private val inlineMemberAccess: DeepRecursiveFunction<FrameData<SmlMemberAccess>
             FrameData(
                 current = data.current.receiver,
                 visited = data.visited,
-                substitutions = data.substitutions,
-                stopAtImpureCall = data.stopAtImpureCall
+                substitutions = data.substitutions
             )
         )
 
@@ -289,8 +264,7 @@ private val inlineReference: DeepRecursiveFunction<FrameData<SmlReference>, SmlS
                     FrameData(
                         current = declaration,
                         visited = data.visited,
-                        substitutions = data.substitutions,
-                        stopAtImpureCall = data.stopAtImpureCall
+                        substitutions = data.substitutions
                     )
                 )
             }
@@ -299,8 +273,7 @@ private val inlineReference: DeepRecursiveFunction<FrameData<SmlReference>, SmlS
                     FrameData(
                         current = declaration,
                         visited = data.visited,
-                        substitutions = data.substitutions,
-                        stopAtImpureCall = data.stopAtImpureCall
+                        substitutions = data.substitutions
                     )
                 )
             }
@@ -321,8 +294,7 @@ private val inlineAssignee: DeepRecursiveFunction<FrameData<SmlAbstractAssignee?
             FrameData(
                 current = assignmentRHS,
                 visited = data.visited,
-                substitutions = data.substitutions,
-                stopAtImpureCall = data.stopAtImpureCall
+                substitutions = data.substitutions
             )
         )
 
@@ -346,8 +318,7 @@ private val inlineParameter: DeepRecursiveFunction<FrameData<SmlParameter>, SmlS
                 FrameData(
                     current = data.current.defaultValue,
                     visited = data.visited,
-                    substitutions = data.substitutions,
-                    stopAtImpureCall = data.stopAtImpureCall
+                    substitutions = data.substitutions
                 )
             )
             else -> null

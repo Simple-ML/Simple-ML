@@ -198,7 +198,7 @@ class ToSourceExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToPureBlockLambda")
 
             val testData = workflow.testExpression()
-            testData.toSourceExpressionOrNull(stopAtImpureCall = false)
+            testData.toSourceExpressionOrNull()
                 .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -211,7 +211,7 @@ class ToSourceExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToPureBlockLambda")
 
             val testData = workflow.testExpression()
-            testData.toSourceExpressionOrNull(stopAtImpureCall = true)
+            testData.toSourceExpressionOrNull()
                 .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -224,7 +224,7 @@ class ToSourceExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToImpureBlockLambda")
 
             val testData = workflow.testExpression()
-            testData.toSourceExpressionOrNull(stopAtImpureCall = false)
+            testData.toSourceExpressionOrNull()
                 .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -238,7 +238,7 @@ class ToSourceExpressionTest {
 
             val testData = workflow.testExpression()
             testData
-                .toSourceExpressionOrNull(stopAtImpureCall = true)
+                .toSourceExpressionOrNull()
                 .shouldBe(SmlBoundOtherExpression(testData, emptyMap()))
         }
 
@@ -247,7 +247,7 @@ class ToSourceExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToPureExpressionLambda")
 
             val testData = workflow.testExpression()
-            testData.toSourceExpressionOrNull(stopAtImpureCall = false)
+            testData.toSourceExpressionOrNull()
                 .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -260,7 +260,7 @@ class ToSourceExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToPureExpressionLambda")
 
             val testData = workflow.testExpression()
-            testData.toSourceExpressionOrNull(stopAtImpureCall = true)
+            testData.toSourceExpressionOrNull()
                 .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -273,7 +273,7 @@ class ToSourceExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToImpureExpressionLambda")
 
             val testData = workflow.testExpression()
-            testData.toSourceExpressionOrNull(stopAtImpureCall = false)
+            testData.toSourceExpressionOrNull()
                 .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -287,7 +287,7 @@ class ToSourceExpressionTest {
 
             val testData = workflow.testExpression()
             testData
-                .toSourceExpressionOrNull(stopAtImpureCall = true)
+                .toSourceExpressionOrNull()
                 .shouldBe(SmlBoundOtherExpression(testData, emptyMap()))
         }
 
@@ -296,7 +296,7 @@ class ToSourceExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToPureStep")
 
             val testData = workflow.testExpression()
-            testData.toSourceExpressionOrNull(stopAtImpureCall = false)
+            testData.toSourceExpressionOrNull()
                 .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -309,7 +309,7 @@ class ToSourceExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToPureStep")
 
             val testData = workflow.testExpression()
-            testData.toSourceExpressionOrNull(stopAtImpureCall = true)
+            testData.toSourceExpressionOrNull()
                 .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -322,7 +322,7 @@ class ToSourceExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("callToImpureStep")
 
             val testData = workflow.testExpression()
-            testData.toSourceExpressionOrNull(stopAtImpureCall = false)
+            testData.toSourceExpressionOrNull()
                 .shouldBeInstanceOf<SmlBoundOtherExpression>()
                 .expression
                 .shouldBeInstanceOf<SmlInt>()
@@ -336,7 +336,7 @@ class ToSourceExpressionTest {
 
             val testData = workflow.testExpression()
             testData
-                .toSourceExpressionOrNull(stopAtImpureCall = true)
+                .toSourceExpressionOrNull()
                 .shouldBe(SmlBoundOtherExpression(testData, emptyMap()))
         }
 
