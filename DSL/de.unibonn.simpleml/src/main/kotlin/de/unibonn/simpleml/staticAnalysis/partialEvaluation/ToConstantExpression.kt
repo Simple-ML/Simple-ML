@@ -322,7 +322,7 @@ private fun SmlCall.buildNewSubstitutions(
     val substitutionsOnCall = argumentsOrEmpty()
         .groupBy { it.parameterOrNull() }
         .mapValues { (parameter, arguments) ->
-            when  {
+            when {
                 parameter == null -> null
                 parameter.isVariadic -> SmlIntermediateVariadicArguments(
                     arguments.map { it.simplify(oldSubstitutions) }
