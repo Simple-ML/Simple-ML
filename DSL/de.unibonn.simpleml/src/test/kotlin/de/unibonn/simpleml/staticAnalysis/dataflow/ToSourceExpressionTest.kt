@@ -10,7 +10,6 @@ import de.unibonn.simpleml.emf.createSmlAttribute
 import de.unibonn.simpleml.emf.createSmlBlockLambda
 import de.unibonn.simpleml.emf.createSmlBoolean
 import de.unibonn.simpleml.emf.createSmlCall
-import de.unibonn.simpleml.emf.createSmlEnumVariant
 import de.unibonn.simpleml.emf.createSmlExpressionLambda
 import de.unibonn.simpleml.emf.createSmlFloat
 import de.unibonn.simpleml.emf.createSmlInfixOperation
@@ -35,7 +34,6 @@ import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantEnumVariant
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
@@ -191,7 +189,7 @@ class ToSourceExpressionTest {
         @BeforeEach
         fun reset() {
             compilationUnit = parseHelper
-                .parseResourceWithStdlib("staticAnalysis/partialEvaluation/callsInline.smltest")
+                .parseResourceWithStdlib("staticAnalysis/dataflow/calls.smltest")
                 .shouldNotBeNull()
         }
 
@@ -488,32 +486,7 @@ class ToSourceExpressionTest {
     inner class Reference {
 
         @Test
-        fun `should return constant enum variant if referenced enum variant has no parameters`() { // TODO
-            val testEnumVariant = createSmlEnumVariant(name = "TestEnumVariant")
-            val testData = createSmlReference(
-                declaration = testEnumVariant
-            )
-
-            testData.toSourceExpressionOrNull() shouldBe SmlConstantEnumVariant(testEnumVariant)
-        }
-
-        @Test
-        fun `should return null if referenced enum variant has parameters`() { // TODO
-            val testEnumVariant = createSmlEnumVariant(
-                name = "TestEnumVariant",
-                parameters = listOf(
-                    createSmlParameter(name = "testParameter")
-                )
-            )
-            val testData = createSmlReference(
-                declaration = testEnumVariant
-            )
-
-            testData.toSourceExpressionOrNull().shouldBeNull()
-        }
-
-        @Test
-        fun `should convert assigned value of referenced placeholder`() { // TODO
+        fun `should convert assigned value of referenced placeholder`() {
             val testPlaceholder = createSmlPlaceholder("testPlaceholder")
             createSmlAssignment(
                 assignees = listOf(testPlaceholder),
@@ -523,12 +496,14 @@ class ToSourceExpressionTest {
                 declaration = testPlaceholder
             )
 
-            val result = testData.toSourceExpressionOrNull()
-            result.shouldBeInstanceOf<SmlNull>()
+            testData.toSourceExpressionOrNull()
+                .shouldBeInstanceOf<SmlBoundExpression>()
+                .expression
+                .shouldBeInstanceOf<SmlNull>()
         }
 
         @Test
-        fun `should return null if referenced placeholder has no assigned value`() { // TODO
+        fun `should return null if referenced placeholder has no assigned value`() {
             val testData = createSmlReference(
                 declaration = createSmlPlaceholder("testPlaceholder")
             )
@@ -537,18 +512,7 @@ class ToSourceExpressionTest {
         }
 
         @Test
-        fun `should return substituted value if it exists`() { // TODO
-            val testParameter = createSmlParameter("testParameter")
-            val testData = createSmlReference(
-                declaration = testParameter
-            )
-
-            val result = testData.toSourceExpressionOrNull()
-            result.shouldBeInstanceOf<SmlNull>()
-        }
-
-        @Test
-        fun `should return default value if referenced parameter is not substituted but optional`() { // TODO
+        fun `should return default value if referenced parameter is not substituted but optional`() {
             val testParameter = createSmlParameter(
                 name = "testParameter",
                 defaultValue = createSmlNull()
@@ -557,8 +521,10 @@ class ToSourceExpressionTest {
                 declaration = testParameter
             )
 
-            val result = testData.toSourceExpressionOrNull()
-            result.shouldBeInstanceOf<SmlNull>()
+            testData.toSourceExpressionOrNull()
+                .shouldBeInstanceOf<SmlBoundExpression>()
+                .expression
+                .shouldBeInstanceOf<SmlNull>()
         }
 
         @Test
@@ -579,7 +545,7 @@ class ToSourceExpressionTest {
         }
 
         @Test
-        fun `should return value of placeholders inside valid assignment with call as expression`() { // TODO
+        fun `should return value of placeholders inside valid assignment with call as expression`() {
             val compilationUnit = parseHelper
                 .parseResource("staticAnalysis/partialEvaluation/references.smltest")
                 .shouldNotBeNull()
@@ -587,13 +553,16 @@ class ToSourceExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("successfulRecordAssignment")
             val testData = workflow.testExpression()
 
-            val result = testData.toSourceExpressionOrNull()
-            result.shouldBeInstanceOf<SmlInt>()
-            result.value shouldBe 1
+            testData.toSourceExpressionOrNull()
+                .shouldBeInstanceOf<SmlBoundExpression>()
+                .expression
+                .shouldBeInstanceOf<SmlInt>()
+                .value
+                .shouldBe(1)
         }
 
         @Test
-        fun `should return null for references to placeholders inside invalid assignment with call as expression`() { // TODO
+        fun `should return null for references to placeholders inside invalid assignment with call as expression`() {
             val compilationUnit = parseHelper
                 .parseResource("staticAnalysis/partialEvaluation/references.smltest")
                 .shouldNotBeNull()
@@ -605,9 +574,9 @@ class ToSourceExpressionTest {
         }
 
         @Test
-        fun `should evaluate references to placeholders (assigned, called step has different yield order)`() { // TODO
+        fun `should evaluate references to placeholders (assigned, called step has different yield order)`() {
             val compilationUnit = parseHelper
-                .parseResource("staticAnalysis/partialEvaluation/references.smltest")
+                .parseResource("staticAnalysis/dataflow/references.smltest")
                 .shouldNotBeNull()
 
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>(
@@ -615,13 +584,16 @@ class ToSourceExpressionTest {
             )
             val testData = workflow.testExpression()
 
-            val result = testData.toSourceExpressionOrNull()
-            result.shouldBeInstanceOf<SmlInt>()
-            result.value shouldBe 1
+            testData.toSourceExpressionOrNull()
+                .shouldBeInstanceOf<SmlBoundExpression>()
+                .expression
+                .shouldBeInstanceOf<SmlInt>()
+                .value
+                .shouldBe(2)
         }
 
         @Test
-        fun `should evaluate references to placeholders (assigned, called step has missing yield)`() { // TODO
+        fun `should evaluate references to placeholders (assigned, called step has missing yield)`() {
             val compilationUnit = parseHelper
                 .parseResource("staticAnalysis/partialEvaluation/references.smltest")
                 .shouldNotBeNull()
@@ -629,13 +601,16 @@ class ToSourceExpressionTest {
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("recordAssignmentWithMissingYield")
             val testData = workflow.testExpression()
 
-            val result = testData.toSourceExpressionOrNull()
-            result.shouldBeInstanceOf<SmlInt>()
-            result.value shouldBe 1
+            testData.toSourceExpressionOrNull()
+                .shouldBeInstanceOf<SmlBoundExpression>()
+                .expression
+                .shouldBeInstanceOf<SmlInt>()
+                .value
+                .shouldBe(1)
         }
 
         @Test
-        fun `should evaluate references to placeholders (assigned, called step has additional yield)`() { // TODO
+        fun `should evaluate references to placeholders (assigned, called step has additional yield)`() {
             val compilationUnit = parseHelper
                 .parseResource("staticAnalysis/partialEvaluation/references.smltest")
                 .shouldNotBeNull()
@@ -645,18 +620,21 @@ class ToSourceExpressionTest {
             )
             val testData = workflow.testExpression()
 
-            val result = testData.toSourceExpressionOrNull()
-            result.shouldBeInstanceOf<SmlInt>()
-            result.value shouldBe 1
+            testData.toSourceExpressionOrNull()
+                .shouldBeInstanceOf<SmlBoundExpression>()
+                .expression
+                .shouldBeInstanceOf<SmlInt>()
+                .value
+                .shouldBe(1)
         }
 
         @Test
-        fun `should return null for other declarations`() { // TODO
+        fun `should wrap reference for other declarations`() {
             val testData = createSmlReference(
                 declaration = createSmlAnnotation("TestAnnotation")
             )
 
-            testData.toSourceExpressionOrNull().shouldBeNull()
+            testData.toSourceExpressionOrNull() shouldBe SmlBoundExpression(testData, emptyMap())
         }
     }
 }

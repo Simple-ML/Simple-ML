@@ -1,0 +1,10 @@
+step myStep1() -> (a: Int, b: Int) {
+    yield b = 1;
+    yield a = 2;
+}
+
+workflow recordAssignmentWithDifferentYieldOrder {
+    (val placeholder1, val placeholder2) = myStep1();
+
+    placeholder1;
+}
