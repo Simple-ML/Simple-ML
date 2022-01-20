@@ -40,6 +40,13 @@ object StdlibAnnotations {
     val Description: QualifiedName = StdlibPackages.lang.append("Description")
 
     /**
+     * The function has no side effects.
+     *
+     * @see hasNoSideEffects
+     */
+    val NoSideEffects: QualifiedName = StdlibPackages.lang.append("NoSideEffects")
+
+    /**
      * The qualified name of the corresponding module in Python.
      *
      * @see pythonModuleOrNull
@@ -54,7 +61,7 @@ object StdlibAnnotations {
     val PythonName: QualifiedName = StdlibPackages.lang.append("PythonName")
 
     /**
-     * The function returns the same results for the same arguments and has no side effects.
+     * The function has no side effects and returns the same results for the same arguments.
      *
      * @see isPure
      */
@@ -125,6 +132,13 @@ fun SmlFunction.isPure(): Boolean {
  */
 fun SmlAnnotation.isRepeatable(): Boolean {
     return hasAnnotationCallTo(StdlibAnnotations.Repeatable)
+}
+
+/**
+ * Checks if the function is annotated with the `simpleml.lang.NoSideEffects` annotation.
+ */
+fun SmlFunction.hasNoSideEffects(): Boolean {
+    return hasAnnotationCallTo(StdlibAnnotations.NoSideEffects)
 }
 
 /**
