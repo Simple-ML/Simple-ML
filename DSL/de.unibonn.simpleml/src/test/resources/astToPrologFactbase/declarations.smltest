@@ -59,7 +59,7 @@ fun myComplexFunction
 step mySimpleStep() {}
 
 @MySimpleAnnotation
-step myComplexStep (a, b) -> (a, b) {
+private step myComplexStep (a, b) -> (a, b) {
     val a = 1;
 }
 

@@ -20,6 +20,16 @@ enum class SmlTypeParameterConstraintOperator(val operator: String) {
     SuperclassOf("super");
 
     override fun toString(): String {
-        return name
+        return operator
     }
+}
+
+/**
+ * Returns the [SmlTypeParameterConstraintOperator] of this [SmlTypeParameterConstraint].
+ *
+ * @throws IllegalArgumentException If the operator is unknown.
+ */
+fun SmlTypeParameterConstraint.operator(): SmlTypeParameterConstraintOperator {
+    return SmlTypeParameterConstraintOperator.values().firstOrNull { it.operator == this.operator }
+        ?: throw IllegalArgumentException("Unknown type parameter constraint operator '$operator'.")
 }

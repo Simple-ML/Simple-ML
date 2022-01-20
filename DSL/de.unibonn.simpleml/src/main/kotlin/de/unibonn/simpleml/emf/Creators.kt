@@ -9,6 +9,7 @@ import de.unibonn.simpleml.constant.SmlProtocolQuantifiedTermQuantifier
 import de.unibonn.simpleml.constant.SmlProtocolTokenClassValue
 import de.unibonn.simpleml.constant.SmlTypeParameterConstraintOperator
 import de.unibonn.simpleml.constant.SmlVariance
+import de.unibonn.simpleml.constant.SmlVisibility
 import de.unibonn.simpleml.simpleML.SimpleMLFactory
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractClassMember
@@ -1211,6 +1212,7 @@ fun createSmlStarProjection(): SmlStarProjection {
 fun createSmlStep(
     name: String,
     annotationCalls: List<SmlAnnotationCall> = emptyList(),
+    visibility: SmlVisibility = SmlVisibility.Public,
     parameters: List<SmlParameter> = emptyList(),
     results: List<SmlResult> = emptyList(),
     statements: List<SmlAbstractStatement> = emptyList(),
@@ -1219,6 +1221,7 @@ fun createSmlStep(
     return factory.createSmlStep().apply {
         this.name = name
         this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
+        this.visibility = visibility.visibility
         this.parameterList = createSmlParameterList(parameters)
         this.resultList = results.nullIfEmptyElse(::createSmlResultList)
         this.body = factory.createSmlBlock()
@@ -1233,12 +1236,23 @@ fun createSmlStep(
 fun SmlCompilationUnit.smlStep(
     name: String,
     annotationCalls: List<SmlAnnotationCall> = emptyList(),
+    visibility: SmlVisibility = SmlVisibility.Public,
     parameters: List<SmlParameter> = emptyList(),
     results: List<SmlResult> = emptyList(),
     statements: List<SmlAbstractStatement> = emptyList(),
     init: SmlStep.() -> Unit = {}
 ) {
-    this.addMember(createSmlStep(name, annotationCalls, parameters, results, statements, init))
+    this.addMember(
+        createSmlStep(
+            name,
+            annotationCalls,
+            visibility,
+            parameters,
+            results,
+            statements,
+            init
+        )
+    )
 }
 
 /**
@@ -1247,12 +1261,23 @@ fun SmlCompilationUnit.smlStep(
 fun SmlPackage.smlStep(
     name: String,
     annotationCalls: List<SmlAnnotationCall> = emptyList(),
+    visibility: SmlVisibility = SmlVisibility.Public,
     parameters: List<SmlParameter> = emptyList(),
     results: List<SmlResult> = emptyList(),
     statements: List<SmlAbstractStatement> = emptyList(),
     init: SmlStep.() -> Unit = {}
 ) {
-    this.addMember(createSmlStep(name, annotationCalls, parameters, results, statements, init))
+    this.addMember(
+        createSmlStep(
+            name,
+            annotationCalls,
+            visibility,
+            parameters,
+            results,
+            statements,
+            init
+        )
+    )
 }
 
 /**

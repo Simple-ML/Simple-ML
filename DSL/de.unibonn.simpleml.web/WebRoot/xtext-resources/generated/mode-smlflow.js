@@ -5,7 +5,7 @@ define([
 ], function (oop, mText, mTextHighlightRules) {
   var HighlightRules = function () {
     var keywords =
-      "_|and|annotation|as|attr|class|enum|false|fun|import|in|not|null|or|out|package|protocol|static|step|sub|subterm|super|true|union|val|vararg|where|workflow|yield";
+      "_|and|annotation|as|attr|class|enum|false|fun|import|in|internal|not|null|or|out|package|private|protocol|static|step|sub|subterm|super|true|union|val|vararg|where|workflow|yield";
     this.$rules = {
       start: [
         { token: "lparen", regex: "[\\[({]" },
