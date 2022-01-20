@@ -1,6 +1,5 @@
 package de.unibonn.simpleml.constant
 
-import de.unibonn.simpleml.simpleML.SmlProtocolQuantifiedTerm
 import de.unibonn.simpleml.simpleML.SmlProtocolTokenClass
 
 /**

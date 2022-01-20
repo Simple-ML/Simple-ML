@@ -1,6 +1,5 @@
 package de.unibonn.simpleml.formatting2
 
-import de.unibonn.simpleml.constant.variance
 import de.unibonn.simpleml.constant.visibility
 import de.unibonn.simpleml.emf.annotationCallsOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ABSTRACT_DECLARATION__NAME

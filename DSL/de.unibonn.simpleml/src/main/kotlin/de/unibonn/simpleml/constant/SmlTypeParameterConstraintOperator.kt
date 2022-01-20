@@ -1,6 +1,5 @@
 package de.unibonn.simpleml.constant
 
-import de.unibonn.simpleml.simpleML.SmlProtocolTokenClass
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
 
 /**

@@ -150,9 +150,11 @@ class SimpleMLScopeProvider : AbstractSimpleMLScopeProvider() {
         if (obj is SmlAnnotation) return false
 
         // Internal steps in another package cannot be referenced
-        return !(obj is SmlStep &&
+        return !(
+            obj is SmlStep &&
                 obj.visibility() == SmlVisibility.Internal &&
-                obj.containingPackageOrNull()?.qualifiedNameOrNull() != fromPackageWithQualifiedName)
+                obj.containingPackageOrNull()?.qualifiedNameOrNull() != fromPackageWithQualifiedName
+            )
     }
 
     private fun scopeForMemberAccessDeclaration(context: SmlMemberAccess): IScope {
