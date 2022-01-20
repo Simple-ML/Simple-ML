@@ -313,6 +313,7 @@ class AstToPrologFactbase {
                     obj.id,
                     parentId,
                     obj.name,
+                    obj.visibility,
                     obj.parametersOrEmpty().map { it.id },
                     obj.resultList?.results?.map { it.id },
                     obj.statementsOrEmpty().map { it.id }

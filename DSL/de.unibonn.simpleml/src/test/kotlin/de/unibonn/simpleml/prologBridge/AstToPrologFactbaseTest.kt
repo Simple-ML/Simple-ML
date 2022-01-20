@@ -591,12 +591,19 @@ class AstToPrologFactbaseTest {
             fun `should handle simple steps`() = withFactbaseFromFile("declarations") {
                 val stepT = findUniqueFactOrFail<StepT> { it.name == "mySimpleStep" }
                 stepT.asClue {
+                    stepT.visibility.shouldBeNull()
                     stepT.parameters.shouldBeEmpty()
                     stepT.results.shouldBeNull()
                     stepT.statements.shouldBeEmpty()
                 }
 
                 shouldHaveNAnnotationCalls(stepT, 0)
+            }
+
+            @Test
+            fun `should store visibility`() = withFactbaseFromFile("declarations") {
+                val stepT = findUniqueFactOrFail<StepT> { it.name == "myComplexStep" }
+                stepT.visibility shouldBe "private"
             }
 
             @Test
