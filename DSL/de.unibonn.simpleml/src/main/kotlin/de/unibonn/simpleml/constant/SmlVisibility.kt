@@ -32,7 +32,7 @@ enum class SmlVisibility(val visibility: String?) {
  *
  * @throws IllegalArgumentException If the visibility is unknown.
  */
-fun SmlStep.variance(): SmlVisibility {
+fun SmlStep.visibility(): SmlVisibility {
     return SmlVisibility.values().firstOrNull { it.visibility == this.visibility }
         ?: throw IllegalArgumentException("Unknown visibility '$visibility'.")
 }
