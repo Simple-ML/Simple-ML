@@ -53,6 +53,7 @@ SmlCompilationUnitMember returns SmlAbstractAnnotatedObject
           constraintList=SmlConstraintList?
 
     | {SmlStep.annotationCallHolder=current}
+          visibility=('internal'|'private')?
           'step' name=ID
           parameterList=SmlParameterList
           resultList=SmlResultList?
