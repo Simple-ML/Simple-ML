@@ -1,5 +1,7 @@
 package de.unibonn.simpleml.scoping
 
+import de.unibonn.simpleml.constant.SmlVisibility
+import de.unibonn.simpleml.constant.visibility
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
@@ -56,7 +58,11 @@ class SimpleMLResourceDescriptionStrategy : DefaultResourceDescriptionStrategy()
                 false
             }
             is SmlStep -> {
-                super.createEObjectDescriptions(eObject, acceptor)
+                if (eObject.visibility() != SmlVisibility.Private) {
+                    super.createEObjectDescriptions(eObject, acceptor)
+                } else {
+                    false
+                }
             }
             else -> {
                 false

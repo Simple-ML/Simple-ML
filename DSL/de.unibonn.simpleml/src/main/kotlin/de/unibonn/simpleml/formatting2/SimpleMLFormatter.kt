@@ -1,5 +1,6 @@
 package de.unibonn.simpleml.formatting2
 
+import de.unibonn.simpleml.constant.visibility
 import de.unibonn.simpleml.emf.annotationCallsOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ABSTRACT_DECLARATION__NAME
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ANNOTATION_CALL__ANNOTATION
@@ -12,6 +13,7 @@ import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_NAMED_TYPE__DEC
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_NAMED_TYPE__NULLABLE
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_PREFIX_OPERATION__OPERATOR
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_PROTOCOL_QUANTIFIED_TERM__QUANTIFIER
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_STEP__VISIBILITY
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_ARGUMENT__TYPE_PARAMETER
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_PARAMETER_CONSTRAINT__LEFT_OPERAND
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_TYPE_PARAMETER_CONSTRAINT__OPERATOR
@@ -475,8 +477,13 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // Features "annotations"
                 doc.formatAnnotations(obj)
 
-                // Keyword "workflow"
+                // Feature "visibility"
                 if (obj.annotationCallsOrEmpty().isEmpty()) {
+                    doc.formatFeature(obj, SML_STEP__VISIBILITY, noSpace, null)
+                }
+
+                // Keyword "step"
+                if (obj.annotationCallsOrEmpty().isEmpty() && obj.visibility == null) {
                     doc.formatKeyword(obj, "step", noSpace, oneSpace)
                 } else {
                     doc.formatKeyword(obj, "step", oneSpace, oneSpace)

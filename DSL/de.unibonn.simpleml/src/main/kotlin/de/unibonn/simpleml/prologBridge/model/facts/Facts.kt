@@ -654,6 +654,7 @@ data class StepT(
     override val id: Id<SmlStep>,
     override val parent: Id<SmlAbstractObject>, // Actually just SmlCompilationUnit but this allows a handleDeclaration function
     override val name: String,
+    val visibility: String?,
     val parameters: List<Id<SmlParameter>>,
     val results: List<Id<SmlResult>>?,
     val statements: List<Id<SmlAbstractStatement>>
@@ -662,6 +663,7 @@ data class StepT(
     id,
     parent,
     name,
+    visibility,
     parameters,
     results,
     statements

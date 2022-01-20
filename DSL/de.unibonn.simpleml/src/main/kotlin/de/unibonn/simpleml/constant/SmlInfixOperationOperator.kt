@@ -71,6 +71,16 @@ enum class SmlInfixOperationOperator(val operator: String) {
     Elvis("?:");
 
     override fun toString(): String {
-        return name
+        return operator
     }
+}
+
+/**
+ * Returns the [SmlInfixOperationOperator] of this [SmlInfixOperation].
+ *
+ * @throws IllegalArgumentException If the operator is unknown.
+ */
+fun SmlInfixOperation.operator(): SmlInfixOperationOperator {
+    return SmlInfixOperationOperator.values().firstOrNull { it.operator == this.operator }
+        ?: throw IllegalArgumentException("Unknown infix operator '$operator'.")
 }
