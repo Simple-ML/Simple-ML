@@ -1210,7 +1210,7 @@ class ScopingTest {
             val stepInSameFile = findUniqueDeclarationOrFail<SmlStep>("stepInSameFile")
 
             val references = step.descendants<SmlReference>().toList()
-            references.shouldHaveSize(4)
+            references.shouldHaveSize(10)
 
             val declaration = references[0].declaration
             declaration.shouldBeResolved()
@@ -1222,7 +1222,7 @@ class ScopingTest {
             val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToSteps")
 
             val references = step.descendants<SmlReference>().toList()
-            references.shouldHaveSize(4)
+            references.shouldHaveSize(10)
 
             val declaration = references[1].declaration
             declaration.shouldBeResolved()
@@ -1234,7 +1234,7 @@ class ScopingTest {
             val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToSteps")
 
             val references = step.descendants<SmlReference>().toList()
-            references.shouldHaveSize(4)
+            references.shouldHaveSize(10)
 
             val declaration = references[2].declaration
             declaration.shouldBeResolved()
@@ -1246,8 +1246,73 @@ class ScopingTest {
             val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToSteps")
 
             val references = step.descendants<SmlReference>().toList()
-            references.shouldHaveSize(4)
+            references.shouldHaveSize(10)
             references[3].declaration.shouldNotBeResolved()
+        }
+
+        @Test
+        fun `should resolve internal step in same file`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToSteps")
+            val stepInSameFile = findUniqueDeclarationOrFail<SmlStep>("internalStepInSameFile")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(10)
+
+            val declaration = references[4].declaration
+            declaration.shouldBeResolved()
+            declaration.shouldBe(stepInSameFile)
+        }
+
+        @Test
+        fun `should resolve private step in same file`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToSteps")
+            val stepInSameFile = findUniqueDeclarationOrFail<SmlStep>("privateStepInSameFile")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(10)
+
+            val declaration = references[5].declaration
+            declaration.shouldBeResolved()
+            declaration.shouldBe(stepInSameFile)
+        }
+
+        @Test
+        fun `should resolve internal step in same package`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToSteps")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(10)
+
+            val declaration = references[6].declaration
+            declaration.shouldBeResolved()
+            declaration.name.shouldBe("internalStepInSamePackage")
+        }
+
+        @Test
+        fun `should not resolve private step in same package`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToSteps")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(10)
+            references[7].declaration.shouldNotBeResolved()
+        }
+
+        @Test
+        fun `should not resolve internal step in another package`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToSteps")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(10)
+            references[8].declaration.shouldNotBeResolved()
+        }
+
+        @Test
+        fun `should not resolve private step in another package`() = withResource(REFERENCE) {
+            val step = findUniqueDeclarationOrFail<SmlStep>("directReferencesToSteps")
+
+            val references = step.descendants<SmlReference>().toList()
+            references.shouldHaveSize(10)
+            references[9].declaration.shouldNotBeResolved()
         }
 
         @Test

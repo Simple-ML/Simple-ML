@@ -1,10 +1,13 @@
 package de.unibonn.simpleml.scoping
 
+import de.unibonn.simpleml.constant.SmlVisibility
+import de.unibonn.simpleml.constant.visibility
 import de.unibonn.simpleml.emf.classMembersOrEmpty
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingCallableOrNull
 import de.unibonn.simpleml.emf.containingClassOrNull
+import de.unibonn.simpleml.emf.containingPackageOrNull
 import de.unibonn.simpleml.emf.containingProtocolOrNull
 import de.unibonn.simpleml.emf.isStatic
 import de.unibonn.simpleml.emf.parametersOrEmpty
@@ -13,6 +16,7 @@ import de.unibonn.simpleml.emf.subtermsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrNull
 import de.unibonn.simpleml.emf.uniquePackageOrNull
 import de.unibonn.simpleml.emf.variantsOrEmpty
+import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
 import de.unibonn.simpleml.simpleML.SmlAbstractLambda
 import de.unibonn.simpleml.simpleML.SmlAbstractNamedTypeDeclaration
@@ -31,11 +35,13 @@ import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
+import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlProtocol
 import de.unibonn.simpleml.simpleML.SmlProtocolReference
 import de.unibonn.simpleml.simpleML.SmlProtocolSubterm
 import de.unibonn.simpleml.simpleML.SmlReference
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
 import de.unibonn.simpleml.simpleML.SmlTypeParameterConstraint
@@ -53,6 +59,8 @@ import de.unibonn.simpleml.staticAnalysis.typing.type
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.xtext.naming.QualifiedName
+import org.eclipse.xtext.resource.IEObjectDescription
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.FilteringScope
@@ -95,13 +103,13 @@ class SimpleMLScopeProvider : AbstractSimpleMLScopeProvider() {
             container is SmlMemberAccess && container.member == context -> scopeForMemberAccessDeclaration(container)
             else -> {
                 val resource = context.eResource()
+                val packageQualifiedName = context.containingPackageOrNull()?.qualifiedNameOrNull()
 
                 // Declarations in other files
                 var result: IScope = FilteringScope(
                     super.delegateGetScope(context, SimpleMLPackage.Literals.SML_REFERENCE__DECLARATION)
                 ) {
-                    // Keep only external declarations, since this also includes all local declarations
-                    it != null && it.eObjectOrProxy.eResource() != resource && it.eObjectOrProxy !is SmlAnnotation
+                    it.isReferencableExternalDeclaration(resource, packageQualifiedName)
                 }
 
                 // Declarations in this file
@@ -119,6 +127,32 @@ class SimpleMLScopeProvider : AbstractSimpleMLScopeProvider() {
                 localDeclarations(context, result)
             }
         }
+    }
+
+    /**
+     * Removes declarations in this [Resource], [SmlAnnotation]s, and internal [SmlStep]s located in other
+     * [SmlPackage]s.
+     */
+    private fun IEObjectDescription?.isReferencableExternalDeclaration(
+        fromResource: Resource,
+        fromPackageWithQualifiedName: QualifiedName?
+    ): Boolean {
+
+        // Resolution failed in delegate scope
+        if (this == null) return false
+
+        val obj = this.eObjectOrProxy
+
+        // Local declarations are added later using custom scoping rules
+        if (obj.eResource() == fromResource) return false
+
+        // Annotations cannot be referenced
+        if (obj is SmlAnnotation) return false
+
+        // Internal steps in another package cannot be referenced
+        return !(obj is SmlStep &&
+                obj.visibility() == SmlVisibility.Internal &&
+                obj.containingPackageOrNull()?.qualifiedNameOrNull() != fromPackageWithQualifiedName)
     }
 
     private fun scopeForMemberAccessDeclaration(context: SmlMemberAccess): IScope {

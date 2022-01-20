@@ -15,6 +15,7 @@ import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Or
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Plus
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Times
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Not
+import de.unibonn.simpleml.constant.operator
 import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.isOptional
@@ -133,56 +134,56 @@ private fun SmlInfixOperation.simplifyInfixOp(substitutions: ParameterSubstituti
     val constantLeft = leftOperand.toConstantExpressionOrNull(substitutions) ?: return null
     val constantRight = rightOperand.toConstantExpressionOrNull(substitutions) ?: return null
 
-    return when (operator) {
-        Or.operator -> simplifyLogicalOp(constantLeft, Boolean::or, constantRight)
-        And.operator -> simplifyLogicalOp(constantLeft, Boolean::and, constantRight)
-        Equals.operator -> SmlConstantBoolean(constantLeft == constantRight)
-        NotEquals.operator -> SmlConstantBoolean(constantLeft != constantRight)
-        IdenticalTo.operator -> SmlConstantBoolean(constantLeft == constantRight)
-        NotIdenticalTo.operator -> SmlConstantBoolean(constantLeft != constantRight)
-        LessThan.operator -> simplifyComparisonOp(
+    return when (operator()) {
+        Or -> simplifyLogicalOp(constantLeft, Boolean::or, constantRight)
+        And -> simplifyLogicalOp(constantLeft, Boolean::and, constantRight)
+        Equals -> SmlConstantBoolean(constantLeft == constantRight)
+        NotEquals -> SmlConstantBoolean(constantLeft != constantRight)
+        IdenticalTo -> SmlConstantBoolean(constantLeft == constantRight)
+        NotIdenticalTo -> SmlConstantBoolean(constantLeft != constantRight)
+        LessThan -> simplifyComparisonOp(
             constantLeft,
             { a, b -> a < b },
             { a, b -> a < b },
             constantRight
         )
-        LessThanOrEquals.operator -> simplifyComparisonOp(
+        LessThanOrEquals -> simplifyComparisonOp(
             constantLeft,
             { a, b -> a <= b },
             { a, b -> a <= b },
             constantRight
         )
-        GreaterThanOrEquals.operator -> simplifyComparisonOp(
+        GreaterThanOrEquals -> simplifyComparisonOp(
             constantLeft,
             { a, b -> a >= b },
             { a, b -> a >= b },
             constantRight
         )
-        GreaterThan.operator -> simplifyComparisonOp(
+        GreaterThan -> simplifyComparisonOp(
             constantLeft,
             { a, b -> a > b },
             { a, b -> a > b },
             constantRight
         )
-        Plus.operator -> simplifyArithmeticOp(
+        Plus -> simplifyArithmeticOp(
             constantLeft,
             { a, b -> a + b },
             { a, b -> a + b },
             constantRight
         )
-        InfixMinus.operator -> simplifyArithmeticOp(
+        InfixMinus -> simplifyArithmeticOp(
             constantLeft,
             { a, b -> a - b },
             { a, b -> a - b },
             constantRight
         )
-        Times.operator -> simplifyArithmeticOp(
+        Times -> simplifyArithmeticOp(
             constantLeft,
             { a, b -> a * b },
             { a, b -> a * b },
             constantRight
         )
-        By.operator -> {
+        By -> {
             if (constantRight == SmlConstantFloat(0.0) || constantRight == SmlConstantInt(0)) {
                 return null
             }
@@ -194,11 +195,10 @@ private fun SmlInfixOperation.simplifyInfixOp(substitutions: ParameterSubstituti
                 constantRight
             )
         }
-        Elvis.operator -> when (constantLeft) {
+        Elvis -> when (constantLeft) {
             SmlConstantNull -> constantRight
             else -> constantLeft
         }
-        else -> throw IllegalArgumentException("Missing case to handle $this.")
     }
 }
 
@@ -255,17 +255,16 @@ private fun simplifyArithmeticOp(
 private fun SmlPrefixOperation.simplifyPrefixOp(substitutions: ParameterSubstitutions): SmlConstantExpression? {
     val constantOperand = operand.toConstantExpressionOrNull(substitutions) ?: return null
 
-    return when (operator) {
-        Not.operator -> when (constantOperand) {
+    return when (operator()) {
+        Not -> when (constantOperand) {
             is SmlConstantBoolean -> SmlConstantBoolean(!constantOperand.value)
             else -> null
         }
-        PrefixMinus.operator -> when (constantOperand) {
+        PrefixMinus -> when (constantOperand) {
             is SmlConstantFloat -> SmlConstantFloat(-constantOperand.value)
             is SmlConstantInt -> SmlConstantInt(-constantOperand.value)
             else -> null
         }
-        else -> throw IllegalArgumentException("Missing case to handle $this.")
     }
 }
 
