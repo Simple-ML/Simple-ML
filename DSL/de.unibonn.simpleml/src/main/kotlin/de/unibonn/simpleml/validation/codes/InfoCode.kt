@@ -13,4 +13,7 @@ enum class InfoCode {
     UnnecessaryTypeArgumentList,
     UnnecessaryTypeParameterList,
     UnnecessaryUnionType,
+
+    // Other
+    PureImpliesNoSideEffects
 }

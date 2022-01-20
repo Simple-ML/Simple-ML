@@ -27,6 +27,7 @@ import de.unibonn.simpleml.staticAnalysis.linking.parametersOrNull
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibAnnotations
 import de.unibonn.simpleml.stdlibAccess.StdlibEnums.AnnotationTarget
+import de.unibonn.simpleml.stdlibAccess.isPure
 import de.unibonn.simpleml.stdlibAccess.validTargets
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
@@ -178,6 +179,22 @@ class AnnotationCallChecker : AbstractSimpleMLChecker() {
                     ErrorCode.MustBeConstant
                 )
             }
+        }
+    }
+
+    @Check
+    fun pureImpliesNoSideEffects(smlAnnotationCall: SmlAnnotationCall) {
+        if (smlAnnotationCall.annotation.qualifiedNameOrNull() != StdlibAnnotations.NoSideEffects) {
+            return
+        }
+
+        val target = smlAnnotationCall.targetOrNull() ?: return
+        if (target is SmlFunction && target.isPure()) {
+            info(
+                "Purity implies absence of side effects (remove this annotation call).",
+                null,
+                InfoCode.PureImpliesNoSideEffects
+            )
         }
     }
 }
