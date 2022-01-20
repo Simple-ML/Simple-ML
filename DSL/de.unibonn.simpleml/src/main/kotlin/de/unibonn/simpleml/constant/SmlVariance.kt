@@ -46,3 +46,23 @@ enum class SmlVariance(val variance: String?) {
         return name
     }
 }
+
+/**
+ * Returns the [SmlVariance] of this [SmlTypeParameter].
+ *
+ * @throws IllegalArgumentException If the variance is unknown.
+ */
+fun SmlTypeParameter.variance(): SmlVariance {
+    return SmlVariance.values().firstOrNull { it.variance == this.variance }
+        ?: throw IllegalArgumentException("Unknown variance '$variance'.")
+}
+
+/**
+ * Returns the [SmlVariance] of this [SmlTypeProjection].
+ *
+ * @throws IllegalArgumentException If the variance is unknown.
+ */
+fun SmlTypeProjection.variance(): SmlVariance {
+    return SmlVariance.values().firstOrNull { it.variance == this.variance }
+        ?: throw IllegalArgumentException("Unknown variance '$variance'.")
+}

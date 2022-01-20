@@ -18,6 +18,16 @@ enum class SmlPrefixOperationOperator(val operator: String) {
     Minus("-");
 
     override fun toString(): String {
-        return name
+        return operator
     }
+}
+
+/**
+ * Returns the [SmlPrefixOperationOperator] of this [SmlPrefixOperation].
+ *
+ * @throws IllegalArgumentException If the operator is unknown.
+ */
+fun SmlPrefixOperation.operator(): SmlPrefixOperationOperator {
+    return SmlPrefixOperationOperator.values().firstOrNull { it.operator == this.operator }
+        ?: throw IllegalArgumentException("Unknown prefix operator '$operator'.")
 }
