@@ -54,15 +54,15 @@ fun List<Issue>.shouldHaveNoSemanticWarning(expected: ExpectedIssue) {
 }
 
 fun List<Issue>.shouldHaveSemanticInfo(expected: ExpectedIssue) {
-    val warnings = this.filter { it.severity == Severity.INFO }
-    if (warnings.none { expected.matches(it) }) {
+    val infos = this.filter { it.severity == Severity.INFO }
+    if (infos.none { expected.matches(it) }) {
         throw AssertionError("Expected $expected but got${this.stringify()}")
     }
 }
 
 fun List<Issue>.shouldHaveNoSemanticInfo(expected: ExpectedIssue) {
-    val warnings = this.filter { it.severity == Severity.INFO }
-    if (warnings.any { expected.matches(it) }) {
+    val infos = this.filter { it.severity == Severity.INFO }
+    if (infos.any { expected.matches(it) }) {
         throw AssertionError("Expected $expected but got${this.stringify()}")
     }
 }
