@@ -16,7 +16,6 @@
         <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractCompilationUnitMember" />
         <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractLocalVariable" />
         <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractNamedTypeDeclaration" />
-        <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractPackageMember" />
         <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractProtocolToken" />
         <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractResult" />
         <genClasses ecoreClass="SimpleML.ecore#//SmlAnnotation">
@@ -81,12 +80,8 @@
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlProtocolParenthesizedTerm/term" />
         </genClasses>
         <genClasses ecoreClass="SimpleML.ecore#//SmlCompilationUnit">
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlCompilationUnit/imports" />
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlCompilationUnit/members" />
-        </genClasses>
-        <genClasses ecoreClass="SimpleML.ecore#//SmlPackage">
-            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlPackage/imports" />
-            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlPackage/members" />
-            <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlPackage/name" />
         </genClasses>
         <genClasses ecoreClass="SimpleML.ecore#//SmlImport">
             <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlImport/importedNamespace" />

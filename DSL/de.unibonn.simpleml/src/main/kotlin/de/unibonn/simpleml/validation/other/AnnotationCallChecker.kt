@@ -12,11 +12,11 @@ import de.unibonn.simpleml.simpleML.SmlAnnotationCall
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
-import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlResult
@@ -106,7 +106,7 @@ class AnnotationCallChecker : AbstractSimpleMLChecker() {
             actualTarget is SmlClass && AnnotationTarget.Class !in legalTargets -> {
                 "a class"
             }
-            actualTarget is SmlPackage && AnnotationTarget.CompilationUnit !in legalTargets -> {
+            actualTarget is SmlCompilationUnit && AnnotationTarget.CompilationUnit !in legalTargets -> {
                 "a compilation unit"
             }
             actualTarget is SmlEnum && AnnotationTarget.Enum !in legalTargets -> {

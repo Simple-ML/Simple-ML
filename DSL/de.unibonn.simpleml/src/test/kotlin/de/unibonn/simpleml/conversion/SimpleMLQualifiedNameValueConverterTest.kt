@@ -7,9 +7,6 @@ import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlCompilationUnit
 import de.unibonn.simpleml.emf.createSmlDummyResource
 import de.unibonn.simpleml.emf.createSmlImport
-import de.unibonn.simpleml.emf.createSmlPackage
-import de.unibonn.simpleml.emf.smlPackage
-import de.unibonn.simpleml.emf.uniquePackageOrNull
 import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.testing.ParseHelper
@@ -52,9 +49,7 @@ class SimpleMLQualifiedNameValueConverterTest {
             val compilationUnit = parseHelper.parseResource("conversion/qualifiedNameValueConverter.smltest")
             compilationUnit.shouldNotBeNull()
 
-            val `package` = compilationUnit.uniquePackageOrNull()
-            `package`.shouldNotBeNull()
-            `package`.name shouldBe "simpleml.package"
+            compilationUnit.name shouldBe "simpleml.package"
         }
 
         @Test
@@ -62,10 +57,9 @@ class SimpleMLQualifiedNameValueConverterTest {
             val compilationUnit = parseHelper.parseResource("conversion/qualifiedNameValueConverter.smltest")
             compilationUnit.shouldNotBeNull()
 
-            val `package` = compilationUnit.uniquePackageOrNull()
-            `package`.shouldNotBeNull()
+            compilationUnit.name.shouldNotBeNull()
 
-            val imports = `package`.imports
+            val imports = compilationUnit.imports
             imports.shouldHaveSize(1)
 
             imports[0].importedNamespace shouldBe "simpleml.package.*"
@@ -86,14 +80,14 @@ class SimpleMLQualifiedNameValueConverterTest {
 
         @Test
         fun `should escape keywords (creator, no wildcard)`() {
-            val `package` = createSmlPackage("simpleml.package")
+            val compilationUnit = createSmlCompilationUnit(packageName = "simpleml.package")
             createSmlDummyResource(
                 "test",
                 SmlFileExtension.Test,
-                createSmlCompilationUnit(listOf(`package`))
+                compilationUnit
             )
 
-            val result = `package`.serializeToFormattedString()
+            val result = compilationUnit.serializeToFormattedString()
             result.shouldBeInstanceOf<SerializationResult.Success>()
             result.code shouldBe "package simpleml.`package`"
         }
@@ -101,9 +95,11 @@ class SimpleMLQualifiedNameValueConverterTest {
         @Test
         fun `should escape keywords (creator, with wildcard)`() {
             val import = createSmlImport("simpleml.package.*")
-            createSmlDummyResource("test", SmlFileExtension.Test) {
-                smlPackage(name = "test", imports = listOf(import))
-            }
+            createSmlDummyResource(
+                fileName = "test",
+                SmlFileExtension.Test,
+                createSmlCompilationUnit(packageName = "test", imports = listOf(import))
+            )
 
             val result = import.serializeToFormattedString()
             result.shouldBeInstanceOf<SerializationResult.Success>()
@@ -122,14 +118,14 @@ class SimpleMLQualifiedNameValueConverterTest {
 
         @Test
         fun `should not escape non-keywords (creator, no wildcard)`() {
-            val `package` = createSmlPackage("simpleml.notAKeyword")
+            val compilationUnit = createSmlCompilationUnit(packageName = "simpleml.notAKeyword")
             createSmlDummyResource(
                 "test",
                 SmlFileExtension.Test,
-                createSmlCompilationUnit(listOf(`package`))
+                compilationUnit
             )
 
-            val result = `package`.serializeToFormattedString()
+            val result = compilationUnit.serializeToFormattedString()
             result.shouldBeInstanceOf<SerializationResult.Success>()
             result.code shouldBe "package simpleml.notAKeyword"
         }
@@ -137,9 +133,11 @@ class SimpleMLQualifiedNameValueConverterTest {
         @Test
         fun `should not escape non-keywords (creator, with wildcard)`() {
             val import = createSmlImport("simpleml.notAKeyword.*")
-            createSmlDummyResource("test", SmlFileExtension.Test) {
-                smlPackage(name = "test", imports = listOf(import))
-            }
+            createSmlDummyResource(
+                fileName = "test",
+                SmlFileExtension.Test,
+                createSmlCompilationUnit(packageName = "test", imports = listOf(import))
+            )
 
             val result = import.serializeToFormattedString()
             result.shouldBeInstanceOf<SerializationResult.Success>()

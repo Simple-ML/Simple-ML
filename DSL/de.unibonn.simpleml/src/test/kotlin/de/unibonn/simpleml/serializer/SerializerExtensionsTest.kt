@@ -3,6 +3,7 @@
 package de.unibonn.simpleml.serializer
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.emf.createSmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.testing.ParseHelper
@@ -84,7 +85,7 @@ class SerializerExtensionsTest {
 
         @Test
         fun `should not serialize EObjects without Resource`() {
-            val compilationUnit = factory.createSmlCompilationUnit()
+            val compilationUnit = createSmlCompilationUnit(packageName = "test")
 
             val result = compilationUnit.serializeToFormattedString()
             result.shouldBeInstanceOf<SerializationResult.NotInResourceFailure>()
@@ -93,8 +94,8 @@ class SerializerExtensionsTest {
         @Test
         fun `should not serialize wrong EMF models`() {
             val compilationUnit = factory.createSmlCompilationUnit().apply {
-                // Missing SmlAnnotationUseHolder
-                members += factory.createSmlPackage().apply {
+                // Missing SmlAnnotationCallHolder
+                members += factory.createSmlClass().apply {
                     name = "tests"
                 }
             }

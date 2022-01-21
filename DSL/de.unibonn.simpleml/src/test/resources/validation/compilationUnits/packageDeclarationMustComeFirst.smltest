@@ -1,7 +1,0 @@
-class MyClass
-
-// semantic_error "The package declaration and imports must come first."
-»import myPackage«
-
-// semantic_error "The package declaration and imports must come first."
-»package myPackage«
