@@ -35,6 +35,7 @@ import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode
 import de.unibonn.simpleml.validation.codes.WarningCode
 import org.eclipse.xtext.validation.Check
+import org.eclipse.xtext.validation.CheckType
 
 class AnnotationCallChecker : AbstractSimpleMLChecker() {
 
@@ -168,7 +169,7 @@ class AnnotationCallChecker : AbstractSimpleMLChecker() {
         }
     }
 
-    @Check
+    @Check(CheckType.NORMAL)
     fun argumentsMustBeConstant(smlAnnotationCall: SmlAnnotationCall) {
         smlAnnotationCall.argumentsOrEmpty().forEach {
             if (it.value?.toConstantExpressionOrNull() == null) {
