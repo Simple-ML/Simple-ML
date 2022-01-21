@@ -10,9 +10,9 @@
     "galleryBanner": {
         "color": "#ffffff"
     },
-    "version": "0.0.10",
+    "version": "0.0.12",
     "engines": {
-        "vscode": "^1.59.0"
+        "vscode": "^1.62.0"
     },
     "categories": [
         "Programming Languages",
@@ -30,7 +30,9 @@
                     "simpleml"
                 ],
                 "extensions": [
-                    ".simpleml"
+                    ".smlflow",
+                    ".smlstub",
+                    ".smltest"
                 ],
                 "configuration": "./language-configuration.json"
             }
@@ -55,11 +57,11 @@
         "vscode-languageclient": "^7.0.0"
     },
     "devDependencies": {
-        "@types/node": "^16.10.2",
-        "@types/vscode": "^1.59.0",
-        "esbuild": "^0.13.3",
-        "prettier": "^2.4.1",
-        "typescript": "^4.4.3",
+        "@types/node": "^16.11.12",
+        "@types/vscode": "^1.62.0",
+        "esbuild": "^0.14.10",
+        "prettier": "^2.5.1",
+        "typescript": "^4.5.4",
         "vscode-test": "^1.6.1"
     }
 }

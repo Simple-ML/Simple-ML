@@ -1,0 +1,135 @@
+@prefix dsl: <http://simple-ml.de/dsl#> .
+
+dsl:FunctionLoadDataset a dsl:Function ;
+    dsl:has_input_parameter dsl:ParameterInputFunctionloadDatasetName ;
+    dsl:name "loadDataset" .
+
+dsl:FunctionPrint a dsl:Function ;
+    dsl:has_input_parameter dsl:ParameterInputFunctionprintShowable ;
+    dsl:name "print" .
+
+dsl:FunctionPrintln a dsl:Function ;
+    dsl:has_input_parameter dsl:ParameterInputFunctionprintlnShowable ;
+    dsl:name "println" .
+
+dsl:StubAny a dsl:Stub ;
+    dsl:name "Any" .
+
+dsl:StubBoolean a dsl:Stub ;
+    dsl:name "Boolean" .
+
+dsl:StubDataset a dsl:Stub ;
+    dsl:has_function dsl:FunctionDatasetDropAttributes,
+        dsl:FunctionDatasetKeepAttributes,
+        dsl:FunctionDatasetSample,
+        dsl:FunctionDatasetSplitIntoTrainAndTest ;
+    dsl:name "Dataset" .
+
+dsl:StubDecisionTree a dsl:Stub ;
+    dsl:has_function dsl:FunctionDecisionTreeFit ;
+    dsl:has_parameter dsl:ParameterDecisionTreeMaxDepth ;
+    dsl:name "DecisionTree" .
+
+dsl:StubDecisionTreeClassifier a dsl:Stub ;
+    dsl:has_function dsl:FunctionDecisionTreeClassifierFit ;
+    dsl:has_parameter dsl:ParameterDecisionTreeClassifierMaxDepth ;
+    dsl:name "DecisionTreeClassifier" .
+
+dsl:StubDecisionTreeModel a dsl:Stub ;
+    dsl:has_function dsl:FunctionDecisionTreeModelPredict ;
+    dsl:name "DecisionTreeModel" .
+
+dsl:StubEstimator a dsl:Stub ;
+    dsl:name "Estimator" .
+
+dsl:StubFloat a dsl:Stub ;
+    dsl:name "Float" .
+
+dsl:StubInt a dsl:Stub ;
+    dsl:name "Int" .
+
+dsl:StubLasso a dsl:Stub ;
+    dsl:has_function dsl:FunctionLassoFit ;
+    dsl:has_parameter dsl:ParameterLassoRegularizationStrength ;
+    dsl:name "Lasso" .
+
+dsl:StubList a dsl:Stub ;
+    dsl:has_function dsl:FunctionListListOf ;
+    dsl:name "List" .
+
+dsl:StubMap a dsl:Stub ;
+    dsl:name "Map" .
+
+dsl:StubModel a dsl:Stub ;
+    dsl:has_function dsl:FunctionModelPredict ;
+    dsl:name "Model" .
+
+dsl:StubNumber a dsl:Stub ;
+    dsl:name "Number" .
+
+dsl:StubString a dsl:Stub ;
+    dsl:name "String" .
+
+dsl:StubTrainedDecisionTree a dsl:Stub ;
+    dsl:has_function dsl:FunctionTrainedDecisionTreePredict ;
+    dsl:name "TrainedDecisionTree" .
+
+dsl:StubTrainedLasso a dsl:Stub ;
+    dsl:has_function dsl:FunctionTrainedLassoPredict ;
+    dsl:has_parameter dsl:ParameterTrainedLassoSlope,
+        dsl:ParameterTrainedLassoYIntercept ;
+    dsl:name "TrainedLasso" .
+
+dsl:FunctionDatasetDropAttributes a dsl:Function ;
+    dsl:has_input_parameter dsl:ParameterInputDatasetFunctiondropAttributesVarargattributes ;
+    dsl:name "dropAttributes" .
+
+dsl:FunctionDatasetKeepAttributes a dsl:Function ;
+    dsl:has_input_parameter dsl:ParameterInputDatasetFunctionkeepAttributesVarargattributes ;
+    dsl:name "keepAttributes" .
+
+dsl:FunctionDatasetSample a dsl:Function ;
+    dsl:has_input_parameter dsl:ParameterInputDatasetFunctionsampleNInstances ;
+    dsl:name "sample" .
+
+dsl:FunctionDatasetSplitIntoTrainAndTest a dsl:Function ;
+    dsl:has_input_parameter dsl:ParameterInputDatasetFunctionsplitIntoTrainAndTestDataset2,
+        dsl:ParameterInputDatasetFunctionsplitIntoTrainAndTestRandomState,
+        dsl:ParameterInputDatasetFunctionsplitIntoTrainAndTestTrainRatio ;
+    dsl:name "splitIntoTrainAndTest" .
+
+dsl:FunctionDecisionTreeClassifierFit a dsl:Function ;
+    dsl:has_input_parameter dsl:ParameterInputDecisionTreeClassifierFunctionfitFeatures,
+        dsl:ParameterInputDecisionTreeClassifierFunctionfitTarget ;
+    dsl:name "fit" .
+
+dsl:FunctionDecisionTreeFit a dsl:Function ;
+    dsl:has_input_parameter dsl:ParameterInputDecisionTreeFunctionfitFeatures,
+        dsl:ParameterInputDecisionTreeFunctionfitTarget ;
+    dsl:name "fit" .
+
+dsl:FunctionDecisionTreeModelPredict a dsl:Function ;
+    dsl:has_input_parameter dsl:ParameterInputDecisionTreeModelFunctionpredictFeatures ;
+    dsl:name "predict" .
+
+dsl:FunctionLassoFit a dsl:Function ;
+    dsl:has_input_parameter dsl:ParameterInputLassoFunctionfitFeatures,
+        dsl:ParameterInputLassoFunctionfitTarget ;
+    dsl:name "fit" .
+
+dsl:FunctionListListOf a dsl:Function ;
+    dsl:has_input_parameter dsl:ParameterInputListFunctionlistOfVarargelements ;
+    dsl:name "listOf" .
+
+dsl:FunctionModelPredict a dsl:Function ;
+    dsl:has_input_parameter dsl:ParameterInputModelFunctionpredictFeatures ;
+    dsl:name "predict" .
+
+dsl:FunctionTrainedDecisionTreePredict a dsl:Function ;
+    dsl:has_input_parameter dsl:ParameterInputTrainedDecisionTreeFunctionpredictFeatures ;
+    dsl:name "predict" .
+
+dsl:FunctionTrainedLassoPredict a dsl:Function ;
+    dsl:has_input_parameter dsl:ParameterInputTrainedLassoFunctionpredictFeatures ;
+    dsl:name "predict" .
+

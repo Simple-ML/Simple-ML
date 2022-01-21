@@ -149,7 +149,7 @@ def exportStatisticsAsRDF(dataset: Dataset):
                        Literal(value[config.value], datatype=rdf_config.xsd_data_types[value['data_type']])))
                 g.add((rdf_attribute_stat, RDF.type, SML["Distribution" + capitalise(value[config.id]) + "Evaluation"]))
 
-    return g.serialize(format="turtle").decode("utf-8")
+    return g.serialize(format="turtle")#.decode("utf-8")
 
 
 def urify(string):

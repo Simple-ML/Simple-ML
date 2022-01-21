@@ -1,6 +1,0 @@
-// semantic_error "A workflow step must have no modifiers."
-// semantic_error "A workflow step must have no modifiers."
-// semantic_error "A workflow step must have no modifiers."
-// semantic_error "A workflow step must have no modifiers."
-// semantic_error "A workflow step must have no modifiers."
-»deprecated« »open« »override« »pure« »static« step myStep() {}
