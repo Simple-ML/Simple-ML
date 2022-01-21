@@ -18,10 +18,9 @@
     <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractCompilationUnitMember" abstract="true" eSuperTypes="#//SmlAbstractDeclaration" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractLocalVariable" abstract="true" eSuperTypes="#//SmlAbstractDeclaration" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractNamedTypeDeclaration" abstract="true" eSuperTypes="#//SmlAbstractDeclaration" />
-    <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractPackageMember" abstract="true" eSuperTypes="#//SmlAbstractDeclaration" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractProtocolToken" abstract="true" eSuperTypes="#//SmlAbstractDeclaration" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractResult" abstract="true" eSuperTypes="#//SmlAbstractDeclaration" />
-    <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotation" eSuperTypes="#//SmlAbstractCallable #//SmlAbstractCompilationUnitMember #//SmlAbstractPackageMember">
+    <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotation" eSuperTypes="#//SmlAbstractCallable #//SmlAbstractCompilationUnitMember">
         <eStructuralFeatures xsi:type="ecore:EReference" name="constraintList" eType="#//SmlConstraintList" containment="true" />
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotationCallHolder" eSuperTypes="#//SmlAbstractAnnotatedObject" />
@@ -32,7 +31,7 @@
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="static" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//SmlAbstractType" containment="true" />
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SmlClass" abstract="false" eSuperTypes="#//SmlAbstractCallable #//SmlAbstractClassMember #//SmlAbstractCompilationUnitMember #//SmlAbstractNamedTypeDeclaration #//SmlAbstractPackageMember">
+    <eClassifiers xsi:type="ecore:EClass" name="SmlClass" abstract="false" eSuperTypes="#//SmlAbstractCallable #//SmlAbstractClassMember #//SmlAbstractCompilationUnitMember #//SmlAbstractNamedTypeDeclaration">
         <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterList" eType="#//SmlTypeParameterList" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="parentTypeList" eType="#//SmlParentTypeList" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="constraintList" eType="#//SmlConstraintList" containment="true" />
@@ -81,10 +80,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="SmlProtocolParenthesizedTerm" eSuperTypes="#//SmlAbstractProtocolTerm">
         <eStructuralFeatures xsi:type="ecore:EReference" name="term" eType="#//SmlAbstractProtocolTerm" containment="true" />
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SmlCompilationUnit" eSuperTypes="#//SmlAbstractObject">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="members" upperBound="-1" eType="#//SmlAbstractAnnotatedObject" containment="true" />
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SmlPackage" eSuperTypes="#//SmlAbstractCompilationUnitMember">
+    <eClassifiers xsi:type="ecore:EClass" name="SmlCompilationUnit" eSuperTypes="#//SmlAbstractDeclaration">
         <eStructuralFeatures xsi:type="ecore:EReference" name="imports" upperBound="-1" eType="#//SmlImport" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="members" upperBound="-1" eType="#//SmlAbstractAnnotatedObject" containment="true" />
     </eClassifiers>
@@ -95,7 +91,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="SmlImportAlias" eSuperTypes="#//SmlAbstractObject">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" />
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SmlEnum" eSuperTypes="#//SmlAbstractNamedTypeDeclaration #//SmlAbstractClassMember #//SmlAbstractCompilationUnitMember #//SmlAbstractPackageMember">
+    <eClassifiers xsi:type="ecore:EClass" name="SmlEnum" eSuperTypes="#//SmlAbstractNamedTypeDeclaration #//SmlAbstractClassMember #//SmlAbstractCompilationUnitMember">
         <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlEnumBody" containment="true" />
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlEnumBody" eSuperTypes="#//SmlAbstractObject">
@@ -105,7 +101,7 @@
         <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterList" eType="#//SmlTypeParameterList" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="constraintList" eType="#//SmlConstraintList" containment="true" />
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SmlFunction" eSuperTypes="#//SmlAbstractCallable #//SmlAbstractClassMember #//SmlAbstractCompilationUnitMember #//SmlAbstractPackageMember #//SmlAbstractProtocolToken">
+    <eClassifiers xsi:type="ecore:EClass" name="SmlFunction" eSuperTypes="#//SmlAbstractCallable #//SmlAbstractClassMember #//SmlAbstractCompilationUnitMember #//SmlAbstractProtocolToken">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="static" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameterList" eType="#//SmlTypeParameterList" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="resultList" eType="#//SmlResultList" containment="true" />
@@ -125,12 +121,12 @@
     <eClassifiers xsi:type="ecore:EClass" name="SmlResult" eSuperTypes="#//SmlAbstractResult">
         <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//SmlAbstractType" containment="true" />
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SmlStep" eSuperTypes="#//SmlAbstractCallable #//SmlAbstractCompilationUnitMember #//SmlAbstractPackageMember">
+    <eClassifiers xsi:type="ecore:EClass" name="SmlStep" eSuperTypes="#//SmlAbstractCallable #//SmlAbstractCompilationUnitMember">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="visibility" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="resultList" eType="#//SmlResultList" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlBlock" containment="true" />
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SmlWorkflow" eSuperTypes="#//SmlAbstractCompilationUnitMember #//SmlAbstractPackageMember">
+    <eClassifiers xsi:type="ecore:EClass" name="SmlWorkflow" eSuperTypes="#//SmlAbstractCompilationUnitMember">
         <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//SmlBlock" containment="true" />
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlBlock" eSuperTypes="#//SmlAbstractObject">

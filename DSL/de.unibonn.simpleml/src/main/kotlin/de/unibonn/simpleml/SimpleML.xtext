@@ -16,19 +16,18 @@ import 'http://www.unibonn.de/simpleml/SimpleML'
 // Compilations Units --------------------------------------------------------------------------------------------------
 
 SmlCompilationUnit
-    : {SmlCompilationUnit} members+=SmlCompilationUnitMember*
+    : {SmlCompilationUnit}
+    ( annotationCalls+=SmlAnnotationCall*
+      'package' name=QualifiedName
+      imports+=SmlImport*
+      members+=SmlCompilationUnitMember*
+    )?
     ;
 
 SmlCompilationUnitMember returns SmlAbstractAnnotatedObject
     : {SmlAnnotationCallHolder} annotationCalls+=SmlAnnotationCall*
 
-    ( {SmlPackage.annotationCallHolder=current}
-          ( ('package' name=QualifiedName =>imports+=SmlImport*)
-          | (imports+=SmlImport =>imports+=SmlImport*)
-          )
-          =>members+=SmlPackageMember*
-
-    | {SmlAnnotation.annotationCallHolder=current}
+    ( {SmlAnnotation.annotationCallHolder=current}
           'annotation' name=ID
           parameterList=SmlParameterList?
           constraintList=SmlConstraintList?
@@ -71,46 +70,6 @@ SmlImport
 
 SmlImportAlias
     : 'as' name=ID
-    ;
-
-SmlPackageMember returns SmlAbstractAnnotatedObject
-    : {SmlAnnotationCallHolder} annotationCalls+=SmlAnnotationCall*
-
-    ( {SmlAnnotation.annotationCallHolder=current}
-          'annotation' name=ID
-          parameterList=SmlParameterList?
-          constraintList=SmlConstraintList?
-
-    | {SmlClass.annotationCallHolder=current}
-          'class' name=ID
-          typeParameterList=SmlTypeParameterList?
-          parameterList=SmlParameterList?
-          parentTypeList=SmlParentTypeList?
-          constraintList=SmlConstraintList?
-          body=SmlClassBody?
-
-    | {SmlEnum.annotationCallHolder=current}
-          'enum' name=ID
-          body=SmlEnumBody?
-
-    | {SmlFunction.annotationCallHolder=current}
-          'fun' name=ID
-          typeParameterList=SmlTypeParameterList?
-          parameterList=SmlParameterList
-          resultList=SmlResultList?
-          constraintList=SmlConstraintList?
-
-    | {SmlStep.annotationCallHolder=current}
-          visibility=('internal'|'private')?
-          'step' name=ID
-          parameterList=SmlParameterList
-          resultList=SmlResultList?
-          body=SmlBlock
-
-    | {SmlWorkflow.annotationCallHolder=current}
-          'workflow' name=ID
-          body=SmlBlock
-    )
     ;
 
 
