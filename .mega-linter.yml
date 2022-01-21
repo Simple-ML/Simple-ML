@@ -1,4 +1,4 @@
-# See all available variables at https://nvuillam.github.io/mega-linter/configuration/ and in linters documentation
+# See all available variables at https://megalinter.github.io/configuration/ and in linters documentation
 
 # General Config
 APPLY_FIXES: all
@@ -10,7 +10,13 @@ SHOW_ELAPSED_TIME: true
 
 # Language-specific
 JAVASCRIPT_DEFAULT_STYLE: prettier
+JAVASCRIPT_PRETTIER_FILE_EXTENSIONS:
+  - .js
+  - .jsx
 TYPESCRIPT_DEFAULT_STYLE: prettier
+TYPESCRIPT_PRETTIER_FILE_EXTENSIONS:
+  - .ts
+  - .tsx
 
 # Linters
 DISABLE_LINTERS:

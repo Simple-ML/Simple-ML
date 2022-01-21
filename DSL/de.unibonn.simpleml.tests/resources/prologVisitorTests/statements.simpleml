@@ -1,7 +1,0 @@
-package de.unibonn.test_package
-
-private fun test() -> (result: Int) {
-    val assignment = 0;
-    test();
-    yield result = assignment;
-}
