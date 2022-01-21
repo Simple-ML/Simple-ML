@@ -9,6 +9,7 @@ import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpression
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.validation.Check
+import org.eclipse.xtext.validation.CheckType
 
 class ParameterChecker : AbstractSimpleMLChecker() {
 
@@ -24,7 +25,7 @@ class ParameterChecker : AbstractSimpleMLChecker() {
         }
     }
 
-    @Check
+    @Check(CheckType.NORMAL)
     fun defaultValueMustBeConstant(smlParameter: SmlParameter) {
         val defaultValue = smlParameter.defaultValue ?: return
         if (defaultValue.toConstantExpressionOrNull() == null) {

@@ -16,6 +16,7 @@ import de.unibonn.simpleml.validation.declarations.PlaceholderChecker
 import de.unibonn.simpleml.validation.declarations.ResultChecker
 import de.unibonn.simpleml.validation.declarations.StepChecker
 import de.unibonn.simpleml.validation.declarations.WorkflowChecker
+import de.unibonn.simpleml.validation.expressions.ArgumentChecker
 import de.unibonn.simpleml.validation.expressions.CallChecker
 import de.unibonn.simpleml.validation.expressions.InfixOperationChecker
 import de.unibonn.simpleml.validation.expressions.LambdaChecker
@@ -62,6 +63,7 @@ import org.eclipse.xtext.validation.ComposedChecks
         NameConventionChecker::class,
 
         // Expressions
+        ArgumentChecker::class,
         CallChecker::class,
         InfixOperationChecker::class,
         LambdaChecker::class,
