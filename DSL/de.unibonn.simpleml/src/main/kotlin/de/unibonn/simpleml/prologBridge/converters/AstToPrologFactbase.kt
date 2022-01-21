@@ -7,7 +7,6 @@ import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.emf.compilationUnitMembersOrEmpty
 import de.unibonn.simpleml.emf.constraintsOrEmpty
 import de.unibonn.simpleml.emf.objectsInBodyOrEmpty
-import de.unibonn.simpleml.emf.packageMembersOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
 import de.unibonn.simpleml.emf.referencesOrEmpty
@@ -44,7 +43,6 @@ import de.unibonn.simpleml.prologBridge.model.facts.MemberAccessT
 import de.unibonn.simpleml.prologBridge.model.facts.MemberTypeT
 import de.unibonn.simpleml.prologBridge.model.facts.NamedTypeT
 import de.unibonn.simpleml.prologBridge.model.facts.NullT
-import de.unibonn.simpleml.prologBridge.model.facts.PackageT
 import de.unibonn.simpleml.prologBridge.model.facts.ParameterT
 import de.unibonn.simpleml.prologBridge.model.facts.ParenthesizedExpressionT
 import de.unibonn.simpleml.prologBridge.model.facts.ParenthesizedTypeT
@@ -118,7 +116,6 @@ import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlNull
-import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlParenthesizedType
@@ -183,10 +180,13 @@ class AstToPrologFactbase {
     // ****************************************************************************************************************/
 
     private fun PlFactbase.visitCompilationUnit(obj: SmlCompilationUnit) {
+        obj.imports.forEach { this.visitImport(it, obj.id) }
         obj.compilationUnitMembersOrEmpty().forEach { this.visitDeclaration(it, obj.id) }
 
         +CompilationUnitT(
             obj.id,
+            obj.name,
+            obj.imports.map { it.id },
             obj.compilationUnitMembersOrEmpty().map { it.id }
         )
         +ResourceS(obj.id, obj.eResource().uri.toString())
@@ -268,18 +268,6 @@ class AstToPrologFactbase {
                     obj.constraintList?.constraints?.map { it.id },
                 )
             }
-            is SmlPackage -> {
-                obj.imports.forEach { this.visitImport(it, obj.id) }
-                obj.packageMembersOrEmpty().forEach { this.visitDeclaration(it, obj.id) }
-
-                +PackageT(
-                    obj.id,
-                    parentId,
-                    obj.name,
-                    obj.imports.map { it.id },
-                    obj.packageMembersOrEmpty().map { it.id }
-                )
-            }
             is SmlParameter -> {
                 obj.type?.let { visitType(it, obj.id) }
                 obj.defaultValue?.let { visitExpression(it, obj.id, obj.id) }
@@ -332,7 +320,7 @@ class AstToPrologFactbase {
         visitSourceLocation(obj)
     }
 
-    private fun PlFactbase.visitImport(obj: SmlImport, parentId: Id<SmlPackage>) {
+    private fun PlFactbase.visitImport(obj: SmlImport, parentId: Id<SmlCompilationUnit>) {
         +ImportT(obj.id, parentId, obj.importedNamespace, obj.aliasNameOrNull())
         visitSourceLocation(obj)
     }

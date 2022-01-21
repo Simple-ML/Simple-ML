@@ -130,12 +130,3 @@ workflow »workflow_snake_case« {
     // semantic_warning "Names of placeholders should be lowerCamelCase."
     val »placeholder_snake_case« = 1;
 }
-
-// semantic_warning "All segments of the qualified name of a package should be lowerCamelCase."
-package »tests.validation.declarations.Uppercase«
-// no_semantic_warning "All segments of the qualified name of a package should be lowerCamelCase."
-package »tests.validation.declarations.lowercase1«
-// semantic_warning "All segments of the qualified name of a package should be lowerCamelCase."
-package »tests.validation.declarations._underscore«
-// semantic_warning "All segments of the qualified name of a package should be lowerCamelCase."
-package »tests.validation.declarations.snake_case«

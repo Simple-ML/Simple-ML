@@ -114,12 +114,6 @@ class StdlibAnnotationsTest {
             }
 
         @Test
-        fun `should return null if compilation unit has multiple packages`() =
-            withCompilationUnit("pythonModuleMultiplePackages") {
-                pythonModuleOrNull().shouldBeNull()
-            }
-
-        @Test
         fun `should return null if compilation unit does not have a Python module`() =
             withCompilationUnit("pythonModuleMissing") {
                 pythonModuleOrNull().shouldBeNull()

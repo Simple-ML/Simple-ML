@@ -70,7 +70,7 @@ class SimpleMLTEMPLATE_STRING_INNERValueConverterTest {
                 listOf(createSmlNull(), createSmlNull())
             )
 
-            createSmlDummyResource("test", SmlFileExtension.Test) {
+            createSmlDummyResource(fileName = "test", SmlFileExtension.Test, packageName = "test") {
                 smlWorkflow("test") {
                     smlExpressionStatement(stringTemplate)
                 }

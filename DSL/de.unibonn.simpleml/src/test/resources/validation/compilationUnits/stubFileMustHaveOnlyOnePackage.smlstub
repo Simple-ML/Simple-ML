@@ -1,5 +1,0 @@
-// no_semantic_error "A file must have only one package."
-package »myPackage«
-
-// semantic_error "A file must have only one package."
-package »myPackage2«

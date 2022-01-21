@@ -4,7 +4,6 @@ package de.unibonn.simpleml.stdlibAccess
 
 import de.unibonn.simpleml.emf.annotationCallsOrEmpty
 import de.unibonn.simpleml.emf.argumentsOrEmpty
-import de.unibonn.simpleml.emf.uniquePackageOrNull
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAnnotation
@@ -146,7 +145,7 @@ fun SmlFunction.hasNoSideEffects(): Boolean {
  * compilation unit with a `simpleml.lang.PythonModule` annotation.
  */
 fun SmlCompilationUnit.pythonModuleOrNull(): String? {
-    val value = uniquePackageOrNull()?.annotationCallArgumentValueOrNull(
+    val value = annotationCallArgumentValueOrNull(
         StdlibAnnotations.PythonModule,
         "qualifiedName"
     )

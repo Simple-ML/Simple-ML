@@ -8,7 +8,6 @@ import de.unibonn.simpleml.emf.createSmlDummyResource
 import de.unibonn.simpleml.emf.createSmlString
 import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.smlExpressionStatement
-import de.unibonn.simpleml.emf.smlPackage
 import de.unibonn.simpleml.emf.smlWorkflow
 import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
@@ -116,11 +115,9 @@ class SimpleMLSTRINGValueConverterTest {
         fun `should always escape opening curly brace (creator)`() {
             val string = createSmlString("{")
 
-            createSmlDummyResource("test", SmlFileExtension.Test) {
-                smlPackage("test") {
-                    smlWorkflow("test") {
-                        smlExpressionStatement(string)
-                    }
+            createSmlDummyResource(fileName = "test", SmlFileExtension.Test, packageName = "test") {
+                smlWorkflow("test") {
+                    smlExpressionStatement(string)
                 }
             }
 
@@ -153,11 +150,9 @@ class SimpleMLSTRINGValueConverterTest {
         fun `should not escape single quote (creator)`() {
             val string = createSmlString("'")
 
-            createSmlDummyResource("test", SmlFileExtension.Test) {
-                smlPackage("test") {
-                    smlWorkflow("test") {
-                        smlExpressionStatement(string)
-                    }
+            createSmlDummyResource(fileName = "test", SmlFileExtension.Test, packageName = "test") {
+                smlWorkflow("test") {
+                    smlExpressionStatement(string)
                 }
             }
 

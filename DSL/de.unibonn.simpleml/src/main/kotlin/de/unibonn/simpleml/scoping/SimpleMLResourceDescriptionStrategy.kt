@@ -9,7 +9,6 @@ import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
@@ -44,9 +43,6 @@ class SimpleMLResourceDescriptionStrategy : DefaultResourceDescriptionStrategy()
                 super.createEObjectDescriptions(eObject, acceptor)
             }
             is SmlFunction -> {
-                super.createEObjectDescriptions(eObject, acceptor)
-            }
-            is SmlPackage -> {
                 super.createEObjectDescriptions(eObject, acceptor)
             }
             is SmlParameter -> {
