@@ -8,6 +8,7 @@ import de.unibonn.simpleml.emf.isQualified
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.scoping.externalGlobalDeclarations
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.SML_ABSTRACT_DECLARATION__NAME
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlImport
@@ -54,14 +55,15 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
             return
         }
 
-        if (smlCompilationUnit.name == null &&
-            (smlCompilationUnit.imports.isNotEmpty() || smlCompilationUnit.compilationUnitMembersOrEmpty().isNotEmpty())
-        ) {
-            error(
-                "A file must declare its package.",
-                null,
-                ErrorCode.FileMustDeclarePackage
-            )
+        if (smlCompilationUnit.name == null) {
+            smlCompilationUnit.compilationUnitMembersOrEmpty().firstOrNull()?.let {
+                error(
+                    "A file with declarations must declare its package.",
+                    it,
+                    Literals.SML_ABSTRACT_DECLARATION__NAME,
+                    ErrorCode.FileMustDeclarePackage
+                )
+            }
         }
     }
 

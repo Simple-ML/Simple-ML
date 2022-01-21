@@ -1,3 +1,0 @@
-// semantic_error "A file must declare its package."
-
-import myPackage
