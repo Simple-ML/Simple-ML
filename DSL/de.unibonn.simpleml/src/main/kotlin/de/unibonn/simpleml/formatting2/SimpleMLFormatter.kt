@@ -1,6 +1,5 @@
 package de.unibonn.simpleml.formatting2
 
-import de.unibonn.simpleml.constant.visibility
 import de.unibonn.simpleml.emf.annotationCallsOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ABSTRACT_DECLARATION__NAME
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals.SML_ANNOTATION_CALL__ANNOTATION
@@ -51,7 +50,6 @@ import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
-import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlParameterList
 import de.unibonn.simpleml.simpleML.SmlParentTypeList
@@ -131,26 +129,6 @@ class SimpleMLFormatter : AbstractFormatter2() {
 
             is SmlCompilationUnit -> {
 
-                // Feature "members"
-                obj.members.forEach {
-                    doc.format(it)
-
-                    if (obj.members.last() != it) {
-                        doc.append(it, newLines(2))
-                    } else {
-                        doc.append(it, noSpace)
-                    }
-                }
-
-                doc.append(obj, newLine)
-            }
-
-            /**********************************************************************************************************
-             * Declarations
-             **********************************************************************************************************/
-
-            is SmlPackage -> {
-
                 // Feature "annotations"
                 obj.annotationCallsOrEmpty().forEach {
                     doc.format(it)
@@ -200,7 +178,14 @@ class SimpleMLFormatter : AbstractFormatter2() {
                         doc.append(it, noSpace)
                     }
                 }
+
+                doc.append(obj, newLine)
             }
+
+            /**********************************************************************************************************
+             * Declarations
+             **********************************************************************************************************/
+
             is SmlImport -> {
 
                 // Keyword "import"

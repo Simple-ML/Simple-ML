@@ -2,7 +2,8 @@
 
 package de.unibonn.simpleml.naming
 
-import de.unibonn.simpleml.simpleML.SimpleMLPackage
+import de.unibonn.simpleml.emf.createSmlClass
+import de.unibonn.simpleml.emf.createSmlCompilationUnit
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import io.kotest.matchers.shouldBe
 import org.eclipse.xtext.testing.InjectWith
@@ -15,39 +16,21 @@ import org.junit.jupiter.api.extension.ExtendWith
 @InjectWith(SimpleMLInjectorProvider::class)
 class QualifiedNameProviderTest {
 
-    private val factory = SimpleMLPackage.eINSTANCE.simpleMLFactory
-
     @Nested
     inner class QualifiedNameOrNull {
 
         @Test
         fun `should handle declarations with simple names`() {
-            val myClass = factory.createSmlClass().apply {
-                name = "MyClass"
-            }
-
-            factory.createSmlCompilationUnit().apply {
-                members += factory.createSmlPackage().apply {
-                    name = "tests"
-                    members += myClass
-                }
-            }
+            val myClass = createSmlClass(name = "MyClass")
+            createSmlCompilationUnit(packageName = "tests", members = listOf(myClass))
 
             myClass.qualifiedNameOrNull() shouldBe "tests.MyClass".toQualifiedName()
         }
 
         @Test
         fun `should handle declarations with escaped names`() {
-            val myClass = factory.createSmlClass().apply {
-                name = "`MyClass`"
-            }
-
-            factory.createSmlCompilationUnit().apply {
-                members += factory.createSmlPackage().apply {
-                    name = "`tests`"
-                    members += myClass
-                }
-            }
+            val myClass = createSmlClass(name = "`MyClass`")
+            createSmlCompilationUnit(packageName = "`tests`", members = listOf(myClass))
 
             myClass.qualifiedNameOrNull() shouldBe "`tests`.`MyClass`".toQualifiedName()
         }

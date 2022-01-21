@@ -6,10 +6,10 @@ import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlProtocolSubterm
@@ -24,8 +24,8 @@ import org.eclipse.xtext.validation.Check
 class NameConventionChecker : AbstractSimpleMLChecker() {
 
     @Check
-    fun segmentsShouldBeLowercase(smlPackage: SmlPackage) {
-        val hasInvalidSegments = smlPackage.name
+    fun segmentsShouldBeLowercase(smlCompilationUnit: SmlCompilationUnit) {
+        val hasInvalidSegments = smlCompilationUnit.name
             .split('.')
             .any { !it.isLowerCamelCase() }
 

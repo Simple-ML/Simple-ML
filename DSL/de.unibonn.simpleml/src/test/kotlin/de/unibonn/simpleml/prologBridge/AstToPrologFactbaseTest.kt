@@ -31,7 +31,6 @@ import de.unibonn.simpleml.prologBridge.model.facts.MemberTypeT
 import de.unibonn.simpleml.prologBridge.model.facts.NamedTypeT
 import de.unibonn.simpleml.prologBridge.model.facts.NodeWithParent
 import de.unibonn.simpleml.prologBridge.model.facts.NullT
-import de.unibonn.simpleml.prologBridge.model.facts.PackageT
 import de.unibonn.simpleml.prologBridge.model.facts.ParameterT
 import de.unibonn.simpleml.prologBridge.model.facts.ParenthesizedExpressionT
 import de.unibonn.simpleml.prologBridge.model.facts.ParenthesizedTypeT
@@ -118,6 +117,20 @@ class AstToPrologFactbaseTest {
                 compilationUnitT.asClue {
                     it.members.shouldBeEmpty()
                 }
+            }
+
+            @Test
+            fun `should store package name`() = withFactbaseFromFile("declarations") {
+                val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
+                compilationUnitT.asClue {
+                    compilationUnitT.packageName shouldBe "tests.astToPrologFactbase.declarations"
+                }
+            }
+
+            @Test
+            fun `should reference imports`() = withFactbaseFromFile("declarations") {
+                val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
+                shouldBeNChildrenOf<ImportT>(compilationUnitT.imports, compilationUnitT, 3)
             }
 
             @Test
@@ -408,36 +421,6 @@ class AstToPrologFactbaseTest {
             fun `should store source location in separate relation`() = withFactbaseFromFile("declarations") {
                 val functionT = findUniqueFactOrFail<FunctionT> { it.name == "mySimpleFunction" }
                 findUniqueFactOrFail<SourceLocationS> { it.target == functionT.id }
-            }
-        }
-
-        @Nested
-        inner class Package {
-
-            @Test
-            fun `should store package`() = withFactbaseFromFile("declarations") {
-                val packageT = findUniqueFactOrFail<PackageT>()
-                packageT.asClue {
-                    packageT.name shouldBe "tests.astToPrologFactbase.declarations"
-                }
-            }
-
-            @Test
-            fun `should reference imports`() = withFactbaseFromFile("declarations") {
-                val packageT = findUniqueFactOrFail<PackageT>()
-                shouldBeNChildrenOf<ImportT>(packageT.imports, packageT, 3)
-            }
-
-            @Test
-            fun `should reference members`() = withFactbaseFromFile("declarations") {
-                val packageT = findUniqueFactOrFail<PackageT>()
-                shouldBeNChildrenOf<DeclarationT>(packageT.members, packageT, 12)
-            }
-
-            @Test
-            fun `should store source location in separate relation`() = withFactbaseFromFile("declarations") {
-                val packageT = findUniqueFactOrFail<PackageT>()
-                findUniqueFactOrFail<SourceLocationS> { it.target == packageT.id }
             }
         }
 

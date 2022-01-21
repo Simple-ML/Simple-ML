@@ -7,7 +7,6 @@ import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlCompilationUnit
 import de.unibonn.simpleml.emf.createSmlDummyResource
 import de.unibonn.simpleml.emf.smlClass
-import de.unibonn.simpleml.emf.smlPackage
 import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlClass
@@ -60,7 +59,7 @@ class SimpleMLIDValueConverterTest {
 
         @Test
         fun `should escape keywords (creator)`() {
-            val compilationUnit = createSmlCompilationUnit {
+            val compilationUnit = createSmlCompilationUnit(packageName = "test") {
                 smlClass("class")
             }
             createSmlDummyResource("test", SmlFileExtension.Test, compilationUnit)
@@ -77,14 +76,14 @@ class SimpleMLIDValueConverterTest {
 
         @Test
         fun `should not escape non-keywords (creator)`() {
-            val compilationUnit = createSmlCompilationUnit {
-                smlPackage("notAKeyword")
+            val compilationUnit = createSmlCompilationUnit(packageName = "test") {
+                smlClass("notAKeyword")
             }
             createSmlDummyResource("test", SmlFileExtension.Test, compilationUnit)
 
             val result = compilationUnit.serializeToFormattedString()
             result.shouldBeInstanceOf<SerializationResult.Success>()
-            result.code shouldBe "package notAKeyword"
+            result.code shouldBe "package notAKeyword\n\nclass notAKeyword"
         }
     }
 }

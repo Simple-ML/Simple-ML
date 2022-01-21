@@ -38,7 +38,6 @@ import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlNull
-import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
@@ -170,8 +169,10 @@ sealed class NodeWithParent(
  */
 data class CompilationUnitT(
     override val id: Id<SmlCompilationUnit>,
+    val packageName: String,
+    val imports: List<Id<SmlImport>>,
     val members: List<Id<SmlAbstractDeclaration>>
-) : Node("compilationUnitT", id, members) {
+) : Node("compilationUnitT", id, packageName, imports, members) {
     override fun toString() = super.toString()
 }
 
@@ -459,34 +460,6 @@ data class FunctionT(
 }
 
 /**
- * This Prolog fact represents packages.
- *
- * @param id
- * The ID of this fact.
- *
- * @param parent
- * The ID of the compilationUnitT fact for the containing compilation unit.
- *
- * @param name
- * The name of this package.
- *
- * @param imports
- * The IDs of the importT facts for the imports.
- *
- * @param members
- * The IDs of the facts for the members.
- */
-data class PackageT(
-    override val id: Id<SmlPackage>,
-    override val parent: Id<SmlAbstractObject>, // Actually just SmlCompilationUnit but this allows a handleDeclaration function
-    override val name: String,
-    val imports: List<Id<SmlImport>>,
-    val members: List<Id<SmlAbstractDeclaration>>
-) : DeclarationT("packageT", id, parent, name, imports, members) {
-    override fun toString() = super.toString()
-}
-
-/**
  * This Prolog fact represents imports.
  *
  * @param id
@@ -503,7 +476,7 @@ data class PackageT(
  */
 data class ImportT(
     override val id: Id<SmlImport>,
-    override val parent: Id<SmlPackage>,
+    override val parent: Id<SmlCompilationUnit>,
     val importedNamespace: String,
     val alias: String?
 ) :

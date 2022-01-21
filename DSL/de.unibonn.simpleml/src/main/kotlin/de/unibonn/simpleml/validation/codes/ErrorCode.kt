@@ -12,8 +12,6 @@ enum class ErrorCode {
     REDECLARATION,
 
     FILE_MUST_DECLARE_PACKAGE,
-    FILE_MUST_HAVE_ONLY_ONE_PACKAGE,
-    PACKAGE_MUST_COME_FIRST,
     StubFileMustNotDeclareWorkflowsOrSteps,
     WorkflowFileMustOnlyDeclareWorkflowsAndSteps,
 

@@ -19,7 +19,6 @@ import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractNamedTypeDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
-import de.unibonn.simpleml.simpleML.SmlAbstractPackageMember
 import de.unibonn.simpleml.simpleML.SmlAbstractProtocolTerm
 import de.unibonn.simpleml.simpleML.SmlAbstractProtocolToken
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
@@ -56,7 +55,6 @@ import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlNull
-import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlParameterList
 import de.unibonn.simpleml.simpleML.SmlParentTypeList
@@ -125,11 +123,15 @@ fun createSmlDummyResource(
 fun createSmlDummyResource(
     fileName: String,
     fileExtension: SmlFileExtension,
+    packageName: String,
     init: SmlCompilationUnit.() -> Unit = {}
 ): Resource {
     val uri = URI.createURI("dummy:/$fileName.${fileExtension.extension}")
     return XtextResource(uri).apply {
-        this.contents += createSmlCompilationUnit(init = init)
+        this.contents += createSmlCompilationUnit(
+            packageName = packageName,
+            init = init
+        )
     }
 }
 
@@ -152,17 +154,6 @@ fun createSmlAnnotation(
  * Adds a new object of class [SmlAnnotation] to the receiver.
  */
 fun SmlCompilationUnit.smlAnnotation(
-    name: String,
-    annotationCalls: List<SmlAnnotationCall> = emptyList(),
-    parameters: List<SmlParameter> = emptyList()
-) {
-    this.addMember(createSmlAnnotation(name, annotationCalls, parameters))
-}
-
-/**
- * Adds a new object of class [SmlAnnotation] to the receiver.
- */
-fun SmlPackage.smlAnnotation(
     name: String,
     annotationCalls: List<SmlAnnotationCall> = emptyList(),
     parameters: List<SmlParameter> = emptyList()
@@ -469,35 +460,6 @@ fun SmlCompilationUnit.smlClass(
 }
 
 /**
- * Adds a new object of class [SmlClass] to the receiver.
- */
-fun SmlPackage.smlClass(
-    name: String,
-    annotationCalls: List<SmlAnnotationCall> = emptyList(),
-    typeParameters: List<SmlTypeParameter> = emptyList(),
-    parameters: List<SmlParameter>? = null,
-    parentTypes: List<SmlAbstractType> = emptyList(),
-    constraints: List<SmlAbstractConstraint> = emptyList(),
-    protocol: SmlProtocol? = null,
-    members: List<SmlAbstractClassMember> = emptyList(),
-    init: SmlClass.() -> Unit = {}
-) {
-    this.addMember(
-        createSmlClass(
-            name,
-            annotationCalls,
-            typeParameters,
-            parameters,
-            parentTypes,
-            constraints,
-            protocol,
-            members,
-            init
-        )
-    )
-}
-
-/**
  * Adds a new member to the receiver.
  */
 private fun SmlClass.addMember(member: SmlAbstractObject) {
@@ -512,10 +474,16 @@ private fun SmlClass.addMember(member: SmlAbstractObject) {
  * Returns a new object of class [SmlCompilationUnit].
  */
 fun createSmlCompilationUnit(
+    packageName: String,
+    annotationCalls: List<SmlAnnotationCall> = emptyList(),
+    imports: List<SmlImport> = emptyList(),
     members: List<SmlAbstractCompilationUnitMember> = emptyList(),
     init: SmlCompilationUnit.() -> Unit = {}
 ): SmlCompilationUnit {
     return factory.createSmlCompilationUnit().apply {
+        this.name = packageName
+        this.annotationCalls += annotationCalls
+        this.imports += imports
         members.forEach { addMember(it) }
         init()
     }
@@ -570,18 +538,6 @@ fun SmlClass.smlEnum(
  * Adds a new object of class [SmlEnum] to the receiver.
  */
 fun SmlCompilationUnit.smlEnum(
-    name: String,
-    annotationCalls: List<SmlAnnotationCall> = emptyList(),
-    variants: List<SmlEnumVariant> = emptyList(),
-    init: SmlEnum.() -> Unit = {}
-) {
-    this.addMember(createSmlEnum(name, annotationCalls, variants, init))
-}
-
-/**
- * Adds a new object of class [SmlEnum] to the receiver.
- */
-fun SmlPackage.smlEnum(
     name: String,
     annotationCalls: List<SmlAnnotationCall> = emptyList(),
     variants: List<SmlEnumVariant> = emptyList(),
@@ -765,31 +721,6 @@ fun SmlCompilationUnit.smlFunction(
 }
 
 /**
- * Adds a new object of class [SmlFunction] to the receiver.
- */
-fun SmlPackage.smlFunction(
-    name: String,
-    annotationCalls: List<SmlAnnotationCall> = emptyList(),
-    isStatic: Boolean = false,
-    typeParameters: List<SmlTypeParameter> = emptyList(),
-    parameters: List<SmlParameter> = emptyList(),
-    results: List<SmlResult> = emptyList(),
-    constraints: List<SmlAbstractConstraint> = emptyList()
-) {
-    this.addMember(
-        createSmlFunction(
-            name,
-            annotationCalls,
-            isStatic,
-            typeParameters,
-            parameters,
-            results,
-            constraints
-        )
-    )
-}
-
-/**
  * Returns a new object of class [SmlImport].
  */
 fun createSmlImport(importedNamespace: String, alias: String? = null): SmlImport {
@@ -898,45 +829,6 @@ fun createSmlNamedType(
  */
 fun createSmlNull(): SmlNull {
     return factory.createSmlNull()
-}
-
-/**
- * Returns a new object of class [SmlPackage].
- */
-fun createSmlPackage(
-    name: String,
-    annotationCalls: List<SmlAnnotationCall> = emptyList(),
-    imports: List<SmlImport> = emptyList(),
-    members: List<SmlAbstractPackageMember> = emptyList(),
-    init: SmlPackage.() -> Unit = {}
-): SmlPackage {
-    return factory.createSmlPackage().apply {
-        this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
-        this.imports += imports
-        members.forEach { addMember(it) }
-        this.init()
-    }
-}
-
-/**
- * Adds a new object of class [SmlPackage] to the receiver.
- */
-fun SmlCompilationUnit.smlPackage(
-    name: String,
-    annotationCalls: List<SmlAnnotationCall> = emptyList(),
-    imports: List<SmlImport> = emptyList(),
-    members: List<SmlAbstractPackageMember> = emptyList(),
-    init: SmlPackage.() -> Unit = {}
-) {
-    this.addMember(createSmlPackage(name, annotationCalls, imports, members, init))
-}
-
-/**
- * Adds a new member to the receiver.
- */
-private fun SmlPackage.addMember(member: SmlAbstractPackageMember) {
-    this.members += member
 }
 
 /**
@@ -1256,31 +1148,6 @@ fun SmlCompilationUnit.smlStep(
 }
 
 /**
- * Adds a new object of class [SmlStep] to the receiver.
- */
-fun SmlPackage.smlStep(
-    name: String,
-    annotationCalls: List<SmlAnnotationCall> = emptyList(),
-    visibility: SmlVisibility = SmlVisibility.Public,
-    parameters: List<SmlParameter> = emptyList(),
-    results: List<SmlResult> = emptyList(),
-    statements: List<SmlAbstractStatement> = emptyList(),
-    init: SmlStep.() -> Unit = {}
-) {
-    this.addMember(
-        createSmlStep(
-            name,
-            annotationCalls,
-            visibility,
-            parameters,
-            results,
-            statements,
-            init
-        )
-    )
-}
-
-/**
  * Adds a new statement to the receiver.
  */
 private fun SmlStep.addStatement(statement: SmlAbstractStatement) {
@@ -1497,18 +1364,6 @@ fun createSmlWorkflow(
  * Adds a new object of class [SmlWorkflow] to the receiver.
  */
 fun SmlCompilationUnit.smlWorkflow(
-    name: String,
-    annotationCalls: List<SmlAnnotationCall> = emptyList(),
-    statements: List<SmlAbstractStatement> = emptyList(),
-    init: SmlWorkflow.() -> Unit = {}
-) {
-    this.addMember(createSmlWorkflow(name, annotationCalls, statements, init))
-}
-
-/**
- * Adds a new object of class [SmlWorkflow] to the receiver.
- */
-fun SmlPackage.smlWorkflow(
     name: String,
     annotationCalls: List<SmlAnnotationCall> = emptyList(),
     statements: List<SmlAbstractStatement> = emptyList(),

@@ -67,7 +67,7 @@ class SimpleMLINTValueConverterTest {
         fun `should convert int to string (creator)`() {
             val int = createSmlInt(1)
 
-            createSmlDummyResource("test", SmlFileExtension.Test) {
+            createSmlDummyResource(fileName = "test", SmlFileExtension.Test, packageName = "test") {
                 smlWorkflow("test") {
                     smlExpressionStatement(int)
                 }
