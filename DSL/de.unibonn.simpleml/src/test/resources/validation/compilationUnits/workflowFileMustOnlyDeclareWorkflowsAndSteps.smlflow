@@ -1,3 +1,5 @@
+package tests.workflowFileMustOnlyDeclareWorkflowsAndSteps
+
 // semantic_error "A workflow file must only declare workflows and steps."
 annotation »MyAnnotation«
 // semantic_error "A workflow file must only declare workflows and steps."
@@ -9,6 +11,3 @@ enum »MyEnum«
 step »myStep«() {}
 // no_semantic_error "A workflow file must only declare workflows and steps."
 workflow »myWorkflow« {}
-
-// no_semantic_error "A workflow file must only declare workflows and steps."
-package »tests.validation.compilationUnits.workflowFileMustOnlyDeclareWorkflowsOrSteps«

@@ -7,14 +7,13 @@ import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingCallableOrNull
 import de.unibonn.simpleml.emf.containingClassOrNull
-import de.unibonn.simpleml.emf.containingPackageOrNull
+import de.unibonn.simpleml.emf.containingCompilationUnitOrNull
 import de.unibonn.simpleml.emf.containingProtocolOrNull
 import de.unibonn.simpleml.emf.isStatic
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.subtermsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrNull
-import de.unibonn.simpleml.emf.uniquePackageOrNull
 import de.unibonn.simpleml.emf.variantsOrEmpty
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
@@ -30,12 +29,12 @@ import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlBlock
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlConstraintList
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
-import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlProtocol
 import de.unibonn.simpleml.simpleML.SmlProtocolReference
@@ -103,13 +102,13 @@ class SimpleMLScopeProvider : AbstractSimpleMLScopeProvider() {
             container is SmlMemberAccess && container.member == context -> scopeForMemberAccessDeclaration(container)
             else -> {
                 val resource = context.eResource()
-                val packageQualifiedName = context.containingPackageOrNull()?.qualifiedNameOrNull()
+                val packageName = context.containingCompilationUnitOrNull()?.qualifiedNameOrNull()
 
                 // Declarations in other files
                 var result: IScope = FilteringScope(
                     super.delegateGetScope(context, SimpleMLPackage.Literals.SML_REFERENCE__DECLARATION)
                 ) {
-                    it.isReferencableExternalDeclaration(resource, packageQualifiedName)
+                    it.isReferencableExternalDeclaration(resource, packageName)
                 }
 
                 // Declarations in this file
@@ -131,7 +130,7 @@ class SimpleMLScopeProvider : AbstractSimpleMLScopeProvider() {
 
     /**
      * Removes declarations in this [Resource], [SmlAnnotation]s, and internal [SmlStep]s located in other
-     * [SmlPackage]s.
+     * [SmlCompilationUnit]s.
      */
     private fun IEObjectDescription?.isReferencableExternalDeclaration(
         fromResource: Resource,
@@ -153,7 +152,7 @@ class SimpleMLScopeProvider : AbstractSimpleMLScopeProvider() {
         return !(
             obj is SmlStep &&
                 obj.visibility() == SmlVisibility.Internal &&
-                obj.containingPackageOrNull()?.qualifiedNameOrNull() != fromPackageWithQualifiedName
+                obj.containingCompilationUnitOrNull()?.qualifiedNameOrNull() != fromPackageWithQualifiedName
             )
     }
 
@@ -212,7 +211,7 @@ class SimpleMLScopeProvider : AbstractSimpleMLScopeProvider() {
     }
 
     private fun declarationsInSameFile(resource: Resource, parentScope: IScope): IScope {
-        if (resource.compilationUnitOrNull()?.uniquePackageOrNull() != null) {
+        if (resource.compilationUnitOrNull() != null) {
             return Scopes.scopeFor(
                 emptyList(),
                 parentScope
@@ -232,7 +231,6 @@ class SimpleMLScopeProvider : AbstractSimpleMLScopeProvider() {
 
     private fun declarationsInSamePackageDeclaration(resource: Resource, parentScope: IScope): IScope {
         val members = resource.compilationUnitOrNull()
-            ?.uniquePackageOrNull()
             ?.members
             ?.filter { it !is SmlAnnotation && it !is SmlWorkflow }
             ?: emptyList()

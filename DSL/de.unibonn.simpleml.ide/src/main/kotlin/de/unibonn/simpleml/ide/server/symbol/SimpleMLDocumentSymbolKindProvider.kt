@@ -27,11 +27,10 @@ class SimpleMLDocumentSymbolKindProvider : DocumentSymbolMapper.DocumentSymbolKi
             Literals.SML_ANNOTATION -> SymbolKind.Interface // Not ideal but matches @interface in Java
             Literals.SML_ATTRIBUTE -> SymbolKind.Field
             Literals.SML_CLASS -> SymbolKind.Class
-            Literals.SML_COMPILATION_UNIT -> SymbolKind.File
+            Literals.SML_COMPILATION_UNIT -> SymbolKind.Package
             Literals.SML_ENUM -> SymbolKind.Enum
             Literals.SML_ENUM_VARIANT -> SymbolKind.EnumMember
             Literals.SML_FUNCTION -> SymbolKind.Function
-            Literals.SML_PACKAGE -> SymbolKind.Package
             Literals.SML_STEP -> SymbolKind.Function
             Literals.SML_WORKFLOW -> SymbolKind.Function
             else -> null

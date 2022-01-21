@@ -16,7 +16,6 @@ import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractLambda
 import de.unibonn.simpleml.simpleML.SmlAbstractLocalVariable
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
-import de.unibonn.simpleml.simpleML.SmlAbstractPackageMember
 import de.unibonn.simpleml.simpleML.SmlAbstractProtocolTerm
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
@@ -39,7 +38,6 @@ import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlImport
 import de.unibonn.simpleml.simpleML.SmlNamedType
-import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlProtocol
@@ -211,13 +209,6 @@ fun SmlCompilationUnit?.compilationUnitMembersOrEmpty(): List<SmlAbstractCompila
         .orEmpty()
 }
 
-/**
- * Returns the unique package declaration contained in the compilation unit or `null` if none or multiple exist.
- */
-fun SmlCompilationUnit.uniquePackageOrNull(): SmlPackage? {
-    return this.members?.filterIsInstance<SmlPackage>()?.uniqueOrNull()
-}
-
 // SmlEnum -----------------------------------------------------------------------------------------
 
 fun SmlEnum?.variantsOrEmpty(): List<SmlEnumVariant> {
@@ -268,14 +259,6 @@ fun SmlImport.importedNameOrNull(): String? {
 
 fun SmlNamedType?.typeArgumentsOrEmpty(): List<SmlTypeArgument> {
     return this?.typeArgumentList?.typeArguments.orEmpty()
-}
-
-// SmlPackage --------------------------------------------------------------------------------------
-
-fun SmlPackage?.packageMembersOrEmpty(): List<SmlAbstractPackageMember> {
-    return this?.members
-        ?.filterIsInstance<SmlAbstractPackageMember>()
-        .orEmpty()
 }
 
 // SmlProtocol -------------------------------------------------------------------------------------
@@ -356,7 +339,6 @@ fun EObject.containingDeclarationOrNull() = this.closestAncestorOrNull<SmlAbstra
 fun EObject.containingEnumOrNull() = this.closestAncestorOrNull<SmlEnum>()
 fun EObject.containingExpressionLambdaOrNull() = this.closestAncestorOrNull<SmlExpressionLambda>()
 fun EObject.containingFunctionOrNull() = this.closestAncestorOrNull<SmlFunction>()
-fun EObject.containingPackageOrNull() = this.closestAncestorOrNull<SmlPackage>()
 fun EObject.containingProtocolOrNull() = this.closestAncestorOrNull<SmlProtocol>()
 fun EObject.containingStepOrNull() = this.closestAncestorOrNull<SmlStep>()
 fun EObject.containingWorkflowOrNull() = this.closestAncestorOrNull<SmlWorkflow>()

@@ -2,7 +2,7 @@ package de.unibonn.simpleml.scoping
 
 import de.unibonn.simpleml.emf.aliasNameOrNull
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
-import de.unibonn.simpleml.simpleML.SmlPackage
+import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.scoping.impl.ImportNormalizer
@@ -29,7 +29,7 @@ class SimpleMLImportedNamespaceAwareLocalScopeProvider : ImportedNamespaceAwareL
         ignoreCase: Boolean
     ): List<ImportNormalizer> {
 
-        if (context !is SmlPackage) {
+        if (context !is SmlCompilationUnit) {
             return emptyList()
         }
 
