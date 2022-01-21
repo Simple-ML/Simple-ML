@@ -19,8 +19,8 @@ inline fun <reified T : EObject> EObject.descendants(crossinline prune: (EObject
 }
 
 /**
- * Returns the closest ancestor of this [EObject] with the given type or `null` if none exists. This can the this
- * [EObject] itself.
+ * Returns the closest ancestor of this [EObject] with the given type or `null` if none exists. This cannot return the
+ * receiver.
  */
 inline fun <reified T : EObject> EObject.closestAncestorOrNull(): T? {
     var current: EObject? = this.eContainer()
@@ -28,4 +28,16 @@ inline fun <reified T : EObject> EObject.closestAncestorOrNull(): T? {
         current = current.eContainer()
     }
     return current as T?
+}
+
+/**
+ * Returns the closest ancestor of this [EObject] that matches the given [predicate] or `null` if none
+ * exists. This cannot return the receiver.
+ */
+inline fun EObject.closestAncestorOrNull(crossinline predicate: (EObject) -> Boolean = { true }): EObject? {
+    var current: EObject? = this.eContainer()
+    while (current != null && !predicate(current)) {
+        current = current.eContainer()
+    }
+    return current
 }

@@ -77,4 +77,6 @@ enum class ErrorCode {
     DivisionByZero,
 
     UnsupportedAnnotationParameterType,
+
+    LambdaMustBeTypedArgumentOrYielded
 }
