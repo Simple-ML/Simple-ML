@@ -5,8 +5,10 @@
 
 # Gradle
 .gradle/
+build/
+
+# Xtext test module (gets created by workflow but removed afterwards)
+de.unibonn.simpleml.tests/
 
 # Generated stuff
-.DS_Store/
 /package-lock.json
-*.log

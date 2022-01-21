@@ -1,0 +1,14 @@
+// semantic_error "A stub file must not declare workflows or steps."
+step »myStep«() {}
+// semantic_error "A stub file must not declare workflows or steps."
+workflow »myWorkflow« {}
+
+// no_semantic_error "A stub file must not declare workflows or steps."
+annotation »MyAnnotation«
+// no_semantic_error "A stub file must not declare workflows or steps."
+class »MyClass«
+// no_semantic_error "A stub file must not declare workflows or steps."
+enum »MyEnum«
+
+// no_semantic_error "A stub file must only declare workflows and steps."
+package »tests.validation.compilationUnits.stubFileMustNotDeclareWorkflowsOrSteps«
