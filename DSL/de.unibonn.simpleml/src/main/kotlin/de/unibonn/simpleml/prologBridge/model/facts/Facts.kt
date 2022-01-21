@@ -164,12 +164,18 @@ sealed class NodeWithParent(
  * @param id
  * The ID of this fact.
  *
+ * @param packageName
+ * The name of the package that this compilation unit belongs to or `null` if no package is declared.
+ *
+ * @param
+ * IDs of [ImportT] facts.
+ *
  * @param members
  * The IDs of the facts for the members.
  */
 data class CompilationUnitT(
     override val id: Id<SmlCompilationUnit>,
-    val packageName: String,
+    val packageName: String?,
     val imports: List<Id<SmlImport>>,
     val members: List<Id<SmlAbstractDeclaration>>
 ) : Node("compilationUnitT", id, packageName, imports, members) {

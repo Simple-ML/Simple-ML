@@ -136,7 +136,7 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should reference members`() = withFactbaseFromFile("declarations") {
                 val compilationUnitT = findUniqueFactOrFail<CompilationUnitT>()
-                shouldBeNChildrenOf<DeclarationT>(compilationUnitT.members, compilationUnitT, 1)
+                shouldBeNChildrenOf<DeclarationT>(compilationUnitT.members, compilationUnitT, 12)
             }
 
             @Test
@@ -1902,7 +1902,7 @@ class AstToPrologFactbaseTest {
                 val importT = findUniqueFactOrFail<ImportT> { it.importedNamespace == "myPackage.MyOtherClass" }
                 val sourceLocationS = findUniqueFactOrFail<SourceLocationS> { it.target == importT.id }
                 sourceLocationS.asClue {
-                    sourceLocationS.uriHash shouldBe "//@members.0/@imports.1"
+                    sourceLocationS.uriHash shouldBe "//@imports.1"
                 }
             }
 

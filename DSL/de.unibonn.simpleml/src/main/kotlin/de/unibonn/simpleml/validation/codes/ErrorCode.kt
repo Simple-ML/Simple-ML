@@ -11,7 +11,7 @@ enum class ErrorCode {
     CLASS_MUST_NOT_BE_SUBTYPE_OF_ITSELF,
     REDECLARATION,
 
-    FILE_MUST_DECLARE_PACKAGE,
+    FileMustDeclarePackage,
     StubFileMustNotDeclareWorkflowsOrSteps,
     WorkflowFileMustOnlyDeclareWorkflowsAndSteps,
 

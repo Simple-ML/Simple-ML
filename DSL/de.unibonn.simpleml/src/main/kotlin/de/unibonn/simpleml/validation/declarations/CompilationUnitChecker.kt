@@ -49,6 +49,23 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
     }
 
     @Check
+    fun uniquePackageDeclaration(smlCompilationUnit: SmlCompilationUnit) {
+        if (smlCompilationUnit.isInTestFile()) {
+            return
+        }
+
+        if (smlCompilationUnit.name == null &&
+            (smlCompilationUnit.imports.isNotEmpty() || smlCompilationUnit.compilationUnitMembersOrEmpty().isNotEmpty())
+        ) {
+            error(
+                "A file must declare its package.",
+                null,
+                ErrorCode.FileMustDeclarePackage
+            )
+        }
+    }
+
+    @Check
     fun uniqueNames(smlCompilationUnit: SmlCompilationUnit) {
         val namedEObjects = smlCompilationUnit.imports.filter { it.isQualified() } + smlCompilationUnit.members
 

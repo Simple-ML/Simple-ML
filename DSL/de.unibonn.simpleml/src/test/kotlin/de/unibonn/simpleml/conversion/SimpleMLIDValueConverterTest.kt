@@ -4,9 +4,9 @@ package de.unibonn.simpleml.conversion
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.constant.SmlFileExtension
+import de.unibonn.simpleml.emf.createSmlClass
 import de.unibonn.simpleml.emf.createSmlCompilationUnit
 import de.unibonn.simpleml.emf.createSmlDummyResource
-import de.unibonn.simpleml.emf.smlClass
 import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlClass
@@ -59,12 +59,11 @@ class SimpleMLIDValueConverterTest {
 
         @Test
         fun `should escape keywords (creator)`() {
-            val compilationUnit = createSmlCompilationUnit(packageName = "test") {
-                smlClass("class")
-            }
+            val `class` = createSmlClass("class")
+            val compilationUnit = createSmlCompilationUnit(packageName = "test", members = listOf(`class`))
             createSmlDummyResource("test", SmlFileExtension.Test, compilationUnit)
 
-            val result = compilationUnit.serializeToFormattedString()
+            val result = `class`.serializeToFormattedString()
             result.shouldBeInstanceOf<SerializationResult.Success>()
             result.code shouldBe "class `class`"
         }
@@ -76,14 +75,13 @@ class SimpleMLIDValueConverterTest {
 
         @Test
         fun `should not escape non-keywords (creator)`() {
-            val compilationUnit = createSmlCompilationUnit(packageName = "test") {
-                smlClass("notAKeyword")
-            }
+            val `class` = createSmlClass("notAKeyword")
+            val compilationUnit = createSmlCompilationUnit(packageName = "notAKeyword", members = listOf(`class`))
             createSmlDummyResource("test", SmlFileExtension.Test, compilationUnit)
 
-            val result = compilationUnit.serializeToFormattedString()
+            val result = `class`.serializeToFormattedString()
             result.shouldBeInstanceOf<SerializationResult.Success>()
-            result.code shouldBe "package notAKeyword\n\nclass notAKeyword"
+            result.code shouldBe "class notAKeyword"
         }
     }
 }

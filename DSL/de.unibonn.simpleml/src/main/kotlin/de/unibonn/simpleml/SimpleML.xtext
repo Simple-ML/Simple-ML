@@ -17,11 +17,10 @@ import 'http://www.unibonn.de/simpleml/SimpleML'
 
 SmlCompilationUnit
     : {SmlCompilationUnit}
-    ( annotationCalls+=SmlAnnotationCall*
-      'package' name=QualifiedName
+      =>annotationCalls+=SmlAnnotationCall* // Annotation calls before a package declaration belong to the compilation unit
+      ('package' name=QualifiedName)?
       imports+=SmlImport*
       members+=SmlCompilationUnitMember*
-    )?
     ;
 
 SmlCompilationUnitMember returns SmlAbstractAnnotatedObject
