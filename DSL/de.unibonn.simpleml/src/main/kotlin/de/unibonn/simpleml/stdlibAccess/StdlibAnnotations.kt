@@ -10,6 +10,7 @@ import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationCall
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.staticAnalysis.linking.parameterOrNull
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantEnumVariant
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantExpression
@@ -23,6 +24,13 @@ import org.eclipse.xtext.naming.QualifiedName
  * Important annotations in the standard library.
  */
 object StdlibAnnotations {
+
+    /**
+     * Values assigned to this parameter must be constant.
+     *
+     * @see isConstant
+     */
+    val Constant: QualifiedName = StdlibPackages.lang.append("Constant")
 
     /**
      * The declaration should no longer be used.
@@ -110,6 +118,13 @@ fun SmlAbstractDeclaration.uniqueAnnotationCallOrNull(qualifiedName: QualifiedNa
 fun SmlAbstractDeclaration.descriptionOrNull(): String? {
     val value = annotationCallArgumentValueOrNull(StdlibAnnotations.Description, "description")
     return (value as? SmlConstantString)?.value
+}
+
+/**
+ * Checks if the [SmlParameter] is annotated with the `simpleml.lang.Constant` annotation.
+ */
+fun SmlParameter.isConstant(): Boolean {
+    return hasAnnotationCallTo(StdlibAnnotations.Constant)
 }
 
 /**
