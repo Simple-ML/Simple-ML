@@ -255,7 +255,7 @@ SmlParameterList
     : {SmlParameterList} '(' (parameters+=SmlParameter (',' parameters+=SmlParameter)* ','?)? ')'
     ;
 
-// Only used temporarily while parsing lambdas to avoid left-recursion. Can be treated like a normal parameter list.
+// Used while parsing lambdas to avoid left-recursion. Can be treated like a normal parameter list.
 SmlLambdaParameterList
     : {SmlLambdaParameterList} '(' (parameters+=SmlParameter (',' parameters+=SmlParameter)* ','?)? ')'
     ;
@@ -325,7 +325,7 @@ SmlExpression returns SmlAbstractExpression
     | SmlOrExpression
     ;
 
-SmlLambda returns SmlAbstractLambda
+SmlLambda returns SmlAbstractExpression
     : SmlLambdaParameterList
     ( {SmlBlockLambda.parameterList=current}      body=SmlBlockLambdaBlock
     | {SmlExpressionLambda.parameterList=current} '->' result=SmlExpression
