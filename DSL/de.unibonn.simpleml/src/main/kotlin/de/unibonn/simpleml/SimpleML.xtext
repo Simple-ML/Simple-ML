@@ -316,24 +316,15 @@ SmlExpressionStatement
  **********************************************************************************************************************/
 
 SmlExpression returns SmlAbstractExpression
-    : SmlBlockLambda
-    | SmlExpressionLambda
+    : SmlLambda
     | SmlOrExpression
     ;
 
-SmlBlockLambda
-    : parameterList=SmlLambdaParameterList
-      body=SmlBlockLambdaBlock
-    ;
-
-SmlExpressionLambda
-    : parameterList=SmlLambdaParameterList
-      '->'
-      result=SmlExpression
-    ;
-
-SmlLambdaParameterList returns SmlParameterList
-    : {SmlParameterList} '(' (parameters+=SmlLambdaParameter (',' parameters+=SmlLambdaParameter)* ','?)? ')'
+SmlLambda returns SmlAbstractLambda
+    : {SmlLambdaParameterList} '(' (parameters+=SmlLambdaParameter (',' parameters+=SmlLambdaParameter)* ','?)? ')'
+    ( {SmlBlockLambda.parameterList=current}      body=SmlBlockLambdaBlock
+    | {SmlExpressionLambda.parameterList=current} '->' result=SmlExpression
+    )
     ;
 
 SmlLambdaParameter returns SmlParameter
