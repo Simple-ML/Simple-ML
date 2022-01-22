@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.validation.declarations
 
 import de.unibonn.simpleml.emf.closestAncestorOrNull
+import de.unibonn.simpleml.emf.isOptional
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAbstractLambda
 import de.unibonn.simpleml.simpleML.SmlParameter
@@ -33,6 +34,17 @@ class ParameterChecker : AbstractSimpleMLChecker() {
                 "Default values of parameters must be constant.",
                 Literals.SML_PARAMETER__DEFAULT_VALUE,
                 ErrorCode.MustBeConstant
+            )
+        }
+    }
+
+    @Check
+    fun variadicParametersMustHaveNoDefaultValue(smlParameter: SmlParameter) {
+        if (smlParameter.isVariadic && smlParameter.isOptional()) {
+            error(
+                "Variadic parameters must not have default values.",
+                Literals.SML_ABSTRACT_DECLARATION__NAME,
+                ErrorCode.VariadicParametersMustNotHaveDefaultValue
             )
         }
     }

@@ -255,6 +255,11 @@ SmlParameterList
     : {SmlParameterList} '(' (parameters+=SmlParameter (',' parameters+=SmlParameter)* ','?)? ')'
     ;
 
+// Only used temporarily while parsing lambdas to avoid left-recursion. Can be treated like a normal parameter list.
+SmlLambdaParameterList
+    : {SmlLambdaParameterList} '(' (parameters+=SmlParameter (',' parameters+=SmlParameter)* ','?)? ')'
+    ;
+
 SmlParameter
     : annotationCalls+=SmlAnnotationCall*
       variadic?='vararg'?
@@ -325,10 +330,6 @@ SmlLambda returns SmlAbstractLambda
     ( {SmlBlockLambda.parameterList=current}      body=SmlBlockLambdaBlock
     | {SmlExpressionLambda.parameterList=current} '->' result=SmlExpression
     )
-    ;
-
-SmlLambdaParameterList
-    : {SmlLambdaParameterList} '(' (parameters+=SmlParameter (',' parameters+=SmlParameter)* ','?)? ')'
     ;
 
 SmlBlockLambdaBlock returns SmlBlock
