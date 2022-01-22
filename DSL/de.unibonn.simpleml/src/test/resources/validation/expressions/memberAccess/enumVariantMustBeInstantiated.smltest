@@ -3,7 +3,7 @@ package tests.validation.expressions.memberAccesses.enumVariantMustBeInstantiate
 enum MyEnum {
     A
     B()
-    C(c: Int or 0)
+    C(c: Int = 0)
     D(d: Int)
     E<T>
 }

@@ -7,7 +7,7 @@ result  :   Int    ) {}
 step s3(f: 
     (  @AnnotationUse      a
     :   Int  ,   vararg   b  :
-     Int  or   3 )    -> (
+     Int  = 3 )    -> (
      @AnnotationUse      a
      :  Int ,   b :   Int  )) {}
 
@@ -17,4 +17,4 @@ step s1(f: () -> ()) {}
 
 step s2(f: () -> result: Int) {}
 
-step s3(f: (@AnnotationUse a: Int, vararg b: Int or 3) -> (@AnnotationUse a: Int, b: Int)) {}
+step s3(f: (@AnnotationUse a: Int, vararg b: Int = 3) -> (@AnnotationUse a: Int, b: Int)) {}

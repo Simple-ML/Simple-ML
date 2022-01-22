@@ -8,6 +8,7 @@ import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlInt
+import de.unibonn.simpleml.simpleML.SmlParameterList
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlProtocol
 import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
@@ -188,23 +189,9 @@ class CreatorsTest {
     }
 
     @Test
-    fun `createSmlBlockLambda should omit empty parameter lists`() {
+    fun `createSmlBlockLambda should not omit empty parameter lists`() {
         val lambda = createSmlBlockLambda(parameters = emptyList())
-        lambda.parameterList.shouldBeNull()
-    }
-
-    @Test
-    fun `createSmlBlockLambdaResult should store annotation uses in annotationCallHolder`() {
-        val lambdaResult = createSmlBlockLambdaResult(
-            "test",
-            listOf(createSmlAnnotationCall("Test"))
-        )
-
-        lambdaResult.annotationCalls.shouldHaveSize(0)
-
-        val annotationCallHolder = lambdaResult.annotationCallHolder
-        annotationCallHolder.shouldNotBeNull()
-        annotationCallHolder.annotationCalls.shouldHaveSize(1)
+        lambda.parameterList.shouldBeInstanceOf<SmlParameterList>()
     }
 
     @Test
@@ -525,20 +512,6 @@ class CreatorsTest {
 
         parameter.annotationCalls.shouldHaveSize(1)
         parameter.annotationCallHolder.shouldBeNull()
-    }
-
-    @Test
-    fun `createSmlPlaceholder should store annotation uses in annotationCallHolder`() {
-        val placeholder = createSmlPlaceholder(
-            "test",
-            listOf(createSmlAnnotationCall("Test"))
-        )
-
-        placeholder.annotationCalls.shouldHaveSize(0)
-
-        val annotationCallHolder = placeholder.annotationCallHolder
-        annotationCallHolder.shouldNotBeNull()
-        annotationCallHolder.annotationCalls.shouldHaveSize(1)
     }
 
     @Test

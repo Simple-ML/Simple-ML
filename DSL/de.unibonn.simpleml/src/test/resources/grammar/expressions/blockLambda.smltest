@@ -3,7 +3,7 @@
 workflow myWorkflow {
     () {};
 
-    (a, b) {
+    (a, vararg b = 1) {
         val a = 1;
     };
 }

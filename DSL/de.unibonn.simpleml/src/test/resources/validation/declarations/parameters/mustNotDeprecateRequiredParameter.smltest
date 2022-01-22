@@ -2,31 +2,31 @@ package tests.validation.declarations.parameters.mustNotDeprecateRequiredParamet
 
 // semantic_error "A required parameter cannot be deprecated."
 // no_semantic_error "A required parameter cannot be deprecated."
-annotation MyAnnotation(»@Deprecated("")« a: Int, »@Deprecated("")« b: Int or 3)
+annotation MyAnnotation(»@Deprecated("")« a: Int, »@Deprecated("")« b: Int = 3)
 
 // semantic_error "A required parameter cannot be deprecated."
 // no_semantic_error "A required parameter cannot be deprecated."
-class MyClass(»@Deprecated("")« a: Int, »@Deprecated("")« b: Int or 3) {
+class MyClass(»@Deprecated("")« a: Int, »@Deprecated("")« b: Int = 3) {
 
     // semantic_error "A required parameter cannot be deprecated."
     // no_semantic_error "A required parameter cannot be deprecated."
-    class MyClass(»@Deprecated("")« a: Int, »@Deprecated("")« b: Int or 3)
+    class MyClass(»@Deprecated("")« a: Int, »@Deprecated("")« b: Int = 3)
 
     // semantic_error "A required parameter cannot be deprecated."
     // no_semantic_error "A required parameter cannot be deprecated."
-    fun myFunction(»@Deprecated("")« a: Int, »@Deprecated("")« b: Int or 3)
+    fun myFunction(»@Deprecated("")« a: Int, »@Deprecated("")« b: Int = 3)
 }
 
 // semantic_error "A required parameter cannot be deprecated."
 // no_semantic_error "A required parameter cannot be deprecated."
-fun myFunction(»@Deprecated("")« a: Int, »@Deprecated("")« b: Int or 3)
+fun myFunction(»@Deprecated("")« a: Int, »@Deprecated("")« b: Int = 3)
 
 // semantic_error "A required parameter cannot be deprecated."
 // no_semantic_error "A required parameter cannot be deprecated."
-step myStep1(»@Deprecated("")« a: Int, »@Deprecated("")« b: Int or 3) {}
+step myStep1(»@Deprecated("")« a: Int, »@Deprecated("")« b: Int = 3) {}
 
 // semantic_error "A required parameter cannot be deprecated."
 // no_semantic_error "A required parameter cannot be deprecated."
 step myStep2(
-    f: (»@Deprecated("")« a: Int, »@Deprecated("")« b: Int or 3) -> ()
+    f: (»@Deprecated("")« a: Int, »@Deprecated("")« b: Int = 3) -> ()
 ) {}

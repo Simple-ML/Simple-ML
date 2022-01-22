@@ -6,8 +6,6 @@ workflow invalidCases {
     // semantic_error "A lambda must either be yielded in a step or assigned to a typed parameter."
     »() -> 1«;
     // semantic_error "A lambda must either be yielded in a step or assigned to a typed parameter."
-    »() {}«();
-    // semantic_error "A lambda must either be yielded in a step or assigned to a typed parameter."
     (»() {}«)();
     // semantic_error "A lambda must either be yielded in a step or assigned to a typed parameter."
     (»() -> 1«)();
