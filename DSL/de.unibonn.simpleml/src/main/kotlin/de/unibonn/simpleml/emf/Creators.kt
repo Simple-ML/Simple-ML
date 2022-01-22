@@ -17,6 +17,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractCompilationUnitMember
 import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
+import de.unibonn.simpleml.simpleML.SmlAbstractLambda
 import de.unibonn.simpleml.simpleML.SmlAbstractNamedTypeDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlAbstractProtocolTerm
@@ -52,6 +53,7 @@ import de.unibonn.simpleml.simpleML.SmlImportAlias
 import de.unibonn.simpleml.simpleML.SmlIndexedAccess
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
+import de.unibonn.simpleml.simpleML.SmlLambdaParameterList
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -323,7 +325,7 @@ fun createSmlBlockLambda(
     init: SmlBlockLambda.() -> Unit = {}
 ): SmlBlockLambda {
     return factory.createSmlBlockLambda().apply {
-        this.parameterList = createSmlParameterList(parameters)
+        this.parameterList = createSmlLambdaParameterList(parameters)
         this.body = factory.createSmlBlock()
         statements.forEach { addStatement(it) }
         this.init()
@@ -607,7 +609,7 @@ fun createSmlExpressionLambda(
     result: SmlAbstractExpression
 ): SmlExpressionLambda {
     return factory.createSmlExpressionLambda().apply {
-        this.parameterList = createSmlParameterList(parameters)
+        this.parameterList = createSmlLambdaParameterList(parameters)
         this.result = result
     }
 }
@@ -865,6 +867,17 @@ fun createSmlParameter(
  */
 fun createSmlParameterList(parameters: List<SmlParameter>): SmlParameterList {
     return factory.createSmlParameterList().apply {
+        this.parameters += parameters
+    }
+}
+
+/**
+ * Returns a new object of class [SmlLambdaParameterList]. These have to be used as parameter lists of an
+ * [SmlAbstractLambda]
+ */
+@Suppress("FunctionName")
+fun createSmlLambdaParameterList(parameters: List<SmlParameter>): SmlLambdaParameterList {
+    return factory.createSmlLambdaParameterList().apply {
         this.parameters += parameters
     }
 }
