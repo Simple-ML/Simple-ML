@@ -5,7 +5,7 @@
         <eStructuralFeatures xsi:type="ecore:EReference" name="annotationCalls" upperBound="-1" eType="#//SmlAnnotationCall" containment="true" />
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractDeclaration" abstract="true" eSuperTypes="#//SmlAbstractAnnotatedObject">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="annotationCallHolder" eType="#//SmlAnnotationCallHolder" containment="true" />
+        <eStructuralFeatures xsi:type="ecore:EReference" name="annotationCallList" eType="#//SmlAnnotationCallList" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" />
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractCall" abstract="true" eSuperTypes="#//SmlAbstractObject">
@@ -23,7 +23,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotation" eSuperTypes="#//SmlAbstractCallable #//SmlAbstractCompilationUnitMember">
         <eStructuralFeatures xsi:type="ecore:EReference" name="constraintList" eType="#//SmlConstraintList" containment="true" />
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotationCallHolder" eSuperTypes="#//SmlAbstractAnnotatedObject" />
+    <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotationCallList" eSuperTypes="#//SmlAbstractAnnotatedObject" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlAnnotationCall" eSuperTypes="#//SmlAbstractCall">
         <eStructuralFeatures xsi:type="ecore:EReference" name="annotation" eType="#//SmlAnnotation" />
     </eClassifiers>

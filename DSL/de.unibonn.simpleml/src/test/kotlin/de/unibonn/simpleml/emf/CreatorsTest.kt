@@ -34,7 +34,7 @@ import org.junit.jupiter.api.extension.ExtendWith
  * Includes tests for the (extension) functions in Creators.kt. Since most of the functions are straightforward, not
  * everything is being tested. These are the guidelines for what should be tested:
  *
- * - Handling of annotations (features annotationCallHolder vs. annotations)
+ * - Handling of annotations (features annotationCallList vs. annotations)
  * - Extension functions should add created object to receiver
  * - Creators for objects with cross-references that take a name instead of the referenced object
  * - Should not create unnecessary syntax (like empty class bodies)
@@ -58,7 +58,7 @@ class CreatorsTest {
     }
 
     @Test
-    fun `createSmlAnnotation should store annotation uses in annotationCallHolder`() {
+    fun `createSmlAnnotation should store annotation uses in annotationCallList`() {
         val annotation = createSmlAnnotation(
             "Test",
             listOf(createSmlAnnotationCall("Test"))
@@ -66,9 +66,9 @@ class CreatorsTest {
 
         annotation.annotationCalls.shouldHaveSize(0)
 
-        val annotationCallHolder = annotation.annotationCallHolder
-        annotationCallHolder.shouldNotBeNull()
-        annotationCallHolder.annotationCalls.shouldHaveSize(1)
+        val annotationCallList = annotation.annotationCallList
+        annotationCallList.shouldNotBeNull()
+        annotationCallList.annotationCalls.shouldHaveSize(1)
     }
 
     @Test
@@ -165,7 +165,7 @@ class CreatorsTest {
     }
 
     @Test
-    fun `createSmlAttribute should store annotation uses in annotationCallHolder`() {
+    fun `createSmlAttribute should store annotation uses in annotationCallList`() {
         val attribute = createSmlAttribute(
             "Test",
             listOf(createSmlAnnotationCall("Test"))
@@ -173,9 +173,9 @@ class CreatorsTest {
 
         attribute.annotationCalls.shouldHaveSize(0)
 
-        val annotationCallHolder = attribute.annotationCallHolder
-        annotationCallHolder.shouldNotBeNull()
-        annotationCallHolder.annotationCalls.shouldHaveSize(1)
+        val annotationCallList = attribute.annotationCallList
+        annotationCallList.shouldNotBeNull()
+        annotationCallList.annotationCalls.shouldHaveSize(1)
     }
 
     @Test
@@ -224,7 +224,7 @@ class CreatorsTest {
     }
 
     @Test
-    fun `createSmlClass should store annotation uses in annotationCallHolder`() {
+    fun `createSmlClass should store annotation uses in annotationCallList`() {
         val `class` = createSmlClass(
             "Test",
             listOf(createSmlAnnotationCall("Test"))
@@ -232,9 +232,9 @@ class CreatorsTest {
 
         `class`.annotationCalls.shouldHaveSize(0)
 
-        val annotationCallHolder = `class`.annotationCallHolder
-        annotationCallHolder.shouldNotBeNull()
-        annotationCallHolder.annotationCalls.shouldHaveSize(1)
+        val annotationCallList = `class`.annotationCallList
+        annotationCallList.shouldNotBeNull()
+        annotationCallList.annotationCalls.shouldHaveSize(1)
     }
 
     @Test
@@ -301,11 +301,11 @@ class CreatorsTest {
         )
 
         compilationUnit.annotationCalls.shouldHaveSize(1)
-        compilationUnit.annotationCallHolder.shouldBeNull()
+        compilationUnit.annotationCallList.shouldBeNull()
     }
 
     @Test
-    fun `createSmlEnum should store annotation uses in annotationCallHolder`() {
+    fun `createSmlEnum should store annotation uses in annotationCallList`() {
         val `enum` = createSmlEnum(
             "Test",
             listOf(createSmlAnnotationCall("Test"))
@@ -313,9 +313,9 @@ class CreatorsTest {
 
         `enum`.annotationCalls.shouldHaveSize(0)
 
-        val annotationCallHolder = `enum`.annotationCallHolder
-        annotationCallHolder.shouldNotBeNull()
-        annotationCallHolder.annotationCalls.shouldHaveSize(1)
+        val annotationCallList = `enum`.annotationCallList
+        annotationCallList.shouldNotBeNull()
+        annotationCallList.annotationCalls.shouldHaveSize(1)
     }
 
     @Test
@@ -355,7 +355,7 @@ class CreatorsTest {
         )
 
         variant.annotationCalls.shouldHaveSize(1)
-        variant.annotationCallHolder.shouldBeNull()
+        variant.annotationCallList.shouldBeNull()
     }
 
     @Test
@@ -461,7 +461,7 @@ class CreatorsTest {
     }
 
     @Test
-    fun `createSmlFunction should store annotation uses in annotationCallHolder`() {
+    fun `createSmlFunction should store annotation uses in annotationCallList`() {
         val function = createSmlFunction(
             "test",
             listOf(createSmlAnnotationCall("Test"))
@@ -469,9 +469,9 @@ class CreatorsTest {
 
         function.annotationCalls.shouldHaveSize(0)
 
-        val annotationCallHolder = function.annotationCallHolder
-        annotationCallHolder.shouldNotBeNull()
-        annotationCallHolder.annotationCalls.shouldHaveSize(1)
+        val annotationCallList = function.annotationCallList
+        annotationCallList.shouldNotBeNull()
+        annotationCallList.annotationCalls.shouldHaveSize(1)
     }
 
     @Test
@@ -550,7 +550,7 @@ class CreatorsTest {
         )
 
         parameter.annotationCalls.shouldHaveSize(1)
-        parameter.annotationCallHolder.shouldBeNull()
+        parameter.annotationCallList.shouldBeNull()
     }
 
     @Test
@@ -643,7 +643,7 @@ class CreatorsTest {
         )
 
         result.annotationCalls.shouldHaveSize(1)
-        result.annotationCallHolder.shouldBeNull()
+        result.annotationCallList.shouldBeNull()
     }
 
     @Test
@@ -714,7 +714,7 @@ class CreatorsTest {
         )
 
         result.annotationCalls.shouldHaveSize(1)
-        result.annotationCallHolder.shouldBeNull()
+        result.annotationCallList.shouldBeNull()
     }
 
     @Test
@@ -755,7 +755,7 @@ class CreatorsTest {
     }
 
     @Test
-    fun `createSmlStep should store annotation uses in annotationCallHolder`() {
+    fun `createSmlStep should store annotation uses in annotationCallList`() {
         val step = createSmlStep(
             "test",
             listOf(createSmlAnnotationCall("Test"))
@@ -763,9 +763,9 @@ class CreatorsTest {
 
         step.annotationCalls.shouldHaveSize(0)
 
-        val annotationCallHolder = step.annotationCallHolder
-        annotationCallHolder.shouldNotBeNull()
-        annotationCallHolder.annotationCalls.shouldHaveSize(1)
+        val annotationCallList = step.annotationCallList
+        annotationCallList.shouldNotBeNull()
+        annotationCallList.annotationCalls.shouldHaveSize(1)
     }
 
     @Test
@@ -787,7 +787,7 @@ class CreatorsTest {
     }
 
     @Test
-    fun `createSmlWorkflow should store annotation uses in annotationCallHolder`() {
+    fun `createSmlWorkflow should store annotation uses in annotationCallList`() {
         val workflow = createSmlWorkflow(
             "test",
             listOf(createSmlAnnotationCall("Test"))
@@ -795,9 +795,9 @@ class CreatorsTest {
 
         workflow.annotationCalls.shouldHaveSize(0)
 
-        val annotationCallHolder = workflow.annotationCallHolder
-        annotationCallHolder.shouldNotBeNull()
-        annotationCallHolder.annotationCalls.shouldHaveSize(1)
+        val annotationCallList = workflow.annotationCallList
+        annotationCallList.shouldNotBeNull()
+        annotationCallList.annotationCalls.shouldHaveSize(1)
     }
 
     @Test
