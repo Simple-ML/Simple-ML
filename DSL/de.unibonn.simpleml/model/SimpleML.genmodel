@@ -6,7 +6,7 @@
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAbstractAnnotatedObject/annotationCalls" />
         </genClasses>
         <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractDeclaration">
-            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAbstractAnnotatedObject/annotationCallHolder" />
+            <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAbstractAnnotatedObject/annotationCallList" />
             <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SimpleML.ecore#//SmlAbstractDeclaration/name" />
         </genClasses>
         <genClasses image="false" ecoreClass="SimpleML.ecore#//SmlAbstractCallable">
@@ -21,7 +21,7 @@
         <genClasses ecoreClass="SimpleML.ecore#//SmlAnnotation">
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAnnotation/constraintList" />
         </genClasses>
-        <genClasses ecoreClass="SimpleML.ecore#//SmlAnnotationCallHolder" />
+        <genClasses ecoreClass="SimpleML.ecore#//SmlAnnotationCallList" />
         <genClasses ecoreClass="SimpleML.ecore#//SmlAnnotationCall">
             <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAnnotationUse/annotation" />
             <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SimpleML.ecore#//SmlAnnotationUse/argumentList" />

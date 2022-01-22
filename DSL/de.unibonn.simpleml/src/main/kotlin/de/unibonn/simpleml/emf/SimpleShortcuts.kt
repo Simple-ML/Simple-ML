@@ -21,7 +21,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationCall
-import de.unibonn.simpleml.simpleML.SmlAnnotationCallHolder
+import de.unibonn.simpleml.simpleML.SmlAnnotationCallList
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlAttribute
@@ -94,7 +94,7 @@ fun SmlAbstractCallable.immediateCalls(): List<SmlCall> {
 // SmlAbstractDeclaration --------------------------------------------------------------------------
 
 fun SmlAbstractDeclaration?.annotationCallsOrEmpty(): List<SmlAnnotationCall> {
-    return this?.annotationCallHolder?.annotationCalls ?: this?.annotationCalls.orEmpty()
+    return this?.annotationCallList?.annotationCalls ?: this?.annotationCalls.orEmpty()
 }
 
 // SmlAnnotation -----------------------------------------------------------------------------------
@@ -345,7 +345,7 @@ fun EObject.containingWorkflowOrNull() = this.closestAncestorOrNull<SmlWorkflow>
 
 fun SmlAnnotationCall.targetOrNull(): SmlAbstractDeclaration? {
     return when (val declaration = this.containingDeclarationOrNull() ?: return null) {
-        is SmlAnnotationCallHolder -> declaration.containingDeclarationOrNull()
+        is SmlAnnotationCallList -> declaration.containingDeclarationOrNull()
         else -> declaration
     }
 }

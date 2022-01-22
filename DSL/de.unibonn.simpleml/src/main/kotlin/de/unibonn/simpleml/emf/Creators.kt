@@ -26,7 +26,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAbstractTypeArgumentValue
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationCall
-import de.unibonn.simpleml.simpleML.SmlAnnotationCallHolder
+import de.unibonn.simpleml.simpleML.SmlAnnotationCallList
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlArgumentList
 import de.unibonn.simpleml.simpleML.SmlAssigneeList
@@ -146,7 +146,7 @@ fun createSmlAnnotation(
 ): SmlAnnotation {
     return factory.createSmlAnnotation().apply {
         this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
+        this.annotationCallList = createSmlAnnotationCallList(annotationCalls)
         this.parameterList = parameters.nullIfEmptyElse(::createSmlParameterList)
     }
 }
@@ -189,10 +189,10 @@ fun createSmlAnnotationCall(
 }
 
 /**
- * Returns a new object of class [SmlAnnotationCallHolder].
+ * Returns a new object of class [SmlAnnotationCallList].
  */
-private fun createSmlAnnotationCallHolder(annotationCalls: List<SmlAnnotationCall>): SmlAnnotationCallHolder {
-    return factory.createSmlAnnotationCallHolder().apply {
+private fun createSmlAnnotationCallList(annotationCalls: List<SmlAnnotationCall>): SmlAnnotationCallList {
+    return factory.createSmlAnnotationCallList().apply {
         this.annotationCalls += annotationCalls
     }
 }
@@ -283,7 +283,7 @@ fun createSmlAttribute(
 ): SmlAttribute {
     return factory.createSmlAttribute().apply {
         this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
+        this.annotationCallList = createSmlAnnotationCallList(annotationCalls)
         this.isStatic = isStatic
         this.type = type
     }
@@ -400,7 +400,7 @@ fun createSmlClass(
 ): SmlClass {
     return factory.createSmlClass().apply {
         this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
+        this.annotationCallList = createSmlAnnotationCallList(annotationCalls)
         this.typeParameterList = typeParameters.nullIfEmptyElse(::createSmlTypeParameterList)
         this.parameterList = parameters?.nullIfEmptyElse(::createSmlParameterList)
         this.parentTypeList = parentTypes.nullIfEmptyElse(::createSmlParentTypeList)
@@ -526,7 +526,7 @@ fun createSmlEnum(
 ): SmlEnum {
     return factory.createSmlEnum().apply {
         this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
+        this.annotationCallList = createSmlAnnotationCallList(annotationCalls)
         variants.forEach { addVariant(it) }
         this.init()
     }
@@ -671,7 +671,7 @@ fun createSmlFunction(
 ): SmlFunction {
     return factory.createSmlFunction().apply {
         this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
+        this.annotationCallList = createSmlAnnotationCallList(annotationCalls)
         this.isStatic = isStatic
         this.typeParameterList = typeParameters.nullIfEmptyElse(::createSmlTypeParameterList)
         this.parameterList = createSmlParameterList(parameters)
@@ -1118,7 +1118,7 @@ fun createSmlStep(
 ): SmlStep {
     return factory.createSmlStep().apply {
         this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
+        this.annotationCallList = createSmlAnnotationCallList(annotationCalls)
         this.visibility = visibility.visibility
         this.parameterList = createSmlParameterList(parameters)
         this.resultList = results.nullIfEmptyElse(::createSmlResultList)
@@ -1359,7 +1359,7 @@ fun createSmlWorkflow(
 ): SmlWorkflow {
     return factory.createSmlWorkflow().apply {
         this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
+        this.annotationCallList = createSmlAnnotationCallList(annotationCalls)
         this.body = factory.createSmlBlock()
         statements.forEach { addStatement(it) }
         this.init()
