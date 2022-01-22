@@ -110,6 +110,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="SmlParameterList" eSuperTypes="#//SmlAbstractObject">
         <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1" eType="#//SmlParameter" containment="true" />
     </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SmlLambdaParameterList" eSuperTypes="#//SmlAbstractLambda #//SmlParameterList" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlParameter" eSuperTypes="#//SmlAbstractLocalVariable">
         <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//SmlAbstractExpression" containment="true" />
         <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//SmlAbstractType" containment="true" />
@@ -138,9 +139,9 @@
         <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//SmlAbstractExpression" containment="true" />
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlAssigneeList" eSuperTypes="#//SmlAbstractObject">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="assignees" upperBound="-1" eType="#//SmlAbstractAnnotatedObject" containment="true" />
+        <eStructuralFeatures xsi:type="ecore:EReference" name="assignees" upperBound="-1" eType="#//SmlAbstractAssignee" containment="true" />
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractAssignee" abstract="true" eSuperTypes="#//SmlAbstractAnnotatedObject" />
+    <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractAssignee" abstract="true" eSuperTypes="#//SmlAbstractObject" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlPlaceholder" eSuperTypes="#//SmlAbstractAssignee #//SmlAbstractLocalVariable" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlWildcard" eSuperTypes="#//SmlAbstractAssignee" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlYield" eSuperTypes="#//SmlAbstractAssignee">

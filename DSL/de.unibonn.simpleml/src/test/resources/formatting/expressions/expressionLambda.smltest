@@ -3,7 +3,9 @@ workflow myWorkflow {
 
     1;
           (  a  
-         ,   b   )
+         ,   
+          vararg    b   =  
+          1   )
      ->
             1;
 }
@@ -12,5 +14,5 @@ workflow myWorkflow {
 
 workflow myWorkflow {
     () -> 1;
-    (a, b) -> 1;
+    (a, vararg b = 1) -> 1;
 }

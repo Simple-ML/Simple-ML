@@ -7,7 +7,7 @@ step myFunctionalStep() -> a {
     // Assignment with placeholder, wildcard, and yield
     (
         val mySimplePlaceholder,
-        @MySimpleAnnotation val myComplexPlaceholder,
+        val myComplexPlaceholder,
         _, 
         yield a
     ) = f();
@@ -17,7 +17,7 @@ step myFunctionalStep() -> a {
 
         // Lambda result
         yield mySimpleLambdaResult = 1;
-        @MySimpleAnnotation yield myComplexLambdaResult = 1;
+        yield myComplexLambdaResult = 1;
     };
 }
 

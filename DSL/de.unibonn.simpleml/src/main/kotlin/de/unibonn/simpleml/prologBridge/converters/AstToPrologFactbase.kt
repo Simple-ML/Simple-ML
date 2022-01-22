@@ -421,13 +421,9 @@ class AstToPrologFactbase {
     private fun PlFactbase.visitAssignee(obj: SmlAbstractAssignee, parentId: Id<SmlAssignment>) {
         when (obj) {
             is SmlBlockLambdaResult -> {
-                obj.annotationCallsOrEmpty().forEach { visitAnnotationCall(it, obj.id) }
-
                 +BlockLambdaResultT(obj.id, parentId, obj.name)
             }
             is SmlPlaceholder -> {
-                obj.annotationCallsOrEmpty().forEach { visitAnnotationCall(it, obj.id) }
-
                 +PlaceholderT(obj.id, parentId, obj.name)
             }
             is SmlWildcard -> {

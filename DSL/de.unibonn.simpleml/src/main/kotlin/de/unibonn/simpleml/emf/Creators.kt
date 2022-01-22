@@ -32,6 +32,7 @@ import de.unibonn.simpleml.simpleML.SmlArgumentList
 import de.unibonn.simpleml.simpleML.SmlAssigneeList
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlAttribute
+import de.unibonn.simpleml.simpleML.SmlBlock
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlBoolean
@@ -301,6 +302,19 @@ fun SmlClass.smlAttribute(
 }
 
 /**
+ * Returns a new object of class [SmlBlock].
+ */
+fun createSmlBlock(
+    statements: List<SmlAbstractStatement> = emptyList(),
+    init: SmlBlock.() -> Unit = {}
+): SmlBlock {
+    return factory.createSmlBlock().apply {
+        this.statements += statements
+        this.init()
+    }
+}
+
+/**
  * Returns a new object of class [SmlBlockLambda].
  */
 fun createSmlBlockLambda(
@@ -309,7 +323,7 @@ fun createSmlBlockLambda(
     init: SmlBlockLambda.() -> Unit = {}
 ): SmlBlockLambda {
     return factory.createSmlBlockLambda().apply {
-        this.parameterList = parameters.nullIfEmptyElse(::createSmlParameterList)
+        this.parameterList = createSmlParameterList(parameters)
         this.body = factory.createSmlBlock()
         statements.forEach { addStatement(it) }
         this.init()
@@ -330,13 +344,9 @@ private fun SmlBlockLambda.addStatement(statement: SmlAbstractStatement) {
 /**
  * Returns a new object of class [SmlBlockLambdaResult].
  */
-fun createSmlBlockLambdaResult(
-    name: String,
-    annotationCalls: List<SmlAnnotationCall> = emptyList()
-): SmlBlockLambdaResult {
+fun createSmlBlockLambdaResult(name: String): SmlBlockLambdaResult {
     return factory.createSmlBlockLambdaResult().apply {
         this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
     }
 }
 
@@ -889,13 +899,9 @@ fun createSmlParentTypeList(parentTypes: List<SmlAbstractType>): SmlParentTypeLi
 /**
  * Returns a new object of class [SmlPlaceholder].
  */
-fun createSmlPlaceholder(
-    name: String,
-    annotationCalls: List<SmlAnnotationCall> = emptyList()
-): SmlPlaceholder {
+fun createSmlPlaceholder(name: String): SmlPlaceholder {
     return factory.createSmlPlaceholder().apply {
         this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
     }
 }
 

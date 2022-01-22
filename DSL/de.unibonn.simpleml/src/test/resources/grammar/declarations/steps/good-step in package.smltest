@@ -9,6 +9,6 @@ internal step myInternalStep() {}
 step myStepWithOneResult() -> a: Int {}
 
 @AnnotationUse
-private step myComplexStep(@AnnotationUse a: Int, vararg b: Int or 3) -> (a: Int, b: Int) {
+private step myComplexStep(@AnnotationUse a: Int, vararg b: Int = 3) -> (a: Int, b: Int) {
     val a = 1;
 }
