@@ -287,7 +287,7 @@ class CreatorsTest {
     }
 
     @Test
-    fun `createSmlPackage should store annotation uses in annotationCalls`() {
+    fun `createSmlCompilationUnit should store annotation uses in annotationCalls`() {
         val compilationUnit = createSmlCompilationUnit(
             packageName = "test",
             listOf(createSmlAnnotationCall("Test"))
