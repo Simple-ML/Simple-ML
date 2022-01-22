@@ -138,9 +138,9 @@
         <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//SmlAbstractExpression" containment="true" />
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SmlAssigneeList" eSuperTypes="#//SmlAbstractObject">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="assignees" upperBound="-1" eType="#//SmlAbstractAnnotatedObject" containment="true" />
+        <eStructuralFeatures xsi:type="ecore:EReference" name="assignees" upperBound="-1" eType="#//SmlAbstractAssignee" containment="true" />
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractAssignee" abstract="true" eSuperTypes="#//SmlAbstractAnnotatedObject" />
+    <eClassifiers xsi:type="ecore:EClass" name="SmlAbstractAssignee" abstract="true" eSuperTypes="#//SmlAbstractObject" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlPlaceholder" eSuperTypes="#//SmlAbstractAssignee #//SmlAbstractLocalVariable" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlWildcard" eSuperTypes="#//SmlAbstractAssignee" />
     <eClassifiers xsi:type="ecore:EClass" name="SmlYield" eSuperTypes="#//SmlAbstractAssignee">

@@ -302,7 +302,7 @@ SmlAssigneeList
     ;
 
 SmlAssignee returns SmlAbstractAssignee
-    : {SmlPlaceholder} annotationCalls+=SmlAnnotationCall* 'val' name=ID
+    : {SmlPlaceholder} 'val' name=ID
     | {SmlWildcard}    '_'
     | {SmlYield}       'yield' result=[SmlResult]
     ;
@@ -496,14 +496,10 @@ SmlBlockLambdaAssigneeList returns SmlAssigneeList
     | {SmlAssigneeList} '(' (assignees+=SmlBlockLambdaAssignee (',' assignees+=SmlBlockLambdaAssignee)* ','?)? ')'
     ;
 
-SmlBlockLambdaAssignee returns SmlAbstractAnnotatedObject
+SmlBlockLambdaAssignee returns SmlAbstractAssignee
     : {SmlWildcard} '_'
-    |
-    ( {SmlAnnotationCallHolder} annotationCalls+=SmlAnnotationCall*
-        ( {SmlPlaceholder.annotationCallHolder=current} 'val' name=ID
-        | {SmlBlockLambdaResult.annotationCallHolder=current} 'yield' name=ID
-        )
-    )
+    | {SmlPlaceholder} 'val' name=ID
+    | {SmlBlockLambdaResult} 'yield' name=ID
     ;
 
 SmlLambdaParameterList returns SmlParameterList
@@ -511,7 +507,9 @@ SmlLambdaParameterList returns SmlParameterList
     ;
 
 SmlLambdaParameter returns SmlParameter
-    : name=ID
+    : variadic?='vararg'?
+      name=ID (':' type=SmlType)?
+      ('or' defaultValue=SmlExpression)?
     ;
 
 
