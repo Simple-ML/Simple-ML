@@ -78,5 +78,7 @@ enum class ErrorCode {
 
     UnsupportedAnnotationParameterType,
 
-    LambdaMustBeTypedArgumentOrYielded
+    LambdaMustBeTypedArgumentOrYielded,
+
+    NoOptionalParametersInCallableType
 }
