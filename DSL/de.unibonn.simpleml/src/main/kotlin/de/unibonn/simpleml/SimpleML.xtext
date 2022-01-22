@@ -321,10 +321,14 @@ SmlExpression returns SmlAbstractExpression
     ;
 
 SmlLambda returns SmlAbstractLambda
-    : {SmlLambdaParameterList} '(' (parameters+=SmlLambdaParameter (',' parameters+=SmlLambdaParameter)* ','?)? ')'
+    : SmlLambdaParameterList
     ( {SmlBlockLambda.parameterList=current}      body=SmlBlockLambdaBlock
     | {SmlExpressionLambda.parameterList=current} '->' result=SmlExpression
     )
+    ;
+
+SmlLambdaParameterList
+    : {SmlLambdaParameterList} '(' (parameters+=SmlLambdaParameter (',' parameters+=SmlLambdaParameter)* ','?)? ')'
     ;
 
 SmlLambdaParameter returns SmlParameter

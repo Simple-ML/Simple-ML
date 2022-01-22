@@ -119,14 +119,8 @@ class AnnotationCallChecker : AbstractSimpleMLChecker() {
             actualTarget is SmlFunction && AnnotationTarget.Function !in legalTargets -> {
                 "a function"
             }
-            actualTarget is SmlBlockLambdaResult && AnnotationTarget.LambdaResult !in legalTargets -> {
-                "a lambda result"
-            }
             actualTarget is SmlParameter && AnnotationTarget.Parameter !in legalTargets -> {
                 "a parameter"
-            }
-            actualTarget is SmlPlaceholder && AnnotationTarget.Placeholder !in legalTargets -> {
-                "a placeholder"
             }
             actualTarget is SmlResult && AnnotationTarget.Result !in legalTargets -> {
                 "a result"

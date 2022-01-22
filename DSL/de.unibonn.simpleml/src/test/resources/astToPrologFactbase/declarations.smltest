@@ -50,7 +50,7 @@ fun mySimpleFunction()
 @MySimpleAnnotation
 fun myComplexFunction
     <T1, T2>
-    (mySimpleParameter, @AnnotationUse vararg myComplexParameter: Int or 3)
+    (mySimpleParameter, @AnnotationUse vararg myComplexParameter: Int = 3)
     -> (mySimpleResult, @AnnotationUse myComplexResult: Int)
     where T1 super Number, T2 sub Number
 

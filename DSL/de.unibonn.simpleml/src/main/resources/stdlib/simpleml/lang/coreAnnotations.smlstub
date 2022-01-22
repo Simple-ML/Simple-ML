@@ -39,16 +39,16 @@ annotation Repeatable
 )
 annotation Deprecated(
     @Description("What to use instead.")
-    alternative: String? or null,
+    alternative: String? = null,
 
     @Description("Why the declaration was deprecated.")
-    reason: String? or null,
+    reason: String? = null,
 
     @Description("When the declaration was deprecated.")
-    sinceVersion: String? or null,
+    sinceVersion: String? = null,
 
     @Description("When the declaration will be removed.")
-    removalVersion: String? or null,
+    removalVersion: String? = null,
 )
 
 @Description("The function has no side effects and returns the same results for the same arguments.")
