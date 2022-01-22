@@ -80,5 +80,7 @@ enum class ErrorCode {
 
     LambdaMustBeTypedArgumentOrYielded,
 
-    NoOptionalParametersInCallableType
+    NoOptionalParametersInCallableType,
+
+    VariadicParametersMustNotHaveDefaultValue
 }
