@@ -8,6 +8,7 @@ import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlInt
+import de.unibonn.simpleml.simpleML.SmlLambdaParameterList
 import de.unibonn.simpleml.simpleML.SmlParameterList
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlProtocol
@@ -195,6 +196,25 @@ class CreatorsTest {
     }
 
     @Test
+    fun `createSmlBlockLambda should use a lambda parameter list for parameters`() {
+        val lambda = createSmlBlockLambda()
+        lambda.parameterList.shouldBeInstanceOf<SmlLambdaParameterList>()
+    }
+
+    @Test
+    fun `createSmlBlockLambda should create a serializable block lambda`() {
+        val lambda = createSmlBlockLambda()
+
+        createSmlDummyResource(fileName = "test", SmlFileExtension.Test, packageName = "test") {
+            smlWorkflow(name = "test") {
+                smlExpressionStatement(lambda)
+            }
+        }
+
+        lambda.serializeToFormattedString().shouldBeInstanceOf<SerializationResult.Success>()
+    }
+
+    @Test
     fun `createSmlCall should omit empty type argument lists`() {
         val call = createSmlCall(
             createSmlNull(),
@@ -374,6 +394,25 @@ class CreatorsTest {
         val body = enum.body
         body.shouldNotBeNull()
         body.variants.shouldHaveSize(1)
+    }
+
+    @Test
+    fun `createSmlExpressionLambda should use a lambda parameter list for parameters`() {
+        val lambda = createSmlExpressionLambda(result = createSmlNull())
+        lambda.parameterList.shouldBeInstanceOf<SmlLambdaParameterList>()
+    }
+
+    @Test
+    fun `createSmlExpressionLambda should create a serializable expression lambda`() {
+        val lambda = createSmlExpressionLambda(result = createSmlNull())
+
+        createSmlDummyResource(fileName = "test", SmlFileExtension.Test, packageName = "test") {
+            smlWorkflow(name = "test") {
+                smlExpressionStatement(lambda)
+            }
+        }
+
+        lambda.serializeToFormattedString().shouldBeInstanceOf<SerializationResult.Success>()
     }
 
     @Test
