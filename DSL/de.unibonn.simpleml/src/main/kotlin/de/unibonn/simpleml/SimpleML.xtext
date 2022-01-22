@@ -328,13 +328,7 @@ SmlLambda returns SmlAbstractLambda
     ;
 
 SmlLambdaParameterList
-    : {SmlLambdaParameterList} '(' (parameters+=SmlLambdaParameter (',' parameters+=SmlLambdaParameter)* ','?)? ')'
-    ;
-
-SmlLambdaParameter returns SmlParameter
-    : variadic?='vararg'?
-      name=ID (':' type=SmlType)?
-      ('=' defaultValue=SmlExpression)?
+    : {SmlLambdaParameterList} '(' (parameters+=SmlParameter (',' parameters+=SmlParameter)* ','?)? ')'
     ;
 
 SmlBlockLambdaBlock returns SmlBlock
