@@ -52,23 +52,23 @@ step myStep() {
     };
 
     // semantic_warning "This statement does nothing."
-    »() {
+    »(() {
         pureFunction();
         MyClass().pureFunction();
-    }();«
+    })();«
 
     // semantic_warning "This statement does nothing."
     »pureStep();«
 
     // no_semantic_warning "This statement does nothing."
-    »() {
+    »(() {
         impureFunction();
-    }();«
+    })();«
 
     // no_semantic_warning "This statement does nothing."
-    »() {
+    »(() {
         MyClass().impureFunction();
-    }();«
+    })();«
 
     // no_semantic_warning "This statement does nothing."
     »impureStep();«

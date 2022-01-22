@@ -316,7 +316,8 @@ SmlExpressionStatement
  **********************************************************************************************************************/
 
 SmlExpression returns SmlAbstractExpression
-    : SmlExpressionLambda
+    : SmlBlockLambda
+    | SmlExpressionLambda
     | SmlOrExpression
     ;
 
@@ -405,8 +406,7 @@ SmlCallArgument returns SmlArgument
     ;
 
 SmlPrimaryExpression returns SmlAbstractExpression
-    : SmlBlockLambda
-    | SmlLiteral
+    : SmlLiteral
     | SmlParenthesizedExpression
     | SmlReference
     | SmlTemplateString

@@ -122,19 +122,19 @@ workflow test {
         »b = 1«
     );
 
-    (a, b) {}(
+    ((a, b) {})(
         // semantic_error "The parameter 'a' is already set."
         »1«,
         // semantic_error "The parameter 'a' is already set."
         »a = 1«
     );
-    (a, b) {}(
+    ((a, b) {})(
         // semantic_error "The parameter 'b' is already set."
         »b = 1«,
         // semantic_error "The parameter 'b' is already set."
         »b = 1«
     );
-    (a, b) {}(
+    ((a, b) {})(
         // no_semantic_error "The parameter 'a' is already set."
         »a = 1«,
         // no_semantic_error "The parameter 'b' is already set."
