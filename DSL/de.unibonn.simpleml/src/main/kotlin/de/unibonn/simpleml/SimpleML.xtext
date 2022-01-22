@@ -24,14 +24,14 @@ SmlCompilationUnit
     ;
 
 SmlCompilationUnitMember returns SmlAbstractAnnotatedObject
-    : {SmlAnnotationCallHolder} annotationCalls+=SmlAnnotationCall*
+    : {SmlAnnotationCallList} annotationCalls+=SmlAnnotationCall*
 
-    ( {SmlAnnotation.annotationCallHolder=current}
+    ( {SmlAnnotation.annotationCallList=current}
           'annotation' name=ID
           parameterList=SmlParameterList?
           constraintList=SmlConstraintList?
 
-    | {SmlClass.annotationCallHolder=current}
+    | {SmlClass.annotationCallList=current}
           'class' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
@@ -39,25 +39,25 @@ SmlCompilationUnitMember returns SmlAbstractAnnotatedObject
           constraintList=SmlConstraintList?
           body=SmlClassBody?
 
-    | {SmlEnum.annotationCallHolder=current}
+    | {SmlEnum.annotationCallList=current}
           'enum' name=ID
           body=SmlEnumBody?
 
-    | {SmlFunction.annotationCallHolder=current}
+    | {SmlFunction.annotationCallList=current}
           'fun' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList
           resultList=SmlResultList?
           constraintList=SmlConstraintList?
 
-    | {SmlStep.annotationCallHolder=current}
+    | {SmlStep.annotationCallList=current}
           visibility=('internal'|'private')?
           'step' name=ID
           parameterList=SmlParameterList
           resultList=SmlResultList?
           body=SmlBlock
 
-    | {SmlWorkflow.annotationCallHolder=current}
+    | {SmlWorkflow.annotationCallList=current}
           'workflow' name=ID
           body=SmlBlock
     )
@@ -116,13 +116,13 @@ SmlClassMember returns SmlAbstractObject
     ;
 
 SmlAnnotatedClassMember returns SmlAbstractAnnotatedObject
-    : {SmlAnnotationCallHolder} annotationCalls+=SmlAnnotationCall*
+    : {SmlAnnotationCallList} annotationCalls+=SmlAnnotationCall*
 
-    ( {SmlAttribute.annotationCallHolder=current}
+    ( {SmlAttribute.annotationCallList=current}
           static?='static'?
           'attr' name=ID (':' type=SmlType)?
 
-    | {SmlClass.annotationCallHolder=current}
+    | {SmlClass.annotationCallList=current}
           'class' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
@@ -130,11 +130,11 @@ SmlAnnotatedClassMember returns SmlAbstractAnnotatedObject
           constraintList=SmlConstraintList?
           body=SmlClassBody?
 
-    | {SmlEnum.annotationCallHolder=current}
+    | {SmlEnum.annotationCallList=current}
           'enum' name=ID
           body=SmlEnumBody?
 
-    | {SmlFunction.annotationCallHolder=current}
+    | {SmlFunction.annotationCallList=current}
           static?='static'?
           'fun' name=ID
           typeParameterList=SmlTypeParameterList?
