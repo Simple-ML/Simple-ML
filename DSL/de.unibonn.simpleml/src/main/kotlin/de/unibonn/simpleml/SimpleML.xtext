@@ -259,7 +259,7 @@ SmlParameter
     : annotationCalls+=SmlAnnotationCall*
       variadic?='vararg'?
       name=ID (':' type=SmlType)?
-      ('or' defaultValue=SmlExpression)?
+      ('=' defaultValue=SmlExpression)?
     ;
 
 
@@ -321,10 +321,49 @@ SmlExpression returns SmlAbstractExpression
     | SmlOrExpression
     ;
 
+SmlBlockLambda
+    : parameterList=SmlLambdaParameterList
+      body=SmlBlockLambdaBlock
+    ;
+
 SmlExpressionLambda
     : parameterList=SmlLambdaParameterList
       '->'
       result=SmlExpression
+    ;
+
+SmlLambdaParameterList returns SmlParameterList
+    : {SmlParameterList} '(' (parameters+=SmlLambdaParameter (',' parameters+=SmlLambdaParameter)* ','?)? ')'
+    ;
+
+SmlLambdaParameter returns SmlParameter
+    : variadic?='vararg'?
+      name=ID (':' type=SmlType)?
+      ('=' defaultValue=SmlExpression)?
+    ;
+
+SmlBlockLambdaBlock returns SmlBlock
+    : {SmlBlock} '{' statements+=SmlBlockLambdaStatement* '}'
+    ;
+
+SmlBlockLambdaStatement returns SmlAbstractStatement
+    : SmlBlockLambdaAssignment
+    | SmlExpressionStatement
+    ;
+
+SmlBlockLambdaAssignment returns SmlAssignment
+    : assigneeList=SmlBlockLambdaAssigneeList '=' expression=SmlExpression ';'
+    ;
+
+SmlBlockLambdaAssigneeList returns SmlAssigneeList
+    : {SmlAssigneeList} assignees+=SmlBlockLambdaAssignee
+    | {SmlAssigneeList} '(' (assignees+=SmlBlockLambdaAssignee (',' assignees+=SmlBlockLambdaAssignee)* ','?)? ')'
+    ;
+
+SmlBlockLambdaAssignee returns SmlAbstractAssignee
+    : {SmlWildcard} '_'
+    | {SmlPlaceholder} 'val' name=ID
+    | {SmlBlockLambdaResult} 'yield' name=ID
     ;
 
 SmlOrExpression returns SmlAbstractExpression
@@ -468,48 +507,6 @@ SmlTemplateStringInner
 
 SmlTemplateStringEnd
     : value=TEMPLATE_STRING_END
-    ;
-
-
-// Block lambdas -------------------------------------------------------------------------------------------------------
-
-SmlBlockLambda
-    : parameterList=SmlLambdaParameterList
-      body=SmlBlockLambdaBlock
-    ;
-
-SmlBlockLambdaBlock returns SmlBlock
-    : {SmlBlock} '{' statements+=SmlBlockLambdaStatement* '}'
-    ;
-
-SmlBlockLambdaStatement returns SmlAbstractStatement
-    : SmlBlockLambdaAssignment
-    | SmlExpressionStatement
-    ;
-
-SmlBlockLambdaAssignment returns SmlAssignment
-    : assigneeList=SmlBlockLambdaAssigneeList '=' expression=SmlExpression ';'
-    ;
-
-SmlBlockLambdaAssigneeList returns SmlAssigneeList
-    : {SmlAssigneeList} assignees+=SmlBlockLambdaAssignee
-    | {SmlAssigneeList} '(' (assignees+=SmlBlockLambdaAssignee (',' assignees+=SmlBlockLambdaAssignee)* ','?)? ')'
-    ;
-
-SmlBlockLambdaAssignee returns SmlAbstractAssignee
-    : {SmlWildcard} '_'
-    | {SmlPlaceholder} 'val' name=ID
-    | {SmlBlockLambdaResult} 'yield' name=ID
-    ;
-
-SmlLambdaParameterList returns SmlParameterList
-    : {SmlParameterList} '(' (parameters+=SmlLambdaParameter (',' parameters+=SmlLambdaParameter)* ','?)? ')'
-    ;
-
-SmlLambdaParameter returns SmlParameter
-    : variadic?='vararg'?
-      name=ID (':' type=SmlType)?
-      ('or' defaultValue=SmlExpression)?
     ;
 
 
