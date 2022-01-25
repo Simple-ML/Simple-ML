@@ -1,9 +1,23 @@
 # Change Log
 
-[comment]: <> (All notable changes to the "simple-ml" extension will be documented in this file.)
+## [Unreleased]
+### Added
+- [Custom outline and breadcrumbs](https://github.com/Simple-ML/Simple-ML/pull/114)
+- Additional brackets, auto-closing pairs, and surrounding pairs
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
 
-[comment]: <> (Check [Keep a Changelog]&#40;http://keepachangelog.com/&#41; for recommendations on how to structure this file.)
+## [0.0.12] - 2021-12-07
+### Changed
+- Upgrade to the new version of the Simple-ML DSL
 
-## v0.0.9
+## [0.0.11] - 2021-11-16
+### Fixed
+- Crash when running the extension with Java 12+
 
+## [0.0.9] - 2021-07-31
+### Added
 - Initial release
