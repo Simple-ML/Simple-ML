@@ -4,7 +4,8 @@ import { mxConstants } from "mxgraph-js";
 const initialState = {
     viewMode: mxConstants.DIRECTION_NORTH,
     entitySelected: {},
-    entityHoveredOver: {}
+    entityHoveredOver: {},
+    dataviewBackdropActive: false
 };
 
 
@@ -12,6 +13,8 @@ const initialState = {
 const GRAPH_CHANGE_DIRECTION = 'GRAPH_CHANGE_DIRECTION';
 const GRAPH_HOVERED_OVER_ENTITY = 'GRAPH_HOVERED_OVER_ENTITY';
 const GRAPH_SELECT_ENTITY = 'GRAPH_SELECT_ENTITY';
+const SHOW_DATAVIEW_BACKDROP = 'SHOW_DATAVIEW_BACKDROP';
+const HIDE_DATAVIEW_BACKDROP = 'HIDE_DATAVIEW_BACKDROP';
 
 // Actions
 export const changeDirection = () => {
@@ -56,6 +59,17 @@ export const entityHoverStateLeav = () => {
     }  
 };
 
+export const showDataViewBackdrop = () => {
+    return {
+        type: SHOW_DATAVIEW_BACKDROP
+    }
+};
+
+export const hideDataViewBackdrop = () => {
+    return {
+        type: HIDE_DATAVIEW_BACKDROP
+    }
+};
 
 // Reducer
 const reducer = (state = initialState, action) =>{
@@ -81,6 +95,14 @@ const reducer = (state = initialState, action) =>{
         case GRAPH_HOVERED_OVER_ENTITY:
             return Object.assign({}, state, {
                 entityHoveredOver: action.payload.entity
+            });
+        case SHOW_DATAVIEW_BACKDROP:
+            return Object.assign({}, state, {
+                dataviewBackdropActive: true
+            });
+        case HIDE_DATAVIEW_BACKDROP:
+            return Object.assign({}, state, {
+                dataviewBackdropActive: false
             });
         default:
             return state;

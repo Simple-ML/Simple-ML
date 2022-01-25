@@ -86,8 +86,8 @@ class DataView extends React.Component {
                     <TabContext value={this.state.value}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <TabList onChange={this.handleChange} aria-label="lab API tabs example">
-                            <Tab label="Data table" value="1" />
-                            <Tab label="Summary" value="2" />
+                            <Tab label="Data table" value="1" style= {{color: '#E84E1A'}}/>
+                            <Tab label="Summary" value="2" style= {{color: '#E84E1A'}}/>
                         </TabList>
                         </Box>
                         <TabPanel value="1">

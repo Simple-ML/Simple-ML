@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import StarOutlineIcon from '@material-ui/icons/StarOutline';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
-import  DeleteIcon  from '@material-ui/icons/Delete';
+import DeleteIcon  from '@material-ui/icons/Delete';
 import CloseIcon from '@material-ui/icons/Close';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ErrorIcon from '@material-ui/icons/Error';
@@ -19,6 +19,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
+import { ReactComponent as TableChart } from './assets/tableChart.svg';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     color: theme.palette.text.primary,
@@ -95,6 +97,10 @@ export default function Icons(props) {
 		case 'helpOutline':
 			return (
 				<HelpOutlineIcon style={style}/ >
+			);
+		case 'tableChart':
+			return (
+				<TableChart style={style}/ >
 			);
 		default: 
 			console.debug('Icon Name does not exist renders null')

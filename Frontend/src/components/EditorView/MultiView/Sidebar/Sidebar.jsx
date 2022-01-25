@@ -11,6 +11,9 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import XtextServices from '../../../../serverConnection/XtextServices';
+import Button from '@mui/material/Button';
+import { showDataViewBackdrop } from '../../../../reducers/graphicalEditor';
+import Icons from '../../../../stories/Icons';
 
 class Sidebar extends React.Component {
     constructor(props) {
@@ -26,13 +29,11 @@ class Sidebar extends React.Component {
     }
 
     onStoreChange = (state) => {
-        console.log(state);
 
       return {
-          selectedEntityType: this.getEntityType(state.graphicalEditor.entitySelected?.data?.className),
-          selectedEntityName: this.getEntityName(state.graphicalEditor.entitySelected),
-          // TODO: Runtime not responding
-          selectedPlaceholder: state.runtime.placeholder[state.graphicalEditor.entitySelected?.data?.className]
+          //selectedEntityType: this.getEntityType(state.graphicalEditor.entitySelected?.data?.className),
+          //selectedEntityName: this.getEntityName(state.graphicalEditor.entitySelected),
+          placeholders: this.getPlaceholders(state.runtime?.placeholder),
       };
     }    
     
@@ -40,6 +41,7 @@ class Sidebar extends React.Component {
         this.unsubscribe();
     }
 
+    /*
     getEntityType = (entitySelectedClasName) => {
         switch(entitySelectedClasName) {
           case 'de.unibonn.simpleml.simpleML.SmlPlaceholder':
@@ -50,9 +52,9 @@ class Sidebar extends React.Component {
             return '';
         }
     }
+    */
 
     getEntityName = (entitySelected) => {
-        console.log(entitySelected)
         if (entitySelected?.data?.name !== undefined) {
             return entitySelected.data.name;
         } else if (entitySelected?.data?.className !== undefined) {
@@ -62,21 +64,33 @@ class Sidebar extends React.Component {
         }
     }
 
+    getPlaceholders = (placeholders) => {
+        if (placeholders !== undefined) {
+            return placeholders;
+        } else {
+            return '';
+        }
+    }
+
+    handleOpen= () => {
+        this.props.showDataViewBackdrop();
+    }
+
     render() {
+        const { placeholders } = this.state;
             return(
               <div style= {{backgroundColor: 'white'}}>
                 <header style= {{backgroundColor: 'white'}}>
-                    <h1>{this.state.selectedEntityType}</h1>
+                    <h1>{'Select data set'}</h1>
                 </header> 
-                {/* Search Bar
+                {
                 <Autocomplete
                     freeSolo
                     id="free-solo-2-demo"
                     disableClearable
-                    options={['SpeedAverages']}
+                    options={['WhiteWineQualityBinary']}
                     renderInput={(params) => (
                         <TextField
-                        style= {{backgroundColor: 'white'}}
                             {...params}
                             label="Search input"
                             InputProps={{
@@ -86,20 +100,29 @@ class Sidebar extends React.Component {
                         />
                     )}
                 />
-                 */}
-                <Accordion>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
-                    >
-                    <Typography>{this.state.selectedEntityName}</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Typography>
-                        </Typography>
-                    </AccordionDetails>
-                </Accordion>
+                }
+                { 
+                Object.keys(placeholders).length !== 0 ? (
+                    Object.keys(placeholders).map((placeholder) => (
+                        placeholder ? (
+                            <Accordion>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="panel1a-content"
+                                    id="panel1a-header"
+                                >
+                                    <Typography>{placeholder}</Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <Typography>{placeholders[placeholder].id}</Typography>
+                                    <Button onClick={this.handleOpen}>
+                                        <Icons icons="tableChart"/>
+                                    </Button>
+                                </AccordionDetails>
+                            </Accordion>
+                        ): <div></div>
+                    ))
+                ): <div></div>}
               </div>
             )
       }
@@ -110,11 +133,13 @@ Sidebar.propTypes = {
 
 const mapStateToProps = state => {
     return {
+        showDataViewBackdrop: PropTypes.func.isRequired
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
+        showDataViewBackdrop: () => dispatch(showDataViewBackdrop())
     }
 };
 
