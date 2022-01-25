@@ -291,6 +291,19 @@ class EmfModelHelper {
         
         return flatEntity;
     }
+
+    static getProcessEmfPathFromFlatEntities(flatEntityList) {
+        const collection = [];
+
+        for(const entity of flatEntityList) {
+            if(entity.data['$ref'] && (
+                entity.data['$ref'].startsWith('file:') ||
+                entity.data['$ref'].startsWith('jar:file:'))) {
+                collection.push(entity.data['$ref']);
+            }
+        }
+        return new Set(collection);
+    }
 }
 
 export default {
@@ -298,5 +311,6 @@ export default {
     getFullHierarchy: (emfEntity) => EmfModelHelper.getFullHierarchy(emfEntity),
     getFullHierarchy2: (emfEntity) => EmfModelHelper.getFullHierarchy2(emfEntity),
     getRenderableEmfEntities: (emfModelFlat) => EmfModelHelper.getRenderableEmfEntities(emfModelFlat),
-    getEmfEntityAssociations: (emfModelFlat) => EmfModelHelper.getEmfEntityAssociations(emfModelFlat)
+    getEmfEntityAssociations: (emfModelFlat) => EmfModelHelper.getEmfEntityAssociations(emfModelFlat),
+    getProcessEmfPathFromFlatEntities: (emfModelFlat) => EmfModelHelper.getProcessEmfPathFromFlatEntities(emfModelFlat)
 }
