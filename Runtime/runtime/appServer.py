@@ -12,6 +12,7 @@ import jsonpickle
 import jsonpickle.ext.numpy as jsonpickle_numpy
 import jsonpickle.ext.pandas as jsonpickle_pandas
 from simpleml.dataset._stats import getStatistics
+from simpleml.data_catalog import getDatasets
 
 logging.basicConfig()
 jsonpickle_numpy.register_handlers()
@@ -91,6 +92,15 @@ async def requestHandler(websocket, path):
                 STATE["value"] = json.JSONEncoder().encode(
                     {"type": "[status]:EXECUTION_STARTED", "sessionId": run_session, "message": "Execution started"})
                 await notify_state()
+            elif data["action"] == "get_available_dataset":
+                dataset_list=getDatasets()
+                placeholder_value = jsonpickler.flatten(dataset_list)
+                notify_placeholder(
+                    json.dumps({"type": "[placeholder]:VALUE",
+                                "description": "Available datasets",
+                                "name": "datasets",
+                                "value": placeholder_value
+                                }))
             elif data["action"] == "get_placeholder":
                 # {action: 'get_placeholder',"placeholder":{sessionId:123123123123,name:"message"}}
                 try:

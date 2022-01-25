@@ -6,12 +6,11 @@ import Box from '@mui/material/Box';
 import TabContext from '@material-ui/lab/TabContext';
 import TabPanel from '@material-ui/lab/TabPanel';
 import TabList from '@material-ui/lab/TabList';
-import  SimpleBarChart from '../../../stories/SimpleBarChart.js';
-import  SimpleHistogramChart from '../../../stories/SimpleHistogramChart.js';
-import  Table from '../../../stories/Table.js';
+import SimpleBarChart from '../../../stories/SimpleBarChart.js';
+import SimpleHistogramChart from '../../../stories/SimpleHistogramChart.js';
+import Table from '../../../stories/Table.js';
 import PropTypes from 'prop-types';
 import { MultiSelect } from "react-multi-select-component";
-import { keyframes } from '@emotion/react';
 
 class DataView extends React.Component {
     constructor(props) {

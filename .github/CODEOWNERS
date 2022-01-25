@@ -1,28 +1,12 @@
-*                                                                       @Simple-ML/developers
-/.github/                                                               @lars-reimann
+*                                                    @Simple-ML/developers
+/.github/                                            @lars-reimann
 
-/DSL/                                                                   @Simple-ML/dsl
-/DSL/.devcontainer/                                                     @lars-reimann
-/DSL/.vscode/                                                           @lars-reimann
-/DSL/client/                                                            @lars-reimann
-/DSL/server/                                                            @lars-reimann
-/DSL/server/de.unibonn.simpleml.parent/de.unibonn.simpleml.web/         @adanewitz
+/DSL/                                                @lars-reimann
+/DSL/de.unibonn.simpleml.web/                        @adanewitz @khalid-abdalla
 
-/Frontend/                                                              @adanewitz
+/Frontend/                                           @adanewitz @khalid-abdalla
 
-/Runtime/                                                               @Simple-ML/runtime
-/Runtime/.devcontainer/                                                 @lars-reimann
-/Runtime/.vscode/                                                       @lars-reimann
-/Runtime/runtime/                                                       @s6fikass
-/Runtime/Dockerfile                                                     @lars-reimann
-
-/Stdlib/                                                                @Simple-ML/stdlib
-/Stdlib/.devcontainer/                                                  @lars-reimann
-/Stdlib/.vscode/                                                        @lars-reimann
-/Stdlib/data/                                                           @fakharabbas-3002 @sgottsch
-/Stdlib/data_catalog/                                                   @fakharabbas-3002 @sgottsch
-/Stdlib/python/simpleml/data_catalog/                                   @fakharabbas-3002 @sgottsch
-/Stdlib/python/simpleml/ml_catalog/                                     @fakharabbas-3002 @sgottsch
-/Stdlib/python/simpleml/queries/                                        @fakharabbas-3002 @sgottsch
-/Stdlib/python/simpleml/rdf/                                            @fakharabbas-3002 @sgottsch
-/Stdlib/stubs/                                                          @lars-reimann
+/Runtime/.devcontainer/                              @lars-reimann
+/Runtime/.vscode/                                    @lars-reimann
+/Runtime/runtime/                                    @s6fikass
+/Runtime/stdlib                                      @fakharabbas-3002 @sgottsch

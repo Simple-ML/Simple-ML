@@ -1,9 +1,0 @@
-// no_syntax_error
-
-step mySimpleStep() {}
-
-step myStepWithOneResult() -> a : Int {}
-
-@AnnotationUse deprecated step myComplexStep(a: Int, b: Int) -> (a: Int, b: Int) {
-    val a = 1;
-}

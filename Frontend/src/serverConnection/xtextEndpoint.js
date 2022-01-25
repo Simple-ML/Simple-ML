@@ -9,8 +9,8 @@ const xtextEndpoint = {
     serviceRoute: "xtext-service",
     port: "8080",
     protocol: "http:",
-    syntaxDefinition: "xtext-resources/generated/mode-simpleml",
-    xtextLang: "simpleml",
+    syntaxDefinition: "xtext-resources/generated/mode-smlflow",
+    xtextLang: "smlflow",
 };
 
 export default xtextEndpoint;

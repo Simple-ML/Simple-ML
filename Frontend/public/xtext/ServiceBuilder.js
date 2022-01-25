@@ -9,12 +9,13 @@ define([
 	'jquery',
 	'xtext/services/XtextService',
     'xtext/services/GetEmfModelService',
-	'xtext/services/GetProcessProposals',
+	'xtext/services/GetProcessProposalsService',
 	'xtext/services/CreateEntityService',
+	'xtext/services/EditProcessParameterService',
     'xtext/services/DeleteEntityService',
     'xtext/services/CreateAssociationService',
     'xtext/services/DeleteAssociationService',
-	'xtext/services/GetEntityAttributeDefinitionService',
+	'xtext/services/GetProcessMetadataService',
 	'xtext/services/SetEntityAttributeService',
 	'xtext/services/LoadResourceService',
 	'xtext/services/SaveResourceService',
@@ -25,8 +26,8 @@ define([
 	'xtext/services/HoverService',
 	'xtext/services/OccurrencesService',
 	'xtext/services/FormattingService'
-], function(jQuery, XtextService, GetEmfModelService, GetProcessProposalsService, CreateEntityService, DeleteEntityService,
-            CreateAssociationService, DeleteAssociationService, GetEntityAttributeDefinitionService,
+], function(jQuery, XtextService, GetEmfModelService, GetProcessProposalsService, CreateEntityService, EditProcessParameterService, DeleteEntityService,
+            CreateAssociationService, DeleteAssociationService, GetProcessMetadataService,
 			SetEntityAttributeService, LoadResourceService, SaveResourceService, HighlightingService, ValidationService, UpdateService,
 			ContentAssistService, HoverService, OccurrencesService, FormattingService) {
 
@@ -179,6 +180,11 @@ define([
 			return services.createEntityService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
 		}
 
+		services.editProcessParameterService = new EditProcessParameterService(options.serviceUrl, options.resourceId);
+		services.editProcessParameter = function(addParams) {
+			return services.editProcessParameterService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
+		}
+
         services.deleteEntityService = new DeleteEntityService(options.serviceUrl, options.resourceId);
         services.deleteEntity = function(addParams) {
             return services.deleteEntityService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
@@ -194,9 +200,9 @@ define([
             return services.deleteAssociationService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
         }
 
-		services.getEntityAttributeDefinitionService = new GetEntityAttributeDefinitionService(options.serviceUrl, options.resourceId);
-		services.getEntityAttributeDefinition = function(addParams) {
-			return services.getEntityAttributeDefinitionService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
+		services.getProcessMetadataService = new GetProcessMetadataService(options.serviceUrl, options.resourceId);
+		services.getProcessMetadata = function(addParams) {
+			return services.getProcessMetadataService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
 		}
 
 		services.setEntityAttributeService = new SetEntityAttributeService(options.serviceUrl, options.resourceId);

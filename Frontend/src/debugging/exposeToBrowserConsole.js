@@ -11,20 +11,32 @@ const debugInterface = {
     x: { //xtext
         s: { //services
             getEmfModel: () => XtextServices.getEmfModel(),
-            getProcessProposals: () => XtextServices.getProcessProposals(),
+            getProcessMetadata: (entityPath) => XtextServices.getProcessMetadata(entityPath),
+            getProcessProposals: (entityId, entityPath) => XtextServices.getProcessProposals(entityId, entityPath),
             createEntity: (entity) => XtextServices.createEntity(entity),
             deleteEntity: (entityPath) => XtextServices.deleteEntity(entityPath),
             createAssociation: (fromEntityPath, toEntityPath) => XtextServices.createAssociation(fromEntityPath, toEntityPath),
             deleteAssociation: (fromEntityPath, toEntityPath) => XtextServices.deleteAssociation(fromEntityPath, toEntityPath),
             getEntityAttributes: (entities) => XtextServices.getEntityAttributes(entities),
             setEntityAttributes: (entity) => XtextServices.setEntityAttributes(entity),
-            generate: () => XtextServices.generate()
+            generate: () => XtextServices.generate(),
+            editProcessParameter: (index ,value) => {
+                const temp =  {
+                    entityPath: EmfModelHelper.getFullHierarchy(store.getState().graphicalEditor.entitySelected),
+                    parameterType: 'string',
+                    parameterIndex: index,
+                    value: value
+                }
+                XtextServices.editProcessParameter(temp);
+            }
         }
     },
     h: { //helper
         flattenEmfModelTree: (emfModelTree) => EmfModelHelper.flattenEmfModelTree(emfModelTree),
         getFullHierarchy: (emfEntity) => EmfModelHelper.getFullHierarchy(emfEntity),
-        getFullHierarchy2: (emfEntity) => EmfModelHelper.getFullHierarchy2(emfEntity)
+        getSelectedEntity: () => {
+            return store.getState().graphicalEditor.entitySelected;
+        }
     },
     o: { //other
         showDefaultModal: () => store.dispatch(showModal(DefaultModal, {text: 'some text', message: 'some message'}))
