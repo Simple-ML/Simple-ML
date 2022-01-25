@@ -5,9 +5,9 @@ import DetailsEditor from "../DetailsEditor/DetailsEditor";
 import TextEditor from '../TextEditor/TextEditor';
 
 // Icons
-import graphicalEditorIcon from '../../../images/sideToolbar/graph-viewbar.svg';
-import textEditorIcon from '../../../images/sideToolbar/text-viewbar.svg';
-import detailViewIcon from '../../../images/sideToolbar/chart-viewbar.svg';
+import graphicalEditorIcon from '../../../images/toolbar/graph-viewbar.svg';
+import textEditorIcon from '../../../images/toolbar/text-viewbar.svg';
+import detailViewIcon from '../../../images/toolbar/chart-viewbar.svg';
 
 class MultiViewConfig {
 

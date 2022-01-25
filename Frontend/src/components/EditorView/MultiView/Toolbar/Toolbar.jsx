@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 
-import sideToolbarStyles from './sideToolbar.module.scss';
+import ToolbarStyles from './toolbar.module.scss';
 
 /**
  * This component is used in combination with golden-layout. So this.props.layout has to be the layout-Object from
  * golden-layout, (caution) what is commonly initialised after render in componentDidMount.
  */
-class SideToolbar extends React.Component {
+class Toolbar extends React.Component {
     constructor(props) {
         super(props);
 
@@ -36,11 +36,11 @@ class SideToolbar extends React.Component {
         let style = {visibility: this.props.visible ? 'visible' : 'hidden'};
 
         return (
-            <div className={sideToolbarStyles["Side-Toolbar"]} style={style}>
+            <div className={ToolbarStyles['Toolbar']} style={style}>
                 {   this.state.childInfos = []   }
                 {   buttonConfigs.map((buttonConfig, i) => {
                 return (
-                    <input className={sideToolbarStyles["Side-Toolbar-button"]}
+                    <input className={ToolbarStyles['Toolbar-button']}
                         key={i}
                         type={'image'} src={buttonConfig.icon} alt={buttonConfig.title}
                         ref={(input) => {
@@ -62,13 +62,13 @@ class SideToolbar extends React.Component {
     }
 }
 
-SideToolbar.propTypes = {
+Toolbar.propTypes = {
     visible: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => {
     return {
-        visible: state.sideToolbar.visible
+        visible: state.toolbar.visible
     }
 };
 
@@ -77,4 +77,4 @@ const mapDispatchToProps = dispatch => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SideToolbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);

@@ -4,6 +4,8 @@ const initialState = {
     flat: [],               // flat version of the raw Emf-Model-Tree
     renderable: [],         // subcollection fo flat Emf-Model-Tree (only items with associated metadata for rendering purposes)
     associations: [],       // list of parent-child-associations of renderable eintities
+    processMetadata: [],
+    processProposals: {},
     dirty: true
 };
 
@@ -12,6 +14,8 @@ const initialState = {
 export const NEW_EMF_MODEL = 'NEW_EMF_MODEL';
 export const CLEAN_EMF_MODEL = 'CLEAN_EMF_MODEL';
 export const DIRTY_EMF_MODEL = 'DIRTY_EMF_MODEL';
+export const NEW_PROCESS_METADATA = 'NEW_PROCESS_METADATA';
+export const NEW_PROCESS_PROPOSALS = 'NEW_PROCESS_PROPOSALS';
 
 // Actions
 export const setNewEmfModel = (raw, flat, renderable, associations) => {
@@ -38,6 +42,24 @@ export const setEmfModelDirty = () => {
     }
 };
 
+export const setNewProcessMetadata = (processMetadata) => {
+    return {
+        type: NEW_PROCESS_METADATA,
+        payload: {
+            processMetadata: processMetadata
+        }
+    }
+};
+
+export const setNewProcessProposals = (processProposals) => {
+    return {
+        type: NEW_PROCESS_PROPOSALS,
+        payload: {
+            processProposals: processProposals
+        }
+    }
+};
+
 
 // Reducer
 export default (state = initialState, action) =>{
@@ -56,6 +78,14 @@ export default (state = initialState, action) =>{
         case DIRTY_EMF_MODEL:
             return Object.assign({}, state, {
                 dirty: true
+            });
+        case NEW_PROCESS_METADATA:
+            return Object.assign({}, state, {
+                processMetadata: action.payload.processMetadata
+            });
+        case NEW_PROCESS_PROPOSALS:
+            return Object.assign({}, state, {
+                processProposals: action.payload.processProposals
             });
         default:
             return state;

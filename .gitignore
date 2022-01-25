@@ -8,5 +8,7 @@
 report/
 
 # Generated stuff
+bin/
 src-gen/
+xtend-gen/
 *.log

@@ -11,7 +11,8 @@ const debugInterface = {
     x: { //xtext
         s: { //services
             getEmfModel: () => XtextServices.getEmfModel(),
-            getProcessProposals: () => XtextServices.getProcessProposals(),
+            getProcessMetadata: (entityPath) => XtextServices.getProcessMetadata(entityPath),
+            getProcessProposals: (entityId, entityPath) => XtextServices.getProcessProposals(entityId, entityPath),
             createEntity: (entity) => XtextServices.createEntity(entity),
             deleteEntity: (entityPath) => XtextServices.deleteEntity(entityPath),
             createAssociation: (fromEntityPath, toEntityPath) => XtextServices.createAssociation(fromEntityPath, toEntityPath),
@@ -24,7 +25,10 @@ const debugInterface = {
     h: { //helper
         flattenEmfModelTree: (emfModelTree) => EmfModelHelper.flattenEmfModelTree(emfModelTree),
         getFullHierarchy: (emfEntity) => EmfModelHelper.getFullHierarchy(emfEntity),
-        getFullHierarchy2: (emfEntity) => EmfModelHelper.getFullHierarchy2(emfEntity)
+        getFullHierarchy2: (emfEntity) => EmfModelHelper.getFullHierarchy2(emfEntity),
+        getSelectedEntity: () => {
+            return store.getState().graphicalEditor.entitySelected;
+        }
     },
     o: { //other
         showDefaultModal: () => store.dispatch(showModal(DefaultModal, {text: 'some text', message: 'some message'}))

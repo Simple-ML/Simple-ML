@@ -5,20 +5,20 @@ const initialState = {
 
 
 // Constants
-const SHOW_SIDE_TOOLBAR = 'SHOW_SIDE_TOOLBAR';
-const HIDE_SIDE_TOOLBAR = 'HIDE_SIDE_TOOLBAR';
+const SHOW_TOOLBAR = 'SHOW_TOOLBAR';
+const HIDE_TOOLBAR = 'HIDE_TOOLBAR';
 
 
 // Actions
-export const showSideToolbar = () => {
+export const showToolbar = () => {
     return {
-        type: SHOW_SIDE_TOOLBAR
+        type: SHOW_TOOLBAR
     }
 };
 
-export const hideSideToolbar = () => {
+export const hideToolbar = () => {
     return {
-        type: HIDE_SIDE_TOOLBAR
+        type: HIDE_TOOLBAR
     }
 };
 
@@ -26,11 +26,11 @@ export const hideSideToolbar = () => {
 // Reducer
 const reducer = (state = initialState, action) => {
     switch(action.type) {
-        case SHOW_SIDE_TOOLBAR:
+        case SHOW_TOOLBAR:
             return Object.assign({}, state, {
                 visible: true
             });
-        case HIDE_SIDE_TOOLBAR:
+        case HIDE_TOOLBAR:
             return Object.assign({}, state, {
                 visible: false
             });
