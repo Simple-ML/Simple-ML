@@ -40,12 +40,28 @@ export default class XtextServices {
      *      CreateEntityDTO: {
      *          className: string,
      *          referenceIfFunktion: string,
-     *          placeholderName: string
+     *          placeholderName: string,
      *          associationTargetPath: string
      *      }
      */
     static createEntity(createEntityDTO) {
         TextEditorWrapper.editor.xtextServices.createEntity({createEntityDTO: JSON.stringify(createEntityDTO)});
+    }
+
+
+    /**
+     * 
+     * @param {*} editProcessParameterDTO: EditProcessParameterDTO
+     * 
+     *      EditProcessParameterDTO: {
+     *          entityPath: string,
+     *          parameterType: string,
+     *          parameterIndex: number,
+     *          value: string
+     * }
+     */
+    static editProcessParameter(editProcessParameterDTO) {
+        TextEditorWrapper.editor.xtextServices.editProcessParameter({editProcessParameterDTO: JSON.stringify(editProcessParameterDTO)});
     }
 
     /**

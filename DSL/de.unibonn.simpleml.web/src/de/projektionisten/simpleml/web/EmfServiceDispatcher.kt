@@ -26,10 +26,7 @@ import de.unibonn.simpleml.utils.QualifiedNameProvider
 import de.unibonn.simpleml.utils.Proposals
 import de.unibonn.simpleml.utils.containingCompilationUnitOrNull
 import de.unibonn.simpleml.simpleML.*
-import de.projektionisten.simpleml.web.dto.CreateEntityDTO
-import de.projektionisten.simpleml.web.dto.ParameterDTO
-import de.projektionisten.simpleml.web.dto.ProcessMetadataDTO
-import de.projektionisten.simpleml.web.dto.ProcessProposalsDTO
+import de.projektionisten.simpleml.web.dto.*
 import org.eclipse.xtext.web.server.persistence.IServerResourceHandler
 import java.lang.IllegalArgumentException
 
@@ -75,6 +72,8 @@ class EmfServiceDispatcher @Inject constructor(
 				getProcessProposals(context)
 			"createEntity" ->
 				createEntity(context)
+			"editProcessParameter" ->
+				editProcessParameter(context)
 //			"deleteEntity" ->
 //				deleteEntity(context)
 //			"createAssociation" ->
@@ -204,6 +203,33 @@ class EmfServiceDispatcher @Inject constructor(
 		return context.createDefaultPostServiceResult("")
 	}
 
+	private fun editProcessParameter(context: IServiceContext): ServiceDescriptor {
+		val resourceDocument = getResourceDocument(super.getResourceID(context), context)
+		val type = object: TypeToken<EditProcessParameterDTO>(){}.getType()
+		val editProcessParameterDTO = jsonConverter.fromJson(context.getParameter("editProcessParameterDTO"), type) as EditProcessParameterDTO		
+		val target = getEmfEntityByPath(resourceDocument, editProcessParameterDTO.entityPath) as SmlCall?
+
+		if(target != null) {
+			val argumentList = target.argumentList
+			var argument: SmlArgument
+			var valueContainer = SimpleMLFactory.eINSTANCE.createSmlString()
+			val indexAndSizeDiff = editProcessParameterDTO.parameterIndex.toInt() - target.argumentList.arguments.size
+
+			if(indexAndSizeDiff >= 0) {
+				for(i in 0..indexAndSizeDiff) {
+					argument = SimpleMLFactory.eINSTANCE.createSmlArgument()
+					argument.value = SimpleMLFactory.eINSTANCE.createSmlNull()
+					argumentList.arguments.add(argument)
+				}
+			}
+			
+			valueContainer.value = editProcessParameterDTO.value
+			argument = SimpleMLFactory.eINSTANCE.createSmlArgument()
+			argument.value = valueContainer
+			argumentList.arguments.set(editProcessParameterDTO.parameterIndex.toInt(), argument);
+		}
+		return context.createDefaultPostServiceResult("")
+	}
 
 
 

@@ -11,6 +11,7 @@ define([
     'xtext/services/GetEmfModelService',
 	'xtext/services/GetProcessProposalsService',
 	'xtext/services/CreateEntityService',
+	'xtext/services/EditProcessParameterService',
     'xtext/services/DeleteEntityService',
     'xtext/services/CreateAssociationService',
     'xtext/services/DeleteAssociationService',
@@ -25,7 +26,7 @@ define([
 	'xtext/services/HoverService',
 	'xtext/services/OccurrencesService',
 	'xtext/services/FormattingService'
-], function(jQuery, XtextService, GetEmfModelService, GetProcessProposalsService, CreateEntityService, DeleteEntityService,
+], function(jQuery, XtextService, GetEmfModelService, GetProcessProposalsService, CreateEntityService, EditProcessParameterService, DeleteEntityService,
             CreateAssociationService, DeleteAssociationService, GetProcessMetadataService,
 			SetEntityAttributeService, LoadResourceService, SaveResourceService, HighlightingService, ValidationService, UpdateService,
 			ContentAssistService, HoverService, OccurrencesService, FormattingService) {
@@ -177,6 +178,11 @@ define([
 		services.createEntityService = new CreateEntityService(options.serviceUrl, options.resourceId);
 		services.createEntity = function(addParams) {
 			return services.createEntityService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
+		}
+
+		services.editProcessParameterService = new EditProcessParameterService(options.serviceUrl, options.resourceId);
+		services.editProcessParameter = function(addParams) {
+			return services.editProcessParameterService.invoke(editorContext, ServiceBuilder.mergeOptions(addParams, options));
 		}
 
         services.deleteEntityService = new DeleteEntityService(options.serviceUrl, options.resourceId);
