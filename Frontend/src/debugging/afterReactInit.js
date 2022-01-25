@@ -44,7 +44,7 @@ let afterReactInit = () => {
 `package example
 
 import simpleml.dataset.loadDataset
-import simpleml.model.supervised.classification.DecisionTreeClassifier
+import simpleml.model.classification.DecisionTreeClassifier
 
 workflow winebasic {
 
