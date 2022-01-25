@@ -22,15 +22,17 @@ import viewbarIcon from '../../images/headerButtons/viewbar-closed.svg';
 //Datasets
 import DataView from './DataView/DataView';
 import Backdrop from '@mui/material/Backdrop';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import Sidebar from './MultiView/Sidebar/Sidebar';
+import Icons from '../../stories/Icons';
+
+import { hideDataViewBackdrop } from '../../reducers/graphicalEditor';
 
 class EditorView extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            backdropActive: false
         }
         
         this.showHideSideToolbar = this.showHideSideToolbar.bind(this);
@@ -48,15 +50,12 @@ class EditorView extends React.Component {
         this.props.changeDirection();
     }
 
-    handleToggle = () => {
-        this.setState({ backdropActive: !this.state.backdropActive })
-    }
-
     handleClose = () => {
-        this.setState({ backdropActive: false })
+        this.props.hideDataViewBackdrop();
     };
 
     render() {
+        console.log(this.props.isDataviewBackdropActive);
         return(
             <div className={'editor-view'}>
                 <EditorHeader>
@@ -72,18 +71,19 @@ class EditorView extends React.Component {
                         'textEditor'
                     ]}
                 />
-                <Button onClick={this.handleToggle}>Show dataset</Button>
                 <Backdrop
-                  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                  open={this.state.backdropActive}
+                    style= {{backgroundColor:'white'}}
+                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={this.props.isDataviewBackdropActive}
                 >
                     <DataView
                         url='data/example_profile_adac.json'
                     />
                     <IconButton 
+                        style= {{marginBottom: 'auto'}}
                         sx={{ color: '#fff'}}
                         onClick={this.handleClose}>
-                        close
+                        <Icons icons="close" color="black"/>
                     </IconButton>
                 </Backdrop>
             </div>
@@ -93,15 +93,17 @@ class EditorView extends React.Component {
 
 EditorView.propTypes = {
     isSideToolbarVisible: PropTypes.bool.isRequired,
-
     changeDirection: PropTypes.func.isRequired,
     showSideToolbar: PropTypes.func.isRequired,
-    hideSideToolbar: PropTypes.func.isRequired
+    hideSideToolbar: PropTypes.func.isRequired,
+
+    hideDataViewBackdrop: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
     return {
-        isSideToolbarVisible: state.sideToolbar.visible
+        isSideToolbarVisible: state.sideToolbar.visible,
+        isDataviewBackdropActive: state.graphicalEditor.dataviewBackdropActive
     }
 };
 
@@ -109,7 +111,9 @@ const mapDispatchToProps = dispatch => {
     return {
         changeDirection: () => dispatch(changeDirection()),
         showSideToolbar: () => dispatch(showSideToolbar()),
-        hideSideToolbar: () => dispatch(hideSideToolbar())
+        hideSideToolbar: () => dispatch(hideSideToolbar()),
+    
+        hideDataViewBackdrop: () => dispatch(hideDataViewBackdrop())
     }
 };
 
