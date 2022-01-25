@@ -1,0 +1,11 @@
+package simpleml.model
+
+import simpleml.dataset.Dataset
+
+class Estimator {
+    fun fit(features: Dataset, target: Dataset) -> trainedModel: Model
+}
+
+class Model {
+    fun predict(features: Dataset) -> results: Any
+}

@@ -297,8 +297,8 @@ class SMLGraph extends mxGraph {
                 var edge = evt.getProperty('cell');
                 var sourceEntity=edge.source.value;
                 var targetEntity=edge.target.value;
-                var from=EmfModelHelper.getFullHierarchy2(sourceEntity);
-                var to=EmfModelHelper.getFullHierarchy2(targetEntity);
+                var from=EmfModelHelper.getFullHierarchy(sourceEntity);
+                var to=EmfModelHelper.getFullHierarchy(targetEntity);
                 XtextServices.createAssociation(from,to);
             } else {
                 reduxStore.dispatch(openContextMenu(source, evt.properties.event.pageX, evt.properties.event.pageY))

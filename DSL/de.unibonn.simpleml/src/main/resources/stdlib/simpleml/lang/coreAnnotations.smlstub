@@ -1,0 +1,62 @@
+package simpleml.lang
+
+@Description("The annotation can target these declaration types. If the @Target annotation is not used any declaration type can be targeted.")
+@Target(AnnotationTarget.Annotation)
+annotation Target(vararg targets: AnnotationTarget)
+
+@Description("Declaration types that can be targeted by annotations.")
+enum AnnotationTarget {
+    Annotation
+    Attribute
+    Class
+    CompilationUnit
+    Enum
+    EnumVariant
+    Function
+    LambdaResult
+    Parameter
+    Placeholder
+    Result
+    Step
+    TypeParameter
+    Workflow
+}
+
+@Description("The annotation can be called multiple times for the same declaration.")
+@Target(AnnotationTarget.Annotation)
+annotation Repeatable
+
+@Description("The declaration should no longer be used.")
+@Target(
+    AnnotationTarget.Annotation,
+    AnnotationTarget.Attribute,
+    AnnotationTarget.Class,
+    AnnotationTarget.Enum,
+    AnnotationTarget.EnumVariant,
+    AnnotationTarget.Function,
+    AnnotationTarget.Parameter,
+    AnnotationTarget.Result,
+    AnnotationTarget.Step,
+    AnnotationTarget.TypeParameter,
+)
+annotation Deprecated(
+    @Description("What to use instead.")
+    alternative: String? or null,
+
+    @Description("Why the declaration was deprecated.")
+    reason: String? or null,
+
+    @Description("When the declaration was deprecated.")
+    sinceVersion: String? or null,
+
+    @Description("When the declaration will be removed.")
+    removalVersion: String? or null,
+)
+
+@Description("The function has no side effects and returns the same results for the same arguments.")
+@Target(AnnotationTarget.Function)
+annotation Pure
+
+@Description("The function has no side effects.")
+@Target(AnnotationTarget.Function)
+annotation NoSideEffects

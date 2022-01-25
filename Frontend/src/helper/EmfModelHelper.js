@@ -183,15 +183,12 @@ class EmfModelHelper {
      * @returns string
      */
     static getFullHierarchy(emfEntity, suffix = '') {
-        if(suffix === '' && emfEntity.data.className !== undefined)
-            suffix = emfEntity.data.className.split('.').pop();
-        if(emfEntity.parent !== undefined)
-            return this.getFullHierarchy(emfEntity.parent, emfEntity.parent.data.className.split('.').pop() + '(' + emfEntity.self + ')/' + suffix);
-        return suffix
+        let associationTargetPath = '//' + EmfModelHelper.getFullHierarchy2(emfEntity, suffix);
+        associationTargetPath = associationTargetPath.substring(0, associationTargetPath.length - 1);
+        return associationTargetPath;
     }
 
     /**
-     * Like getFullHierarchy(...) but without parent-className.
      *
      * @param emfEntity
      * @param suffix
@@ -291,12 +288,25 @@ class EmfModelHelper {
         
         return flatEntity;
     }
+
+    static getProcessEmfPathFromFlatEntities(flatEntityList) {
+        const collection = [];
+
+        for(const entity of flatEntityList) {
+            if(entity.data['$ref'] && (
+                entity.data['$ref'].startsWith('file:') ||
+                entity.data['$ref'].startsWith('jar:file:'))) {
+                collection.push(entity.data['$ref']);
+            }
+        }
+        return new Set(collection);
+    }
 }
 
 export default {
     flattenEmfModelTree: (emfModelTree) => EmfModelHelper.flattenEmfModelTree(emfModelTree),
     getFullHierarchy: (emfEntity) => EmfModelHelper.getFullHierarchy(emfEntity),
-    getFullHierarchy2: (emfEntity) => EmfModelHelper.getFullHierarchy2(emfEntity),
     getRenderableEmfEntities: (emfModelFlat) => EmfModelHelper.getRenderableEmfEntities(emfModelFlat),
-    getEmfEntityAssociations: (emfModelFlat) => EmfModelHelper.getEmfEntityAssociations(emfModelFlat)
+    getEmfEntityAssociations: (emfModelFlat) => EmfModelHelper.getEmfEntityAssociations(emfModelFlat),
+    getProcessEmfPathFromFlatEntities: (emfModelFlat) => EmfModelHelper.getProcessEmfPathFromFlatEntities(emfModelFlat)
 }

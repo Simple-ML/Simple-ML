@@ -1,6 +1,0 @@
-// semantic_error "A workflow must have no modifiers."
-// semantic_error "A workflow must have no modifiers."
-// semantic_error "A workflow must have no modifiers."
-// semantic_error "A workflow must have no modifiers."
-// semantic_error "A workflow must have no modifiers."
-»deprecated« »open« »override« »pure« »static« workflow myWorkflow {}

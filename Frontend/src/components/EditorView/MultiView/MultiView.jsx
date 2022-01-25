@@ -2,20 +2,14 @@
 // node_modules
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import $ from "jquery";
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import TextField from '@material-ui/core/TextField';
+
 
 // React.Components
 import GoldenLayoutComponent from './../../../helper/goldenLayoutServices/goldenLayoutComponent';
 import SideToolbar from './SideToolbar/SideToolbar';
 import Sidebar from './Sidebar/Sidebar'
+
 
 // Styles
 import './multiView.scss';

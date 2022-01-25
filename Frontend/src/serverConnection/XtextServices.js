@@ -14,30 +14,54 @@ export default class XtextServices {
         TextEditorWrapper.editor.xtextServices.getEmfModel();
     }
 
-    static getProcessProposals() {
-        TextEditorWrapper.editor.xtextServices.getProcessProposals();
+
+    /**
+     * 
+     * @param entityPathCollection: string[]
+     */
+    static getProcessMetadata(entityPathCollection) {
+        TextEditorWrapper.editor.xtextServices.getProcessMetadata({entityPathCollection: JSON.stringify([...entityPathCollection])});
+    }
+
+    /**
+     * 
+     * @param {*} entityPath: string 
+     */
+    static getProcessProposals(entityId, entityPath) {
+        TextEditorWrapper.editor.xtextServices.getProcessProposals({entityId: entityId, entityPath: entityPath});
     }
 
     /**
      * Creates an Entity and associates it to the specified target. If targetPath is undefined the created
      * entity will be associated to the root-node.
      *
-     * @param entityDescription: CreateEntityDTO
-     * @param targetPath: string
+     * @param createEntityDTO: CreateEntityDTO
      *
      *      CreateEntityDTO: {
-     *          name: string,
      *          className: string,
-     *          value: string,
-     *          children: CreateEntityDTO[]
+     *          referenceIfFunktion: string,
+     *          placeholderName: string,
+     *          associationTargetPath: string
      *      }
      */
-    static createEntity(entityDescription, targetPath) {
-        let creation = {
-            entity: entityDescription,
-            target: targetPath
-        };
-        TextEditorWrapper.editor.xtextServices.createEntity({createEntityDTO: JSON.stringify(creation)});
+    static createEntity(createEntityDTO) {
+        TextEditorWrapper.editor.xtextServices.createEntity({createEntityDTO: JSON.stringify(createEntityDTO)});
+    }
+
+
+    /**
+     * 
+     * @param {*} editProcessParameterDTO: EditProcessParameterDTO
+     * 
+     *      EditProcessParameterDTO: {
+     *          entityPath: string,
+     *          parameterType: string,
+     *          parameterIndex: number,
+     *          value: string
+     * }
+     */
+    static editProcessParameter(editProcessParameterDTO) {
+        TextEditorWrapper.editor.xtextServices.editProcessParameter({editProcessParameterDTO: JSON.stringify(editProcessParameterDTO)});
     }
 
     /**

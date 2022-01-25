@@ -1,5 +1,0 @@
-// no_syntax_error
-
-workflow myWorkflow {
-    a.member?.f();
-}
