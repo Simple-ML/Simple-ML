@@ -137,6 +137,37 @@ class Dataset:
 
         return copy
 
+    def transformInstances(self, filterFunc) -> Dataset:
+
+        if self.data is None:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+
+        for index, row in copy.data.iterrows():
+            if not filterFunc(Instance(row)):
+                copy.data.at()
+
+        return copy
+
+    def addAttribute(self, columnName, transformFunc) -> Dataset:
+
+        if self.data is None:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+
+        for index, row in copy.data.iterrows():
+            copy.data.at[index, columnName] = transformFunc(Instance(row))
+
+        return copy
+
+    def addIsWeekendAttribute(self, columnName):
+        def transformIntoWeekend(instance: Instance):
+            return True
+            #return instance.getValue(columnName) is weekend
+        return self.addAttribute(columnName+'_isWeekend', transformIntoWeekend)
+
     def getStatistics(self) -> dict:
         if self.stats is None:
             if self.data is None:
