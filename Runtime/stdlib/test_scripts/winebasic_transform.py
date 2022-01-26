@@ -8,12 +8,12 @@ from simpleml.util import exportDictionaryAsJSON
 def exampleWorkflow():
     dataset = loadDataset("WhiteWineQuality")
 
-    def filterByQuality(instance: Instance):
-        return instance.getValue("quality") == 8 or instance.getValue("quality") < 4
+    def transformIntoBinaryQuality(instance: Instance):
+        return 1 if instance.getValue("quality") >= 7 else 0
 
-    dataset_filtered = dataset.filterInstances(filter_func=filterByQuality)
+    dataset = dataset.addAttribute("goodquality", transformFunc = transformIntoBinaryQuality)
 
-    print("Example quality value:", dataset_filtered.getRow(3).getValue("quality"))
+    print("Example quality value:", dataset.getRow(3).getValue("goodquality"))
 
 
 if __name__ == '__main__':
