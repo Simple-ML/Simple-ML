@@ -39,7 +39,7 @@ rdfs:label "number of attributes"@en;
     rdfs:domain <Attribute> ;
     rdfs:range xsd:double .
 
-# maxValue, minValue and meanValue: DEPRECATED 
+# maxValue, minValue and meanValue: DEPRECATED
 <maxValue> rdf:type rdf:Property ;
     rdfs:label "maximum value"@en;
     rdfs:domain <Attribute>;
@@ -49,7 +49,7 @@ rdfs:label "number of attributes"@en;
     rdfs:label "minimum value"@en;
     rdfs:domain <Attribute>;
     rdfs:range xsd:double .
-    
+
 <meanValue> rdf:type rdf:Property ;
     rdfs:label "mean value"@en ;
     rdfs:domain <Attribute> ;
@@ -162,7 +162,7 @@ rdfs:label "number of attributes"@en;
 #<hasMapping> rdf:type rdf:Property ;
 #    rdfs:domain <Attribute>;
 #    rdfs:range <Mapping> .
-#    
+#
 #<hasJoin> rdf:type rdf:Property ;
 #    rdfs:domain <Attribute>;
 #    rdfs:range <Join> .
@@ -171,13 +171,13 @@ rdfs:label "number of attributes"@en;
     rdfs:domain <Mapping>;
     rdfs:range rdf:Property .
 
-<mapsToProperty2> rdf:type rdf:Property ;
-    rdfs:domain <Mapping>;
-    rdfs:range rdf:Property .
+#<mapsToProperty2> rdf:type rdf:Property ;
+#    rdfs:domain <Mapping>;
+#    rdfs:range rdf:Property .
 
-<mapsToProperty3> rdf:type rdf:Property ;
-    rdfs:domain <Mapping>;
-    rdfs:range rdf:Property .
+#<mapsToProperty3> rdf:type rdf:Property ;
+#    rdfs:domain <Mapping>;
+#    rdfs:range rdf:Property .
 
 <mapsToDomain> rdf:type <DomainClass> ;
     rdfs:domain <Mapping>;
@@ -187,13 +187,13 @@ rdfs:label "number of attributes"@en;
     rdfs:domain <Mapping>;
     rdfs:range rdfs:Class .
 
-<mapsToRange2> rdf:type <DomainClass> ;
-    rdfs:domain <Mapping>;
-    rdfs:range rdfs:Class .
+#<mapsToRange2> rdf:type <DomainClass> ;
+#    rdfs:domain <Mapping>;
+#    rdfs:range rdfs:Class .
 
-<mapsToRange3> rdf:type <DomainClass> ;
-    rdfs:domain <Mapping>;
-    rdfs:range rdfs:Class .
+#<mapsToRange3> rdf:type <DomainClass> ;
+#    rdfs:domain <Mapping>;
+#    rdfs:range rdfs:Class .
 
 <DomainModel> rdf:type rdf:Class ;
     dcterms:description "a data model about rdf:type specific topical domain" .
@@ -225,7 +225,7 @@ rdfs:label "number of attributes"@en;
 <instancesOfRegion> rdf:type rdf:Property ;
     rdfs:domain <SpatialDistributionValue> ;
     rdfs:range dcterms:Location .
-    
+
 <hasValueDistribution> rdf:type rdf:Property ;
     rdfs:domain <Attribute> ;
     rdfs:range <ValueDistribution> .
