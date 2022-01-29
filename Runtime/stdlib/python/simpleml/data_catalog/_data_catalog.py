@@ -33,7 +33,8 @@ def getDatasets(domain=None, topic=None):
         identifier = result["identifier"]["value"]
         topics = result["subjects"]["value"].split(";")
         number_of_instances = int(result["numberOfInstances"]["value"])
-        dataset = Dataset(id=identifier, title=title, subjects={lang: topics}, number_of_instances=number_of_instances)
+        dataset = Dataset(id=identifier, title=title, subjects={
+                          lang: topics}, number_of_instances=number_of_instances)
         datasets.append(dataset)
     return datasets
 
@@ -60,6 +61,7 @@ def getDatasetsJson(datasets):
 def addDomainModel(dataset):
     parameters = {"datasetId": dataset.id, "lang": lang}
     query = load_query("getDatasetAttributes", parameters)
+
     results = run_query(query)
     domain_model = DomainModel()
     dataset.domain_model = domain_model
@@ -74,7 +76,8 @@ def addDomainModel(dataset):
         propertyLabel = result["propertyLabel"]["value"]
         domain_node_uri = result["subjectClass"]["value"]
         domain_node_label = result["subjectClassLabel"]["value"]
-        domain_node = domain_model.createClass(domain_node_uri, domain_node_label)
+        domain_node = domain_model.createClass(
+            domain_node_uri, domain_node_label)
         resource_node = domain_model.createNode(subjectResource, domain_node)
         property_node = domain_model.createProperty(propertyURI, propertyLabel)
 
@@ -92,9 +95,11 @@ def addDomainModel(dataset):
             lon_lat_pairs[subjectResource]["longitude"] = identifier
 
         value_type = result["valueType"]["value"]
+
         dataset.addColumnDescription(attribute_identifier=identifier, resource_node=resource_node,
                                      domain_node=domain_node, property_node=property_node,
-                                     rdf_value_type=value_type, value_type=getPythonType(value_type),
+                                     rdf_value_type=value_type, value_type=getPythonType(
+                                         value_type),
                                      attribute_label=domain_node_label + " (" + propertyLabel + ")")
 
     for lon_lat_pair in lon_lat_pairs.values():
@@ -106,6 +111,7 @@ def addDomainModel(dataset):
 def getDataset(dataset_id: str) -> Dataset:
     parameters = {"datasetId": dataset_id, "lang": lang}
     query = load_query("getDataset", parameters)
+
     results = run_query(query)
 
     for result in results["results"]["bindings"]:
@@ -123,7 +129,8 @@ def getDataset(dataset_id: str) -> Dataset:
 
     # TODO: Assign spatial columns
     dataset = Dataset(id=dataset_id, title=title, fileName=file_name, hasHeader=has_header, separator=separator,
-                      null_value=null_value, description=description, subjects={lang: topics},
+                      null_value=null_value, description=description, subjects={
+                          lang: topics},
                       number_of_instances=number_of_instances, titles={lang: title}, descriptions={lang: description})
 
     addDomainModel(dataset)
@@ -135,6 +142,7 @@ def getDataset(dataset_id: str) -> Dataset:
 def addStatistics(dataset: Dataset):
     parameters = {"datasetId": dataset.id}
     query = load_query("getDatasetStatistics", parameters)
+
     results = run_query(query)
     dataset.stats = {}
     for result in results["results"]["bindings"]:
@@ -152,19 +160,28 @@ def addStatistics(dataset: Dataset):
 
         if "datatype" in result["value"]:
             datatype = result["value"]["datatype"]
+            stats_datatype = None
             if datatype == "http://www.w3.org/2001/XMLSchema#double":
                 value = float(value)
+                stats_datatype = config.type_float
             elif datatype == "http://www.w3.org/2001/XMLSchema#nonNegativeInteger" or datatype == "http://www.w3.org/2001/XMLSchema#integer":
                 value = int(value)
+                stats_datatype = config.type_integer
             elif datatype == "http://www.w3.org/2001/XMLSchema#long":
                 value = int(value)
+                stats_datatype = config.type_integer
             elif datatype == "http://www.w3.org/2001/XMLSchema#dateTime":
                 value = datetime64(value)
+                stats_datatype = config.type_datetime
             else:
                 print("Missing data type:", datatype)
 
         if "rank" not in result:
-            dataset.stats[attribute_identifier][evaluation_type] = value
+            # todo
+            addNumericValue(dataset.stats[attribute_identifier],
+                            evaluation_type, value, data_type=stats_datatype)
+
+            #dataset.stats[attribute_identifier][evaluation_type] = value
         else:
             current_list.append(value)
 
@@ -217,7 +234,8 @@ def addSample(dataset: Dataset):
     for result in results["results"]["bindings"]:
         sample_string += result["content"]["value"] + "\n"
 
-    dataset.data_sample = pd.read_csv(StringIO(sample_string), sep="\t", header=0, na_values='')
+    dataset.data_sample = pd.read_csv(
+        StringIO(sample_string), sep="\t", header=0, na_values='')
 
     dataset.addSample()
 
@@ -225,3 +243,23 @@ def addSample(dataset: Dataset):
 
     dataset.sample_for_profile = {config.sample_lines: sample_as_list,
                                   config.sample_header_labels: list(dataset.attribute_labels.values())}
+
+
+def addNumericValue(column_stats, name, value, data_type=None):
+    simple_type = config.type_numeric
+
+    column_stats[name] = createNumericValue(
+        name, value, config.type_numeric, data_type)
+
+
+def createNumericValue(name, value, simple_type, data_type=None):
+    if not data_type:
+        data_type = config.data_type_labels[type(value)]
+    return {config.type: simple_type,
+            config.type_numeric_data_type: data_type,
+            config.type_numeric_value: value,
+            config.i18n_id: name}
+
+
+def get_pd_timestamp(datetime):
+    return pd.Timestamp(datetime, unit='s')
