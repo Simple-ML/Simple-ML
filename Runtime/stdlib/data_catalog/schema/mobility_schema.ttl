@@ -13,6 +13,8 @@
 @prefix time: <http://www.w3.org/2006/time#> .
 @prefix seas: <https://w3id.org/seas/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
 
 <MobilityClass> rdfs:subClassOf sml:DomainClass ;
     dcterms:description "a class used in the mobility domain" ;
@@ -21,9 +23,45 @@
 <MobilityModel> a owl:Ontology ;
     dcterms:description "a data model about the mobility domain" .
 
-#  --------------------------- Geometry -------------------------
+#  --------------------------- External Vocabularies -------------------------
 
-<Wine> a <MobilityClass> .
+dcterms:Location
+    rdfs:label "Ort"@de .
+
+so:Event
+    rdfs:label "Ereignis"@de ;
+    rdfs:label "Event"@en .
+
+dcterms:description
+	rdfs:label "Beschreibung"@de .
+
+dcterms:title
+	rdfs:label "Titel"@de .
+
+dcterms:identifier
+	rdfs:label "ID"@de .
+
+time:inXSDDate
+	rdfs:label "im XSD-Datumsformat"@de .
+
+foaf:name
+	rdfs:label "name"@en ;
+	rdfs:label "Name"@de .
+
+foaf:accountName
+	rdfs:label "account name"@en ;
+	rdfs:label "Nutzername"@de .
+
+sioc:UserAccount
+	rdfs:label "Nutzer-Account"@de .
+
+sioc:Post
+	rdfs:label "Beitrag"@de .
+
+sioc:content
+	rdfs:label "Inhalt"@de .
+
+#  --------------------------- Geometry -------------------------
 
 <LocationType> rdfs:subClassOf <MobilityClass> ;
         rdfs:label "Location type"@en ;
@@ -37,7 +75,7 @@
 <StreetSegment> rdfs:subClassOf <Street>;
 	rdfs:label "Street segment"@en ;
 	rdfs:label "Straßensegment"@de .
-	
+
 <SpeedLimit> rdfs:subClassOf <MobilityClass> ;
         rdfs:label "Speed limit"@en ;
         rdfs:label "Geschwindigkeitsbegrenzung"@de .
