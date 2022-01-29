@@ -54,12 +54,14 @@ class Dataset:
 
     def sample(self, nInstances: int) -> Dataset:
 
-        if self.data is None:
-            self.readFile(self.separator)
+        print("Sample")
 
         copy = self.copy()
 
-        copy.data = self.data.head(n=nInstances)
+        if copy.data is None:
+            copy.readFile(copy.separator, number_of_lines=nInstances)
+
+        copy.data = copy.data.head(n=nInstances)
 
         # invalidate statistics
         copy.stats = None
@@ -137,37 +139,6 @@ class Dataset:
 
         return copy
 
-    def transformInstances(self, filterFunc) -> Dataset:
-
-        if self.data is None:
-            self.readFile(self.separator)
-
-        copy = self.copy()
-
-        for index, row in copy.data.iterrows():
-            if not filterFunc(Instance(row)):
-                copy.data.at()
-
-        return copy
-
-    def addAttribute(self, columnName, transformFunc) -> Dataset:
-
-        if self.data is None:
-            self.readFile(self.separator)
-
-        copy = self.copy()
-
-        for index, row in copy.data.iterrows():
-            copy.data.at[index, columnName] = transformFunc(Instance(row))
-
-        return copy
-
-    def addIsWeekendAttribute(self, columnName):
-        def transformIntoWeekend(instance: Instance):
-            return True
-            #return instance.getValue(columnName) is weekend
-        return self.addAttribute(columnName+'_isWeekend', transformIntoWeekend)
-
     def getStatistics(self) -> dict:
         if self.stats is None:
             if self.data is None:
@@ -198,7 +169,19 @@ class Dataset:
 
         return train, test
 
-    def readFile(self, sep):
+    def parseWKB(self, value, hex):
+        try:
+            return wkb.loads(value, hex=hex)
+        except:
+            return None
+
+    def parseWKT(self, value, hex):
+        try:
+            return wkt.loads(value, hex=hex)
+        except:
+            return None
+
+    def readFile(self, sep, number_of_lines: int = None):
 
         # TODO: Create global config file where we define the data folder path
         dirName = os.path.dirname(__file__)
@@ -215,7 +198,7 @@ class Dataset:
                 parse_dates.append(attribute)
                 self.data_types[attribute] = np.str
                 self.simple_data_types[attribute] = config.type_datetime
-            elif data_type == np.integer or data_type == pd.Int32Dtype():
+            elif data_type == np.integer or data_type == pd.Int32Dtype() or data_type == pd.Int64Dtype():
                 self.simple_data_types[attribute] = config.type_numeric
             elif data_type == np.float64:
                 self.simple_data_types[attribute] = config.type_numeric
@@ -231,19 +214,20 @@ class Dataset:
         # print(self.attributes)
 
         self.data = pd.read_csv(dataFilePath, sep=sep, dtype=self.data_types, parse_dates=parse_dates,
-                                na_values=self.null_value, usecols=self.attributes)
+                                na_values=self.null_value, usecols=self.attributes, nrows=number_of_lines)
 
         # print(self.data.head())
 
         # parse geo data
         # WKT columns
         for wkt_column in self.wkt_columns:
-            self.data[wkt_column] = self.data[wkt_column].apply(wkt.loads)
+            self.data[wkt_column] = self.data[wkt_column].apply(
+                self.parseWKT, hex=True)
             self.simple_data_types[wkt_column] = config.type_geometry
         # WKB columns
         for wkb_column in self.wkb_columns:
             self.data[wkb_column] = self.data[wkb_column].apply(
-                wkb.loads, hex=True)
+                self.parseWKB, hex=True)
             # latitude/longitude pairs
             self.simple_data_types[wkb_column] = config.type_geometry
 
@@ -314,6 +298,9 @@ class Dataset:
         copy.data_types = self.data_types.copy()
         copy.simple_data_types = self.simple_data_types.copy()
         copy.attribute_graph = self.attribute_graph.copy()
+        copy.wkb_columns = self.wkb_columns
+        copy.wkt_columns = self.wkt_columns
+        copy.lon_lat_pairs = self.lon_lat_pairs
 
         if not basic_data_only:
             if self.data is not None:
@@ -353,6 +340,7 @@ class Dataset:
 
         profile[config.sample] = self.sample_info
 
+        self.addSample()
         return profile
 
     def addSample(self):
@@ -374,9 +362,6 @@ def loadDataset(datasetID: str) -> Dataset:
     from simpleml.data_catalog import getDataset
     dataset = getDataset(datasetID)
 
-    # TODO: From the data catalog, get the list of temporal and spatial columns. Currently, we have them here fixed in the code.
-    # dataset.spatial_columns = ["geometry"]
-
     return dataset
 
 
@@ -390,28 +375,28 @@ def readDataSetFromCSV(file_name: str, dataset_name: str, separator: str, has_he
     data_file_path = os.path.join(
         dir_name, global_config.data_folder_name, file_name)
     # print(data_file_path)
-    speed_data = pd.read_csv(data_file_path, sep=separator)
+    data = pd.read_csv(data_file_path, sep=separator)
     # print(speed_data['geometry'])
-    speed_data = speed_data.convert_dtypes()
+    data = data.convert_dtypes()
     # print(speed_data['geometry'])
-    gdf = geopandas.GeoDataFrame(speed_data)
+    gdf = geopandas.GeoDataFrame(data)
     # print(gdf['geometry'])
     # print(gdf.dtypes)
     # print(speed_data.dtypes)
     # print(speed_data.info())
 
-    attribute_names = speed_data.columns.values.tolist()
+    attribute_names = data.columns.values.tolist()
     attribute_types = {}
     attribute_labels = {}
     np_type = ''
     for attribute in attribute_names:
-        type_change = speed_data[attribute]
+        type_change = data[attribute]
         # print(attribute)
         # print(speed_data[attribute].dtype)
-        if speed_data[attribute].dtype == 'string':
+        if data[attribute].dtype == 'string':
             # print('yes')
             try:
-                speed_data[attribute] = pd.to_datetime(speed_data[attribute])
+                data[attribute] = pd.to_datetime(data[attribute])
             except ValueError:
                 pass
 
@@ -424,7 +409,7 @@ def readDataSetFromCSV(file_name: str, dataset_name: str, separator: str, has_he
             # print(speed_data.dtypes)
             # print(speed_data[attribute].dtype)
 
-        attribute_types[attribute] = dataTypes(speed_data[attribute].dtype)
+        attribute_types[attribute] = dataTypes(data[attribute].dtype)
         attribute_labels[attribute] = dataset_name
         # print(speed_data[attribute].dtype)
 
@@ -516,6 +501,5 @@ def joinTwoDatasets2(first_file_name: str, second_file_name: str, separator: str
         second_data, on=('id'), suffixes=('_l', '_r'))
 
     pd.set_option("max_columns", None)
-    print(joint_data.head(10))
 
     return True

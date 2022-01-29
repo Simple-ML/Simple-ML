@@ -1,5 +1,5 @@
 import numpy as np
-from pandas import Timestamp, Int32Dtype
+from pandas import Timestamp, Int32Dtype, Int64Dtype
 from shapely import geometry
 
 lang = 'de'
@@ -8,6 +8,7 @@ i18n_id = 'id'
 
 type_numeric = 'numeric'
 type_integer = 'integer'
+type_long = 'long'
 type_float = 'float'
 type_string = 'string'
 type_datetime = 'datetime'
@@ -23,7 +24,7 @@ type_table_header_labels = 'header_labels'
 
 type_histogram = 'histogram'
 type_histogram_buckets = 'buckets'
-data_type_labels = {np.int32: type_integer, Int32Dtype(): type_integer, np.bool_: type_bool,
+data_type_labels = {np.int32: type_integer, Int32Dtype(): type_integer, Int64Dtype(): type_long, np.bool_: type_bool,
                     np.datetime64: type_datetime, str: type_string, int: type_integer, float: type_float,
                     np.int64: type_integer, np.float64: type_float, np.floating: type_float, np.integer: type_integer,
                     np.dtype('float64'): type_float, np.dtype('int64'): type_integer, np.dtype('bool'): type_bool,

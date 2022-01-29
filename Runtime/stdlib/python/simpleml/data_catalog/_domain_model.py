@@ -20,7 +20,8 @@ class DomainModel:
     def createClass(self, classURI, classLabel):
         class_node = rdflib.URIRef(classURI)
         self.graph.add((class_node, RDFS.subClassOf, OWL.Class))
-        self.graph.add((class_node, RDFS.label, Literal(classLabel, datatype=XSD.string)))
+        self.graph.add((class_node, RDFS.label, Literal(
+            classLabel, datatype=XSD.string)))
         return class_node
 
     def createNode(self, nodeURI, domainClass):
@@ -31,7 +32,8 @@ class DomainModel:
     def createProperty(self, propertyURI, propertyLabel):
         property_node = rdflib.URIRef(propertyURI)
         self.graph.add((property_node, RDF.type, OWL.DatatypeProperty))
-        self.graph.add((property_node, RDFS.label, Literal(propertyLabel, datatype=XSD.string)))
+        self.graph.add((property_node, RDFS.label, Literal(
+            propertyLabel, datatype=XSD.string)))
         return property_node
 
 
@@ -43,6 +45,8 @@ def getPythonType(data_type):
     # spatial?
     if data_type == SML.wellKnownBinary or data_type == SML.wellKnownText:
         return np.object
+    if data_type == XSD.long:
+        return pd.Int64Dtype()
     try:
         # boolean?
         if data_type == XSD.boolean:
