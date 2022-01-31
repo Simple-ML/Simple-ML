@@ -26,7 +26,7 @@ import org.junit.jupiter.params.provider.MethodSource
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(InjectionExtension::class)
 @InjectWith(SimpleMLInjectorProvider::class)
-class PurityTest {
+class SideEffectsTest {
 
     @Inject
     private lateinit var parseHelper: ParseHelper
@@ -36,7 +36,7 @@ class PurityTest {
     @BeforeAll
     fun reset() {
         compilationUnit = parseHelper
-            .parseResourceWithStdlib("staticAnalysis/purity.smltest")
+            .parseResourceWithStdlib("staticAnalysis/sideEffects.smltest")
             .shouldNotBeNull()
     }
 
@@ -52,7 +52,7 @@ class PurityTest {
 
         step.descendants<SmlCall>().toList().forEach { call ->
             NodeModelUtils.getNode(call).text.trim().asClue {
-                call.isPureExpression() shouldBe callsShouldBePure
+                call.expressionHasNoSideEffects() shouldBe callsShouldBePure
             }
         }
     }
@@ -60,15 +60,15 @@ class PurityTest {
     private fun stepSource(): List<Arguments> {
         return compilationUnit.descendants<SmlStep>()
             .mapNotNull { step ->
-                val callsShouldBePure = step.annotationCallsOrEmpty().any {
-                    it.annotation.name == "CallsShouldBePure"
+                val shouldHaveNoSideEffects = step.annotationCallsOrEmpty().any {
+                    it.annotation.name == "ShouldHaveNoSideEffects"
                 }
-                val callsShouldNotBePure = step.annotationCallsOrEmpty().any {
-                    it.annotation.name == "CallsShouldNotBePure"
+                val shouldHaveSideEffects = step.annotationCallsOrEmpty().any {
+                    it.annotation.name == "ShouldHaveSideEffects"
                 }
-                (callsShouldBePure && callsShouldNotBePure).shouldNotBeTrue()
+                (shouldHaveNoSideEffects && shouldHaveSideEffects).shouldNotBeTrue()
 
-                Arguments.of(step.name, callsShouldBePure)
+                Arguments.of(step.name, shouldHaveNoSideEffects)
             }
             .toList()
     }

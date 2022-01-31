@@ -149,10 +149,11 @@ fun SmlAnnotation.isRepeatable(): Boolean {
 }
 
 /**
- * Checks if the function is annotated with the `simpleml.lang.NoSideEffects` annotation.
+ * Checks if the function is annotated with the `simpleml.lang.Pure` or the `simpleml.lang.NoSideEffects`
+ * annotation.
  */
 fun SmlFunction.hasNoSideEffects(): Boolean {
-    return hasAnnotationCallTo(StdlibAnnotations.NoSideEffects)
+    return isPure() || hasAnnotationCallTo(StdlibAnnotations.NoSideEffects)
 }
 
 /**

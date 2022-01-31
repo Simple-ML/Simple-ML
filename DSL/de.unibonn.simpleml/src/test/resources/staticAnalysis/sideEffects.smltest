@@ -1,14 +1,14 @@
-package tests.staticAnalysis.purity
+package tests.staticAnalysis.sideEffects
 
 // Positive examples -----------------------------------------------------------
 
-annotation CallsShouldBePure
+annotation ShouldHaveNoSideEffects
 
 // Call to class constructor
 
 class C()
 
-@CallsShouldBePure
+@ShouldHaveNoSideEffects
 step callOfClassConstructor() {
     C();
 }
@@ -16,27 +16,31 @@ step callOfClassConstructor() {
 // Call to enum variant constructor
 
 enum MyEnum {
-    Variant()
+    Variant
 }
 
-@CallsShouldBePure
+@ShouldHaveNoSideEffects
 step callOfEnumVariantConstructor() {
     MyEnum.Variant();
 }
 
-// Pure function
+// Function without side effects
 
 @Pure
 fun pureFunction()
 
-@CallsShouldBePure
+@NoSideEffects
+fun functionWithoutSideEffects()
+
+@ShouldHaveNoSideEffects
 step callToPureFunction() {
     pureFunction();
+    functionWithoutSideEffects();
 }
 
-// Pure lambdas
+// Lambdas without side effects
 
-@CallsShouldBePure
+@ShouldHaveNoSideEffects
 step callToPureLambdas() {
     (() {})();
     (() -> null)();
@@ -48,11 +52,11 @@ step callToPureLambdas() {
     () -> (() -> null)();
 }
 
-// Pure steps
+// Steps without side effects
 
 step pureStep() {}
 
-@CallsShouldBePure
+@ShouldHaveNoSideEffects
 step callToPureSteps() {
     pureStep();
 }
@@ -63,41 +67,41 @@ step pureStepWithUncalledLambdas() {
     () -> impureFunction();
 }
 
-@CallsShouldBePure
+@ShouldHaveNoSideEffects
 step uncalledLambdas() {
     pureStepWithUncalledLambdas();
 }
 
 // Function as result
 
-@CallsShouldBePure
+@ShouldHaveNoSideEffects
 step pureFunctionAsResult() {
     (() -> pureFunction)()();
 }
 
 // Negative examples -----------------------------------------------------------
 
-annotation CallsShouldNotBePure
+annotation ShouldHaveSideEffects
 
 // Callable type
 
-@CallsShouldNotBePure
+@ShouldHaveSideEffects
 step callToCallableType(f: () -> ()) {
     f();
 }
 
-// Impure function
+// Function with side effects
 
 fun impureFunction()
 
-@CallsShouldNotBePure
+@ShouldHaveSideEffects
 step callToImpureFunction() {
     impureFunction();
 }
 
-// Impure lambdas
+// Lambdas with side effects
 
-@CallsShouldNotBePure
+@ShouldHaveSideEffects
 step callToImpureLambdas() {
     (() { impureFunction(); })();
     (() -> impureFunction())();
@@ -109,34 +113,34 @@ step callToImpureLambdas() {
     () -> (() -> impureFunction())();
 }
 
-// Impure steps
+// Steps with side effects
 
 step impureStep() {
     impureFunction();
 }
 
-@CallsShouldNotBePure
+@ShouldHaveSideEffects
 step callToImpureSteps() {
     impureStep();
 }
 
 // Recursion
 
-@CallsShouldNotBePure
+@ShouldHaveSideEffects
 step recursion() {
     recursion();
 }
 
 // Unresolved callable
 
-@CallsShouldNotBePure
+@ShouldHaveSideEffects
 step unresolvedCallable() {
     unresolved();
 }
 
 // Function as parameter
 
-@CallsShouldNotBePure
+@ShouldHaveSideEffects
 step impureFunctionAsParameter() {
     ((f) -> f())(pureFunction); // This is actually pure, but we match in a conservative manner. Can be improved later.
     ((f) -> f())(impureFunction);
