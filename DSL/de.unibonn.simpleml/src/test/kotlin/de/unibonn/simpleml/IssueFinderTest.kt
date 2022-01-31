@@ -89,8 +89,8 @@ class IssueFinderTest {
     }
 
     /**
-     * Checks if the given program is a valid test. If there are issues a description of the issue is returned, otherwise
-     * this returns null.
+     * Checks if the given program is a valid test. If there are issues a description of the issue is returned,
+     * otherwise this returns `null`.
      */
     private fun validateTestFile(program: String, filePath: Path): String? {
         val severities = severities(program)
