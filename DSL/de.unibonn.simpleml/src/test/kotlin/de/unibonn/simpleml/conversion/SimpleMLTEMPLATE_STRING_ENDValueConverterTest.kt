@@ -46,7 +46,7 @@ class SimpleMLTEMPLATE_STRING_ENDValueConverterTest {
         fun `should remove delimiters (file)`() {
             val compilationUnit = parseHelper.parseResource(
                 "conversion/templateStringPartValueConverter.smltest"
-            )
+            ) // readProgramTextFromResource(resourceName)?.let { parseHelper.parse(it) }
             compilationUnit.shouldNotBeNull()
 
             val stringTemplateParts = compilationUnit.descendants<SmlTemplateStringEnd>().toList()

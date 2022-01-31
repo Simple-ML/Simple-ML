@@ -36,7 +36,7 @@ class SideEffectsTest {
     @BeforeAll
     fun reset() {
         compilationUnit = parseHelper
-            .parseResourceWithStdlib("staticAnalysis/sideEffects.smltest")
+            .parseResource("staticAnalysis/sideEffects.smltest")
             .shouldNotBeNull()
     }
 

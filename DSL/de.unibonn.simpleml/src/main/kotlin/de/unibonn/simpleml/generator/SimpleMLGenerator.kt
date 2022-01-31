@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.generator
 
 import de.unibonn.simpleml.constant.isFlowFile
+import de.unibonn.simpleml.constant.isTestFile
 import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingCompilationUnitOrNull
@@ -54,7 +55,7 @@ class SimpleMLGenerator : AbstractGenerator() {
     private val indent = "    "
 
     override fun doGenerate(resource: Resource, fsa: IFileSystemAccess2, context: IGeneratorContext) {
-        if (!resource.isFlowFile()) {
+        if (!resource.isFlowFile() && !resource.isTestFile()) {
             return
         }
 

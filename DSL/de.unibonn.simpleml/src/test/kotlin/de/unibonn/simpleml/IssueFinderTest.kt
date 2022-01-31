@@ -119,7 +119,7 @@ class IssueFinderTest {
         }
 
         // Must be able to parse the test file
-        if (parseHelper.parseProgramTextWithStdlib(program) == null) {
+        if (parseHelper.parseProgramText(program) == null) {
             return "Could not parse test file."
         }
 
@@ -209,7 +209,7 @@ class IssueFinderTest {
     }
 
     private fun actualIssues(program: String, filePath: Path): List<Issue> {
-        val parsingResult = parseHelper.parseProgramTextWithStdlib(program) ?: return emptyList()
+        val parsingResult = parseHelper.parseProgramText(program) ?: return emptyList()
         parsingResult.eResource().eAdapters().add(OriginalFilePath(filePath.toString()))
         return validationHelper.validate(parsingResult)
     }

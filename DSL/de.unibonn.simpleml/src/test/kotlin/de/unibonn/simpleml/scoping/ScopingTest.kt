@@ -2426,7 +2426,7 @@ class ScopingTest {
     ) {
 
         val compilationUnit =
-            parseHelper.parseResourceWithContext(
+            parseHelper.parseResource(
                 "scoping/$resourceName/main.${SmlFileExtension.Test}",
                 listOf(
                     "scoping/$resourceName/externalsInOtherPackage.${SmlFileExtension.Test}",
