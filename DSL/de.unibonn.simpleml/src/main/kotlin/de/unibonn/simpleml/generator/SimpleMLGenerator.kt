@@ -67,7 +67,7 @@ class SimpleMLGenerator : AbstractGenerator() {
             return
         }
 
-        val fileName = "${resource.baseGeneratedFilePath()}.py"
+        val fileName = "${resource.baseGeneratedFilePathOrNull()}.py"
         val compilationUnit = resource.compilationUnitOrNull() ?: return
         val content = compile(compilationUnit)
 
@@ -96,9 +96,9 @@ class SimpleMLGenerator : AbstractGenerator() {
                     return
                 }
 
-                val fileName = "${resource.baseGeneratedFilePath()}_${it.name}.py"
+                val fileName = "${resource.baseGeneratedFilePathOrNull()}_${it.name}.py"
                 val content = """
-                        |from gen_${resource.baseFileName()} import ${it.name}
+                        |from gen_${resource.baseFileNameOrNull()} import ${it.name}
                         |
                         |if __name__ == '__main__':
                         |$indent${it.name}()
@@ -164,7 +164,7 @@ class SimpleMLGenerator : AbstractGenerator() {
                     null
                 } else {
                     if (importPath.first() != "simpleml") {
-                        val fileName = it.eResource().baseFileName().split("/").last()
+                        val fileName = it.eResource().baseFileNameOrNull() ?: return@mapNotNull null
                         importPath += fileName
                     }
 
