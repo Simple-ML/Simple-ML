@@ -107,6 +107,7 @@ def createNumericValue(name, value, simple_type, data_type=None):
 
 
 def addGenericStatistics(column, column_stats, column_type):
+
     # TODO: for efficiency and to avoid number overflow: don't compute total sum
     totalSpecialCharacters = 0
     totalNumberOfTokens = 0
@@ -115,7 +116,7 @@ def addGenericStatistics(column, column_stats, column_type):
     totalNumberOfDigits = 0
     totalCountOfValidValues = 0
 
-    for val in column.notnull():
+    for val in column:
         if not val:
             continue
         totalCountOfValidValues += 1
@@ -213,14 +214,8 @@ def getStatistics(dataset: Dataset) -> dict:
         stats[colName] = {}
         transform_timestamp = False
 
-        print("Simple type:", simple_type, "colName:", colName)
-
         if simple_type == config.type_string:
             # string statistics are based on string length
-            print("DAT")
-            print(colName)
-            print(data[colName])
-            print("END DAT")
             column_data = data[colName].str.len()
         elif simple_type == config.type_geometry:
             polygon_count = {}
