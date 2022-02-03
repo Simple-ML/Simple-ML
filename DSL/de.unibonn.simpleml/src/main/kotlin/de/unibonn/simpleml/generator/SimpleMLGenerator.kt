@@ -20,6 +20,7 @@ import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.statementsOrEmpty
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAssignment
@@ -47,6 +48,7 @@ import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantInt
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantNull
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantString
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
+import de.unibonn.simpleml.stdlibAccess.pythonNameOrNull
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
@@ -93,12 +95,12 @@ class SimpleMLGenerator : AbstractGenerator() {
                     return
                 }
 
-                val fileName = "${resource.baseGeneratedFilePathOrNull()}_${it.name}.py"
+                val fileName = "${resource.baseGeneratedFilePathOrNull()}_${it.correspondingPythonName()}.py"
                 val content = """
-                        |from gen_${resource.baseFileNameOrNull()} import ${it.name}
+                        |from gen_${resource.baseFileNameOrNull()} import ${it.correspondingPythonName()}
                         |
                         |if __name__ == '__main__':
-                        |$indent${it.name}()
+                        |$indent${it.correspondingPythonName()}()
                         |
                     """.trimMargin()
 
@@ -208,28 +210,32 @@ class SimpleMLGenerator : AbstractGenerator() {
 
     private data class ImportData(val importPath: String, val declarationName: String)
 
-    private fun compileWorkflowSteps(workflowStep: SmlStep) = buildString {
-        append("def ${workflowStep.name}(")
-        append(workflowStep.parametersOrEmpty().joinToString { it.name })
+    private fun compileWorkflowSteps(step: SmlStep) = buildString {
+        append("def ${step.name}(")
+        append(step.parametersOrEmpty().joinToString { it.name })
         appendLine("):")
 
-        if (workflowStep.statementsOrEmpty().isEmpty()) {
+        if (step.statementsOrEmpty().isEmpty()) {
             appendLine("${indent}pass")
         } else {
-            workflowStep.statementsOrEmpty().forEach {
+            step.statementsOrEmpty().forEach {
                 appendLine("$indent${compileStatement(it)}")
             }
 
-            if (workflowStep.resultsOrEmpty().isNotEmpty()) {
-                appendLine("${indent}return ${workflowStep.resultsOrEmpty().joinToString { it.name }}")
+            if (step.resultsOrEmpty().isNotEmpty()) {
+                appendLine("${indent}return ${step.resultsOrEmpty().joinToString { it.name }}")
             }
         }
     }
 
     private fun compileWorkflow(workflow: SmlWorkflow) = buildString {
-        appendLine("def ${workflow.name}():")
-        workflow.statementsOrEmpty().forEach {
-            appendLine(compileStatement(it, shouldSavePlaceholders = true).prependIndent(indent))
+        appendLine("def ${workflow.correspondingPythonName()}():")
+        if (workflow.statementsOrEmpty().isEmpty()) {
+            appendLine("${indent}pass")
+        } else {
+            workflow.statementsOrEmpty().forEach {
+                appendLine(compileStatement(it, shouldSavePlaceholders = true).prependIndent(indent))
+            }
         }
     }
 
@@ -338,4 +344,11 @@ class SimpleMLGenerator : AbstractGenerator() {
             }
         }
     }
+}
+
+/**
+ * Returns the name of the Python declaration that corresponds to this [SmlAbstractDeclaration].
+ */
+private fun SmlAbstractDeclaration.correspondingPythonName(): String {
+    return pythonNameOrNull() ?: name
 }
