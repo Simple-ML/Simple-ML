@@ -30,7 +30,6 @@
 1. Add new dependencies to the [environment.yml](./environment.yml) file.
 2. Update your environment:
     ```shell
-    cd python
     conda env update -n runtime --file environment.yml --prune
     ```
 
