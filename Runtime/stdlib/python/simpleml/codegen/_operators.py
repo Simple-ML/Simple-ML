@@ -15,7 +15,7 @@ Elvis_T = TypeVar("Elvis_T")
 
 
 def eager_elvis(left_operand: Elvis_T, right_operand: Elvis_T) -> Elvis_T:
-    pass
+    return left_operand if left_operand is not None else right_operand
 
 
 Safe_Access_T = TypeVar("Safe_Access_T")
