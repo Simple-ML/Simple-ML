@@ -78,8 +78,6 @@ class SimpleMLGeneratorTest {
     }
 
     private fun createTest(resourcePath: Path, filePath: Path, program: String) = sequence {
-        println(resourcePath)
-        println(filePath)
         yield(
             CategorizedTest(
                 "valid test file",

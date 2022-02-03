@@ -9,6 +9,7 @@ import de.unibonn.simpleml.constant.SmlPrefixOperationOperator
 import de.unibonn.simpleml.constant.isFlowFile
 import de.unibonn.simpleml.constant.isTestFile
 import de.unibonn.simpleml.constant.operator
+import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingCompilationUnitOrNull
@@ -39,6 +40,10 @@ import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlString
+import de.unibonn.simpleml.simpleML.SmlTemplateString
+import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
+import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
+import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantBoolean
@@ -239,6 +244,7 @@ class SimpleMLGenerator : AbstractGenerator() {
         }
     }
 
+    @OptIn(ExperimentalStdlibApi::class)
     private fun compileStatement(stmt: SmlAbstractStatement, shouldSavePlaceholders: Boolean = false) = buildString {
         when (stmt) {
             is SmlAssignment -> {
@@ -271,79 +277,98 @@ class SimpleMLGenerator : AbstractGenerator() {
         }
     }
 
-    // TODO: make deep recursive function
-    private fun compileExpression(expr: SmlAbstractExpression): String {
-        val constantExpr = expr.toConstantExpressionOrNull()
-        if (constantExpr != null) {
-            return when (constantExpr) {
-                is SmlConstantBoolean -> if (constantExpr.value) "True" else "False"
-                is SmlConstantEnumVariant -> TODO()
-                SmlConstantNull -> "None"
-                is SmlConstantFloat -> constantExpr.value.toString()
-                is SmlConstantInt -> constantExpr.value.toString()
-                is SmlConstantString -> "'${constantExpr.value}'"
-            }
-        }
+    @OptIn(ExperimentalStdlibApi::class)
+    private val compileExpression: DeepRecursiveFunction<SmlAbstractExpression, String> =
+        DeepRecursiveFunction { expr ->
 
-        return when (expr) {
-            is SmlBoolean -> {
-                if (expr.isTrue) {
-                    "True"
-                } else {
-                    "False"
+            // Template string parts
+            when (expr) {
+                is SmlTemplateStringStart -> return@DeepRecursiveFunction "${expr.value}{ "
+                is SmlTemplateStringInner -> return@DeepRecursiveFunction " }${expr.value}{ "
+                is SmlTemplateStringEnd -> return@DeepRecursiveFunction " }${expr.value}"
+            }
+
+            // Constant expressions
+            val constantExpr = expr.toConstantExpressionOrNull()
+            if (constantExpr != null) {
+                when (constantExpr) {
+                    is SmlConstantBoolean -> return@DeepRecursiveFunction if (constantExpr.value) "True" else "False"
+                    is SmlConstantEnumVariant -> { /* let remaining code handle this */ }
+                    is SmlConstantFloat -> return@DeepRecursiveFunction constantExpr.value.toString()
+                    is SmlConstantInt -> return@DeepRecursiveFunction constantExpr.value.toString()
+                    is SmlConstantNull -> return@DeepRecursiveFunction "None"
+                    is SmlConstantString -> return@DeepRecursiveFunction "'${constantExpr.value}'"
                 }
             }
-            is SmlCall -> {
-                val receiver = compileExpression(expr.receiver)
-                val arguments = expr.argumentList.arguments.joinToString {
-                    if (it.isNamed()) {
-                        "${it.parameter?.name}=${compileExpression(it.value)}"
+
+            // Other
+            return@DeepRecursiveFunction when (expr) {
+                is SmlBoolean -> {
+                    if (expr.isTrue) {
+                        "True"
                     } else {
-                        compileExpression(it.value)
+                        "False"
                     }
                 }
-                "$receiver($arguments)"
-            }
-            is SmlFloat -> {
-                expr.value.toString()
-            }
-            is SmlInfixOperation -> when (expr.operator()) {
-                Or -> "eager_or(${compileExpression(expr.leftOperand)}, ${compileExpression(expr.rightOperand)})"
-                And -> "eager_and(${compileExpression(expr.leftOperand)}, ${compileExpression(expr.rightOperand)})"
-                IdenticalTo -> "(${compileExpression(expr.leftOperand)}) is (${compileExpression(expr.rightOperand)})"
-                NotIdenticalTo -> "(${compileExpression(expr.leftOperand)}) is not (${compileExpression(expr.rightOperand)})"
-                Elvis -> "eager_elvis(${compileExpression(expr.leftOperand)}, ${compileExpression(expr.rightOperand)})"
-                else -> "(${compileExpression(expr.leftOperand)}) ${expr.operator} (${compileExpression(expr.rightOperand)})"
-            }
-            is SmlInt -> {
-                expr.value.toString()
-            }
-            is SmlNull -> {
-                "None"
-            }
-            is SmlMemberAccess -> {
-                val receiver = compileExpression(expr.receiver)
-                "$receiver.${expr.member.declaration.name}"
-            }
-            is SmlParenthesizedExpression -> {
-                compileExpression(expr.expression)
-            }
-            is SmlPrefixOperation -> when (expr.operator()) {
-                SmlPrefixOperationOperator.Not -> "not (${compileExpression(expr.operand)})"
-                SmlPrefixOperationOperator.Minus -> "-(${compileExpression(expr.operand)})"
-            }
-            is SmlString -> {
-                "'${expr.value}'"
-            }
-            is SmlReference -> {
-                expr.declaration.name
-            }
-            else -> {
-                println("Unknown expression $expr.")
-                ""
+                is SmlCall -> {
+                    val receiver = callRecursive(expr.receiver)
+                    val arguments = mutableListOf<String>()
+                    for (argument in expr.argumentsOrEmpty()) {
+                        arguments += if (argument.isNamed()) {
+                            "${argument.parameter?.name}=${callRecursive(argument.value)}"
+                        } else {
+                            callRecursive(argument.value)
+                        }
+                    }
+                    "$receiver(${arguments.joinToString()})"
+                }
+                is SmlFloat -> {
+                    expr.value.toString()
+                }
+                is SmlInfixOperation -> when (expr.operator()) {
+                    Or -> "eager_or(${callRecursive(expr.leftOperand)}, ${callRecursive(expr.rightOperand)})"
+                    And -> "eager_and(${callRecursive(expr.leftOperand)}, ${callRecursive(expr.rightOperand)})"
+                    IdenticalTo -> "(${callRecursive(expr.leftOperand)}) is (${callRecursive(expr.rightOperand)})"
+                    NotIdenticalTo -> "(${callRecursive(expr.leftOperand)}) is not (${callRecursive(expr.rightOperand)})"
+                    Elvis -> "eager_elvis(${callRecursive(expr.leftOperand)}, ${callRecursive(expr.rightOperand)})"
+                    else -> "(${callRecursive(expr.leftOperand)}) ${expr.operator} (${callRecursive(expr.rightOperand)})"
+                }
+                is SmlInt -> {
+                    expr.value.toString()
+                }
+                is SmlNull -> {
+                    "None"
+                }
+                is SmlMemberAccess -> {
+                    val receiver = callRecursive(expr.receiver)
+                    "$receiver.${expr.member.declaration.name}"
+                }
+                is SmlParenthesizedExpression -> {
+                    callRecursive(expr.expression)
+                }
+                is SmlPrefixOperation -> when (expr.operator()) {
+                    SmlPrefixOperationOperator.Not -> "not (${callRecursive(expr.operand)})"
+                    SmlPrefixOperationOperator.Minus -> "-(${callRecursive(expr.operand)})"
+                }
+                is SmlString -> {
+                    "'${expr.value}'"
+                }
+                is SmlReference -> {
+                    expr.declaration.name
+                }
+                is SmlTemplateString -> {
+                    val substrings = mutableListOf<String>()
+                    for (expression in expr.expressions) {
+                        substrings += callRecursive(expression)
+                    }
+                    "f'${substrings.joinToString("")}'"
+                }
+                else -> {
+                    println("Unknown expression $expr.")
+                    ""
+                }
             }
         }
-    }
 }
 
 /**
