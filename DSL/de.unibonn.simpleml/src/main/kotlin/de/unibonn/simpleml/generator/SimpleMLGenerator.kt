@@ -54,25 +54,14 @@ class SimpleMLGenerator : AbstractGenerator() {
 
     private val indent = "    "
 
+    /**
+     * Creates Python workflow and declaration files if the [resource] is either a Simple-ML flow or test file.
+     */
     override fun doGenerate(resource: Resource, fsa: IFileSystemAccess2, context: IGeneratorContext) {
-        if (!resource.isFlowFile() && !resource.isTestFile()) {
-            return
+        if (resource.isFlowFile() || resource.isTestFile()) {
+            generateWorkflowFiles(resource, fsa, context)
+            generateDeclarationFile(resource, fsa, context)
         }
-
-        generateDeclarationFile(resource, fsa, context)
-        generateWorkflowFiles(resource, fsa, context)
-    }
-
-    private fun generateDeclarationFile(resource: Resource, fsa: IFileSystemAccess2, context: IGeneratorContext) {
-        if (context.cancelIndicator.isCanceled) {
-            return
-        }
-
-        val fileName = "${resource.baseGeneratedFilePathOrNull()}.py"
-        val compilationUnit = resource.compilationUnitOrNull() ?: return
-        val content = compile(compilationUnit)
-
-        fsa.generateFile(fileName, content)
     }
 
     /**
@@ -85,8 +74,8 @@ class SimpleMLGenerator : AbstractGenerator() {
      *  * Workflow names:    "workflow1", "workflow2"
      *
      * we create two files in the folder "com/example" (determined by the Simple-ML package). The file for "workflow1"
-     * is called "test$workflow1.py" and the file for "workflow2" is called "test$workflow2.py". The names are created
-     * by taking the Simple-ML file name, removing the file extension, appending a dollar sign, and then the workflow
+     * is called "test_workflow1.py" and the file for "workflow2" is called "test_workflow2.py". The names are created
+     * by taking the Simple-ML file name, removing the file extension, appending an underscore, and then the workflow
      * name.
      */
     private fun generateWorkflowFiles(resource: Resource, fsa: IFileSystemAccess2, context: IGeneratorContext) {
@@ -110,16 +99,25 @@ class SimpleMLGenerator : AbstractGenerator() {
             }
     }
 
+    private fun generateDeclarationFile(resource: Resource, fsa: IFileSystemAccess2, context: IGeneratorContext) {
+        if (context.cancelIndicator.isCanceled) {
+            return
+        }
+
+        val fileName = "${resource.baseGeneratedFilePathOrNull()}.py"
+        val compilationUnit = resource.compilationUnitOrNull() ?: return
+        val content = compile(compilationUnit)
+
+        fsa.generateFile(fileName, content)
+    }
+
     private fun compile(compilationUnit: SmlCompilationUnit) = buildString {
 
         // Imports
         val importsString = compileImports(compilationUnit)
-        appendLine("# Imports ----------------------------------------------------------------------\n")
-        appendLine("from runtimeBridge import save_placeHolder")
         if (importsString.isNotBlank()) {
+            appendLine("# Imports ----------------------------------------------------------------------\n")
             appendLine(importsString)
-        } else {
-            appendLine()
         }
 
         // Steps
@@ -149,6 +147,10 @@ class SimpleMLGenerator : AbstractGenerator() {
 
     private fun compileImports(compilationUnit: SmlCompilationUnit) = buildString {
         // TODO split this into a function that gets all external references inside an arbitrary eObject
+
+        if (compilationUnit.descendants<SmlPlaceholder>().firstOrNull() != null) {
+            appendLine("from runtimeBridge import save_placeHolder")
+        }
 
         compilationUnit
             .descendants<SmlReference>()
