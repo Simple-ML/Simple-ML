@@ -16,6 +16,7 @@ import de.unibonn.simpleml.emf.containingCompilationUnitOrNull
 import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.isGlobal
 import de.unibonn.simpleml.emf.isNamed
+import de.unibonn.simpleml.emf.isOptional
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
@@ -28,6 +29,7 @@ import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlBoolean
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlIndexedAccess
@@ -330,7 +332,24 @@ class SimpleMLGenerator : AbstractGenerator() {
                             callRecursive(argument.value)
                         }
                     }
+
                     "$receiver(${arguments.joinToString()})"
+                }
+                is SmlExpressionLambda -> {
+                    val parameters = mutableListOf<String>()
+                    for (parameter in expr.parametersOrEmpty()) {
+                        parameters += if (parameter.isOptional()) {
+                            "${parameter.name}=${callRecursive(parameter.defaultValue)}"
+                        } else if (parameter.isVariadic) {
+                            "*${parameter.name}"
+                        } else {
+                            parameter.name
+                        }
+                    }
+
+                    val result = callRecursive(expr.result)
+
+                    "lambda ${parameters.joinToString()}: $result"
                 }
                 is SmlFloat -> {
                     expr.value.toString()
