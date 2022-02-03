@@ -390,7 +390,7 @@ class SimpleMLGenerator : AbstractGenerator() {
                     "'${expr.value}'"
                 }
                 is SmlReference -> {
-                    expr.declaration.name
+                    expr.declaration.correspondingPythonName()
                 }
                 is SmlTemplateString -> {
                     val substrings = mutableListOf<String>()
