@@ -53,7 +53,7 @@ class ProposalsTest {
 
     @Test
     fun `should contain steps with primitive parameters when no result is passed`() {
-        val context = parseHelper.parseProgramTextWithStdlib(testProgram)
+        val context = parseHelper.parseProgramText(testProgram)
         context.shouldNotBeNull()
 
         val steps = context.members
@@ -69,7 +69,7 @@ class ProposalsTest {
 
     @Test
     fun `should contain only steps with matching parameters when a placeholder is passed`() {
-        val context = parseHelper.parseProgramTextWithStdlib(testProgram)
+        val context = parseHelper.parseProgramText(testProgram)
         context.shouldNotBeNull()
 
         val placeholder = context.findUniqueDeclarationOrFail<SmlPlaceholder>("test_placeholder_a")
@@ -83,7 +83,7 @@ class ProposalsTest {
 
     @Test
     fun `should contain only steps with matching parameters when a result is passed`() {
-        val context = parseHelper.parseProgramTextWithStdlib(testProgram)
+        val context = parseHelper.parseProgramText(testProgram)
         context.shouldNotBeNull()
 
         val result = context.findUniqueDeclarationOrFail<SmlResult>("test_result_a")
@@ -97,7 +97,7 @@ class ProposalsTest {
 
     @Test
     fun `should contain only steps with matching parameters when multiple declarations are passed (1)`() {
-        val context = parseHelper.parseProgramTextWithStdlib(testProgram)
+        val context = parseHelper.parseProgramText(testProgram)
         context.shouldNotBeNull()
 
         val result = context.findUniqueDeclarationOrFail<SmlResult>("test_result_c")
@@ -111,7 +111,7 @@ class ProposalsTest {
 
     @Test
     fun `should contain only steps with matching parameters when multiple declarations are passed (2)`() {
-        val context = parseHelper.parseProgramTextWithStdlib(testProgram)
+        val context = parseHelper.parseProgramText(testProgram)
         context.shouldNotBeNull()
 
         val result = context.findUniqueDeclarationOrFail<SmlResult>("test_result_c")
@@ -127,7 +127,7 @@ class ProposalsTest {
 
     @Test
     fun `should contain only steps with matching parameters when multiple declarations are passed (3)`() {
-        val context = parseHelper.parseProgramTextWithStdlib(testProgram)
+        val context = parseHelper.parseProgramText(testProgram)
         context.shouldNotBeNull()
 
         val result = context.findUniqueDeclarationOrFail<SmlResult>("test_result_c")

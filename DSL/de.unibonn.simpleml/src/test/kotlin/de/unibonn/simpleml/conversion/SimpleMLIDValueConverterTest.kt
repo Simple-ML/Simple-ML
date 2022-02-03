@@ -42,7 +42,8 @@ class SimpleMLIDValueConverterTest {
 
         @Test
         fun `should remove backticks (file)`() {
-            val compilationUnit = parseHelper.parseResource("conversion/idValueConverter.smltest")
+            val compilationUnit =
+                parseHelper.parseResource("conversion/idValueConverter.smltest")
             compilationUnit.shouldNotBeNull()
 
             val `class` = compilationUnit.findUniqueDeclarationOrFail<SmlClass>("class")

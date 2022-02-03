@@ -31,7 +31,7 @@ jobs:
         uses: megalinter/megalinter@v5.4.0
         env:
           DISABLE: COPYPASTE,SPELL
-          FILTER_REGEX_EXCLUDE: (\.github/workflows/)
+          FILTER_REGEX_EXCLUDE: (\.github/workflows/|DSL/de\.unibonn\.simpleml/src/test/resources)
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_ALL_CODEBASE: false
 

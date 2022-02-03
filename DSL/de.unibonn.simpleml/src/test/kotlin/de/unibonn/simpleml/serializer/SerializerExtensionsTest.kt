@@ -34,7 +34,8 @@ class SerializerExtensionsTest {
 
         @Test
         fun `should serialize and format a complete EMF model created from a resource`() {
-            val compilationUnit = parseHelper.parseResource("serialization/extensionsTest.smltest")
+            val compilationUnit =
+                parseHelper.parseResource("serialization/extensionsTest.smltest")
             compilationUnit.shouldNotBeNull()
 
             val result = compilationUnit.serializeToFormattedString()
@@ -52,7 +53,8 @@ class SerializerExtensionsTest {
 
         @Test
         fun `should serialize and format a subtree of the EMF model from a resource`() {
-            val compilationUnit = parseHelper.parseResource("serialization/extensionsTest.smltest")
+            val compilationUnit =
+                parseHelper.parseResource("serialization/extensionsTest.smltest")
             compilationUnit.shouldNotBeNull()
 
             val `class` = compilationUnit.findUniqueDeclarationOrFail<SmlClass>("MyClass")
@@ -69,7 +71,8 @@ class SerializerExtensionsTest {
 
         @Test
         fun `should use line feed as line separator`() {
-            val compilationUnit = parseHelper.parseResource("serialization/extensionsTest.smltest")
+            val compilationUnit =
+                parseHelper.parseResource("serialization/extensionsTest.smltest")
             compilationUnit.shouldNotBeNull()
 
             val `class` = compilationUnit.findUniqueDeclarationOrFail<SmlClass>("MyClass")

@@ -1,0 +1,7 @@
+package tests.generator.expressionLambda
+
+fun f(param: Any?)
+
+workflow test {
+    f((a, b = 2, vararg c) -> 1);
+}

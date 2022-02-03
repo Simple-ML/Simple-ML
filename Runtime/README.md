@@ -16,6 +16,10 @@
     ```shell
     conda activate runtime
     ```
+1. Add the runtime as a local library:
+    ```shell
+    conda develop runtime
+    ```
 1. Add the stdlib files as a local library:
     ```shell
     conda develop stdlib/python
@@ -26,7 +30,6 @@
 1. Add new dependencies to the [environment.yml](./environment.yml) file.
 2. Update your environment:
     ```shell
-    cd python
     conda env update -n runtime --file environment.yml --prune
     ```
 

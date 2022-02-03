@@ -1,5 +1,7 @@
 # Ignore anywhere
 **/.DS_STORE/
+**/test_scripts
+**/tests
 
 # Ignore in root
 .devcontainer/

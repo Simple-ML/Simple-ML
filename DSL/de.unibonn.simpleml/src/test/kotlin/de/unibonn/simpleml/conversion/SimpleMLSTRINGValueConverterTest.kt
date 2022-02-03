@@ -46,7 +46,8 @@ class SimpleMLSTRINGValueConverterTest {
 
         @Test
         fun `should unescape opening curly brace (file)`() {
-            val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
+            val compilationUnit =
+                parseHelper.parseResource("conversion/stringValueConverter.smltest")
             compilationUnit.shouldNotBeNull()
 
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("escapedOpeningBrace")
@@ -63,7 +64,8 @@ class SimpleMLSTRINGValueConverterTest {
 
         @Test
         fun `should unescape single quote (file)`() {
-            val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
+            val compilationUnit =
+                parseHelper.parseResource("conversion/stringValueConverter.smltest")
             compilationUnit.shouldNotBeNull()
 
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("escapedSingleQuote")
@@ -83,7 +85,8 @@ class SimpleMLSTRINGValueConverterTest {
 
         @Test
         fun `should keep escaped opening curly brace (file)`() {
-            val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
+            val compilationUnit =
+                parseHelper.parseResource("conversion/stringValueConverter.smltest")
             compilationUnit.shouldNotBeNull()
 
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("escapedOpeningBrace")
@@ -98,7 +101,8 @@ class SimpleMLSTRINGValueConverterTest {
 
         @Test
         fun `should keep unescaped opening curly brace (file)`() {
-            val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
+            val compilationUnit =
+                parseHelper.parseResource("conversion/stringValueConverter.smltest")
             compilationUnit.shouldNotBeNull()
 
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("unescapedOpeningBrace")
@@ -133,7 +137,8 @@ class SimpleMLSTRINGValueConverterTest {
 
         @Test
         fun `should not escape single quote (file)`() {
-            val compilationUnit = parseHelper.parseResource("conversion/stringValueConverter.smltest")
+            val compilationUnit =
+                parseHelper.parseResource("conversion/stringValueConverter.smltest")
             compilationUnit.shouldNotBeNull()
 
             val workflow = compilationUnit.findUniqueDeclarationOrFail<SmlWorkflow>("unescapedSingleQuote")
