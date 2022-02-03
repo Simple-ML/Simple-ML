@@ -5,5 +5,8 @@ fun f(param: Any?)
 fun g() -> result: Int
 
 workflow test {
-    f("start {{ g() }} inner {{ g() }} end");
+    f("start
+{{ g() }}
+inner {{ g() }}
+end");
 }

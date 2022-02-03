@@ -1,4 +1,4 @@
 # Workflows --------------------------------------------------------------------
 
 def test():
-    f(f'start { g() } inner { g() } end')
+    f(f'start\n{ g() }\ninner { g() }\nend')

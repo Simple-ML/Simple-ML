@@ -9,4 +9,6 @@ workflow test {
     f(1);
     f(null);
     f("");
+    f("multi
+line");
 }

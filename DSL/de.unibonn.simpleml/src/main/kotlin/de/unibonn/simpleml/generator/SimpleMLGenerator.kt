@@ -302,9 +302,9 @@ class SimpleMLGenerator : AbstractGenerator() {
 
             // Template string parts
             when (expr) {
-                is SmlTemplateStringStart -> return@DeepRecursiveFunction "${expr.value}{ "
-                is SmlTemplateStringInner -> return@DeepRecursiveFunction " }${expr.value}{ "
-                is SmlTemplateStringEnd -> return@DeepRecursiveFunction " }${expr.value}"
+                is SmlTemplateStringStart -> return@DeepRecursiveFunction "${expr.value.toSingleLine()}{ "
+                is SmlTemplateStringInner -> return@DeepRecursiveFunction " }${expr.value.toSingleLine()}{ "
+                is SmlTemplateStringEnd -> return@DeepRecursiveFunction " }${expr.value.toSingleLine()}"
             }
 
             // Constant expressions
@@ -318,19 +318,12 @@ class SimpleMLGenerator : AbstractGenerator() {
                     is SmlConstantFloat -> return@DeepRecursiveFunction constantExpr.value.toString()
                     is SmlConstantInt -> return@DeepRecursiveFunction constantExpr.value.toString()
                     is SmlConstantNull -> return@DeepRecursiveFunction "None"
-                    is SmlConstantString -> return@DeepRecursiveFunction "'${constantExpr.value}'"
+                    is SmlConstantString -> return@DeepRecursiveFunction "'${constantExpr.value.toSingleLine()}'"
                 }
             }
 
             // Other
             return@DeepRecursiveFunction when (expr) {
-                is SmlBoolean -> {
-                    if (expr.isTrue) {
-                        "True"
-                    } else {
-                        "False"
-                    }
-                }
                 is SmlCall -> {
                     val receiver = callRecursive(expr.receiver)
                     val arguments = mutableListOf<String>()
@@ -353,9 +346,6 @@ class SimpleMLGenerator : AbstractGenerator() {
 
                     "lambda ${parameters.joinToString()}: $result"
                 }
-                is SmlFloat -> {
-                    expr.value.toString()
-                }
                 is SmlInfixOperation -> when (expr.operator()) {
                     Or -> "eager_or(${callRecursive(expr.leftOperand)}, ${callRecursive(expr.rightOperand)})"
                     And -> "eager_and(${callRecursive(expr.leftOperand)}, ${callRecursive(expr.rightOperand)})"
@@ -369,12 +359,6 @@ class SimpleMLGenerator : AbstractGenerator() {
                     val index = callRecursive(expr.index)
                     "$receiver[$index]"
                 }
-                is SmlInt -> {
-                    expr.value.toString()
-                }
-                is SmlNull -> {
-                    "None"
-                }
                 is SmlMemberAccess -> {
                     val receiver = callRecursive(expr.receiver)
                     "$receiver.${expr.member.declaration.name}"
@@ -385,9 +369,6 @@ class SimpleMLGenerator : AbstractGenerator() {
                 is SmlPrefixOperation -> when (expr.operator()) {
                     SmlPrefixOperationOperator.Not -> "not (${callRecursive(expr.operand)})"
                     SmlPrefixOperationOperator.Minus -> "-(${callRecursive(expr.operand)})"
-                }
-                is SmlString -> {
-                    "'${expr.value}'"
                 }
                 is SmlReference -> {
                     expr.declaration.correspondingPythonName()
@@ -412,4 +393,11 @@ class SimpleMLGenerator : AbstractGenerator() {
  */
 private fun SmlAbstractDeclaration.correspondingPythonName(): String {
     return pythonNameOrNull() ?: name
+}
+
+/**
+ * Escapes newlines.
+ */
+private fun String.toSingleLine(): String {
+    return replace("\n", "\\n")
 }

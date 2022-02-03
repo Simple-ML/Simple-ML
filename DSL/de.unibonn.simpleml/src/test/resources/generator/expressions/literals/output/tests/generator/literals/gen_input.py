@@ -7,3 +7,4 @@ def test():
     f(1)
     f(None)
     f('')
+    f('multi\nline')
