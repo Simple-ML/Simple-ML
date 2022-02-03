@@ -119,7 +119,7 @@ jobs:
           use-only-tar-bz2: true
 
       - name: Test with pytest
-        run: pytest --cov=simpleml --cov-report=html
+        run: conda run -n runtime pytest --cov=simpleml --cov-report=html
 
       - name: Upload test coverage
         if: ${{ github.actor != 'dependabot[bot]' }}
