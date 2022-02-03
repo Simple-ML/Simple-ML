@@ -1,0 +1,7 @@
+package tests.generator.parenthesizedExpression
+
+fun f(param: Any?)
+
+workflow test {
+    f((true));
+}

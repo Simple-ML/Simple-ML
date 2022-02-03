@@ -125,7 +125,7 @@ class SimpleMLGeneratorTest {
 
         compilationTestHelper.compile(resourceSet(resourcePath, filePath)) { result ->
             actualOutput = result.allGeneratedResources.map {
-                OutputFile(it.key.removePathPrefix(), it.value.toString())
+                OutputFile(it.key.normalizePathPrefix(), it.value.toString())
             }
         }
 
@@ -150,7 +150,9 @@ class SimpleMLGeneratorTest {
         return this.toString().replace("\\", "/")
     }
 
-    private fun String.removePathPrefix(): String {
-        return this.removePrefix("/myProject/./")
+    private fun String.normalizePathPrefix(): String {
+        return this
+            .removePrefix("/myProject/./")
+            .replace("src-gen", "output")
     }
 }

@@ -121,7 +121,7 @@ fun SmlAbstractDeclaration.descriptionOrNull(): String? {
 }
 
 /**
- * Checks if the [SmlParameter] is annotated with the `simpleml.lang.Constant` annotation.
+ * Checks if the parameter is annotated with the `simpleml.lang.Constant` annotation.
  */
 fun SmlParameter.isConstant(): Boolean {
     return hasAnnotationCallTo(StdlibAnnotations.Constant)
