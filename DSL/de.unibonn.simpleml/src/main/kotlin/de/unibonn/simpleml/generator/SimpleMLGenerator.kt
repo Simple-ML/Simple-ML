@@ -1,7 +1,14 @@
 package de.unibonn.simpleml.generator
 
+import de.unibonn.simpleml.constant.SmlInfixOperationOperator.And
+import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Elvis
+import de.unibonn.simpleml.constant.SmlInfixOperationOperator.IdenticalTo
+import de.unibonn.simpleml.constant.SmlInfixOperationOperator.NotIdenticalTo
+import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Or
+import de.unibonn.simpleml.constant.SmlPrefixOperationOperator
 import de.unibonn.simpleml.constant.isFlowFile
 import de.unibonn.simpleml.constant.isTestFile
+import de.unibonn.simpleml.constant.operator
 import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingCompilationUnitOrNull
@@ -152,6 +159,21 @@ class SimpleMLGenerator : AbstractGenerator() {
             appendLine("from runtimeBridge import save_placeHolder")
         }
 
+        val codegenImports = mutableListOf<String>()
+        if (compilationUnit.descendants<SmlInfixOperation>().any { it.operator() == Or }) {
+            codegenImports += "eager_or"
+        }
+        if (compilationUnit.descendants<SmlInfixOperation>().any { it.operator() == And }) {
+            codegenImports += "eager_and"
+        }
+        if (compilationUnit.descendants<SmlInfixOperation>().any { it.operator() == Elvis }) {
+            codegenImports += "eager_elvis"
+        }
+
+        if (codegenImports.isNotEmpty()) {
+            appendLine("from simpleml.codegen import ${codegenImports.joinToString()}")
+        }
+
         compilationUnit
             .descendants<SmlReference>()
             .map { it.declaration }
@@ -243,6 +265,7 @@ class SimpleMLGenerator : AbstractGenerator() {
         }
     }
 
+    // TODO: make deep recursive function
     private fun compileExpression(expr: SmlAbstractExpression): String {
         val constantExpr = expr.toConstantExpressionOrNull()
         if (constantExpr != null) {
@@ -278,8 +301,13 @@ class SimpleMLGenerator : AbstractGenerator() {
             is SmlFloat -> {
                 expr.value.toString()
             }
-            is SmlInfixOperation -> {
-                "(${compileExpression(expr.leftOperand)}) ${expr.operator} (${compileExpression(expr.rightOperand)})"
+            is SmlInfixOperation -> when (expr.operator()) {
+                Or -> "eager_or(${compileExpression(expr.leftOperand)}, ${compileExpression(expr.rightOperand)})"
+                And -> "eager_and(${compileExpression(expr.leftOperand)}, ${compileExpression(expr.rightOperand)})"
+                IdenticalTo -> "(${compileExpression(expr.leftOperand)}) is (${compileExpression(expr.rightOperand)})"
+                NotIdenticalTo -> "(${compileExpression(expr.leftOperand)}) is not (${compileExpression(expr.rightOperand)})"
+                Elvis -> "eager_elvis(${compileExpression(expr.leftOperand)}, ${compileExpression(expr.rightOperand)})"
+                else -> "(${compileExpression(expr.leftOperand)}) ${expr.operator} (${compileExpression(expr.rightOperand)})"
             }
             is SmlInt -> {
                 expr.value.toString()
@@ -292,10 +320,11 @@ class SimpleMLGenerator : AbstractGenerator() {
                 "$receiver.${expr.member.declaration.name}"
             }
             is SmlParenthesizedExpression -> {
-                "(${expr.expression})"
+                compileExpression(expr.expression)
             }
-            is SmlPrefixOperation -> {
-                "${expr.operator} (${compileExpression(expr.operand)})"
+            is SmlPrefixOperation -> when (expr.operator()) {
+                SmlPrefixOperationOperator.Not -> "not (${compileExpression(expr.operand)})"
+                SmlPrefixOperationOperator.Minus -> "-(${compileExpression(expr.operand)})"
             }
             is SmlString -> {
                 "'${expr.value}'"

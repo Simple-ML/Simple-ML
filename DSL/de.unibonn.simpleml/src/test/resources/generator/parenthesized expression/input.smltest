@@ -2,6 +2,8 @@ package tests.generator.parenthesizedExpression
 
 fun f(param: Any?)
 
+fun g() -> result: Boolean
+
 workflow test {
-    f((true));
+    f((g()));
 }
