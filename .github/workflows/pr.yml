@@ -52,7 +52,7 @@ jobs:
         if: ${{ github.actor != 'dependabot[bot]' }}
         uses: actions/upload-artifact@v2
         with:
-          name: Test coverage
+          name: DSL test coverage
           # upload-artifact does not use working-directory
           path: DSL/build/reports/kover/html/
 
@@ -131,5 +131,5 @@ jobs:
         if: ${{ github.actor != 'dependabot[bot]' }}
         uses: actions/upload-artifact@v2
         with:
-          name: Test coverage
+          name: Runtime test coverage
           path: Runtime/htmlcov
