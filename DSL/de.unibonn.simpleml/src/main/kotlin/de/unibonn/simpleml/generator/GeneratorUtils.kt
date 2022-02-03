@@ -2,31 +2,36 @@ package de.unibonn.simpleml.generator
 
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.compilationUnitOrNull
+import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 
-fun URI.toUNIXString(): String {
-    val uriString = this.toPlatformString(true) ?: this.toString()
-    return uriString.replace("\\", "/")
+/**
+ * Returns the base file name of the resource, i.e. the last segment of its [URI] with any Simple-ML extension removed,
+ * or `null` if the resource has no [URI].
+ */
+fun Resource.baseFileNameOrNull(): String? {
+    return uri
+        ?.lastSegment()
+        ?.removeSuffix(".${SmlFileExtension.Stub}")
+        ?.removeSuffix(".${SmlFileExtension.Test}")
+        ?.removeSuffix(".${SmlFileExtension.Flow}")
 }
 
-fun Resource.baseFileName(): String {
-    return this.uri.toUNIXString()
-        .split("/")
-        .last()
-        .removeSuffix(".${SmlFileExtension.Stub}")
-        .removeSuffix(".${SmlFileExtension.Test}")
-        .removeSuffix(".${SmlFileExtension.Flow}")
-}
-
-fun Resource.baseGeneratedFilePath(): String {
-    val compilationUnit = this.compilationUnitOrNull()
-        ?: throw IllegalArgumentException("Resource does not contain a compilation unit.")
-
-    val packagePart = compilationUnit
-        .name
+/**
+ * Returns the prefix of the path of all generated files, or `null` if this [Resource] does not provide enough
+ * information to deduce this prefix. This can be caused if either
+ * - the [Resource] contains no [SmlCompilationUnit],
+ * - the [SmlCompilationUnit] has no package,
+ * - the [Resource] has no [URI].
+ */
+fun Resource.baseGeneratedFilePathOrNull(): String? {
+    val packagePart = compilationUnitOrNull()
+        ?.name
         ?.replace(".", "/")
-        ?: "."
-    val filePart = this.baseFileName()
+        ?: return null
+
+    val filePart = baseFileNameOrNull() ?: return null
+
     return "$packagePart/gen_$filePart"
 }

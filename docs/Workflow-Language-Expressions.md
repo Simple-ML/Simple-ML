@@ -141,12 +141,12 @@ Some objects, like numbers, can naturally be brought into some order. The intege
 
 ## Operator precedence
 
-We all know that `2 + 3 * 7` is 23 and not 35. The reason is that the `*` operator has a higher precedence than the `+` operator and is therefore evaluate first. These precedence rules are necessary for all types of expressions listed above and shown in the following list. The higher up an expression is in the list the higher is its precedence. Expressions listed beside each other have the same precedence and are evaluated from left to right:
+We all know that `2 + 3 * 7` is 23 and not 35. The reason is that the `*` operator has a higher precedence than the `+` operator and is therefore evaluated first. These precedence rules are necessary for all types of expressions listed above and shown in the following list. The higher up an expression is in the list, the higher its precedence. Expressions listed beside each other have the same precedence and are evaluated from left to right:
 
 * **HIGHER PRECEDENCE**
 * `()` (parentheses around an expression)
-* `1` ([integer literals](#working-with-numbers)), `1.0` ([float literals](#working-with-numbers)), `"a"` ([string literals](#working-with-text)), `true`/`false` ([boolean literals](#working-with-logic)), `someName` ([references](#references)), `null` ([null literal](#working-with-null))
-* `()` ([calls](#calls)), `.` ([member accesses](#member-accesses)), `?.` ([safe member accesses](#working-with-null))
+* `1` ([integer literals](#working-with-numbers)), `1.0` ([float literals](#working-with-numbers)), `"a"` ([string literals](#working-with-text)), `true`/`false` ([boolean literals](#working-with-logic)), `someName` ([references](#references)), `null` ([null literal](#working-with-null)), `"age: {{ age }}"` (template strings)
+* `()` ([calls](#calls)), `.` ([member accesses](#member-accesses)), `?.` ([safe member accesses](#working-with-null)), `[]` (indexed access)
 * `-` (unary, [arithmetic negations](#working-with-numbers))
 * `?:` ([Elvis operators](#working-with-null))
 * `*`, `/` ([multiplicative operators](#working-with-numbers))
@@ -156,6 +156,7 @@ We all know that `2 + 3 * 7` is 23 and not 35. The reason is that the `*` operat
 * `not` ([logical negations](#working-with-logic))
 * `and` ([conjunctions](#working-with-logic))
 * `or` ([disjunctions](#working-with-logic))
+* `() -> 1` (expression lambda), `() {}` (block lambda)
 * **LOWER PRECEDENCE**
 
 If the default precedence of operators is not sufficient, parentheses can be used to force a part of an expression to be evaluated first.

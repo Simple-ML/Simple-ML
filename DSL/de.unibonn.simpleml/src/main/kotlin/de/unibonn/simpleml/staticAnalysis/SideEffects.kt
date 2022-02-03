@@ -10,38 +10,39 @@ import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlStep
+import de.unibonn.simpleml.stdlibAccess.hasNoSideEffects
 import de.unibonn.simpleml.stdlibAccess.isPure
 
 /**
- * Whether this [SmlAbstractExpression] is pure and, thus, can be removed.
+ * Whether this [SmlAbstractExpression] has no side effects and, thus, can be removed.
  *
  * @param resultIfUnknown What to return if neither purity nor impurity can be proven. Note that external functions are
- * still always assumed to be impure unless they are marked with `@Pure`.
+ * still always assumed to have side effects unless they are marked with `@Pure` or `@NoSideEffects.
  */
-fun SmlAbstractExpression.isPureExpression(resultIfUnknown: Boolean = false): Boolean {
+fun SmlAbstractExpression.expressionHasNoSideEffects(resultIfUnknown: Boolean = false): Boolean {
     return when (this) {
-        is SmlCall -> !isRecursive() && callableOrNull().isPureCallable(resultIfUnknown)
+        is SmlCall -> !isRecursive() && callableOrNull().callableHasNoSideEffects(resultIfUnknown)
         else -> true
     }
 }
 
 /**
- * Whether this [SmlAbstractCallable] is pure, so calls to this can be removed.
+ * Whether this [SmlAbstractCallable] has no side effects, so calls to this can be removed.
  *
  * @param resultIfUnknown What to return if neither purity nor impurity can be proven. Note that external functions are
- * still always assumed to be impure unless they are marked with `@Pure`.
+ * still always assumed to have side effects unless they are marked with `@Pure` or `@NoSideEffects.
  */
-fun SmlAbstractCallable?.isPureCallable(resultIfUnknown: Boolean = false): Boolean {
+fun SmlAbstractCallable?.callableHasNoSideEffects(resultIfUnknown: Boolean = false): Boolean {
     return when (this) {
         null -> resultIfUnknown
 
-        is SmlAbstractLambda -> immediateCalls().all { it.isPureExpression(resultIfUnknown) }
-        is SmlStep -> immediateCalls().all { it.isPureExpression(resultIfUnknown) }
+        is SmlAbstractLambda -> immediateCalls().all { it.expressionHasNoSideEffects(resultIfUnknown) }
+        is SmlStep -> immediateCalls().all { it.expressionHasNoSideEffects(resultIfUnknown) }
 
         is SmlCallableType -> resultIfUnknown
         is SmlClass -> true
         is SmlEnumVariant -> true
-        is SmlFunction -> isPure()
+        is SmlFunction -> hasNoSideEffects()
 
         else -> throw IllegalArgumentException("Cannot handle callable of type '${this::class.simpleName}'.")
     }

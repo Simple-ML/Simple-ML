@@ -121,7 +121,7 @@ fun SmlAbstractDeclaration.descriptionOrNull(): String? {
 }
 
 /**
- * Checks if the [SmlParameter] is annotated with the `simpleml.lang.Constant` annotation.
+ * Checks if the parameter is annotated with the `simpleml.lang.Constant` annotation.
  */
 fun SmlParameter.isConstant(): Boolean {
     return hasAnnotationCallTo(StdlibAnnotations.Constant)
@@ -149,10 +149,11 @@ fun SmlAnnotation.isRepeatable(): Boolean {
 }
 
 /**
- * Checks if the function is annotated with the `simpleml.lang.NoSideEffects` annotation.
+ * Checks if the function is annotated with the `simpleml.lang.Pure` or the `simpleml.lang.NoSideEffects`
+ * annotation.
  */
 fun SmlFunction.hasNoSideEffects(): Boolean {
-    return hasAnnotationCallTo(StdlibAnnotations.NoSideEffects)
+    return isPure() || hasAnnotationCallTo(StdlibAnnotations.NoSideEffects)
 }
 
 /**
