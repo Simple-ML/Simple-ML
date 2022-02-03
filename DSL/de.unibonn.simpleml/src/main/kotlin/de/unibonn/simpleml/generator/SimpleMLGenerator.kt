@@ -37,6 +37,7 @@ import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlNull
+import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
@@ -221,14 +222,11 @@ class SimpleMLGenerator : AbstractGenerator() {
 
     private data class ImportData(val importPath: String, val declarationName: String)
 
+    @OptIn(ExperimentalStdlibApi::class)
     private fun compileWorkflowSteps(step: SmlStep) = buildString {
         append("def ${step.name}(")
         append(step.parametersOrEmpty().joinToString {
-            if (it.isVariadic) {
-                "*${it.name}"
-            } else {
-                it.name
-            }
+            compileParameter(it)
         })
         appendLine("):")
 
@@ -290,6 +288,15 @@ class SimpleMLGenerator : AbstractGenerator() {
     }
 
     @OptIn(ExperimentalStdlibApi::class)
+    private val compileParameter: DeepRecursiveFunction<SmlParameter, String> = DeepRecursiveFunction { parameter ->
+        when {
+            parameter.isOptional() -> "${parameter.name}=${compileExpression.callRecursive(parameter.defaultValue)}"
+            parameter.isVariadic -> "*${parameter.name}"
+            else -> parameter.name
+        }
+    }
+
+    @OptIn(ExperimentalStdlibApi::class)
     private val compileExpression: DeepRecursiveFunction<SmlAbstractExpression, String> =
         DeepRecursiveFunction { expr ->
 
@@ -305,7 +312,9 @@ class SimpleMLGenerator : AbstractGenerator() {
             if (constantExpr != null) {
                 when (constantExpr) {
                     is SmlConstantBoolean -> return@DeepRecursiveFunction if (constantExpr.value) "True" else "False"
-                    is SmlConstantEnumVariant -> { /* let remaining code handle this */ }
+                    is SmlConstantEnumVariant -> {
+                        /* let remaining code handle this */
+                    }
                     is SmlConstantFloat -> return@DeepRecursiveFunction constantExpr.value.toString()
                     is SmlConstantInt -> return@DeepRecursiveFunction constantExpr.value.toString()
                     is SmlConstantNull -> return@DeepRecursiveFunction "None"
@@ -338,15 +347,8 @@ class SimpleMLGenerator : AbstractGenerator() {
                 is SmlExpressionLambda -> {
                     val parameters = mutableListOf<String>()
                     for (parameter in expr.parametersOrEmpty()) {
-                        parameters += if (parameter.isOptional()) {
-                            "${parameter.name}=${callRecursive(parameter.defaultValue)}"
-                        } else if (parameter.isVariadic) {
-                            "*${parameter.name}"
-                        } else {
-                            parameter.name
-                        }
+                        parameters += compileParameter.callRecursive(parameter)
                     }
-
                     val result = callRecursive(expr.result)
 
                     "lambda ${parameters.joinToString()}: $result"
