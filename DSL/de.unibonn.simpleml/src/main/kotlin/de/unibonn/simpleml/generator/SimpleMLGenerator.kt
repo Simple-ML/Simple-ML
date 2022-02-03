@@ -30,6 +30,7 @@ import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlFloat
+import de.unibonn.simpleml.simpleML.SmlIndexedAccess
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
@@ -143,7 +144,7 @@ class SimpleMLGenerator : AbstractGenerator() {
             }
         if (stepString.isNotBlank()) {
             appendLine("# Steps ------------------------------------------------------------------------\n")
-            appendLine(stepString)
+            append(stepString)
         }
 
         // Workflows
@@ -154,6 +155,9 @@ class SimpleMLGenerator : AbstractGenerator() {
                 compileWorkflow(it)
             }
         if (workflowString.isNotBlank()) {
+            if (stepString.isNotBlank()) {
+                appendLine()
+            }
             appendLine("# Workflows --------------------------------------------------------------------\n")
             append(workflowString)
         }
@@ -217,7 +221,13 @@ class SimpleMLGenerator : AbstractGenerator() {
 
     private fun compileWorkflowSteps(step: SmlStep) = buildString {
         append("def ${step.name}(")
-        append(step.parametersOrEmpty().joinToString { it.name })
+        append(step.parametersOrEmpty().joinToString {
+            if (it.isVariadic) {
+                "*${it.name}"
+            } else {
+                it.name
+            }
+        })
         appendLine("):")
 
         if (step.statementsOrEmpty().isEmpty()) {
@@ -332,6 +342,11 @@ class SimpleMLGenerator : AbstractGenerator() {
                     NotIdenticalTo -> "(${callRecursive(expr.leftOperand)}) is not (${callRecursive(expr.rightOperand)})"
                     Elvis -> "eager_elvis(${callRecursive(expr.leftOperand)}, ${callRecursive(expr.rightOperand)})"
                     else -> "(${callRecursive(expr.leftOperand)}) ${expr.operator} (${callRecursive(expr.rightOperand)})"
+                }
+                is SmlIndexedAccess -> {
+                    val receiver = callRecursive(expr.receiver)
+                    val index = callRecursive(expr.index)
+                    "$receiver[$index]"
                 }
                 is SmlInt -> {
                     expr.value.toString()
