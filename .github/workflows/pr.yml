@@ -118,6 +118,12 @@ jobs:
           python-version: 3.9
           use-only-tar-bz2: true
 
+      - name: Install runtime
+        run: conda run -n runtime conda develop runtime
+
+      - name: Install stdlib
+        run: conda run -n runtime conda develop stdlib/python
+
       - name: Test with pytest
         run: conda run -n runtime pytest --cov=simpleml --cov-report=html
 
