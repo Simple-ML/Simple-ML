@@ -21,5 +21,5 @@ def eager_elvis(left_operand: Elvis_T, right_operand: Elvis_T) -> Elvis_T:
 Safe_Access_T = TypeVar("Safe_Access_T")
 
 
-def safe_access(receiver: Any, lazy_member_access: Callable[[], Safe_Access_T]) -> Optional[Safe_Access_T]:
-    pass
+def safe_access(receiver: Any, member_name: str) -> Optional[Safe_Access_T]:
+    return getattr(receiver, member_name) if receiver is not None else None
