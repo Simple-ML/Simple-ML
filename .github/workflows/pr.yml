@@ -114,7 +114,7 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v2.1.1
         with:
           activate-environment: runtime
-          environment-file: environment.yml
+          environment-file: Runtime/environment.yml
           python-version: 3.9
           use-only-tar-bz2: true
 
