@@ -1,0 +1,29 @@
+package tests.generator.assignment
+
+fun f(param: Any?)
+
+fun g() -> (a: Int, b: Int, c: Int)
+
+workflow testFlow {
+    (_, _ ,_) = g();
+    (val a, _, _) = g();
+    val x = g();
+    f(a);
+    f(x);
+
+    f(() {
+        (_, _ ,_) = g();
+        (val a, _, yield c) = g();
+        val x = g();
+        f(a);
+        f(x);
+    });
+}
+
+step testStep() -> c: Int {
+    (_, _ ,_) = g();
+    (val a, _, yield c) = g();
+    val x = g();
+    f(a);
+    f(x);
+}
