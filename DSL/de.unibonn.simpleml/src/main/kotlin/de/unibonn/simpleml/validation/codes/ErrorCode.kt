@@ -82,5 +82,7 @@ enum class ErrorCode {
 
     NoOptionalParametersInCallableType,
 
-    VariadicParametersMustNotHaveDefaultValue
+    VariadicParametersMustNotHaveDefaultValue,
+
+    BlockLambdaPrefix
 }

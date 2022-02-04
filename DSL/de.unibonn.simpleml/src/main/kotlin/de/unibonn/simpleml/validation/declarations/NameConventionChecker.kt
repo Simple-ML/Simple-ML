@@ -18,6 +18,7 @@ import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.WarningCode
 import org.eclipse.xtext.validation.Check
 
@@ -34,6 +35,17 @@ class NameConventionChecker : AbstractSimpleMLChecker() {
                 "All segments of the qualified name of a package should be lowerCamelCase.",
                 Literals.SML_ABSTRACT_DECLARATION__NAME,
                 WarningCode.SegmentsShouldBeLowerCamelCase
+            )
+        }
+    }
+
+    @Check
+    fun blockLambdaPrefix(smlDeclaration: SmlAbstractDeclaration) {
+        if (smlDeclaration.name.startsWith("__block_lambda_")) {
+            error(
+                "Names of declarations must not start with '__block_lambda_'. This is reserved for code generation of block lambdas.",
+                Literals.SML_ABSTRACT_DECLARATION__NAME,
+                ErrorCode.BlockLambdaPrefix
             )
         }
     }
