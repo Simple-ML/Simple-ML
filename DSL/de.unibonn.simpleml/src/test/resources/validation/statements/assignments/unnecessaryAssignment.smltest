@@ -8,9 +8,9 @@ class MyClass {
 
 step myFunction() -> a: Int {
     // semantic_info "This assignment can be converted to an expression statement."
-    »(_, _) = f();«
+    »_, _ = f();«
     // semantic_info "This assignment can be converted to an expression statement."
-    »(_, _) = MyClass().f();«
+    »_, _ = MyClass().f();«
 
     // no_semantic_info "This assignment can be converted to an expression statement."
     »val a = 1;«
@@ -19,9 +19,9 @@ step myFunction() -> a: Int {
 
     () {
         // semantic_info "This assignment can be converted to an expression statement."
-        »(_, _) = f();«
+        »_, _ = f();«
         // semantic_info "This assignment can be converted to an expression statement."
-        »(_, _) = MyClass().f();«
+        »_, _ = MyClass().f();«
 
         // no_semantic_info "This assignment can be converted to an expression statement."
         »val a = 1;«

@@ -112,5 +112,5 @@ step test(
     // semantic_error "A call that produces no results is not allowed in this context."
     val x = »functionNoResults«();
     // no_semantic_error "A call that produces multiple results is not allowed in this context."
-    (val y, val z) = »functionTwoResults«();
+    val y, val z = »functionTwoResults«();
 }
