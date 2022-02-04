@@ -26,6 +26,8 @@ import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpression
 import de.unibonn.simpleml.stdlibAccess.StdlibAnnotations
 import de.unibonn.simpleml.stdlibAccess.StdlibEnums.AnnotationTarget
 import de.unibonn.simpleml.stdlibAccess.isPure
+import de.unibonn.simpleml.stdlibAccess.pythonModuleOrNull
+import de.unibonn.simpleml.stdlibAccess.pythonNameOrNull
 import de.unibonn.simpleml.stdlibAccess.validTargets
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
@@ -187,6 +189,38 @@ class AnnotationCallChecker : AbstractSimpleMLChecker() {
                 "Purity implies absence of side effects (remove this annotation call).",
                 null,
                 InfoCode.PureImpliesNoSideEffects
+            )
+        }
+    }
+
+    @Check
+    fun identicalPythonModule(smlAnnotationCall: SmlAnnotationCall) {
+        if (smlAnnotationCall.annotation.qualifiedNameOrNull() != StdlibAnnotations.PythonModule) {
+            return
+        }
+
+        val target = smlAnnotationCall.targetOrNull() as? SmlCompilationUnit ?: return
+        if (target.name == target.pythonModuleOrNull()) {
+            info(
+                "Python module is identical to Simple-ML package (can remove annotation call).",
+                null,
+                InfoCode.IdenticalPythonModule
+            )
+        }
+    }
+
+    @Check
+    fun identicalPythonName(smlAnnotationCall: SmlAnnotationCall) {
+        if (smlAnnotationCall.annotation.qualifiedNameOrNull() != StdlibAnnotations.PythonName) {
+            return
+        }
+
+        val target = smlAnnotationCall.targetOrNull() ?: return
+        if (target.name == target.pythonNameOrNull()) {
+            info(
+                "Python name is identical to Simple-ML name (can remove annotation call).",
+                null,
+                InfoCode.IdenticalPythonName
             )
         }
     }
