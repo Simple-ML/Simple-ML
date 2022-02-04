@@ -3,8 +3,8 @@ Statements are used in the [workflow language](./Workflow-Language.md) to run a 
 * [assignments](#assignments), which also evaluate an expression exactly once, but then assign selected results to _placeholders_ or _results_.
 
 Other types of statements such as
- * if-statements to conditionally execute code or
- * while-statements to repeatedly execute code
+* if-statements to conditionally execute code or
+* while-statements to repeatedly execute code
 
 are not planned since we want to keep the language small and easy to learn. Moreover, we want to refrain from developing yet another general-purpose programming language. Instead, code that depends on such features can be implemented in Python, integrated into Simple-ML using the [stub language](./Stub-Language.md), and called in a workflow using the provided statements.
 
