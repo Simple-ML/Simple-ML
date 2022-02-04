@@ -302,8 +302,7 @@ SmlAssignment
     ;
 
 SmlAssigneeList
-    : {SmlAssigneeList} assignees+=SmlAssignee
-    | {SmlAssigneeList} '(' (assignees+=SmlAssignee (',' assignees+=SmlAssignee)* ','?)? ')'
+    : assignees+=SmlAssignee (',' assignees+=SmlAssignee)* ','?
     ;
 
 SmlAssignee returns SmlAbstractAssignee
@@ -346,8 +345,7 @@ SmlBlockLambdaAssignment returns SmlAssignment
     ;
 
 SmlBlockLambdaAssigneeList returns SmlAssigneeList
-    : {SmlAssigneeList} assignees+=SmlBlockLambdaAssignee
-    | {SmlAssigneeList} '(' (assignees+=SmlBlockLambdaAssignee (',' assignees+=SmlBlockLambdaAssignee)* ','?)? ')'
+    : assignees+=SmlBlockLambdaAssignee (',' assignees+=SmlBlockLambdaAssignee)* ','?
     ;
 
 SmlBlockLambdaAssignee returns SmlAbstractAssignee

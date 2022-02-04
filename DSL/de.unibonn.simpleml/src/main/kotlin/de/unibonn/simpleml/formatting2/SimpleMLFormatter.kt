@@ -770,19 +770,13 @@ class SimpleMLFormatter : AbstractFormatter2() {
             }
             is SmlAssigneeList -> {
 
-                // Keyword "("
-                doc.formatKeyword(obj, "(", null, noSpace)
-
-                // Feature "parameters"
+                // Feature "assignees"
                 obj.assignees.forEach {
                     doc.formatObject(it)
                 }
 
                 // Keywords ","
                 doc.formatCommas(obj)
-
-                // Keyword ")"
-                doc.formatKeyword(obj, ")", noSpace, null)
             }
             is SmlBlockLambdaResult -> {
 

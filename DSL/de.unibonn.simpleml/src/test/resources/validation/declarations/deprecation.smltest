@@ -155,17 +155,17 @@ step testStep2() -> (result1: Int, result2: Int, result3: Int) {
     // semantic_warning "The assigned declaration is deprecated."
     // no_semantic_warning "The assigned declaration is deprecated."
     // no_semantic_warning "The assigned declaration is deprecated."
-    (»val a«, »val b«, »val c«) = validFunction();    
+    »val a«, »val b«, »val c« = validFunction();    
     
     // semantic_warning "The assigned declaration is deprecated."
     // no_semantic_warning "The assigned declaration is deprecated."
     // no_semantic_warning "The assigned declaration is deprecated."
-    (»yield result1«, »yield result2«, »yield result3«) = validFunction();
+    »yield result1«, »yield result2«, »yield result3« = validFunction();
 
     // no_semantic_warning "The assigned declaration is deprecated."
     // no_semantic_warning "The assigned declaration is deprecated."
     // no_semantic_warning "The assigned declaration is deprecated."
-    (»_«, »_«, »_«) = validFunction();
+    »_«, »_«, »_« = validFunction();
 
     // no_semantic_warning "The assigned declaration is deprecated."
     »val d« = a;
