@@ -8,7 +8,7 @@ import de.unibonn.simpleml.prologBridge.model.facts.NodeWithParent
 import de.unibonn.simpleml.prologBridge.model.facts.PlFact
 import de.unibonn.simpleml.prologBridge.model.facts.PlFactbase
 import de.unibonn.simpleml.prologBridge.model.facts.ProtocolTermT
-import de.unibonn.simpleml.prologBridge.utils.Id
+import de.unibonn.simpleml.utils.Id
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractProtocolTerm
 import io.kotest.assertions.asClue

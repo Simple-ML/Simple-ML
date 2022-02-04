@@ -1,7 +1,7 @@
 package de.unibonn.simpleml.prologBridge.model.facts
 
 import de.unibonn.simpleml.prologBridge.model.facts.PlTerm.Companion.fromJavaRepresentation
-import de.unibonn.simpleml.prologBridge.utils.Id
+import de.unibonn.simpleml.utils.Id
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration

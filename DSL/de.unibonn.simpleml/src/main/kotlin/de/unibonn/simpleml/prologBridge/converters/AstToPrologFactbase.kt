@@ -78,8 +78,8 @@ import de.unibonn.simpleml.prologBridge.model.facts.UnresolvedT
 import de.unibonn.simpleml.prologBridge.model.facts.WildcardT
 import de.unibonn.simpleml.prologBridge.model.facts.WorkflowT
 import de.unibonn.simpleml.prologBridge.model.facts.YieldT
-import de.unibonn.simpleml.prologBridge.utils.Id
-import de.unibonn.simpleml.prologBridge.utils.IdManager
+import de.unibonn.simpleml.utils.Id
+import de.unibonn.simpleml.utils.IdManager
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
