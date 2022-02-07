@@ -101,26 +101,26 @@ workflow winebasic {
     });
 
     TextEditorWrapper.setText(
-`package example
-import simpleml.dataset.loadDataset
-import simpleml.model.classification.DecisionTreeClassifier
-workflow winebasic {
-    // load data
-    val df = loadDataset("WhiteWineQualityBinary");
-    // Splitting the data into test and training sets
-    (val df_train, val df_test) = df.splitIntoTrainAndTest(trainRatio=0.75, randomState=1);
-    // split df_train and df_test into features and target
-    val X_train = df_train.dropAttributes("quality");
-    val X_test = df_test.dropAttributes("quality");
-    val y_train = df_train.keepAttributes("quality");
-    // Create estimator
-    val estimator = DecisionTreeClassifier();
-    // Train estimator and print results
-    val model = estimator.fit(X_train, y_train);
-    // Predict something with the model
-    val y_pred = model.predict(X_test);
-}`
-            );
+        `package example
+        import simpleml.dataset.loadDataset
+        import simpleml.model.classification.DecisionTreeClassifier
+        workflow winebasic {
+            // load data
+            val df = loadDataset("WhiteWineQualityBinary");
+            // Splitting the data into test and training sets
+            (val df_train, val df_test) = df.splitIntoTrainAndTest(trainRatio=0.75, randomState=1);
+            // split df_train and df_test into features and target
+            val X_train = df_train.dropAttributes("quality");
+            val X_test = df_test.dropAttributes("quality");
+            val y_train = df_train.keepAttributes("quality");
+            // Create estimator
+            val estimator = DecisionTreeClassifier();
+            // Train estimator and print results
+            val model = estimator.fit(X_train, y_train);
+            // Predict something with the model
+            val y_pred = model.predict(X_test);
+        }`
+    );
 }
 
 
