@@ -59,6 +59,7 @@ import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantNull
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantString
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
 import de.unibonn.simpleml.staticAnalysis.resultsOrNull
+import de.unibonn.simpleml.staticAnalysis.statementHasNoSideEffects
 import de.unibonn.simpleml.stdlibAccess.pythonNameOrNull
 import de.unibonn.simpleml.utils.IdManager
 import org.eclipse.emf.ecore.resource.Resource
@@ -235,10 +236,10 @@ class SimpleMLGenerator : AbstractGenerator() {
         })
         appendLine("):")
 
-        if (step.statementsOrEmpty().isEmpty()) {
+        if (step.statementsOrEmpty().withEffect().isEmpty()) {
             appendLine("${indent}pass")
         } else {
-            step.statementsOrEmpty().forEach {
+            step.statementsOrEmpty().withEffect().forEach {
                 val statement = compileStatement(
                     CompileStatementFrame(
                         it,
@@ -260,10 +261,10 @@ class SimpleMLGenerator : AbstractGenerator() {
         val blockLambdaIdManager = IdManager<SmlBlockLambda>()
 
         appendLine("def ${workflow.correspondingPythonName()}():")
-        if (workflow.statementsOrEmpty().isEmpty()) {
+        if (workflow.statementsOrEmpty().withEffect().isEmpty()) {
             appendLine("${indent}pass")
         } else {
-            workflow.statementsOrEmpty().forEach {
+            workflow.statementsOrEmpty().withEffect().forEach {
                 appendLine(
                     compileStatement(
                         CompileStatementFrame(it, blockLambdaIdManager, shouldSavePlaceholders = true)
@@ -363,10 +364,10 @@ class SimpleMLGenerator : AbstractGenerator() {
             stringBuilder.appendLine("):")
 
             // Statements
-            if (lambda.statementsOrEmpty().isEmpty()) {
+            if (lambda.statementsOrEmpty().withEffect().isEmpty()) {
                 stringBuilder.appendLine("${indent}pass")
             } else {
-                for (stmt in lambda.statementsOrEmpty()) {
+                for (stmt in lambda.statementsOrEmpty().withEffect()) {
                     stringBuilder.appendLine(
                         compileStatement.callRecursive(
                             CompileStatementFrame(
@@ -552,6 +553,13 @@ private fun SmlAssignment.paddedAssignees(): List<SmlAbstractAssignee> {
 private fun SmlBlockLambda.uniqueName(blockLambdaIdManager: IdManager<SmlBlockLambda>): String {
     val id = blockLambdaIdManager.assignIdIfAbsent(this).value
     return "__block_lambda_$id"
+}
+
+/**
+ * Returns a new list that only contains the [SmlAbstractStatement] that have some effect.
+ */
+private fun List<SmlAbstractStatement>.withEffect(): List<SmlAbstractStatement> {
+    return this.filter { !it.statementHasNoSideEffects() }
 }
 
 /**
