@@ -9,14 +9,12 @@ import de.unibonn.simpleml.constant.SmlPrefixOperationOperator
 import de.unibonn.simpleml.constant.isFlowFile
 import de.unibonn.simpleml.constant.isTestFile
 import de.unibonn.simpleml.constant.operator
-import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingCompilationUnitOrNull
 import de.unibonn.simpleml.emf.createSmlWildcard
 import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.isGlobal
-import de.unibonn.simpleml.emf.isNamed
 import de.unibonn.simpleml.emf.isOptional
 import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
@@ -28,6 +26,8 @@ import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
+import de.unibonn.simpleml.simpleML.SmlArgument
+import de.unibonn.simpleml.simpleML.SmlArgumentList
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
@@ -51,6 +51,8 @@ import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
 import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.staticAnalysis.linking.parameterOrNull
+import de.unibonn.simpleml.staticAnalysis.linking.parametersOrNull
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantBoolean
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantEnumVariant
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantFloat
@@ -450,10 +452,10 @@ class SimpleMLGenerator : AbstractGenerator() {
                 is SmlCall -> {
                     val receiver = callRecursive(CompileExpressionFrame(expr.receiver, blockLambdaIdManager))
                     val arguments = mutableListOf<String>()
-                    for (argument in expr.argumentsOrEmpty()) {
+                    for (argument in expr.argumentList.sortedByParameter()) {
                         val value = callRecursive(CompileExpressionFrame(argument.value, blockLambdaIdManager))
-                        arguments += if (argument.isNamed()) {
-                            "${argument.parameter?.name}=$value"
+                        arguments += if (argument.parameterOrNull()?.isOptional() == true) {
+                            "${argument.parameterOrNull()?.correspondingPythonName()}=$value"
                         } else {
                             value
                         }
@@ -560,6 +562,20 @@ private fun SmlBlockLambda.uniqueName(blockLambdaIdManager: IdManager<SmlBlockLa
  */
 private fun List<SmlAbstractStatement>.withEffect(): List<SmlAbstractStatement> {
     return this.filter { !it.statementHasNoSideEffects() }
+}
+
+/**
+ * Returns a new list with the arguments in the same order as the corresponding parameters.
+ */
+private fun SmlArgumentList?.sortedByParameter(): List<SmlArgument> {
+    val parameters = this?.parametersOrNull() ?: return emptyList()
+    val arguments = this.arguments
+
+    return buildList {
+        parameters.forEach { parameter ->
+            addAll(arguments.filter { it.parameterOrNull() == parameter })
+        }
+    }
 }
 
 /**
