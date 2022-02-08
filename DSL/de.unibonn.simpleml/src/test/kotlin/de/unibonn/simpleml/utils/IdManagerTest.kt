@@ -2,7 +2,6 @@ package de.unibonn.simpleml.utils
 
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
-import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -76,11 +75,38 @@ class IdManagerTest {
 
         @Test
         fun `should return whether an ID is in use`() {
-            val firstObject = TestClass()
-            val id = idManager.assignIdIfAbsent(firstObject)
+            val obj = TestClass()
+            val id = idManager.assignIdIfAbsent(obj)
 
             idManager.knowsId(id).shouldBeTrue()
             idManager.knowsId(Id<Any>(10)).shouldBeFalse()
+        }
+    }
+
+    @Nested
+    inner class Reset {
+
+        @Test
+        fun `should clear all mappings from object to ID`() {
+            val obj = TestClass()
+            val id = idManager.assignIdIfAbsent(obj)
+
+            idManager.reset()
+
+            idManager.knowsObject(obj).shouldBeFalse()
+            idManager.knowsId(id).shouldBeFalse()
+        }
+
+        @Test
+        fun `should reset the counter`() {
+            val obj = TestClass()
+            val idBeforeClear = idManager.assignIdIfAbsent(obj)
+
+            idManager.reset()
+
+            val idAfterClear = idManager.assignIdIfAbsent(obj)
+
+            idBeforeClear shouldBe idAfterClear
         }
     }
 }

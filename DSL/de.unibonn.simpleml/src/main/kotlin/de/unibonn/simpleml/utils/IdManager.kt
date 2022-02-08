@@ -64,4 +64,13 @@ class IdManager<UPPER : Any> {
      * Check if the given ID has already been assigned to some object.
      */
     fun knowsId(id: Id<*>) = id in idToObj
+
+    /**
+     * Removes all mappings between object and ID and resets the counter.
+     */
+    fun reset() {
+        objToId.clear()
+        idToObj.clear()
+        nextId = 0
+    }
 }
