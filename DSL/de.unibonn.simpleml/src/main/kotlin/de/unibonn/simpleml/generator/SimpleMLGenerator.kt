@@ -245,8 +245,8 @@ class SimpleMLGenerator : AbstractGenerator() {
                         blockLambdaIdManager,
                         shouldSavePlaceholders = false
                     )
-                )
-                appendLine("$indent$statement")
+                ).prependIndent(indent)
+                appendLine(statement)
             }
 
             if (step.resultsOrEmpty().isNotEmpty()) {
@@ -353,7 +353,16 @@ class SimpleMLGenerator : AbstractGenerator() {
         DeepRecursiveFunction { (lambda, blockLambdaIdManager) ->
             val stringBuilder = StringBuilder()
 
-            stringBuilder.appendLine("def ${lambda.uniqueName(blockLambdaIdManager)}():")
+            // Header
+            stringBuilder.append("def ${lambda.uniqueName(blockLambdaIdManager)}(")
+            val parameters = mutableListOf<String>()
+            for (parameter in lambda.parametersOrEmpty()) {
+                parameters += compileParameter.callRecursive(CompileParameterFrame(parameter, blockLambdaIdManager))
+            }
+            stringBuilder.append(parameters.joinToString())
+            stringBuilder.appendLine("):")
+
+            // Statements
             if (lambda.statementsOrEmpty().isEmpty()) {
                 stringBuilder.appendLine("${indent}pass")
             } else {
@@ -394,10 +403,10 @@ class SimpleMLGenerator : AbstractGenerator() {
                     val defaultValue = compileExpression.callRecursive(
                         CompileExpressionFrame(parameter.defaultValue, blockLambdaIdManager)
                     )
-                    "${parameter.name}=$defaultValue"
+                    "${parameter.correspondingPythonName()}=$defaultValue"
                 }
-                parameter.isVariadic -> "*${parameter.name}"
-                else -> parameter.name
+                parameter.isVariadic -> "*${parameter.correspondingPythonName()}"
+                else -> parameter.correspondingPythonName()
             }
         }
 
