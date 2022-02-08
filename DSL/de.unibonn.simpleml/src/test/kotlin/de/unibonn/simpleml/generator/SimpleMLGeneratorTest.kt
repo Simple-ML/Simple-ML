@@ -6,6 +6,7 @@ import de.unibonn.simpleml.emf.resourceSetOrNull
 import de.unibonn.simpleml.testing.CategorizedTest
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
+import de.unibonn.simpleml.testing.assertions.stringify
 import de.unibonn.simpleml.testing.createDynamicTestsFromResourceFolder
 import de.unibonn.simpleml.testing.getResourcePath
 import de.unibonn.simpleml.testing.testDisplayName
@@ -65,8 +66,9 @@ class SimpleMLGeneratorTest {
         }
 
         // Must not have errors
-        if (actualIssues(program, filePath).any { it.severity == Severity.ERROR }) {
-            return "Program has errors."
+        val errors = actualIssues(program, filePath).filter { it.severity == Severity.ERROR }
+        if (errors.isNotEmpty()) {
+            return "Program has errors:${errors.stringify()}"
         }
 
         return null
