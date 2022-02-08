@@ -25,7 +25,7 @@ fun ClassLoader.getResourceEmfUri(fileOrFolder: String): URI? {
 }
 
 fun Path.createDynamicTestsFromResourceFolder(
-    validator: (program: String, filePath: Path) -> String?,
+    validator: (resourcePath: Path, filePath: Path, program: String) -> String?,
     categorizedTestCreator: (resourcePath: Path, filePath: Path, program: String) -> Sequence<CategorizedTest>
 ): Stream<out DynamicNode> {
     return Files.walk(this)
@@ -42,12 +42,12 @@ fun Path.createDynamicTestsFromResourceFolder(
 private fun createDynamicTestFromResource(
     resourcePath: Path,
     filePath: Path,
-    validator: (program: String, filePath: Path) -> String?,
+    validator: (resourcePath: Path, filePath: Path, program: String) -> String?,
     categorizedTestCreator: (resourcePath: Path, filePath: Path, program: String) -> Sequence<CategorizedTest>
 ) = sequence {
     val program = Files.readString(filePath)
 
-    val testFileError = validator(program, filePath)
+    val testFileError = validator(resourcePath, filePath, program)
     if (testFileError != null) {
         yield(
             CategorizedTest(

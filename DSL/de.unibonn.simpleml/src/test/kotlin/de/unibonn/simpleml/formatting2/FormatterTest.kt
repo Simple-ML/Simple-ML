@@ -39,7 +39,7 @@ class FormatterTest {
      * this returns null.
      */
     @Suppress("UNUSED_PARAMETER")
-    private fun validateTestFile(program: String, filePath: Path): String? {
+    private fun validateTestFile(resourcePath: Path, filePath: Path, program: String): String? {
         if (separator !in program) {
             return "Did not find a separator between the original and the formatted code."
         }

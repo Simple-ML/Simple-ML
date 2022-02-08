@@ -216,7 +216,7 @@ class SimpleMLGenerator : AbstractGenerator() {
                 } else {
                     if (it.isInFlowFile() || it.isInTestFile()) {
                         val fileName = it.eResource().baseFileNameOrNull() ?: return@mapNotNull null
-                        importPath += fileName
+                        importPath += "gen_$fileName"
                     }
 
                     ImportData(importPath.joinToString("."), it.name)

@@ -3,6 +3,7 @@ package de.unibonn.simpleml.generator
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.stdlibAccess.pythonModuleOrNull
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 
@@ -16,6 +17,7 @@ fun Resource.baseFileNameOrNull(): String? {
         ?.removeSuffix(".${SmlFileExtension.Stub}")
         ?.removeSuffix(".${SmlFileExtension.Test}")
         ?.removeSuffix(".${SmlFileExtension.Flow}")
+        ?.replace(Regex("%2520"), "_") // Twice URL encoded space
         ?.replace(Regex("[ .-]"), "_")
         ?.replace(Regex("\\W"), "")
 }
@@ -28,8 +30,10 @@ fun Resource.baseFileNameOrNull(): String? {
  * - the [Resource] has no [URI].
  */
 fun Resource.baseGeneratedFilePathOrNull(): String? {
-    val packagePart = compilationUnitOrNull()
-        ?.name
+    val compilationUnit = compilationUnitOrNull() ?: return null
+
+    val compilationUnitPythonName = compilationUnit.pythonModuleOrNull() ?: compilationUnit.name
+    val packagePart = compilationUnitPythonName
         ?.replace(".", "/")
         ?: return null
 

@@ -59,6 +59,17 @@ class GeneratorUtilsTest {
         }
 
         @Test
+        fun `should replace twice URL encoded spaces with underscores`() {
+            val resource = createSmlDummyResource(
+                "_skip_%2520context%2520same%2520package",
+                SmlFileExtension.Flow,
+                createSmlCompilationUnit(packageName = "test")
+            )
+
+            resource.baseFileNameOrNull() shouldBe "_skip__context_same_package"
+        }
+
+        @Test
         fun `should replace dots with underscores`() {
             val resource = createSmlDummyResource(
                 "file.with.dots",
