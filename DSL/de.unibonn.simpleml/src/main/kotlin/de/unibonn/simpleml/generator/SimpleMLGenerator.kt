@@ -13,19 +13,24 @@ import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.assigneesOrEmpty
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingCompilationUnitOrNull
+import de.unibonn.simpleml.emf.createSmlWildcard
 import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.isGlobal
 import de.unibonn.simpleml.emf.isNamed
 import de.unibonn.simpleml.emf.isOptional
+import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.statementsOrEmpty
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
+import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractStatement
 import de.unibonn.simpleml.simpleML.SmlAssignment
+import de.unibonn.simpleml.simpleML.SmlBlockLambda
+import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlExpressionLambda
@@ -43,6 +48,7 @@ import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
 import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
 import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
+import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantBoolean
@@ -52,7 +58,9 @@ import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantInt
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantNull
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantString
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
+import de.unibonn.simpleml.staticAnalysis.resultsOrNull
 import de.unibonn.simpleml.stdlibAccess.pythonNameOrNull
+import de.unibonn.simpleml.utils.IdManager
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
@@ -165,7 +173,7 @@ class SimpleMLGenerator : AbstractGenerator() {
         // TODO split this into a function that gets all external references inside an arbitrary eObject
 
         if (compilationUnit.descendants<SmlPlaceholder>().firstOrNull() != null) {
-            appendLine("from runtimeBridge import save_placeHolder")
+            appendLine("from runtimeBridge import save_placeholder")
         }
 
         val codegenImports = mutableListOf<String>()
@@ -219,9 +227,11 @@ class SimpleMLGenerator : AbstractGenerator() {
 
     @OptIn(ExperimentalStdlibApi::class)
     private fun compileWorkflowSteps(step: SmlStep) = buildString {
+        val blockLambdaIdManager = IdManager<SmlBlockLambda>()
+
         append("def ${step.name}(")
         append(step.parametersOrEmpty().joinToString {
-            compileParameter(it)
+            compileParameter(CompileParameterFrame(it, blockLambdaIdManager))
         })
         appendLine("):")
 
@@ -229,7 +239,14 @@ class SimpleMLGenerator : AbstractGenerator() {
             appendLine("${indent}pass")
         } else {
             step.statementsOrEmpty().forEach {
-                appendLine("$indent${compileStatement(it)}")
+                val statement = compileStatement(
+                    CompileStatementFrame(
+                        it,
+                        blockLambdaIdManager,
+                        shouldSavePlaceholders = false
+                    )
+                )
+                appendLine("$indent$statement")
             }
 
             if (step.resultsOrEmpty().isNotEmpty()) {
@@ -238,60 +255,160 @@ class SimpleMLGenerator : AbstractGenerator() {
         }
     }
 
+    @OptIn(ExperimentalStdlibApi::class)
     private fun compileWorkflow(workflow: SmlWorkflow) = buildString {
+        val blockLambdaIdManager = IdManager<SmlBlockLambda>()
+
         appendLine("def ${workflow.correspondingPythonName()}():")
         if (workflow.statementsOrEmpty().isEmpty()) {
             appendLine("${indent}pass")
         } else {
             workflow.statementsOrEmpty().forEach {
-                appendLine(compileStatement(it, shouldSavePlaceholders = true).prependIndent(indent))
+                appendLine(
+                    compileStatement(
+                        CompileStatementFrame(it, blockLambdaIdManager, shouldSavePlaceholders = true)
+                    ).prependIndent(indent)
+                )
             }
         }
     }
 
+    private data class CompileStatementFrame(
+        val stmt: SmlAbstractStatement,
+        val blockLambdaIdManager: IdManager<SmlBlockLambda>,
+        val shouldSavePlaceholders: Boolean
+    )
+
     @OptIn(ExperimentalStdlibApi::class)
-    private fun compileStatement(stmt: SmlAbstractStatement, shouldSavePlaceholders: Boolean = false) = buildString {
-        when (stmt) {
-            is SmlAssignment -> {
-                if (stmt.assigneesOrEmpty().isNotEmpty()) {
-                    val assignees = stmt.assigneesOrEmpty().joinToString {
-                        when (it) {
-                            is SmlPlaceholder -> it.name
-                            is SmlYield -> it.result.name
-                            else -> {
-                                "_"
+    private val compileStatement: DeepRecursiveFunction<CompileStatementFrame, String> =
+        DeepRecursiveFunction { (stmt, blockLambdaIdManager, shouldSavePlaceholders) ->
+            val stringBuilder = StringBuilder()
+            when (stmt) {
+                is SmlAssignment -> {
+                    for (lambda in stmt.expression.descendants<SmlBlockLambda>()) {
+                        stringBuilder.append(
+                            compileBlockLambda.callRecursive(
+                                CompileBlockLambdaFrame(
+                                    lambda,
+                                    blockLambdaIdManager
+                                )
+                            )
+                        )
+                    }
+
+                    if (stmt.assigneesOrEmpty().any { it !is SmlWildcard }) {
+                        val assignees = stmt.paddedAssignees().joinToString {
+                            when (it) {
+                                is SmlBlockLambdaResult -> it.name
+                                is SmlPlaceholder -> it.name
+                                is SmlYield -> it.result.name
+                                else -> "_"
                             }
                         }
+                        stringBuilder.append("$assignees = ")
                     }
-                    append("$assignees = ")
-                }
-                append(compileExpression(stmt.expression))
+                    stringBuilder.append(
+                        compileExpression.callRecursive(
+                            CompileExpressionFrame(stmt.expression, blockLambdaIdManager)
+                        )
+                    )
 
-                if (shouldSavePlaceholders) {
-                    stmt.placeholdersOrEmpty().forEach {
-                        append("\nsave_placeHolder('${it.name}', ${it.name})")
+                    if (shouldSavePlaceholders) {
+                        stmt.placeholdersOrEmpty().forEach {
+                            stringBuilder.append("\nsave_placeholder('${it.name}', ${it.name})")
+                        }
                     }
                 }
+                is SmlExpressionStatement -> {
+                    for (lambda in stmt.expression.descendants<SmlBlockLambda>()) {
+                        stringBuilder.append(
+                            compileBlockLambda.callRecursive(
+                                CompileBlockLambdaFrame(
+                                    lambda,
+                                    blockLambdaIdManager
+                                )
+                            )
+                        )
+                    }
+
+                    stringBuilder.append(
+                        compileExpression.callRecursive(
+                            CompileExpressionFrame(stmt.expression, blockLambdaIdManager)
+                        )
+                    )
+                }
+                else -> throw java.lang.IllegalStateException("Missing case to handle statement $stmt.")
             }
-            is SmlExpressionStatement -> {
-                append(compileExpression(stmt.expression))
-            }
-            else -> throw java.lang.IllegalStateException("Missing case to handle statement $stmt.")
+
+            stringBuilder.toString()
         }
-    }
+
+    private data class CompileBlockLambdaFrame(
+        val lambda: SmlBlockLambda,
+        val blockLambdaIdManager: IdManager<SmlBlockLambda>
+    )
 
     @OptIn(ExperimentalStdlibApi::class)
-    private val compileParameter: DeepRecursiveFunction<SmlParameter, String> = DeepRecursiveFunction { parameter ->
-        when {
-            parameter.isOptional() -> "${parameter.name}=${compileExpression.callRecursive(parameter.defaultValue)}"
-            parameter.isVariadic -> "*${parameter.name}"
-            else -> parameter.name
+    private val compileBlockLambda: DeepRecursiveFunction<CompileBlockLambdaFrame, String> =
+        DeepRecursiveFunction { (lambda, blockLambdaIdManager) ->
+            val stringBuilder = StringBuilder()
+
+            stringBuilder.appendLine("def ${lambda.uniqueName(blockLambdaIdManager)}():")
+            if (lambda.statementsOrEmpty().isEmpty()) {
+                stringBuilder.appendLine("${indent}pass")
+            } else {
+                for (stmt in lambda.statementsOrEmpty()) {
+                    stringBuilder.appendLine(
+                        compileStatement.callRecursive(
+                            CompileStatementFrame(
+                                stmt,
+                                blockLambdaIdManager,
+                                shouldSavePlaceholders = false
+                            )
+                        ).prependIndent(indent)
+                    )
+                }
+
+                if (lambda.lambdaResultsOrEmpty().isNotEmpty()) {
+                    stringBuilder.appendLine(
+                        "${indent}return ${
+                            lambda.lambdaResultsOrEmpty().joinToString { it.name }
+                        }"
+                    )
+                }
+            }
+
+            stringBuilder.toString()
         }
-    }
+
+    private data class CompileParameterFrame(
+        val parameter: SmlParameter,
+        val blockLambdaIdManager: IdManager<SmlBlockLambda>
+    )
 
     @OptIn(ExperimentalStdlibApi::class)
-    private val compileExpression: DeepRecursiveFunction<SmlAbstractExpression, String> =
-        DeepRecursiveFunction { expr ->
+    private val compileParameter: DeepRecursiveFunction<CompileParameterFrame, String> =
+        DeepRecursiveFunction { (parameter, blockLambdaIdManager) ->
+            when {
+                parameter.isOptional() -> {
+                    val defaultValue = compileExpression.callRecursive(
+                        CompileExpressionFrame(parameter.defaultValue, blockLambdaIdManager)
+                    )
+                    "${parameter.name}=$defaultValue"
+                }
+                parameter.isVariadic -> "*${parameter.name}"
+                else -> parameter.name
+            }
+        }
+
+    private data class CompileExpressionFrame(
+        val expression: SmlAbstractExpression,
+        val blockLambdaIdManager: IdManager<SmlBlockLambda>
+    )
+
+    @OptIn(ExperimentalStdlibApi::class)
+    private val compileExpression: DeepRecursiveFunction<CompileExpressionFrame, String> =
+        DeepRecursiveFunction { (expr, blockLambdaIdManager) ->
 
             // Template string parts
             when (expr) {
@@ -317,14 +434,18 @@ class SimpleMLGenerator : AbstractGenerator() {
 
             // Other
             return@DeepRecursiveFunction when (expr) {
+                is SmlBlockLambda -> {
+                    expr.uniqueName(blockLambdaIdManager)
+                }
                 is SmlCall -> {
-                    val receiver = callRecursive(expr.receiver)
+                    val receiver = callRecursive(CompileExpressionFrame(expr.receiver, blockLambdaIdManager))
                     val arguments = mutableListOf<String>()
                     for (argument in expr.argumentsOrEmpty()) {
+                        val value = callRecursive(CompileExpressionFrame(argument.value, blockLambdaIdManager))
                         arguments += if (argument.isNamed()) {
-                            "${argument.parameter?.name}=${callRecursive(argument.value)}"
+                            "${argument.parameter?.name}=$value"
                         } else {
-                            callRecursive(argument.value)
+                            value
                         }
                     }
 
@@ -333,35 +454,49 @@ class SimpleMLGenerator : AbstractGenerator() {
                 is SmlExpressionLambda -> {
                     val parameters = mutableListOf<String>()
                     for (parameter in expr.parametersOrEmpty()) {
-                        parameters += compileParameter.callRecursive(parameter)
+                        parameters += compileParameter.callRecursive(
+                            CompileParameterFrame(
+                                parameter,
+                                blockLambdaIdManager
+                            )
+                        )
                     }
-                    val result = callRecursive(expr.result)
+                    val result = callRecursive(CompileExpressionFrame(expr.result, blockLambdaIdManager))
 
                     "lambda ${parameters.joinToString()}: $result"
                 }
-                is SmlInfixOperation -> when (expr.operator()) {
-                    Or -> "eager_or(${callRecursive(expr.leftOperand)}, ${callRecursive(expr.rightOperand)})"
-                    And -> "eager_and(${callRecursive(expr.leftOperand)}, ${callRecursive(expr.rightOperand)})"
-                    IdenticalTo -> "(${callRecursive(expr.leftOperand)}) is (${callRecursive(expr.rightOperand)})"
-                    NotIdenticalTo -> "(${callRecursive(expr.leftOperand)}) is not (${callRecursive(expr.rightOperand)})"
-                    Elvis -> "eager_elvis(${callRecursive(expr.leftOperand)}, ${callRecursive(expr.rightOperand)})"
-                    else -> "(${callRecursive(expr.leftOperand)}) ${expr.operator} (${callRecursive(expr.rightOperand)})"
+                is SmlInfixOperation -> {
+                    val leftOperand =
+                        callRecursive(CompileExpressionFrame(expr.leftOperand, blockLambdaIdManager))
+                    val rightOperand =
+                        callRecursive(CompileExpressionFrame(expr.rightOperand, blockLambdaIdManager))
+                    when (expr.operator()) {
+                        Or -> "eager_or($leftOperand, $rightOperand)"
+                        And -> "eager_and($leftOperand, $rightOperand)"
+                        IdenticalTo -> "($leftOperand) is ($rightOperand)"
+                        NotIdenticalTo -> "($leftOperand) is not ($rightOperand)"
+                        Elvis -> "eager_elvis($leftOperand, $rightOperand)"
+                        else -> "($leftOperand) ${expr.operator} ($rightOperand)"
+                    }
                 }
                 is SmlIndexedAccess -> {
-                    val receiver = callRecursive(expr.receiver)
-                    val index = callRecursive(expr.index)
+                    val receiver = callRecursive(CompileExpressionFrame(expr.receiver, blockLambdaIdManager))
+                    val index = callRecursive(CompileExpressionFrame(expr.index, blockLambdaIdManager))
                     "$receiver[$index]"
                 }
                 is SmlMemberAccess -> {
-                    val receiver = callRecursive(expr.receiver)
+                    val receiver = callRecursive(CompileExpressionFrame(expr.receiver, blockLambdaIdManager))
                     "$receiver.${expr.member.declaration.name}"
                 }
                 is SmlParenthesizedExpression -> {
-                    callRecursive(expr.expression)
+                    callRecursive(CompileExpressionFrame(expr.expression, blockLambdaIdManager))
                 }
-                is SmlPrefixOperation -> when (expr.operator()) {
-                    SmlPrefixOperationOperator.Not -> "not (${callRecursive(expr.operand)})"
-                    SmlPrefixOperationOperator.Minus -> "-(${callRecursive(expr.operand)})"
+                is SmlPrefixOperation -> {
+                    val operand = callRecursive(CompileExpressionFrame(expr.operand, blockLambdaIdManager))
+                    when (expr.operator()) {
+                        SmlPrefixOperationOperator.Not -> "not ($operand)"
+                        SmlPrefixOperationOperator.Minus -> "-($operand)"
+                    }
                 }
                 is SmlReference -> {
                     expr.declaration.correspondingPythonName()
@@ -369,14 +504,11 @@ class SimpleMLGenerator : AbstractGenerator() {
                 is SmlTemplateString -> {
                     val substrings = mutableListOf<String>()
                     for (expression in expr.expressions) {
-                        substrings += callRecursive(expression)
+                        substrings += callRecursive(CompileExpressionFrame(expression, blockLambdaIdManager))
                     }
                     "f'${substrings.joinToString("")}'"
                 }
-                else -> {
-                    println("Unknown expression $expr.")
-                    ""
-                }
+                else -> throw java.lang.IllegalStateException("Missing case to handle expression $expr.")
             }
         }
 }
@@ -386,6 +518,31 @@ class SimpleMLGenerator : AbstractGenerator() {
  */
 private fun SmlAbstractDeclaration.correspondingPythonName(): String {
     return pythonNameOrNull() ?: name
+}
+
+/**
+ * Adds wildcards at the end of the assignee list until every value of the right-hand side is captured.
+ */
+private fun SmlAssignment.paddedAssignees(): List<SmlAbstractAssignee> {
+    val desiredNumberOfAssignees = when (val expression = this.expression) {
+        is SmlCall -> expression.resultsOrNull()?.size ?: 0
+        else -> 1
+    }
+
+    return buildList {
+        addAll(assigneesOrEmpty())
+        while (size < desiredNumberOfAssignees) {
+            add(createSmlWildcard())
+        }
+    }
+}
+
+/**
+ * Returns a unique but consistent name for this lambda.
+ */
+private fun SmlBlockLambda.uniqueName(blockLambdaIdManager: IdManager<SmlBlockLambda>): String {
+    val id = blockLambdaIdManager.assignIdIfAbsent(this).value
+    return "__block_lambda_$id"
 }
 
 /**
