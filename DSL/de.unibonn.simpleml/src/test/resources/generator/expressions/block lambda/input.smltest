@@ -1,0 +1,11 @@
+package tests.generator.blockLambda
+
+fun f(param: Any?)
+
+fun g() -> a: Int
+
+workflow test {
+    f(() {
+        yield c = g();
+    });
+}

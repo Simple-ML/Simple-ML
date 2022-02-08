@@ -5,15 +5,15 @@ fun f(param: Any?)
 fun g() -> (a: Int, b: Int, c: Int)
 
 workflow testFlow {
-    (_, _ ,_) = g();
-    (val a, _, _) = g();
+    _, _ ,_ = g();
+    val a, _, _ = g();
     val x = g();
     f(a);
     f(x);
 
     f(() {
-        (_, _ ,_) = g();
-        (val a, _, yield c) = g();
+        _, _ ,_ = g();
+        val a, _, yield c = g();
         val x = g();
         f(a);
         f(x);
@@ -21,8 +21,8 @@ workflow testFlow {
 }
 
 step testStep() -> c: Int {
-    (_, _ ,_) = g();
-    (val a, _, yield c) = g();
+    _, _ ,_ = g();
+    val a, _, yield c = g();
     val x = g();
     f(a);
     f(x);
