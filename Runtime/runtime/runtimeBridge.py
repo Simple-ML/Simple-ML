@@ -21,7 +21,7 @@ async def notify_server(placeHolder):
         # await websocket.recv()
 
 
-def save_placeHolder(name, contents):
+def save_placeholder(name, contents):
     """
         Save the placeholder when it is ready to be called from the code and
         name: name of the placeholder

@@ -1,3 +1,7 @@
+# Imports ----------------------------------------------------------------------
+
+from runtimeBridge import save_placeholder
+
 # Steps ------------------------------------------------------------------------
 
 def testStep():
@@ -13,7 +17,9 @@ def testStep():
 def testFlow():
     g()
     a, _, _ = g()
+    save_placeholder('a', a)
     x, _, _ = g()
+    save_placeholder('x', x)
     f(a)
     f(x)
     def __block_lambda_0():
