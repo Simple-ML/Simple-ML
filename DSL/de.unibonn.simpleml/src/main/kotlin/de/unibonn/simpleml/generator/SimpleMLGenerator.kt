@@ -10,7 +10,9 @@ import de.unibonn.simpleml.constant.isFlowFile
 import de.unibonn.simpleml.constant.isTestFile
 import de.unibonn.simpleml.constant.operator
 import de.unibonn.simpleml.emf.assigneesOrEmpty
+import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.compilationUnitOrNull
+import de.unibonn.simpleml.emf.containingBlockLambdaOrNull
 import de.unibonn.simpleml.emf.containingCompilationUnitOrNull
 import de.unibonn.simpleml.emf.createSmlWildcard
 import de.unibonn.simpleml.emf.descendants
@@ -43,6 +45,8 @@ import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlPrefixOperation
 import de.unibonn.simpleml.simpleML.SmlReference
+import de.unibonn.simpleml.simpleML.SmlResult
+import de.unibonn.simpleml.simpleML.SmlResultList
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
@@ -498,7 +502,33 @@ class SimpleMLGenerator : AbstractGenerator() {
                 }
                 is SmlMemberAccess -> {
                     val receiver = callRecursive(CompileExpressionFrame(expr.receiver, blockLambdaIdManager))
-                    "$receiver.${expr.member.declaration.name}"
+                    when (val memberDeclaration = expr.member.declaration) {
+                        is SmlBlockLambdaResult -> {
+                            val allResults = memberDeclaration.containingBlockLambdaOrNull()!!.lambdaResultsOrEmpty()
+                            if (allResults.size == 1) {
+                                receiver
+                            } else {
+                                val thisIndex = allResults.indexOf(memberDeclaration)
+                                "$receiver[$thisIndex]"
+                            }
+                        }
+                        is SmlResult -> {
+                            val allResults = memberDeclaration.closestAncestorOrNull<SmlResultList>()!!.results
+                            if (allResults.size == 1) {
+                                receiver
+                            } else {
+                                val thisIndex = allResults.indexOf(memberDeclaration)
+                                "$receiver[$thisIndex]"
+                            }
+                        }
+                        else -> {
+                            val member = callRecursive(CompileExpressionFrame(expr.member, blockLambdaIdManager))
+                            when {
+                                expr.isNullSafe -> "safe_access($receiver, '$member')"
+                                else -> "$receiver.$member"
+                            }
+                        }
+                    }
                 }
                 is SmlParenthesizedExpression -> {
                     callRecursive(CompileExpressionFrame(expr.expression, blockLambdaIdManager))
