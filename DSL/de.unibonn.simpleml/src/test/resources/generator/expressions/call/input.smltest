@@ -9,7 +9,7 @@ fun g(
 ) -> result: Boolean
 
 fun h(
-    param1: Int,
+    @PythonName("param_1") param1: Int,
     @PythonName("param_2") param2: Int = 0,
     @PythonName("param_3") vararg param3: Int
 ) -> result: Boolean
@@ -17,5 +17,6 @@ fun h(
 workflow test {
     f((g(1, 2, 3, 4)));
     f((g(param2 = 1, param1 = 2, 3, 4)));
-    f((g(1, 2, 3, 4)));
+    f((h(1, 2, 3, 4)));
+    f((h(param2 = 1, param1 = 2, 3, 4)));
 }

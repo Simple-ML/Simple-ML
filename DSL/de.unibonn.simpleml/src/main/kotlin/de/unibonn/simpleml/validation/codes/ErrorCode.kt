@@ -23,6 +23,7 @@ enum class ErrorCode {
 
     NoRequiredParametersAfterFirstOptionalParameter,
     NoMoreParametersAfterVariadicParameter,
+    NoVariadicParameterAfterOptionalParameter,
 
     NO_YIELD_IN_WORKFLOW,
 

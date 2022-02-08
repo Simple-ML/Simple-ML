@@ -11,7 +11,7 @@ import org.eclipse.xtext.validation.Check
 class ParameterListChecker : AbstractSimpleMLChecker() {
 
     @Check
-    fun noRequiredParametersAfterFirstOptionalParameter(smlParameterList: SmlParameterList) {
+    fun noRequiredOrVariadicParametersAfterFirstOptionalParameter(smlParameterList: SmlParameterList) {
         val firstOptionalParameterIndex = smlParameterList.parameters.indexOfFirst { it.isOptional() }
         if (firstOptionalParameterIndex == -1) {
             return
@@ -19,14 +19,22 @@ class ParameterListChecker : AbstractSimpleMLChecker() {
 
         smlParameterList.parameters
             .drop(firstOptionalParameterIndex + 1)
-            .filter { it.isRequired() }
             .forEach {
-                error(
-                    "After the first optional parameter all parameters must be optional.",
-                    it,
-                    Literals.SML_ABSTRACT_DECLARATION__NAME,
-                    ErrorCode.NoRequiredParametersAfterFirstOptionalParameter
-                )
+                if (it.isRequired()) {
+                    error(
+                        "After the first optional parameter all parameters must be optional.",
+                        it,
+                        Literals.SML_ABSTRACT_DECLARATION__NAME,
+                        ErrorCode.NoRequiredParametersAfterFirstOptionalParameter
+                    )
+                } else if (it.isVariadic) {
+                    error(
+                        "A callable with optional parameters must not have a variadic parameter.",
+                        it,
+                        Literals.SML_ABSTRACT_DECLARATION__NAME,
+                        ErrorCode.NoVariadicParameterAfterOptionalParameter
+                    )
+                }
             }
     }
 

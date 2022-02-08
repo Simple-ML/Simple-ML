@@ -6,7 +6,7 @@ annotation MyAnnotation(a: Int, b: Int = 0, c: Int = 0, d: Int = 0, vararg e: In
 // no_semantic_error "After the first named argument all arguments must be named."
 // semantic_error "After the first named argument all arguments must be named."
 // no_semantic_error "After the first named argument all arguments must be named."
-// no_semantic_error "After the first named argument all arguments must be named."
+// semantic_error "After the first named argument all arguments must be named."
 @MyAnnotation(»0«, »a = 1«, »2«, »b = 3«, »4«) class MyClass1
 
 // no_semantic_error "After the first named argument all arguments must be named."
@@ -28,7 +28,7 @@ workflow myWorkflow {
     // no_semantic_error "After the first named argument all arguments must be named."
     // semantic_error "After the first named argument all arguments must be named."
     // no_semantic_error "After the first named argument all arguments must be named."
-    // no_semantic_error "After the first named argument all arguments must be named."
+    // semantic_error "After the first named argument all arguments must be named."
     f(»0«, »a = 1«, »2«, »b = 3«, »4«);
 
     // no_semantic_error "After the first named argument all arguments must be named."
