@@ -1,0 +1,21 @@
+package tests.generator.call
+
+fun f(param: Any?)
+
+fun g(
+    param1: Int,
+    param2: Int = 0,
+    vararg param3: Int
+) -> result: Boolean
+
+fun h(
+    param1: Int,
+    @PythonName("param_2") param2: Int = 0,
+    @PythonName("param_3") vararg param3: Int
+) -> result: Boolean
+
+workflow test {
+    f((g(1, 2, 3, 4)));
+    f((g(param2 = 1, param1 = 2, 3, 4)));
+    f((g(1, 2, 3, 4)));
+}

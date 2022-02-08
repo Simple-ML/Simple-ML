@@ -38,7 +38,7 @@ class ArgumentListChecker : AbstractSimpleMLChecker() {
 
         smlArgumentList.arguments
             .drop(firstNamedArgumentIndex + 1)
-            .filter { it.isPositional() }
+            .filter { it.isPositional() && (it.parameterOrNull()?.isVariadic != true) }
             .forEach {
                 error(
                     "After the first named argument all arguments must be named.",
