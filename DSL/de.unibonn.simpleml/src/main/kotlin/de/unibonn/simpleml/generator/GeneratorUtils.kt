@@ -16,6 +16,8 @@ fun Resource.baseFileNameOrNull(): String? {
         ?.removeSuffix(".${SmlFileExtension.Stub}")
         ?.removeSuffix(".${SmlFileExtension.Test}")
         ?.removeSuffix(".${SmlFileExtension.Flow}")
+        ?.replace(Regex("[ .-]"), "_")
+        ?.replace(Regex("\\W"), "")
 }
 
 /**

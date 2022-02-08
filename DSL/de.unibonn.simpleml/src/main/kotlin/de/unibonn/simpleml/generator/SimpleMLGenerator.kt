@@ -7,6 +7,8 @@ import de.unibonn.simpleml.constant.SmlInfixOperationOperator.NotIdenticalTo
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Or
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator
 import de.unibonn.simpleml.constant.isFlowFile
+import de.unibonn.simpleml.constant.isInFlowFile
+import de.unibonn.simpleml.constant.isInTestFile
 import de.unibonn.simpleml.constant.isTestFile
 import de.unibonn.simpleml.constant.operator
 import de.unibonn.simpleml.emf.assigneesOrEmpty
@@ -212,7 +214,7 @@ class SimpleMLGenerator : AbstractGenerator() {
                     println("Declaration not in a package $it.")
                     null
                 } else {
-                    if (importPath.first() != "simpleml") {
+                    if (it.isInFlowFile() || it.isInTestFile()) {
                         val fileName = it.eResource().baseFileNameOrNull() ?: return@mapNotNull null
                         importPath += fileName
                     }
