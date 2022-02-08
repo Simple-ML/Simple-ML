@@ -8,4 +8,5 @@ workflow test {
     f((a, b = 2, vararg c) {
         yield d = g();
     });
+    f(() {});
 }

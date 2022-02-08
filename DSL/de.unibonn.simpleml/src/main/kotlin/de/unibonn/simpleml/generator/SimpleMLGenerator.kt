@@ -229,7 +229,7 @@ class SimpleMLGenerator : AbstractGenerator() {
     private fun compileWorkflowSteps(step: SmlStep) = buildString {
         val blockLambdaIdManager = IdManager<SmlBlockLambda>()
 
-        append("def ${step.name}(")
+        append("def ${step.correspondingPythonName()}(")
         append(step.parametersOrEmpty().joinToString {
             compileParameter(CompileParameterFrame(it, blockLambdaIdManager))
         })

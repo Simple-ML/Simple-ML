@@ -1,0 +1,11 @@
+package tests.generator.twoSteps
+
+fun f()
+
+step test1() {
+    f();
+}
+
+step test2() {
+    f();
+}

@@ -5,3 +5,6 @@ def test():
         d = g()
         return d
     f(__block_lambda_0)
+    def __block_lambda_1():
+        pass
+    f(__block_lambda_1)
