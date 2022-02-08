@@ -9,6 +9,7 @@ import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.createDynamicTestsFromResourceFolder
 import de.unibonn.simpleml.testing.getResourcePath
 import de.unibonn.simpleml.testing.testDisplayName
+import de.unibonn.simpleml.testing.withSystemLineBreaks
 import io.kotest.assertions.forEachAsClue
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -98,7 +99,7 @@ class SimpleMLGeneratorTest {
         // Contents should match
         actualOutputs.forEachAsClue { actualOutput ->
             val expectedOutput = expectedOutputs.first { it.filePath == actualOutput.filePath }
-            actualOutput.content shouldBe expectedOutput.content
+            actualOutput.content.withSystemLineBreaks() shouldBe expectedOutput.content.withSystemLineBreaks()
         }
     }
 
