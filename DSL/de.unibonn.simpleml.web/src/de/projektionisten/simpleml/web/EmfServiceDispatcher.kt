@@ -10,13 +10,23 @@ import de.projektionisten.simpleml.web.dto.CreateEntityDTO
 import de.projektionisten.simpleml.web.dto.ParameterDTO
 import de.projektionisten.simpleml.web.dto.ProcessMetadataDTO
 import de.projektionisten.simpleml.web.dto.ProcessProposalsDTO
-import de.unibonn.simpleml.emf.containingCompilationUnitOrNull
 import de.unibonn.simpleml.emf.createSmlImport
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
-import de.unibonn.simpleml.ide.editor.contentassist.listCallables
+import de.unibonn.simpleml.ide.editor.contentassist.listCallablesWithMatchingParameters
+import de.unibonn.simpleml.ide.editor.contentassist.listCallablesWithOnlyPrimitiveParameters
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
-import de.unibonn.simpleml.simpleML.*
+import de.unibonn.simpleml.simpleML.SimpleMLFactory
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractExpression
+import de.unibonn.simpleml.simpleML.SmlAbstractType
+import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.simpleML.SmlNamedType
+import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.web.SimpleMLResourceSetProvider
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
@@ -31,7 +41,6 @@ import org.emfjson.jackson.module.EMFModule
 import org.emfjson.jackson.resource.JsonResourceFactory
 import org.emfjson.jackson.utils.ValueWriter
 
-
 @Singleton
 class EmfServiceDispatcher @Inject constructor(
     private val serializer: ISerializer,
@@ -45,8 +54,8 @@ class EmfServiceDispatcher @Inject constructor(
         val mapper = ObjectMapper()
         val module = EMFModule()
 
-
-        module.typeInfo = EcoreTypeInfo("className",
+        module.typeInfo = EcoreTypeInfo(
+            "className",
             object : ValueWriter<EClass, String> {
                 override fun writeValue(value: EClass, context: SerializerProvider): String {
                     return (value as EClassImpl).instanceClassName
@@ -60,7 +69,6 @@ class EmfServiceDispatcher @Inject constructor(
         this.jsonMapper = factory.getMapper()
     }
 
-
     override fun createServiceDescriptor(serviceType: String, context: IServiceContext): ServiceDescriptor {
         return when (serviceType) {
             "getEmfModel" ->
@@ -71,17 +79,16 @@ class EmfServiceDispatcher @Inject constructor(
                 getProcessProposals(context)
             "createEntity" ->
                 createEntity(context)
-//			"deleteEntity" ->
-//				deleteEntity(context)
-//			"createAssociation" ->
-//				createAssociation(context)
-//			"deleteAssociation" ->
-//				deleteAssociation(context)
+// 			"deleteEntity" ->
+// 				deleteEntity(context)
+// 			"createAssociation" ->
+// 				createAssociation(context)
+// 			"deleteAssociation" ->
+// 				deleteAssociation(context)
             else ->
                 super.createServiceDescriptor(serviceType, context)
         }
     }
-
 
     private fun getEmfModel(context: IServiceContext): ServiceDescriptor {
         return context.createDefaultGetServiceResult("")
@@ -91,7 +98,7 @@ class EmfServiceDispatcher @Inject constructor(
         val type = object : TypeToken<ArrayList<String>>() {}.getType()
         val emfPathCollection =
             jsonConverter.fromJson(context.getParameter("entityPathCollection"), type) as ArrayList<String>
-        val result = ArrayList<ProcessMetadataDTO>();
+        val result = ArrayList<ProcessMetadataDTO>()
 
         emfPathCollection.forEach {
             result.add(getProcessMetadataFromURI(it, context))
@@ -118,8 +125,8 @@ class EmfServiceDispatcher @Inject constructor(
 
         val astRoot = resourceDocument.resource.contents[0]
         val proposals = when (emfEntity) {
-            null -> listCallables(astRoot, emptyList())
-            else -> listCallables(astRoot, listOf(emfEntity))
+            null -> listCallablesWithOnlyPrimitiveParameters(astRoot)
+            else -> listCallablesWithMatchingParameters(astRoot, listOf(emfEntity))
         }
         val result = proposals.map { getProcessMetadataFromURI(it.key.toString(), context) }
 
@@ -207,7 +214,6 @@ class EmfServiceDispatcher @Inject constructor(
 
         return context.createDefaultPostServiceResult("")
     }
-
 
     private fun getProcessMetadataFromURI(uri: String, serviceContext: IServiceContext): ProcessMetadataDTO {
         val resourceDocument = getResourceDocument(super.getResourceID(serviceContext), serviceContext)
