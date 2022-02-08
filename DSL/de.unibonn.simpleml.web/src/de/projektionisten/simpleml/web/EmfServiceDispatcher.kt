@@ -10,13 +10,23 @@ import de.projektionisten.simpleml.web.dto.CreateEntityDTO
 import de.projektionisten.simpleml.web.dto.ParameterDTO
 import de.projektionisten.simpleml.web.dto.ProcessMetadataDTO
 import de.projektionisten.simpleml.web.dto.ProcessProposalsDTO
-import de.unibonn.simpleml.emf.containingCompilationUnitOrNull
 import de.unibonn.simpleml.emf.createSmlImport
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
-import de.unibonn.simpleml.ide.editor.contentassist.listCallables
+import de.unibonn.simpleml.ide.editor.contentassist.listCallablesWithMatchingParameters
+import de.unibonn.simpleml.ide.editor.contentassist.listCallablesWithOnlyPrimitiveParameters
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
-import de.unibonn.simpleml.simpleML.*
+import de.unibonn.simpleml.simpleML.SimpleMLFactory
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractExpression
+import de.unibonn.simpleml.simpleML.SmlAbstractType
+import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.simpleML.SmlNamedType
+import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.web.SimpleMLResourceSetProvider
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
@@ -118,8 +128,8 @@ class EmfServiceDispatcher @Inject constructor(
 
         val astRoot = resourceDocument.resource.contents[0]
         val proposals = when (emfEntity) {
-            null -> listCallables(astRoot, emptyList())
-            else -> listCallables(astRoot, listOf(emfEntity))
+            null -> listCallablesWithOnlyPrimitiveParameters(astRoot)
+            else -> listCallablesWithMatchingParameters(astRoot, listOf(emfEntity))
         }
         val result = proposals.map { getProcessMetadataFromURI(it.key.toString(), context) }
 

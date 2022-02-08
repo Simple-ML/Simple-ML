@@ -52,7 +52,7 @@ class ProposalsTest {
     """.trimMargin()
 
     @Test
-    fun `should contain steps with primitive parameters when no result is passed`() {
+    fun `should contain steps with primitive parameters when no declarations are passed`() {
         val context = parseHelper.parseProgramText(testProgram)
         context.shouldNotBeNull()
 
@@ -63,7 +63,7 @@ class ProposalsTest {
             .toList()
         steps.shouldHaveSize(5)
 
-        val descriptions = listCallables(context, emptyList())
+        val descriptions = listCallablesWithOnlyPrimitiveParameters(context)
         descriptions.shouldContainValues(*steps.toTypedArray())
     }
 
@@ -76,7 +76,7 @@ class ProposalsTest {
         val workflowStepA = context.findUniqueDeclarationOrFail<SmlStep>("matching_a")
         val workflowStepB = context.findUniqueDeclarationOrFail<SmlStep>("matching_b")
 
-        val descriptions = listCallables(context, listOf(placeholder))
+        val descriptions = listCallablesWithMatchingParameters(context, listOf(placeholder))
         descriptions.shouldContainValue(workflowStepA)
         descriptions.shouldNotContainValue(workflowStepB)
     }
@@ -90,7 +90,7 @@ class ProposalsTest {
         val workflowStepA = context.findUniqueDeclarationOrFail<SmlStep>("matching_a")
         val workflowStepB = context.findUniqueDeclarationOrFail<SmlStep>("matching_b")
 
-        val descriptions = listCallables(context, listOf(result))
+        val descriptions = listCallablesWithMatchingParameters(context, listOf(result))
         descriptions.shouldContainValue(workflowStepA)
         descriptions.shouldNotContainValue(workflowStepB)
     }
@@ -104,7 +104,7 @@ class ProposalsTest {
         val matchingWorkflow = context.findUniqueDeclarationOrFail<SmlStep>("matching_multiple_c")
         val nonMatchingWorkflow = context.findUniqueDeclarationOrFail<SmlStep>("not_matching_multiple_c")
 
-        val descriptions = listCallables(context, listOf(result, result))
+        val descriptions = listCallablesWithMatchingParameters(context, listOf(result, result))
         descriptions.shouldContainValue(matchingWorkflow)
         descriptions.shouldNotContainValue(nonMatchingWorkflow)
     }
@@ -120,7 +120,7 @@ class ProposalsTest {
         val matchingWorkflow2 = context.findUniqueDeclarationOrFail<SmlStep>("matching_multiple_d_c")
 
         // Inverse order of placeholder and result than (3)
-        val descriptions = listCallables(context, listOf(result, placeholder))
+        val descriptions = listCallablesWithMatchingParameters(context, listOf(result, placeholder))
         descriptions.shouldContainValue(matchingWorkflow1)
         descriptions.shouldContainValue(matchingWorkflow2)
     }
@@ -136,7 +136,7 @@ class ProposalsTest {
         val matchingWorkflow2 = context.findUniqueDeclarationOrFail<SmlStep>("matching_multiple_d_c")
 
         // Inverse order of placeholder and result than (2)
-        val descriptions = listCallables(context, listOf(placeholder, result))
+        val descriptions = listCallablesWithMatchingParameters(context, listOf(placeholder, result))
         descriptions.shouldContainValue(matchingWorkflow1)
         descriptions.shouldContainValue(matchingWorkflow2)
     }
