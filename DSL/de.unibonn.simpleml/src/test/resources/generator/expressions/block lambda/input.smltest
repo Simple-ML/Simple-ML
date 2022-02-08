@@ -5,7 +5,10 @@ fun f(param: Any?)
 fun g() -> a: Int
 
 workflow test {
-    f((a, b = 2, vararg c) {
+    f((a, b = 2) {
+        yield d = g();
+    });    
+    f((a, vararg c) {
         yield d = g();
     });
     f(() {});
