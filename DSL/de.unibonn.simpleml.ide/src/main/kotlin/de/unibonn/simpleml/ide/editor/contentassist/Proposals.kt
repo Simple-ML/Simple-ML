@@ -7,6 +7,7 @@ import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.scoping.allGlobalDeclarations
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.staticAnalysis.typing.Type
@@ -17,27 +18,16 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 
 /**
- * @param context
- * Any EObject in the current file, e.g. the SmlCompilationUnit. This is used to determine which declarations are
- * visible from here.
+ * Suggests callables that only require primitive values as arguments when called.
  *
- * @param declarations
- * The declarations that correspond to the result port the user clicked on or null if a new initial call should
- * be added. They should be either SmlPlaceholders or SmlResults. If multiple declarations are specified, a callable
- * must have one matching input port for each.
+ * @param context
+ * Any EObject in the current file, e.g. the [SmlCompilationUnit]. This is used to determine which declarations are
+ * visible from here.
  *
  * @return
  * A map of URIs to EObjects (SmlClass, SmlFunction, or SmlWorkflowStep).
  */
-fun listCallables(context: EObject, declarations: List<SmlAbstractDeclaration>): Map<URI, EObject> {
-    return if (declarations.isEmpty()) {
-        listCallablesWithOnlyPrimitiveParameters(context)
-    } else {
-        listCallablesWithMatchingParameters(context, declarations)
-    }
-}
-
-private fun listCallablesWithOnlyPrimitiveParameters(context: EObject): Map<URI, EObject> {
+fun listCallablesWithOnlyPrimitiveParameters(context: EObject): Map<URI, EObject> {
     return listAllReachableDeclarations(context)
         .filterValues { obj ->
             when (obj) {
@@ -61,7 +51,23 @@ private fun listCallablesWithOnlyPrimitiveParameters(context: EObject): Map<URI,
         }
 }
 
-private fun listCallablesWithMatchingParameters(
+/**
+ * Suggests callables that can accept all the given [declarations] as parameters. These callables can still have
+ * additional parameters that are not yet assigned.
+ *
+ * @param context
+ * Any EObject in the current file, e.g. the [SmlCompilationUnit]. This is used to determine which declarations are
+ * visible from here.
+ *
+ * @param declarations
+ * The declarations that correspond to the result port the user clicked on or null if a new initial call should
+ * be added. They should be either SmlPlaceholders or SmlResults. If multiple declarations are specified, a callable
+ * must have one matching input port for each.
+ *
+ * @return
+ * A map of URIs to EObjects (SmlClass, SmlFunction, or SmlWorkflowStep).
+ */
+fun listCallablesWithMatchingParameters(
     context: EObject,
     declarations: List<SmlAbstractDeclaration>
 ): Map<URI, EObject> {
