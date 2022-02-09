@@ -543,7 +543,13 @@ class SimpleMLGenerator : AbstractGenerator() {
                     }
                 }
                 is SmlReference -> {
-                    expr.declaration.correspondingPythonName()
+                    val importAlias = expr.containingCompilationUnitOrNull()
+                        ?.imports
+                        ?.firstOrNull { it.importedNamespace == expr.declaration.qualifiedNameOrNull().toString() }
+                        ?.alias
+                        ?.name
+
+                    importAlias ?: expr.declaration.correspondingPythonName()
                 }
                 is SmlTemplateString -> {
                     val substrings = mutableListOf<String>()
