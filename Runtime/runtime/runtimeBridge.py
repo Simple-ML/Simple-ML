@@ -76,7 +76,7 @@ def save_placeholder(name, contents):
     loop = asyncio.new_event_loop()
 
     asyncio.set_event_loop(loop)
-    ser = False
+    # ser = False
     try:
         placeholder_value = json.JSONEncoder().encode({"action": 'placeholder_available', "placeholder": placeholder})
     #     ser=True
