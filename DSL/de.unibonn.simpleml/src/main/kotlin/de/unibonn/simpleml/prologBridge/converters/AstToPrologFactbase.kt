@@ -78,8 +78,6 @@ import de.unibonn.simpleml.prologBridge.model.facts.UnresolvedT
 import de.unibonn.simpleml.prologBridge.model.facts.WildcardT
 import de.unibonn.simpleml.prologBridge.model.facts.WorkflowT
 import de.unibonn.simpleml.prologBridge.model.facts.YieldT
-import de.unibonn.simpleml.utils.Id
-import de.unibonn.simpleml.utils.IdManager
 import de.unibonn.simpleml.simpleML.SimpleMLPackage
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
@@ -147,6 +145,8 @@ import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.utils.Id
+import de.unibonn.simpleml.utils.IdManager
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.EcoreUtil2

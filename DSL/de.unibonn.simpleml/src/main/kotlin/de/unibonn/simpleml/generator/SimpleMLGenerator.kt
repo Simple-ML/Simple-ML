@@ -223,9 +223,11 @@ class SimpleMLGenerator : AbstractGenerator() {
         val blockLambdaIdManager = IdManager<SmlBlockLambda>()
 
         append("def ${step.correspondingPythonName()}(")
-        append(step.parametersOrEmpty().joinToString {
-            compileParameter(CompileParameterFrame(it, imports, blockLambdaIdManager))
-        })
+        append(
+            step.parametersOrEmpty().joinToString {
+                compileParameter(CompileParameterFrame(it, imports, blockLambdaIdManager))
+            }
+        )
         appendLine("):")
 
         if (step.statementsOrEmpty().withEffect().isEmpty()) {
@@ -387,7 +389,7 @@ class SimpleMLGenerator : AbstractGenerator() {
                 if (lambda.lambdaResultsOrEmpty().isNotEmpty()) {
                     stringBuilder.appendLine(
                         "${indent}return ${
-                            lambda.lambdaResultsOrEmpty().joinToString { it.name }
+                        lambda.lambdaResultsOrEmpty().joinToString { it.name }
                         }"
                     )
                 }

@@ -1,7 +1,6 @@
 package de.unibonn.simpleml.prologBridge.model.facts
 
 import de.unibonn.simpleml.prologBridge.model.facts.PlTerm.Companion.fromJavaRepresentation
-import de.unibonn.simpleml.utils.Id
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
@@ -67,6 +66,7 @@ import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWildcard
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.simpleML.SmlYield
+import de.unibonn.simpleml.utils.Id
 
 /**
  * Represents generic Prolog facts.

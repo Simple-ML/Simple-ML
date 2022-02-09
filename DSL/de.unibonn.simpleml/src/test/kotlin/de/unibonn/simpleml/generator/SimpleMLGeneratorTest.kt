@@ -1,7 +1,6 @@
 package de.unibonn.simpleml.generator
 
 import com.google.inject.Inject
-import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.constant.SmlFileExtension.Flow
 import de.unibonn.simpleml.constant.SmlFileExtension.Stub
 import de.unibonn.simpleml.constant.SmlFileExtension.Test
