@@ -1,6 +1,6 @@
 # Imports ----------------------------------------------------------------------
 
-from runtimeBridge import save_placeholder
+import runtimeBridge.save_placeholder
 
 # Steps ------------------------------------------------------------------------
 
@@ -17,9 +17,9 @@ def testStep():
 def testFlow():
     g()
     a, _, _ = g()
-    save_placeholder('a', a)
+    runtimeBridge.save_placeholder('a', a)
     x, _, _ = g()
-    save_placeholder('x', x)
+    runtimeBridge.save_placeholder('x', x)
     f(a)
     f(x)
     def __block_lambda_0():

@@ -82,6 +82,8 @@ import org.eclipse.xtext.generator.IGeneratorContext
  */
 class SimpleMLGenerator : AbstractGenerator() {
 
+    private val codegenPackage = "simpleml.codegen"
+    private val runtimeBridgePackage = "runtimeBridge"
     private val indent = "    "
 
     /**
@@ -142,7 +144,7 @@ class SimpleMLGenerator : AbstractGenerator() {
     }
 
     private fun compile(compilationUnit: SmlCompilationUnit): String {
-        val imports = mutableListOf<ImportData>()
+        val imports = mutableSetOf<ImportData>()
 
         // Compile steps
         val stepString = compilationUnit
@@ -186,27 +188,16 @@ class SimpleMLGenerator : AbstractGenerator() {
         }
     }
 
-    private fun compileImports(compilationUnit: SmlCompilationUnit, imports: List<ImportData>) = buildString {
-        // TODO split this into a function that gets all external references inside an arbitrary eObject
+    private fun compileImports(compilationUnit: SmlCompilationUnit, imports: Set<ImportData>) = buildString {
+        println(imports) // TODO: remove
 
-        if (compilationUnit.descendants<SmlPlaceholder>().firstOrNull() != null) {
-            appendLine("from runtimeBridge import save_placeholder")
-        }
-
-        val codegenImports = mutableListOf<String>()
-        if (compilationUnit.descendants<SmlInfixOperation>().any { it.operator() == Or }) {
-            codegenImports += "eager_or"
-        }
-        if (compilationUnit.descendants<SmlInfixOperation>().any { it.operator() == And }) {
-            codegenImports += "eager_and"
-        }
-        if (compilationUnit.descendants<SmlInfixOperation>().any { it.operator() == Elvis }) {
-            codegenImports += "eager_elvis"
-        }
-
-        if (codegenImports.isNotEmpty()) {
-            appendLine("from simpleml.codegen import ${codegenImports.joinToString()}")
-        }
+        // Qualified imports
+        imports
+            .filter { it.declarationName == null }
+            .sortedBy { it.importPath }
+            .forEach {
+                appendLine(it.toString())
+            }
 
         compilationUnit
             .descendants<SmlReference>()
@@ -235,13 +226,13 @@ class SimpleMLGenerator : AbstractGenerator() {
             .entries
             .sortedBy { it.key }
             .forEach { (key, value) ->
-                val declarationNames = value.sortedBy { it.declarationName }.joinToString { it.declarationName }
+                val declarationNames = value.sortedBy { it.declarationName }.joinToString { it.declarationName ?: "" }
                 appendLine("from $key import $declarationNames")
             }
     }
 
     @OptIn(ExperimentalStdlibApi::class)
-    private fun compileWorkflowSteps(step: SmlStep, imports: MutableList<ImportData>) = buildString {
+    private fun compileWorkflowSteps(step: SmlStep, imports: MutableSet<ImportData>) = buildString {
         val blockLambdaIdManager = IdManager<SmlBlockLambda>()
 
         append("def ${step.correspondingPythonName()}(")
@@ -272,7 +263,7 @@ class SimpleMLGenerator : AbstractGenerator() {
     }
 
     @OptIn(ExperimentalStdlibApi::class)
-    private fun compileWorkflow(workflow: SmlWorkflow, imports: MutableList<ImportData>) = buildString {
+    private fun compileWorkflow(workflow: SmlWorkflow, imports: MutableSet<ImportData>) = buildString {
         val blockLambdaIdManager = IdManager<SmlBlockLambda>()
 
         appendLine("def ${workflow.correspondingPythonName()}():")
@@ -291,7 +282,7 @@ class SimpleMLGenerator : AbstractGenerator() {
 
     private data class CompileStatementFrame(
         val stmt: SmlAbstractStatement,
-        val imports: MutableList<ImportData>,
+        val imports: MutableSet<ImportData>,
         val blockLambdaIdManager: IdManager<SmlBlockLambda>,
         val shouldSavePlaceholders: Boolean
     )
@@ -333,7 +324,8 @@ class SimpleMLGenerator : AbstractGenerator() {
 
                     if (shouldSavePlaceholders) {
                         stmt.placeholdersOrEmpty().forEach {
-                            stringBuilder.append("\nsave_placeholder('${it.name}', ${it.name})")
+                            imports += ImportData("$runtimeBridgePackage.save_placeholder")
+                            stringBuilder.append("\n$runtimeBridgePackage.save_placeholder('${it.name}', ${it.name})")
                         }
                     }
                 }
@@ -364,7 +356,7 @@ class SimpleMLGenerator : AbstractGenerator() {
 
     private data class CompileBlockLambdaFrame(
         val lambda: SmlBlockLambda,
-        val imports: MutableList<ImportData>,
+        val imports: MutableSet<ImportData>,
         val blockLambdaIdManager: IdManager<SmlBlockLambda>
     )
 
@@ -377,7 +369,13 @@ class SimpleMLGenerator : AbstractGenerator() {
             stringBuilder.append("def ${lambda.uniqueName(blockLambdaIdManager)}(")
             val parameters = mutableListOf<String>()
             for (parameter in lambda.parametersOrEmpty()) {
-                parameters += compileParameter.callRecursive(CompileParameterFrame(parameter, imports, blockLambdaIdManager))
+                parameters += compileParameter.callRecursive(
+                    CompileParameterFrame(
+                        parameter,
+                        imports,
+                        blockLambdaIdManager
+                    )
+                )
             }
             stringBuilder.append(parameters.joinToString())
             stringBuilder.appendLine("):")
@@ -413,7 +411,7 @@ class SimpleMLGenerator : AbstractGenerator() {
 
     private data class CompileParameterFrame(
         val parameter: SmlParameter,
-        val imports: MutableList<ImportData>,
+        val imports: MutableSet<ImportData>,
         val blockLambdaIdManager: IdManager<SmlBlockLambda>
     )
 
@@ -434,7 +432,7 @@ class SimpleMLGenerator : AbstractGenerator() {
 
     private data class CompileExpressionFrame(
         val expression: SmlAbstractExpression,
-        val imports: MutableList<ImportData>,
+        val imports: MutableSet<ImportData>,
         val blockLambdaIdManager: IdManager<SmlBlockLambda>
     )
 
@@ -504,11 +502,20 @@ class SimpleMLGenerator : AbstractGenerator() {
                     val rightOperand =
                         callRecursive(CompileExpressionFrame(expr.rightOperand, imports, blockLambdaIdManager))
                     when (expr.operator()) {
-                        Or -> "eager_or($leftOperand, $rightOperand)"
-                        And -> "eager_and($leftOperand, $rightOperand)"
+                        Or -> {
+                            imports += ImportData("$codegenPackage.eager_or")
+                            "$codegenPackage.eager_or($leftOperand, $rightOperand)"
+                        }
+                        And -> {
+                            imports += ImportData("$codegenPackage.eager_and")
+                            "$codegenPackage.eager_and($leftOperand, $rightOperand)"
+                        }
                         IdenticalTo -> "($leftOperand) is ($rightOperand)"
                         NotIdenticalTo -> "($leftOperand) is not ($rightOperand)"
-                        Elvis -> "eager_elvis($leftOperand, $rightOperand)"
+                        Elvis -> {
+                            imports += ImportData("$codegenPackage.eager_elvis")
+                            "$codegenPackage.eager_elvis($leftOperand, $rightOperand)"
+                        }
                         else -> "($leftOperand) ${expr.operator} ($rightOperand)"
                     }
                 }
@@ -539,9 +546,13 @@ class SimpleMLGenerator : AbstractGenerator() {
                             }
                         }
                         else -> {
-                            val member = callRecursive(CompileExpressionFrame(expr.member, imports, blockLambdaIdManager))
+                            val member =
+                                callRecursive(CompileExpressionFrame(expr.member, imports, blockLambdaIdManager))
                             when {
-                                expr.isNullSafe -> "safe_access($receiver, '$member')"
+                                expr.isNullSafe -> {
+                                    imports += ImportData("$codegenPackage.safe_access")
+                                    "$codegenPackage.safe_access($receiver, '$member')"
+                                }
                                 else -> "$receiver.$member"
                             }
                         }
@@ -643,12 +654,14 @@ private fun String.toSingleLine(): String {
  */
 private data class ImportData(
     val importPath: String,
-    val declarationName: String,
+    val declarationName: String? = null,
     val alias: String? = null
 ) {
     override fun toString(): String {
-        return when (alias) {
-            null -> "from $importPath import $declarationName"
+        return when {
+            declarationName == null && alias == null -> "import $importPath"
+            declarationName == null && alias != null -> "import $importPath as $alias"
+            declarationName != null && alias == null -> "from $importPath import $declarationName"
             else -> "from $importPath import $declarationName as $alias"
         }
     }

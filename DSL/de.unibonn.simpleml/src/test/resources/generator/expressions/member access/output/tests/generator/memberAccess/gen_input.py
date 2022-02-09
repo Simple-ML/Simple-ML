@@ -1,3 +1,7 @@
+# Imports ----------------------------------------------------------------------
+
+import simpleml.codegen.safe_access
+
 # Workflows --------------------------------------------------------------------
 
 def test():
@@ -6,5 +10,5 @@ def test():
     f(h()[1])
     f(C().a)
     f(C().c)
-    f(safe_access(factory(), 'a'))
-    f(safe_access(factory(), 'c'))
+    f(simpleml.codegen.safe_access(factory(), 'a'))
+    f(simpleml.codegen.safe_access(factory(), 'c'))
