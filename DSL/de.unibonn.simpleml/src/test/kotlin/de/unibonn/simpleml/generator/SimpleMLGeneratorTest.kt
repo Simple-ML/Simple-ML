@@ -1,14 +1,20 @@
 package de.unibonn.simpleml.generator
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.constant.SmlFileExtension.Flow
+import de.unibonn.simpleml.constant.SmlFileExtension.Stub
+import de.unibonn.simpleml.constant.SmlFileExtension.Test
 import de.unibonn.simpleml.emf.OriginalFilePath
 import de.unibonn.simpleml.emf.resourceSetOrNull
 import de.unibonn.simpleml.testing.CategorizedTest
 import de.unibonn.simpleml.testing.ParseHelper
+import de.unibonn.simpleml.testing.ResourceName
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
+import de.unibonn.simpleml.testing.assertions.stringify
 import de.unibonn.simpleml.testing.createDynamicTestsFromResourceFolder
 import de.unibonn.simpleml.testing.getResourcePath
 import de.unibonn.simpleml.testing.testDisplayName
+import de.unibonn.simpleml.testing.withSystemLineBreaks
 import io.kotest.assertions.forEachAsClue
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -28,8 +34,9 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Stream
 import kotlin.io.path.extension
+import kotlin.io.path.name
 import kotlin.io.path.readText
-import kotlin.streams.toList
+import kotlin.streams.asSequence
 
 @ExtendWith(InjectionExtension::class)
 @InjectWith(SimpleMLInjectorProvider::class)
@@ -56,7 +63,8 @@ class SimpleMLGeneratorTest {
      * Checks if the given program is a valid test. If there are issues a description of the issue is returned,
      * otherwise this returns `null`.
      */
-    private fun validateTestFile(program: String, filePath: Path): String? {
+    @Suppress("UNUSED_PARAMETER")
+    private fun validateTestFile(resourcePath: Path, filePath: Path, program: String): String? {
 
         // Must be able to parse the test file
         if (parseHelper.parseProgramText(program) == null) {
@@ -64,19 +72,22 @@ class SimpleMLGeneratorTest {
         }
 
         // Must not have errors
-        if (actualIssues(program, filePath).any { it.severity == Severity.ERROR }) {
-            return "Program has errors."
+        val errors = actualIssues(resourcePath, filePath, program).filter { it.severity == Severity.ERROR }
+        if (errors.isNotEmpty()) {
+            return "Program has errors:${errors.stringify()}"
         }
 
         return null
     }
 
-    private fun actualIssues(program: String, filePath: Path): List<Issue> {
-        val parsingResult = parseHelper.parseProgramText(program) ?: return emptyList()
+    private fun actualIssues(resourcePath: Path, filePath: Path, program: String): List<Issue> {
+        val context = context(resourcePath, filePath)
+        val parsingResult = parseHelper.parseProgramText(program, context) ?: return emptyList()
         parsingResult.eResource().eAdapters().add(OriginalFilePath(filePath.toString()))
         return validationHelper.validate(parsingResult)
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun createTest(resourcePath: Path, filePath: Path, program: String) = sequence {
         yield(
             CategorizedTest(
@@ -98,16 +109,28 @@ class SimpleMLGeneratorTest {
         // Contents should match
         actualOutputs.forEachAsClue { actualOutput ->
             val expectedOutput = expectedOutputs.first { it.filePath == actualOutput.filePath }
-            actualOutput.content shouldBe expectedOutput.content
+            actualOutput.content.withSystemLineBreaks() shouldBe expectedOutput.content.withSystemLineBreaks()
         }
     }
 
     private data class OutputFile(val filePath: String, val content: String)
 
+    private fun context(resourcePath: Path, filePath: Path): List<ResourceName> {
+        val root = filePath.parent
+
+        return Files.walk(root)
+            .asSequence()
+            .filter { it.extension in setOf(Flow.extension, Stub.extension, Test.extension) }
+            .filter { it.name.startsWith("_skip_") }
+            .map { resourceName(resourcePath, it) }
+            .toList()
+    }
+
     private fun expectedOutputs(filePath: Path): List<OutputFile> {
         val root = filePath.parent
 
         return Files.walk(root)
+            .asSequence()
             .filter { it.extension == "py" }
             .map {
                 OutputFile(
@@ -131,13 +154,14 @@ class SimpleMLGeneratorTest {
     }
 
     private fun resourceSet(resourcePath: Path, filePath: Path): ResourceSet {
+        val context = context(resourcePath, filePath)
         return parseHelper
-            .parseResource(resourceName(resourcePath, filePath))
+            .parseResource(resourceName(resourcePath, filePath), context)
             ?.resourceSetOrNull()
             .shouldNotBeNull()
     }
 
-    private fun resourceName(resourcePath: Path, filePath: Path): String {
+    private fun resourceName(resourcePath: Path, filePath: Path): ResourceName {
         return resourcePath
             .parent
             .relativize(filePath)

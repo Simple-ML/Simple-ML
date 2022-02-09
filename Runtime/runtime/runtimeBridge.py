@@ -10,9 +10,9 @@ import websockets
 
 async def notify_server(placeHolder):
     """
-        Notify the Runtime Server that a certain placeholder is ready
+    Notify the Runtime Server that a certain placeholder is ready
 
-        placeholder: the placeholder wrapped in a json object
+    placeholder: the placeholder wrapped in a json object
     """
 
     uri = "ws://localhost:6789"
@@ -21,11 +21,11 @@ async def notify_server(placeHolder):
         # await websocket.recv()
 
 
-def save_placeHolder(name, contents):
+def save_placeholder(name, contents):
     """
-        Save the placeholder when it is ready to be called from the code and
-        name: name of the placeholder
-        content: content of the placeholder to be saved
+    Save the placeholder when it is ready to be called from the code and
+    name: name of the placeholder
+    content: content of the placeholder to be saved
     """
 
     placeholder = dict()
@@ -76,13 +76,17 @@ def save_placeHolder(name, contents):
     loop = asyncio.new_event_loop()
 
     asyncio.set_event_loop(loop)
-    ser = False
+    # ser = False
     try:
-        placeholder_value = json.JSONEncoder().encode({"action": 'placeholder_available', "placeholder": placeholder})
+        placeholder_value = json.JSONEncoder().encode(
+            {"action": "placeholder_available", "placeholder": placeholder}
+        )
     #     ser=True
     except Exception as exc:
         print("exception", str(exc))
-        placeholder_value = json.JSONEncoder().encode({"action": 'placeholder_available', "placeholder": placeholder})
+        placeholder_value = json.JSONEncoder().encode(
+            {"action": "placeholder_available", "placeholder": placeholder}
+        )
     # if ser==False:
     #     try:
     #         placeholder_value=json.dumps({"action": 'placeholder_available',"placeholder":placeholder})
@@ -95,6 +99,7 @@ def save_placeHolder(name, contents):
         print(placeholder_value)
 
     asyncio.get_event_loop().run_until_complete(notify_server(placeholder_value))
+
 
 # Test the functionaluty
 # save_placeHolder("input data","""vehicletype,velocity,weekday,hour,highway,maxspeed

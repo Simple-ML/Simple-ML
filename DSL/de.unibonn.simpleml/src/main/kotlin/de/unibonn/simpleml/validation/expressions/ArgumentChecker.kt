@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.validation.expressions
 
-import de.unibonn.simpleml.simpleML.SimpleMLPackage
+import de.unibonn.simpleml.emf.isNamed
+import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.staticAnalysis.linking.parameterOrNull
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
@@ -19,8 +20,19 @@ class ArgumentChecker : AbstractSimpleMLChecker() {
         if (parameterIsConstant && smlArgument.value?.toConstantExpressionOrNull() == null) {
             error(
                 "Arguments assigned to constant parameters must be constant.",
-                SimpleMLPackage.Literals.SML_ARGUMENT__VALUE,
+                Literals.SML_ARGUMENT__VALUE,
                 ErrorCode.MustBeConstant
+            )
+        }
+    }
+
+    @Check
+    fun variadicParameterMustNotBeAssignedByName(smlArgument: SmlArgument) {
+        if (smlArgument.isNamed() && (smlArgument.parameterOrNull()?.isVariadic == true)) {
+            error(
+                "A variadic parameter must not be assigned by name.",
+                Literals.SML_ARGUMENT__PARAMETER,
+                ErrorCode.VariadicParameterMustNotBeAssignedByName
             )
         }
     }
