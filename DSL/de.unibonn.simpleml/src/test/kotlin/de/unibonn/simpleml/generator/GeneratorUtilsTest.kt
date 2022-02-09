@@ -37,6 +37,61 @@ class GeneratorUtilsTest {
         }
 
         @Test
+        fun `should remove all characters that are not legal in Simple-ML identifiers except spaces`() {
+            val resource = createSmlDummyResource(
+                "MyöáúName1",
+                SmlFileExtension.Flow,
+                createSmlCompilationUnit(packageName = "MyName1")
+            )
+
+            resource.baseFileNameOrNull() shouldBe "MyName1"
+        }
+
+        @Test
+        fun `should replace spaces with underscores`() {
+            val resource = createSmlDummyResource(
+                "file with spaces",
+                SmlFileExtension.Flow,
+                createSmlCompilationUnit(packageName = "test")
+            )
+
+            resource.baseFileNameOrNull() shouldBe "file_with_spaces"
+        }
+
+        @Test
+        fun `should replace twice URL encoded spaces with underscores`() {
+            val resource = createSmlDummyResource(
+                "_skip_%2520context%2520same%2520package",
+                SmlFileExtension.Flow,
+                createSmlCompilationUnit(packageName = "test")
+            )
+
+            resource.baseFileNameOrNull() shouldBe "_skip__context_same_package"
+        }
+
+        @Test
+        fun `should replace dots with underscores`() {
+            val resource = createSmlDummyResource(
+                "file.with.dots",
+                SmlFileExtension.Flow,
+                createSmlCompilationUnit(packageName = "test")
+            )
+
+            resource.baseFileNameOrNull() shouldBe "file_with_dots"
+        }
+
+        @Test
+        fun `should replace dashes with underscores`() {
+            val resource = createSmlDummyResource(
+                "file-with-dashes",
+                SmlFileExtension.Flow,
+                createSmlCompilationUnit(packageName = "test")
+            )
+
+            resource.baseFileNameOrNull() shouldBe "file_with_dashes"
+        }
+
+        @Test
         fun `should remove 'smlflow' extension`() {
             val resource = createSmlDummyResource(
                 "file",
@@ -74,7 +129,7 @@ class GeneratorUtilsTest {
             val uri = URI.createURI("dummy:/test.other")
             val resource = XtextResource(uri)
 
-            resource.baseFileNameOrNull() shouldBe "test.other"
+            resource.baseFileNameOrNull() shouldBe "test_other"
         }
 
         @Test

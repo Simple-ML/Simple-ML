@@ -23,6 +23,7 @@ enum class ErrorCode {
 
     NoRequiredParametersAfterFirstOptionalParameter,
     NoMoreParametersAfterVariadicParameter,
+    NoVariadicParameterAfterOptionalParameter,
 
     NO_YIELD_IN_WORKFLOW,
 
@@ -82,5 +83,8 @@ enum class ErrorCode {
 
     NoOptionalParametersInCallableType,
 
-    VariadicParametersMustNotHaveDefaultValue
+    VariadicParametersMustNotHaveDefaultValue,
+    VariadicParameterMustNotBeAssignedByName,
+
+    BlockLambdaPrefix
 }

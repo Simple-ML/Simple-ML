@@ -1,26 +1,29 @@
-package de.unibonn.simpleml.prologBridge.utils
+package de.unibonn.simpleml.utils
+
+import de.unibonn.simpleml.simpleML.SmlAbstractObject
+import java.util.WeakHashMap
 
 /**
- * The ID of a Prolog fact.
+ * The ID of an object.
  */
 @JvmInline
 @Suppress("unused")
 value class Id<out T : Any>(val value: Int)
 
 /**
- * Handles the mapping of objects, usually SmlAbstractObjects in the Simple-ML AST, to the IDs of Prolog facts.
+ * Handles the mapping of objects, usually [SmlAbstractObject]s in the Simple-ML AST, to their IDs.
  */
 class IdManager<UPPER : Any> {
 
     /**
      * Maps an object to an ID.
      */
-    private val objToId = mutableMapOf<UPPER, Id<UPPER>>()
+    private val objToId = WeakHashMap<UPPER, Id<UPPER>>()
 
     /**
      * Maps an ID to an object.
      */
-    private val idToObj = mutableMapOf<Id<UPPER>, UPPER>()
+    private val idToObj = WeakHashMap<Id<UPPER>, UPPER>()
 
     /**
      * The next available ID.
@@ -48,7 +51,7 @@ class IdManager<UPPER : Any> {
     private fun <T : Any> nextId() = Id<T>(nextId++)
 
     /**
-     * Returns the object with the given ID or null if the ID was not assigned yet.
+     * Returns the object with the given ID or `null` if the ID was not assigned yet.
      */
     fun getObjectById(id: Id<*>) = idToObj[id]
 
@@ -61,4 +64,13 @@ class IdManager<UPPER : Any> {
      * Check if the given ID has already been assigned to some object.
      */
     fun knowsId(id: Id<*>) = id in idToObj
+
+    /**
+     * Removes all mappings between object and ID and resets the counter.
+     */
+    fun reset() {
+        objToId.clear()
+        idToObj.clear()
+        nextId = 0
+    }
 }
