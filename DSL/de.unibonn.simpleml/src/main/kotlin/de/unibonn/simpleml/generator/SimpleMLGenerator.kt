@@ -68,6 +68,7 @@ import de.unibonn.simpleml.staticAnalysis.partialEvaluation.SmlConstantString
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
 import de.unibonn.simpleml.staticAnalysis.resultsOrNull
 import de.unibonn.simpleml.staticAnalysis.statementHasNoSideEffects
+import de.unibonn.simpleml.stdlibAccess.pythonModuleOrNull
 import de.unibonn.simpleml.stdlibAccess.pythonNameOrNull
 import de.unibonn.simpleml.utils.IdManager
 import org.eclipse.emf.ecore.resource.Resource
@@ -165,7 +166,7 @@ class SimpleMLGenerator : AbstractGenerator() {
         return buildString {
 
             // Imports
-            val importsString = compileImports(compilationUnit, imports)
+            val importsString = compileImports(imports)
             if (importsString.isNotBlank()) {
                 appendLine("# Imports ----------------------------------------------------------------------\n")
                 appendLine(importsString)
@@ -188,8 +189,7 @@ class SimpleMLGenerator : AbstractGenerator() {
         }
     }
 
-    private fun compileImports(compilationUnit: SmlCompilationUnit, imports: Set<ImportData>) = buildString {
-        println(imports) // TODO: remove
+    private fun compileImports(imports: Set<ImportData>) = buildString {
 
         // Qualified imports
         imports
@@ -199,34 +199,21 @@ class SimpleMLGenerator : AbstractGenerator() {
                 appendLine(it.toString())
             }
 
-        compilationUnit
-            .descendants<SmlReference>()
-            .map { it.declaration }
-            .filter { it.isGlobal() && it.containingCompilationUnitOrNull() != compilationUnit }
-            .mapNotNull {
-                val importPath = it.qualifiedNameOrNull().toString()
-                    .split(".")
-                    .dropLast(1)
-                    .toMutableList()
-
-                if (importPath.isEmpty()) {
-                    println("Declaration not in a package $it.")
-                    null
-                } else {
-                    if (it.isInFlowFile() || it.isInTestFile()) {
-                        val fileName = it.eResource().baseFileNameOrNull() ?: return@mapNotNull null
-                        importPath += "gen_$fileName"
-                    }
-
-                    ImportData(importPath.joinToString("."), it.name)
-                }
-            }
-            .toSet()
+        // From-imports
+        imports
+            .filter { it.declarationName != null }
             .groupBy { it.importPath }
             .entries
             .sortedBy { it.key }
             .forEach { (key, value) ->
-                val declarationNames = value.sortedBy { it.declarationName }.joinToString { it.declarationName ?: "" }
+                val declarationNames = value
+                    .sortedBy { it.declarationName }
+                    .joinToString {
+                        when (it.alias) {
+                            null -> it.declarationName!!
+                            else -> "${it.declarationName} as ${it.alias}"
+                        }
+                    }
                 appendLine("from $key import $declarationNames")
             }
     }
@@ -575,7 +562,39 @@ class SimpleMLGenerator : AbstractGenerator() {
                         ?.alias
                         ?.name
 
-                    importAlias ?: expr.declaration.correspondingPythonName()
+                    // Add import as needed
+                    val declaration = expr.declaration
+                    if (declaration.isGlobal() && declaration.containingCompilationUnitOrNull() != expr.containingCompilationUnitOrNull()) {
+                        val importPath = declaration
+                            .containingCompilationUnitOrNull()
+                            ?.correspondingPythonModule()
+                            ?.split(".")
+                            .orEmpty()
+                            .toMutableList()
+
+                        if (importPath.isNotEmpty()) {
+                            if (declaration.isInFlowFile() || declaration.isInTestFile()) {
+                                val fileName = declaration.eResource().baseFileNameOrNull()
+                                importPath += "gen_$fileName"
+
+                                if (fileName != null) {
+                                    imports += ImportData(
+                                        importPath.joinToString("."),
+                                        declaration.correspondingPythonName(),
+                                        importAlias
+                                    )
+                                }
+                            } else {
+                                imports += ImportData(
+                                    importPath.joinToString("."),
+                                    declaration.correspondingPythonName(),
+                                    importAlias
+                                )
+                            }
+                        }
+                    }
+
+                    importAlias ?: declaration.correspondingPythonName()
                 }
                 is SmlTemplateString -> {
                     val substrings = mutableListOf<String>()
@@ -594,6 +613,13 @@ class SimpleMLGenerator : AbstractGenerator() {
  */
 private fun SmlAbstractDeclaration.correspondingPythonName(): String {
     return pythonNameOrNull() ?: name
+}
+
+/**
+ * Returns the name of the Python module that corresponds to this [SmlCompilationUnit].
+ */
+private fun SmlCompilationUnit.correspondingPythonModule(): String {
+    return pythonModuleOrNull() ?: name
 }
 
 /**
