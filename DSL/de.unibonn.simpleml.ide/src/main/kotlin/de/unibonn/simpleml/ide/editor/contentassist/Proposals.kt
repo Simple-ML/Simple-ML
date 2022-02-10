@@ -33,7 +33,7 @@ import org.eclipse.xtext.EcoreUtil2
  * @return
  * A map of URIs to EObjects (SmlClass, SmlFunction, or SmlWorkflowStep).
  */
-fun listCallablesWithOnlyPrimitiveParameters(context: EObject): Map<URI, EObject> {
+fun listCallablesWithOnlyPrimitiveParameters(context: EObject): Map<URI, SmlAbstractCallable> {
     return context.allCallables()
         .filterValues { obj ->
             when (obj) {
@@ -76,7 +76,7 @@ fun listCallablesWithOnlyPrimitiveParameters(context: EObject): Map<URI, EObject
 fun listCallablesWithMatchingParameters(
     context: EObject,
     declarations: List<SmlAbstractDeclaration>
-): Map<URI, EObject> {
+): Map<URI, SmlAbstractCallable> {
     val requiredTypes = declarations.map { it.type() }
 
     return context.allCallables()
