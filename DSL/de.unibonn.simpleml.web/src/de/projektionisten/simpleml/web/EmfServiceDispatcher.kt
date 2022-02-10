@@ -257,23 +257,6 @@ class EmfServiceDispatcher @Inject constructor(
         return (this as? SmlNamedType)?.declaration?.qualifiedNameOrNull()?.toString()
     }
 
-    private fun XtextWebDocument.createErrorResult(text: String): ServiceDescriptor {
-        val serviceDescriptor = ServiceDescriptor()
-
-        serviceDescriptor.setService(fun(): EmfServiceResult {
-            return EmfServiceResult(
-                "",
-                "",
-                text,
-                this.stateId,
-                false
-            )
-        })
-        serviceDescriptor.setHasSideEffects(false)
-
-        return serviceDescriptor
-    }
-
     private fun IServiceContext.createDefaultGetServiceResult(data: String): ServiceDescriptor {
         return this.createDefaultServiceResult(data, false)
     }
@@ -284,25 +267,25 @@ class EmfServiceDispatcher @Inject constructor(
 
     private fun IServiceContext.createDefaultServiceResult(data: String, sideEffects: Boolean): ServiceDescriptor {
         val resourceDocument = getResourceDocument(super.getResourceID(this), this)
+        val emfModel = jsonMapper.writeValueAsString(resourceDocument.resource)
+        val serviceDescriptor = ServiceDescriptor()
+        var error = ""
 
         if (sideEffects) {
             try {
-
                 val astRoot = resourceDocument.resource.contents.get(0)
                 resourceDocument.text = serializer.serialize(astRoot)
-                getValidationService(this).service.apply()
             } catch (e: Exception) {
-                return resourceDocument.createErrorResult("Serialization failed: " + e.message)
+                error = "Serialization failed: " + e.message
             }
         }
-        val emfModel = jsonMapper.writeValueAsString(resourceDocument.resource)
-        val serviceDescriptor = ServiceDescriptor()
 
         serviceDescriptor.setService(fun(): EmfServiceResult {
             return EmfServiceResult(
                 resourceDocument.text,
                 emfModel,
                 data,
+                error,
                 resourceDocument.stateId,
                 sideEffects
             )
