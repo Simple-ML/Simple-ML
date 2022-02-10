@@ -11,8 +11,16 @@ import de.projektionisten.simpleml.web.dto.ParameterDTO
 import de.projektionisten.simpleml.web.dto.ProcessMetadataDTO
 import de.projektionisten.simpleml.web.dto.ProcessProposalsDTO
 import de.unibonn.simpleml.emf.createSmlImport
+import de.unibonn.simpleml.emf.createSmlAssignment
+import de.unibonn.simpleml.emf.createSmlPlaceholder
+import de.unibonn.simpleml.emf.createSmlReference
+import de.unibonn.simpleml.emf.createSmlCall
+import de.unibonn.simpleml.emf.createSmlMemberAccess
+import de.unibonn.simpleml.emf.createSmlArgument
+import de.unibonn.simpleml.emf.isClassMember
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
+import de.unibonn.simpleml.stdlibAccess.descriptionOrNull
 import de.unibonn.simpleml.ide.editor.contentassist.listCallablesWithMatchingParameters
 import de.unibonn.simpleml.ide.editor.contentassist.listCallablesWithOnlyPrimitiveParameters
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
@@ -163,52 +171,43 @@ class EmfServiceDispatcher @Inject constructor(
         val resourceStdLib = stdLibResourceSetProvider.get(createEntityDTO.referenceIfFunktion, context)
         val functionRef = resourceStdLib.getEObject(URI.createURI(createEntityDTO.referenceIfFunktion), true)
 
-        val assignment = SimpleMLFactory.eINSTANCE.createSmlAssignment()
-        val assigneeList = SimpleMLFactory.eINSTANCE.createSmlAssigneeList()
-        val placeholder = SimpleMLFactory.eINSTANCE.createSmlPlaceholder()
-        val call = SimpleMLFactory.eINSTANCE.createSmlCall()
-        val argumentList = SimpleMLFactory.eINSTANCE.createSmlArgumentList()
-        val argument = SimpleMLFactory.eINSTANCE.createSmlArgument()
-        val reference = SimpleMLFactory.eINSTANCE.createSmlReference()
-        val reference2 = SimpleMLFactory.eINSTANCE.createSmlReference()
-
-        when (functionRef) {
-            is SmlFunction -> {
-                reference.declaration = functionRef
-            }
-            is SmlClass -> {
-                reference.declaration = functionRef
+        val assignment = when {
+            functionRef is SmlFunction && functionRef.isClassMember() -> {
+                createSmlAssignment(
+                    listOf(createSmlPlaceholder(createEntityDTO.placeholderName)),
+                    createSmlCall(
+                        createSmlMemberAccess(
+                            createSmlReference(getEmfEntityByPath(resourceDocument, createEntityDTO.associationTargetPath) as SmlAbstractDeclaration),
+                            createSmlReference(functionRef as SmlAbstractDeclaration)
+                        )
+                    )
+                )
+            } 
+            else -> {
+                createSmlAssignment(
+                    listOf(createSmlPlaceholder(createEntityDTO.placeholderName)),
+                    createSmlCall(
+                        createSmlReference(functionRef as SmlAbstractDeclaration),
+                        arguments = listOf(
+                            createSmlArgument(
+                                createSmlReference(getEmfEntityByPath(resourceDocument, createEntityDTO.associationTargetPath) as SmlAbstractDeclaration)
+                            )
+                        )
+                    )
+                )
             }
         }
-
-        // create entity
-        call.receiver = reference
-        call.argumentList = argumentList
-
-        placeholder.name = createEntityDTO.placeholderName
-        assigneeList.assignees.add(placeholder)
-
-        assignment.expression = call
-        assignment.assigneeList = assigneeList
 
         // attach to root-node
         (astRoot.members[0] as SmlWorkflow).body.statements.add(assignment)
 
-        if (!createEntityDTO.associationTargetPath.isNullOrEmpty()) {
-            val associationTarget = getEmfEntityByPath(resourceDocument, createEntityDTO.associationTargetPath)
-
-            reference2.declaration = associationTarget as SmlPlaceholder
-            argument.value = reference2 as SmlAbstractExpression
-            call.argumentList.arguments.add(argument)
-        }
-
         // create import-statement if necessary
         val importExists = astRoot.imports.any {
-            it.importedNamespace == reference.declaration.qualifiedNameOrNull().toString()
+            it.importedNamespace == functionRef.qualifiedNameOrNull().toString()
         }
         if (!importExists) {
             astRoot.imports += createSmlImport(
-                importedNamespace = reference.declaration.qualifiedNameOrNull().toString()
+                importedNamespace = functionRef.qualifiedNameOrNull().toString()
             )
         }
 
@@ -218,7 +217,8 @@ class EmfServiceDispatcher @Inject constructor(
     private fun getProcessMetadataFromURI(uri: String, serviceContext: IServiceContext): ProcessMetadataDTO {
         val resourceDocument = getResourceDocument(super.getResourceID(serviceContext), serviceContext)
         var entityName = ""
-        var error = ""
+        var description: String? = ""
+        var error: String
         var entity = resourceDocument.resource.getEObject(uri)
         val parameterMetadata = ArrayList<ParameterDTO>()
         val resultMetadata = ArrayList<ParameterDTO>()
@@ -246,11 +246,12 @@ class EmfServiceDispatcher @Inject constructor(
                     entityName = entity.name
                 }
             }
+            description = (entity as? SmlAbstractDeclaration)?.descriptionOrNull() 
             error = ""
         } else {
             error = "Entity not found!"
         }
-        return ProcessMetadataDTO(entityName, uri, error, parameterMetadata, resultMetadata)
+        return ProcessMetadataDTO(entityName, uri, error, parameterMetadata, resultMetadata, description)
     }
 
     private fun SmlAbstractType.qualifiedNameOrNull(): String? {
@@ -275,6 +276,7 @@ class EmfServiceDispatcher @Inject constructor(
             try {
                 val astRoot = resourceDocument.resource.contents.get(0)
                 resourceDocument.text = serializer.serialize(astRoot)
+                getValidationService(this).service.apply()
             } catch (e: Exception) {
                 error = "Serialization failed: " + e.message
             }
