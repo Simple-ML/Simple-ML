@@ -109,10 +109,17 @@ export default class XtextServices {
     }
 
     /**
-     * Standard validation-service from text-editor
+     * Default validation-service from text-editor
      */
     static validate() {
         TextEditorWrapper.editor.xtextServices.validate();
+    }
+
+    /**
+     * Default update-service from text-editor
+     */
+     static update() {
+        TextEditorWrapper.editor.xtextServices.update({forceUpdate: true});
     }
 
     /**

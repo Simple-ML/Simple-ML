@@ -99,6 +99,7 @@ class EmfServiceDispatcher @Inject constructor(
     }
 
     private fun getEmfModel(context: IServiceContext): ServiceDescriptor {
+        getValidationService(context).service.apply()
         return context.createDefaultGetServiceResult("")
     }
 
@@ -172,6 +173,15 @@ class EmfServiceDispatcher @Inject constructor(
         val functionRef = resourceStdLib.getEObject(URI.createURI(createEntityDTO.referenceIfFunktion), true)
 
         val assignment = when {
+            createEntityDTO.associationTargetPath == "" -> {
+                createSmlAssignment(
+                    listOf(createSmlPlaceholder(createEntityDTO.placeholderName)),
+                    createSmlCall(
+                        createSmlReference(functionRef as SmlAbstractDeclaration),
+                        arguments = listOf()
+                    )
+                )
+            }
             functionRef is SmlFunction && functionRef.isClassMember() -> {
                 createSmlAssignment(
                     listOf(createSmlPlaceholder(createEntityDTO.placeholderName)),
@@ -205,7 +215,7 @@ class EmfServiceDispatcher @Inject constructor(
         val importExists = astRoot.imports.any {
             it.importedNamespace == functionRef.qualifiedNameOrNull().toString()
         }
-        if (!importExists) {
+        if (!importExists && !functionRef.isClassMember()) {
             astRoot.imports += createSmlImport(
                 importedNamespace = functionRef.qualifiedNameOrNull().toString()
             )
