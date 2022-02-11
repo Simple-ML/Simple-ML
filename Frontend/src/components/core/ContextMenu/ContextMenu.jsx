@@ -2,6 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Backdrop, TextField } from '@mui/material';
 //redux
 import InferenceCreator from './InferenceCreator';
 import { closeContextMenu } from '../../../reducers/contextMenu';
@@ -20,6 +21,26 @@ class ContextMenu extends React.Component {
 
         this.inferFromContextDynamically = this.inferFromContextDynamically.bind(this);
         this.prepareMetaData = this.prepareMetaData.bind(this);
+
+        this.state = {
+            contextButtonFunc: () => {},
+            isBackdropActive: false,
+            placeholderName: ''
+        };
+    }
+
+    clearState = () => {
+        this.setState({
+            contextButtonFunc: () => {},
+            isBackdropActive: false,
+            placeholderName: ''
+        });
+    }
+
+    createEntity = () => {
+        this.state.contextButtonFunc(this.state.placeholderName);
+        this.clearState();
+        this.props.closeContextMenu();
     }
 
     inferFromContextDynamically = (context, context2) => {
@@ -32,11 +53,11 @@ class ContextMenu extends React.Component {
                         icon: editIcon,
                         text: item.name
                     },
-                    func: () => {
+                    func: (placeholderName) => {
                         XtextServices.createEntity({
                             className: '',
                             referenceIfFunktion: item.emfPath, 
-                            placeholderName: 'temp',
+                            placeholderName: placeholderName,
                             associationTargetPath: context.associationTargetPath || ''
                         });
                     }
@@ -90,8 +111,10 @@ class ContextMenu extends React.Component {
                                     key={i}
                                     disabled={item.metaData.disabled()}
                                     onClick={() => {
-                                        item.func();
-                                        this.props.closeContextMenu();
+                                        this.setState({
+                                            contextButtonFunc: item.func,
+                                            isBackdropActive: true
+                                        })
                                     }
                                 }>
                                     <img className={ContextMenuStyle.icon} src={item.metaData.icon}/>
@@ -104,6 +127,44 @@ class ContextMenu extends React.Component {
                 <div className={ContextMenuStyle["toolbar-outside"]}
                      onClick={this.props.closeContextMenu}>
                 </div>
+                <Backdrop
+                    // style= {{backgroundColor:'white', opacity: '0.3'}}
+                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={this.state.isBackdropActive}
+                >
+                    <div className={ContextMenuStyle["assign-placeholder-modal"]}>
+                        <div className={ContextMenuStyle["assign-placeholder-modal-headline"]}>
+                            Assign a name
+                        </div>
+                        <TextField className={ContextMenuStyle["assign-placeholder-modal-text-field"]}
+                            id="outlined-basic" label="Name" variant="outlined" value={this.state.placeholderName}
+                            onChange={(e) => {
+                                e.persist();
+                                // this.state.placeholderName = e.target.value;
+                                this.setState({placeholderName: e.target.value})
+                            }}
+                            onKeyDown={(e) => {
+                                if(e.keyCode === 13)
+                                    this.createEntity();
+                            }}>
+                        </TextField>
+                        <div className={ContextMenuStyle["assign-placeholder-modal-button-container"]}>
+                            <button className={ContextMenuStyle["assign-placeholder-modal-cancel-button"]}
+                                onClick={() => {
+                                    this.clearState();
+                                    this.props.closeContextMenu();
+                                }}>
+                                Cancel
+                            </button>
+                            <button className={ContextMenuStyle["assign-placeholder-modal-create-button"]}
+                                onClick={() => {
+                                    this.createEntity();
+                                }}>
+                                Create
+                            </button>
+                        </div>
+                    </div>
+                </Backdrop>
             </div>
         )
     }
