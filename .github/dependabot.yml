@@ -12,6 +12,10 @@ updates:
       interval: "monthly"
 
   # DSL
+  - package-ecosystem: "docker"
+    directory: "/DSL"
+    schedule:
+      interval: "monthly"  
   - package-ecosystem: "gradle"
     directory: "/DSL"
     schedule:
@@ -22,7 +26,17 @@ updates:
       interval: "monthly"
 
   # Frontend
+  - package-ecosystem: "docker"
+    directory: "/Frontend"
+    schedule:
+      interval: "monthly" 
   - package-ecosystem: "npm"
     directory: "/Frontend"
+    schedule:
+      interval: "monthly"
+
+  # Runtime
+  - package-ecosystem: "docker"
+    directory: "/Runtime"
     schedule:
       interval: "monthly"
