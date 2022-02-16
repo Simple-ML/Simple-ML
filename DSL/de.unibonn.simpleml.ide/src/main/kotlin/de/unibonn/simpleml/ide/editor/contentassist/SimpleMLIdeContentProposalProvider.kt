@@ -83,7 +83,7 @@ class SimpleMLIdeContentProposalProvider @Inject constructor(
     ) {
         val usedParameters = model.arguments.map { it.parameter }.toSet()
         model.parametersOrNull()
-            ?.filter { it !in usedParameters }
+            ?.filter { it !in usedParameters && !it.isVariadic }
             ?.forEach {
                 acceptor.accept(proposalCreator.createProposal("${it.name} = ", context), crossReferencePriority)
             }

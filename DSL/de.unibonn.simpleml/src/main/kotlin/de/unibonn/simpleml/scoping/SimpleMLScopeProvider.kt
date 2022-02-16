@@ -91,7 +91,6 @@ class SimpleMLScopeProvider : AbstractSimpleMLScopeProvider() {
         val parameters = smlArgument
             .closestAncestorOrNull<SmlArgumentList>()
             ?.parametersOrNull()
-            ?.filterNot { it.isVariadic }
             ?: emptyList()
         return Scopes.scopeFor(parameters)
     }

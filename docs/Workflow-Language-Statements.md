@@ -3,8 +3,8 @@ Statements are used in the [workflow language](./Workflow-Language.md) to run a 
 * [assignments](#assignments), which also evaluate an expression exactly once, but then assign selected results to _placeholders_ or _results_.
 
 Other types of statements such as
- * if-statements to conditionally execute code or
- * while-statements to repeatedly execute code
+* if-statements to conditionally execute code or
+* while-statements to repeatedly execute code
 
 are not planned since we want to keep the language small and easy to learn. Moreover, we want to refrain from developing yet another general-purpose programming language. Instead, code that depends on such features can be implemented in Python, integrated into Simple-ML using the [stub language](./Stub-Language.md), and called in a workflow using the provided statements.
 
@@ -24,9 +24,9 @@ The next snippet shows how the singular result of an expression (the number 1) c
 
     val one = 1;
 
-If an expression produces more than one result, each one can be assigned to a placeholder individually. However, the list of placeholders must be enclosed in parentheses, whereas the parentheses can be omitted if there is only one placeholder. For example, the `split` method in this snippet splits a large dataset into two datasets according to a given ratio, which can then be used for, say, training and testing:
+If an expression produces more than one result, each one can be assigned to a placeholder individually. For example, the `split` method in this snippet splits a large dataset into two datasets according to a given ratio, which can then be used for, say, training and testing:
 
-    (val trainingDataset, val testDataset) = fullDataset.split(0.8);
+    val trainingDataset, val testDataset = fullDataset.split(0.8);
 
 ### Yielding Results
 
@@ -52,14 +52,14 @@ This creates a block lambda that has two results, called "one" and "two". The di
 
 In case we are only interested in some of the results, we can skip results by inserting an underscore in the appropriate location. In the next snippet, we only assign the dataset for testing to a placeholder and ignore the training dataset:
 
-    (_, val testDataset) = fullDataset.split(0.8);
+    _, val testDataset = fullDataset.split(0.8);
 
 ### Everything Taken Together
 
-When the right-hand side of the assignment produces more than one value, it is possible to freely decide whether a value should be assigned to a placeholder, yielded or ignored. In the upcoming snippet we use this to yield the test dataset right away and use the training dataset only internally for training a model, which is then yielded as well. Note again that parentheses must be used around the left-hand side of an assignment when there are multiple assignees:
+When the right-hand side of the assignment produces more than one value, it is possible to freely decide whether a value should be assigned to a placeholder, yielded or ignored. In the upcoming snippet we use this to yield the test dataset right away and use the training dataset only internally for training a model, which is then yielded as well:
 
     step createTestAndModel(fullDataset: Dataset) -> (testDataset: Dataset, trainedModel: Model) {
-        (val trainingDataset, yield testDataset) = fullDataset.split(0.8);
+        val trainingDataset, yield testDataset = fullDataset.split(0.8);
         // ...
         yield trainedModel = model.fit(trainingDataset);
     }

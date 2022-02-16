@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.ide.editor.contentassist
 
 import com.google.inject.Inject
+import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
@@ -14,6 +15,7 @@ import io.kotest.matchers.maps.shouldNotContainValue
 import io.kotest.matchers.nulls.shouldNotBeNull
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -35,7 +37,9 @@ class ProposalsTest {
         |
         |class A()
         |class B()
-        |class C()
+        |class C() {
+        |    fun someMethod()
+        |}
         |class D() sub C
         |
         |step matching_a(a: A) {}
@@ -51,93 +55,127 @@ class ProposalsTest {
         |}
     """.trimMargin()
 
-    @Test
-    fun `should contain steps with primitive parameters when no result is passed`() {
-        val context = parseHelper.parseProgramText(testProgram)
-        context.shouldNotBeNull()
+    @Nested
+    inner class ListCallablesWithOnlyPrimitiveParameters {
 
-        val steps = context.members
-            .asSequence()
-            .filterIsInstance<SmlStep>()
-            .filter { it.name.startsWith("primitive") }
-            .toList()
-        steps.shouldHaveSize(5)
+        @Test
+        fun `should contain steps with primitive parameters`() {
+            val context = parseHelper.parseProgramText(testProgram)
+            context.shouldNotBeNull()
 
-        val descriptions = listCallables(context, emptyList())
-        descriptions.shouldContainValues(*steps.toTypedArray())
+            val steps = context.members
+                .asSequence()
+                .filterIsInstance<SmlStep>()
+                .filter { it.name.startsWith("primitive") }
+                .toList()
+            steps.shouldHaveSize(5)
+
+            val descriptions = listCallablesWithOnlyPrimitiveParameters(context)
+            descriptions.shouldContainValues(*steps.toTypedArray())
+        }
     }
 
-    @Test
-    fun `should contain only steps with matching parameters when a placeholder is passed`() {
-        val context = parseHelper.parseProgramText(testProgram)
-        context.shouldNotBeNull()
+    @Nested
+    inner class ListCallablesWithMatchingParameters {
 
-        val placeholder = context.findUniqueDeclarationOrFail<SmlPlaceholder>("test_placeholder_a")
-        val workflowStepA = context.findUniqueDeclarationOrFail<SmlStep>("matching_a")
-        val workflowStepB = context.findUniqueDeclarationOrFail<SmlStep>("matching_b")
+        @Test
+        fun `should contain only steps with matching parameters when a placeholder is passed`() {
+            val context = parseHelper.parseProgramText(testProgram)
+            context.shouldNotBeNull()
 
-        val descriptions = listCallables(context, listOf(placeholder))
-        descriptions.shouldContainValue(workflowStepA)
-        descriptions.shouldNotContainValue(workflowStepB)
-    }
+            val placeholder = context.findUniqueDeclarationOrFail<SmlPlaceholder>("test_placeholder_a")
+            val workflowStepA = context.findUniqueDeclarationOrFail<SmlStep>("matching_a")
+            val workflowStepB = context.findUniqueDeclarationOrFail<SmlStep>("matching_b")
 
-    @Test
-    fun `should contain only steps with matching parameters when a result is passed`() {
-        val context = parseHelper.parseProgramText(testProgram)
-        context.shouldNotBeNull()
+            val descriptions = listCallablesWithMatchingParameters(context, listOf(placeholder))
+            descriptions.shouldContainValue(workflowStepA)
+            descriptions.shouldNotContainValue(workflowStepB)
+        }
 
-        val result = context.findUniqueDeclarationOrFail<SmlResult>("test_result_a")
-        val workflowStepA = context.findUniqueDeclarationOrFail<SmlStep>("matching_a")
-        val workflowStepB = context.findUniqueDeclarationOrFail<SmlStep>("matching_b")
+        @Test
+        fun `should contain only steps with matching parameters when a result is passed`() {
+            val context = parseHelper.parseProgramText(testProgram)
+            context.shouldNotBeNull()
 
-        val descriptions = listCallables(context, listOf(result))
-        descriptions.shouldContainValue(workflowStepA)
-        descriptions.shouldNotContainValue(workflowStepB)
-    }
+            val result = context.findUniqueDeclarationOrFail<SmlResult>("test_result_a")
+            val workflowStepA = context.findUniqueDeclarationOrFail<SmlStep>("matching_a")
+            val workflowStepB = context.findUniqueDeclarationOrFail<SmlStep>("matching_b")
 
-    @Test
-    fun `should contain only steps with matching parameters when multiple declarations are passed (1)`() {
-        val context = parseHelper.parseProgramText(testProgram)
-        context.shouldNotBeNull()
+            val descriptions = listCallablesWithMatchingParameters(context, listOf(result))
+            descriptions.shouldContainValue(workflowStepA)
+            descriptions.shouldNotContainValue(workflowStepB)
+        }
 
-        val result = context.findUniqueDeclarationOrFail<SmlResult>("test_result_c")
-        val matchingWorkflow = context.findUniqueDeclarationOrFail<SmlStep>("matching_multiple_c")
-        val nonMatchingWorkflow = context.findUniqueDeclarationOrFail<SmlStep>("not_matching_multiple_c")
+        @Test
+        fun `should contain only steps with matching parameters when multiple declarations are passed (1)`() {
+            val context = parseHelper.parseProgramText(testProgram)
+            context.shouldNotBeNull()
 
-        val descriptions = listCallables(context, listOf(result, result))
-        descriptions.shouldContainValue(matchingWorkflow)
-        descriptions.shouldNotContainValue(nonMatchingWorkflow)
-    }
+            val result = context.findUniqueDeclarationOrFail<SmlResult>("test_result_c")
+            val matchingWorkflow = context.findUniqueDeclarationOrFail<SmlStep>("matching_multiple_c")
+            val nonMatchingWorkflow = context.findUniqueDeclarationOrFail<SmlStep>("not_matching_multiple_c")
 
-    @Test
-    fun `should contain only steps with matching parameters when multiple declarations are passed (2)`() {
-        val context = parseHelper.parseProgramText(testProgram)
-        context.shouldNotBeNull()
+            val descriptions = listCallablesWithMatchingParameters(context, listOf(result, result))
+            descriptions.shouldContainValue(matchingWorkflow)
+            descriptions.shouldNotContainValue(nonMatchingWorkflow)
+        }
 
-        val result = context.findUniqueDeclarationOrFail<SmlResult>("test_result_c")
-        val placeholder = context.findUniqueDeclarationOrFail<SmlPlaceholder>("test_placeholder_d")
-        val matchingWorkflow1 = context.findUniqueDeclarationOrFail<SmlStep>("matching_multiple_c_d")
-        val matchingWorkflow2 = context.findUniqueDeclarationOrFail<SmlStep>("matching_multiple_d_c")
+        @Test
+        fun `should contain only steps with matching parameters when multiple declarations are passed (2)`() {
+            val context = parseHelper.parseProgramText(testProgram)
+            context.shouldNotBeNull()
 
-        // Inverse order of placeholder and result than (3)
-        val descriptions = listCallables(context, listOf(result, placeholder))
-        descriptions.shouldContainValue(matchingWorkflow1)
-        descriptions.shouldContainValue(matchingWorkflow2)
-    }
+            val result = context.findUniqueDeclarationOrFail<SmlResult>("test_result_c")
+            val placeholder = context.findUniqueDeclarationOrFail<SmlPlaceholder>("test_placeholder_d")
+            val matchingWorkflow1 = context.findUniqueDeclarationOrFail<SmlStep>("matching_multiple_c_d")
+            val matchingWorkflow2 = context.findUniqueDeclarationOrFail<SmlStep>("matching_multiple_d_c")
 
-    @Test
-    fun `should contain only steps with matching parameters when multiple declarations are passed (3)`() {
-        val context = parseHelper.parseProgramText(testProgram)
-        context.shouldNotBeNull()
+            // Inverse order of placeholder and result compared to (3)
+            val descriptions = listCallablesWithMatchingParameters(context, listOf(result, placeholder))
+            descriptions.shouldContainValue(matchingWorkflow1)
+            descriptions.shouldContainValue(matchingWorkflow2)
+        }
 
-        val result = context.findUniqueDeclarationOrFail<SmlResult>("test_result_c")
-        val placeholder = context.findUniqueDeclarationOrFail<SmlPlaceholder>("test_placeholder_d")
-        val matchingWorkflow1 = context.findUniqueDeclarationOrFail<SmlStep>("matching_multiple_c_d")
-        val matchingWorkflow2 = context.findUniqueDeclarationOrFail<SmlStep>("matching_multiple_d_c")
+        @Test
+        fun `should contain only steps with matching parameters when multiple declarations are passed (3)`() {
+            val context = parseHelper.parseProgramText(testProgram)
+            context.shouldNotBeNull()
 
-        // Inverse order of placeholder and result than (2)
-        val descriptions = listCallables(context, listOf(placeholder, result))
-        descriptions.shouldContainValue(matchingWorkflow1)
-        descriptions.shouldContainValue(matchingWorkflow2)
+            val result = context.findUniqueDeclarationOrFail<SmlResult>("test_result_c")
+            val placeholder = context.findUniqueDeclarationOrFail<SmlPlaceholder>("test_placeholder_d")
+            val matchingWorkflow1 = context.findUniqueDeclarationOrFail<SmlStep>("matching_multiple_c_d")
+            val matchingWorkflow2 = context.findUniqueDeclarationOrFail<SmlStep>("matching_multiple_d_c")
+
+            // Inverse order of placeholder and result compared to (2)
+            val descriptions = listCallablesWithMatchingParameters(context, listOf(placeholder, result))
+            descriptions.shouldContainValue(matchingWorkflow1)
+            descriptions.shouldContainValue(matchingWorkflow2)
+        }
+
+        @Test
+        fun `should contain methods defined directly on class`() {
+            val context = parseHelper.parseProgramText(testProgram)
+            context.shouldNotBeNull()
+
+            val result = context.findUniqueDeclarationOrFail<SmlResult>("test_result_c")
+            val matchingMethod = context.findUniqueDeclarationOrFail<SmlFunction>("someMethod")
+
+            // Inverse order of placeholder and result compared to (2)
+            val descriptions = listCallablesWithMatchingParameters(context, listOf(result))
+            descriptions.shouldContainValue(matchingMethod)
+        }
+
+        @Test
+        fun `should contain methods defined on superclass`() {
+            val context = parseHelper.parseProgramText(testProgram)
+            context.shouldNotBeNull()
+
+            val placeholder = context.findUniqueDeclarationOrFail<SmlPlaceholder>("test_placeholder_d")
+            val matchingMethod = context.findUniqueDeclarationOrFail<SmlFunction>("someMethod")
+
+            // Inverse order of placeholder and result compared to (2)
+            val descriptions = listCallablesWithMatchingParameters(context, listOf(placeholder))
+            descriptions.shouldContainValue(matchingMethod)
+        }
     }
 }

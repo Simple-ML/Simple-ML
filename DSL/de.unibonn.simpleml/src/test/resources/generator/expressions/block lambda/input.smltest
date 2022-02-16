@@ -1,0 +1,15 @@
+package tests.generator.blockLambda
+
+fun f(param: Any?)
+
+fun g() -> a: Int
+
+workflow test {
+    f((a, b = 2) {
+        yield d = g();
+    });    
+    f((a, vararg c) {
+        yield d = g();
+    });
+    f(() {});
+}

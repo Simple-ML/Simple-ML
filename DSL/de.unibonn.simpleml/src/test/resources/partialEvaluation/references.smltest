@@ -13,7 +13,7 @@ workflow failedRecordAssignment {
     val lambda = () {
         yield result = 1;
     };
-    (_, val placeholder) = lambda();
+    _, val placeholder = lambda();
 
     placeholder;
 }
@@ -24,7 +24,7 @@ step myStep1() -> (a: Int, b: Int) {
 }
 
 workflow recordAssignmentWithDifferentYieldOrder {
-    (val placeholder1, val placeholder2) = myStep1();
+    val placeholder1, val placeholder2 = myStep1();
 
     placeholder1 - placeholder2;
 }
@@ -34,7 +34,7 @@ step myStep2() -> (a: Int, b: Int) {
 }
 
 workflow recordAssignmentWithMissingYield {
-    (_, val placeholder) = myStep2();
+    _, val placeholder = myStep2();
     
     placeholder;
 }

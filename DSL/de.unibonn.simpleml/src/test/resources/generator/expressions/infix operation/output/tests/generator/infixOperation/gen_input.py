@@ -1,12 +1,14 @@
 # Imports ----------------------------------------------------------------------
 
-from simpleml.codegen import eager_or, eager_and, eager_elvis
+import simpleml.codegen.eager_and
+import simpleml.codegen.eager_elvis
+import simpleml.codegen.eager_or
 
 # Workflows --------------------------------------------------------------------
 
 def test():
-    f(eager_or(g(), g()))
-    f(eager_and(g(), g()))
+    f(simpleml.codegen.eager_or(g(), g()))
+    f(simpleml.codegen.eager_and(g(), g()))
     f((h()) == (h()))
     f((h()) != (h()))
     f((h()) is (h()))
@@ -19,4 +21,4 @@ def test():
     f((h()) - (h()))
     f((h()) * (h()))
     f((h()) / (h()))
-    f(eager_elvis(i(), i()))
+    f(simpleml.codegen.eager_elvis(i(), i()))

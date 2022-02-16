@@ -14,6 +14,8 @@ enum class InfoCode {
     UnnecessaryTypeParameterList,
     UnnecessaryUnionType,
 
-    // Other
+    // Annotation calls
+    IdenticalPythonModule,
+    IdenticalPythonName,
     PureImpliesNoSideEffects
 }
