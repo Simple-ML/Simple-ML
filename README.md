@@ -2,7 +2,7 @@
 
 [![Main](https://github.com/Simple-ML/Simple-ML/actions/workflows/main.yml/badge.svg)](https://github.com/Simple-ML/Simple-ML/actions/workflows/main.yml)
 
-**Simple-ML is a project funded by the German Federal Ministry of Education and Research (BMBF). Our goal is to increase the usability of creating make machine learning workflows.**
+**Simple-ML is a project funded by the German Federal Ministry of Education and Research (BMBF). Our goal is to increase the usability of creating machine learning workflows.**
 
 * [Website](https://simple-ml.de/)
 * [Twitter](https://twitter.com/MlSimple)
