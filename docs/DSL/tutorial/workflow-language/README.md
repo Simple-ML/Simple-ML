@@ -15,4 +15,3 @@ Files that use the workflow language must have the extension `.smlflow`.
 [steps]: ./steps.md
 [statements]: ./statements.md
 [expressions]: ./expressions.md
-[types]: ../common/types.md
