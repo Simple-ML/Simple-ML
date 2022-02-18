@@ -7,7 +7,6 @@ The stub language is the part of the Simple-ML DSL that is used to integrate fun
 * [Global Functions][global-functions] define operations that do not belong to a specific [class][classes].
 * [Enumerations][enumerations] define custom datatypes with a fixed set of possible variants.
 * [Annotations][annotations] attach additional metainformation to declarations.
-* [Types][types] describe the values that a declaration can accept.
 
 Files that use the stub language must have the extension `.smlstub`.
 
@@ -16,4 +15,3 @@ Files that use the stub language must have the extension `.smlstub`.
 [global-functions]: ./global-functions.md
 [enumerations]: ./enumerations.md
 [annotations]: ./annotations.md
-[types]: ../common/types.md
