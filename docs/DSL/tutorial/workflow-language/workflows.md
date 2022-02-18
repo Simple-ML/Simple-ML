@@ -1,3 +1,5 @@
+# Workflows
+
 Workflows are machine learning programs designed to solve a specific task. They act as the entry point to start the evaluation. Workflows are not meant to be reusable, reusable code should instead be extracted into [workflow steps](./Workflow-Language-Workflow-Steps.md).
 
 The definition of a workflow has the following syntactic elements:

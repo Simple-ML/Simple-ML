@@ -1,6 +1,8 @@
+# Steps
+
 Workflow steps can be used to extract a sequence of [statements](./Workflow-Language-Statements.md) from a workflow to give the sequence a name and make it reusable.
 
-## Defining a Workflow Step
+## Defining a Step
 
 The definition of a workflow step has the following syntactic elements:
 * The keyword `step`.
@@ -23,7 +25,7 @@ step loadMovieRatingsSample(n_instances: Int) -> (features: Table, target: Table
 }
 ```
 
-## Calling a Workflow Step
+## Calling a Step
 
 Inside a workflow or another workflow step we can then call a workflow step just like we can [call global functions or class constructors](./Workflow-Language-Expressions.md#calls): We write the name of the workflow step we want to call, followed by the arguments we want to pass enclosed in parentheses and separated by commas. We can use either named or positional arguments. The result of a workflow step can then be [assigned to placeholders](./Workflow-Language-Statements.md#assigning-placeholders) as needed. Here is how to call the workflow step defined above:
 

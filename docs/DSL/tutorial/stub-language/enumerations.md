@@ -1,3 +1,5 @@
+# Enumerations
+
 An enumeration is a datatype that can take a fixed, finite set of values. The [Ridge model of scikit-learn](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge) for instance allows the user to choose a solver by selecting one of the strings "auto", "svd", "cholesky", "lsqr", "sparse_cg", "sag", "saga". However, the string datatype does not prevent the user from passing another invalid string like "automatic", leading to unspecified behavior. To prevent this, in Simple-ML the solver is an enumeration.
 
 ## Declaring an Enumeration
