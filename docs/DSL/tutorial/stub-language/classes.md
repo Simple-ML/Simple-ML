@@ -1,3 +1,5 @@
+# Classes
+
 Classes can be used to define custom datatypes that bundle data and operations on this data.
 
 ## Defining Classes

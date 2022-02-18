@@ -1,3 +1,5 @@
+# Statements
+
 Statements are used in the [workflow language](./Workflow-Language.md) to run a specific action. Simple-ML supports only two type of statements, namely
 * [expression statements](#expression-statements), which is used to evaluate an expression exactly once and discard any results, and
 * [assignments](#assignments), which also evaluate an expression exactly once, but then assign selected results to _placeholders_ or _results_.
