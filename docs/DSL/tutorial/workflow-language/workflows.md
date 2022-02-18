@@ -1,17 +1,36 @@
 # Workflows
 
-Workflows are machine learning programs designed to solve a specific task. They act as the entry point to start the evaluation. Workflows are not meant to be reusable, reusable code should instead be extracted into [workflow steps](./Workflow-Language-Workflow-Steps.md).
+Workflows are machine learning programs designed to solve a specific task. They act as the entry point to start execution. Workflows are not meant to be reusable, instead extract reusable code into a [step][steps].
 
-The definition of a workflow has the following syntactic elements:
+## Syntax
+
+### Minimal Example
+
+Let's look at a minimal example of a workflow:
+
+```
+workflow predictSpeed {}
+```
+
+This declaration of a workflow has the following syntactic elements:
 * The keyword `workflow`.
-* The name of the workflow ("predictSpeed" in the following example).
-* The body of the workflow, which is the list of [statements](./Workflow-Language-Statements.md) that should be executed if the workflow is executed. This list is enclosed by curly braces and each statement ends with a semicolon.
+* The name of the workflow, here `predictSpeed`, which can be any combination of upper- and lowercase letters, underscores, and numbers, as long as it does not start with a number. However, we suggest to use `lowerCamelCase` for the names of workflows.
+* The body of the workflow, which contains the [statements][statements] that should be run when the workflow is executed. The body is delimited by curly braces. In this example, the body is empty, so running this workflow does nothing.
+
+### Statements in Body
+
+In order to describe what should be done when the workflow is executed, we need to add [statements][statements] to its body, as shown in this example:
 
 ```
 workflow predictSpeed {
-	val adac = loadDataset("ADAC");
-	val adacSample = adac.sample(1000);
+    val adac = loadDataset("ADAC");
+    val adacSample = adac.sample(1000);
 
-	// …
+    // …
 }
 ```
+
+More information about statements can be found in the [linked document][statements]. Note, however, that all statements must end with a semicolon.
+
+[steps]: ./steps.md
+[statements]: ./statements.md
