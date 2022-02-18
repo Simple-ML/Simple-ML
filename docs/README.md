@@ -17,7 +17,7 @@
 [tutorial_concepts]: ./Tutorial-Basic-Concepts.md
 [tutorial_interface]: ./Tutorial-The-Simple-ML-Interface.md
 [installation]: ./Installation.md
-[dsl]: ./Language-Tutorial.md
+[dsl]: ./DSL/tutorial/README.md
 [data_api]: ./Data-API.md
 [data_set_api]: ./Data-Set-API.md
 [data_catalog_api]: ./Data-Catalog-API.md
