@@ -6,6 +6,26 @@ Expressions are the parts of the [workflow language][workflow-language] that eva
 
 **TODO**
 
+### Int Literals
+
+**TODO**
+
+### Float Literals
+
+**TODO**
+
+### String Literals
+
+**TODO**
+
+### Boolean Literals
+
+**TODO**
+
+### `null` Literal
+
+**TODO**
+
 ## Working With Numbers
 
 Simple-ML has two different types of numbers, integers and floating point numbers (_float_ for short) and uses the expected syntax for both:
@@ -124,6 +144,10 @@ The elvis operator `?:` (given its name because it resembles Elvis's haircut) is
 
     nullableExpression ?: 42
 
+## Indexed Access
+
+**TODO**
+
 ## Checking for Equality
 
 There are two different types of equality in Simple-ML, _identity_ and _structural equality_. Identity checks if two objects are one and the same, whereas structural equality checks if two objects have the same structure and content. Using a real world example, two phones of the same type would be structurally equal but not identical. Both types of equality checks return a boolean literal `true` if the check was positive and `false` if the check was negative. The syntax for these operations is as follows:
@@ -144,6 +168,10 @@ Some objects, like numbers, can naturally be brought into some order. The intege
 * Less than or equal: `1 <= 3`
 * Greater than or equal: `7 >= 7`
 * Greater than: `9 > 2`
+
+## Template Strings
+
+**TODO**
 
 ## Lambdas
 
