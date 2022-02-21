@@ -2,6 +2,8 @@
 
 Expressions are the parts of the [workflow language](./Workflow-Language.md) that evaluate to some value. A multitude of different expression types known from other programming languages are supported by Simple-ML.
 
+## Literals
+
 ## Working With Numbers
 
 Simple-ML has two different types of numbers, integers and floating point numbers (_float_ for short) and uses the expected syntax for both:
@@ -31,14 +33,14 @@ To work with logic, Simple-ML has the two boolean literals `false` and `true` as
 ---|---|---
 &nbsp; | true | false
 
-* Conjunction (example `a and b`): Output is `true` if and only if both operands are `true`. Note that the second operand is only evaluated if the first operand is `true` since we otherwise already know the result must be `false` (_short-circuiting_):
+* Conjunction (example `a and b`): Output is `true` if and only if both operands are `true`. Note that the second operand is always evaluated, even if the first operand is `false` and, thus, already determines the result of the expression. The operator is not _short-circuited:
 
 `a and b` | false | true
 ---|---|---
 **false** | false | false
 **true** | false | true
 
-* Disjunction (example `a or b`): Output is `true` if and only if at least one operand is `true`. Note that the second operand is only evaluated if the first operand is `false` since we otherwise already know the result must be `true` (_short-circuiting_):
+* Disjunction (example `a or b`): Output is `true` if and only if at least one operand is `true`. Note that the second operand is always evaluated, even if the first operand is `true` and, thus, already determines the result of the expression. The operator is not _short-circuited:
 
 `a or b` | false | true
 ---|---|---
