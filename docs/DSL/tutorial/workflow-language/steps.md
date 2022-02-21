@@ -51,7 +51,6 @@ In order to describe what should be done when the step is executed, we need to a
 
 ```
 step loadMovieRatingsSample(nInstances: Int) {
-    print(nInstances);
     val movieRatingsSample = loadDataset("movieRatings").sample(nInstances = 1000);
 }
 ```
@@ -68,7 +67,6 @@ As with [parameters](#parameters) we first need to declare the available results
 
 ```
 step loadMovieRatingsSample(nInstances: Int) -> (features: Dataset, target: Dataset) {
-    print(nInstances);
     val movieRatingsSample = loadDataset("movieRatings").sample(nInstances = 1000);
 }
 ```
@@ -84,7 +82,6 @@ Currently, the program will not compile since we never assigned a value to these
 
 ```
 step loadMovieRatingsSample(nInstances: Int) -> (features: Dataset, target: Dataset) {
-    print(nInstances);
     val movieRatingsSample = loadDataset("movieRatings").sample(nInstances = 1000);
     yield features = movieRatingsSample.keepAttributes(
         "leadingActor",
