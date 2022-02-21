@@ -24,7 +24,7 @@ As we can see here, an expression statement has the following syntactic elements
 
 ## Assignments
 
-An assignment evaluates an [expression][expressions], its _right-hand side_, exactly once. This is identical to [expression statements](#expression-statements). However, the results of this expression can then either be [assigned to placeholders](#declaring-placeholders), [assigned to results](#yielding-results), or [ignored](#skipping-results).
+An assignment evaluates an [expression][expressions], its _right-hand side_, exactly once. This is identical to [expression statements](#expression-statements). However, the results of this expression can then either be [assigned to placeholders](#declaring-placeholders), [assigned to results](#yielding-results), or [ignored](#ignoring-results).
 
 ### Declaring Placeholders
 
@@ -43,18 +43,6 @@ This assignment to a placeholder has the following syntactic elements:
 * An `=` sign.
 * The expression to evaluate (right-hand side).
 * A semicolon at the end.
-
-If an expression produces more than one result, each one can be assigned to a placeholder individually. For example, the `split` method in the next example splits a large dataset into two datasets according to a given ratio, which can then be used for, say, training and testing:
-
-```
-val trainingDataset, val testDataset = fullDataset.split(0.8);
-```
-
-Here we see some additional syntax:
-
-* The left-hand side of the assignment can be a comma-separated list of placeholder declarations. Trailing commas are permitted.
-
-It is important to note, that **we may declare at most as many placeholders as the expression on the right-hand side has results**. For everything but calls this means only a single placeholder can be declared. For calls it depends on the number of declared [results][results] of the callee.
 
 #### References to Placeholder
 
@@ -107,31 +95,32 @@ The assignment here has the following syntactic elements:
 * The expression to evaluate (right-hand side).
 * A semicolon at the end.
 
-### Skipping Results
+### Ignoring Results
 
-In case we are only interested in some of the results of the expression on the right-hand side of the assignment, we can skip results by inserting an underscore (called _wildcard_) in the appropriate position. In the next snippet, we only assign the second dataset produced by the `split` functions and ignore the first one:
-
-```
-_, val testDataset = fullDataset.split(0.8);
-```
-
-### Everything Taken Together
-
-When the right-hand side of the assignment produces more than one value, it is possible to freely decide whether a value should be [assigned to a placeholder](#declaring-placeholders), [yielded](#yielding-results) or [ignored](#skipping-results). In the upcoming snippet we use this to yield the second dataset produced by `split` right away and use the first dataset only internally for training a model, which is then yielded as well:
+In case we want to ignore a result of the expression on the right-hand side of the assignment we can inserting an underscore (called _wildcard_). The following snippet is equivalent to the [expression statement](#expression-statements) `1;`:
 
 ```
-step createTestAndModel(fullDataset: Dataset) -> (testDataset: Dataset, trainedModel: Model) {
-    val trainingDataset, yield testDataset = fullDataset.split(0.8);
-    // ...
-    yield trainedModel = model.fit(trainingDataset);
+_ = 1;
+```
+
+### Multiple Assignees
+
+So far, the left-hand side of the assignment always had a single assignee. However, when the right-hand side of the assignment produces more than one value, it is possible to freely decide for each value whether it should be [assigned to a placeholder](#declaring-placeholders), [yielded](#yielding-results) or [ignored](#ignoring-results). 
+
+For example, the `split` method in the next example splits a large dataset into two datasets according to a given ratio. We then ignore the first dataset using a [wildcard](#ignoring-results) and [assign the second result to a placeholder](#declaring-placeholders) called `trainingDataset`. Afterwards, we train a `DecisionTree` using the `trainingDataset` and yield the trained model as a result:
+
+```
+step createModel(fullDataset: Dataset) -> trainedModel: Model {
+    _, val trainingDataset = fullDataset.split(0.2);
+    yield trainedModel = DecisionTree().fit(trainingDataset);
 }
 ```
 
-Let us sum up the syntax:
+Let us sum up the complete syntax of an assignment:
 * A comma-separated list of assignees, possibly with a trailing comma (left-hand side). Each entry is one of
   * [Placeholder](#declaring-placeholders)
   * [Yield](#yielding-results)
-  * [Wildcard](#skipping-results)
+  * [Wildcard](#ignoring-results)
 * An `=` sign.
 * The expression to evaluate (right-hand side).
 * A semicolon at the end.
@@ -139,8 +128,7 @@ Let us sum up the syntax:
 
 **There must be at most as many assignees on the left-hand side as the right-hand side has results.** For everything but calls this means only a single assignee can be specified. For calls it depends on the number of declared [results][results] of the callee.
 
-Assignment happens by index, so the first result is assigned to the first assignee, the second result is assigned to the second assignee, and so forth. If there are more results than assignee any trailing results are implicitly ignored.
-
+Assignment happens by index, so the first result is assigned to the first assignee, the second result is assigned to the second assignee, and so forth. If there are more results than assignees, any trailing results are implicitly ignored.
 
 [results]: ../common/results.md
 [stub-language]: ../stub-language/README.md
