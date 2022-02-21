@@ -30,7 +30,7 @@ workflow predictSpeed {
 }
 ```
 
-More information about statements can be found in the [linked document][statements]. Note, however, that all statements must end with a semicolon.
+More information about statements can be found in the [linked document][statements]. Note particularly, that all statements must end with a semicolon.
 
 [steps]: ./steps.md
 [statements]: ./statements.md

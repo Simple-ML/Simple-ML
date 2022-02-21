@@ -1,6 +1,6 @@
 # Steps
 
-Steps can be used to extract a sequence of [statements][statements] from a Machine Learning program to give the sequence a name and make it reusable. In the following discussion we explain how to [declare a step](#declaring-a-step) and how to use it by [calling it](#calling-a-step).
+Steps are used to extract a sequence of [statements][statements] from a Machine Learning program to give the sequence a name and make it reusable. In the following discussion we explain how to [declare a step](#declaring-a-step) and how to [call it](#calling-a-step).
 
 ## Declaring a Step
 
@@ -16,39 +16,76 @@ This declaration of a step has the following syntactic elements:
 * The keyword `step`.
 * The name of the step, here `loadMovieRatingsSample`. This can be any combination of upper- and lowercase letters, underscores, and numbers, as long as it does not start with a number. However, we suggest to use `lowerCamelCase` for the names of steps.
 * The list of parameters (i.e. inputs) of the step. This is delimited by parentheses. In the example above, the step has no parameters.
-* The body of the step, which contains the [statements][statements] that should be run when the step is executed. The body is delimited by curly braces. In this example, the body is empty, so running this step does nothing.
+* The _body_ of the step, which contains the [statements][statements] that should be run when the step is [called](#calling-a-step). The body is delimited by curly braces. In this example, the body is empty, so running this step does nothing.
 
 ### Parameters
 
-To make a step configurable, you can add [parameters][parameters].
+To make a step configurable, add [parameters][parameters] (inputs). We will first show how to [declare parameters](#parameter-declaration) and afterwards how to [refer to them](#references-to-parameters) in the body of the step.
+#### Parameter Declaration
 
+Parameters must be declared in the header of the step so [callers](#calling-a-step) know they are expected to pass them as an argument, and so we can [use them](#references-to-parameters) in the body of the step.
 
-
-### Results
-
-[Results][results] are used to return values that are produced inside the step back to the caller.
-
-### Statements
-
-In order to describe what should be done when the step is executed, we need to add [statements][statements] to its body, as shown in this example:
+In the following example, we give the step a single parameters with name `nInstances` and [type][types] `Int`.
 
 ```
-step loadMovieRatingsSample(n_instances: Int) -> (features: Table, target: Table) {
-    val movieRatingsSample = loadDataset("movieRatings").sample(n_instances = 1000);
-    
-    // ...
+step loadMovieRatingsSample(nInstances: Int) {}
+```
+
+More information about parameters can be found in the [linked document][parameters].
+
+#### References to Parameters
+
+Within the step we can access the value of a parameter using a [reference][references]. Here is a basic example where we print the value of the `nInstances` parameter to the console:
+
+```
+step loadMovieRatingsSample(nInstances: Int) {
+    print(nInstances);
 }
 ```
 
-More information about statements can be found in the [linked document][statements]. Note, however, that all statements must end with a semicolon.
+More information about references can be found in the [linked document][references].
 
-* The list of _parameters_ (inputs) enclosed in parentheses and separated by commas (`(n_instances: Int)` in the following snippet). For each parameter we list the name of the parameter followed by a colon and its type.
-* Optionally we can list the _results_ (outputs) after the symbol `->`. If this section is missing it means the workflow step does not produce results. The list of results is again enclosed in parentheses and we use commas to separate the entries (`-> (features: Table, target: Table)` in the following snippet). If there is exactly one result we can omit the parentheses. For each result we specify its name followed by a colon and its type.
-* Finally we have the _body_ of the workflow step, which is the list of [statements](./Workflow-Language-Statements.md) that should be executed if the workflow step is [called](#calling-a-workflow-step). This list is enclosed by curly braces and each statement ends with a semicolon.
- 
+### Statements
+
+In order to describe what should be done when the step is executed, we need to add [statements][statements] to its body. The previous example in the section ["References to Parameters"](#references-to-parameters) already contained a statement - an [expression statement][expression-statements] to be precise. Here is another example, this time showing an [assignment][assignments]:
+
 ```
-step loadMovieRatingsSample(n_instances: Int) -> (features: Table, target: Table) {
-    val movieRatingsSample = loadDataset("movieRatings").sample(n_instances = 1000);
+step loadMovieRatingsSample(nInstances: Int) {
+    print(nInstances);
+    val movieRatingsSample = loadDataset("movieRatings").sample(nInstances = 1000);
+}
+```
+
+More information about statements can be found in the [linked document][statements]. Note particularly, that all statements must end with a semicolon.
+
+### Results
+
+[Results][results] (outputs) are used to return values that are produced inside the step back to the caller. First, we show how to [declare the available results](#result-declaration) of the step and then how to [assign a value to them](#assigning-to-results).
+
+#### Result Declaration
+
+As with [parameters](#parameters) we first need to declare the available results in the headed. This tells [callers](#calling-a-step) that the can use these results and reminds us to [assign a value to them](#assigning-to-results). Let's look at an example:
+
+```
+step loadMovieRatingsSample(nInstances: Int) -> (features: Dataset, target: Dataset) {
+    print(nInstances);
+    val movieRatingsSample = loadDataset("movieRatings").sample(nInstances = 1000);
+}
+```
+
+We added two results to the step: The first one is called `features` and has type `Dataset`, while the second one is called `target` and also has type `Dataset`.
+
+More information about the declaration of results can be found in the [linked document][results].
+
+#### Assigning to Results
+
+Currently, the program will not compile since we never assigned a value to these results. This can be done with an [assignment][assignments] and the `yield` keyword:
+
+
+```
+step loadMovieRatingsSample(nInstances: Int) -> (features: Dataset, target: Dataset) {
+    print(nInstances);
+    val movieRatingsSample = loadDataset("movieRatings").sample(nInstances = 1000);
     yield features = movieRatingsSample.keepAttributes(
         "leadingActor",
         "genre",
@@ -60,12 +97,27 @@ step loadMovieRatingsSample(n_instances: Int) -> (features: Table, target: Table
 }
 ```
 
+In the assignment beginning with `yield features =` we specify the value of the result called `features`, while the next assignment beginning with `yield target =` assigns a value to the `target` result.
+
+The order of the [result declarations](#result-declaration) does not need to match the order of assignment. However, **each result musts be assigned exactly once**.
+
 ## Calling a Step
 
-Inside a workflow or another workflow step we can then call a workflow step just like we can [call global functions or class constructors](./Workflow-Language-Expressions.md#calls): We write the name of the workflow step we want to call, followed by the arguments we want to pass enclosed in parentheses and separated by commas. We can use either named or positional arguments. The result of a workflow step can then be [assigned to placeholders](./Workflow-Language-Statements.md#assigning-placeholders) as needed. Here is how to call the workflow step defined above:
+Inside of a workflow, another step, or a [lambda][lambdas] we can then [call][calls] a step, which means the step is executed when the call is reached: The results of a step can then be used as needed. In the following example, where we call the step `loadMovieRatingsSample` that we defined above, we [assign the results to placeholders] [assigned to placeholders][assignments-to-placeholders]:
 
-    val features, val target = loadMovieRatingsSample(n_instances = 1000);
+```
+val features, val target = loadMovieRatingsSample(nInstances = 1000);
+```
+
+More information about calls can be found in the [linked document][calls].
 
 [parameters]: ../common/parameters.md
 [results]: ../common/results.md
+[types]: ../common/types.md
 [statements]: ./statements.md
+[assignments]: ./statements.md#assignments
+[assignments-to-placeholders]: ./statements.md#assigning-placeholders
+[expression-statements]: ./statements.md#expression-statements
+[calls]: ./expressions.md#calls
+[lambdas]: ./expressions.md#lambdas
+[references]: ./expressions.md#references
