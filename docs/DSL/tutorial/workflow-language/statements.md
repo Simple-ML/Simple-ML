@@ -12,7 +12,7 @@ are not planned since we want to keep the language small and easy to learn. More
 
 ## Expression Statements
 
-Expression statements are used to evaluate an [expression][expressions] exactly once. The results of this expression are ignored. Therefore, expression statements are only useful, if the expression has side effects. The following snippet demonstrates this by [calling][calls] the `print` function that prints the given string to the console:
+Expression statements are used to evaluate an [expression][expressions] exactly once. The results of this expression are ignored. Therefore, expression statements are only useful if the expression has side effects. The following snippet demonstrates this by [calling][calls] the `print` function that prints the given string to the console:
 
 ```
 print("Hello, world!");
@@ -46,7 +46,7 @@ This assignment to a placeholder has the following syntactic elements:
 
 #### References to Placeholder
 
-We can access the value of a placeholder in any statement that follows the assignment of that placeholder in the closest containing [workflow][workflows], [step][steps], or [block lambda][block-lambdas] using a [reference][references]. Here is a basic example where we print the value of the `one` placeholder (here `1`) to the console:
+We can access the value of a placeholder in any statement that follows the assignment of that placeholder in the closest containing [workflow][workflows], [step][steps], or [block lambda][block-lambdas] using a [reference][references]. Here is a basic example, where we print the value of the `one` placeholder (here `1`) to the console:
 
 ```
 step loadMovieRatingsSample(nInstances: Int) {
@@ -73,7 +73,7 @@ step trulyRandomInt() -> result: Int {
 
 The assignment here has the following syntactic elements:
 * The keyword `yield`, which indicates that we want to assign to a result.
-* The name of the result, here `result`. This must be identical to one of the names of a declared result in the header of the step.
+* The name of the result, here `greeting`. This must be identical to one of the names of a declared result in the header of the step.
 * An `=` sign.
 * The expression to evaluate (right-hand side).
 * A semicolon at the end.
