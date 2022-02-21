@@ -63,7 +63,7 @@ More information about statements can be found in the [linked document][statemen
 
 #### Result Declaration
 
-As with [parameters](#parameters) we first need to declare the available results in the headed. This tells [callers](#calling-a-step) that the can use these results and reminds us to [assign a value to them](#assigning-to-results). Let's look at an example:
+As with [parameters](#parameters) we first need to declare the available results in the headed. This tells [callers](#calling-a-step) that they can use these results and reminds us to [assign a value to them](#assigning-to-results) in the body of the step. Let's look at an example:
 
 ```
 step loadMovieRatingsSample(nInstances: Int) -> (features: Dataset, target: Dataset) {
@@ -96,7 +96,7 @@ step loadMovieRatingsSample(nInstances: Int) -> (features: Dataset, target: Data
 
 In the assignment beginning with `yield features =` we specify the value of the result called `features`, while the next assignment beginning with `yield target =` assigns a value to the `target` result.
 
-The order of the [result declarations](#result-declaration) does not need to match the order of assignment. However, **each result musts be assigned exactly once**.
+The order of the [result declarations](#result-declaration) does not need to match the order of assignment. However, **each result musts be assigned exactly once**. Note that unlike the `return` in other programming languages, `yield` does not stop the execution of the step, which allows [assignments][assignments] to different results to be split across multiple [statements][statements].
 
 ## Calling a Step
 
