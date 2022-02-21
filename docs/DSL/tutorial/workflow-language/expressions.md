@@ -1,8 +1,10 @@
 # Expressions
 
-Expressions are the parts of the [workflow language](./Workflow-Language.md) that evaluate to some value. A multitude of different expression types known from other programming languages are supported by Simple-ML.
+Expressions are the parts of the [workflow language][workflow-language] that evaluate to some value. A multitude of different expression types known from other programming languages are supported by Simple-ML, from basic [literals](#literals) to [lambdas](#lambdas).
 
 ## Literals
+
+**TODO**
 
 ## Working With Numbers
 
@@ -49,20 +51,20 @@ To work with logic, Simple-ML has the two boolean literals `false` and `true` as
 
 ## References
 
-References are used to refer to a declaration, such as a [class](./Stub-Language-Classes.md) or a [placeholder](./Workflow-Language-Statements.md#assigning-placeholders). The syntax is to simply write the name of the declaration, as shown in the next snippet where we first declare a placeholder called "one" and then refer to it when computing the value for the placeholder called "two":
+References are used to refer to a declaration, such as a [class][classes] or a [placeholder][placeholders]. The syntax is to simply write the name of the declaration, as shown in the next snippet where we first declare a placeholder called "one" and then refer to it when computing the value for the placeholder called "two":
 
     val one = 1;
     val two = one + one;
 
 ## Calls
 
-Calls are used to trigger the execution of a specific action, which can be the creation of an instance of a [class](./Stub-Language-Classes.md) or executing the code in a (global) [function](./Stub-Language-Global-Functions.md) or [workflow step](./Workflow-Language-Workflow-Steps.md). In any case a call consists of a _receiver_, which is a [reference](#references) to the declaration to call, and a list of _arguments_ (inputs) enclosed by parentheses and separated by commas.
+Calls are used to trigger the execution of a specific action, which can be the creation of an instance of a [class][classes] or executing the code in a (global) [function][global-functions] or [workflow step][steps]. In any case a call consists of a _receiver_, which is a [reference](#references) to the declaration to call, and a list of _arguments_ (inputs) enclosed by parentheses and separated by commas.
 
 Arguments can either be named or positional. For named arguments the name of the parameter the argument assigned to is given explicitly. Textually we write the name of the parameter, an assignment operator and the value. 
 
 Positional arguments are implicitly assigned to the parameter with the same index. So the first argument is assigned to the first parameter etc. Note that to the right of a named argument all arguments must be named. Syntactically we only need to write the value.
  
-The following example first shows the declaration of a [class](./Stub-Language-Classes.md) with the name "DecisionTree" that has a single parameter called "maxDepth" and then two calls that create an instance of this class.
+The following example first shows the declaration of a [class][classes] with the name "DecisionTree" that has a single parameter called "maxDepth" and then two calls that create an instance of this class.
 
 **Definition of the example class:**
 
@@ -78,7 +80,7 @@ The following example first shows the declaration of a [class](./Stub-Language-C
 
 ## Member Accesses
 
-A member access is used to refer to members of a [class](./Stub-Language-Classes.md) or class instance, i. e. attributes and methods, and instances of an [enum](./Stub-Language-Enumerations.md). 
+A member access is used to refer to members of a [class][classes] or class instance, i. e. attributes and methods, and instances of an [enum][enums]. 
 
 Syntactically a member access starts with the _receiver_, which is a [reference](#references) to the program element containing the member followed by a dot and a reference to the member itself. Note that static class member are only accessible from the class itself while non-static class member are only accessible from instance of the class, as the following snippet shows:
 
@@ -174,3 +176,10 @@ We all know that `2 + 3 * 7` is 23 and not 35. The reason is that the `*` operat
 * **LOWER PRECEDENCE**
 
 If the default precedence of operators is not sufficient, parentheses can be used to force a part of an expression to be evaluated first.
+
+[classes]: ../stub-language/classes.md
+[enums]: ../stub-language/enumerations.md
+[global-functions]: ../stub-language/global-functions.md
+[workflow-language]: ./README.md
+[placeholders]: ./statements.md#declaring-placeholders
+[steps]: ./steps.md
