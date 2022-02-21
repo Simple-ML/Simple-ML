@@ -100,7 +100,7 @@ The order of the [result declarations](#result-declaration) does not need to mat
 
 ## Calling a Step
 
-Inside of a workflow, another step, or a [lambda][lambdas] we can then [call][calls] a step, which means the step is executed when the call is reached: The results of a step can then be used as needed. In the following example, where we call the step `loadMovieRatingsSample` that we defined above, we [assign the results to placeholders] [assigned to placeholders][assignments-to-placeholders]:
+Inside of a workflow, another step, or a [lambda][lambdas] we can then [call][calls] a step, which means the step is executed when the call is reached: The results of a step can then be used as needed. In the following example, where we call the step `loadMovieRatingsSample` that we defined above, we [assign the results to placeholders][assignments-to-placeholders]:
 
 ```
 val features, val target = loadMovieRatingsSample(nInstances = 1000);
