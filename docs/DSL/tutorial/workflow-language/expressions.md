@@ -141,6 +141,16 @@ Some objects, like numbers, can naturally be brought into some order. The intege
 * Greater than or equal: `7 >= 7`
 * Greater than: `9 > 2`
 
+## Lambdas
+
+**TODO**
+### Block Lambdas
+
+**TODO**
+### Expression Lambdas
+
+**TODO**
+
 ## Operator precedence
 
 We all know that `2 + 3 * 7` is 23 and not 35. The reason is that the `*` operator has a higher precedence than the `+` operator and is therefore evaluated first. These precedence rules are necessary for all types of expressions listed above and shown in the following list. The higher up an expression is in the list, the higher its precedence. Expressions listed beside each other have the same precedence and are evaluated from left to right:
