@@ -8,11 +8,11 @@ Other types of statements such as
 * if-statements to conditionally execute code or
 * while-statements to repeatedly execute code
 
-are not planned since we want to keep the language small and easy to learn. Moreover, we want to refrain from developing yet another general-purpose programming language. Instead, code that depends on such features can be implemented in Python, integrated into Simple-ML using the [stub language][stub-language], and called in a workflow using the provided statements.
+are not planned since we want to keep the language small and easy to learn. Moreover, we want to refrain from developing yet another general-purpose programming language. Instead, code that depends on such features can be implemented in Python, integrated into Simple-ML using the [stub language][stub-language], and called in a Simple-ML program using the provided statements.
 
 ## Expression Statements
 
-Expression statements are used to evaluate an [expression][expressions] exactly once. The results of this expression are ignored. Therefore, expression statements are only useful, if the expression has side effects. The following snippet demonstrates this by [calling](./Workflow-Language-Expressions.md#calls) the `print` function that prints the given string to the console:
+Expression statements are used to evaluate an [expression][expressions] exactly once. The results of this expression are ignored. Therefore, expression statements are only useful, if the expression has side effects. The following snippet demonstrates this by [calling][calls] the `print` function that prints the given string to the console:
 
 ```
 print("Hello, world!");
@@ -75,7 +75,7 @@ In addition to the [declaration of placeholders](#declaring-placeholders), assig
 
 #### Yielding Results of Steps
 
-The following snippet shows how we can assign a value to a declared [results][results] of a [step][steps]:
+The following snippet shows how we can assign a value to a declared [result][results] of a [step][steps]:
 
 ```
 step trulyRandomInt() -> result: Int {
@@ -128,7 +128,7 @@ step createTestAndModel(fullDataset: Dataset) -> (testDataset: Dataset, trainedM
 ```
 
 Let us sum up the syntax:
-* Comma separated list of assignees, possibly with a trailing comma (left-hand side). Each entry is one of
+* A comma-separated list of assignees, possibly with a trailing comma (left-hand side). Each entry is one of
   * [Placeholder](#declaring-placeholders)
   * [Yield](#yielding-results)
   * [Wildcard](#skipping-results)
@@ -137,7 +137,7 @@ Let us sum up the syntax:
 * A semicolon at the end.
 
 
-There must be at most as many assignees on the left-hand side as the right-hand side has results. For everything but calls this means only a single assignee can be specified. For calls it depends on the number of declared [results][results] of the callee.
+**There must be at most as many assignees on the left-hand side as the right-hand side has results.** For everything but calls this means only a single assignee can be specified. For calls it depends on the number of declared [results][results] of the callee.
 
 Assignment happens by index, so the first result is assigned to the first assignee, the second result is assigned to the second assignee, and so forth. If there are more results than assignee any trailing results are implicitly ignored.
 
