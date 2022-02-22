@@ -79,14 +79,14 @@ To work with logic, Simple-ML has the two boolean literals `false` and `true` as
 --------|-------|------
 &nbsp;  | true  | false
 
-* Conjunction (example `a and b`): Output is `true` if and only if both operands are `true`. Note that the second operand is always evaluated, even if the first operand is `false` and, thus, already determines the result of the expression. The operator is not _short-circuited:
+* Conjunction (example `a and b`): Output is `true` if and only if both operands are `true`. Note that the second operand is always evaluated, even if the first operand is `false` and, thus, already determines the result of the expression. The operator is not short-circuited:
 
 `a and b` | false | true
 ----------|-------|------
 **false** | false | false
 **true**  | false | true
 
-* Disjunction (example `a or b`): Output is `true` if and only if at least one operand is `true`. Note that the second operand is always evaluated, even if the first operand is `true` and, thus, already determines the result of the expression. The operator is not _short-circuited:
+* Disjunction (example `a or b`): Output is `true` if and only if at least one operand is `true`. Note that the second operand is always evaluated, even if the first operand is `true` and, thus, already determines the result of the expression. The operator is not short-circuited:
 
 `a or b`  | false | true
 ----------|-------|-----
