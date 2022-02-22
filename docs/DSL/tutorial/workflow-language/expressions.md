@@ -133,72 +133,177 @@ These template expressions are evaluated, converted to a string and inserted int
 
 ## References
 
-References are used to refer to a declaration, such as a [class][classes] or a [placeholder][placeholders]. The syntax is to simply write the name of the declaration, as shown in the next snippet where we first declare a placeholder called "one" and then refer to it when computing the value for the placeholder called "two":
+References are used to refer to a declaration, such as a [class][classes] or a [placeholder][placeholders]. The syntax is simply the name of the declaration, as shown in the next snippet where we first declare a [placeholder][placeholders] called `one` and then refer to it when computing the value for the [placeholder][placeholders] called `two`:
 
-    val one = 1;
-    val two = one + one;
+```
+val one = 1;
+val two = one + one;
+```
+
+In order to refer to global declarations in other [packages][packages], we first need to [import][imports] them.
+
+## Calls
+
+Calls are used to trigger the execution of a specific action, which can, for example, be the creation of an instance of a [class][classes] or executing the code in a [step][steps]. Let's look at an example:
+
+First, we show the code of the [step][steps] that we want to call.
+
+```
+step createDecisionTree(maxDepth: Int = 10) {
+    // ... do something ...
+}
+```
+
+This [step][steps] has a single [parameter][parameters] `maxDepth`, which must have [type][types] `Int`, and has the default value `10`. Since it has a default value, we are not required to specify a value when we call this [step][steps]. The most basic legal call of the [step][steps] is, thus, this:
+
+```
+createDecisionTree()
+```
+
+This calls the [step][steps] `createDecisionTree`, using the default `maxDepth` of `10`.
+
+The syntax consists of these elements:
+* The _callee_ of the call, which is the expression to call (here a [reference](#references) to the [step][steps] `createDecisionTree`)
+* The list of arguments, which is delimited by parentheses. In this case the list is empty, so no arguments are passed.
+
+If we want to override the default value of an optional [parameter][parameters] or if the callee has required [parameters][parameters], we need to pass arguments. We can either use _positional arguments_ or _named arguments_. 
+
+In the case of positional arguments, they are mapped to parameters by position, i.e. the first argument is assigned to the first parameter, the second argument is assigned to the second parameter and so forth. We do this in the following example to set `maxDepth` to 5:
+
+```
+createDecisionTree(5)
+```
+
+The syntax for positional argument is simply the expression we want to pass as value.
+
+Named arguments, however, are mapped to parameters by name. On the one hand, this can improve readability of the code, since the meaning of a value becomes obvious. On the other hand, it allows to override only specific optional parameters and keep the rest unchanged. Here is how to set `maxDepth` to 5 using a named argument:
+
+```
+createDecisionTree(maxDepth = 5)
+```
+
+These are the syntactic elements:
+* The name of the parameter for which we want to specify a value.
+* An equals sign.
+* The value to assign to the parameter.
+
+### Passing Multiple Arguments
+
+We now add another parameter to the `createDecisionTree` [step][steps]:
+
+```
+step createDecisionTree(isBinary: Boolean, maxDepth: Int = 10) {
+    // ... do something ...
+}
+```
+
+This allows us to show how multiple arguments can be passed:
+
+```
+createDecisionTree(isBinary = true, maxDepth = 5)
+```
+
+We have already seen the syntax for a single argument. If we want to pass multiple arguments, we just separate them by commas. A trailing comma is allowed.
+
+### Restrictions For Arguments
+
+There are some restriction regarding the choice of positional vs. named arguments and passing arguments in general:
+* For all [parameters][parameters] of the callee there must be at most one argument.
+* For all [required parameters][required-parameters] there must be exactly one argument.
+* After a named argument all arguments must be named.
+* [Variadic parameters][variadic-parameters] can only be assigned by position.
+### Legal Callees
+
+Depending on the callee, a call can do different things. The following table lists all legal callees and what happens if they are called:
+
+|Callee|Meaning|
+|-|-|
+|[Class][classes]|Create a new instance of the class. The class must have a constructor to be callable. The call evaluates to this new instance.|
+|[Enum Variant][enum-variants]|Creates a new instance of the enum variant. Enum variants are always callable. The call evaluates to this new instance.|
+|[Global Function][global-functions]|Invokes the function and runs the associated Python code. The call evaluates to the result record of the function.|
+|[Method][methods]|Invokes the method and runs the associated Python code. The call evaluates to the result record of the method.|
+|[Step][steps]|Invokes the step and runs the Simple-ML code in its body. The call evaluates to the result record of the step.||
+|[Block Lambda](#block-lambdas)|Invokes the lambda and runs the Simple-ML code in its body. The call evaluates to the result record of the lambda.||
+|[Expression Lambda](#expression-lambdas)|Invokes the lambda and runs the Simple-ML code in its body. The call evaluates to the result record of the lambda.||
+|Declaration with [Callable Type][callable-types]|Call whatever the value of the declaration is.
+
+#### Result Record
+
+The term _result record_ warrants further explanation: A result record maps [results][results] of a
+* [global function][global-functions],
+* [method][methods],
+* [step][steps], or
+* [lambda](#lambdas)
+to their computed values.
+
+If the result record only has a single entry, its value can be accessed directly. Otherwise, the result record must be _deconstructed_ either by an [assignment][assignment-multiple-assignees] (can access multiple results) or by a [member access](#member-access-of-results) (can access a single result).
 
 ## Member Accesses
 
-A member access is used to refer to members of a [class][classes] or class instance, i. e. attributes and methods, and instances of an [enum][enums].
+A member access is used to refer to members of a complex data structure such as
+* a [class][classes],
+* an [enum][enums], or
+* the [result record](#result-record) of a [call](#calls).
 
-Syntactically a member access starts with the _receiver_, which is a [reference](#references) to the program element containing the member followed by a dot and a reference to the member itself. Note that static class member are only accessible from the class itself while non-static class member are only accessible from instance of the class, as the following snippet shows:
+### Member Access of Class Members
+
+**TODO**
+
+### Member Access of Enum Variants
+
+**TODO**
+### Member Access of Results
+
+**TODO**
+
+### Null-Safe Member Access
+
+**TODO**
 
 **Definition of the example class and enum:**
 
-    class DecisionTree() {
-        static val verboseTraining: Boolean
-        val score: Float
-    }
+```
+class DecisionTree() {
+    static val verboseTraining: Boolean
+    val score: Float
+}
 
-    enum SvmKernel {
-        Linear,
-        RBF
-    }
+enum SvmKernel {
+    Linear,
+    RBF
+}
+```
 
 **Accessing static class member:**
 
-    DecisionTree.verboseTraining
+```
+DecisionTree.verboseTraining
+```
 
 **Accessing non-static class member (note that we create an instance of the "DecisionTree" class by [calling](#calls) it):**
 
-    DecisionTree().score
+```
+DecisionTree().score
+```
 
 **Accessing enum instances:**
 
-    SvmKernel.Linear
+```
+SvmKernel.Linear
+```
 
 ### Safe member access
 
 If an expression could be null it cannot be used as the receiver of a regular [member access](#member-access), since null does not have members. Instead a safe member access must be used. The syntax is identical to a normal member access except that we replace the dot with the operator `?.`. A safe member access evaluates to null if the receiver is null. Otherwise it evaluates to the accessed member, just like a normal member access. Here is an example:
 
-    nullableExpression?.member1?.member2
+```
+nullableExpression?.member1?.member2
+```
 
 ## Indexed Access
 
 **TODO**
 
-## Calls
-
-Calls are used to trigger the execution of a specific action, which can be the creation of an instance of a [class][classes] or executing the code in a (global) [function][global-functions] or [workflow step][steps]. In any case a call consists of a _receiver_, which is a [reference](#references) to the declaration to call, and a list of _arguments_ (inputs) enclosed by parentheses and separated by commas.
-
-Arguments can either be named or positional. For named arguments the name of the parameter the argument assigned to is given explicitly. Textually we write the name of the parameter, an assignment operator and the value.
-
-Positional arguments are implicitly assigned to the parameter with the same index. So the first argument is assigned to the first parameter etc. Note that to the right of a named argument all arguments must be named. Syntactically we only need to write the value.
-
-The following example first shows the declaration of a [class][classes] with the name "DecisionTree" that has a single parameter called "maxDepth" and then two calls that create an instance of this class.
-
-**Definition of the example class:**
-
-    class DecisionTree(maxDepth: Int) {}
-
-**Positional argument:**
-
-    DecisionTree(10)
-
-**Named argument:**
-
-    DecisionTree(maxDepth = 10)
 ## Lambdas
 
 **TODO**
@@ -232,9 +337,21 @@ We all know that `2 + 3 * 7` is `23` and not `35`. The reason is that the `*` op
 
 If the default precedence of operators is not sufficient, parentheses can be used to force a part of an expression to be evaluated first.
 
+[imports]: ../common/imports.md
+[parameters]: ../common/parameters.md
+[required-parameters]: ../common/parameters.md#required-parameters
+[optional-parameters]: ../common/parameters.md#optional-parameters
+[variadic-parameters]: ../common/parameters.md#variadic-parameters
+[results]: ../common/results.md
+[types]: ../common/types.md
+[callable-types]: ../common/types.md#callable-type
 [classes]: ../stub-language/classes.md
 [enums]: ../stub-language/enumerations.md
+[enum-variants]: ../stub-language/enumerations.md#enum-variants
 [global-functions]: ../stub-language/global-functions.md
+[methods]: ../stub-language/classes.md#defining-methods
 [workflow-language]: ./README.md
+[packages]: ./packages.md
+[assignment-multiple-assignees]: ./statements.md#multiple-assignees
 [placeholders]: ./statements.md#declaring-placeholders
 [steps]: ./steps.md

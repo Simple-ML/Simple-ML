@@ -23,6 +23,10 @@ enum RidgeSolver {
 }
 ```
 
+## Enum Variants
+
+**TODO**
+
 ## Using an Enumeration as a Type
 
 To express that the type of a declaration is an enumeration we simply write the name of the enumeration as the type. For example, when declaring a [class](./Stub-Language-Classes.md) called "Ridge" for the ridge regression model we can declare a parameter of type "RidgeSolver" like this:

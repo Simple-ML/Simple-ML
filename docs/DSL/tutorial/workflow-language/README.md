@@ -8,6 +8,7 @@ The workflow language is the part of the Simple-ML DSL that is designed to solve
 * [Steps][steps] encapsulate parts of a Machine Learning program and make them reusable.
 * [Statements][statements] are the instructions that are executed as part of a [workflow][workflows] or [step][steps].
 * [Expressions][expressions] are computations that produce some value.
+* [Comments][comments] document the code.
 
 Files that use the workflow language must have the extension `.smlflow`.
 
@@ -17,3 +18,4 @@ Files that use the workflow language must have the extension `.smlflow`.
 [steps]: ./steps.md
 [statements]: ./statements.md
 [expressions]: ./expressions.md
+[comments]: ../common/comments.md
