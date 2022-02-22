@@ -406,11 +406,9 @@ def readDataSetFromCSV(file_name: str, dataset_id: str, separator: str, has_head
     dataset.data = data
     dataset.lon_lat_pairs = lon_lat_pairs
 
-    np_type = ''
     for attribute in data.columns.values.tolist():
         is_geometry = False
 
-        type_change = data[attribute]
         if data[attribute].dtype == 'string':
 
             found_new_type = False
@@ -473,9 +471,6 @@ def joinTwoDatasets(first_data: Dataset, second_data: Dataset, join_column_name_
                           null_value='', description=first_data.description + '-' + second_data.description,
                           subjects={'qw': 'qw'}, number_of_instances=joint_data.shape[0])
 
-        attribute_names = joint_data.columns.values.tolist()
-        # print(attribute_names)
-
         new_attribute_types = {}
         for attribute in first_data.attributes:
             if attribute == join_column_name_1:
@@ -512,8 +507,8 @@ def joinTwoDatasets2(first_file_name: str, second_file_name: str, separator: str
     second_data = pd.read_csv(second_data_file_path, sep=separator)
     # joint_data = second_data.join(first_data.set_index('id'), on='id', lsuffix=first_suffix, rsuffix=second_suffix)
     # joint_data = first_data.join(second_data, lsuffix=first_suffix, rsuffix=second_suffix)
-    joint_data = first_data.merge(
-        second_data, on=('id'), suffixes=('_l', '_r'))
+    # joint_data = first_data.merge(
+    #    second_data, on=('id'), suffixes=('_l', '_r'))
 
     pd.set_option("max_columns", None)
 

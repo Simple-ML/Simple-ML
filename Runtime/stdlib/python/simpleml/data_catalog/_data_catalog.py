@@ -131,11 +131,11 @@ def getDataset(dataset_id: str) -> Dataset:
         description = result["description"]["value"]
         number_of_instances = int(result["numberOfInstances"]["value"])
 
-        coordinate_system = None
+        coordinate_system = 4326
         if "coordinateSystem" in result:
             coordinate_system = int(result["coordinateSystem"]["value"])
 
-        lat_before_lon = None
+        lat_before_lon = False
         if "latBeforeLon" in result:
             lat_before_lon = bool(result["latBeforeLon"]["value"])
 
@@ -282,7 +282,7 @@ def addSpatialDistribution(dataset: Dataset):
     for result in results["results"]["bindings"]:
         attribute_identifier = result["identifier"]["value"]
 
-        if not attribute_identifier in areas:
+        if attribute_identifier not in areas:
             areas[attribute_identifier] = {}
 
         # if config.spatialValueDistribution not in dataset.stats[attribute_identifier]:

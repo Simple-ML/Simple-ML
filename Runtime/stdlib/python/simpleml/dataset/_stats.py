@@ -14,7 +14,7 @@ from shapely import geometry, ops, wkt
 from shapely.geometry import Point, LineString, Polygon
 
 
-def addSpatialValueDistribution(geometry_object, polygon_count, areas, proj=None) -> dict:
+def addSpatialValueDistribution(geometry_object, polygon_count, areas, proj=None):
     if not geometry_object:
         if None not in polygon_count:
             polygon_count[None] = 1
@@ -35,7 +35,7 @@ def addSpatialValueDistribution(geometry_object, polygon_count, areas, proj=None
                 polygon_count[polygon_id] = polygon_count[polygon_id] + 1
 
 
-def addValueDistribution(stats, column, name) -> dict:
+def addValueDistribution(stats, column, name):
     value_distribution = []
 
     for value, count in column.value_counts().head(10).iteritems():
@@ -45,7 +45,7 @@ def addValueDistribution(stats, column, name) -> dict:
     return value_distribution
 
 
-def addHistograms(stats, column, name, number_of_unique_values, transform_timestamp=False) -> dict:
+def addHistograms(stats, column, name, number_of_unique_values, transform_timestamp=False):
     count = []
     division = []
     column = column.dropna()
@@ -77,7 +77,7 @@ def addHistograms(stats, column, name, number_of_unique_values, transform_timest
     return histograms, bucket_data_type
 
 
-def addQuantiles(column, name, bins, transform_timestamp=False) -> dict:
+def addQuantiles(column, name, bins, transform_timestamp=False):
     quantiles = pd.qcut(column, bins, retbins=True,
                         labels=False, duplicates='drop')[1].tolist()
     if transform_timestamp:
@@ -201,7 +201,7 @@ def get_datetime_string(datetime):
     return datet.fromtimestamp(datetime).strftime(config.datetime_format[config.lang])
 
 
-def getStatistics(dataset) -> dict:
+def getStatistics(dataset):
     data = dataset.data
 
     stats = {}
@@ -215,7 +215,6 @@ def getStatistics(dataset) -> dict:
         simple_type = dataset.simple_data_types[colName]
         stats[colName] = {}
         transform_timestamp = False
-        data_type = config.data_type_labels[dataset.data_types[colName]]
 
         if simple_type == config.type_string:
             # string statistics are based on string length

@@ -7,25 +7,24 @@ from io import StringIO
 from rdflib import Graph
 from rdflib.plugins.sparql.results.jsonresults import JSONResultSerializer
 from rdflib.util import guess_format
-#from rdflib_hdt import HDTStore
 
-import simpleml.util.global_configurations as global_config
+# from rdflib_hdt import HDTStore
 
 print("Init data catalog.")
 graph = Graph()
 
 dirName = os.path.dirname(__file__)
 
-#if global_config.use_hdt:
-    # TODO(lr): removed for now since rdflib_hdt is not available on Windows systems
-    #folderPath = os.path.join(dirName, "../../../data_catalog/" + "OLD_data_catalog.hdt")
-    #graph = Graph(store=HDTStore(folderPath))
-    #graph.parse("C:/Users/user/Documents/Simple-ML/Simple-ML/Runtime/stdlib/python/simpleml/rdf/data_catalog.xml",
-    #            format='xml')
+# if global_config.use_hdt:
+# TODO(lr): removed for now since rdflib_hdt is not available on Windows systems
+# folderPath = os.path.join(dirName, "../../../data_catalog/" + "OLD_data_catalog.hdt")
+# graph = Graph(store=HDTStore(folderPath))
+# graph.parse("C:/Users/user/Documents/Simple-ML/Simple-ML/Runtime/stdlib/python/simpleml/rdf/data_catalog.xml",
+#            format='xml')
 #    pass
-#else:
-    #graph.parse("C:/Users/user/Documents/Simple-ML/Simple-ML/Runtime/stdlib/python/simpleml/rdf/data_catalog.rdf", format='application/rdf+xml')
-folders = ["datasets", "external_vocabularies", "schema" ] # "ml_catalog", "schema"]
+# else:
+# graph.parse("C:/Users/user/Documents/Simple-ML/Simple-ML/Runtime/stdlib/python/simpleml/rdf/data_catalog.rdf", format='application/rdf+xml')
+folders = ["datasets", "external_vocabularies", "schema"]  # "ml_catalog", "schema"]
 
 for folder in folders:
     folderPath = os.path.join(dirName, "../../../data_catalog/" + folder)
@@ -40,7 +39,7 @@ for folder in folders:
 
         graph.parse(filename, format=format)
 
-#qres2 = graph.query("SELECT (COUNT(?a) AS ?cnt) WHERE { ?a ?b ?c }")
+# qres2 = graph.query("SELECT (COUNT(?a) AS ?cnt) WHERE { ?a ?b ?c }")
 # for row in qres2:
 #    print(row)
 
@@ -70,6 +69,7 @@ def load_query(file_name, parameters=None, filter_parameters=None):
     for filter_parameter in filter_parameters:
         query = query.replace("#" + filter_parameter + " ", "")
     return query
+
 
 def get_graph():
     return graph

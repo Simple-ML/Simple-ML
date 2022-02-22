@@ -2,27 +2,23 @@ from __future__ import annotations
 
 from re import sub
 
-from rdflib import Graph, Literal, RDF, Namespace, URIRef
-from rdflib.namespace import XSD, RDFS, DCTERMS, CSVW, DCAT
-
-import simpleml.util.jsonLabels_util as config
-from simpleml.dataset import Dataset
-
 import simpleml.rdf._rdf_labels as rdf_config
-import numpy as np
-
+import simpleml.util.jsonLabels_util as config
+from rdflib import Graph, Literal, RDF, Namespace, URIRef
+from rdflib.namespace import XSD, DCTERMS, CSVW, DCAT
+from simpleml.dataset import Dataset
 from simpleml.rdf._sparql_connector_local import get_graph
 
 
-def exportStatisticsAsRDF(dataset: Dataset, filename = None):
+def exportStatisticsAsRDF(dataset: Dataset, filename=None):
     profile = dataset.getProfile()
 
     g = Graph()
-    g.namespaces = get_graph().namespaces # get all namespaces
+    g.namespaces = get_graph().namespaces  # get all namespaces
 
     for x in g.namespaces():
-        if not x[0].startswith("default"): # in external vocabularies, namespaces are sometimes the default
-            g.bind(x[0],x[1])
+        if not x[0].startswith("default"):  # in external vocabularies, namespaces are sometimes the default
+            g.bind(x[0], x[1])
 
     SML = Namespace("https://simple-ml.de/resource/")
     SEAS = Namespace("https://w3id.org/seas/")
@@ -69,13 +65,12 @@ def exportStatisticsAsRDF(dataset: Dataset, filename = None):
     rdf_sample_header = SML[dataset.id + "SampleHeader"]
     g.add((rdf_sample, SML.hasHeader, rdf_sample_header))
     g.add((rdf_sample_header, RDF.type, SML.DatasetSampleLine))
-    g.add((rdf_sample_header, SML.hasContent, Literal('\t'.join(map(str, dataset.attribute_labels.values())), datatype=XSD.string)))
+    g.add((rdf_sample_header, SML.hasContent,
+           Literal('\t'.join(map(str, dataset.attribute_labels.values())), datatype=XSD.string)))
 
-
-
-    for line_number in range(0,len(dataset.data_sample)):
-
-        sample_line_content=dataset.data_sample.loc[[line_number]].to_csv(header=None, index=False, sep='\t', na_rep='').strip()
+    for line_number in range(0, len(dataset.data_sample)):
+        sample_line_content = dataset.data_sample.loc[[line_number]].to_csv(header=None, index=False, sep='\t',
+                                                                            na_rep='').strip()
         # fillna(dataset.null_value)
 
         rdf_sample_line = SML[dataset.id + "SampleLine" + str(line_number)]
@@ -106,7 +101,8 @@ def exportStatisticsAsRDF(dataset: Dataset, filename = None):
 
             # add classInstance Property
             if "resource_rank" in dataset.attribute_graph[attribute]:
-                g.add((URIRef(dataset.attribute_graph[attribute]["resource"]), SML.classInstance, Literal(dataset.attribute_graph[attribute]["resource_rank"], datatype=XSD.integer)))
+                g.add((URIRef(dataset.attribute_graph[attribute]["resource"]), SML.classInstance,
+                       Literal(dataset.attribute_graph[attribute]["resource_rank"], datatype=XSD.integer)))
 
         for key, value in attribute_val["statistics"].items():
             if config.values in value:
@@ -120,7 +116,7 @@ def exportStatisticsAsRDF(dataset: Dataset, filename = None):
                     evaluation_type = "Distribution" + capitalise(value[config.id]) + "Evaluation"
 
                     # some evaluation types are defined in SEAS, others in SML
-                    if capitalise(value[config.id]) in ["Quartile","Decile"]:
+                    if capitalise(value[config.id]) in ["Quartile", "Decile"]:
                         evaluation_type = SEAS[evaluation_type]
                     else:
                         evaluation_type = SML[evaluation_type]
@@ -202,7 +198,7 @@ def exportStatisticsAsRDF(dataset: Dataset, filename = None):
     if filename:
         g.serialize(filename, format="turtle", )
     else:
-        return g.serialize(format="turtle")#.decode("utf-8")
+        return g.serialize(format="turtle")  # .decode("utf-8")
 
 
 def urify(string):
@@ -211,13 +207,12 @@ def urify(string):
 
 
 def urifyCapitalised(string):
-
     if not string:
         string = "None"
 
     string = sub(r"(_|-)+", " ", string)
     string = [capitalise(x) for x in string.split(" ")]
-    string =  "".join(string).replace(" ", "")
+    string = "".join(string).replace(" ", "")
     return string[0].upper() + string[1:]
 
 
