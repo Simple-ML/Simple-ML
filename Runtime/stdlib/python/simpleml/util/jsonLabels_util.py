@@ -1,9 +1,10 @@
 import numpy as np
-from pandas import Timestamp, Int32Dtype, Int64Dtype
+from pandas import Timestamp, Int32Dtype, Int64Dtype, StringDtype
 from shapely import geometry
 
 lang = 'de'
 type = 'type'
+simple_type = 'simple_type'
 i18n_id = 'id'
 
 type_numeric = 'numeric'
@@ -14,6 +15,7 @@ type_string = 'string'
 type_datetime = 'datetime'
 type_bool = 'boolean'
 type_geometry = 'geometry'
+type_numeric_vector = 'numeric_vector'
 
 type_dataset = 'dataset'
 
@@ -29,7 +31,7 @@ data_type_labels = {np.int32: type_integer, Int32Dtype(): type_integer, Int64Dty
                     np.int64: type_integer, np.float64: type_float, np.floating: type_float, np.integer: type_integer,
                     np.dtype('float64'): type_float, np.dtype('int64'): type_integer, np.dtype('bool'): type_bool,
                     'str': type_string, bool: type_bool, object: 'ERROR', geometry: type_geometry,
-                    Timestamp: type_datetime}
+                    Timestamp: type_datetime, StringDtype: type_string}
 
 type_bar_chart = 'bar_chart'
 type_bar_chart_bars = 'bars'
@@ -41,7 +43,6 @@ type_list_data_type = 'data_type'
 type_box_plot = 'box_plot'
 type_box_plot_values = 'values'
 type_box_plot_data_type = 'data_type'
-quartile = 'quartile'
 
 statistics = 'statistics'
 attributes = 'attributes'
@@ -54,6 +55,7 @@ has_header = 'hasHeader'
 description = 'description'
 id = 'id'
 list_data_type = 'list_data_type'
+bucket_data_type = 'bucket_data_type'
 number_of_instances = 'number_of_instances'
 
 attribute_label = 'label'
@@ -63,9 +65,9 @@ type_spatial_distribution = 'spatial_value_distribution'
 type_spatial_distribution_areas = 'areas'
 
 numberOfNullValues = 'numberOfNullValues'
-deciles = 'deciles'
-decile = 'decile'
-quartiles = 'quartiles'
+deciles = 'decile'
+#decile = 'decile'
+quartiles = 'quartile'
 averageNumberOfSpecialCharacters = 'averageNumberOfSpecialCharacters'
 averageNumberOfTokens = 'averageNumberOfTokens'
 numberOfValidValues = 'numberOfValidValues'

@@ -283,3 +283,14 @@ seas:DistributionMaximumEvaluation dcterms:identifier "maximum" .
 <DistributionHistogramEvaluation> dcterms:identifier "histogram" .
 seas:DistributionQuartileEvaluation dcterms:identifier "quartile" .
 seas:DistributionDecileEvaluation dcterms:identifier "decile" .
+
+# Geo attributes
+<latBeforeLon> a owl:DatatypeProperty ;
+	rdfs:label "latitude before longitude"@en ;
+	rdfs:domain <Dataset> ;
+	rdfs:range xsd:boolean .
+
+<coordinateSystem> a owl:DatatypeProperty ;
+	rdfs:label "coordinate system"@en ;
+	rdfs:domain <Dataset> ;
+	rdfs:range xsd:nonNegativeInteger  .

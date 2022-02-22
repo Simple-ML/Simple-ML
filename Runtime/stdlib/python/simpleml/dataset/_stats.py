@@ -15,7 +15,7 @@ import simpleml.util.global_configurations as global_config
 import simpleml.util.jsonLabels_util as config
 
 
-def addSpatialValueDistribution(geometry_object, polygon_count, areas, proj) -> dict:
+def addSpatialValueDistribution(geometry_object, polygon_count, areas, proj = None) -> dict:
 
     if not geometry_object:
         if None not in polygon_count:
@@ -24,12 +24,13 @@ def addSpatialValueDistribution(geometry_object, polygon_count, areas, proj) -> 
             polygon_count[None] = polygon_count[None] + 1
         return
 
-    transformedLine = ops.transform(proj, geometry_object)
-    print(transformedLine)
+    transformedGeometryObject = geometry_object
+
+    if proj:
+        transformedGeometryObject = ops.transform(proj, geometry_object)
 
     for polygon_id, polygonObject in areas.items():
-        lineIntersectsPolygon = transformedLine.within(polygonObject)
-        if lineIntersectsPolygon:
+        if transformedGeometryObject.within(polygonObject):
             if (polygon_id not in polygon_count):
                 polygon_count[polygon_id] = 1
             else:
@@ -51,8 +52,7 @@ def addHistograms(stats, column, name, number_of_unique_values, transform_timest
     division = []
     column = column.dropna()
 
-    count, division = np.histogram(
-        column, bins=min(10, number_of_unique_values))
+    count, division = np.histogram(column, bins=min(10, number_of_unique_values))
 
     histograms = [{config.bucketMinimum: i, config.bucketValue: int(
         j)} for i, j in zip(division, count)]
@@ -74,7 +74,9 @@ def addHistograms(stats, column, name, number_of_unique_values, transform_timest
                 bucket[config.bucketMaximum] = get_pd_timestamp(
                     bucket[config.bucketMaximum])
 
-    return histograms
+    bucket_data_type = type(histograms[0][config.bucketMaximum])
+
+    return histograms, bucket_data_type
 
 
 def addQuantiles(column, name, bins, transform_timestamp=False) -> dict:
@@ -82,7 +84,8 @@ def addQuantiles(column, name, bins, transform_timestamp=False) -> dict:
                         labels=False, duplicates='drop')[1].tolist()
     if transform_timestamp:
         quantiles = [get_pd_timestamp(item) for item in quantiles]
-    return quantiles
+
+    return quantiles, type(quantiles[0])
 
 
 def addNumericValue(column_stats, name, value, data_type=None, transform_timestamp=False):
@@ -100,6 +103,11 @@ def addNumericValue(column_stats, name, value, data_type=None, transform_timesta
 def createNumericValue(name, value, simple_type, data_type=None):
     if not data_type:
         data_type = config.data_type_labels[type(value)]
+
+    # avoid conversion to numpy.float if float (e.g., happens when using Series.mean)
+    if type(value).__module__ == np.__name__:
+        value = value.item()
+
     return {config.type: simple_type,
             config.type_numeric_data_type: data_type,
             config.type_numeric_value: value,
@@ -117,7 +125,7 @@ def addGenericStatistics(column, column_stats, column_type):
     totalCountOfValidValues = 0
 
     for val in column:
-        if not val:
+        if pd.isna(val) or not val :
             continue
         totalCountOfValidValues += 1
         val_str = str(val)
@@ -130,7 +138,6 @@ def addGenericStatistics(column, column_stats, column_type):
             totalNumberOfCapitalisedValues += 1
         totalNumberOfCharacters += len(val_str)
         totalNumberOfDigits += len(re.sub("[^0-9]", "", val_str))
-        # print(totalCountOfValidValues)
 
     if (totalCountOfValidValues == 0):
         totalCountOfValidValues = 1
@@ -199,7 +206,6 @@ def get_datetime_string(datetime):
 
 def getStatistics(dataset: Dataset) -> dict:
     data = dataset.data
-    # print(data)
 
     stats = {}
     totalRecords = data.shape[0]
@@ -209,10 +215,10 @@ def getStatistics(dataset: Dataset) -> dict:
     dataset.number_of_instances = data.shape[0]
 
     for colName in data:
-
         simple_type = dataset.simple_data_types[colName]
         stats[colName] = {}
         transform_timestamp = False
+        data_type = config.data_type_labels[dataset.data_types[colName]]
 
         if simple_type == config.type_string:
             # string statistics are based on string length
@@ -225,7 +231,7 @@ def getStatistics(dataset: Dataset) -> dict:
 
             if not areas:
                 proj = pyproj.Transformer.from_crs(
-                    3857, 4326, always_xy=True).transform
+                    dataset.coordinate_system, 4326, always_xy=True).transform
                 dirName = os.path.dirname(__file__)
                 dataFilePath = os.path.join(
                     dirName, global_config.areas_file_path)
@@ -250,9 +256,13 @@ def getStatistics(dataset: Dataset) -> dict:
                                                                config.type_spatial_distribution_areas: polygon_count}
 
             if geo_type == Polygon:
-                column_data = data[colName].apply(area)
+                # TODO: We could also add statistics on the polygon area by adding the next line and removing pass
+                #column_data = data[colName].apply(area)
+                pass
             elif geo_type == LineString:
-                column_data = data[colName].apply(get_line_length)
+                # TODO: We could also add statistics on the linestring length by adding the next line and removing pass
+                #column_data = data[colName].apply(get_line_length)
+                pass
             else:
                 # TODO: No statistics for points
                 pass
@@ -280,19 +290,20 @@ def getStatistics(dataset: Dataset) -> dict:
 
         # deciles
         if simple_type in [config.type_numeric, config.type_datetime]:
+            deciles, deciles_data_type = addQuantiles(column_data, colName, 10,
+                         transform_timestamp=transform_timestamp)
             stats[colName][config.deciles] = {config.type: config.type_list,
-                                              config.id: config.decile,
-                                              config.list_data_type: config.type_float,
-                                              config.type_list_values: addQuantiles(column_data, colName, 10,
-                                                                                    transform_timestamp=transform_timestamp)}
+                                              config.id: config.deciles,
+                                              config.list_data_type: config.data_type_labels[deciles_data_type],
+                                              config.type_list_values: deciles}
 
         # quartiles
         if simple_type in [config.type_numeric, config.type_datetime]:
+            quartiles, quartiles_data_type = addQuantiles(column_data, colName, 4, transform_timestamp=transform_timestamp)
             stats[colName][config.quartiles] = {config.type: config.type_box_plot,
-                                                config.id: config.quartile,
-                                                config.list_data_type: config.type_float,
-                                                config.type_box_plot_values: addQuantiles(column_data, colName, 4,
-                                                                                          transform_timestamp=transform_timestamp)}
+                                                config.id: config.quartiles,
+                                                config.list_data_type: config.data_type_labels[quartiles_data_type],
+                                                config.type_box_plot_values: quartiles}
 
         # number of distinct values
         if simple_type == config.type_geometry:
@@ -307,14 +318,17 @@ def getStatistics(dataset: Dataset) -> dict:
             addNumericValue(stats[colName], config.median, column_data.median(),
                             transform_timestamp=transform_timestamp)
 
+        # mean
         if simple_type in [config.type_numeric, config.type_datetime]:
             addNumericValue(stats[colName], config.mean, column_data.mean(
             ), transform_timestamp=transform_timestamp)
 
+        # maximum
         if simple_type in [config.type_numeric, config.type_datetime]:
             addNumericValue(stats[colName], config.maximum, column_data.max(skipna=True),
                             transform_timestamp=transform_timestamp)
 
+        # minimum
         if simple_type in [config.type_numeric, config.type_datetime]:
             addNumericValue(stats[colName], config.minimum, column_data.min(skipna=True),
                             transform_timestamp=transform_timestamp)
@@ -324,11 +338,13 @@ def getStatistics(dataset: Dataset) -> dict:
                 stats[colName], config.standardDeviation, column_data.std())
 
         if simple_type in [config.type_numeric, config.type_datetime]:
+            buckets, buckets_data_type = addHistograms(stats, column_data,
+                          colName,
+                          number_of_distinct_values,
+                          transform_timestamp=transform_timestamp)
             stats[colName][config.histogram] = {config.type: config.type_histogram,
-                                                config.type_histogram_buckets: addHistograms(stats, column_data,
-                                                                                             colName,
-                                                                                             number_of_distinct_values,
-                                                                                             transform_timestamp=transform_timestamp)}
+                                                config.bucket_data_type: config.data_type_labels[buckets_data_type],
+                                                config.type_histogram_buckets: buckets}
 
         if simple_type in [config.type_string, config.type_bool]:
             stats[colName][config.value_distribution] = {config.type: config.type_bar_chart, config.id: config.value,
@@ -339,10 +355,11 @@ def getStatistics(dataset: Dataset) -> dict:
     # sample
     sample = dataset.sample(10)
 
-    if 'geometry' in sample.data:
-        sample.data = sample.data.drop(labels='geometry', axis=1)
+    # Drop all geometry columns. Not only "geometry" column
+    for attribute in dataset.simple_data_types:
+        if dataset.simple_data_types[attribute] == config.type_geometry:
+            sample.data = sample.data.drop(labels=attribute, axis=1)
 
     dataset.data_sample = sample.data
-    dataset.addSample()
 
     return stats

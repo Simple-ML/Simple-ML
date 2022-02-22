@@ -9,24 +9,23 @@ import simpleml.util.jsonLabels_util as config
 from simpleml.dataset import Dataset
 
 import simpleml.rdf._rdf_labels as rdf_config
+import numpy as np
+
+from simpleml.rdf._sparql_connector_local import get_graph
 
 
-def exportStatisticsAsRDF(dataset: Dataset):
+def exportStatisticsAsRDF(dataset: Dataset, filename = None):
     profile = dataset.getProfile()
 
     g = Graph()
+    g.namespaces = get_graph().namespaces # get all namespaces
+
+    for x in g.namespaces():
+        if not x[0].startswith("default"): # in external vocabularies, namespaces are sometimes the default
+            g.bind(x[0],x[1])
 
     SML = Namespace("https://simple-ml.de/resource/")
     SEAS = Namespace("https://w3id.org/seas/")
-
-    g.bind("csvw", CSVW)
-    g.bind("sml", SML)
-    g.bind("dcat", DCAT)
-    g.bind("rdf", RDF)
-    g.bind("rdfs", RDFS)
-    g.bind("dcterms", DCTERMS)
-    g.bind("xsd", XSD)
-    g.bind("seas", SEAS)
 
     rdf_dataset = SML[dataset.id]
     g.add((SML['simple-ml'], DCAT.dataset, rdf_dataset))
@@ -45,6 +44,12 @@ def exportStatisticsAsRDF(dataset: Dataset):
         for subject in subjects:
             g.add((rdf_dataset, DCTERMS.subject, Literal(subject, lang)))
 
+    if dataset.lat_before_lon:
+        g.add((rdf_dataset, SML.latBeforeLon, Literal(dataset.lat_before_lon, datatype=XSD.boolean)))
+
+    if dataset.coordinate_system:
+        g.add((rdf_dataset, SML.coordinateSystem, Literal(dataset.coordinate_system, datatype=XSD.nonNegativeInteger)))
+
     # file
     rdf_file = SML[dataset.id + "File"]
     g.add((rdf_dataset, SML.hasFile, rdf_file))
@@ -61,6 +66,24 @@ def exportStatisticsAsRDF(dataset: Dataset):
     g.add((rdf_sample, RDF.type, SML.DatasetSample))
     g.add((rdf_sample, CSVW.separator, Literal("	")))
 
+    rdf_sample_header = SML[dataset.id + "SampleHeader"]
+    g.add((rdf_sample, SML.hasHeader, rdf_sample_header))
+    g.add((rdf_sample_header, RDF.type, SML.DatasetSampleLine))
+    g.add((rdf_sample_header, SML.hasContent, Literal('\t'.join(map(str, dataset.attribute_labels.values())), datatype=XSD.string)))
+
+
+
+    for line_number in range(0,len(dataset.data_sample)):
+
+        sample_line_content=dataset.data_sample.loc[[line_number]].to_csv(header=None, index=False, sep='\t', na_rep='').strip()
+        # fillna(dataset.null_value)
+
+        rdf_sample_line = SML[dataset.id + "SampleLine" + str(line_number)]
+        g.add((rdf_sample, SML.hasLine, rdf_sample_line))
+        g.add((rdf_sample_line, RDF.type, SML.DatasetSampleLine))
+        g.add((rdf_sample_line, SML.hasContent, Literal(sample_line_content, datatype=XSD.string)))
+        g.add((rdf_sample_line, SML.rank, Literal(line_number, datatype=XSD.integer)))
+
     # attributes
     for column_index, attribute in enumerate(dataset.attributes):
 
@@ -73,22 +96,36 @@ def exportStatisticsAsRDF(dataset: Dataset):
         g.add((rdf_attribute, SML.columnIndex, Literal(column_index, datatype=XSD.nonNegativeInteger)))
 
         # semantic graph
-        g.add((rdf_attribute, SML.valueType, URIRef(dataset.attribute_graph[attribute]["value_type"])))
-        g.add((rdf_attribute, SML.mapsToProperty, dataset.attribute_graph[attribute]["property"]))
-        g.add((rdf_attribute, SML.mapsToDomain, URIRef(dataset.attribute_graph[attribute]["resource"])))
-        g.add((URIRef(dataset.attribute_graph[attribute]["resource"]), SML.mapsTo,
-               dataset.attribute_graph[attribute]["class"]))
-        g.add((URIRef(dataset.attribute_graph[attribute]["resource"]), RDF.type, SML.classInstance))
+        if attribute in dataset.attribute_graph:
+            g.add((rdf_attribute, SML.valueType, URIRef(dataset.attribute_graph[attribute]["value_type"])))
+            g.add((rdf_attribute, SML.mapsToProperty, dataset.attribute_graph[attribute]["property"]))
+            g.add((rdf_attribute, SML.mapsToDomain, URIRef(dataset.attribute_graph[attribute]["resource"])))
+            g.add((URIRef(dataset.attribute_graph[attribute]["resource"]), SML.mapsTo,
+                   dataset.attribute_graph[attribute]["class"]))
+            g.add((URIRef(dataset.attribute_graph[attribute]["resource"]), RDF.type, SML.ClassInstance))
+
+            # add classInstance Property
+            if "resource_rank" in dataset.attribute_graph[attribute]:
+                g.add((URIRef(dataset.attribute_graph[attribute]["resource"]), SML.classInstance, Literal(dataset.attribute_graph[attribute]["resource_rank"], datatype=XSD.integer)))
 
         for key, value in attribute_val["statistics"].items():
             if config.values in value:
                 rank = 0
+
                 for sub_value in value[config.values]:
                     rdf_attribute_stat = SML[
                         dataset.id + "Attribute" + urifyCapitalised(attribute) + capitalise(value[config.id]) + str(
                             rank)]
-                    g.add((rdf_attribute_stat, RDF.type,
-                           SML["Distribution" + capitalise(value[config.id]) + "Evaluation"]))
+
+                    evaluation_type = "Distribution" + capitalise(value[config.id]) + "Evaluation"
+
+                    # some evaluation types are defined in SEAS, others in SML
+                    if capitalise(value[config.id]) in ["Quartile","Decile"]:
+                        evaluation_type = SEAS[evaluation_type]
+                    else:
+                        evaluation_type = SML[evaluation_type]
+
+                    g.add((rdf_attribute_stat, RDF.type, evaluation_type))
                     g.add((rdf_attribute_stat, SEAS.evaluatedValue,
                            Literal(sub_value, datatype=rdf_config.xsd_data_types[value[config.list_data_type]])))
                     g.add((rdf_attribute_stat, SEAS.rank,
@@ -96,6 +133,7 @@ def exportStatisticsAsRDF(dataset: Dataset):
                     g.add((rdf_attribute, SEAS.evaluation, rdf_attribute_stat))
                     rank += 1
             elif config.type_histogram_buckets in value:
+                bucket_data_type = value[config.bucket_data_type]
                 bucket_rank = 0
                 for bucket in value[config.type_histogram_buckets]:
                     rdf_attribute_stat = SML[
@@ -105,9 +143,9 @@ def exportStatisticsAsRDF(dataset: Dataset):
                     g.add((rdf_attribute_stat, RDF.type,
                            SML["DistributionHistogramEvaluation"]))
                     g.add((rdf_attribute_stat, SML.bucketMinimum,
-                           Literal(bucket[config.bucketMinimum], datatype=XSD.double)))
+                           Literal(bucket[config.bucketMinimum], datatype=rdf_config.xsd_data_types[bucket_data_type])))
                     g.add((rdf_attribute_stat, SML.bucketMaximum,
-                           Literal(bucket[config.bucketMaximum], datatype=XSD.double)))
+                           Literal(bucket[config.bucketMaximum], datatype=rdf_config.xsd_data_types[bucket_data_type])))
                     g.add((rdf_attribute_stat, SML.instancesInBucket,
                            Literal(bucket[config.bucketValue], datatype=XSD.nonNegativeInteger)))
                     bucket_rank += 1
@@ -125,7 +163,6 @@ def exportStatisticsAsRDF(dataset: Dataset):
                     g.add((rdf_attribute_stat, RDF.type, SML.ValueDistributionValue))
                     value_rank += 1
             elif config.type_spatial_distribution_areas in value:
-
                 rdf_attribute_stat = SML[
                     dataset.id + "Attribute" + urifyCapitalised(attribute) + "SpatialDistribution"]
                 g.add((rdf_attribute, SML.hasSpatialDistribution, rdf_attribute_stat))
@@ -147,9 +184,25 @@ def exportStatisticsAsRDF(dataset: Dataset):
                 g.add((rdf_attribute, SEAS.evaluation, rdf_attribute_stat))
                 g.add((rdf_attribute_stat, SEAS.evaluatedValue,
                        Literal(value[config.value], datatype=rdf_config.xsd_data_types[value['data_type']])))
-                g.add((rdf_attribute_stat, RDF.type, SML["Distribution" + capitalise(value[config.id]) + "Evaluation"]))
 
-    return g.serialize(format="turtle")#.decode("utf-8")
+                # some evaluation types are defined in SEAS, others in SML
+                evaluation_type = "Distribution" + capitalise(value[config.id]) + "Evaluation"
+                if capitalise(value[config.id]) in ["Median", "Mean", "Maximum", "Minimum",
+                                                    "StandardDeviation"]:
+                    evaluation_type = SEAS[evaluation_type]
+                else:
+                    evaluation_type = SML[evaluation_type]
+
+                g.add((rdf_attribute_stat, RDF.type, evaluation_type))
+
+    if dataset.domain_model:
+        for s, p, o in dataset.domain_model.get_attribute_relation_triples_graph():
+            g.add((s, p, o))
+
+    if filename:
+        g.serialize(filename, format="turtle", )
+    else:
+        return g.serialize(format="turtle")#.decode("utf-8")
 
 
 def urify(string):
@@ -158,6 +211,10 @@ def urify(string):
 
 
 def urifyCapitalised(string):
+
+    if not string:
+        string = "None"
+
     string = sub(r"(_|-)+", " ", string)
     string = [capitalise(x) for x in string.split(" ")]
     string =  "".join(string).replace(" ", "")
