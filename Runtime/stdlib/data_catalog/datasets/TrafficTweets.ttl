@@ -1,0 +1,699 @@
+@prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix seas: <https://w3id.org/seas/> .
+@prefix sioc: <http://rdfs.org/sioc/ns#> .
+@prefix sml: <https://simple-ml.de/resource/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sml:simple-ml dcat:dataset sml:TrafficTweets .
+
+sml:TrafficTweets a dcat:Dataset ;
+    dct:description "Deutsche Tweets von Accounts mit Verkehrsbezug."@de,
+        "German Tweets from traffic-related accounts."@en ;
+    dct:identifier "TrafficTweets" ;
+    dct:subject "Verkehr"@de,
+        "Traffic"@en ;
+    dct:title "Verkehrsbezoegene deutsche Tweets"@de,
+        "Traffic-related German tweets"@en ;
+    sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
+    sml:creatorId "0"^^xsd:nonNegativeInteger ;
+    sml:hasAttribute sml:TrafficTweetsAttributeName,
+        sml:TrafficTweetsAttributeTweetdatetime,
+        sml:TrafficTweetsAttributeTweetext,
+        sml:TrafficTweetsAttributeTweetid,
+        sml:TrafficTweetsAttributeUserid ;
+    sml:hasFile sml:TrafficTweetsFile ;
+    sml:hasSample sml:TrafficTweetsSample ;
+    sml:latBeforeLon true ;
+    sml:numberOfInstances "13388"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeName a sml:Attribute ;
+    dct:identifier "name" ;
+    sml:columnIndex "0"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:TrafficTweets_sioc_UserAccount ;
+    sml:mapsToProperty foaf:name ;
+    sml:valueType rdfs:Literal ;
+    seas:evaluation sml:TrafficTweetsAttributeNameAverageNumberOfCapitalisedValues,
+        sml:TrafficTweetsAttributeNameAverageNumberOfCharacters,
+        sml:TrafficTweetsAttributeNameAverageNumberOfDigits,
+        sml:TrafficTweetsAttributeNameAverageNumberOfSpecialCharacters,
+        sml:TrafficTweetsAttributeNameAverageNumberOfTokens,
+        sml:TrafficTweetsAttributeNameNumberOfDistinctValues,
+        sml:TrafficTweetsAttributeNameNumberOfInvalidValues,
+        sml:TrafficTweetsAttributeNameNumberOfNullValues,
+        sml:TrafficTweetsAttributeNameNumberOfValidNonNullValues,
+        sml:TrafficTweetsAttributeNameNumberOfValidValues,
+        sml:TrafficTweetsAttributeNameNumberOfValues ;
+    seas:valueDistributionValue sml:TrafficTweetsAttributeNameValueDistributionValue0,
+        sml:TrafficTweetsAttributeNameValueDistributionValue1,
+        sml:TrafficTweetsAttributeNameValueDistributionValue2,
+        sml:TrafficTweetsAttributeNameValueDistributionValue3,
+        sml:TrafficTweetsAttributeNameValueDistributionValue4,
+        sml:TrafficTweetsAttributeNameValueDistributionValue5,
+        sml:TrafficTweetsAttributeNameValueDistributionValue6,
+        sml:TrafficTweetsAttributeNameValueDistributionValue7,
+        sml:TrafficTweetsAttributeNameValueDistributionValue8,
+        sml:TrafficTweetsAttributeNameValueDistributionValue9 .
+
+sml:TrafficTweetsAttributeNameAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
+
+sml:TrafficTweetsAttributeNameAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "23.61951000896325"^^xsd:float .
+
+sml:TrafficTweetsAttributeNameAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:TrafficTweetsAttributeNameAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.6945025395876905"^^xsd:float .
+
+sml:TrafficTweetsAttributeNameAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "2.282865252464894"^^xsd:float .
+
+sml:TrafficTweetsAttributeNameNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 27 .
+
+sml:TrafficTweetsAttributeNameNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:TrafficTweetsAttributeNameNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:TrafficTweetsAttributeNameNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 13388 .
+
+sml:TrafficTweetsAttributeNameNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 13388 .
+
+sml:TrafficTweetsAttributeNameNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 13388 .
+
+sml:TrafficTweetsAttributeNameValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Verkehrsinformationszentrale Berlin (VIZ)" ;
+    sml:numberOfInstancesOfValue "4022"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeNameValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "WDR Verkehrsstudio" ;
+    sml:numberOfInstancesOfValue "2953"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeNameValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "VerkehrsstudioBerlin" ;
+    sml:numberOfInstancesOfValue "1063"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeNameValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Verkehr AB" ;
+    sml:numberOfInstancesOfValue "939"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeNameValueDistributionValue4 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Blitzer im Vogtland" ;
+    sml:numberOfInstancesOfValue "872"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeNameValueDistributionValue5 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "PK Deutschland" ;
+    sml:numberOfInstancesOfValue "833"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeNameValueDistributionValue6 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "PK_SOE" ;
+    sml:numberOfInstancesOfValue "616"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeNameValueDistributionValue7 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "BVI - Braunschweiger Verkehrsinfo" ;
+    sml:numberOfInstancesOfValue "376"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeNameValueDistributionValue8 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Radio Duisburg" ;
+    sml:numberOfInstancesOfValue "270"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeNameValueDistributionValue9 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Polizei NRW MS" ;
+    sml:numberOfInstancesOfValue "250"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetdatetime a sml:Attribute ;
+    dct:identifier "tweetdatetime" ;
+    sml:columnIndex "2"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:TrafficTweets_time_DateTimeDescription ;
+    sml:mapsToProperty time:inXSDDate ;
+    sml:valueType xsd:date ;
+    seas:evaluation sml:TrafficTweetsAttributeTweetdatetimeDecile0,
+        sml:TrafficTweetsAttributeTweetdatetimeDecile1,
+        sml:TrafficTweetsAttributeTweetdatetimeDecile10,
+        sml:TrafficTweetsAttributeTweetdatetimeDecile2,
+        sml:TrafficTweetsAttributeTweetdatetimeDecile3,
+        sml:TrafficTweetsAttributeTweetdatetimeDecile4,
+        sml:TrafficTweetsAttributeTweetdatetimeDecile5,
+        sml:TrafficTweetsAttributeTweetdatetimeDecile6,
+        sml:TrafficTweetsAttributeTweetdatetimeDecile7,
+        sml:TrafficTweetsAttributeTweetdatetimeDecile8,
+        sml:TrafficTweetsAttributeTweetdatetimeDecile9,
+        sml:TrafficTweetsAttributeTweetdatetimeHistogram0,
+        sml:TrafficTweetsAttributeTweetdatetimeHistogram1,
+        sml:TrafficTweetsAttributeTweetdatetimeHistogram2,
+        sml:TrafficTweetsAttributeTweetdatetimeHistogram3,
+        sml:TrafficTweetsAttributeTweetdatetimeHistogram4,
+        sml:TrafficTweetsAttributeTweetdatetimeHistogram5,
+        sml:TrafficTweetsAttributeTweetdatetimeHistogram6,
+        sml:TrafficTweetsAttributeTweetdatetimeHistogram7,
+        sml:TrafficTweetsAttributeTweetdatetimeHistogram8,
+        sml:TrafficTweetsAttributeTweetdatetimeHistogram9,
+        sml:TrafficTweetsAttributeTweetdatetimeMaximum,
+        sml:TrafficTweetsAttributeTweetdatetimeMean,
+        sml:TrafficTweetsAttributeTweetdatetimeMedian,
+        sml:TrafficTweetsAttributeTweetdatetimeMinimum,
+        sml:TrafficTweetsAttributeTweetdatetimeNumberOfDistinctValues,
+        sml:TrafficTweetsAttributeTweetdatetimeNumberOfInvalidValues,
+        sml:TrafficTweetsAttributeTweetdatetimeNumberOfNullValues,
+        sml:TrafficTweetsAttributeTweetdatetimeNumberOfValidNonNullValues,
+        sml:TrafficTweetsAttributeTweetdatetimeNumberOfValidValues,
+        sml:TrafficTweetsAttributeTweetdatetimeNumberOfValues,
+        sml:TrafficTweetsAttributeTweetdatetimeQuartile0,
+        sml:TrafficTweetsAttributeTweetdatetimeQuartile1,
+        sml:TrafficTweetsAttributeTweetdatetimeQuartile2,
+        sml:TrafficTweetsAttributeTweetdatetimeQuartile3,
+        sml:TrafficTweetsAttributeTweetdatetimeQuartile4 .
+
+sml:TrafficTweetsAttributeTweetdatetimeDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2016-01-12T04:59:26"^^xsd:dateTime ;
+    seas:rank 0 .
+
+sml:TrafficTweetsAttributeTweetdatetimeDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-06-16T08:56:55.700000048"^^xsd:dateTime ;
+    seas:rank 1 .
+
+sml:TrafficTweetsAttributeTweetdatetimeDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2019-11-01T16:55:33"^^xsd:dateTime ;
+    seas:rank 10 .
+
+sml:TrafficTweetsAttributeTweetdatetimeDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-10-08T18:58:59.400000095"^^xsd:dateTime ;
+    seas:rank 2 .
+
+sml:TrafficTweetsAttributeTweetdatetimeDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-12-28T21:31:26"^^xsd:dateTime ;
+    seas:rank 3 .
+
+sml:TrafficTweetsAttributeTweetdatetimeDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2018-03-05T17:52:26.200000048"^^xsd:dateTime ;
+    seas:rank 4 .
+
+sml:TrafficTweetsAttributeTweetdatetimeDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2018-05-06T13:43:02.500000"^^xsd:dateTime ;
+    seas:rank 5 .
+
+sml:TrafficTweetsAttributeTweetdatetimeDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2018-06-27T23:59:28.600000143"^^xsd:dateTime ;
+    seas:rank 6 .
+
+sml:TrafficTweetsAttributeTweetdatetimeDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2018-08-15T15:51:52.500000"^^xsd:dateTime ;
+    seas:rank 7 .
+
+sml:TrafficTweetsAttributeTweetdatetimeDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2018-10-07T17:47:56"^^xsd:dateTime ;
+    seas:rank 8 .
+
+sml:TrafficTweetsAttributeTweetdatetimeDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2018-11-27T07:03:30.599999905"^^xsd:dateTime ;
+    seas:rank 9 .
+
+sml:TrafficTweetsAttributeTweetdatetimeHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2016-05-30T03:47:02.700000048"^^xsd:dateTime ;
+    sml:bucketMinimum "2016-01-12T04:59:26"^^xsd:dateTime ;
+    sml:instancesInBucket "12"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetdatetimeHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2016-10-16T02:34:39.400000095"^^xsd:dateTime ;
+    sml:bucketMinimum "2016-05-30T03:47:02.700000048"^^xsd:dateTime ;
+    sml:instancesInBucket "4"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetdatetimeHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-03-04T01:22:16.099999905"^^xsd:dateTime ;
+    sml:bucketMinimum "2016-10-16T02:34:39.400000095"^^xsd:dateTime ;
+    sml:instancesInBucket "410"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetdatetimeHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-07-21T00:09:52.799999952"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-03-04T01:22:16.099999905"^^xsd:dateTime ;
+    sml:instancesInBucket "1221"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetdatetimeHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-12-06T22:57:29.500000"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-07-21T00:09:52.799999952"^^xsd:dateTime ;
+    sml:instancesInBucket "2051"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetdatetimeHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-04-24T21:45:06.200000048"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-12-06T22:57:29.500000"^^xsd:dateTime ;
+    sml:instancesInBucket "2744"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetdatetimeHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-09-10T20:32:42.900000095"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-04-24T21:45:06.200000048"^^xsd:dateTime ;
+    sml:instancesInBucket "3638"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetdatetimeHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2019-01-27T19:20:19.599999905"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-09-10T20:32:42.900000095"^^xsd:dateTime ;
+    sml:instancesInBucket "2810"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetdatetimeHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2019-06-15T18:07:56.299999952"^^xsd:dateTime ;
+    sml:bucketMinimum "2019-01-27T19:20:19.599999905"^^xsd:dateTime ;
+    sml:instancesInBucket "141"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetdatetimeHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2019-11-01T16:55:33"^^xsd:dateTime ;
+    sml:bucketMinimum "2019-06-15T18:07:56.299999952"^^xsd:dateTime ;
+    sml:instancesInBucket "357"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetdatetimeMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "2019-11-01T16:55:33"^^xsd:dateTime .
+
+sml:TrafficTweetsAttributeTweetdatetimeMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "2018-04-11T03:30:52.944128990"^^xsd:dateTime .
+
+sml:TrafficTweetsAttributeTweetdatetimeMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "2018-05-06T13:43:02.500000"^^xsd:dateTime .
+
+sml:TrafficTweetsAttributeTweetdatetimeMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "2016-01-12T04:59:26"^^xsd:dateTime .
+
+sml:TrafficTweetsAttributeTweetdatetimeNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 13361 .
+
+sml:TrafficTweetsAttributeTweetdatetimeNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:TrafficTweetsAttributeTweetdatetimeNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:TrafficTweetsAttributeTweetdatetimeNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 13388 .
+
+sml:TrafficTweetsAttributeTweetdatetimeNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 13388 .
+
+sml:TrafficTweetsAttributeTweetdatetimeNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 13388 .
+
+sml:TrafficTweetsAttributeTweetdatetimeQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2016-01-12T04:59:26"^^xsd:dateTime ;
+    seas:rank 0 .
+
+sml:TrafficTweetsAttributeTweetdatetimeQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-11-17T21:46:39.750000"^^xsd:dateTime ;
+    seas:rank 1 .
+
+sml:TrafficTweetsAttributeTweetdatetimeQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2018-05-06T13:43:02.500000"^^xsd:dateTime ;
+    seas:rank 2 .
+
+sml:TrafficTweetsAttributeTweetdatetimeQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2018-09-09T10:32:10.500000"^^xsd:dateTime ;
+    seas:rank 3 .
+
+sml:TrafficTweetsAttributeTweetdatetimeQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2019-11-01T16:55:33"^^xsd:dateTime ;
+    seas:rank 4 .
+
+sml:TrafficTweetsAttributeTweetext a sml:Attribute ;
+    dct:identifier "tweetext" ;
+    sml:columnIndex "4"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:TrafficTweets_sioc_Post ;
+    sml:mapsToProperty sioc:content ;
+    sml:valueType rdfs:Literal ;
+    seas:evaluation sml:TrafficTweetsAttributeTweetextAverageNumberOfCapitalisedValues,
+        sml:TrafficTweetsAttributeTweetextAverageNumberOfCharacters,
+        sml:TrafficTweetsAttributeTweetextAverageNumberOfDigits,
+        sml:TrafficTweetsAttributeTweetextAverageNumberOfSpecialCharacters,
+        sml:TrafficTweetsAttributeTweetextAverageNumberOfTokens,
+        sml:TrafficTweetsAttributeTweetextNumberOfDistinctValues,
+        sml:TrafficTweetsAttributeTweetextNumberOfInvalidValues,
+        sml:TrafficTweetsAttributeTweetextNumberOfNullValues,
+        sml:TrafficTweetsAttributeTweetextNumberOfValidNonNullValues,
+        sml:TrafficTweetsAttributeTweetextNumberOfValidValues,
+        sml:TrafficTweetsAttributeTweetextNumberOfValues ;
+    seas:valueDistributionValue sml:TrafficTweetsAttributeTweetextValueDistributionValue0,
+        sml:TrafficTweetsAttributeTweetextValueDistributionValue1,
+        sml:TrafficTweetsAttributeTweetextValueDistributionValue2,
+        sml:TrafficTweetsAttributeTweetextValueDistributionValue3,
+        sml:TrafficTweetsAttributeTweetextValueDistributionValue4,
+        sml:TrafficTweetsAttributeTweetextValueDistributionValue5,
+        sml:TrafficTweetsAttributeTweetextValueDistributionValue6,
+        sml:TrafficTweetsAttributeTweetextValueDistributionValue7,
+        sml:TrafficTweetsAttributeTweetextValueDistributionValue8,
+        sml:TrafficTweetsAttributeTweetextValueDistributionValue9 .
+
+sml:TrafficTweetsAttributeTweetextAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "0.7403645055273379"^^xsd:float .
+
+sml:TrafficTweetsAttributeTweetextAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "177.6735135942635"^^xsd:float .
+
+sml:TrafficTweetsAttributeTweetextAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "7.0469823722736775"^^xsd:float .
+
+sml:TrafficTweetsAttributeTweetextAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "12.077606812070512"^^xsd:float .
+
+sml:TrafficTweetsAttributeTweetextAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "25.3860920227069"^^xsd:float .
+
+sml:TrafficTweetsAttributeTweetextNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 13366 .
+
+sml:TrafficTweetsAttributeTweetextNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:TrafficTweetsAttributeTweetextNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:TrafficTweetsAttributeTweetextNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 13388 .
+
+sml:TrafficTweetsAttributeTweetextNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 13388 .
+
+sml:TrafficTweetsAttributeTweetextNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 13388 .
+
+sml:TrafficTweetsAttributeTweetextValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "#Behinderung, A72, Chemnitz Ri. Hof, zw. Pirk und Dreieck Hochfranken, defektes Fahrzeug. /jf" ;
+    sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetextValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "#Blitzer, B173, Zwickau, Reichenbacher Str., stadteinwärts, am Flugplatz. /jf" ;
+    sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetextValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "#Behinderung, A72, Hof Ri. Chemnitz, zw. Treuen und Reichenbach, defektes Fahrzeug, Person im Fahrzeug. /jf" ;
+    sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetextValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Der Straßenzug Kronprinzessinnenweg/Havelchaussee ( #Grunewald) ist wegen den Munitionssprengungen bereits #GESPERRT. Diese Vollsperrung betrifft auch #Radfahrer und #Fußgänger." ;
+    sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetextValueDistributionValue4 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "#Achtung, A72, Hof Ri. Chemnitz, ist der Parkplatz Großzöbern überfüllt, Lkw's stehen schon auf der Autobahn. Danke Jens /jf" ;
+    sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetextValueDistributionValue5 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Von 18:00 - 05:00 werden auf der #A100 #Straßenschäden beseitigt. Richtung Neukölln werden die Ausfahrt Gradestraße und die Einfahrt Oberlandstraße #gesperrt. Umleitung über Tempelhofer Damm und Ullsteinstraße." ;
+    sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetextValueDistributionValue6 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "#msverkehr Die #Westfalenstraße ist wieder freigegeben! Gute Fahrt!" ;
+    sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetextValueDistributionValue7 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Um ca. 14:00 Uhr startet die @criticalmassbln am Brandenburger Tor in #Mitte. Die Strecke wird von den Teilnehmern spontan beschlossen. Mit kurzzeitigen #Verkehrsbehinderungen ist zu rechnen. #criticalmass #Radverkehr" ;
+    sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetextValueDistributionValue8 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "#Behinderung, A72, Hof Ri. Chemnitz, zw. Hof Töpen und Dreieck Hochfranken, defekter Lkw. /jf" ;
+    sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetextValueDistributionValue9 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "#Behinderung, A72, Chemnitz Ri. Hof, zw. Dreieck Hochfranken und Hof Töpen, defektes Fahrzeug. /jf" ;
+    sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetid a sml:Attribute ;
+    dct:identifier "tweetid" ;
+    sml:columnIndex "3"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:TrafficTweets_sioc_Post ;
+    sml:mapsToProperty dct:identifier ;
+    sml:valueType rdfs:Literal ;
+    seas:evaluation sml:TrafficTweetsAttributeTweetidAverageNumberOfCapitalisedValues,
+        sml:TrafficTweetsAttributeTweetidAverageNumberOfCharacters,
+        sml:TrafficTweetsAttributeTweetidAverageNumberOfDigits,
+        sml:TrafficTweetsAttributeTweetidAverageNumberOfSpecialCharacters,
+        sml:TrafficTweetsAttributeTweetidAverageNumberOfTokens,
+        sml:TrafficTweetsAttributeTweetidNumberOfDistinctValues,
+        sml:TrafficTweetsAttributeTweetidNumberOfInvalidValues,
+        sml:TrafficTweetsAttributeTweetidNumberOfNullValues,
+        sml:TrafficTweetsAttributeTweetidNumberOfValidNonNullValues,
+        sml:TrafficTweetsAttributeTweetidNumberOfValidValues,
+        sml:TrafficTweetsAttributeTweetidNumberOfValues ;
+    seas:valueDistributionValue sml:TrafficTweetsAttributeTweetidValueDistributionValue0,
+        sml:TrafficTweetsAttributeTweetidValueDistributionValue1,
+        sml:TrafficTweetsAttributeTweetidValueDistributionValue2,
+        sml:TrafficTweetsAttributeTweetidValueDistributionValue3,
+        sml:TrafficTweetsAttributeTweetidValueDistributionValue4,
+        sml:TrafficTweetsAttributeTweetidValueDistributionValue5,
+        sml:TrafficTweetsAttributeTweetidValueDistributionValue6,
+        sml:TrafficTweetsAttributeTweetidValueDistributionValue7,
+        sml:TrafficTweetsAttributeTweetidValueDistributionValue8,
+        sml:TrafficTweetsAttributeTweetidValueDistributionValue9 .
+
+sml:TrafficTweetsAttributeTweetidAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:TrafficTweetsAttributeTweetidAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "18.474753510606515"^^xsd:float .
+
+sml:TrafficTweetsAttributeTweetidAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "18.474753510606515"^^xsd:float .
+
+sml:TrafficTweetsAttributeTweetidAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:TrafficTweetsAttributeTweetidAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
+
+sml:TrafficTweetsAttributeTweetidNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 13388 .
+
+sml:TrafficTweetsAttributeTweetidNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:TrafficTweetsAttributeTweetidNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:TrafficTweetsAttributeTweetidNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 13388 .
+
+sml:TrafficTweetsAttributeTweetidNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 13388 .
+
+sml:TrafficTweetsAttributeTweetidNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 13388 .
+
+sml:TrafficTweetsAttributeTweetidValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "1083704002934722560" ;
+    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetidValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "978491871684067329" ;
+    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetidValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "976706298942238722" ;
+    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetidValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "976693718169382912" ;
+    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetidValueDistributionValue4 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "976541553723346945" ;
+    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetidValueDistributionValue5 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "976535100753104896" ;
+    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetidValueDistributionValue6 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "976514928701067269" ;
+    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetidValueDistributionValue7 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "976504603826163713" ;
+    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetidValueDistributionValue8 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "976481589009047558" ;
+    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeTweetidValueDistributionValue9 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "976475541439242242" ;
+    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeUserid a sml:Attribute ;
+    dct:identifier "userid" ;
+    sml:columnIndex "1"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:TrafficTweets_sioc_UserAccount ;
+    sml:mapsToProperty foaf:accountName ;
+    sml:valueType rdfs:Literal ;
+    seas:evaluation sml:TrafficTweetsAttributeUseridAverageNumberOfCapitalisedValues,
+        sml:TrafficTweetsAttributeUseridAverageNumberOfCharacters,
+        sml:TrafficTweetsAttributeUseridAverageNumberOfDigits,
+        sml:TrafficTweetsAttributeUseridAverageNumberOfSpecialCharacters,
+        sml:TrafficTweetsAttributeUseridAverageNumberOfTokens,
+        sml:TrafficTweetsAttributeUseridNumberOfDistinctValues,
+        sml:TrafficTweetsAttributeUseridNumberOfInvalidValues,
+        sml:TrafficTweetsAttributeUseridNumberOfNullValues,
+        sml:TrafficTweetsAttributeUseridNumberOfValidNonNullValues,
+        sml:TrafficTweetsAttributeUseridNumberOfValidValues,
+        sml:TrafficTweetsAttributeUseridNumberOfValues ;
+    seas:valueDistributionValue sml:TrafficTweetsAttributeUseridValueDistributionValue0,
+        sml:TrafficTweetsAttributeUseridValueDistributionValue1,
+        sml:TrafficTweetsAttributeUseridValueDistributionValue2,
+        sml:TrafficTweetsAttributeUseridValueDistributionValue3,
+        sml:TrafficTweetsAttributeUseridValueDistributionValue4,
+        sml:TrafficTweetsAttributeUseridValueDistributionValue5,
+        sml:TrafficTweetsAttributeUseridValueDistributionValue6,
+        sml:TrafficTweetsAttributeUseridValueDistributionValue7,
+        sml:TrafficTweetsAttributeUseridValueDistributionValue8,
+        sml:TrafficTweetsAttributeUseridValueDistributionValue9 .
+
+sml:TrafficTweetsAttributeUseridAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:TrafficTweetsAttributeUseridAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "11.453017627726322"^^xsd:float .
+
+sml:TrafficTweetsAttributeUseridAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "11.453017627726322"^^xsd:float .
+
+sml:TrafficTweetsAttributeUseridAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:TrafficTweetsAttributeUseridAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
+
+sml:TrafficTweetsAttributeUseridNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 27 .
+
+sml:TrafficTweetsAttributeUseridNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:TrafficTweetsAttributeUseridNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:TrafficTweetsAttributeUseridNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 13388 .
+
+sml:TrafficTweetsAttributeUseridNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 13388 .
+
+sml:TrafficTweetsAttributeUseridNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 13388 .
+
+sml:TrafficTweetsAttributeUseridValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "728236310" ;
+    sml:numberOfInstancesOfValue "4022"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeUseridValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "1224885026" ;
+    sml:numberOfInstancesOfValue "2953"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeUseridValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "1558036566" ;
+    sml:numberOfInstancesOfValue "1063"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeUseridValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "890232740666376192" ;
+    sml:numberOfInstancesOfValue "939"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeUseridValueDistributionValue4 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "2317989343" ;
+    sml:numberOfInstancesOfValue "872"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeUseridValueDistributionValue5 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "891065630488752128" ;
+    sml:numberOfInstancesOfValue "833"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeUseridValueDistributionValue6 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "1016373012268974080" ;
+    sml:numberOfInstancesOfValue "616"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeUseridValueDistributionValue7 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "2834150099" ;
+    sml:numberOfInstancesOfValue "376"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeUseridValueDistributionValue8 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "108234375" ;
+    sml:numberOfInstancesOfValue "270"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsAttributeUseridValueDistributionValue9 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "2284811875" ;
+    sml:numberOfInstancesOfValue "250"^^xsd:nonNegativeInteger .
+
+sml:TrafficTweetsFile a sml:TextFile ;
+    dct:format "text/comma-separated-values" ;
+    csvw:header false ;
+    csvw:null "" ;
+    csvw:separator "	" ;
+    sml:fileLocation "TrafficTweets.tsv" .
+
+sml:TrafficTweetsSample a sml:DatasetSample ;
+    csvw:separator "	" ;
+    sml:hasHeader sml:TrafficTweetsSampleHeader ;
+    sml:hasLine sml:TrafficTweetsSampleLine0,
+        sml:TrafficTweetsSampleLine1,
+        sml:TrafficTweetsSampleLine2,
+        sml:TrafficTweetsSampleLine3,
+        sml:TrafficTweetsSampleLine4,
+        sml:TrafficTweetsSampleLine5,
+        sml:TrafficTweetsSampleLine6,
+        sml:TrafficTweetsSampleLine7,
+        sml:TrafficTweetsSampleLine8,
+        sml:TrafficTweetsSampleLine9 .
+
+sml:TrafficTweetsSampleHeader a sml:DatasetSampleLine ;
+    sml:hasContent "User Account (name)	User Account (account name)	Date-Time description (in XSD date)	Post (Identifier)	Post (content)"^^xsd:string .
+
+sml:TrafficTweetsSampleLine0 a sml:DatasetSampleLine ;
+    sml:hasContent "Blitzer im Vogtland	2317989343	2019-11-01 13:35:43	1083704002934722560	#VKU, Klingenthal Ri. Mühlleiten. /jd"^^xsd:string ;
+    sml:rank 0 .
+
+sml:TrafficTweetsSampleLine1 a sml:DatasetSampleLine ;
+    sml:hasContent "Blitzer im Vogtland	2317989343	2019-11-01 17:55:33	1083769392050069506	#VKU, A72, Hof Ri. Chemnitz, zw. Plauen Ost und Treuen. Bitte Rettungsgasse bilden und einhalten! /jd"^^xsd:string ;
+    sml:rank 1 .
+
+sml:TrafficTweetsSampleLine2 a sml:DatasetSampleLine ;
+    sml:hasContent "Blitzer im Vogtland	2317989343	2019-11-01 12:59:32	1083694898547691521	#Sperrung, Wegen Schnee und Gefahr durch umstürzende Bäume wird die Straße zwischen Carolagrün und Schönheide ab sofort für den Verkehr voll gesperrt. Die Sperrung gilt voraussichtlich bis Montag, 14.01.2019, 12 Uhr. Quelle: Stadt Auerbach /jd"^^xsd:string ;
+    sml:rank 2 .
+
+sml:TrafficTweetsSampleLine3 a sml:DatasetSampleLine ;
+    sml:hasContent "Blitzer im Vogtland	2317989343	2019-11-01 14:45:12	1083721488396701696	#Behinderung zwischen Schnarrtanne und Schönheide Behinderungen nach einem Unfall. /lm"^^xsd:string ;
+    sml:rank 3 .
+
+sml:TrafficTweetsSampleLine4 a sml:DatasetSampleLine ;
+    sml:hasContent "Blitzer im Vogtland	2317989343	2019-11-01 14:30:17	1083717734280638464	#Vollsperrung, Rodewisch Ri. Wildenau, beidseitig durch Schneebruch, für Fahrzeuge über 3,5t. /jd"^^xsd:string ;
+    sml:rank 4 .
+
+sml:TrafficTweetsSampleLine5 a sml:DatasetSampleLine ;
+    sml:hasContent "Blitzer im Vogtland	2317989343	2019-10-01 23:55:57	1083497704309907456	#Behinderung, A72, Hof Ri. Chemnitz, zw. Pirk und Plauen Süd, ist der Rastplatz Vogtland mit Lkw überfüllt und stehen in der Einfahrt. /jd"^^xsd:string ;
+    sml:rank 5 .
+
+sml:TrafficTweetsSampleLine6 a sml:DatasetSampleLine ;
+    sml:hasContent "Blitzer im Vogtland	2317989343	2019-11-01 13:06:19	1083696604484435970	#VKU, B173, zw. der Anschlußstelle A72 und Plauen. /jd"^^xsd:string ;
+    sml:rank 6 .
+
+sml:TrafficTweetsSampleLine7 a sml:DatasetSampleLine ;
+    sml:hasContent "Blitzer im Vogtland	2317989343	2019-10-01 07:54:26	1083255727966310400	#Feuerwehreinsatz zwischen Treuen und Schreiersgrün durch umgestürzte Bäume - Vollsperrung! Ebenfalls kein Durchkommen zwischen Eich und Schreiersgrün /ss"^^xsd:string ;
+    sml:rank 7 .
+
+sml:TrafficTweetsSampleLine8 a sml:DatasetSampleLine ;
+    sml:hasContent "Blitzer im Vogtland	2317989343	2019-09-01 21:53:04	1083104391522074625	#Information Vogtlandkreis, S280 zwischen Rodewisch und Wildenau in beiden Richtungen Gefahr durch Schneebruch, nicht passierbar für Fahrzeuge über 3,5 t. /lm"^^xsd:string ;
+    sml:rank 8 .
+
+sml:TrafficTweetsSampleLine9 a sml:DatasetSampleLine ;
+    sml:hasContent "Blitzer im Vogtland	2317989343	2019-11-01 15:01:48	1083725669635448832	#VKU, Plauen, Breitscheidstr. /jd"^^xsd:string ;
+    sml:rank 9 .
+
+sml:TrafficTweets_sioc_Post a sml:ClassInstance ;
+    sioc:has_creator sml:TrafficTweets_sioc_UserAccount ;
+    time:hasTime sml:TrafficTweets_time_DateTimeDescription ;
+    sml:mapsTo sioc:Post .
+
+sml:TrafficTweets_time_DateTimeDescription a sml:ClassInstance ;
+    sml:mapsTo time:DateTimeDescription .
+
+sml:TrafficTweets_sioc_UserAccount a sml:ClassInstance ;
+    sml:mapsTo sioc:UserAccount .
+
