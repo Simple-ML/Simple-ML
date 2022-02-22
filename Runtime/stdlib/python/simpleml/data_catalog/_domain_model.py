@@ -13,6 +13,7 @@ SML = rdflib.Namespace('https://simple-ml.de/resource/')
 class DomainModel:
     def __init__(self):
         self.graph = rdflib.Graph()
+        self.triple_graph = rdflib.Graph()
 
     def addNode(self, node_identifier, class_identifier):
         self.graph.add((node_identifier, SML.mapsTo, class_identifier))
@@ -36,6 +37,20 @@ class DomainModel:
             propertyLabel, datatype=XSD.string)))
         return property_node
 
+    def addTriple(self, triple):
+        self.graph.add(triple)
+        self.triple_graph.add(triple)
+
+    def get_attribute_relation_triples_graph(self):
+        return self.triple_graph
+
+    def copy(self):
+        copy = DomainModel()
+        copy.graph=self.graph
+        copy.triple_graph = rdflib.Graph()
+        for s,p,o in self.triple_graph.triples((None,None,None)):
+            copy.triple_graph.add((s,p,o))
+        return copy
 
 def getPythonType(data_type):
     data_type = rdflib.URIRef(data_type)

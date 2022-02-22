@@ -3,7 +3,7 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX sml: <https://simple-ml.de/resource/>
 PREFIX csvw: <http://www.w3.org/ns/csvw#>
 
-SELECT ?identifier ?property ?domain ?valueType ?identifier ?columnIndex ?subjectClass
+SELECT ?identifier ?property ?domain ?valueType ?columnIndex ?subjectClass
  (STR(?propertyLabelWithLang) AS ?propertyLabel)
  (STR(?subjectClassLabelWithLang) AS ?subjectClassLabel)
 WHERE {
@@ -17,7 +17,6 @@ WHERE {
 ?attribute sml:mapsToProperty ?property .
 ?attribute sml:mapsToDomain ?domain .
 ?attribute sml:valueType ?valueType .
-?attribute dcterms:identifier ?identifier .
 ?attribute sml:columnIndex ?columnIndex .
 
 ?property rdfs:label ?propertyLabelWithLang .

@@ -57,4 +57,6 @@ value_distribution = 'value_distribution'
 value_distribution_number_of_instances = 'number_of_instances'
 value_distribution_value = 'value'
 
-xsd_data_types = { config.type_float: XSD.float, config.type_integer: XSD.integer, config.type_datetime: XSD.dateTime}
+xsd_data_types = { config.type_long: XSD.long, config.type_float: XSD.float,
+                   config.type_integer: XSD.integer, config.type_datetime: XSD.dateTime,
+                   config.type_bool: XSD.boolean, config.type_string: XSD.string}
