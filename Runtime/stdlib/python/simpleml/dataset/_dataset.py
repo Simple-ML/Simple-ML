@@ -39,7 +39,7 @@ class Dataset:
         self.data_types = {}
         self.attribute_labels = {}
         self.stats = None
-        self.data_sample = None
+        self.data_sample = pd.DataFrame()
         self.sample_info = None
         self.lon_lat_pairs = []
         self.wkt_columns = []
@@ -272,7 +272,7 @@ class Dataset:
 
     def getJson(self):
         json_input = {"id": self.id,
-                      "title": self.title, "topics": self.topics}
+                      "title": self.title, "topics": self.subjects}
         return json.dumps(json_input)
 
     def getColumn(self, column_identifier):

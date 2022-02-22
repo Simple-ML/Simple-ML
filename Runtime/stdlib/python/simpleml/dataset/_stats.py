@@ -22,7 +22,7 @@ def addSpatialValueDistribution(geometry_object, polygon_count, areas, proj = No
             polygon_count[None] = 1
         else:
             polygon_count[None] = polygon_count[None] + 1
-        return
+        return None
 
     transformedGeometryObject = geometry_object
 
@@ -204,7 +204,7 @@ def get_datetime_string(datetime):
     return datet.fromtimestamp(datetime).strftime(config.datetime_format[config.lang])
 
 
-def getStatistics(dataset: Dataset) -> dict:
+def getStatistics(dataset) -> dict:
     data = dataset.data
 
     stats = {}

@@ -48,7 +48,7 @@ def createDatasets(results):
         title = result["title"]["value"]
         identifier = result["identifier"]["value"]
         topics = result["subjects"]["value"].split(";")
-        dataset = Dataset(id=identifier, title=title, topics=topics)
+        dataset = Dataset(id=identifier, title=title, subjects=topics)
         datasets.append(dataset)
     return datasets
 
