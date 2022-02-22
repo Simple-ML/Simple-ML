@@ -4,15 +4,12 @@ import json
 from io import StringIO
 
 import pandas as pd
-from numpy import datetime64
-
 import simpleml.util.jsonLabels_util as config
+from numpy import datetime64
+from rdflib import URIRef
 from simpleml.data_catalog._domain_model import DomainModel, getPythonType
 from simpleml.dataset import Dataset
 from simpleml.rdf import run_query, load_query
-
-from rdflib import URIRef
-from simpleml.util import exportDictionaryAsJSON
 
 lang = "de"  # TODO: Configure in a global config
 
@@ -37,7 +34,7 @@ def getDatasets(domain=None, topic=None):
         topics = result["subjects"]["value"].split(";")
         number_of_instances = int(result["numberOfInstances"]["value"])
         dataset = Dataset(id=identifier, title=title, subjects={
-                          lang: topics}, number_of_instances=number_of_instances)
+            lang: topics}, number_of_instances=number_of_instances)
         datasets.append(dataset)
     return datasets
 
@@ -72,7 +69,7 @@ def addDomainModel(dataset):
     lon_lat_pairs = {}
 
     for result in results["results"]["bindings"]:
-        column_index = result["columnIndex"]["value"]
+        # column_index = result["columnIndex"]["value"]
         identifier = result["identifier"]["value"]
         propertyURI = result["property"]["value"]
         subjectResource = result["domain"]["value"]
@@ -105,8 +102,9 @@ def addDomainModel(dataset):
         dataset.addColumnDescription(attribute_identifier=identifier, resource_node=resource_node,
                                      domain_node=domain_node, property_node=property_node,
                                      rdf_value_type=value_type, value_type=getPythonType(
-                                         value_type),
-                                     attribute_label=domain_node_label + " (" + propertyLabel + ")", is_geometry = is_geometry)
+                value_type),
+                                     attribute_label=domain_node_label + " (" + propertyLabel + ")",
+                                     is_geometry=is_geometry)
 
     for lon_lat_pair in lon_lat_pairs.values():
         dataset.lon_lat_pairs.append(lon_lat_pair)
@@ -115,7 +113,8 @@ def addDomainModel(dataset):
     query = load_query("getClassRelations", {"datasetId": dataset.id})
     results = run_query(query)
     for result in results["results"]["bindings"]:
-        dataset.domain_model.addTriple((URIRef(result["domain_class1"]["value"]),URIRef(result["property"]["value"]),URIRef(result["domain_class2"]["value"])))
+        dataset.domain_model.addTriple((URIRef(result["domain_class1"]["value"]), URIRef(result["property"]["value"]),
+                                        URIRef(result["domain_class2"]["value"])))
 
 
 def getDataset(dataset_id: str) -> Dataset:
@@ -140,7 +139,6 @@ def getDataset(dataset_id: str) -> Dataset:
         if "latBeforeLon" in result:
             lat_before_lon = bool(result["latBeforeLon"]["value"])
 
-
         topics = result["subjects"]["value"].split(";")
 
         title = result["title"]["value"]
@@ -149,8 +147,9 @@ def getDataset(dataset_id: str) -> Dataset:
     # TODO: Assign spatial columns
     dataset = Dataset(id=dataset_id, title=title, fileName=file_name, hasHeader=has_header, separator=separator,
                       null_value=null_value, description=description, subjects={
-                          lang: topics},
-                      number_of_instances=number_of_instances, titles={lang: title}, descriptions={lang: description}, coordinate_system=coordinate_system,lat_before_lon=lat_before_lon)
+            lang: topics},
+                      number_of_instances=number_of_instances, titles={lang: title}, descriptions={lang: description},
+                      coordinate_system=coordinate_system, lat_before_lon=lat_before_lon)
 
     addDomainModel(dataset)
     addStatistics(dataset)
@@ -181,7 +180,7 @@ def addStatistics(dataset: Dataset):
             # Special case: quartiles are shown as box plots, not lists
 
             type = config.type_list
-            if(evaluation_type == 'quartile'):
+            if (evaluation_type == 'quartile'):
                 type = config.type_box_plot
 
             dataset.stats[attribute_identifier][evaluation_type] = {config.type: type,
@@ -196,7 +195,7 @@ def addStatistics(dataset: Dataset):
             addNumericValue(dataset.stats[attribute_identifier],
                             evaluation_type, value, data_type=stats_datatype)
 
-            #dataset.stats[attribute_identifier][evaluation_type] = value
+            # dataset.stats[attribute_identifier][evaluation_type] = value
         else:
             current_list.append(value)
 
@@ -212,6 +211,7 @@ def addStatistics(dataset: Dataset):
     # add spatial value distribution
     addSpatialDistribution(dataset)
 
+
 def getValue(result):
     value = result["value"]
 
@@ -219,7 +219,7 @@ def getValue(result):
     if "datatype" in result:
         datatype = result["datatype"]
         stats_datatype = None
-        if datatype == "http://www.w3.org/2001/XMLSchema#double" or datatype == "http://www.w3.org/2001/XMLSchema#float" or datatype=="http://www.w3.org/2001/XMLSchema#decimal":
+        if datatype == "http://www.w3.org/2001/XMLSchema#double" or datatype == "http://www.w3.org/2001/XMLSchema#float" or datatype == "http://www.w3.org/2001/XMLSchema#decimal":
             value = float(value)
             stats_datatype = config.type_float
         elif datatype == "http://www.w3.org/2001/XMLSchema#nonNegativeInteger" or datatype == "http://www.w3.org/2001/XMLSchema#integer":
@@ -236,7 +236,6 @@ def getValue(result):
     return stats_datatype, value
 
 
-
 def addHistograms(dataset: Dataset):
     parameters = {"datasetId": dataset.id}
     query = load_query("getDatasetHistograms", parameters)
@@ -246,9 +245,13 @@ def addHistograms(dataset: Dataset):
         attribute_identifier = result["identifier"]["value"]
 
         if config.histogram not in dataset.stats[attribute_identifier]:
-            dataset.stats[attribute_identifier][config.histogram] = {config.type: config.type_histogram, config.bucket_data_type:getValue(result["minimum"])[0], config.type_histogram_buckets: []}
+            dataset.stats[attribute_identifier][config.histogram] = {config.type: config.type_histogram,
+                                                                     config.bucket_data_type:
+                                                                         getValue(result["minimum"])[0],
+                                                                     config.type_histogram_buckets: []}
 
-        histogram = {config.bucketMinimum: getValue(result["minimum"])[1], config.bucketMaximum: getValue(result["maximum"])[1],
+        histogram = {config.bucketMinimum: getValue(result["minimum"])[1],
+                     config.bucketMaximum: getValue(result["maximum"])[1],
                      config.value: getValue(result["instances"])[1]}
 
         dataset.stats[attribute_identifier][config.histogram][config.type_histogram_buckets].append(histogram)
@@ -268,6 +271,7 @@ def addValueDistribution(dataset: Dataset):
             {config.value_distribution_value: result["value"]["value"],
              config.value_distribution_number_of_instances: result["instances"]["value"]})
 
+
 def addSpatialDistribution(dataset: Dataset):
     parameters = {"datasetId": dataset.id}
     query = load_query("getDatasetSpatialDistribution", parameters)
@@ -281,19 +285,22 @@ def addSpatialDistribution(dataset: Dataset):
         if not attribute_identifier in areas:
             areas[attribute_identifier] = {}
 
-        #if config.spatialValueDistribution not in dataset.stats[attribute_identifier]:
+        # if config.spatialValueDistribution not in dataset.stats[attribute_identifier]:
         #    dataset.stats[attribute_identifier][config.spatialValueDistribution] = []
 
         areas[attribute_identifier][result["region"]["value"]] = result["instances"]["value"]
 
-        #dataset.stats[attribute_identifier][config.spatialValueDistribution].append(
+        # dataset.stats[attribute_identifier][config.spatialValueDistribution].append(
         #    {config.value_distribution_value: result["region"]["value"].rsplit('/', 1)[1],
         #     config.value_distribution_number_of_instances: result["instances"]["value"]})
 
     for attribute_identifier in areas:
-        dataset.stats[attribute_identifier][config.spatialValueDistribution]={}
-        dataset.stats[attribute_identifier][config.spatialValueDistribution][config.type] = config.type_spatial_distribution
-        dataset.stats[attribute_identifier][config.spatialValueDistribution][config.type_spatial_distribution_areas] = areas[attribute_identifier]
+        dataset.stats[attribute_identifier][config.spatialValueDistribution] = {}
+        dataset.stats[attribute_identifier][config.spatialValueDistribution][
+            config.type] = config.type_spatial_distribution
+        dataset.stats[attribute_identifier][config.spatialValueDistribution][config.type_spatial_distribution_areas] = \
+            areas[attribute_identifier]
+
 
 def addSample(dataset: Dataset):
     parameters = {"datasetId": dataset.id}
@@ -307,8 +314,9 @@ def addSample(dataset: Dataset):
     dataset.data_sample = pd.read_csv(
         StringIO(sample_string), sep="\t", header=0, na_values='')
 
+
 def addNumericValue(column_stats, name, value, data_type=None):
-    simple_type = config.type_numeric
+    # simple_type = config.type_numeric
 
     column_stats[name] = createNumericValue(
         name, value, config.type_numeric, data_type)
@@ -325,6 +333,7 @@ def createNumericValue(name, value, simple_type, data_type=None):
 
 def get_pd_timestamp(datetime):
     return pd.Timestamp(datetime, unit='s')
+
 
 def get_datatype_from_rdf(datatype):
     if datatype == "http://www.w3.org/2001/XMLSchema#double" or datatype == "http://www.w3.org/2001/XMLSchema#float" or datatype == "http://www.w3.org/2001/XMLSchema#decimal":

@@ -7,10 +7,9 @@ from typing import Any, Tuple
 import geopandas
 import numpy as np  # For huge arrays and matrices
 import pandas as pd  # For data processing
-from shapely import wkt, wkb, geometry, ops
-
 import simpleml.util.global_configurations as global_config
 import simpleml.util.jsonLabels_util as config
+from shapely import wkt, wkb, geometry
 from simpleml.dataset._instance import Instance
 from simpleml.dataset._stats import getStatistics
 
@@ -24,7 +23,8 @@ from simpleml.dataset._stats import getStatistics
 class Dataset:
     def __init__(self, id: str = None, title: str = None, description: str = None, fileName: str = None,
                  hasHeader: bool = True, null_value="", separator=",", number_of_instances: int = None,
-                 titles: dict = None, descriptions: dict = None, subjects: dict = None, coordinate_system:int=4326, lat_before_lon:bool = False):
+                 titles: dict = None, descriptions: dict = None, subjects: dict = None, coordinate_system: int = 4326,
+                 lat_before_lon: bool = False):
         self.id = id
         self.title = title
         self.description = description
@@ -122,9 +122,9 @@ class Dataset:
 
         copy.data = copy.data.loc[copy.data[attribute] > value]
 
-        #copy.data = copy.data[copy.data.column_name != 'False']
-        #df = df[df.column_name != value]
-        #print('Dataset class')
+        # copy.data = copy.data[copy.data.column_name != 'False']
+        # df = df[df.column_name != value]
+        # print('Dataset class')
         # print(copy.data)
 
         return copy
@@ -235,11 +235,9 @@ class Dataset:
             self.simple_data_types[column_name] = config.type_geometry
             lon_lat_pair_number += 1
 
-
-
     def addColumnDescription(self, attribute_identifier, resource_node, domain_node, property_node, rdf_value_type,
                              value_type,
-                             attribute_label, is_geometry:bool,resource_rank= None):
+                             attribute_label, is_geometry: bool, resource_rank=None):
         self.attributes.append(attribute_identifier)
 
         if resource_node:
@@ -255,7 +253,7 @@ class Dataset:
         # create simple types
         if value_type == np.datetime64:
             self.parse_dates.append(attribute_identifier)
-            #self.data_types[attribute_identifier] = np.str
+            # self.data_types[attribute_identifier] = np.str
             self.simple_data_types[attribute_identifier] = config.type_datetime
         elif value_type == np.integer or value_type == pd.Int32Dtype() or value_type == pd.Int64Dtype():
             self.simple_data_types[attribute_identifier] = config.type_numeric
@@ -307,7 +305,7 @@ class Dataset:
         copy.coordinate_system = self.coordinate_system
         copy.parse_dates = self.parse_dates.copy()
 
-        if(self.domain_model):
+        if (self.domain_model):
             copy.domain_model = self.domain_model.copy()
 
         if not basic_data_only:
@@ -375,9 +373,9 @@ class Dataset:
                 sample_attribute_labels.append(self.attribute_labels[attribute])
 
         return {config.type: config.type_table,
-                               config.sample_lines: sample_as_list,
-                               config.sample_header_labels: sample_attribute_labels,
-                               config.type_table_data_types: sample_data_types}
+                config.sample_lines: sample_as_list,
+                config.sample_header_labels: sample_attribute_labels,
+                config.type_table_data_types: sample_data_types}
 
     def exportDataAsFile(self, file_path):
         self.data.to_csv(file_path, encoding='utf-8')
@@ -390,8 +388,8 @@ def loadDataset(datasetID: str) -> Dataset:
     return dataset
 
 
-def readDataSetFromCSV(file_name: str, dataset_id: str, separator: str, has_header: bool, null_value: str, dataset_name: str = None, coordinate_system = 3857, lon_lat_pairs = []) -> Dataset:
-
+def readDataSetFromCSV(file_name: str, dataset_id: str, separator: str, has_header: bool, null_value: str,
+                       dataset_name: str = None, coordinate_system=3857, lon_lat_pairs=[]) -> Dataset:
     dir_name = os.path.dirname(__file__)
     data_file_path = os.path.join(
         dir_name, global_config.data_folder_name, file_name)
@@ -402,8 +400,9 @@ def readDataSetFromCSV(file_name: str, dataset_id: str, separator: str, has_head
         dataset_name = dataset_id
 
     dataset = Dataset(id=dataset_id, title=dataset_name, fileName=file_name, hasHeader=has_header, separator=separator,
-                      null_value='', description='', subjects={}, number_of_instances=None, titles={}, descriptions={}, coordinate_system=coordinate_system)
-    dataset.data=data
+                      null_value='', description='', subjects={}, number_of_instances=None, titles={}, descriptions={},
+                      coordinate_system=coordinate_system)
+    dataset.data = data
     dataset.lon_lat_pairs = lon_lat_pairs
 
     np_type = ''
@@ -422,7 +421,7 @@ def readDataSetFromCSV(file_name: str, dataset_id: str, separator: str, has_head
 
             if not found_new_type:
                 try:
-                    data[attribute].apply(wkb.loads, hex = True)
+                    data[attribute].apply(wkb.loads, hex=True)
                     dataset.wkb_columns.append(attribute)
                     is_geometry = True
                     found_new_type = True
@@ -437,15 +436,18 @@ def readDataSetFromCSV(file_name: str, dataset_id: str, separator: str, has_head
                 except:
                     pass
 
-        dataset.addColumnDescription(attribute, None, None, None, None, dataTypes(data[attribute].dtype),attribute , is_geometry=is_geometry)
+        dataset.addColumnDescription(attribute, None, None, None, None, dataTypes(data[attribute].dtype), attribute,
+                                     is_geometry=is_geometry)
 
     dataset.parse_geo_columns()
 
     return dataset
 
+
 def testx(x):
     print("HAAA")
     return "a"
+
 
 def dataTypes(type):
     if type == 'Float64':
