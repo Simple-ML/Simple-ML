@@ -1,0 +1,581 @@
+@prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix seas: <https://w3id.org/seas/> .
+@prefix sml: <https://simple-ml.de/resource/> .
+@prefix sml-mob: <https://simple-ml.de/resource/mobility/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sml:simple-ml dcat:dataset sml:PublicHolidaysNiedersachsen .
+
+sml:PublicHolidaysNiedersachsen a dcat:Dataset ;
+    dct:description "Gesetzliche in Niedersachsen."@de,
+        "Public holidays in Lower Saxony, Germany."@en ;
+    dct:identifier "PublicHolidaysNiedersachsen" ;
+    dct:subject "Ereignisse"@de,
+        "Events"@en ;
+    dct:title "Gesetzliche Feiertage in Niedersachsen"@de,
+        "Public holidays in Lower Saxony (Germany)"@en ;
+    sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
+    sml:creatorId "0"^^xsd:nonNegativeInteger ;
+    sml:hasAttribute sml:PublicHolidaysNiedersachsenAttributeEndTime,
+        sml:PublicHolidaysNiedersachsenAttributeName,
+        sml:PublicHolidaysNiedersachsenAttributeStartTime ;
+    sml:hasFile sml:PublicHolidaysNiedersachsenFile ;
+    sml:hasSample sml:PublicHolidaysNiedersachsenSample ;
+    sml:numberOfInstances "97"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTime a sml:Attribute ;
+    dct:identifier "end_time" ;
+    sml:columnIndex "2"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:PublicHolidaysNiedersachsen_time_2 ;
+    sml:mapsToProperty time:inXSDDateTime ;
+    sml:valueType xsd:dateTime ;
+    seas:evaluation sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile0,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile1,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile10,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile2,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile3,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile4,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile5,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile6,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile7,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile8,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile9,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram0,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram1,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram2,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram3,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram4,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram5,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram6,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram7,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram8,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram9,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeMaximum,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeMean,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeMedian,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeMinimum,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeNumberOfDistinctValues,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeNumberOfInvalidValues,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeNumberOfNullValues,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeNumberOfValidNonNullValues,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeNumberOfValidValues,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeNumberOfValues,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeQuartile0,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeQuartile1,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeQuartile2,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeQuartile3,
+        sml:PublicHolidaysNiedersachsenAttributeEndTimeQuartile4 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2014-01-01T23:00:00"^^xsd:dateTime ;
+    seas:rank 0 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2015-02-26T03:12:00"^^xsd:dateTime ;
+    seas:rank 1 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2023-12-26T23:00:00"^^xsd:dateTime ;
+    seas:rank 10 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2016-03-26T13:12:00"^^xsd:dateTime ;
+    seas:rank 2 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-04-17T07:36:00"^^xsd:dateTime ;
+    seas:rank 3 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2018-04-01T02:48:00"^^xsd:dateTime ;
+    seas:rank 4 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2019-04-19T22:00:00"^^xsd:dateTime ;
+    seas:rank 5 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2020-03-01T22:24:00"^^xsd:dateTime ;
+    seas:rank 6 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2021-01-20T03:36:00"^^xsd:dateTime ;
+    seas:rank 7 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2021-12-31T18:12:00"^^xsd:dateTime ;
+    seas:rank 8 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2022-12-29T08:36:00"^^xsd:dateTime ;
+    seas:rank 9 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2015-01-01T13:24:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2014-01-01T23:00:00"^^xsd:dateTime ;
+    sml:instancesInBucket "9"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2016-01-01T03:48:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2015-01-01T13:24:00"^^xsd:dateTime ;
+    sml:instancesInBucket "9"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2016-12-30T18:12:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2016-01-01T03:48:00"^^xsd:dateTime ;
+    sml:instancesInBucket "9"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-12-30T08:36:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2016-12-30T18:12:00"^^xsd:dateTime ;
+    sml:instancesInBucket "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-12-29T23:00:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-12-30T08:36:00"^^xsd:dateTime ;
+    sml:instancesInBucket "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2019-12-29T13:24:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-12-29T23:00:00"^^xsd:dateTime ;
+    sml:instancesInBucket "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2020-12-28T03:48:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2019-12-29T13:24:00"^^xsd:dateTime ;
+    sml:instancesInBucket "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2021-12-27T18:12:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2020-12-28T03:48:00"^^xsd:dateTime ;
+    sml:instancesInBucket "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2022-12-27T08:36:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2021-12-27T18:12:00"^^xsd:dateTime ;
+    sml:instancesInBucket "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2023-12-26T23:00:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2022-12-27T08:36:00"^^xsd:dateTime ;
+    sml:instancesInBucket "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "2023-12-26T23:00:00"^^xsd:dateTime .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "2019-02-14T14:13:36.494845390"^^xsd:dateTime .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "2019-04-19T22:00:00"^^xsd:dateTime .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "2014-01-01T23:00:00"^^xsd:dateTime .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 97 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 97 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 97 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 97 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2014-01-01T23:00:00"^^xsd:dateTime ;
+    seas:rank 0 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2016-10-03T22:00:00"^^xsd:dateTime ;
+    seas:rank 1 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2019-04-19T22:00:00"^^xsd:dateTime ;
+    seas:rank 2 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2021-05-24T22:00:00"^^xsd:dateTime ;
+    seas:rank 3 .
+
+sml:PublicHolidaysNiedersachsenAttributeEndTimeQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2023-12-26T23:00:00"^^xsd:dateTime ;
+    seas:rank 4 .
+
+sml:PublicHolidaysNiedersachsenAttributeName a sml:Attribute ;
+    dct:identifier "name" ;
+    sml:columnIndex "0"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/PublicHolidaysNiedersachsen_sml_mobility/Holiday> ;
+    sml:mapsToProperty rdfs:label ;
+    sml:valueType rdfs:Literal ;
+    seas:evaluation sml:PublicHolidaysNiedersachsenAttributeNameAverageNumberOfCapitalisedValues,
+        sml:PublicHolidaysNiedersachsenAttributeNameAverageNumberOfCharacters,
+        sml:PublicHolidaysNiedersachsenAttributeNameAverageNumberOfDigits,
+        sml:PublicHolidaysNiedersachsenAttributeNameAverageNumberOfSpecialCharacters,
+        sml:PublicHolidaysNiedersachsenAttributeNameAverageNumberOfTokens,
+        sml:PublicHolidaysNiedersachsenAttributeNameNumberOfDistinctValues,
+        sml:PublicHolidaysNiedersachsenAttributeNameNumberOfInvalidValues,
+        sml:PublicHolidaysNiedersachsenAttributeNameNumberOfNullValues,
+        sml:PublicHolidaysNiedersachsenAttributeNameNumberOfValidNonNullValues,
+        sml:PublicHolidaysNiedersachsenAttributeNameNumberOfValidValues,
+        sml:PublicHolidaysNiedersachsenAttributeNameNumberOfValues ;
+    seas:valueDistributionValue sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue0,
+        sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue1,
+        sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue2,
+        sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue3,
+        sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue4,
+        sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue5,
+        sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue6,
+        sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue7,
+        sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue8,
+        sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue9 .
+
+sml:PublicHolidaysNiedersachsenAttributeNameAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "0.7938144329896907"^^xsd:float .
+
+sml:PublicHolidaysNiedersachsenAttributeNameAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "14.587628865979381"^^xsd:float .
+
+sml:PublicHolidaysNiedersachsenAttributeNameAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "0.20618556701030927"^^xsd:float .
+
+sml:PublicHolidaysNiedersachsenAttributeNameAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.20618556701030927"^^xsd:float .
+
+sml:PublicHolidaysNiedersachsenAttributeNameAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "1.824742268041237"^^xsd:float .
+
+sml:PublicHolidaysNiedersachsenAttributeNameNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 10 .
+
+sml:PublicHolidaysNiedersachsenAttributeNameNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:PublicHolidaysNiedersachsenAttributeNameNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:PublicHolidaysNiedersachsenAttributeNameNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 97 .
+
+sml:PublicHolidaysNiedersachsenAttributeNameNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 97 .
+
+sml:PublicHolidaysNiedersachsenAttributeNameNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 97 .
+
+sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Neujahr" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Karfreitag" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Ostermontag" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Tag der Arbeit" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue4 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Christi Himmelfahrt" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue5 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Pfingstmontag" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue6 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Tag der Deutschen Einheit" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue7 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "1. Weihnachtstag" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue8 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "2. Weihnachtstag" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue9 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Reformationstag" ;
+    sml:numberOfInstancesOfValue "7"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTime a sml:Attribute ;
+    dct:identifier "start_time" ;
+    sml:columnIndex "1"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:PublicHolidaysNiedersachsen_time_1 ;
+    sml:mapsToProperty time:inXSDDateTime ;
+    sml:valueType xsd:dateTime ;
+    seas:evaluation sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile0,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile1,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile10,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile2,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile3,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile4,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile5,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile6,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile7,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile8,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile9,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram0,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram1,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram2,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram3,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram4,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram5,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram6,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram7,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram8,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram9,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeMaximum,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeMean,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeMedian,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeMinimum,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeNumberOfDistinctValues,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeNumberOfInvalidValues,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeNumberOfNullValues,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeNumberOfValidNonNullValues,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeNumberOfValidValues,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeNumberOfValues,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeQuartile0,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeQuartile1,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeQuartile2,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeQuartile3,
+        sml:PublicHolidaysNiedersachsenAttributeStartTimeQuartile4 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2013-12-31T23:00:00"^^xsd:dateTime ;
+    seas:rank 0 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2015-02-25T03:12:00"^^xsd:dateTime ;
+    seas:rank 1 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2023-12-25T23:00:00"^^xsd:dateTime ;
+    seas:rank 10 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2016-03-25T13:12:00"^^xsd:dateTime ;
+    seas:rank 2 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-04-16T07:36:00"^^xsd:dateTime ;
+    seas:rank 3 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2018-03-31T02:48:00"^^xsd:dateTime ;
+    seas:rank 4 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2019-04-18T22:00:00"^^xsd:dateTime ;
+    seas:rank 5 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2020-02-29T22:24:00"^^xsd:dateTime ;
+    seas:rank 6 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2021-01-19T03:36:00"^^xsd:dateTime ;
+    seas:rank 7 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2021-12-30T18:12:00"^^xsd:dateTime ;
+    seas:rank 8 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2022-12-28T08:36:00"^^xsd:dateTime ;
+    seas:rank 9 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2014-12-31T13:24:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2013-12-31T23:00:00"^^xsd:dateTime ;
+    sml:instancesInBucket "9"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2015-12-31T03:48:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2014-12-31T13:24:00"^^xsd:dateTime ;
+    sml:instancesInBucket "9"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2016-12-29T18:12:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2015-12-31T03:48:00"^^xsd:dateTime ;
+    sml:instancesInBucket "9"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-12-29T08:36:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2016-12-29T18:12:00"^^xsd:dateTime ;
+    sml:instancesInBucket "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-12-28T23:00:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-12-29T08:36:00"^^xsd:dateTime ;
+    sml:instancesInBucket "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2019-12-28T13:24:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-12-28T23:00:00"^^xsd:dateTime ;
+    sml:instancesInBucket "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2020-12-27T03:48:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2019-12-28T13:24:00"^^xsd:dateTime ;
+    sml:instancesInBucket "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2021-12-26T18:12:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2020-12-27T03:48:00"^^xsd:dateTime ;
+    sml:instancesInBucket "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2022-12-26T08:36:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2021-12-26T18:12:00"^^xsd:dateTime ;
+    sml:instancesInBucket "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2023-12-25T23:00:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2022-12-26T08:36:00"^^xsd:dateTime ;
+    sml:instancesInBucket "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "2023-12-25T23:00:00"^^xsd:dateTime .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "2019-02-13T14:12:59.381443262"^^xsd:dateTime .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "2019-04-18T22:00:00"^^xsd:dateTime .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "2013-12-31T23:00:00"^^xsd:dateTime .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 97 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 97 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 97 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 97 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2013-12-31T23:00:00"^^xsd:dateTime ;
+    seas:rank 0 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2016-10-02T22:00:00"^^xsd:dateTime ;
+    seas:rank 1 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2019-04-18T22:00:00"^^xsd:dateTime ;
+    seas:rank 2 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2021-05-23T22:00:00"^^xsd:dateTime ;
+    seas:rank 3 .
+
+sml:PublicHolidaysNiedersachsenAttributeStartTimeQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2023-12-25T23:00:00"^^xsd:dateTime ;
+    seas:rank 4 .
+
+sml:PublicHolidaysNiedersachsenFile a sml:TextFile ;
+    dct:format "text/comma-separated-values" ;
+    csvw:header false ;
+    csvw:null "" ;
+    csvw:separator "," ;
+    sml:fileLocation "PublicHolidaysNiedersachsen.csv" .
+
+sml:PublicHolidaysNiedersachsenSample a sml:DatasetSample ;
+    csvw:separator "	" ;
+    sml:hasHeader sml:PublicHolidaysNiedersachsenSampleHeader ;
+    sml:hasLine sml:PublicHolidaysNiedersachsenSampleLine0,
+        sml:PublicHolidaysNiedersachsenSampleLine1,
+        sml:PublicHolidaysNiedersachsenSampleLine2,
+        sml:PublicHolidaysNiedersachsenSampleLine3,
+        sml:PublicHolidaysNiedersachsenSampleLine4,
+        sml:PublicHolidaysNiedersachsenSampleLine5,
+        sml:PublicHolidaysNiedersachsenSampleLine6,
+        sml:PublicHolidaysNiedersachsenSampleLine7,
+        sml:PublicHolidaysNiedersachsenSampleLine8,
+        sml:PublicHolidaysNiedersachsenSampleLine9 .
+
+sml:PublicHolidaysNiedersachsenSampleHeader a sml:DatasetSampleLine ;
+    sml:hasContent "public holidays (label)	Date-Time description (in XSD Date-Time)	Date-Time description (in XSD Date-Time)"^^xsd:string .
+
+sml:PublicHolidaysNiedersachsenSampleLine0 a sml:DatasetSampleLine ;
+    sml:hasContent "Neujahr	2014-01-01	2014-01-02"^^xsd:string ;
+    sml:rank 0 .
+
+sml:PublicHolidaysNiedersachsenSampleLine1 a sml:DatasetSampleLine ;
+    sml:hasContent "Karfreitag	2014-04-18	2014-04-19"^^xsd:string ;
+    sml:rank 1 .
+
+sml:PublicHolidaysNiedersachsenSampleLine2 a sml:DatasetSampleLine ;
+    sml:hasContent "Ostermontag	2014-04-21	2014-04-22"^^xsd:string ;
+    sml:rank 2 .
+
+sml:PublicHolidaysNiedersachsenSampleLine3 a sml:DatasetSampleLine ;
+    sml:hasContent "Tag der Arbeit	2014-05-01	2014-05-02"^^xsd:string ;
+    sml:rank 3 .
+
+sml:PublicHolidaysNiedersachsenSampleLine4 a sml:DatasetSampleLine ;
+    sml:hasContent "Christi Himmelfahrt	2014-05-29	2014-05-30"^^xsd:string ;
+    sml:rank 4 .
+
+sml:PublicHolidaysNiedersachsenSampleLine5 a sml:DatasetSampleLine ;
+    sml:hasContent "Pfingstmontag	2014-06-09	2014-06-10"^^xsd:string ;
+    sml:rank 5 .
+
+sml:PublicHolidaysNiedersachsenSampleLine6 a sml:DatasetSampleLine ;
+    sml:hasContent "Tag der Deutschen Einheit	2014-10-03	2014-10-04"^^xsd:string ;
+    sml:rank 6 .
+
+sml:PublicHolidaysNiedersachsenSampleLine7 a sml:DatasetSampleLine ;
+    sml:hasContent "1. Weihnachtstag	2014-12-25	2014-12-26"^^xsd:string ;
+    sml:rank 7 .
+
+sml:PublicHolidaysNiedersachsenSampleLine8 a sml:DatasetSampleLine ;
+    sml:hasContent "2. Weihnachtstag	2014-12-26	2014-12-27"^^xsd:string ;
+    sml:rank 8 .
+
+sml:PublicHolidaysNiedersachsenSampleLine9 a sml:DatasetSampleLine ;
+    sml:hasContent "Neujahr	2015-01-01	2015-01-02"^^xsd:string ;
+    sml:rank 9 .
+
+<https://simple-ml.de/resource/PublicHolidaysNiedersachsen_sml_mobility/Holiday> a sml:ClassInstance ;
+    time:hasBeginning sml:PublicHolidaysNiedersachsen_time_1 ;
+    time:hasEnd sml:PublicHolidaysNiedersachsen_time_2 ;
+    sml:mapsTo sml-mob:Holiday .
+
+sml:PublicHolidaysNiedersachsen_time_1 a sml:ClassInstance ;
+    sml:classInstance 1 ;
+    sml:mapsTo time:DateTimeDescription .
+
+sml:PublicHolidaysNiedersachsen_time_2 a sml:ClassInstance ;
+    sml:classInstance 2 ;
+    sml:mapsTo time:DateTimeDescription .
+
