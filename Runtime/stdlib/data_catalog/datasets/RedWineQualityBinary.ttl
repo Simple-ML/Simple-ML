@@ -1,0 +1,2335 @@
+@prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix seas: <https://w3id.org/seas/> .
+@prefix sml: <https://simple-ml.de/resource/> .
+@prefix sml-wine: <https://simple-ml.de/resource/wine/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sml:simple-ml dcat:dataset sml:RedWineQualityBinary .
+
+sml:RedWineQualityBinary a dcat:Dataset ;
+    dct:description "Qualität (0/1) von Rotweinen aus dem Norden Portugals"@de,
+        "Quality (0/1) of red vinho verde wine samples, from the north of Portugal"@en ;
+    dct:identifier "RedWineQualityBinary" ;
+    dct:subject "Wein"@de,
+        "Wine"@en ;
+    dct:title "Rotwein-Qualität (binär)"@de,
+        "Red Wine Quality (binary)"@en ;
+    sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
+    sml:creatorId "0"^^xsd:nonNegativeInteger ;
+    sml:hasAttribute sml:RedWineQualityBinaryAttributeAlcohol,
+        sml:RedWineQualityBinaryAttributeChlorides,
+        sml:RedWineQualityBinaryAttributeCitricAcid,
+        sml:RedWineQualityBinaryAttributeDensity,
+        sml:RedWineQualityBinaryAttributeFixedAcidity,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxide,
+        sml:RedWineQualityBinaryAttributePh,
+        sml:RedWineQualityBinaryAttributeQuality,
+        sml:RedWineQualityBinaryAttributeResidualSugar,
+        sml:RedWineQualityBinaryAttributeSulphates,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxide,
+        sml:RedWineQualityBinaryAttributeVolatileAcidity ;
+    sml:hasFile sml:RedWineQualityBinaryFile ;
+    sml:hasSample sml:RedWineQualityBinarySample ;
+    sml:numberOfInstances "1599"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeAlcohol a sml:Attribute ;
+    dct:identifier "alcohol" ;
+    sml:columnIndex "10"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/RedWineQualityBinary_sml_wine/Wine> ;
+    sml:mapsToProperty sml-wine:alcohol ;
+    sml:valueType xsd:double ;
+    seas:evaluation sml:RedWineQualityBinaryAttributeAlcoholAverageNumberOfDigits,
+        sml:RedWineQualityBinaryAttributeAlcoholDecile0,
+        sml:RedWineQualityBinaryAttributeAlcoholDecile1,
+        sml:RedWineQualityBinaryAttributeAlcoholDecile10,
+        sml:RedWineQualityBinaryAttributeAlcoholDecile2,
+        sml:RedWineQualityBinaryAttributeAlcoholDecile3,
+        sml:RedWineQualityBinaryAttributeAlcoholDecile4,
+        sml:RedWineQualityBinaryAttributeAlcoholDecile5,
+        sml:RedWineQualityBinaryAttributeAlcoholDecile6,
+        sml:RedWineQualityBinaryAttributeAlcoholDecile7,
+        sml:RedWineQualityBinaryAttributeAlcoholDecile8,
+        sml:RedWineQualityBinaryAttributeAlcoholDecile9,
+        sml:RedWineQualityBinaryAttributeAlcoholHistogram0,
+        sml:RedWineQualityBinaryAttributeAlcoholHistogram1,
+        sml:RedWineQualityBinaryAttributeAlcoholHistogram2,
+        sml:RedWineQualityBinaryAttributeAlcoholHistogram3,
+        sml:RedWineQualityBinaryAttributeAlcoholHistogram4,
+        sml:RedWineQualityBinaryAttributeAlcoholHistogram5,
+        sml:RedWineQualityBinaryAttributeAlcoholHistogram6,
+        sml:RedWineQualityBinaryAttributeAlcoholHistogram7,
+        sml:RedWineQualityBinaryAttributeAlcoholHistogram8,
+        sml:RedWineQualityBinaryAttributeAlcoholHistogram9,
+        sml:RedWineQualityBinaryAttributeAlcoholMaximum,
+        sml:RedWineQualityBinaryAttributeAlcoholMean,
+        sml:RedWineQualityBinaryAttributeAlcoholMedian,
+        sml:RedWineQualityBinaryAttributeAlcoholMinimum,
+        sml:RedWineQualityBinaryAttributeAlcoholNumberOfDistinctValues,
+        sml:RedWineQualityBinaryAttributeAlcoholNumberOfInvalidValues,
+        sml:RedWineQualityBinaryAttributeAlcoholNumberOfNullValues,
+        sml:RedWineQualityBinaryAttributeAlcoholNumberOfValidNonNullValues,
+        sml:RedWineQualityBinaryAttributeAlcoholNumberOfValidValues,
+        sml:RedWineQualityBinaryAttributeAlcoholNumberOfValues,
+        sml:RedWineQualityBinaryAttributeAlcoholQuartile0,
+        sml:RedWineQualityBinaryAttributeAlcoholQuartile1,
+        sml:RedWineQualityBinaryAttributeAlcoholQuartile2,
+        sml:RedWineQualityBinaryAttributeAlcoholQuartile3,
+        sml:RedWineQualityBinaryAttributeAlcoholQuartile4,
+        sml:RedWineQualityBinaryAttributeAlcoholStandardDeviation .
+
+sml:RedWineQualityBinaryAttributeAlcoholAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "2.626641651031895"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeAlcoholDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "8.4"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeAlcoholDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "9.3"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeAlcoholDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "14.9"^^xsd:float ;
+    seas:rank 10 .
+
+sml:RedWineQualityBinaryAttributeAlcoholDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "9.5"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeAlcoholDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "9.6"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeAlcoholDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "9.9"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeAlcoholDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "10.2"^^xsd:float ;
+    seas:rank 5 .
+
+sml:RedWineQualityBinaryAttributeAlcoholDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "10.5"^^xsd:float ;
+    seas:rank 6 .
+
+sml:RedWineQualityBinaryAttributeAlcoholDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "10.9"^^xsd:float ;
+    seas:rank 7 .
+
+sml:RedWineQualityBinaryAttributeAlcoholDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "11.3"^^xsd:float ;
+    seas:rank 8 .
+
+sml:RedWineQualityBinaryAttributeAlcoholDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "12.0"^^xsd:float ;
+    seas:rank 9 .
+
+sml:RedWineQualityBinaryAttributeAlcoholHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "9.05"^^xsd:float ;
+    sml:bucketMinimum "8.4"^^xsd:float ;
+    sml:instancesInBucket "37"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeAlcoholHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "9.700000000000001"^^xsd:float ;
+    sml:bucketMinimum "9.05"^^xsd:float ;
+    sml:instancesInBucket "515"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeAlcoholHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "10.350000000000001"^^xsd:float ;
+    sml:bucketMinimum "9.700000000000001"^^xsd:float ;
+    sml:instancesInBucket "323"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeAlcoholHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "11.0"^^xsd:float ;
+    sml:bucketMinimum "10.350000000000001"^^xsd:float ;
+    sml:instancesInBucket "257"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeAlcoholHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "11.65"^^xsd:float ;
+    sml:bucketMinimum "11.0"^^xsd:float ;
+    sml:instancesInBucket "232"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeAlcoholHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "12.3"^^xsd:float ;
+    sml:bucketMinimum "11.65"^^xsd:float ;
+    sml:instancesInBucket "119"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeAlcoholHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "12.95"^^xsd:float ;
+    sml:bucketMinimum "12.3"^^xsd:float ;
+    sml:instancesInBucket "87"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeAlcoholHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "13.600000000000001"^^xsd:float ;
+    sml:bucketMinimum "12.95"^^xsd:float ;
+    sml:instancesInBucket "21"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeAlcoholHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "14.25"^^xsd:float ;
+    sml:bucketMinimum "13.600000000000001"^^xsd:float ;
+    sml:instancesInBucket "7"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeAlcoholHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "14.9"^^xsd:float ;
+    sml:bucketMinimum "14.25"^^xsd:float ;
+    sml:instancesInBucket "1"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeAlcoholMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "14.9"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeAlcoholMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "10.422983114446529"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeAlcoholMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "10.2"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeAlcoholMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "8.4"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeAlcoholNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 65 .
+
+sml:RedWineQualityBinaryAttributeAlcoholNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeAlcoholNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeAlcoholNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeAlcoholNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeAlcoholNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeAlcoholQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "8.4"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeAlcoholQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "9.5"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeAlcoholQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "10.2"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeAlcoholQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "11.1"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeAlcoholQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "14.9"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeAlcoholStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "1.0656675818473946"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeChlorides a sml:Attribute ;
+    dct:identifier "chlorides" ;
+    sml:columnIndex "4"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/RedWineQualityBinary_sml_wine/Wine> ;
+    sml:mapsToProperty sml-wine:chlorides ;
+    sml:valueType xsd:double ;
+    seas:evaluation sml:RedWineQualityBinaryAttributeChloridesAverageNumberOfDigits,
+        sml:RedWineQualityBinaryAttributeChloridesDecile0,
+        sml:RedWineQualityBinaryAttributeChloridesDecile1,
+        sml:RedWineQualityBinaryAttributeChloridesDecile10,
+        sml:RedWineQualityBinaryAttributeChloridesDecile2,
+        sml:RedWineQualityBinaryAttributeChloridesDecile3,
+        sml:RedWineQualityBinaryAttributeChloridesDecile4,
+        sml:RedWineQualityBinaryAttributeChloridesDecile5,
+        sml:RedWineQualityBinaryAttributeChloridesDecile6,
+        sml:RedWineQualityBinaryAttributeChloridesDecile7,
+        sml:RedWineQualityBinaryAttributeChloridesDecile8,
+        sml:RedWineQualityBinaryAttributeChloridesDecile9,
+        sml:RedWineQualityBinaryAttributeChloridesHistogram0,
+        sml:RedWineQualityBinaryAttributeChloridesHistogram1,
+        sml:RedWineQualityBinaryAttributeChloridesHistogram2,
+        sml:RedWineQualityBinaryAttributeChloridesHistogram3,
+        sml:RedWineQualityBinaryAttributeChloridesHistogram4,
+        sml:RedWineQualityBinaryAttributeChloridesHistogram5,
+        sml:RedWineQualityBinaryAttributeChloridesHistogram6,
+        sml:RedWineQualityBinaryAttributeChloridesHistogram7,
+        sml:RedWineQualityBinaryAttributeChloridesHistogram8,
+        sml:RedWineQualityBinaryAttributeChloridesHistogram9,
+        sml:RedWineQualityBinaryAttributeChloridesMaximum,
+        sml:RedWineQualityBinaryAttributeChloridesMean,
+        sml:RedWineQualityBinaryAttributeChloridesMedian,
+        sml:RedWineQualityBinaryAttributeChloridesMinimum,
+        sml:RedWineQualityBinaryAttributeChloridesNumberOfDistinctValues,
+        sml:RedWineQualityBinaryAttributeChloridesNumberOfInvalidValues,
+        sml:RedWineQualityBinaryAttributeChloridesNumberOfNullValues,
+        sml:RedWineQualityBinaryAttributeChloridesNumberOfValidNonNullValues,
+        sml:RedWineQualityBinaryAttributeChloridesNumberOfValidValues,
+        sml:RedWineQualityBinaryAttributeChloridesNumberOfValues,
+        sml:RedWineQualityBinaryAttributeChloridesQuartile0,
+        sml:RedWineQualityBinaryAttributeChloridesQuartile1,
+        sml:RedWineQualityBinaryAttributeChloridesQuartile2,
+        sml:RedWineQualityBinaryAttributeChloridesQuartile3,
+        sml:RedWineQualityBinaryAttributeChloridesQuartile4,
+        sml:RedWineQualityBinaryAttributeChloridesStandardDeviation .
+
+sml:RedWineQualityBinaryAttributeChloridesAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "3.8774233896185115"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeChloridesDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.012"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeChloridesDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.06"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeChloridesDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.611"^^xsd:float ;
+    seas:rank 10 .
+
+sml:RedWineQualityBinaryAttributeChloridesDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.067"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeChloridesDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.072"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeChloridesDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.076"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeChloridesDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.079"^^xsd:float ;
+    seas:rank 5 .
+
+sml:RedWineQualityBinaryAttributeChloridesDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.082"^^xsd:float ;
+    seas:rank 6 .
+
+sml:RedWineQualityBinaryAttributeChloridesDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.087"^^xsd:float ;
+    seas:rank 7 .
+
+sml:RedWineQualityBinaryAttributeChloridesDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.094"^^xsd:float ;
+    seas:rank 8 .
+
+sml:RedWineQualityBinaryAttributeChloridesDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.109"^^xsd:float ;
+    seas:rank 9 .
+
+sml:RedWineQualityBinaryAttributeChloridesHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.07189999999999999"^^xsd:float ;
+    sml:bucketMinimum "0.012"^^xsd:float ;
+    sml:instancesInBucket "457"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeChloridesHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.1318"^^xsd:float ;
+    sml:bucketMinimum "0.07189999999999999"^^xsd:float ;
+    sml:instancesInBucket "1064"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeChloridesHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.19169999999999998"^^xsd:float ;
+    sml:bucketMinimum "0.1318"^^xsd:float ;
+    sml:instancesInBucket "35"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeChloridesHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.2516"^^xsd:float ;
+    sml:bucketMinimum "0.19169999999999998"^^xsd:float ;
+    sml:instancesInBucket "18"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeChloridesHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.3115"^^xsd:float ;
+    sml:bucketMinimum "0.2516"^^xsd:float ;
+    sml:instancesInBucket "3"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeChloridesHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.37139999999999995"^^xsd:float ;
+    sml:bucketMinimum "0.3115"^^xsd:float ;
+    sml:instancesInBucket "8"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeChloridesHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.43129999999999996"^^xsd:float ;
+    sml:bucketMinimum "0.37139999999999995"^^xsd:float ;
+    sml:instancesInBucket "10"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeChloridesHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.49119999999999997"^^xsd:float ;
+    sml:bucketMinimum "0.43129999999999996"^^xsd:float ;
+    sml:instancesInBucket "2"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeChloridesHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.5510999999999999"^^xsd:float ;
+    sml:bucketMinimum "0.49119999999999997"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeChloridesHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.611"^^xsd:float ;
+    sml:bucketMinimum "0.5510999999999999"^^xsd:float ;
+    sml:instancesInBucket "2"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeChloridesMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "0.611"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeChloridesMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "0.08746654158849279"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeChloridesMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "0.079"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeChloridesMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "0.012"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeChloridesNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 153 .
+
+sml:RedWineQualityBinaryAttributeChloridesNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeChloridesNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeChloridesNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeChloridesNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeChloridesNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeChloridesQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.012"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeChloridesQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.07"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeChloridesQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.079"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeChloridesQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.09"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeChloridesQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.611"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeChloridesStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "0.0470653020100901"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeCitricAcid a sml:Attribute ;
+    dct:identifier "citric acid" ;
+    sml:columnIndex "2"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/RedWineQualityBinary_sml_wine/Wine> ;
+    sml:mapsToProperty sml-wine:citricAcid ;
+    sml:valueType xsd:double ;
+    seas:evaluation sml:RedWineQualityBinaryAttributeCitricAcidAverageNumberOfDigits,
+        sml:RedWineQualityBinaryAttributeCitricAcidDecile0,
+        sml:RedWineQualityBinaryAttributeCitricAcidDecile1,
+        sml:RedWineQualityBinaryAttributeCitricAcidDecile10,
+        sml:RedWineQualityBinaryAttributeCitricAcidDecile2,
+        sml:RedWineQualityBinaryAttributeCitricAcidDecile3,
+        sml:RedWineQualityBinaryAttributeCitricAcidDecile4,
+        sml:RedWineQualityBinaryAttributeCitricAcidDecile5,
+        sml:RedWineQualityBinaryAttributeCitricAcidDecile6,
+        sml:RedWineQualityBinaryAttributeCitricAcidDecile7,
+        sml:RedWineQualityBinaryAttributeCitricAcidDecile8,
+        sml:RedWineQualityBinaryAttributeCitricAcidDecile9,
+        sml:RedWineQualityBinaryAttributeCitricAcidHistogram0,
+        sml:RedWineQualityBinaryAttributeCitricAcidHistogram1,
+        sml:RedWineQualityBinaryAttributeCitricAcidHistogram2,
+        sml:RedWineQualityBinaryAttributeCitricAcidHistogram3,
+        sml:RedWineQualityBinaryAttributeCitricAcidHistogram4,
+        sml:RedWineQualityBinaryAttributeCitricAcidHistogram5,
+        sml:RedWineQualityBinaryAttributeCitricAcidHistogram6,
+        sml:RedWineQualityBinaryAttributeCitricAcidHistogram7,
+        sml:RedWineQualityBinaryAttributeCitricAcidHistogram8,
+        sml:RedWineQualityBinaryAttributeCitricAcidHistogram9,
+        sml:RedWineQualityBinaryAttributeCitricAcidMaximum,
+        sml:RedWineQualityBinaryAttributeCitricAcidMean,
+        sml:RedWineQualityBinaryAttributeCitricAcidMedian,
+        sml:RedWineQualityBinaryAttributeCitricAcidMinimum,
+        sml:RedWineQualityBinaryAttributeCitricAcidNumberOfDistinctValues,
+        sml:RedWineQualityBinaryAttributeCitricAcidNumberOfInvalidValues,
+        sml:RedWineQualityBinaryAttributeCitricAcidNumberOfNullValues,
+        sml:RedWineQualityBinaryAttributeCitricAcidNumberOfValidNonNullValues,
+        sml:RedWineQualityBinaryAttributeCitricAcidNumberOfValidValues,
+        sml:RedWineQualityBinaryAttributeCitricAcidNumberOfValues,
+        sml:RedWineQualityBinaryAttributeCitricAcidQuartile0,
+        sml:RedWineQualityBinaryAttributeCitricAcidQuartile1,
+        sml:RedWineQualityBinaryAttributeCitricAcidQuartile2,
+        sml:RedWineQualityBinaryAttributeCitricAcidQuartile3,
+        sml:RedWineQualityBinaryAttributeCitricAcidQuartile4,
+        sml:RedWineQualityBinaryAttributeCitricAcidStandardDeviation .
+
+sml:RedWineQualityBinaryAttributeCitricAcidAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "2.8970688479890936"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeCitricAcidDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.01"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float ;
+    seas:rank 10 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.07"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.12400000000000092"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.21"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.26"^^xsd:float ;
+    seas:rank 5 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.32"^^xsd:float ;
+    seas:rank 6 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.39"^^xsd:float ;
+    seas:rank 7 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.46"^^xsd:float ;
+    seas:rank 8 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.5220000000000005"^^xsd:float ;
+    seas:rank 9 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.1"^^xsd:float ;
+    sml:bucketMinimum "0.0"^^xsd:float ;
+    sml:instancesInBucket "403"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeCitricAcidHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.2"^^xsd:float ;
+    sml:bucketMinimum "0.1"^^xsd:float ;
+    sml:instancesInBucket "203"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeCitricAcidHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.30000000000000004"^^xsd:float ;
+    sml:bucketMinimum "0.2"^^xsd:float ;
+    sml:instancesInBucket "316"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeCitricAcidHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.4"^^xsd:float ;
+    sml:bucketMinimum "0.30000000000000004"^^xsd:float ;
+    sml:instancesInBucket "205"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeCitricAcidHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.5"^^xsd:float ;
+    sml:bucketMinimum "0.4"^^xsd:float ;
+    sml:instancesInBucket "262"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeCitricAcidHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.6000000000000001"^^xsd:float ;
+    sml:bucketMinimum "0.5"^^xsd:float ;
+    sml:instancesInBucket "132"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeCitricAcidHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.7000000000000001"^^xsd:float ;
+    sml:bucketMinimum "0.6000000000000001"^^xsd:float ;
+    sml:instancesInBucket "62"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeCitricAcidHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.8"^^xsd:float ;
+    sml:bucketMinimum "0.7000000000000001"^^xsd:float ;
+    sml:instancesInBucket "15"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeCitricAcidHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.9"^^xsd:float ;
+    sml:bucketMinimum "0.8"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeCitricAcidHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1.0"^^xsd:float ;
+    sml:bucketMinimum "0.9"^^xsd:float ;
+    sml:instancesInBucket "1"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeCitricAcidMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeCitricAcidMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "0.2709756097560976"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeCitricAcidMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "0.26"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeCitricAcidMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeCitricAcidNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 80 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.09"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.26"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.42"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeCitricAcidStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "0.19480113740531857"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeDensity a sml:Attribute ;
+    dct:identifier "density" ;
+    sml:columnIndex "7"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/RedWineQualityBinary_sml_wine/Wine> ;
+    sml:mapsToProperty sml-wine:density ;
+    sml:valueType xsd:double ;
+    seas:evaluation sml:RedWineQualityBinaryAttributeDensityAverageNumberOfDigits,
+        sml:RedWineQualityBinaryAttributeDensityDecile0,
+        sml:RedWineQualityBinaryAttributeDensityDecile1,
+        sml:RedWineQualityBinaryAttributeDensityDecile10,
+        sml:RedWineQualityBinaryAttributeDensityDecile2,
+        sml:RedWineQualityBinaryAttributeDensityDecile3,
+        sml:RedWineQualityBinaryAttributeDensityDecile4,
+        sml:RedWineQualityBinaryAttributeDensityDecile5,
+        sml:RedWineQualityBinaryAttributeDensityDecile6,
+        sml:RedWineQualityBinaryAttributeDensityDecile7,
+        sml:RedWineQualityBinaryAttributeDensityDecile8,
+        sml:RedWineQualityBinaryAttributeDensityDecile9,
+        sml:RedWineQualityBinaryAttributeDensityHistogram0,
+        sml:RedWineQualityBinaryAttributeDensityHistogram1,
+        sml:RedWineQualityBinaryAttributeDensityHistogram2,
+        sml:RedWineQualityBinaryAttributeDensityHistogram3,
+        sml:RedWineQualityBinaryAttributeDensityHistogram4,
+        sml:RedWineQualityBinaryAttributeDensityHistogram5,
+        sml:RedWineQualityBinaryAttributeDensityHistogram6,
+        sml:RedWineQualityBinaryAttributeDensityHistogram7,
+        sml:RedWineQualityBinaryAttributeDensityHistogram8,
+        sml:RedWineQualityBinaryAttributeDensityHistogram9,
+        sml:RedWineQualityBinaryAttributeDensityMaximum,
+        sml:RedWineQualityBinaryAttributeDensityMean,
+        sml:RedWineQualityBinaryAttributeDensityMedian,
+        sml:RedWineQualityBinaryAttributeDensityMinimum,
+        sml:RedWineQualityBinaryAttributeDensityNumberOfDistinctValues,
+        sml:RedWineQualityBinaryAttributeDensityNumberOfInvalidValues,
+        sml:RedWineQualityBinaryAttributeDensityNumberOfNullValues,
+        sml:RedWineQualityBinaryAttributeDensityNumberOfValidNonNullValues,
+        sml:RedWineQualityBinaryAttributeDensityNumberOfValidValues,
+        sml:RedWineQualityBinaryAttributeDensityNumberOfValues,
+        sml:RedWineQualityBinaryAttributeDensityQuartile0,
+        sml:RedWineQualityBinaryAttributeDensityQuartile1,
+        sml:RedWineQualityBinaryAttributeDensityQuartile2,
+        sml:RedWineQualityBinaryAttributeDensityQuartile3,
+        sml:RedWineQualityBinaryAttributeDensityQuartile4,
+        sml:RedWineQualityBinaryAttributeDensityStandardDeviation .
+
+sml:RedWineQualityBinaryAttributeDensityAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "5.3958724202626644"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeDensityDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.99007"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeDensityDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.994556"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeDensityDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1.00369"^^xsd:float ;
+    seas:rank 10 .
+
+sml:RedWineQualityBinaryAttributeDensityDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.99534"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeDensityDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.99586"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeDensityDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.9963"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeDensityDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.99675"^^xsd:float ;
+    seas:rank 5 .
+
+sml:RedWineQualityBinaryAttributeDensityDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.997156"^^xsd:float ;
+    seas:rank 6 .
+
+sml:RedWineQualityBinaryAttributeDensityDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.9976"^^xsd:float ;
+    seas:rank 7 .
+
+sml:RedWineQualityBinaryAttributeDensityDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.998174"^^xsd:float ;
+    seas:rank 8 .
+
+sml:RedWineQualityBinaryAttributeDensityDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.99914"^^xsd:float ;
+    seas:rank 9 .
+
+sml:RedWineQualityBinaryAttributeDensityHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.991432"^^xsd:float ;
+    sml:bucketMinimum "0.99007"^^xsd:float ;
+    sml:instancesInBucket "8"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeDensityHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.992794"^^xsd:float ;
+    sml:bucketMinimum "0.991432"^^xsd:float ;
+    sml:instancesInBucket "27"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeDensityHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.994156"^^xsd:float ;
+    sml:bucketMinimum "0.992794"^^xsd:float ;
+    sml:instancesInBucket "90"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeDensityHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.995518"^^xsd:float ;
+    sml:bucketMinimum "0.994156"^^xsd:float ;
+    sml:instancesInBucket "250"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeDensityHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.99688"^^xsd:float ;
+    sml:bucketMinimum "0.995518"^^xsd:float ;
+    sml:instancesInBucket "485"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeDensityHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.998242"^^xsd:float ;
+    sml:bucketMinimum "0.99688"^^xsd:float ;
+    sml:instancesInBucket "450"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeDensityHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.9996039999999999"^^xsd:float ;
+    sml:bucketMinimum "0.998242"^^xsd:float ;
+    sml:instancesInBucket "185"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeDensityHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1.000966"^^xsd:float ;
+    sml:bucketMinimum "0.9996039999999999"^^xsd:float ;
+    sml:instancesInBucket "74"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeDensityHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1.0023279999999999"^^xsd:float ;
+    sml:bucketMinimum "1.000966"^^xsd:float ;
+    sml:instancesInBucket "19"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeDensityHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1.00369"^^xsd:float ;
+    sml:bucketMinimum "1.0023279999999999"^^xsd:float ;
+    sml:instancesInBucket "11"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeDensityMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "1.00369"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeDensityMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "0.9967466791744841"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeDensityMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "0.99675"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeDensityMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "0.99007"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeDensityNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 436 .
+
+sml:RedWineQualityBinaryAttributeDensityNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeDensityNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeDensityNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeDensityNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeDensityNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeDensityQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.99007"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeDensityQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.9956"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeDensityQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.99675"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeDensityQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.997835"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeDensityQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "1.00369"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeDensityStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "0.0018873339538425554"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeFixedAcidity a sml:Attribute ;
+    dct:identifier "fixed acidity" ;
+    sml:columnIndex "0"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/RedWineQualityBinary_sml_wine/Wine> ;
+    sml:mapsToProperty sml-wine:fixedAcidity ;
+    sml:valueType xsd:double ;
+    seas:evaluation sml:RedWineQualityBinaryAttributeFixedAcidityAverageNumberOfDigits,
+        sml:RedWineQualityBinaryAttributeFixedAcidityDecile0,
+        sml:RedWineQualityBinaryAttributeFixedAcidityDecile1,
+        sml:RedWineQualityBinaryAttributeFixedAcidityDecile10,
+        sml:RedWineQualityBinaryAttributeFixedAcidityDecile2,
+        sml:RedWineQualityBinaryAttributeFixedAcidityDecile3,
+        sml:RedWineQualityBinaryAttributeFixedAcidityDecile4,
+        sml:RedWineQualityBinaryAttributeFixedAcidityDecile5,
+        sml:RedWineQualityBinaryAttributeFixedAcidityDecile6,
+        sml:RedWineQualityBinaryAttributeFixedAcidityDecile7,
+        sml:RedWineQualityBinaryAttributeFixedAcidityDecile8,
+        sml:RedWineQualityBinaryAttributeFixedAcidityDecile9,
+        sml:RedWineQualityBinaryAttributeFixedAcidityHistogram0,
+        sml:RedWineQualityBinaryAttributeFixedAcidityHistogram1,
+        sml:RedWineQualityBinaryAttributeFixedAcidityHistogram2,
+        sml:RedWineQualityBinaryAttributeFixedAcidityHistogram3,
+        sml:RedWineQualityBinaryAttributeFixedAcidityHistogram4,
+        sml:RedWineQualityBinaryAttributeFixedAcidityHistogram5,
+        sml:RedWineQualityBinaryAttributeFixedAcidityHistogram6,
+        sml:RedWineQualityBinaryAttributeFixedAcidityHistogram7,
+        sml:RedWineQualityBinaryAttributeFixedAcidityHistogram8,
+        sml:RedWineQualityBinaryAttributeFixedAcidityHistogram9,
+        sml:RedWineQualityBinaryAttributeFixedAcidityMaximum,
+        sml:RedWineQualityBinaryAttributeFixedAcidityMean,
+        sml:RedWineQualityBinaryAttributeFixedAcidityMedian,
+        sml:RedWineQualityBinaryAttributeFixedAcidityMinimum,
+        sml:RedWineQualityBinaryAttributeFixedAcidityNumberOfDistinctValues,
+        sml:RedWineQualityBinaryAttributeFixedAcidityNumberOfInvalidValues,
+        sml:RedWineQualityBinaryAttributeFixedAcidityNumberOfNullValues,
+        sml:RedWineQualityBinaryAttributeFixedAcidityNumberOfValidNonNullValues,
+        sml:RedWineQualityBinaryAttributeFixedAcidityNumberOfValidValues,
+        sml:RedWineQualityBinaryAttributeFixedAcidityNumberOfValues,
+        sml:RedWineQualityBinaryAttributeFixedAcidityQuartile0,
+        sml:RedWineQualityBinaryAttributeFixedAcidityQuartile1,
+        sml:RedWineQualityBinaryAttributeFixedAcidityQuartile2,
+        sml:RedWineQualityBinaryAttributeFixedAcidityQuartile3,
+        sml:RedWineQualityBinaryAttributeFixedAcidityQuartile4,
+        sml:RedWineQualityBinaryAttributeFixedAcidityStandardDeviation .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "2.172607879924953"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "4.6"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "6.5"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "15.9"^^xsd:float ;
+    seas:rank 10 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "7.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "7.2"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "7.6"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "7.9"^^xsd:float ;
+    seas:rank 5 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "8.3"^^xsd:float ;
+    seas:rank 6 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "8.9"^^xsd:float ;
+    seas:rank 7 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "9.7"^^xsd:float ;
+    seas:rank 8 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "10.7"^^xsd:float ;
+    seas:rank 9 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "5.7299999999999995"^^xsd:float ;
+    sml:bucketMinimum "4.6"^^xsd:float ;
+    sml:instancesInBucket "45"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "6.859999999999999"^^xsd:float ;
+    sml:bucketMinimum "5.7299999999999995"^^xsd:float ;
+    sml:instancesInBucket "229"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "7.99"^^xsd:float ;
+    sml:bucketMinimum "6.859999999999999"^^xsd:float ;
+    sml:instancesInBucket "542"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "9.120000000000001"^^xsd:float ;
+    sml:bucketMinimum "7.99"^^xsd:float ;
+    sml:instancesInBucket "371"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "10.25"^^xsd:float ;
+    sml:bucketMinimum "9.120000000000001"^^xsd:float ;
+    sml:instancesInBucket "188"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "11.38"^^xsd:float ;
+    sml:bucketMinimum "10.25"^^xsd:float ;
+    sml:instancesInBucket "110"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "12.510000000000002"^^xsd:float ;
+    sml:bucketMinimum "11.38"^^xsd:float ;
+    sml:instancesInBucket "76"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "13.64"^^xsd:float ;
+    sml:bucketMinimum "12.510000000000002"^^xsd:float ;
+    sml:instancesInBucket "26"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "14.770000000000001"^^xsd:float ;
+    sml:bucketMinimum "13.64"^^xsd:float ;
+    sml:instancesInBucket "5"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "15.9"^^xsd:float ;
+    sml:bucketMinimum "14.770000000000001"^^xsd:float ;
+    sml:instancesInBucket "7"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "15.9"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "8.31963727329581"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "7.9"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "4.6"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 96 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "4.6"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "7.1"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "7.9"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "9.2"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "15.9"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeFixedAcidityStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "1.7410963181276953"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxide a sml:Attribute ;
+    dct:identifier "free sulfur dioxide" ;
+    sml:columnIndex "5"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/RedWineQualityBinary_sml_wine/Wine> ;
+    sml:mapsToProperty sml-wine:freeSulfurDioxide ;
+    sml:valueType xsd:double ;
+    seas:evaluation sml:RedWineQualityBinaryAttributeFreeSulfurDioxideAverageNumberOfDigits,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile0,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile1,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile10,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile2,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile3,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile4,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile5,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile6,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile7,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile8,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile9,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram0,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram1,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram2,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram3,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram4,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram5,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram6,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram7,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram8,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram9,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideMaximum,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideMean,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideMedian,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideMinimum,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideNumberOfDistinctValues,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideNumberOfInvalidValues,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideNumberOfNullValues,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideNumberOfValidNonNullValues,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideNumberOfValidValues,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideNumberOfValues,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideQuartile0,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideQuartile1,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideQuartile2,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideQuartile3,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideQuartile4,
+        sml:RedWineQualityBinaryAttributeFreeSulfurDioxideStandardDeviation .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "2.6710444027517197"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "5.0"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "72.0"^^xsd:float ;
+    seas:rank 10 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "6.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "9.0"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "11.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "14.0"^^xsd:float ;
+    seas:rank 5 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "16.0"^^xsd:float ;
+    seas:rank 6 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "19.0"^^xsd:float ;
+    seas:rank 7 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "24.0"^^xsd:float ;
+    seas:rank 8 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "31.0"^^xsd:float ;
+    seas:rank 9 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "8.1"^^xsd:float ;
+    sml:bucketMinimum "1.0"^^xsd:float ;
+    sml:instancesInBucket "464"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "15.2"^^xsd:float ;
+    sml:bucketMinimum "8.1"^^xsd:float ;
+    sml:instancesInBucket "460"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "22.299999999999997"^^xsd:float ;
+    sml:bucketMinimum "15.2"^^xsd:float ;
+    sml:instancesInBucket "299"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "29.4"^^xsd:float ;
+    sml:bucketMinimum "22.299999999999997"^^xsd:float ;
+    sml:instancesInBucket "197"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "36.5"^^xsd:float ;
+    sml:bucketMinimum "29.4"^^xsd:float ;
+    sml:instancesInBucket "113"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "43.599999999999994"^^xsd:float ;
+    sml:bucketMinimum "36.5"^^xsd:float ;
+    sml:instancesInBucket "39"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "50.699999999999996"^^xsd:float ;
+    sml:bucketMinimum "43.599999999999994"^^xsd:float ;
+    sml:instancesInBucket "11"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "57.8"^^xsd:float ;
+    sml:bucketMinimum "50.699999999999996"^^xsd:float ;
+    sml:instancesInBucket "12"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "64.9"^^xsd:float ;
+    sml:bucketMinimum "57.8"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "72.0"^^xsd:float ;
+    sml:bucketMinimum "64.9"^^xsd:float ;
+    sml:instancesInBucket "4"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "72.0"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "15.874921826141339"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "14.0"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 60 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "7.0"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "14.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "21.0"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "72.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeFreeSulfurDioxideStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "10.460156969809725"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributePHAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "2.8855534709193247"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributePHDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2.74"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributePHDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "3.12"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributePHDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "4.01"^^xsd:float ;
+    seas:rank 10 .
+
+sml:RedWineQualityBinaryAttributePHDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "3.18"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributePHDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "3.23"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributePHDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "3.28"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributePHDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "3.31"^^xsd:float ;
+    seas:rank 5 .
+
+sml:RedWineQualityBinaryAttributePHDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "3.35"^^xsd:float ;
+    seas:rank 6 .
+
+sml:RedWineQualityBinaryAttributePHDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "3.38"^^xsd:float ;
+    seas:rank 7 .
+
+sml:RedWineQualityBinaryAttributePHDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "3.424000000000001"^^xsd:float ;
+    seas:rank 8 .
+
+sml:RedWineQualityBinaryAttributePHDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "3.51"^^xsd:float ;
+    seas:rank 9 .
+
+sml:RedWineQualityBinaryAttributePHHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2.867"^^xsd:float ;
+    sml:bucketMinimum "2.74"^^xsd:float ;
+    sml:instancesInBucket "2"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributePHHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2.994"^^xsd:float ;
+    sml:bucketMinimum "2.867"^^xsd:float ;
+    sml:instancesInBucket "27"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributePHHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "3.121"^^xsd:float ;
+    sml:bucketMinimum "2.994"^^xsd:float ;
+    sml:instancesInBucket "134"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributePHHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "3.248"^^xsd:float ;
+    sml:bucketMinimum "3.121"^^xsd:float ;
+    sml:instancesInBucket "361"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributePHHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "3.375"^^xsd:float ;
+    sml:bucketMinimum "3.248"^^xsd:float ;
+    sml:instancesInBucket "555"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributePHHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "3.502"^^xsd:float ;
+    sml:bucketMinimum "3.375"^^xsd:float ;
+    sml:instancesInBucket "352"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributePHHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "3.6289999999999996"^^xsd:float ;
+    sml:bucketMinimum "3.502"^^xsd:float ;
+    sml:instancesInBucket "132"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributePHHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "3.756"^^xsd:float ;
+    sml:bucketMinimum "3.6289999999999996"^^xsd:float ;
+    sml:instancesInBucket "29"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributePHHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "3.883"^^xsd:float ;
+    sml:bucketMinimum "3.756"^^xsd:float ;
+    sml:instancesInBucket "3"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributePHHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "4.01"^^xsd:float ;
+    sml:bucketMinimum "3.883"^^xsd:float ;
+    sml:instancesInBucket "4"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributePHMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "4.01"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributePHMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "3.3111131957473416"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributePHMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "3.31"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributePHMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "2.74"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributePHNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 89 .
+
+sml:RedWineQualityBinaryAttributePHNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributePHNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributePHNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributePHNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributePHNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributePHQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2.74"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributePHQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "3.21"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributePHQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "3.31"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributePHQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "3.4"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributePHQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "4.01"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributePHStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "0.15438646490354277"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributePh a sml:Attribute ;
+    dct:identifier "pH" ;
+    sml:columnIndex "8"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/RedWineQualityBinary_sml_wine/Wine> ;
+    sml:mapsToProperty sml-wine:pH ;
+    sml:valueType xsd:double ;
+    seas:evaluation sml:RedWineQualityBinaryAttributePHAverageNumberOfDigits,
+        sml:RedWineQualityBinaryAttributePHDecile0,
+        sml:RedWineQualityBinaryAttributePHDecile1,
+        sml:RedWineQualityBinaryAttributePHDecile10,
+        sml:RedWineQualityBinaryAttributePHDecile2,
+        sml:RedWineQualityBinaryAttributePHDecile3,
+        sml:RedWineQualityBinaryAttributePHDecile4,
+        sml:RedWineQualityBinaryAttributePHDecile5,
+        sml:RedWineQualityBinaryAttributePHDecile6,
+        sml:RedWineQualityBinaryAttributePHDecile7,
+        sml:RedWineQualityBinaryAttributePHDecile8,
+        sml:RedWineQualityBinaryAttributePHDecile9,
+        sml:RedWineQualityBinaryAttributePHHistogram0,
+        sml:RedWineQualityBinaryAttributePHHistogram1,
+        sml:RedWineQualityBinaryAttributePHHistogram2,
+        sml:RedWineQualityBinaryAttributePHHistogram3,
+        sml:RedWineQualityBinaryAttributePHHistogram4,
+        sml:RedWineQualityBinaryAttributePHHistogram5,
+        sml:RedWineQualityBinaryAttributePHHistogram6,
+        sml:RedWineQualityBinaryAttributePHHistogram7,
+        sml:RedWineQualityBinaryAttributePHHistogram8,
+        sml:RedWineQualityBinaryAttributePHHistogram9,
+        sml:RedWineQualityBinaryAttributePHMaximum,
+        sml:RedWineQualityBinaryAttributePHMean,
+        sml:RedWineQualityBinaryAttributePHMedian,
+        sml:RedWineQualityBinaryAttributePHMinimum,
+        sml:RedWineQualityBinaryAttributePHNumberOfDistinctValues,
+        sml:RedWineQualityBinaryAttributePHNumberOfInvalidValues,
+        sml:RedWineQualityBinaryAttributePHNumberOfNullValues,
+        sml:RedWineQualityBinaryAttributePHNumberOfValidNonNullValues,
+        sml:RedWineQualityBinaryAttributePHNumberOfValidValues,
+        sml:RedWineQualityBinaryAttributePHNumberOfValues,
+        sml:RedWineQualityBinaryAttributePHQuartile0,
+        sml:RedWineQualityBinaryAttributePHQuartile1,
+        sml:RedWineQualityBinaryAttributePHQuartile2,
+        sml:RedWineQualityBinaryAttributePHQuartile3,
+        sml:RedWineQualityBinaryAttributePHQuartile4,
+        sml:RedWineQualityBinaryAttributePHStandardDeviation .
+
+sml:RedWineQualityBinaryAttributeQuality a sml:Attribute ;
+    dct:identifier "quality" ;
+    sml:columnIndex "11"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/RedWineQualityBinary_sml_wine/Wine> ;
+    sml:mapsToProperty sml-wine:qualityBinary ;
+    sml:valueType xsd:nonNegativeInteger ;
+    seas:evaluation sml:RedWineQualityBinaryAttributeQualityAverageNumberOfDigits,
+        sml:RedWineQualityBinaryAttributeQualityDecile0,
+        sml:RedWineQualityBinaryAttributeQualityDecile1,
+        sml:RedWineQualityBinaryAttributeQualityHistogram0,
+        sml:RedWineQualityBinaryAttributeQualityHistogram1,
+        sml:RedWineQualityBinaryAttributeQualityMaximum,
+        sml:RedWineQualityBinaryAttributeQualityMean,
+        sml:RedWineQualityBinaryAttributeQualityMedian,
+        sml:RedWineQualityBinaryAttributeQualityMinimum,
+        sml:RedWineQualityBinaryAttributeQualityNumberOfDistinctValues,
+        sml:RedWineQualityBinaryAttributeQualityNumberOfInvalidValues,
+        sml:RedWineQualityBinaryAttributeQualityNumberOfNullValues,
+        sml:RedWineQualityBinaryAttributeQualityNumberOfValidNonNullValues,
+        sml:RedWineQualityBinaryAttributeQualityNumberOfValidValues,
+        sml:RedWineQualityBinaryAttributeQualityNumberOfValues,
+        sml:RedWineQualityBinaryAttributeQualityQuartile0,
+        sml:RedWineQualityBinaryAttributeQualityQuartile1,
+        sml:RedWineQualityBinaryAttributeQualityStandardDeviation .
+
+sml:RedWineQualityBinaryAttributeQualityAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeQualityDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeQualityDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeQualityHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.5"^^xsd:float ;
+    sml:bucketMinimum "0.0"^^xsd:float ;
+    sml:instancesInBucket "1382"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeQualityHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1"^^xsd:float ;
+    sml:bucketMinimum "0.5"^^xsd:float ;
+    sml:instancesInBucket "217"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeQualityMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue 1 .
+
+sml:RedWineQualityBinaryAttributeQualityMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "0.1357098186366479"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeQualityMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeQualityMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeQualityNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 2 .
+
+sml:RedWineQualityBinaryAttributeQualityNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeQualityNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeQualityNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeQualityNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeQualityNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeQualityQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeQualityQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeQualityStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "0.34258730774313284"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeResidualSugar a sml:Attribute ;
+    dct:identifier "residual sugar" ;
+    sml:columnIndex "3"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/RedWineQualityBinary_sml_wine/Wine> ;
+    sml:mapsToProperty sml-wine:residualSugar ;
+    sml:valueType xsd:double ;
+    seas:evaluation sml:RedWineQualityBinaryAttributeResidualSugarAverageNumberOfDigits,
+        sml:RedWineQualityBinaryAttributeResidualSugarDecile0,
+        sml:RedWineQualityBinaryAttributeResidualSugarDecile1,
+        sml:RedWineQualityBinaryAttributeResidualSugarDecile10,
+        sml:RedWineQualityBinaryAttributeResidualSugarDecile2,
+        sml:RedWineQualityBinaryAttributeResidualSugarDecile3,
+        sml:RedWineQualityBinaryAttributeResidualSugarDecile4,
+        sml:RedWineQualityBinaryAttributeResidualSugarDecile5,
+        sml:RedWineQualityBinaryAttributeResidualSugarDecile6,
+        sml:RedWineQualityBinaryAttributeResidualSugarDecile7,
+        sml:RedWineQualityBinaryAttributeResidualSugarDecile8,
+        sml:RedWineQualityBinaryAttributeResidualSugarDecile9,
+        sml:RedWineQualityBinaryAttributeResidualSugarHistogram0,
+        sml:RedWineQualityBinaryAttributeResidualSugarHistogram1,
+        sml:RedWineQualityBinaryAttributeResidualSugarHistogram2,
+        sml:RedWineQualityBinaryAttributeResidualSugarHistogram3,
+        sml:RedWineQualityBinaryAttributeResidualSugarHistogram4,
+        sml:RedWineQualityBinaryAttributeResidualSugarHistogram5,
+        sml:RedWineQualityBinaryAttributeResidualSugarHistogram6,
+        sml:RedWineQualityBinaryAttributeResidualSugarHistogram7,
+        sml:RedWineQualityBinaryAttributeResidualSugarHistogram8,
+        sml:RedWineQualityBinaryAttributeResidualSugarHistogram9,
+        sml:RedWineQualityBinaryAttributeResidualSugarMaximum,
+        sml:RedWineQualityBinaryAttributeResidualSugarMean,
+        sml:RedWineQualityBinaryAttributeResidualSugarMedian,
+        sml:RedWineQualityBinaryAttributeResidualSugarMinimum,
+        sml:RedWineQualityBinaryAttributeResidualSugarNumberOfDistinctValues,
+        sml:RedWineQualityBinaryAttributeResidualSugarNumberOfInvalidValues,
+        sml:RedWineQualityBinaryAttributeResidualSugarNumberOfNullValues,
+        sml:RedWineQualityBinaryAttributeResidualSugarNumberOfValidNonNullValues,
+        sml:RedWineQualityBinaryAttributeResidualSugarNumberOfValidValues,
+        sml:RedWineQualityBinaryAttributeResidualSugarNumberOfValues,
+        sml:RedWineQualityBinaryAttributeResidualSugarQuartile0,
+        sml:RedWineQualityBinaryAttributeResidualSugarQuartile1,
+        sml:RedWineQualityBinaryAttributeResidualSugarQuartile2,
+        sml:RedWineQualityBinaryAttributeResidualSugarQuartile3,
+        sml:RedWineQualityBinaryAttributeResidualSugarQuartile4,
+        sml:RedWineQualityBinaryAttributeResidualSugarStandardDeviation .
+
+sml:RedWineQualityBinaryAttributeResidualSugarAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "2.0212632895559723"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeResidualSugarDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.9"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1.7"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "15.5"^^xsd:float ;
+    seas:rank 10 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1.8"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2.0"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2.1"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2.2"^^xsd:float ;
+    seas:rank 5 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2.3"^^xsd:float ;
+    seas:rank 6 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2.5"^^xsd:float ;
+    seas:rank 7 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2.7"^^xsd:float ;
+    seas:rank 8 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "3.6"^^xsd:float ;
+    seas:rank 9 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2.36"^^xsd:float ;
+    sml:bucketMinimum "0.9"^^xsd:float ;
+    sml:instancesInBucket "994"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeResidualSugarHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "3.82"^^xsd:float ;
+    sml:bucketMinimum "2.36"^^xsd:float ;
+    sml:instancesInBucket "463"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeResidualSugarHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "5.28"^^xsd:float ;
+    sml:bucketMinimum "3.82"^^xsd:float ;
+    sml:instancesInBucket "67"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeResidualSugarHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "6.74"^^xsd:float ;
+    sml:bucketMinimum "5.28"^^xsd:float ;
+    sml:instancesInBucket "45"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeResidualSugarHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "8.2"^^xsd:float ;
+    sml:bucketMinimum "6.74"^^xsd:float ;
+    sml:instancesInBucket "11"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeResidualSugarHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "9.66"^^xsd:float ;
+    sml:bucketMinimum "8.2"^^xsd:float ;
+    sml:instancesInBucket "8"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeResidualSugarHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "11.12"^^xsd:float ;
+    sml:bucketMinimum "9.66"^^xsd:float ;
+    sml:instancesInBucket "3"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeResidualSugarHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "12.58"^^xsd:float ;
+    sml:bucketMinimum "11.12"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeResidualSugarHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "14.040000000000001"^^xsd:float ;
+    sml:bucketMinimum "12.58"^^xsd:float ;
+    sml:instancesInBucket "5"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeResidualSugarHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "15.5"^^xsd:float ;
+    sml:bucketMinimum "14.040000000000001"^^xsd:float ;
+    sml:instancesInBucket "3"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeResidualSugarMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "15.5"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeResidualSugarMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "2.53880550343965"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeResidualSugarMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "2.2"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeResidualSugarMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "0.9"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeResidualSugarNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 91 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.9"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "1.9"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2.2"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2.6"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "15.5"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeResidualSugarStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "1.4099280595072798"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeSulphates a sml:Attribute ;
+    dct:identifier "sulphates" ;
+    sml:columnIndex "9"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/RedWineQualityBinary_sml_wine/Wine> ;
+    sml:mapsToProperty sml-wine:sulphates ;
+    sml:valueType xsd:double ;
+    seas:evaluation sml:RedWineQualityBinaryAttributeSulphatesAverageNumberOfDigits,
+        sml:RedWineQualityBinaryAttributeSulphatesDecile0,
+        sml:RedWineQualityBinaryAttributeSulphatesDecile1,
+        sml:RedWineQualityBinaryAttributeSulphatesDecile10,
+        sml:RedWineQualityBinaryAttributeSulphatesDecile2,
+        sml:RedWineQualityBinaryAttributeSulphatesDecile3,
+        sml:RedWineQualityBinaryAttributeSulphatesDecile4,
+        sml:RedWineQualityBinaryAttributeSulphatesDecile5,
+        sml:RedWineQualityBinaryAttributeSulphatesDecile6,
+        sml:RedWineQualityBinaryAttributeSulphatesDecile7,
+        sml:RedWineQualityBinaryAttributeSulphatesDecile8,
+        sml:RedWineQualityBinaryAttributeSulphatesDecile9,
+        sml:RedWineQualityBinaryAttributeSulphatesHistogram0,
+        sml:RedWineQualityBinaryAttributeSulphatesHistogram1,
+        sml:RedWineQualityBinaryAttributeSulphatesHistogram2,
+        sml:RedWineQualityBinaryAttributeSulphatesHistogram3,
+        sml:RedWineQualityBinaryAttributeSulphatesHistogram4,
+        sml:RedWineQualityBinaryAttributeSulphatesHistogram5,
+        sml:RedWineQualityBinaryAttributeSulphatesHistogram6,
+        sml:RedWineQualityBinaryAttributeSulphatesHistogram7,
+        sml:RedWineQualityBinaryAttributeSulphatesHistogram8,
+        sml:RedWineQualityBinaryAttributeSulphatesHistogram9,
+        sml:RedWineQualityBinaryAttributeSulphatesMaximum,
+        sml:RedWineQualityBinaryAttributeSulphatesMean,
+        sml:RedWineQualityBinaryAttributeSulphatesMedian,
+        sml:RedWineQualityBinaryAttributeSulphatesMinimum,
+        sml:RedWineQualityBinaryAttributeSulphatesNumberOfDistinctValues,
+        sml:RedWineQualityBinaryAttributeSulphatesNumberOfInvalidValues,
+        sml:RedWineQualityBinaryAttributeSulphatesNumberOfNullValues,
+        sml:RedWineQualityBinaryAttributeSulphatesNumberOfValidNonNullValues,
+        sml:RedWineQualityBinaryAttributeSulphatesNumberOfValidValues,
+        sml:RedWineQualityBinaryAttributeSulphatesNumberOfValues,
+        sml:RedWineQualityBinaryAttributeSulphatesQuartile0,
+        sml:RedWineQualityBinaryAttributeSulphatesQuartile1,
+        sml:RedWineQualityBinaryAttributeSulphatesQuartile2,
+        sml:RedWineQualityBinaryAttributeSulphatesQuartile3,
+        sml:RedWineQualityBinaryAttributeSulphatesQuartile4,
+        sml:RedWineQualityBinaryAttributeSulphatesStandardDeviation .
+
+sml:RedWineQualityBinaryAttributeSulphatesAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "2.896810506566604"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeSulphatesDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.33"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeSulphatesDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.5"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeSulphatesDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2.0"^^xsd:float ;
+    seas:rank 10 .
+
+sml:RedWineQualityBinaryAttributeSulphatesDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.54"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeSulphatesDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.564000000000001"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeSulphatesDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.59"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeSulphatesDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.62"^^xsd:float ;
+    seas:rank 5 .
+
+sml:RedWineQualityBinaryAttributeSulphatesDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.65"^^xsd:float ;
+    seas:rank 6 .
+
+sml:RedWineQualityBinaryAttributeSulphatesDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.7"^^xsd:float ;
+    seas:rank 7 .
+
+sml:RedWineQualityBinaryAttributeSulphatesDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.76"^^xsd:float ;
+    seas:rank 8 .
+
+sml:RedWineQualityBinaryAttributeSulphatesDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.85"^^xsd:float ;
+    seas:rank 9 .
+
+sml:RedWineQualityBinaryAttributeSulphatesHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.497"^^xsd:float ;
+    sml:bucketMinimum "0.33"^^xsd:float ;
+    sml:instancesInBucket "151"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeSulphatesHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.6639999999999999"^^xsd:float ;
+    sml:bucketMinimum "0.497"^^xsd:float ;
+    sml:instancesInBucket "855"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeSulphatesHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.831"^^xsd:float ;
+    sml:bucketMinimum "0.6639999999999999"^^xsd:float ;
+    sml:instancesInBucket "416"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeSulphatesHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.998"^^xsd:float ;
+    sml:bucketMinimum "0.831"^^xsd:float ;
+    sml:instancesInBucket "118"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeSulphatesHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1.165"^^xsd:float ;
+    sml:bucketMinimum "0.998"^^xsd:float ;
+    sml:instancesInBucket "32"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeSulphatesHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1.3319999999999999"^^xsd:float ;
+    sml:bucketMinimum "1.165"^^xsd:float ;
+    sml:instancesInBucket "15"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeSulphatesHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1.4989999999999999"^^xsd:float ;
+    sml:bucketMinimum "1.3319999999999999"^^xsd:float ;
+    sml:instancesInBucket "4"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeSulphatesHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1.666"^^xsd:float ;
+    sml:bucketMinimum "1.4989999999999999"^^xsd:float ;
+    sml:instancesInBucket "4"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeSulphatesHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1.833"^^xsd:float ;
+    sml:bucketMinimum "1.666"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeSulphatesHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2.0"^^xsd:float ;
+    sml:bucketMinimum "1.833"^^xsd:float ;
+    sml:instancesInBucket "4"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeSulphatesMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "2.0"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeSulphatesMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "0.6581488430268917"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeSulphatesMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "0.62"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeSulphatesMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "0.33"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeSulphatesNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 96 .
+
+sml:RedWineQualityBinaryAttributeSulphatesNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeSulphatesNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeSulphatesNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeSulphatesNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeSulphatesNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeSulphatesQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.33"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeSulphatesQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.55"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeSulphatesQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.62"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeSulphatesQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.73"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeSulphatesQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeSulphatesStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "0.16950697959010996"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxide a sml:Attribute ;
+    dct:identifier "total sulfur dioxide" ;
+    sml:columnIndex "6"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/RedWineQualityBinary_sml_wine/Wine> ;
+    sml:mapsToProperty sml-wine:totalSulfurDioxide ;
+    sml:valueType xsd:double ;
+    seas:evaluation sml:RedWineQualityBinaryAttributeTotalSulfurDioxideAverageNumberOfDigits,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile0,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile1,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile10,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile2,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile3,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile4,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile5,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile6,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile7,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile8,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile9,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram0,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram1,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram2,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram3,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram4,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram5,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram6,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram7,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram8,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram9,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideMaximum,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideMean,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideMedian,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideMinimum,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideNumberOfDistinctValues,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideNumberOfInvalidValues,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideNumberOfNullValues,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideNumberOfValidNonNullValues,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideNumberOfValidValues,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideNumberOfValues,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideQuartile0,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideQuartile1,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideQuartile2,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideQuartile3,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideQuartile4,
+        sml:RedWineQualityBinaryAttributeTotalSulfurDioxideStandardDeviation .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "3.0594121325828643"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "6.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "14.0"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "289.0"^^xsd:float ;
+    seas:rank 10 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "19.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "24.0"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "30.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "38.0"^^xsd:float ;
+    seas:rank 5 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "45.80000000000018"^^xsd:float ;
+    seas:rank 6 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "55.0"^^xsd:float ;
+    seas:rank 7 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "69.0"^^xsd:float ;
+    seas:rank 8 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "93.20000000000005"^^xsd:float ;
+    seas:rank 9 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "34.3"^^xsd:float ;
+    sml:bucketMinimum "6.0"^^xsd:float ;
+    sml:instancesInBucket "730"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "62.6"^^xsd:float ;
+    sml:bucketMinimum "34.3"^^xsd:float ;
+    sml:instancesInBucket "471"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "90.9"^^xsd:float ;
+    sml:bucketMinimum "62.6"^^xsd:float ;
+    sml:instancesInBucket "221"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "119.2"^^xsd:float ;
+    sml:bucketMinimum "90.9"^^xsd:float ;
+    sml:instancesInBucket "113"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "147.5"^^xsd:float ;
+    sml:bucketMinimum "119.2"^^xsd:float ;
+    sml:instancesInBucket "52"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "175.8"^^xsd:float ;
+    sml:bucketMinimum "147.5"^^xsd:float ;
+    sml:instancesInBucket "10"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "204.1"^^xsd:float ;
+    sml:bucketMinimum "175.8"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "232.4"^^xsd:float ;
+    sml:bucketMinimum "204.1"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "260.70000000000005"^^xsd:float ;
+    sml:bucketMinimum "232.4"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "289.0"^^xsd:float ;
+    sml:bucketMinimum "260.70000000000005"^^xsd:float ;
+    sml:instancesInBucket "2"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "289.0"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "46.46779237023139"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "38.0"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "6.0"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 144 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "6.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "22.0"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "38.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "62.0"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "289.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeTotalSulfurDioxideStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "32.895324478299074"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidity a sml:Attribute ;
+    dct:identifier "volatile acidity" ;
+    sml:columnIndex "1"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/RedWineQualityBinary_sml_wine/Wine> ;
+    sml:mapsToProperty sml-wine:volatileAcidity ;
+    sml:valueType xsd:double ;
+    seas:evaluation sml:RedWineQualityBinaryAttributeVolatileAcidityAverageNumberOfDigits,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityDecile0,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityDecile1,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityDecile10,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityDecile2,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityDecile3,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityDecile4,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityDecile5,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityDecile6,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityDecile7,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityDecile8,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityDecile9,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram0,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram1,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram2,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram3,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram4,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram5,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram6,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram7,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram8,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram9,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityMaximum,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityMean,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityMedian,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityMinimum,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityNumberOfDistinctValues,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityNumberOfInvalidValues,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityNumberOfNullValues,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityNumberOfValidNonNullValues,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityNumberOfValidValues,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityNumberOfValues,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityQuartile0,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityQuartile1,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityQuartile2,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityQuartile3,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityQuartile4,
+        sml:RedWineQualityBinaryAttributeVolatileAcidityStandardDeviation .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "3.014383989993746"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.12"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.31"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1.58"^^xsd:float ;
+    seas:rank 10 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.37"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.415"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.47"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.52"^^xsd:float ;
+    seas:rank 5 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.57"^^xsd:float ;
+    seas:rank 6 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.61"^^xsd:float ;
+    seas:rank 7 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.66"^^xsd:float ;
+    seas:rank 8 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.745"^^xsd:float ;
+    seas:rank 9 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.266"^^xsd:float ;
+    sml:bucketMinimum "0.12"^^xsd:float ;
+    sml:instancesInBucket "73"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.412"^^xsd:float ;
+    sml:bucketMinimum "0.266"^^xsd:float ;
+    sml:instancesInBucket "405"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.5579999999999999"^^xsd:float ;
+    sml:bucketMinimum "0.412"^^xsd:float ;
+    sml:instancesInBucket "423"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.704"^^xsd:float ;
+    sml:bucketMinimum "0.5579999999999999"^^xsd:float ;
+    sml:instancesInBucket "475"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.85"^^xsd:float ;
+    sml:bucketMinimum "0.704"^^xsd:float ;
+    sml:instancesInBucket "148"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "0.9959999999999999"^^xsd:float ;
+    sml:bucketMinimum "0.85"^^xsd:float ;
+    sml:instancesInBucket "51"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1.142"^^xsd:float ;
+    sml:bucketMinimum "0.9959999999999999"^^xsd:float ;
+    sml:instancesInBucket "18"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1.2879999999999998"^^xsd:float ;
+    sml:bucketMinimum "1.142"^^xsd:float ;
+    sml:instancesInBucket "3"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1.4339999999999997"^^xsd:float ;
+    sml:bucketMinimum "1.2879999999999998"^^xsd:float ;
+    sml:instancesInBucket "2"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1.58"^^xsd:float ;
+    sml:bucketMinimum "1.4339999999999997"^^xsd:float ;
+    sml:instancesInBucket "1"^^xsd:nonNegativeInteger .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "1.58"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "0.5278205128205128"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "0.52"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "0.12"^^xsd:float .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 143 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1599 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.12"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.39"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.52"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.64"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "1.58"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RedWineQualityBinaryAttributeVolatileAcidityStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "0.17905970415353537"^^xsd:float .
+
+sml:RedWineQualityBinaryFile a sml:TextFile ;
+    dct:format "text/comma-separated-values" ;
+    csvw:header false ;
+    csvw:null "" ;
+    csvw:separator ";" ;
+    sml:fileLocation "RedWineQualityBinary.csv" .
+
+sml:RedWineQualityBinarySample a sml:DatasetSample ;
+    csvw:separator "	" ;
+    sml:hasHeader sml:RedWineQualityBinarySampleHeader ;
+    sml:hasLine sml:RedWineQualityBinarySampleLine0,
+        sml:RedWineQualityBinarySampleLine1,
+        sml:RedWineQualityBinarySampleLine2,
+        sml:RedWineQualityBinarySampleLine3,
+        sml:RedWineQualityBinarySampleLine4,
+        sml:RedWineQualityBinarySampleLine5,
+        sml:RedWineQualityBinarySampleLine6,
+        sml:RedWineQualityBinarySampleLine7,
+        sml:RedWineQualityBinarySampleLine8,
+        sml:RedWineQualityBinarySampleLine9 .
+
+sml:RedWineQualityBinarySampleHeader a sml:DatasetSampleLine ;
+    sml:hasContent "Wine (fixed acidity)	Wine (volatile acidity)	Wine (citric acid)	Wine (residual sugar)	Wine (chlorides)	Wine (free sulfur dioxide)	Wine (total sulfur dioxide)	Wine (density)	Wine (pH)	Wine (sulphates)	Wine (alcohol)	Wine (quality (binary))"^^xsd:string .
+
+sml:RedWineQualityBinarySampleLine0 a sml:DatasetSampleLine ;
+    sml:hasContent "7.4	0.7	0.0	1.9	0.076	11.0	34.0	0.9978	3.51	0.56	9.4	0"^^xsd:string ;
+    sml:rank 0 .
+
+sml:RedWineQualityBinarySampleLine1 a sml:DatasetSampleLine ;
+    sml:hasContent "7.8	0.88	0.0	2.6	0.098	25.0	67.0	0.9968	3.2	0.68	9.8	0"^^xsd:string ;
+    sml:rank 1 .
+
+sml:RedWineQualityBinarySampleLine2 a sml:DatasetSampleLine ;
+    sml:hasContent "7.8	0.76	0.04	2.3	0.092	15.0	54.0	0.997	3.26	0.65	9.8	0"^^xsd:string ;
+    sml:rank 2 .
+
+sml:RedWineQualityBinarySampleLine3 a sml:DatasetSampleLine ;
+    sml:hasContent "11.2	0.28	0.56	1.9	0.075	17.0	60.0	0.998	3.16	0.58	9.8	0"^^xsd:string ;
+    sml:rank 3 .
+
+sml:RedWineQualityBinarySampleLine4 a sml:DatasetSampleLine ;
+    sml:hasContent "7.4	0.7	0.0	1.9	0.076	11.0	34.0	0.9978	3.51	0.56	9.4	0"^^xsd:string ;
+    sml:rank 4 .
+
+sml:RedWineQualityBinarySampleLine5 a sml:DatasetSampleLine ;
+    sml:hasContent "7.4	0.66	0.0	1.8	0.075	13.0	40.0	0.9978	3.51	0.56	9.4	0"^^xsd:string ;
+    sml:rank 5 .
+
+sml:RedWineQualityBinarySampleLine6 a sml:DatasetSampleLine ;
+    sml:hasContent "7.9	0.6	0.06	1.6	0.069	15.0	59.0	0.9964	3.3	0.46	9.4	0"^^xsd:string ;
+    sml:rank 6 .
+
+sml:RedWineQualityBinarySampleLine7 a sml:DatasetSampleLine ;
+    sml:hasContent "7.3	0.65	0.0	1.2	0.065	15.0	21.0	0.9946	3.39	0.47	10.0	1"^^xsd:string ;
+    sml:rank 7 .
+
+sml:RedWineQualityBinarySampleLine8 a sml:DatasetSampleLine ;
+    sml:hasContent "7.8	0.58	0.02	2.0	0.073	9.0	18.0	0.9968	3.36	0.57	9.5	1"^^xsd:string ;
+    sml:rank 8 .
+
+sml:RedWineQualityBinarySampleLine9 a sml:DatasetSampleLine ;
+    sml:hasContent "7.5	0.5	0.36	6.1	0.071	17.0	102.0	0.9978	3.35	0.8	10.5	0"^^xsd:string ;
+    sml:rank 9 .
+
+<https://simple-ml.de/resource/RedWineQualityBinary_sml_wine/Wine> a sml:ClassInstance ;
+    sml:mapsTo sml-wine:Wine .
+

@@ -1,0 +1,762 @@
+@prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix seas: <https://w3id.org/seas/> .
+@prefix sml: <https://simple-ml.de/resource/> .
+@prefix sml-mob: <https://simple-ml.de/resource/mobility/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sml:simple-ml dcat:dataset sml:HannoverEvents .
+
+sml:HannoverEvents a dcat:Dataset ;
+    dct:description "Ereignisse in Hannover."@de,
+        "Events in Hannover, Germany."@en ;
+    dct:identifier "HannoverEvents" ;
+    dct:subject "Ereignisse"@de,
+        "Events"@en ;
+    dct:title "Events in Hannover"@de,
+        "Events in Hannover (Germany)"@en ;
+    sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
+    sml:creatorId "0"^^xsd:nonNegativeInteger ;
+    sml:hasAttribute sml:HannoverEventsAttributeCategory,
+        sml:HannoverEventsAttributeName,
+        sml:HannoverEventsAttributeNoParticipants,
+        sml:HannoverEventsAttributeStartTime,
+        sml:HannoverEventsAttributeVenue ;
+    sml:hasFile sml:HannoverEventsFile ;
+    sml:hasSample sml:HannoverEventsSample ;
+    sml:numberOfInstances "161"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeCategory a sml:Attribute ;
+    dct:identifier "Category" ;
+    sml:columnIndex "2"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:HannoverEvents_so_Event ;
+    sml:mapsToProperty sml-mob:eventCategory ;
+    sml:valueType xsd:string ;
+    seas:evaluation sml:HannoverEventsAttributeCategoryAverageNumberOfCapitalisedValues,
+        sml:HannoverEventsAttributeCategoryAverageNumberOfCharacters,
+        sml:HannoverEventsAttributeCategoryAverageNumberOfDigits,
+        sml:HannoverEventsAttributeCategoryAverageNumberOfSpecialCharacters,
+        sml:HannoverEventsAttributeCategoryAverageNumberOfTokens,
+        sml:HannoverEventsAttributeCategoryNumberOfDistinctValues,
+        sml:HannoverEventsAttributeCategoryNumberOfInvalidValues,
+        sml:HannoverEventsAttributeCategoryNumberOfNullValues,
+        sml:HannoverEventsAttributeCategoryNumberOfValidNonNullValues,
+        sml:HannoverEventsAttributeCategoryNumberOfValidValues,
+        sml:HannoverEventsAttributeCategoryNumberOfValues ;
+    seas:valueDistributionValue sml:HannoverEventsAttributeCategoryValueDistributionValue0,
+        sml:HannoverEventsAttributeCategoryValueDistributionValue1,
+        sml:HannoverEventsAttributeCategoryValueDistributionValue2,
+        sml:HannoverEventsAttributeCategoryValueDistributionValue3,
+        sml:HannoverEventsAttributeCategoryValueDistributionValue4,
+        sml:HannoverEventsAttributeCategoryValueDistributionValue5,
+        sml:HannoverEventsAttributeCategoryValueDistributionValue6 .
+
+sml:HannoverEventsAttributeCategoryAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:HannoverEventsAttributeCategoryAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "5.795031055900621"^^xsd:float .
+
+sml:HannoverEventsAttributeCategoryAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:HannoverEventsAttributeCategoryAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:HannoverEventsAttributeCategoryAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
+
+sml:HannoverEventsAttributeCategoryNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 7 .
+
+sml:HannoverEventsAttributeCategoryNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:HannoverEventsAttributeCategoryNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:HannoverEventsAttributeCategoryNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeCategoryNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeCategoryNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeCategoryValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "concert" ;
+    sml:numberOfInstancesOfValue "70"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeCategoryValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "show" ;
+    sml:numberOfInstancesOfValue "23"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeCategoryValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "fair" ;
+    sml:numberOfInstancesOfValue "19"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeCategoryValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "other" ;
+    sml:numberOfInstancesOfValue "16"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeCategoryValueDistributionValue4 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "party" ;
+    sml:numberOfInstancesOfValue "15"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeCategoryValueDistributionValue5 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "comedy" ;
+    sml:numberOfInstancesOfValue "12"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeCategoryValueDistributionValue6 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "football" ;
+    sml:numberOfInstancesOfValue "6"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeName a sml:Attribute ;
+    dct:identifier "Name" ;
+    sml:columnIndex "0"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:HannoverEvents_so_Event ;
+    sml:mapsToProperty rdfs:label ;
+    sml:valueType rdfs:Literal ;
+    seas:evaluation sml:HannoverEventsAttributeNameAverageNumberOfCapitalisedValues,
+        sml:HannoverEventsAttributeNameAverageNumberOfCharacters,
+        sml:HannoverEventsAttributeNameAverageNumberOfDigits,
+        sml:HannoverEventsAttributeNameAverageNumberOfSpecialCharacters,
+        sml:HannoverEventsAttributeNameAverageNumberOfTokens,
+        sml:HannoverEventsAttributeNameNumberOfDistinctValues,
+        sml:HannoverEventsAttributeNameNumberOfInvalidValues,
+        sml:HannoverEventsAttributeNameNumberOfNullValues,
+        sml:HannoverEventsAttributeNameNumberOfValidNonNullValues,
+        sml:HannoverEventsAttributeNameNumberOfValidValues,
+        sml:HannoverEventsAttributeNameNumberOfValues ;
+    seas:valueDistributionValue sml:HannoverEventsAttributeNameValueDistributionValue0,
+        sml:HannoverEventsAttributeNameValueDistributionValue1,
+        sml:HannoverEventsAttributeNameValueDistributionValue2,
+        sml:HannoverEventsAttributeNameValueDistributionValue3,
+        sml:HannoverEventsAttributeNameValueDistributionValue4,
+        sml:HannoverEventsAttributeNameValueDistributionValue5,
+        sml:HannoverEventsAttributeNameValueDistributionValue6,
+        sml:HannoverEventsAttributeNameValueDistributionValue7,
+        sml:HannoverEventsAttributeNameValueDistributionValue8,
+        sml:HannoverEventsAttributeNameValueDistributionValue9 .
+
+sml:HannoverEventsAttributeNameAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "0.9751552795031055"^^xsd:float .
+
+sml:HannoverEventsAttributeNameAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "20.720496894409937"^^xsd:float .
+
+sml:HannoverEventsAttributeNameAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "0.37267080745341613"^^xsd:float .
+
+sml:HannoverEventsAttributeNameAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.5590062111801242"^^xsd:float .
+
+sml:HannoverEventsAttributeNameAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "3.080745341614907"^^xsd:float .
+
+sml:HannoverEventsAttributeNameNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 120 .
+
+sml:HannoverEventsAttributeNameNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:HannoverEventsAttributeNameNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:HannoverEventsAttributeNameNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeNameNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeNameNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeNameValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Forever Young" ;
+    sml:numberOfInstancesOfValue "14"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNameValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "AGRI TECHNICA" ;
+    sml:numberOfInstancesOfValue "7"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNameValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Bundesliga 2017/2018" ;
+    sml:numberOfInstancesOfValue "6"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNameValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Holiday on Ice: Atlantis" ;
+    sml:numberOfInstancesOfValue "4"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNameValueDistributionValue4 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Domotex" ;
+    sml:numberOfInstancesOfValue "4"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNameValueDistributionValue5 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Maybebop: Weihnachtsprogramm für Euch" ;
+    sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNameValueDistributionValue6 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Drei Haselnüsse für Aschenbrödel" ;
+    sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNameValueDistributionValue7 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Ralf Schmitz: Schmitzenklasse" ;
+    sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNameValueDistributionValue8 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Schwanensee – Bolschoi Staatsballett Belarus" ;
+    sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNameValueDistributionValue9 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Völkerball" ;
+    sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipants a sml:Attribute ;
+    dct:identifier "No Participants" ;
+    sml:columnIndex "4"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:HannoverEvents_so_Event ;
+    sml:mapsToProperty sml-mob:numberOfParticipants ;
+    sml:valueType xsd:nonNegativeInteger ;
+    seas:evaluation sml:HannoverEventsAttributeNoParticipantsAverageNumberOfDigits,
+        sml:HannoverEventsAttributeNoParticipantsDecile0,
+        sml:HannoverEventsAttributeNoParticipantsDecile1,
+        sml:HannoverEventsAttributeNoParticipantsDecile10,
+        sml:HannoverEventsAttributeNoParticipantsDecile2,
+        sml:HannoverEventsAttributeNoParticipantsDecile3,
+        sml:HannoverEventsAttributeNoParticipantsDecile4,
+        sml:HannoverEventsAttributeNoParticipantsDecile5,
+        sml:HannoverEventsAttributeNoParticipantsDecile6,
+        sml:HannoverEventsAttributeNoParticipantsDecile7,
+        sml:HannoverEventsAttributeNoParticipantsDecile8,
+        sml:HannoverEventsAttributeNoParticipantsDecile9,
+        sml:HannoverEventsAttributeNoParticipantsHistogram0,
+        sml:HannoverEventsAttributeNoParticipantsHistogram1,
+        sml:HannoverEventsAttributeNoParticipantsHistogram2,
+        sml:HannoverEventsAttributeNoParticipantsHistogram3,
+        sml:HannoverEventsAttributeNoParticipantsHistogram4,
+        sml:HannoverEventsAttributeNoParticipantsHistogram5,
+        sml:HannoverEventsAttributeNoParticipantsHistogram6,
+        sml:HannoverEventsAttributeNoParticipantsHistogram7,
+        sml:HannoverEventsAttributeNoParticipantsHistogram8,
+        sml:HannoverEventsAttributeNoParticipantsHistogram9,
+        sml:HannoverEventsAttributeNoParticipantsMaximum,
+        sml:HannoverEventsAttributeNoParticipantsMean,
+        sml:HannoverEventsAttributeNoParticipantsMedian,
+        sml:HannoverEventsAttributeNoParticipantsMinimum,
+        sml:HannoverEventsAttributeNoParticipantsNumberOfDistinctValues,
+        sml:HannoverEventsAttributeNoParticipantsNumberOfInvalidValues,
+        sml:HannoverEventsAttributeNoParticipantsNumberOfNullValues,
+        sml:HannoverEventsAttributeNoParticipantsNumberOfValidNonNullValues,
+        sml:HannoverEventsAttributeNoParticipantsNumberOfValidValues,
+        sml:HannoverEventsAttributeNoParticipantsNumberOfValues,
+        sml:HannoverEventsAttributeNoParticipantsQuartile0,
+        sml:HannoverEventsAttributeNoParticipantsQuartile1,
+        sml:HannoverEventsAttributeNoParticipantsQuartile2,
+        sml:HannoverEventsAttributeNoParticipantsQuartile3,
+        sml:HannoverEventsAttributeNoParticipantsQuartile4,
+        sml:HannoverEventsAttributeNoParticipantsStandardDeviation .
+
+sml:HannoverEventsAttributeNoParticipantsAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "4.338235294117647"^^xsd:float .
+
+sml:HannoverEventsAttributeNoParticipantsDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "350.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1000.0"^^xsd:float ;
+    seas:rank 1 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "187000.0"^^xsd:float ;
+    seas:rank 10 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1440.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1600.0"^^xsd:float ;
+    seas:rank 3 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2160.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "5000.0"^^xsd:float ;
+    seas:rank 5 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "9200.000000000004"^^xsd:float ;
+    seas:rank 6 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "10000.0"^^xsd:float ;
+    seas:rank 7 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "35880.0"^^xsd:float ;
+    seas:rank 8 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "65000.0"^^xsd:float ;
+    seas:rank 9 .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "19015.0"^^xsd:float ;
+    sml:bucketMinimum "350.0"^^xsd:float ;
+    sml:instancesInBucket "51"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "37680.0"^^xsd:float ;
+    sml:bucketMinimum "19015.0"^^xsd:float ;
+    sml:instancesInBucket "4"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "56345.0"^^xsd:float ;
+    sml:bucketMinimum "37680.0"^^xsd:float ;
+    sml:instancesInBucket "5"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "75010.0"^^xsd:float ;
+    sml:bucketMinimum "56345.0"^^xsd:float ;
+    sml:instancesInBucket "7"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "93675.0"^^xsd:float ;
+    sml:bucketMinimum "75010.0"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "112340.0"^^xsd:float ;
+    sml:bucketMinimum "93675.0"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "131005.0"^^xsd:float ;
+    sml:bucketMinimum "112340.0"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "149670.0"^^xsd:float ;
+    sml:bucketMinimum "131005.0"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "168335.0"^^xsd:float ;
+    sml:bucketMinimum "149670.0"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "187000"^^xsd:float ;
+    sml:bucketMinimum "168335.0"^^xsd:float ;
+    sml:instancesInBucket "1"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue 187000 .
+
+sml:HannoverEventsAttributeNoParticipantsMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "17598.45588235294"^^xsd:float .
+
+sml:HannoverEventsAttributeNoParticipantsMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "5000.0"^^xsd:float .
+
+sml:HannoverEventsAttributeNoParticipantsMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue 350 .
+
+sml:HannoverEventsAttributeNoParticipantsNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 32 .
+
+sml:HannoverEventsAttributeNoParticipantsNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 93 .
+
+sml:HannoverEventsAttributeNoParticipantsNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 93 .
+
+sml:HannoverEventsAttributeNoParticipantsNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 68 .
+
+sml:HannoverEventsAttributeNoParticipantsNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeNoParticipantsNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeNoParticipantsQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "350.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:HannoverEventsAttributeNoParticipantsQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "1600.0"^^xsd:float ;
+    seas:rank 1 .
+
+sml:HannoverEventsAttributeNoParticipantsQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "5000.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:HannoverEventsAttributeNoParticipantsQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "15400.0"^^xsd:float ;
+    seas:rank 3 .
+
+sml:HannoverEventsAttributeNoParticipantsQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "187000.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:HannoverEventsAttributeNoParticipantsStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "29595.132529115916"^^xsd:float .
+
+sml:HannoverEventsAttributeStartTime a sml:Attribute ;
+    dct:identifier "Start Time" ;
+    sml:columnIndex "3"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:HannoverEvents_time_DateTimeDescription ;
+    sml:mapsToProperty time:inXSDDateTime ;
+    sml:valueType xsd:dateTime ;
+    seas:evaluation sml:HannoverEventsAttributeStartTimeDecile0,
+        sml:HannoverEventsAttributeStartTimeDecile1,
+        sml:HannoverEventsAttributeStartTimeDecile10,
+        sml:HannoverEventsAttributeStartTimeDecile2,
+        sml:HannoverEventsAttributeStartTimeDecile3,
+        sml:HannoverEventsAttributeStartTimeDecile4,
+        sml:HannoverEventsAttributeStartTimeDecile5,
+        sml:HannoverEventsAttributeStartTimeDecile6,
+        sml:HannoverEventsAttributeStartTimeDecile7,
+        sml:HannoverEventsAttributeStartTimeDecile8,
+        sml:HannoverEventsAttributeStartTimeDecile9,
+        sml:HannoverEventsAttributeStartTimeHistogram0,
+        sml:HannoverEventsAttributeStartTimeHistogram1,
+        sml:HannoverEventsAttributeStartTimeHistogram2,
+        sml:HannoverEventsAttributeStartTimeHistogram3,
+        sml:HannoverEventsAttributeStartTimeHistogram4,
+        sml:HannoverEventsAttributeStartTimeHistogram5,
+        sml:HannoverEventsAttributeStartTimeHistogram6,
+        sml:HannoverEventsAttributeStartTimeHistogram7,
+        sml:HannoverEventsAttributeStartTimeHistogram8,
+        sml:HannoverEventsAttributeStartTimeHistogram9,
+        sml:HannoverEventsAttributeStartTimeMaximum,
+        sml:HannoverEventsAttributeStartTimeMean,
+        sml:HannoverEventsAttributeStartTimeMedian,
+        sml:HannoverEventsAttributeStartTimeMinimum,
+        sml:HannoverEventsAttributeStartTimeNumberOfDistinctValues,
+        sml:HannoverEventsAttributeStartTimeNumberOfInvalidValues,
+        sml:HannoverEventsAttributeStartTimeNumberOfNullValues,
+        sml:HannoverEventsAttributeStartTimeNumberOfValidNonNullValues,
+        sml:HannoverEventsAttributeStartTimeNumberOfValidValues,
+        sml:HannoverEventsAttributeStartTimeNumberOfValues,
+        sml:HannoverEventsAttributeStartTimeQuartile0,
+        sml:HannoverEventsAttributeStartTimeQuartile1,
+        sml:HannoverEventsAttributeStartTimeQuartile2,
+        sml:HannoverEventsAttributeStartTimeQuartile3,
+        sml:HannoverEventsAttributeStartTimeQuartile4 .
+
+sml:HannoverEventsAttributeStartTimeDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-10-12T08:00:00"^^xsd:dateTime ;
+    seas:rank 0 .
+
+sml:HannoverEventsAttributeStartTimeDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-10-18T17:00:00"^^xsd:dateTime ;
+    seas:rank 1 .
+
+sml:HannoverEventsAttributeStartTimeDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2018-12-01T19:00:00"^^xsd:dateTime ;
+    seas:rank 10 .
+
+sml:HannoverEventsAttributeStartTimeDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-10-26T18:00:00"^^xsd:dateTime ;
+    seas:rank 2 .
+
+sml:HannoverEventsAttributeStartTimeDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-11-08T19:00:00"^^xsd:dateTime ;
+    seas:rank 3 .
+
+sml:HannoverEventsAttributeStartTimeDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-11-16T08:00:00"^^xsd:dateTime ;
+    seas:rank 4 .
+
+sml:HannoverEventsAttributeStartTimeDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-11-22T19:00:00"^^xsd:dateTime ;
+    seas:rank 5 .
+
+sml:HannoverEventsAttributeStartTimeDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-12-07T19:00:00"^^xsd:dateTime ;
+    seas:rank 6 .
+
+sml:HannoverEventsAttributeStartTimeDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-12-15T18:00:00"^^xsd:dateTime ;
+    seas:rank 7 .
+
+sml:HannoverEventsAttributeStartTimeDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-12-26T18:30:00"^^xsd:dateTime ;
+    seas:rank 8 .
+
+sml:HannoverEventsAttributeStartTimeDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2018-01-14T09:00:00"^^xsd:dateTime ;
+    seas:rank 9 .
+
+sml:HannoverEventsAttributeStartTimeHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-11-22T21:06:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-10-12T08:00:00"^^xsd:dateTime ;
+    sml:instancesInBucket "81"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-01-03T10:12:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-11-22T21:06:00"^^xsd:dateTime ;
+    sml:instancesInBucket "56"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-02-13T23:18:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-01-03T10:12:00"^^xsd:dateTime ;
+    sml:instancesInBucket "13"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-03-27T12:24:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-02-13T23:18:00"^^xsd:dateTime ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-05-08T01:30:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-03-27T12:24:00"^^xsd:dateTime ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-06-18T14:36:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-05-08T01:30:00"^^xsd:dateTime ;
+    sml:instancesInBucket "2"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-07-30T03:42:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-06-18T14:36:00"^^xsd:dateTime ;
+    sml:instancesInBucket "2"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-09-09T16:48:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-07-30T03:42:00"^^xsd:dateTime ;
+    sml:instancesInBucket "2"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-10-21T05:54:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-09-09T16:48:00"^^xsd:dateTime ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-12-01T19:00:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-10-21T05:54:00"^^xsd:dateTime ;
+    sml:instancesInBucket "5"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "2018-12-01T19:00:00"^^xsd:dateTime .
+
+sml:HannoverEventsAttributeStartTimeMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "2017-12-13T03:52:38.385093212"^^xsd:dateTime .
+
+sml:HannoverEventsAttributeStartTimeMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "2017-11-22T19:00:00"^^xsd:dateTime .
+
+sml:HannoverEventsAttributeStartTimeMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "2017-10-12T08:00:00"^^xsd:dateTime .
+
+sml:HannoverEventsAttributeStartTimeNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 146 .
+
+sml:HannoverEventsAttributeStartTimeNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:HannoverEventsAttributeStartTimeNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:HannoverEventsAttributeStartTimeNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeStartTimeNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeStartTimeNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeStartTimeQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-10-12T08:00:00"^^xsd:dateTime ;
+    seas:rank 0 .
+
+sml:HannoverEventsAttributeStartTimeQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-10-30T19:00:00"^^xsd:dateTime ;
+    seas:rank 1 .
+
+sml:HannoverEventsAttributeStartTimeQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-11-22T19:00:00"^^xsd:dateTime ;
+    seas:rank 2 .
+
+sml:HannoverEventsAttributeStartTimeQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-12-17T17:00:00"^^xsd:dateTime ;
+    seas:rank 3 .
+
+sml:HannoverEventsAttributeStartTimeQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2018-12-01T19:00:00"^^xsd:dateTime ;
+    seas:rank 4 .
+
+sml:HannoverEventsAttributeVenue a sml:Attribute ;
+    dct:identifier "Venue" ;
+    sml:columnIndex "1"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:HannoverEvents_dcterms_Location ;
+    sml:mapsToProperty rdfs:label ;
+    sml:valueType rdfs:Literal ;
+    seas:evaluation sml:HannoverEventsAttributeVenueAverageNumberOfCapitalisedValues,
+        sml:HannoverEventsAttributeVenueAverageNumberOfCharacters,
+        sml:HannoverEventsAttributeVenueAverageNumberOfDigits,
+        sml:HannoverEventsAttributeVenueAverageNumberOfSpecialCharacters,
+        sml:HannoverEventsAttributeVenueAverageNumberOfTokens,
+        sml:HannoverEventsAttributeVenueNumberOfDistinctValues,
+        sml:HannoverEventsAttributeVenueNumberOfInvalidValues,
+        sml:HannoverEventsAttributeVenueNumberOfNullValues,
+        sml:HannoverEventsAttributeVenueNumberOfValidNonNullValues,
+        sml:HannoverEventsAttributeVenueNumberOfValidValues,
+        sml:HannoverEventsAttributeVenueNumberOfValues ;
+    seas:valueDistributionValue sml:HannoverEventsAttributeVenueValueDistributionValue0,
+        sml:HannoverEventsAttributeVenueValueDistributionValue1,
+        sml:HannoverEventsAttributeVenueValueDistributionValue2,
+        sml:HannoverEventsAttributeVenueValueDistributionValue3,
+        sml:HannoverEventsAttributeVenueValueDistributionValue4,
+        sml:HannoverEventsAttributeVenueValueDistributionValue5,
+        sml:HannoverEventsAttributeVenueValueDistributionValue6 .
+
+sml:HannoverEventsAttributeVenueAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
+
+sml:HannoverEventsAttributeVenueAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "11.434782608695652"^^xsd:float .
+
+sml:HannoverEventsAttributeVenueAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:HannoverEventsAttributeVenueAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.037267080745341616"^^xsd:float .
+
+sml:HannoverEventsAttributeVenueAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "1.9937888198757765"^^xsd:float .
+
+sml:HannoverEventsAttributeVenueNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 7 .
+
+sml:HannoverEventsAttributeVenueNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:HannoverEventsAttributeVenueNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:HannoverEventsAttributeVenueNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeVenueNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeVenueNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeVenueValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Capitol" ;
+    sml:numberOfInstancesOfValue "49"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeVenueValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Theater am Aegi" ;
+    sml:numberOfInstancesOfValue "39"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeVenueValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Messegelände" ;
+    sml:numberOfInstancesOfValue "20"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeVenueValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Swiss Life Hall" ;
+    sml:numberOfInstancesOfValue "18"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeVenueValueDistributionValue4 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "TUI Arena" ;
+    sml:numberOfInstancesOfValue "18"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeVenueValueDistributionValue5 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Kuppelsaal im HCC" ;
+    sml:numberOfInstancesOfValue "11"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeVenueValueDistributionValue6 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "HDI-Arena" ;
+    sml:numberOfInstancesOfValue "6"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsFile a sml:TextFile ;
+    dct:format "text/comma-separated-values" ;
+    csvw:header false ;
+    csvw:null "" ;
+    csvw:separator "	" ;
+    sml:fileLocation "HannoverEvents.tsv" .
+
+sml:HannoverEventsSample a sml:DatasetSample ;
+    csvw:separator "	" ;
+    sml:hasHeader sml:HannoverEventsSampleHeader ;
+    sml:hasLine sml:HannoverEventsSampleLine0,
+        sml:HannoverEventsSampleLine1,
+        sml:HannoverEventsSampleLine2,
+        sml:HannoverEventsSampleLine3,
+        sml:HannoverEventsSampleLine4,
+        sml:HannoverEventsSampleLine5,
+        sml:HannoverEventsSampleLine6,
+        sml:HannoverEventsSampleLine7,
+        sml:HannoverEventsSampleLine8,
+        sml:HannoverEventsSampleLine9 .
+
+sml:HannoverEventsSampleHeader a sml:DatasetSampleLine ;
+    sml:hasContent "Event (label)	Location (label)	Event (event category)	Date-Time description (in XSD Date-Time)	Event (number of participants)"^^xsd:string .
+
+sml:HannoverEventsSampleLine0 a sml:DatasetSampleLine ;
+    sml:hasContent "Beethoven: 9. Sinfonie	Kuppelsaal im HCC	concert	2017-12-27 20:00:00"^^xsd:string ;
+    sml:rank 0 .
+
+sml:HannoverEventsSampleLine1 a sml:DatasetSampleLine ;
+    sml:hasContent "Chris Rea	Kuppelsaal im HCC	concert	2017-10-28 20:00:00	2500"^^xsd:string ;
+    sml:rank 1 .
+
+sml:HannoverEventsSampleLine2 a sml:DatasetSampleLine ;
+    sml:hasContent "Julia Engelmann: Jetzt, Baby – Poesie und Musik	Kuppelsaal im HCC	concert	2017-11-24 20:00:00"^^xsd:string ;
+    sml:rank 2 .
+
+sml:HannoverEventsSampleLine3 a sml:DatasetSampleLine ;
+    sml:hasContent "Klaus Maria Brandauer und das NDR Elbphilharmonie Orchester	Kuppelsaal im HCC	concert	2017-10-25 20:00:00"^^xsd:string ;
+    sml:rank 3 .
+
+sml:HannoverEventsSampleLine4 a sml:DatasetSampleLine ;
+    sml:hasContent "Max Raabe & Palastorchester	Kuppelsaal im HCC	concert	2017-11-11 18:00:00"^^xsd:string ;
+    sml:rank 4 .
+
+sml:HannoverEventsSampleLine5 a sml:DatasetSampleLine ;
+    sml:hasContent "Max Raabe & Palastorchester	Kuppelsaal im HCC	concert	2017-12-11 18:00:00"^^xsd:string ;
+    sml:rank 5 .
+
+sml:HannoverEventsSampleLine6 a sml:DatasetSampleLine ;
+    sml:hasContent "Michael Jackson – The Symphony Experience	Kuppelsaal im HCC	concert	2017-10-29 20:00:00"^^xsd:string ;
+    sml:rank 6 .
+
+sml:HannoverEventsSampleLine7 a sml:DatasetSampleLine ;
+    sml:hasContent "St. Petersburger Philharmoniker	Kuppelsaal im HCC	concert	2017-12-05 19:30:00"^^xsd:string ;
+    sml:rank 7 .
+
+sml:HannoverEventsSampleLine8 a sml:DatasetSampleLine ;
+    sml:hasContent "Status Quo: Aqoustic Live – It Rocks!	Kuppelsaal im HCC	concert	2017-11-22 20:00:00	1200"^^xsd:string ;
+    sml:rank 8 .
+
+sml:HannoverEventsSampleLine9 a sml:DatasetSampleLine ;
+    sml:hasContent "The Voice of Germany	Kuppelsaal im HCC	show	2018-11-01 20:00:00	2200"^^xsd:string ;
+    sml:rank 9 .
+
+sml:HannoverEvents_dcterms_Location a sml:ClassInstance ;
+    sml:mapsTo dct:Location .
+
+sml:HannoverEvents_time_DateTimeDescription a sml:ClassInstance ;
+    sml:mapsTo time:DateTimeDescription .
+
+sml:HannoverEvents_so_Event a sml:ClassInstance ;
+    dct:spatial sml:HannoverEvents_dcterms_Location ;
+    time:hasTime sml:HannoverEvents_time_DateTimeDescription ;
+    sml:mapsTo schema:Event .
+

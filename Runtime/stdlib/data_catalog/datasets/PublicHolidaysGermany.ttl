@@ -1,0 +1,581 @@
+@prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix seas: <https://w3id.org/seas/> .
+@prefix sml: <https://simple-ml.de/resource/> .
+@prefix sml-mob: <https://simple-ml.de/resource/mobility/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sml:simple-ml dcat:dataset sml:PublicHolidaysGermany .
+
+sml:PublicHolidaysGermany a dcat:Dataset ;
+    dct:description "Gesetzliche in Deutschland."@de,
+        "Public holidays in Germany."@en ;
+    dct:identifier "PublicHolidaysGermany" ;
+    dct:subject "Ereignisse"@de,
+        "Events"@en ;
+    dct:title "Gesetzliche Feiertage in Deutschland"@de,
+        "Public holidays in Germany"@en ;
+    sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
+    sml:creatorId "0"^^xsd:nonNegativeInteger ;
+    sml:hasAttribute sml:PublicHolidaysGermanyAttributeEndTime,
+        sml:PublicHolidaysGermanyAttributeName,
+        sml:PublicHolidaysGermanyAttributeStartTime ;
+    sml:hasFile sml:PublicHolidaysGermanyFile ;
+    sml:hasSample sml:PublicHolidaysGermanySample ;
+    sml:numberOfInstances "186"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeEndTime a sml:Attribute ;
+    dct:identifier "end_time" ;
+    sml:columnIndex "2"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:PublicHolidaysGermany_time_2 ;
+    sml:mapsToProperty time:inXSDDateTime ;
+    sml:valueType xsd:dateTime ;
+    seas:evaluation sml:PublicHolidaysGermanyAttributeEndTimeDecile0,
+        sml:PublicHolidaysGermanyAttributeEndTimeDecile1,
+        sml:PublicHolidaysGermanyAttributeEndTimeDecile10,
+        sml:PublicHolidaysGermanyAttributeEndTimeDecile2,
+        sml:PublicHolidaysGermanyAttributeEndTimeDecile3,
+        sml:PublicHolidaysGermanyAttributeEndTimeDecile4,
+        sml:PublicHolidaysGermanyAttributeEndTimeDecile5,
+        sml:PublicHolidaysGermanyAttributeEndTimeDecile6,
+        sml:PublicHolidaysGermanyAttributeEndTimeDecile7,
+        sml:PublicHolidaysGermanyAttributeEndTimeDecile8,
+        sml:PublicHolidaysGermanyAttributeEndTimeDecile9,
+        sml:PublicHolidaysGermanyAttributeEndTimeHistogram0,
+        sml:PublicHolidaysGermanyAttributeEndTimeHistogram1,
+        sml:PublicHolidaysGermanyAttributeEndTimeHistogram2,
+        sml:PublicHolidaysGermanyAttributeEndTimeHistogram3,
+        sml:PublicHolidaysGermanyAttributeEndTimeHistogram4,
+        sml:PublicHolidaysGermanyAttributeEndTimeHistogram5,
+        sml:PublicHolidaysGermanyAttributeEndTimeHistogram6,
+        sml:PublicHolidaysGermanyAttributeEndTimeHistogram7,
+        sml:PublicHolidaysGermanyAttributeEndTimeHistogram8,
+        sml:PublicHolidaysGermanyAttributeEndTimeHistogram9,
+        sml:PublicHolidaysGermanyAttributeEndTimeMaximum,
+        sml:PublicHolidaysGermanyAttributeEndTimeMean,
+        sml:PublicHolidaysGermanyAttributeEndTimeMedian,
+        sml:PublicHolidaysGermanyAttributeEndTimeMinimum,
+        sml:PublicHolidaysGermanyAttributeEndTimeNumberOfDistinctValues,
+        sml:PublicHolidaysGermanyAttributeEndTimeNumberOfInvalidValues,
+        sml:PublicHolidaysGermanyAttributeEndTimeNumberOfNullValues,
+        sml:PublicHolidaysGermanyAttributeEndTimeNumberOfValidNonNullValues,
+        sml:PublicHolidaysGermanyAttributeEndTimeNumberOfValidValues,
+        sml:PublicHolidaysGermanyAttributeEndTimeNumberOfValues,
+        sml:PublicHolidaysGermanyAttributeEndTimeQuartile0,
+        sml:PublicHolidaysGermanyAttributeEndTimeQuartile1,
+        sml:PublicHolidaysGermanyAttributeEndTimeQuartile2,
+        sml:PublicHolidaysGermanyAttributeEndTimeQuartile3,
+        sml:PublicHolidaysGermanyAttributeEndTimeQuartile4 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2014-01-01T23:00:00"^^xsd:dateTime ;
+    seas:rank 0 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2015-02-19T10:30:00"^^xsd:dateTime ;
+    seas:rank 1 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2023-12-26T23:00:00"^^xsd:dateTime ;
+    seas:rank 10 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2016-03-27T22:00:00"^^xsd:dateTime ;
+    seas:rank 2 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-05-13T22:00:00"^^xsd:dateTime ;
+    seas:rank 3 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2018-05-20T22:00:00"^^xsd:dateTime ;
+    seas:rank 4 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2019-06-04T22:00:00"^^xsd:dateTime ;
+    seas:rank 5 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2020-05-01T22:00:00"^^xsd:dateTime ;
+    seas:rank 6 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2021-04-03T22:00:00"^^xsd:dateTime ;
+    seas:rank 7 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2022-03-08T23:00:00"^^xsd:dateTime ;
+    seas:rank 8 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2023-01-04T11:00:00"^^xsd:dateTime ;
+    seas:rank 9 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2015-01-01T13:24:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2014-01-01T23:00:00"^^xsd:dateTime ;
+    sml:instancesInBucket "17"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeEndTimeHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2016-01-01T03:48:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2015-01-01T13:24:00"^^xsd:dateTime ;
+    sml:instancesInBucket "17"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeEndTimeHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2016-12-30T18:12:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2016-01-01T03:48:00"^^xsd:dateTime ;
+    sml:instancesInBucket "16"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeEndTimeHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-12-30T08:36:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2016-12-30T18:12:00"^^xsd:dateTime ;
+    sml:instancesInBucket "17"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeEndTimeHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-12-29T23:00:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-12-30T08:36:00"^^xsd:dateTime ;
+    sml:instancesInBucket "18"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeEndTimeHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2019-12-29T13:24:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-12-29T23:00:00"^^xsd:dateTime ;
+    sml:instancesInBucket "20"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeEndTimeHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2020-12-28T03:48:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2019-12-29T13:24:00"^^xsd:dateTime ;
+    sml:instancesInBucket "21"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeEndTimeHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2021-12-27T18:12:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2020-12-28T03:48:00"^^xsd:dateTime ;
+    sml:instancesInBucket "20"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeEndTimeHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2022-12-27T08:36:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2021-12-27T18:12:00"^^xsd:dateTime ;
+    sml:instancesInBucket "20"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeEndTimeHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2023-12-26T23:00:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2022-12-27T08:36:00"^^xsd:dateTime ;
+    sml:instancesInBucket "20"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeEndTimeMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "2023-12-26T23:00:00"^^xsd:dateTime .
+
+sml:PublicHolidaysGermanyAttributeEndTimeMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "2019-03-26T02:08:42.580645084"^^xsd:dateTime .
+
+sml:PublicHolidaysGermanyAttributeEndTimeMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "2019-06-04T22:00:00"^^xsd:dateTime .
+
+sml:PublicHolidaysGermanyAttributeEndTimeMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "2014-01-01T23:00:00"^^xsd:dateTime .
+
+sml:PublicHolidaysGermanyAttributeEndTimeNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 186 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 186 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 186 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 186 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2014-01-01T23:00:00"^^xsd:dateTime ;
+    seas:rank 0 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2016-11-05T17:00:00"^^xsd:dateTime ;
+    seas:rank 1 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2019-06-04T22:00:00"^^xsd:dateTime ;
+    seas:rank 2 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2021-09-11T22:00:00"^^xsd:dateTime ;
+    seas:rank 3 .
+
+sml:PublicHolidaysGermanyAttributeEndTimeQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2023-12-26T23:00:00"^^xsd:dateTime ;
+    seas:rank 4 .
+
+sml:PublicHolidaysGermanyAttributeName a sml:Attribute ;
+    dct:identifier "name" ;
+    sml:columnIndex "0"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/PublicHolidaysGermany_sml_mobility/Holiday> ;
+    sml:mapsToProperty rdfs:label ;
+    sml:valueType rdfs:Literal ;
+    seas:evaluation sml:PublicHolidaysGermanyAttributeNameAverageNumberOfCapitalisedValues,
+        sml:PublicHolidaysGermanyAttributeNameAverageNumberOfCharacters,
+        sml:PublicHolidaysGermanyAttributeNameAverageNumberOfDigits,
+        sml:PublicHolidaysGermanyAttributeNameAverageNumberOfSpecialCharacters,
+        sml:PublicHolidaysGermanyAttributeNameAverageNumberOfTokens,
+        sml:PublicHolidaysGermanyAttributeNameNumberOfDistinctValues,
+        sml:PublicHolidaysGermanyAttributeNameNumberOfInvalidValues,
+        sml:PublicHolidaysGermanyAttributeNameNumberOfNullValues,
+        sml:PublicHolidaysGermanyAttributeNameNumberOfValidNonNullValues,
+        sml:PublicHolidaysGermanyAttributeNameNumberOfValidValues,
+        sml:PublicHolidaysGermanyAttributeNameNumberOfValues ;
+    seas:valueDistributionValue sml:PublicHolidaysGermanyAttributeNameValueDistributionValue0,
+        sml:PublicHolidaysGermanyAttributeNameValueDistributionValue1,
+        sml:PublicHolidaysGermanyAttributeNameValueDistributionValue2,
+        sml:PublicHolidaysGermanyAttributeNameValueDistributionValue3,
+        sml:PublicHolidaysGermanyAttributeNameValueDistributionValue4,
+        sml:PublicHolidaysGermanyAttributeNameValueDistributionValue5,
+        sml:PublicHolidaysGermanyAttributeNameValueDistributionValue6,
+        sml:PublicHolidaysGermanyAttributeNameValueDistributionValue7,
+        sml:PublicHolidaysGermanyAttributeNameValueDistributionValue8,
+        sml:PublicHolidaysGermanyAttributeNameValueDistributionValue9 .
+
+sml:PublicHolidaysGermanyAttributeNameAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "0.8924731182795699"^^xsd:float .
+
+sml:PublicHolidaysGermanyAttributeNameAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "15.10752688172043"^^xsd:float .
+
+sml:PublicHolidaysGermanyAttributeNameAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "0.10752688172043011"^^xsd:float .
+
+sml:PublicHolidaysGermanyAttributeNameAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.16129032258064516"^^xsd:float .
+
+sml:PublicHolidaysGermanyAttributeNameAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "1.7688172043010753"^^xsd:float .
+
+sml:PublicHolidaysGermanyAttributeNameNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 21 .
+
+sml:PublicHolidaysGermanyAttributeNameNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:PublicHolidaysGermanyAttributeNameNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:PublicHolidaysGermanyAttributeNameNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 186 .
+
+sml:PublicHolidaysGermanyAttributeNameNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 186 .
+
+sml:PublicHolidaysGermanyAttributeNameNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 186 .
+
+sml:PublicHolidaysGermanyAttributeNameValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Neujahr" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeNameValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Fronleichnam" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeNameValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "2. Weihnachtstag" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeNameValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "1. Weihnachtstag" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeNameValueDistributionValue4 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Buß- und Bettag" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeNameValueDistributionValue5 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Allerheiligen" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeNameValueDistributionValue6 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Tag der Deutschen Einheit" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeNameValueDistributionValue7 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Heilige Drei Könige" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeNameValueDistributionValue8 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Mariä Himmelfahrt" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeNameValueDistributionValue9 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Pfingstmontag" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeStartTime a sml:Attribute ;
+    dct:identifier "start_time" ;
+    sml:columnIndex "1"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:PublicHolidaysGermany_time_1 ;
+    sml:mapsToProperty time:inXSDDateTime ;
+    sml:valueType xsd:dateTime ;
+    seas:evaluation sml:PublicHolidaysGermanyAttributeStartTimeDecile0,
+        sml:PublicHolidaysGermanyAttributeStartTimeDecile1,
+        sml:PublicHolidaysGermanyAttributeStartTimeDecile10,
+        sml:PublicHolidaysGermanyAttributeStartTimeDecile2,
+        sml:PublicHolidaysGermanyAttributeStartTimeDecile3,
+        sml:PublicHolidaysGermanyAttributeStartTimeDecile4,
+        sml:PublicHolidaysGermanyAttributeStartTimeDecile5,
+        sml:PublicHolidaysGermanyAttributeStartTimeDecile6,
+        sml:PublicHolidaysGermanyAttributeStartTimeDecile7,
+        sml:PublicHolidaysGermanyAttributeStartTimeDecile8,
+        sml:PublicHolidaysGermanyAttributeStartTimeDecile9,
+        sml:PublicHolidaysGermanyAttributeStartTimeHistogram0,
+        sml:PublicHolidaysGermanyAttributeStartTimeHistogram1,
+        sml:PublicHolidaysGermanyAttributeStartTimeHistogram2,
+        sml:PublicHolidaysGermanyAttributeStartTimeHistogram3,
+        sml:PublicHolidaysGermanyAttributeStartTimeHistogram4,
+        sml:PublicHolidaysGermanyAttributeStartTimeHistogram5,
+        sml:PublicHolidaysGermanyAttributeStartTimeHistogram6,
+        sml:PublicHolidaysGermanyAttributeStartTimeHistogram7,
+        sml:PublicHolidaysGermanyAttributeStartTimeHistogram8,
+        sml:PublicHolidaysGermanyAttributeStartTimeHistogram9,
+        sml:PublicHolidaysGermanyAttributeStartTimeMaximum,
+        sml:PublicHolidaysGermanyAttributeStartTimeMean,
+        sml:PublicHolidaysGermanyAttributeStartTimeMedian,
+        sml:PublicHolidaysGermanyAttributeStartTimeMinimum,
+        sml:PublicHolidaysGermanyAttributeStartTimeNumberOfDistinctValues,
+        sml:PublicHolidaysGermanyAttributeStartTimeNumberOfInvalidValues,
+        sml:PublicHolidaysGermanyAttributeStartTimeNumberOfNullValues,
+        sml:PublicHolidaysGermanyAttributeStartTimeNumberOfValidNonNullValues,
+        sml:PublicHolidaysGermanyAttributeStartTimeNumberOfValidValues,
+        sml:PublicHolidaysGermanyAttributeStartTimeNumberOfValues,
+        sml:PublicHolidaysGermanyAttributeStartTimeQuartile0,
+        sml:PublicHolidaysGermanyAttributeStartTimeQuartile1,
+        sml:PublicHolidaysGermanyAttributeStartTimeQuartile2,
+        sml:PublicHolidaysGermanyAttributeStartTimeQuartile3,
+        sml:PublicHolidaysGermanyAttributeStartTimeQuartile4 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2013-12-31T23:00:00"^^xsd:dateTime ;
+    seas:rank 0 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2015-02-18T10:30:00"^^xsd:dateTime ;
+    seas:rank 1 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2023-12-25T23:00:00"^^xsd:dateTime ;
+    seas:rank 10 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2016-03-26T23:00:00"^^xsd:dateTime ;
+    seas:rank 2 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-05-12T22:00:00"^^xsd:dateTime ;
+    seas:rank 3 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2018-05-19T22:00:00"^^xsd:dateTime ;
+    seas:rank 4 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2019-06-03T22:00:00"^^xsd:dateTime ;
+    seas:rank 5 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2020-04-30T22:00:00"^^xsd:dateTime ;
+    seas:rank 6 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2021-04-02T22:00:00"^^xsd:dateTime ;
+    seas:rank 7 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2022-03-07T23:00:00"^^xsd:dateTime ;
+    seas:rank 8 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2023-01-03T11:00:00"^^xsd:dateTime ;
+    seas:rank 9 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2014-12-31T13:24:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2013-12-31T23:00:00"^^xsd:dateTime ;
+    sml:instancesInBucket "17"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeStartTimeHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2015-12-31T03:48:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2014-12-31T13:24:00"^^xsd:dateTime ;
+    sml:instancesInBucket "17"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeStartTimeHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2016-12-29T18:12:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2015-12-31T03:48:00"^^xsd:dateTime ;
+    sml:instancesInBucket "16"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeStartTimeHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-12-29T08:36:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2016-12-29T18:12:00"^^xsd:dateTime ;
+    sml:instancesInBucket "17"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeStartTimeHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-12-28T23:00:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-12-29T08:36:00"^^xsd:dateTime ;
+    sml:instancesInBucket "18"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeStartTimeHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2019-12-28T13:24:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-12-28T23:00:00"^^xsd:dateTime ;
+    sml:instancesInBucket "20"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeStartTimeHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2020-12-27T03:48:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2019-12-28T13:24:00"^^xsd:dateTime ;
+    sml:instancesInBucket "21"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeStartTimeHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2021-12-26T18:12:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2020-12-27T03:48:00"^^xsd:dateTime ;
+    sml:instancesInBucket "20"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeStartTimeHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2022-12-26T08:36:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2021-12-26T18:12:00"^^xsd:dateTime ;
+    sml:instancesInBucket "20"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeStartTimeHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2023-12-25T23:00:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2022-12-26T08:36:00"^^xsd:dateTime ;
+    sml:instancesInBucket "20"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeStartTimeMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "2023-12-25T23:00:00"^^xsd:dateTime .
+
+sml:PublicHolidaysGermanyAttributeStartTimeMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "2019-03-25T02:08:42.580645084"^^xsd:dateTime .
+
+sml:PublicHolidaysGermanyAttributeStartTimeMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "2019-06-03T22:00:00"^^xsd:dateTime .
+
+sml:PublicHolidaysGermanyAttributeStartTimeMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "2013-12-31T23:00:00"^^xsd:dateTime .
+
+sml:PublicHolidaysGermanyAttributeStartTimeNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 186 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 186 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 186 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 186 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2013-12-31T23:00:00"^^xsd:dateTime ;
+    seas:rank 0 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2016-11-04T17:00:00"^^xsd:dateTime ;
+    seas:rank 1 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2019-06-03T22:00:00"^^xsd:dateTime ;
+    seas:rank 2 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2021-09-10T22:00:00"^^xsd:dateTime ;
+    seas:rank 3 .
+
+sml:PublicHolidaysGermanyAttributeStartTimeQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2023-12-25T23:00:00"^^xsd:dateTime ;
+    seas:rank 4 .
+
+sml:PublicHolidaysGermanyFile a sml:TextFile ;
+    dct:format "text/comma-separated-values" ;
+    csvw:header false ;
+    csvw:null "" ;
+    csvw:separator "," ;
+    sml:fileLocation "PublicHolidaysGermany.csv" .
+
+sml:PublicHolidaysGermanySample a sml:DatasetSample ;
+    csvw:separator "	" ;
+    sml:hasHeader sml:PublicHolidaysGermanySampleHeader ;
+    sml:hasLine sml:PublicHolidaysGermanySampleLine0,
+        sml:PublicHolidaysGermanySampleLine1,
+        sml:PublicHolidaysGermanySampleLine2,
+        sml:PublicHolidaysGermanySampleLine3,
+        sml:PublicHolidaysGermanySampleLine4,
+        sml:PublicHolidaysGermanySampleLine5,
+        sml:PublicHolidaysGermanySampleLine6,
+        sml:PublicHolidaysGermanySampleLine7,
+        sml:PublicHolidaysGermanySampleLine8,
+        sml:PublicHolidaysGermanySampleLine9 .
+
+sml:PublicHolidaysGermanySampleHeader a sml:DatasetSampleLine ;
+    sml:hasContent "public holidays (label)	Date-Time description (in XSD Date-Time)	Date-Time description (in XSD Date-Time)"^^xsd:string .
+
+sml:PublicHolidaysGermanySampleLine0 a sml:DatasetSampleLine ;
+    sml:hasContent "Neujahr	2014-01-01	2014-01-02"^^xsd:string ;
+    sml:rank 0 .
+
+sml:PublicHolidaysGermanySampleLine1 a sml:DatasetSampleLine ;
+    sml:hasContent "Heilige Drei Könige	2014-01-06	2014-01-07"^^xsd:string ;
+    sml:rank 1 .
+
+sml:PublicHolidaysGermanySampleLine2 a sml:DatasetSampleLine ;
+    sml:hasContent "Karfreitag	2014-04-18	2014-04-19"^^xsd:string ;
+    sml:rank 2 .
+
+sml:PublicHolidaysGermanySampleLine3 a sml:DatasetSampleLine ;
+    sml:hasContent "Ostersonntag	2014-04-20	2014-04-21"^^xsd:string ;
+    sml:rank 3 .
+
+sml:PublicHolidaysGermanySampleLine4 a sml:DatasetSampleLine ;
+    sml:hasContent "Ostermontag	2014-04-21	2014-04-22"^^xsd:string ;
+    sml:rank 4 .
+
+sml:PublicHolidaysGermanySampleLine5 a sml:DatasetSampleLine ;
+    sml:hasContent "Tag der Arbeit	2014-05-01	2014-05-02"^^xsd:string ;
+    sml:rank 5 .
+
+sml:PublicHolidaysGermanySampleLine6 a sml:DatasetSampleLine ;
+    sml:hasContent "Christi Himmelfahrt	2014-05-29	2014-05-30"^^xsd:string ;
+    sml:rank 6 .
+
+sml:PublicHolidaysGermanySampleLine7 a sml:DatasetSampleLine ;
+    sml:hasContent "Pfingstsonntag	2014-06-08	2014-06-09"^^xsd:string ;
+    sml:rank 7 .
+
+sml:PublicHolidaysGermanySampleLine8 a sml:DatasetSampleLine ;
+    sml:hasContent "Pfingstmontag	2014-06-09	2014-06-10"^^xsd:string ;
+    sml:rank 8 .
+
+sml:PublicHolidaysGermanySampleLine9 a sml:DatasetSampleLine ;
+    sml:hasContent "Fronleichnam	2014-06-19	2014-06-20"^^xsd:string ;
+    sml:rank 9 .
+
+<https://simple-ml.de/resource/PublicHolidaysGermany_sml_mobility/Holiday> a sml:ClassInstance ;
+    time:hasBeginning sml:PublicHolidaysGermany_time_1 ;
+    time:hasEnd sml:PublicHolidaysGermany_time_2 ;
+    sml:mapsTo sml-mob:Holiday .
+
+sml:PublicHolidaysGermany_time_1 a sml:ClassInstance ;
+    sml:classInstance 1 ;
+    sml:mapsTo time:DateTimeDescription .
+
+sml:PublicHolidaysGermany_time_2 a sml:ClassInstance ;
+    sml:classInstance 2 ;
+    sml:mapsTo time:DateTimeDescription .
+

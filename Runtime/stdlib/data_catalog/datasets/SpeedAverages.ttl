@@ -1,0 +1,1843 @@
+@prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix seas: <https://w3id.org/seas/> .
+@prefix sml: <https://simple-ml.de/resource/> .
+@prefix sml-mob: <https://simple-ml.de/resource/mobility/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sml:simple-ml dcat:dataset sml:SpeedAverages .
+
+sml:SpeedAverages a dcat:Dataset ;
+    dct:description "Durchschnittsgeschwindigkeit auf niedersächsischen Straßen in einem halbstündigen Intervall."@de,
+        "Average speeds on streets in Niedersachsen in a half-hourly interval."@en ;
+    dct:identifier "SpeedAverages" ;
+    dct:subject "Verkehr"@de,
+        "Traffic"@en ;
+    dct:title "Durchschnittsgeschwindigkeit auf niedersächsischen Straßen"@de,
+        "Average speed per road in Niedersachsen"@en ;
+    sml:coordinateSystem "3857"^^xsd:nonNegativeInteger ;
+    sml:creatorId "0"^^xsd:nonNegativeInteger ;
+    sml:hasAttribute sml:SpeedAveragesAttributeAverageSpeed,
+        sml:SpeedAveragesAttributeDayType,
+        sml:SpeedAveragesAttributeDaylight,
+        sml:SpeedAveragesAttributeEndTime,
+        sml:SpeedAveragesAttributeGeometry,
+        sml:SpeedAveragesAttributeIsWeekend,
+        sml:SpeedAveragesAttributeMaxSpeed,
+        sml:SpeedAveragesAttributeNumberOfDrivers,
+        sml:SpeedAveragesAttributeNumberOfRecords,
+        sml:SpeedAveragesAttributeOsmId,
+        sml:SpeedAveragesAttributeSeason,
+        sml:SpeedAveragesAttributeStartTime,
+        sml:SpeedAveragesAttributeStreetType ;
+    sml:hasFile sml:SpeedAveragesFile ;
+    sml:hasSample sml:SpeedAveragesSample ;
+    sml:numberOfInstances "1000"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeAverageSpeed a sml:Attribute ;
+    dct:identifier "average_speed" ;
+    sml:columnIndex "7"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/SpeedAverages_sml_mobility/TrafficFlow> ;
+    sml:mapsToProperty sml-mob:averageSpeed ;
+    sml:valueType xsd:double ;
+    seas:evaluation sml:SpeedAveragesAttributeAverageSpeedAverageNumberOfDigits,
+        sml:SpeedAveragesAttributeAverageSpeedDecile0,
+        sml:SpeedAveragesAttributeAverageSpeedDecile1,
+        sml:SpeedAveragesAttributeAverageSpeedDecile10,
+        sml:SpeedAveragesAttributeAverageSpeedDecile2,
+        sml:SpeedAveragesAttributeAverageSpeedDecile3,
+        sml:SpeedAveragesAttributeAverageSpeedDecile4,
+        sml:SpeedAveragesAttributeAverageSpeedDecile5,
+        sml:SpeedAveragesAttributeAverageSpeedDecile6,
+        sml:SpeedAveragesAttributeAverageSpeedDecile7,
+        sml:SpeedAveragesAttributeAverageSpeedDecile8,
+        sml:SpeedAveragesAttributeAverageSpeedDecile9,
+        sml:SpeedAveragesAttributeAverageSpeedHistogram0,
+        sml:SpeedAveragesAttributeAverageSpeedHistogram1,
+        sml:SpeedAveragesAttributeAverageSpeedHistogram2,
+        sml:SpeedAveragesAttributeAverageSpeedHistogram3,
+        sml:SpeedAveragesAttributeAverageSpeedHistogram4,
+        sml:SpeedAveragesAttributeAverageSpeedHistogram5,
+        sml:SpeedAveragesAttributeAverageSpeedHistogram6,
+        sml:SpeedAveragesAttributeAverageSpeedHistogram7,
+        sml:SpeedAveragesAttributeAverageSpeedHistogram8,
+        sml:SpeedAveragesAttributeAverageSpeedHistogram9,
+        sml:SpeedAveragesAttributeAverageSpeedMaximum,
+        sml:SpeedAveragesAttributeAverageSpeedMean,
+        sml:SpeedAveragesAttributeAverageSpeedMedian,
+        sml:SpeedAveragesAttributeAverageSpeedMinimum,
+        sml:SpeedAveragesAttributeAverageSpeedNumberOfDistinctValues,
+        sml:SpeedAveragesAttributeAverageSpeedNumberOfInvalidValues,
+        sml:SpeedAveragesAttributeAverageSpeedNumberOfNullValues,
+        sml:SpeedAveragesAttributeAverageSpeedNumberOfValidNonNullValues,
+        sml:SpeedAveragesAttributeAverageSpeedNumberOfValidValues,
+        sml:SpeedAveragesAttributeAverageSpeedNumberOfValues,
+        sml:SpeedAveragesAttributeAverageSpeedQuartile0,
+        sml:SpeedAveragesAttributeAverageSpeedQuartile1,
+        sml:SpeedAveragesAttributeAverageSpeedQuartile2,
+        sml:SpeedAveragesAttributeAverageSpeedQuartile3,
+        sml:SpeedAveragesAttributeAverageSpeedQuartile4,
+        sml:SpeedAveragesAttributeAverageSpeedStandardDeviation .
+
+sml:SpeedAveragesAttributeAverageSpeedAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "12.604049493813273"^^xsd:float .
+
+sml:SpeedAveragesAttributeAverageSpeedDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "7.980392156862741"^^xsd:float ;
+    seas:rank 0 .
+
+sml:SpeedAveragesAttributeAverageSpeedDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "68.52666666666666"^^xsd:float ;
+    seas:rank 1 .
+
+sml:SpeedAveragesAttributeAverageSpeedDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "193.0"^^xsd:float ;
+    seas:rank 10 .
+
+sml:SpeedAveragesAttributeAverageSpeedDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "80.80588235294118"^^xsd:float ;
+    seas:rank 2 .
+
+sml:SpeedAveragesAttributeAverageSpeedDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "85.36999999999999"^^xsd:float ;
+    seas:rank 3 .
+
+sml:SpeedAveragesAttributeAverageSpeedDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "87.80666666666669"^^xsd:float ;
+    seas:rank 4 .
+
+sml:SpeedAveragesAttributeAverageSpeedDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "90.72580645161288"^^xsd:float ;
+    seas:rank 5 .
+
+sml:SpeedAveragesAttributeAverageSpeedDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "95.12509652509654"^^xsd:float ;
+    seas:rank 6 .
+
+sml:SpeedAveragesAttributeAverageSpeedDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "99.0"^^xsd:float ;
+    seas:rank 7 .
+
+sml:SpeedAveragesAttributeAverageSpeedDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "107.24411764705891"^^xsd:float ;
+    seas:rank 8 .
+
+sml:SpeedAveragesAttributeAverageSpeedDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "116.025"^^xsd:float ;
+    seas:rank 9 .
+
+sml:SpeedAveragesAttributeAverageSpeedHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "26.48235294117647"^^xsd:float ;
+    sml:bucketMinimum "7.980392156862741"^^xsd:float ;
+    sml:instancesInBucket "17"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeAverageSpeedHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "44.984313725490196"^^xsd:float ;
+    sml:bucketMinimum "26.48235294117647"^^xsd:float ;
+    sml:instancesInBucket "17"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeAverageSpeedHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "63.48627450980393"^^xsd:float ;
+    sml:bucketMinimum "44.984313725490196"^^xsd:float ;
+    sml:instancesInBucket "36"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeAverageSpeedHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "81.98823529411764"^^xsd:float ;
+    sml:bucketMinimum "63.48627450980393"^^xsd:float ;
+    sml:instancesInBucket "122"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeAverageSpeedHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "100.49019607843137"^^xsd:float ;
+    sml:bucketMinimum "81.98823529411764"^^xsd:float ;
+    sml:instancesInBucket "445"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeAverageSpeedHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "118.9921568627451"^^xsd:float ;
+    sml:bucketMinimum "100.49019607843137"^^xsd:float ;
+    sml:instancesInBucket "178"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeAverageSpeedHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "137.49411764705883"^^xsd:float ;
+    sml:bucketMinimum "118.9921568627451"^^xsd:float ;
+    sml:instancesInBucket "58"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeAverageSpeedHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "155.99607843137255"^^xsd:float ;
+    sml:bucketMinimum "137.49411764705883"^^xsd:float ;
+    sml:instancesInBucket "9"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeAverageSpeedHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "174.49803921568628"^^xsd:float ;
+    sml:bucketMinimum "155.99607843137255"^^xsd:float ;
+    sml:instancesInBucket "4"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeAverageSpeedHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "193.0"^^xsd:float ;
+    sml:bucketMinimum "174.49803921568628"^^xsd:float ;
+    sml:instancesInBucket "3"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeAverageSpeedMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "193.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeAverageSpeedMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "91.57836115940798"^^xsd:float .
+
+sml:SpeedAveragesAttributeAverageSpeedMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "90.72580645161288"^^xsd:float .
+
+sml:SpeedAveragesAttributeAverageSpeedMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "7.980392156862741"^^xsd:float .
+
+sml:SpeedAveragesAttributeAverageSpeedNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 814 .
+
+sml:SpeedAveragesAttributeAverageSpeedNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 111 .
+
+sml:SpeedAveragesAttributeAverageSpeedNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 111 .
+
+sml:SpeedAveragesAttributeAverageSpeedNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 889 .
+
+sml:SpeedAveragesAttributeAverageSpeedNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeAverageSpeedNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeAverageSpeedQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "7.980392156862741"^^xsd:float ;
+    seas:rank 0 .
+
+sml:SpeedAveragesAttributeAverageSpeedQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "83.6875"^^xsd:float ;
+    seas:rank 1 .
+
+sml:SpeedAveragesAttributeAverageSpeedQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "90.72580645161288"^^xsd:float ;
+    seas:rank 2 .
+
+sml:SpeedAveragesAttributeAverageSpeedQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "102.74468085106382"^^xsd:float ;
+    seas:rank 3 .
+
+sml:SpeedAveragesAttributeAverageSpeedQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "193.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:SpeedAveragesAttributeAverageSpeedStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "22.631980652155217"^^xsd:float .
+
+sml:SpeedAveragesAttributeDayType a sml:Attribute ;
+    dct:identifier "day_type" ;
+    sml:columnIndex "11"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:SpeedAverages_time_DayOfWeek ;
+    sml:mapsToProperty rdfs:label ;
+    sml:valueType rdfs:Literal ;
+    seas:evaluation sml:SpeedAveragesAttributeDayTypeAverageNumberOfCapitalisedValues,
+        sml:SpeedAveragesAttributeDayTypeAverageNumberOfCharacters,
+        sml:SpeedAveragesAttributeDayTypeAverageNumberOfDigits,
+        sml:SpeedAveragesAttributeDayTypeAverageNumberOfSpecialCharacters,
+        sml:SpeedAveragesAttributeDayTypeAverageNumberOfTokens,
+        sml:SpeedAveragesAttributeDayTypeNumberOfDistinctValues,
+        sml:SpeedAveragesAttributeDayTypeNumberOfInvalidValues,
+        sml:SpeedAveragesAttributeDayTypeNumberOfNullValues,
+        sml:SpeedAveragesAttributeDayTypeNumberOfValidNonNullValues,
+        sml:SpeedAveragesAttributeDayTypeNumberOfValidValues,
+        sml:SpeedAveragesAttributeDayTypeNumberOfValues ;
+    seas:valueDistributionValue sml:SpeedAveragesAttributeDayTypeValueDistributionValue0,
+        sml:SpeedAveragesAttributeDayTypeValueDistributionValue1,
+        sml:SpeedAveragesAttributeDayTypeValueDistributionValue2,
+        sml:SpeedAveragesAttributeDayTypeValueDistributionValue3,
+        sml:SpeedAveragesAttributeDayTypeValueDistributionValue4,
+        sml:SpeedAveragesAttributeDayTypeValueDistributionValue5,
+        sml:SpeedAveragesAttributeDayTypeValueDistributionValue6 .
+
+sml:SpeedAveragesAttributeDayTypeAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeDayTypeAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "3.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeDayTypeAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeDayTypeAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeDayTypeAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeDayTypeNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 7 .
+
+sml:SpeedAveragesAttributeDayTypeNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeDayTypeNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeDayTypeNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeDayTypeNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeDayTypeNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeDayTypeValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Sat" ;
+    sml:numberOfInstancesOfValue "169"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeDayTypeValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Wed" ;
+    sml:numberOfInstancesOfValue "150"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeDayTypeValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Fri" ;
+    sml:numberOfInstancesOfValue "141"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeDayTypeValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Tue" ;
+    sml:numberOfInstancesOfValue "139"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeDayTypeValueDistributionValue4 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Thu" ;
+    sml:numberOfInstancesOfValue "137"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeDayTypeValueDistributionValue5 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Mon" ;
+    sml:numberOfInstancesOfValue "132"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeDayTypeValueDistributionValue6 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Sun" ;
+    sml:numberOfInstancesOfValue "132"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeDaylight a sml:Attribute ;
+    dct:identifier "daylight" ;
+    sml:columnIndex "9"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/SpeedAverages_sml_mobility/WeatherRecord> ;
+    sml:mapsToProperty sml-mob:hasDaylight ;
+    sml:valueType xsd:string ;
+    seas:evaluation sml:SpeedAveragesAttributeDaylightAverageNumberOfCapitalisedValues,
+        sml:SpeedAveragesAttributeDaylightAverageNumberOfCharacters,
+        sml:SpeedAveragesAttributeDaylightAverageNumberOfDigits,
+        sml:SpeedAveragesAttributeDaylightAverageNumberOfSpecialCharacters,
+        sml:SpeedAveragesAttributeDaylightAverageNumberOfTokens,
+        sml:SpeedAveragesAttributeDaylightNumberOfDistinctValues,
+        sml:SpeedAveragesAttributeDaylightNumberOfInvalidValues,
+        sml:SpeedAveragesAttributeDaylightNumberOfNullValues,
+        sml:SpeedAveragesAttributeDaylightNumberOfValidNonNullValues,
+        sml:SpeedAveragesAttributeDaylightNumberOfValidValues,
+        sml:SpeedAveragesAttributeDaylightNumberOfValues ;
+    seas:valueDistributionValue sml:SpeedAveragesAttributeDaylightValueDistributionValue0,
+        sml:SpeedAveragesAttributeDaylightValueDistributionValue1,
+        sml:SpeedAveragesAttributeDaylightValueDistributionValue2,
+        sml:SpeedAveragesAttributeDaylightValueDistributionValue3 .
+
+sml:SpeedAveragesAttributeDaylightAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "0.922"^^xsd:float .
+
+sml:SpeedAveragesAttributeDaylightAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "5.944"^^xsd:float .
+
+sml:SpeedAveragesAttributeDaylightAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeDaylightAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeDaylightAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeDaylightNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 4 .
+
+sml:SpeedAveragesAttributeDaylightNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeDaylightNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeDaylightNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeDaylightNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeDaylightNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeDaylightValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Dark" ;
+    sml:numberOfInstancesOfValue "513"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeDaylightValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Daylight" ;
+    sml:numberOfInstancesOfValue "408"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeDaylightValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "twilight" ;
+    sml:numberOfInstancesOfValue "78"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeDaylightValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "DARK" ;
+    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeEndTime a sml:Attribute ;
+    dct:identifier "end_time" ;
+    sml:columnIndex "4"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:SpeedAverages_time_2 ;
+    sml:mapsToProperty time:inXSDDateTime ;
+    sml:valueType xsd:dateTime ;
+    seas:evaluation sml:SpeedAveragesAttributeEndTimeDecile0,
+        sml:SpeedAveragesAttributeEndTimeDecile1,
+        sml:SpeedAveragesAttributeEndTimeDecile10,
+        sml:SpeedAveragesAttributeEndTimeDecile2,
+        sml:SpeedAveragesAttributeEndTimeDecile3,
+        sml:SpeedAveragesAttributeEndTimeDecile4,
+        sml:SpeedAveragesAttributeEndTimeDecile5,
+        sml:SpeedAveragesAttributeEndTimeDecile6,
+        sml:SpeedAveragesAttributeEndTimeDecile7,
+        sml:SpeedAveragesAttributeEndTimeDecile8,
+        sml:SpeedAveragesAttributeEndTimeDecile9,
+        sml:SpeedAveragesAttributeEndTimeHistogram0,
+        sml:SpeedAveragesAttributeEndTimeHistogram1,
+        sml:SpeedAveragesAttributeEndTimeHistogram2,
+        sml:SpeedAveragesAttributeEndTimeHistogram3,
+        sml:SpeedAveragesAttributeEndTimeHistogram4,
+        sml:SpeedAveragesAttributeEndTimeHistogram5,
+        sml:SpeedAveragesAttributeEndTimeHistogram6,
+        sml:SpeedAveragesAttributeEndTimeHistogram7,
+        sml:SpeedAveragesAttributeEndTimeHistogram8,
+        sml:SpeedAveragesAttributeEndTimeHistogram9,
+        sml:SpeedAveragesAttributeEndTimeMaximum,
+        sml:SpeedAveragesAttributeEndTimeMean,
+        sml:SpeedAveragesAttributeEndTimeMedian,
+        sml:SpeedAveragesAttributeEndTimeMinimum,
+        sml:SpeedAveragesAttributeEndTimeNumberOfDistinctValues,
+        sml:SpeedAveragesAttributeEndTimeNumberOfInvalidValues,
+        sml:SpeedAveragesAttributeEndTimeNumberOfNullValues,
+        sml:SpeedAveragesAttributeEndTimeNumberOfValidNonNullValues,
+        sml:SpeedAveragesAttributeEndTimeNumberOfValidValues,
+        sml:SpeedAveragesAttributeEndTimeNumberOfValues,
+        sml:SpeedAveragesAttributeEndTimeQuartile0,
+        sml:SpeedAveragesAttributeEndTimeQuartile1,
+        sml:SpeedAveragesAttributeEndTimeQuartile2,
+        sml:SpeedAveragesAttributeEndTimeQuartile3,
+        sml:SpeedAveragesAttributeEndTimeQuartile4 .
+
+sml:SpeedAveragesAttributeEndTimeDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-07-31T23:30:00"^^xsd:dateTime ;
+    seas:rank 0 .
+
+sml:SpeedAveragesAttributeEndTimeDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-08-14T12:57:00"^^xsd:dateTime ;
+    seas:rank 1 .
+
+sml:SpeedAveragesAttributeEndTimeDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-12-31T16:00:00"^^xsd:dateTime ;
+    seas:rank 10 .
+
+sml:SpeedAveragesAttributeEndTimeDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-08-27T23:00:00"^^xsd:dateTime ;
+    seas:rank 2 .
+
+sml:SpeedAveragesAttributeEndTimeDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-09-11T15:51:00"^^xsd:dateTime ;
+    seas:rank 3 .
+
+sml:SpeedAveragesAttributeEndTimeDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-09-28T12:06:00"^^xsd:dateTime ;
+    seas:rank 4 .
+
+sml:SpeedAveragesAttributeEndTimeDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-10-14T01:00:00"^^xsd:dateTime ;
+    seas:rank 5 .
+
+sml:SpeedAveragesAttributeEndTimeDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-11-01T00:42:00"^^xsd:dateTime ;
+    seas:rank 6 .
+
+sml:SpeedAveragesAttributeEndTimeDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-11-15T06:21:00"^^xsd:dateTime ;
+    seas:rank 7 .
+
+sml:SpeedAveragesAttributeEndTimeDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-11-29T16:42:00"^^xsd:dateTime ;
+    seas:rank 8 .
+
+sml:SpeedAveragesAttributeEndTimeDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-12-16T04:33:00"^^xsd:dateTime ;
+    seas:rank 9 .
+
+sml:SpeedAveragesAttributeEndTimeHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-08-16T05:57:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-07-31T23:30:00"^^xsd:dateTime ;
+    sml:instancesInBucket "109"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeEndTimeHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-08-31T12:24:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-08-16T05:57:00"^^xsd:dateTime ;
+    sml:instancesInBucket "119"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeEndTimeHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-09-15T18:51:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-08-31T12:24:00"^^xsd:dateTime ;
+    sml:instancesInBucket "89"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeEndTimeHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-10-01T01:18:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-09-15T18:51:00"^^xsd:dateTime ;
+    sml:instancesInBucket "106"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeEndTimeHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-10-16T07:45:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-10-01T01:18:00"^^xsd:dateTime ;
+    sml:instancesInBucket "92"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeEndTimeHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-10-31T14:12:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-10-16T07:45:00"^^xsd:dateTime ;
+    sml:instancesInBucket "82"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeEndTimeHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-11-15T20:39:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-10-31T14:12:00"^^xsd:dateTime ;
+    sml:instancesInBucket "106"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeEndTimeHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-12-01T03:06:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-11-15T20:39:00"^^xsd:dateTime ;
+    sml:instancesInBucket "110"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeEndTimeHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-12-16T09:33:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-12-01T03:06:00"^^xsd:dateTime ;
+    sml:instancesInBucket "90"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeEndTimeHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-12-31T16:00:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-12-16T09:33:00"^^xsd:dateTime ;
+    sml:instancesInBucket "97"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeEndTimeMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "2017-12-31T16:00:00"^^xsd:dateTime .
+
+sml:SpeedAveragesAttributeEndTimeMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "2017-10-14T13:41:07.799999952"^^xsd:dateTime .
+
+sml:SpeedAveragesAttributeEndTimeMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "2017-10-14T01:00:00"^^xsd:dateTime .
+
+sml:SpeedAveragesAttributeEndTimeMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "2017-07-31T23:30:00"^^xsd:dateTime .
+
+sml:SpeedAveragesAttributeEndTimeNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 924 .
+
+sml:SpeedAveragesAttributeEndTimeNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeEndTimeNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeEndTimeNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeEndTimeNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeEndTimeNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeEndTimeQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-07-31T23:30:00"^^xsd:dateTime ;
+    seas:rank 0 .
+
+sml:SpeedAveragesAttributeEndTimeQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-09-04T16:45:00"^^xsd:dateTime ;
+    seas:rank 1 .
+
+sml:SpeedAveragesAttributeEndTimeQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-10-14T01:00:00"^^xsd:dateTime ;
+    seas:rank 2 .
+
+sml:SpeedAveragesAttributeEndTimeQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-11-21T12:22:30"^^xsd:dateTime ;
+    seas:rank 3 .
+
+sml:SpeedAveragesAttributeEndTimeQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-12-31T16:00:00"^^xsd:dateTime ;
+    seas:rank 4 .
+
+sml:SpeedAveragesAttributeGeometry a sml:Attribute ;
+    dct:identifier "geometry" ;
+    sml:columnIndex "12"^^xsd:nonNegativeInteger ;
+    sml:hasSpatialDistribution sml:SpeedAveragesAttributeGeometrySpatialDistribution ;
+    sml:mapsToDomain <https://simple-ml.de/resource/SpeedAverages_sml_mobility/StreetSegment> ;
+    sml:mapsToProperty sml:asWKB ;
+    sml:valueType sml:wellKnownBinary ;
+    seas:evaluation sml:SpeedAveragesAttributeGeometryNumberOfInvalidValues,
+        sml:SpeedAveragesAttributeGeometryNumberOfNullValues,
+        sml:SpeedAveragesAttributeGeometryNumberOfValidNonNullValues,
+        sml:SpeedAveragesAttributeGeometryNumberOfValidValues,
+        sml:SpeedAveragesAttributeGeometryNumberOfValues .
+
+sml:SpeedAveragesAttributeGeometryNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeGeometryNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeGeometryNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeGeometryNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeGeometryNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistribution a sml:SpatialDistribution ;
+    sml:spatialDistributionValue sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi1,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi12,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi14,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi15,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi22,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi23,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi24,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi25,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi27,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi28,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi29,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi3,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi30,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi32,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi33,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi37,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi38,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi40,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi41,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi42,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi43,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi44,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi45,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi46,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi48,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi50,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi55,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi57,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi59,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi60,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi61,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi62,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi63,
+        sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi9 .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi1 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_1" ;
+    sml:numberOfInstancesInRegion "10"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi12 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_12" ;
+    sml:numberOfInstancesInRegion "48"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi14 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_14" ;
+    sml:numberOfInstancesInRegion "89"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi15 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_15" ;
+    sml:numberOfInstancesInRegion "8"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi22 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_22" ;
+    sml:numberOfInstancesInRegion "30"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi23 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_23" ;
+    sml:numberOfInstancesInRegion "33"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi24 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_24" ;
+    sml:numberOfInstancesInRegion "12"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi25 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_25" ;
+    sml:numberOfInstancesInRegion "35"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi27 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_27" ;
+    sml:numberOfInstancesInRegion "1"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi28 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_28" ;
+    sml:numberOfInstancesInRegion "9"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi29 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_29" ;
+    sml:numberOfInstancesInRegion "45"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi3 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_3" ;
+    sml:numberOfInstancesInRegion "31"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi30 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_30" ;
+    sml:numberOfInstancesInRegion "12"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi32 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_32" ;
+    sml:numberOfInstancesInRegion "48"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi33 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_33" ;
+    sml:numberOfInstancesInRegion "35"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi37 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_37" ;
+    sml:numberOfInstancesInRegion "6"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi38 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_38" ;
+    sml:numberOfInstancesInRegion "2"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi40 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_40" ;
+    sml:numberOfInstancesInRegion "29"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi41 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_41" ;
+    sml:numberOfInstancesInRegion "44"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi42 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_42" ;
+    sml:numberOfInstancesInRegion "21"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi43 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_43" ;
+    sml:numberOfInstancesInRegion "8"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi44 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_44" ;
+    sml:numberOfInstancesInRegion "17"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi45 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_45" ;
+    sml:numberOfInstancesInRegion "48"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi46 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_46" ;
+    sml:numberOfInstancesInRegion "22"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi48 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_48" ;
+    sml:numberOfInstancesInRegion "47"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi50 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_50" ;
+    sml:numberOfInstancesInRegion "1"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi55 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_55" ;
+    sml:numberOfInstancesInRegion "3"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi57 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_57" ;
+    sml:numberOfInstancesInRegion "1"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi59 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_59" ;
+    sml:numberOfInstancesInRegion "15"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi60 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_60" ;
+    sml:numberOfInstancesInRegion "141"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi61 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_61" ;
+    sml:numberOfInstancesInRegion "40"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi62 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_62" ;
+    sml:numberOfInstancesInRegion "6"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi63 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_63" ;
+    sml:numberOfInstancesInRegion "29"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi9 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_9" ;
+    sml:numberOfInstancesInRegion "5"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeIsWeekend a sml:Attribute ;
+    dct:identifier "is_weekend" ;
+    sml:columnIndex "10"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:SpeedAverages_time_1 ;
+    sml:mapsToProperty sml-mob:isWeekend ;
+    sml:valueType xsd:boolean ;
+    seas:evaluation sml:SpeedAveragesAttributeIsWeekendNumberOfInvalidValues,
+        sml:SpeedAveragesAttributeIsWeekendNumberOfNullValues,
+        sml:SpeedAveragesAttributeIsWeekendNumberOfValidNonNullValues,
+        sml:SpeedAveragesAttributeIsWeekendNumberOfValidValues,
+        sml:SpeedAveragesAttributeIsWeekendNumberOfValues ;
+    seas:valueDistributionValue sml:SpeedAveragesAttributeIsWeekendValueDistributionValue0,
+        sml:SpeedAveragesAttributeIsWeekendValueDistributionValue1 .
+
+sml:SpeedAveragesAttributeIsWeekendNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeIsWeekendNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeIsWeekendNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeIsWeekendNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeIsWeekendNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeIsWeekendValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue false ;
+    sml:numberOfInstancesOfValue "699"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeIsWeekendValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue true ;
+    sml:numberOfInstancesOfValue "301"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeMaxSpeed a sml:Attribute ;
+    dct:identifier "max_speed" ;
+    sml:columnIndex "2"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/SpeedAverages_sml_mobility/SpeedLimit> ;
+    sml:mapsToProperty sml-mob:speed ;
+    sml:valueType xsd:string ;
+    seas:evaluation sml:SpeedAveragesAttributeMaxSpeedAverageNumberOfCapitalisedValues,
+        sml:SpeedAveragesAttributeMaxSpeedAverageNumberOfCharacters,
+        sml:SpeedAveragesAttributeMaxSpeedAverageNumberOfDigits,
+        sml:SpeedAveragesAttributeMaxSpeedAverageNumberOfSpecialCharacters,
+        sml:SpeedAveragesAttributeMaxSpeedAverageNumberOfTokens,
+        sml:SpeedAveragesAttributeMaxSpeedNumberOfDistinctValues,
+        sml:SpeedAveragesAttributeMaxSpeedNumberOfInvalidValues,
+        sml:SpeedAveragesAttributeMaxSpeedNumberOfNullValues,
+        sml:SpeedAveragesAttributeMaxSpeedNumberOfValidNonNullValues,
+        sml:SpeedAveragesAttributeMaxSpeedNumberOfValidValues,
+        sml:SpeedAveragesAttributeMaxSpeedNumberOfValues ;
+    seas:valueDistributionValue sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue0,
+        sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue1,
+        sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue2,
+        sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue3,
+        sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue4,
+        sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue5,
+        sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue6,
+        sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue7,
+        sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue8,
+        sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue9 .
+
+sml:SpeedAveragesAttributeMaxSpeedAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "0.0021141649048625794"^^xsd:float .
+
+sml:SpeedAveragesAttributeMaxSpeedAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "3.995771670190275"^^xsd:float .
+
+sml:SpeedAveragesAttributeMaxSpeedAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "0.828752642706131"^^xsd:float .
+
+sml:SpeedAveragesAttributeMaxSpeedAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeMaxSpeedAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeMaxSpeedNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 12 .
+
+sml:SpeedAveragesAttributeMaxSpeedNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 54 .
+
+sml:SpeedAveragesAttributeMaxSpeedNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 54 .
+
+sml:SpeedAveragesAttributeMaxSpeedNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 946 .
+
+sml:SpeedAveragesAttributeMaxSpeedNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeMaxSpeedNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "none" ;
+    sml:numberOfInstancesOfValue "537"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "120" ;
+    sml:numberOfInstancesOfValue "127"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "signals" ;
+    sml:numberOfInstancesOfValue "120"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "100" ;
+    sml:numberOfInstancesOfValue "68"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue4 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "80" ;
+    sml:numberOfInstancesOfValue "36"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue5 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "130" ;
+    sml:numberOfInstancesOfValue "15"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue6 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "50" ;
+    sml:numberOfInstancesOfValue "14"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue7 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "60" ;
+    sml:numberOfInstancesOfValue "12"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue8 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "70" ;
+    sml:numberOfInstancesOfValue "12"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue9 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "40" ;
+    sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfDrivers a sml:Attribute ;
+    dct:identifier "number_of_drivers" ;
+    sml:columnIndex "6"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/SpeedAverages_sml_mobility/TrafficFlow> ;
+    sml:mapsToProperty sml-mob:numberOfVehicles ;
+    sml:valueType xsd:nonNegativeInteger ;
+    seas:evaluation sml:SpeedAveragesAttributeNumberOfDriversAverageNumberOfDigits,
+        sml:SpeedAveragesAttributeNumberOfDriversDecile0,
+        sml:SpeedAveragesAttributeNumberOfDriversDecile1,
+        sml:SpeedAveragesAttributeNumberOfDriversDecile2,
+        sml:SpeedAveragesAttributeNumberOfDriversDecile3,
+        sml:SpeedAveragesAttributeNumberOfDriversDecile4,
+        sml:SpeedAveragesAttributeNumberOfDriversDecile5,
+        sml:SpeedAveragesAttributeNumberOfDriversDecile6,
+        sml:SpeedAveragesAttributeNumberOfDriversDecile7,
+        sml:SpeedAveragesAttributeNumberOfDriversDecile8,
+        sml:SpeedAveragesAttributeNumberOfDriversDecile9,
+        sml:SpeedAveragesAttributeNumberOfDriversHistogram0,
+        sml:SpeedAveragesAttributeNumberOfDriversHistogram1,
+        sml:SpeedAveragesAttributeNumberOfDriversHistogram2,
+        sml:SpeedAveragesAttributeNumberOfDriversHistogram3,
+        sml:SpeedAveragesAttributeNumberOfDriversHistogram4,
+        sml:SpeedAveragesAttributeNumberOfDriversHistogram5,
+        sml:SpeedAveragesAttributeNumberOfDriversHistogram6,
+        sml:SpeedAveragesAttributeNumberOfDriversHistogram7,
+        sml:SpeedAveragesAttributeNumberOfDriversHistogram8,
+        sml:SpeedAveragesAttributeNumberOfDriversHistogram9,
+        sml:SpeedAveragesAttributeNumberOfDriversMaximum,
+        sml:SpeedAveragesAttributeNumberOfDriversMean,
+        sml:SpeedAveragesAttributeNumberOfDriversMedian,
+        sml:SpeedAveragesAttributeNumberOfDriversMinimum,
+        sml:SpeedAveragesAttributeNumberOfDriversNumberOfDistinctValues,
+        sml:SpeedAveragesAttributeNumberOfDriversNumberOfInvalidValues,
+        sml:SpeedAveragesAttributeNumberOfDriversNumberOfNullValues,
+        sml:SpeedAveragesAttributeNumberOfDriversNumberOfValidNonNullValues,
+        sml:SpeedAveragesAttributeNumberOfDriversNumberOfValidValues,
+        sml:SpeedAveragesAttributeNumberOfDriversNumberOfValues,
+        sml:SpeedAveragesAttributeNumberOfDriversQuartile0,
+        sml:SpeedAveragesAttributeNumberOfDriversQuartile1,
+        sml:SpeedAveragesAttributeNumberOfDriversQuartile2,
+        sml:SpeedAveragesAttributeNumberOfDriversQuartile3,
+        sml:SpeedAveragesAttributeNumberOfDriversQuartile4,
+        sml:SpeedAveragesAttributeNumberOfDriversStandardDeviation .
+
+sml:SpeedAveragesAttributeNumberOfDriversAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "1.4386951631046119"^^xsd:float .
+
+sml:SpeedAveragesAttributeNumberOfDriversDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:SpeedAveragesAttributeNumberOfDriversDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2.0"^^xsd:float ;
+    seas:rank 1 .
+
+sml:SpeedAveragesAttributeNumberOfDriversDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "4.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:SpeedAveragesAttributeNumberOfDriversDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "5.0"^^xsd:float ;
+    seas:rank 3 .
+
+sml:SpeedAveragesAttributeNumberOfDriversDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "7.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:SpeedAveragesAttributeNumberOfDriversDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "9.0"^^xsd:float ;
+    seas:rank 5 .
+
+sml:SpeedAveragesAttributeNumberOfDriversDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "12.0"^^xsd:float ;
+    seas:rank 6 .
+
+sml:SpeedAveragesAttributeNumberOfDriversDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "15.0"^^xsd:float ;
+    seas:rank 7 .
+
+sml:SpeedAveragesAttributeNumberOfDriversDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "19.0"^^xsd:float ;
+    seas:rank 8 .
+
+sml:SpeedAveragesAttributeNumberOfDriversDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "48.0"^^xsd:float ;
+    seas:rank 9 .
+
+sml:SpeedAveragesAttributeNumberOfDriversHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "4.8"^^xsd:float ;
+    sml:bucketMinimum "0.0"^^xsd:float ;
+    sml:instancesInBucket "346"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfDriversHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "9.6"^^xsd:float ;
+    sml:bucketMinimum "4.8"^^xsd:float ;
+    sml:instancesInBucket "264"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfDriversHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "14.399999999999999"^^xsd:float ;
+    sml:bucketMinimum "9.6"^^xsd:float ;
+    sml:instancesInBucket "187"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfDriversHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "19.2"^^xsd:float ;
+    sml:bucketMinimum "14.399999999999999"^^xsd:float ;
+    sml:instancesInBucket "114"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfDriversHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "24.0"^^xsd:float ;
+    sml:bucketMinimum "19.2"^^xsd:float ;
+    sml:instancesInBucket "45"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfDriversHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "28.799999999999997"^^xsd:float ;
+    sml:bucketMinimum "24.0"^^xsd:float ;
+    sml:instancesInBucket "25"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfDriversHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "33.6"^^xsd:float ;
+    sml:bucketMinimum "28.799999999999997"^^xsd:float ;
+    sml:instancesInBucket "10"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfDriversHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "38.4"^^xsd:float ;
+    sml:bucketMinimum "33.6"^^xsd:float ;
+    sml:instancesInBucket "6"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfDriversHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "43.199999999999996"^^xsd:float ;
+    sml:bucketMinimum "38.4"^^xsd:float ;
+    sml:instancesInBucket "2"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfDriversHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "48"^^xsd:float ;
+    sml:bucketMinimum "43.199999999999996"^^xsd:float ;
+    sml:instancesInBucket "1"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfDriversMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue 48 .
+
+sml:SpeedAveragesAttributeNumberOfDriversMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "8.788"^^xsd:float .
+
+sml:SpeedAveragesAttributeNumberOfDriversMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "7.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeNumberOfDriversMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeNumberOfDriversNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 39 .
+
+sml:SpeedAveragesAttributeNumberOfDriversNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeNumberOfDriversNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeNumberOfDriversNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeNumberOfDriversNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeNumberOfDriversNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeNumberOfDriversQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:SpeedAveragesAttributeNumberOfDriversQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "3.0"^^xsd:float ;
+    seas:rank 1 .
+
+sml:SpeedAveragesAttributeNumberOfDriversQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "7.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:SpeedAveragesAttributeNumberOfDriversQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "13.0"^^xsd:float ;
+    seas:rank 3 .
+
+sml:SpeedAveragesAttributeNumberOfDriversQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "48.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:SpeedAveragesAttributeNumberOfDriversStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "7.49848539928453"^^xsd:float .
+
+sml:SpeedAveragesAttributeNumberOfRecords a sml:Attribute ;
+    dct:identifier "number_of_records" ;
+    sml:columnIndex "5"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/SpeedAverages_sml_mobility/TrafficFlow> ;
+    sml:mapsToProperty sml-mob:numberOfRecords ;
+    sml:valueType xsd:nonNegativeInteger ;
+    seas:evaluation sml:SpeedAveragesAttributeNumberOfRecordsAverageNumberOfDigits,
+        sml:SpeedAveragesAttributeNumberOfRecordsDecile0,
+        sml:SpeedAveragesAttributeNumberOfRecordsDecile1,
+        sml:SpeedAveragesAttributeNumberOfRecordsDecile2,
+        sml:SpeedAveragesAttributeNumberOfRecordsDecile3,
+        sml:SpeedAveragesAttributeNumberOfRecordsDecile4,
+        sml:SpeedAveragesAttributeNumberOfRecordsDecile5,
+        sml:SpeedAveragesAttributeNumberOfRecordsDecile6,
+        sml:SpeedAveragesAttributeNumberOfRecordsDecile7,
+        sml:SpeedAveragesAttributeNumberOfRecordsDecile8,
+        sml:SpeedAveragesAttributeNumberOfRecordsDecile9,
+        sml:SpeedAveragesAttributeNumberOfRecordsHistogram0,
+        sml:SpeedAveragesAttributeNumberOfRecordsHistogram1,
+        sml:SpeedAveragesAttributeNumberOfRecordsHistogram2,
+        sml:SpeedAveragesAttributeNumberOfRecordsHistogram3,
+        sml:SpeedAveragesAttributeNumberOfRecordsHistogram4,
+        sml:SpeedAveragesAttributeNumberOfRecordsHistogram5,
+        sml:SpeedAveragesAttributeNumberOfRecordsHistogram6,
+        sml:SpeedAveragesAttributeNumberOfRecordsHistogram7,
+        sml:SpeedAveragesAttributeNumberOfRecordsHistogram8,
+        sml:SpeedAveragesAttributeNumberOfRecordsHistogram9,
+        sml:SpeedAveragesAttributeNumberOfRecordsMaximum,
+        sml:SpeedAveragesAttributeNumberOfRecordsMean,
+        sml:SpeedAveragesAttributeNumberOfRecordsMedian,
+        sml:SpeedAveragesAttributeNumberOfRecordsMinimum,
+        sml:SpeedAveragesAttributeNumberOfRecordsNumberOfDistinctValues,
+        sml:SpeedAveragesAttributeNumberOfRecordsNumberOfInvalidValues,
+        sml:SpeedAveragesAttributeNumberOfRecordsNumberOfNullValues,
+        sml:SpeedAveragesAttributeNumberOfRecordsNumberOfValidNonNullValues,
+        sml:SpeedAveragesAttributeNumberOfRecordsNumberOfValidValues,
+        sml:SpeedAveragesAttributeNumberOfRecordsNumberOfValues,
+        sml:SpeedAveragesAttributeNumberOfRecordsQuartile0,
+        sml:SpeedAveragesAttributeNumberOfRecordsQuartile1,
+        sml:SpeedAveragesAttributeNumberOfRecordsQuartile2,
+        sml:SpeedAveragesAttributeNumberOfRecordsQuartile3,
+        sml:SpeedAveragesAttributeNumberOfRecordsQuartile4,
+        sml:SpeedAveragesAttributeNumberOfRecordsStandardDeviation .
+
+sml:SpeedAveragesAttributeNumberOfRecordsAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "1.7255343082114736"^^xsd:float .
+
+sml:SpeedAveragesAttributeNumberOfRecordsDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "4.0"^^xsd:float ;
+    seas:rank 1 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "7.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "10.0"^^xsd:float ;
+    seas:rank 3 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "14.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "17.0"^^xsd:float ;
+    seas:rank 5 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "22.0"^^xsd:float ;
+    seas:rank 6 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "29.0"^^xsd:float ;
+    seas:rank 7 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "44.0"^^xsd:float ;
+    seas:rank 8 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "233.0"^^xsd:float ;
+    seas:rank 9 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "23.3"^^xsd:float ;
+    sml:bucketMinimum "0.0"^^xsd:float ;
+    sml:instancesInBucket "726"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfRecordsHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "46.6"^^xsd:float ;
+    sml:bucketMinimum "23.3"^^xsd:float ;
+    sml:instancesInBucket "187"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfRecordsHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "69.9"^^xsd:float ;
+    sml:bucketMinimum "46.6"^^xsd:float ;
+    sml:instancesInBucket "44"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfRecordsHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "93.2"^^xsd:float ;
+    sml:bucketMinimum "69.9"^^xsd:float ;
+    sml:instancesInBucket "23"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfRecordsHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "116.5"^^xsd:float ;
+    sml:bucketMinimum "93.2"^^xsd:float ;
+    sml:instancesInBucket "5"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfRecordsHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "139.8"^^xsd:float ;
+    sml:bucketMinimum "116.5"^^xsd:float ;
+    sml:instancesInBucket "6"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfRecordsHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "163.1"^^xsd:float ;
+    sml:bucketMinimum "139.8"^^xsd:float ;
+    sml:instancesInBucket "7"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfRecordsHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "186.4"^^xsd:float ;
+    sml:bucketMinimum "163.1"^^xsd:float ;
+    sml:instancesInBucket "1"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfRecordsHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "209.70000000000002"^^xsd:float ;
+    sml:bucketMinimum "186.4"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfRecordsHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "233"^^xsd:float ;
+    sml:bucketMinimum "209.70000000000002"^^xsd:float ;
+    sml:instancesInBucket "1"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeNumberOfRecordsMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue 233 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "19.986"^^xsd:float .
+
+sml:SpeedAveragesAttributeNumberOfRecordsMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "14.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeNumberOfRecordsMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 98 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "6.0"^^xsd:float ;
+    seas:rank 1 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "14.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "25.0"^^xsd:float ;
+    seas:rank 3 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "233.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:SpeedAveragesAttributeNumberOfRecordsStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "24.099223567919708"^^xsd:float .
+
+sml:SpeedAveragesAttributeOsmId a sml:Attribute ;
+    dct:identifier "osm_id" ;
+    sml:columnIndex "0"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/SpeedAverages_sml_mobility/StreetSegment> ;
+    sml:mapsToProperty sml-mob:osmId ;
+    sml:valueType xsd:string ;
+    seas:evaluation sml:SpeedAveragesAttributeOsmIdAverageNumberOfCapitalisedValues,
+        sml:SpeedAveragesAttributeOsmIdAverageNumberOfCharacters,
+        sml:SpeedAveragesAttributeOsmIdAverageNumberOfDigits,
+        sml:SpeedAveragesAttributeOsmIdAverageNumberOfSpecialCharacters,
+        sml:SpeedAveragesAttributeOsmIdAverageNumberOfTokens,
+        sml:SpeedAveragesAttributeOsmIdNumberOfDistinctValues,
+        sml:SpeedAveragesAttributeOsmIdNumberOfInvalidValues,
+        sml:SpeedAveragesAttributeOsmIdNumberOfNullValues,
+        sml:SpeedAveragesAttributeOsmIdNumberOfValidNonNullValues,
+        sml:SpeedAveragesAttributeOsmIdNumberOfValidValues,
+        sml:SpeedAveragesAttributeOsmIdNumberOfValues ;
+    seas:valueDistributionValue sml:SpeedAveragesAttributeOsmIdValueDistributionValue0,
+        sml:SpeedAveragesAttributeOsmIdValueDistributionValue1,
+        sml:SpeedAveragesAttributeOsmIdValueDistributionValue2,
+        sml:SpeedAveragesAttributeOsmIdValueDistributionValue3,
+        sml:SpeedAveragesAttributeOsmIdValueDistributionValue4,
+        sml:SpeedAveragesAttributeOsmIdValueDistributionValue5,
+        sml:SpeedAveragesAttributeOsmIdValueDistributionValue6,
+        sml:SpeedAveragesAttributeOsmIdValueDistributionValue7,
+        sml:SpeedAveragesAttributeOsmIdValueDistributionValue8,
+        sml:SpeedAveragesAttributeOsmIdValueDistributionValue9 .
+
+sml:SpeedAveragesAttributeOsmIdAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeOsmIdAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "8.59"^^xsd:float .
+
+sml:SpeedAveragesAttributeOsmIdAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "8.59"^^xsd:float .
+
+sml:SpeedAveragesAttributeOsmIdAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeOsmIdAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeOsmIdNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 619 .
+
+sml:SpeedAveragesAttributeOsmIdNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeOsmIdNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeOsmIdNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeOsmIdNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeOsmIdNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeOsmIdValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "190346297" ;
+    sml:numberOfInstancesOfValue "5"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeOsmIdValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "346636957" ;
+    sml:numberOfInstancesOfValue "5"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeOsmIdValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "38088075" ;
+    sml:numberOfInstancesOfValue "5"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeOsmIdValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "333045117" ;
+    sml:numberOfInstancesOfValue "4"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeOsmIdValueDistributionValue4 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "331718855" ;
+    sml:numberOfInstancesOfValue "4"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeOsmIdValueDistributionValue5 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "195132044" ;
+    sml:numberOfInstancesOfValue "4"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeOsmIdValueDistributionValue6 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "703238927" ;
+    sml:numberOfInstancesOfValue "4"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeOsmIdValueDistributionValue7 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "331676985" ;
+    sml:numberOfInstancesOfValue "4"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeOsmIdValueDistributionValue8 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "4218485" ;
+    sml:numberOfInstancesOfValue "4"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeOsmIdValueDistributionValue9 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "295995809" ;
+    sml:numberOfInstancesOfValue "4"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeSeason a sml:Attribute ;
+    dct:identifier "season" ;
+    sml:columnIndex "8"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/SpeedAverages_sml_mobility/WeatherRecord> ;
+    sml:mapsToProperty sml-mob:hasSeason ;
+    sml:valueType xsd:string ;
+    seas:evaluation sml:SpeedAveragesAttributeSeasonAverageNumberOfCapitalisedValues,
+        sml:SpeedAveragesAttributeSeasonAverageNumberOfCharacters,
+        sml:SpeedAveragesAttributeSeasonAverageNumberOfDigits,
+        sml:SpeedAveragesAttributeSeasonAverageNumberOfSpecialCharacters,
+        sml:SpeedAveragesAttributeSeasonAverageNumberOfTokens,
+        sml:SpeedAveragesAttributeSeasonNumberOfDistinctValues,
+        sml:SpeedAveragesAttributeSeasonNumberOfInvalidValues,
+        sml:SpeedAveragesAttributeSeasonNumberOfNullValues,
+        sml:SpeedAveragesAttributeSeasonNumberOfValidNonNullValues,
+        sml:SpeedAveragesAttributeSeasonNumberOfValidValues,
+        sml:SpeedAveragesAttributeSeasonNumberOfValues ;
+    seas:valueDistributionValue sml:SpeedAveragesAttributeSeasonValueDistributionValue0,
+        sml:SpeedAveragesAttributeSeasonValueDistributionValue1,
+        sml:SpeedAveragesAttributeSeasonValueDistributionValue2 .
+
+sml:SpeedAveragesAttributeSeasonAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeSeasonAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "6.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeSeasonAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeSeasonAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeSeasonAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeSeasonNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 3 .
+
+sml:SpeedAveragesAttributeSeasonNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeSeasonNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeSeasonNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeSeasonNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeSeasonNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeSeasonValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "autumn" ;
+    sml:numberOfInstancesOfValue "582"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeSeasonValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "summer" ;
+    sml:numberOfInstancesOfValue "230"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeSeasonValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "winter" ;
+    sml:numberOfInstancesOfValue "188"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStartTime a sml:Attribute ;
+    dct:identifier "start_time" ;
+    sml:columnIndex "3"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:SpeedAverages_time_1 ;
+    sml:mapsToProperty time:inXSDDateTime ;
+    sml:valueType xsd:dateTime ;
+    seas:evaluation sml:SpeedAveragesAttributeStartTimeDecile0,
+        sml:SpeedAveragesAttributeStartTimeDecile1,
+        sml:SpeedAveragesAttributeStartTimeDecile10,
+        sml:SpeedAveragesAttributeStartTimeDecile2,
+        sml:SpeedAveragesAttributeStartTimeDecile3,
+        sml:SpeedAveragesAttributeStartTimeDecile4,
+        sml:SpeedAveragesAttributeStartTimeDecile5,
+        sml:SpeedAveragesAttributeStartTimeDecile6,
+        sml:SpeedAveragesAttributeStartTimeDecile7,
+        sml:SpeedAveragesAttributeStartTimeDecile8,
+        sml:SpeedAveragesAttributeStartTimeDecile9,
+        sml:SpeedAveragesAttributeStartTimeHistogram0,
+        sml:SpeedAveragesAttributeStartTimeHistogram1,
+        sml:SpeedAveragesAttributeStartTimeHistogram2,
+        sml:SpeedAveragesAttributeStartTimeHistogram3,
+        sml:SpeedAveragesAttributeStartTimeHistogram4,
+        sml:SpeedAveragesAttributeStartTimeHistogram5,
+        sml:SpeedAveragesAttributeStartTimeHistogram6,
+        sml:SpeedAveragesAttributeStartTimeHistogram7,
+        sml:SpeedAveragesAttributeStartTimeHistogram8,
+        sml:SpeedAveragesAttributeStartTimeHistogram9,
+        sml:SpeedAveragesAttributeStartTimeMaximum,
+        sml:SpeedAveragesAttributeStartTimeMean,
+        sml:SpeedAveragesAttributeStartTimeMedian,
+        sml:SpeedAveragesAttributeStartTimeMinimum,
+        sml:SpeedAveragesAttributeStartTimeNumberOfDistinctValues,
+        sml:SpeedAveragesAttributeStartTimeNumberOfInvalidValues,
+        sml:SpeedAveragesAttributeStartTimeNumberOfNullValues,
+        sml:SpeedAveragesAttributeStartTimeNumberOfValidNonNullValues,
+        sml:SpeedAveragesAttributeStartTimeNumberOfValidValues,
+        sml:SpeedAveragesAttributeStartTimeNumberOfValues,
+        sml:SpeedAveragesAttributeStartTimeQuartile0,
+        sml:SpeedAveragesAttributeStartTimeQuartile1,
+        sml:SpeedAveragesAttributeStartTimeQuartile2,
+        sml:SpeedAveragesAttributeStartTimeQuartile3,
+        sml:SpeedAveragesAttributeStartTimeQuartile4 .
+
+sml:SpeedAveragesAttributeStartTimeDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-07-31T23:00:00"^^xsd:dateTime ;
+    seas:rank 0 .
+
+sml:SpeedAveragesAttributeStartTimeDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-08-14T12:27:00"^^xsd:dateTime ;
+    seas:rank 1 .
+
+sml:SpeedAveragesAttributeStartTimeDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-12-31T15:30:00"^^xsd:dateTime ;
+    seas:rank 10 .
+
+sml:SpeedAveragesAttributeStartTimeDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-08-27T22:30:00"^^xsd:dateTime ;
+    seas:rank 2 .
+
+sml:SpeedAveragesAttributeStartTimeDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-09-11T15:21:00"^^xsd:dateTime ;
+    seas:rank 3 .
+
+sml:SpeedAveragesAttributeStartTimeDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-09-28T11:36:00"^^xsd:dateTime ;
+    seas:rank 4 .
+
+sml:SpeedAveragesAttributeStartTimeDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-10-14T00:30:00"^^xsd:dateTime ;
+    seas:rank 5 .
+
+sml:SpeedAveragesAttributeStartTimeDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-11-01T00:12:00"^^xsd:dateTime ;
+    seas:rank 6 .
+
+sml:SpeedAveragesAttributeStartTimeDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-11-15T05:51:00"^^xsd:dateTime ;
+    seas:rank 7 .
+
+sml:SpeedAveragesAttributeStartTimeDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-11-29T16:12:00"^^xsd:dateTime ;
+    seas:rank 8 .
+
+sml:SpeedAveragesAttributeStartTimeDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-12-16T04:03:00"^^xsd:dateTime ;
+    seas:rank 9 .
+
+sml:SpeedAveragesAttributeStartTimeHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-08-16T05:27:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-07-31T23:00:00"^^xsd:dateTime ;
+    sml:instancesInBucket "109"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStartTimeHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-08-31T11:54:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-08-16T05:27:00"^^xsd:dateTime ;
+    sml:instancesInBucket "119"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStartTimeHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-09-15T18:21:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-08-31T11:54:00"^^xsd:dateTime ;
+    sml:instancesInBucket "89"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStartTimeHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-10-01T00:48:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-09-15T18:21:00"^^xsd:dateTime ;
+    sml:instancesInBucket "106"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStartTimeHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-10-16T07:15:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-10-01T00:48:00"^^xsd:dateTime ;
+    sml:instancesInBucket "92"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStartTimeHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-10-31T13:42:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-10-16T07:15:00"^^xsd:dateTime ;
+    sml:instancesInBucket "82"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStartTimeHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-11-15T20:09:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-10-31T13:42:00"^^xsd:dateTime ;
+    sml:instancesInBucket "106"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStartTimeHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-12-01T02:36:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-11-15T20:09:00"^^xsd:dateTime ;
+    sml:instancesInBucket "110"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStartTimeHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-12-16T09:03:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-12-01T02:36:00"^^xsd:dateTime ;
+    sml:instancesInBucket "90"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStartTimeHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-12-31T15:30:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-12-16T09:03:00"^^xsd:dateTime ;
+    sml:instancesInBucket "97"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStartTimeMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "2017-12-31T15:30:00"^^xsd:dateTime .
+
+sml:SpeedAveragesAttributeStartTimeMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "2017-10-14T13:11:07.799999952"^^xsd:dateTime .
+
+sml:SpeedAveragesAttributeStartTimeMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "2017-10-14T00:30:00"^^xsd:dateTime .
+
+sml:SpeedAveragesAttributeStartTimeMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "2017-07-31T23:00:00"^^xsd:dateTime .
+
+sml:SpeedAveragesAttributeStartTimeNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 924 .
+
+sml:SpeedAveragesAttributeStartTimeNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeStartTimeNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeStartTimeNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeStartTimeNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeStartTimeNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeStartTimeQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-07-31T23:00:00"^^xsd:dateTime ;
+    seas:rank 0 .
+
+sml:SpeedAveragesAttributeStartTimeQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-09-04T16:15:00"^^xsd:dateTime ;
+    seas:rank 1 .
+
+sml:SpeedAveragesAttributeStartTimeQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-10-14T00:30:00"^^xsd:dateTime ;
+    seas:rank 2 .
+
+sml:SpeedAveragesAttributeStartTimeQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-11-21T11:52:30"^^xsd:dateTime ;
+    seas:rank 3 .
+
+sml:SpeedAveragesAttributeStartTimeQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-12-31T15:30:00"^^xsd:dateTime ;
+    seas:rank 4 .
+
+sml:SpeedAveragesAttributeStreetType a sml:Attribute ;
+    dct:identifier "street_type" ;
+    sml:columnIndex "1"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/SpeedAverages_sml_mobility/LocationType> ;
+    sml:mapsToProperty rdfs:label ;
+    sml:valueType rdfs:Literal ;
+    seas:evaluation sml:SpeedAveragesAttributeStreetTypeAverageNumberOfCapitalisedValues,
+        sml:SpeedAveragesAttributeStreetTypeAverageNumberOfCharacters,
+        sml:SpeedAveragesAttributeStreetTypeAverageNumberOfDigits,
+        sml:SpeedAveragesAttributeStreetTypeAverageNumberOfSpecialCharacters,
+        sml:SpeedAveragesAttributeStreetTypeAverageNumberOfTokens,
+        sml:SpeedAveragesAttributeStreetTypeNumberOfDistinctValues,
+        sml:SpeedAveragesAttributeStreetTypeNumberOfInvalidValues,
+        sml:SpeedAveragesAttributeStreetTypeNumberOfNullValues,
+        sml:SpeedAveragesAttributeStreetTypeNumberOfValidNonNullValues,
+        sml:SpeedAveragesAttributeStreetTypeNumberOfValidValues,
+        sml:SpeedAveragesAttributeStreetTypeNumberOfValues ;
+    seas:valueDistributionValue sml:SpeedAveragesAttributeStreetTypeValueDistributionValue0,
+        sml:SpeedAveragesAttributeStreetTypeValueDistributionValue1,
+        sml:SpeedAveragesAttributeStreetTypeValueDistributionValue2,
+        sml:SpeedAveragesAttributeStreetTypeValueDistributionValue3,
+        sml:SpeedAveragesAttributeStreetTypeValueDistributionValue4,
+        sml:SpeedAveragesAttributeStreetTypeValueDistributionValue5,
+        sml:SpeedAveragesAttributeStreetTypeValueDistributionValue6,
+        sml:SpeedAveragesAttributeStreetTypeValueDistributionValue7,
+        sml:SpeedAveragesAttributeStreetTypeValueDistributionValue8 .
+
+sml:SpeedAveragesAttributeStreetTypeAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeStreetTypeAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "8.004"^^xsd:float .
+
+sml:SpeedAveragesAttributeStreetTypeAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeStreetTypeAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.008"^^xsd:float .
+
+sml:SpeedAveragesAttributeStreetTypeAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
+
+sml:SpeedAveragesAttributeStreetTypeNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 9 .
+
+sml:SpeedAveragesAttributeStreetTypeNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeStreetTypeNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:SpeedAveragesAttributeStreetTypeNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeStreetTypeNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeStreetTypeNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1000 .
+
+sml:SpeedAveragesAttributeStreetTypeValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "motorway" ;
+    sml:numberOfInstancesOfValue "862"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStreetTypeValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "primary" ;
+    sml:numberOfInstancesOfValue "52"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStreetTypeValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "trunk" ;
+    sml:numberOfInstancesOfValue "18"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStreetTypeValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "service" ;
+    sml:numberOfInstancesOfValue "18"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStreetTypeValueDistributionValue4 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "residential" ;
+    sml:numberOfInstancesOfValue "12"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStreetTypeValueDistributionValue5 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "secondary" ;
+    sml:numberOfInstancesOfValue "12"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStreetTypeValueDistributionValue6 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "unclassified" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStreetTypeValueDistributionValue7 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "tertiary" ;
+    sml:numberOfInstancesOfValue "8"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesAttributeStreetTypeValueDistributionValue8 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "motorway_link" ;
+    sml:numberOfInstancesOfValue "8"^^xsd:nonNegativeInteger .
+
+sml:SpeedAveragesFile a sml:TextFile ;
+    dct:format "text/comma-separated-values" ;
+    csvw:header false ;
+    csvw:null "" ;
+    csvw:separator "," ;
+    sml:fileLocation "SpeedAverages.csv" .
+
+sml:SpeedAveragesSample a sml:DatasetSample ;
+    csvw:separator "	" ;
+    sml:hasHeader sml:SpeedAveragesSampleHeader ;
+    sml:hasLine sml:SpeedAveragesSampleLine0,
+        sml:SpeedAveragesSampleLine1,
+        sml:SpeedAveragesSampleLine2,
+        sml:SpeedAveragesSampleLine3,
+        sml:SpeedAveragesSampleLine4,
+        sml:SpeedAveragesSampleLine5,
+        sml:SpeedAveragesSampleLine6,
+        sml:SpeedAveragesSampleLine7,
+        sml:SpeedAveragesSampleLine8,
+        sml:SpeedAveragesSampleLine9 .
+
+sml:SpeedAveragesSampleHeader a sml:DatasetSampleLine ;
+    sml:hasContent "Street segment (OpenStreetMap ID)	Location type (label)	Speed limit (has speed)	Date-Time description (in XSD Date-Time)	Date-Time description (in XSD Date-Time)	Traffic flow (number of records)	Traffic flow (number of vehicles)	Traffic flow (average speed)	weather record (season)	weather record (day light)	Date-Time description (is weekend)	Day of week (label)	Street segment (as well-known binary (WKB))"^^xsd:string .
+
+sml:SpeedAveragesSampleLine0 a sml:DatasetSampleLine ;
+    sml:hasContent "558274771	primary		2017-12-23 22:00:00	2017-12-23 22:30:00	0	0		winter	DARK	True	Sat"^^xsd:string ;
+    sml:rank 0 .
+
+sml:SpeedAveragesSampleLine1 a sml:DatasetSampleLine ;
+    sml:hasContent "295742846	motorway	100	2017-11-13 18:00:00	2017-11-13 18:30:00	19	11	77.94736842105264	autumn	Dark	False	Mon"^^xsd:string ;
+    sml:rank 1 .
+
+sml:SpeedAveragesSampleLine2 a sml:DatasetSampleLine ;
+    sml:hasContent "379745598	motorway	none	2017-08-17 23:30:00	2017-08-18 00:00:00	9	4	87.8888888888889	summer	Dark	False	Thu"^^xsd:string ;
+    sml:rank 2 .
+
+sml:SpeedAveragesSampleLine3 a sml:DatasetSampleLine ;
+    sml:hasContent "60209776	primary	40	2017-09-03 17:30:00	2017-09-03 18:00:00	2	1	40.0	autumn	Daylight	True	Sun"^^xsd:string ;
+    sml:rank 3 .
+
+sml:SpeedAveragesSampleLine4 a sml:DatasetSampleLine ;
+    sml:hasContent "270398472	motorway	none	2017-08-23 01:00:00	2017-08-23 01:30:00	28	15	85.71428571428571	summer	Dark	False	Wed"^^xsd:string ;
+    sml:rank 4 .
+
+sml:SpeedAveragesSampleLine5 a sml:DatasetSampleLine ;
+    sml:hasContent "331851089	motorway	none	2017-10-22 00:00:00	2017-10-22 00:30:00	28	2	104.8214285714286	autumn	Dark	True	Sun"^^xsd:string ;
+    sml:rank 5 .
+
+sml:SpeedAveragesSampleLine6 a sml:DatasetSampleLine ;
+    sml:hasContent "121964172	motorway	none	2017-12-16 05:00:00	2017-12-16 05:30:00	14	6	84.64285714285714	winter	Dark	True	Sat"^^xsd:string ;
+    sml:rank 6 .
+
+sml:SpeedAveragesSampleLine7 a sml:DatasetSampleLine ;
+    sml:hasContent "37055351	trunk	100	2017-08-12 18:00:00	2017-08-12 18:30:00	2	1	100.5	summer	Daylight	True	Sat"^^xsd:string ;
+    sml:rank 7 .
+
+sml:SpeedAveragesSampleLine8 a sml:DatasetSampleLine ;
+    sml:hasContent "333293282	motorway	none	2017-12-25 05:00:00	2017-12-25 05:30:00	1	1	123.0	winter	Dark	False	Mon"^^xsd:string ;
+    sml:rank 8 .
+
+sml:SpeedAveragesSampleLine9 a sml:DatasetSampleLine ;
+    sml:hasContent "34894613	motorway	signals	2017-11-11 20:30:00	2017-11-11 21:00:00	6	4	117.33333333333331	autumn	Dark	True	Sat"^^xsd:string ;
+    sml:rank 9 .
+
+<https://simple-ml.de/resource/SpeedAverages_sml_mobility/LocationType> a sml:ClassInstance ;
+    sml:mapsTo sml-mob:LocationType .
+
+<https://simple-ml.de/resource/SpeedAverages_sml_mobility/SpeedLimit> a sml:ClassInstance ;
+    sml:mapsTo sml-mob:SpeedLimit .
+
+sml:SpeedAverages_time_2 a sml:ClassInstance ;
+    sml:classInstance 2 ;
+    sml:mapsTo time:DateTimeDescription .
+
+sml:SpeedAverages_time_DayOfWeek a sml:ClassInstance ;
+    sml:mapsTo time:DayOfWeek .
+
+<https://simple-ml.de/resource/SpeedAverages_sml_mobility/StreetSegment> a sml:ClassInstance ;
+    sml:mapsTo sml-mob:StreetSegment ;
+    sml-mob:hasLocationType <https://simple-ml.de/resource/SpeedAverages_sml_mobility/LocationType> ;
+    sml-mob:maxSpeed <https://simple-ml.de/resource/SpeedAverages_sml_mobility/SpeedLimit> .
+
+<https://simple-ml.de/resource/SpeedAverages_sml_mobility/TrafficFlow> a sml:ClassInstance ;
+    dct:spatial <https://simple-ml.de/resource/SpeedAverages_sml_mobility/StreetSegment> ;
+    time:hasBeginning sml:SpeedAverages_time_1 ;
+    time:hasEnd sml:SpeedAverages_time_2 ;
+    sml:mapsTo sml-mob:TrafficFlow ;
+    sml-mob:hasWeatherRecord <https://simple-ml.de/resource/SpeedAverages_sml_mobility/WeatherRecord> .
+
+<https://simple-ml.de/resource/SpeedAverages_sml_mobility/WeatherRecord> a sml:ClassInstance ;
+    sml:mapsTo sml-mob:WeatherRecord .
+
+sml:SpeedAverages_time_1 a sml:ClassInstance ;
+    time:dayOfWeek sml:SpeedAverages_time_DayOfWeek ;
+    sml:classInstance 1 ;
+    sml:mapsTo time:DateTimeDescription .
+
