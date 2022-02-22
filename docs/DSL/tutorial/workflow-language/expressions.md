@@ -4,33 +4,39 @@ Expressions are the parts of the [workflow language][workflow-language] that eva
 
 ## Literals
 
-**TODO**
+Literals are the basic building blocks of expressions. They describe a fixed, constant value.
 
 ### Int Literals
 
-**TODO**
+Int literals denote integers. They use the expected syntax. For example, the integer three is written as `3`.
 
 ### Float Literals
 
-**TODO**
+Float literals denote floating point numbers. There are two ways to specify them:
+* **Decimal form**: One half can be written as `0.5`. Note that neither the integer part nor the decimal part can be omitted, so `.5` and `0.` are syntax errors.
+* **Scientific notation**: Writing very large or very small numbers in decimal notation can be cumbersome. In those cases, [scientific notation](https://en.wikipedia.org/wiki/Scientific_notation) is helpful. For example, one thousandth can be written in Simple-ML as `1.0e-3` or `1.0E-3`. When scientific notation is used, it is allowed to omit the decimal part, so this can be shortened to `1e-3` or `1E-3`.
 
 ### String Literals
 
-**TODO**
+String literals describe text. Their syntax is simply text enclosed by double quotes: `"Hello, world!"`. String literals can contain also contain line breaks:
+
+```
+"Hello,
+
+world!"
+```
+
+In order to interpolate text with other computed values, use [template strings](#template-strings).
 
 ### Boolean Literals
 
-**TODO**
+To work with logic, Simple-ML has the two boolean literals `false` and `true`.
 
 ### `null` Literal
 
-**TODO**
+To denote that a value is unknown or absent, use the literal `null`.
 
 ## Working With Numbers
-
-Simple-ML has two different types of numbers, integers and floating point numbers (_float_ for short) and uses the expected syntax for both:
-* The integer three is `3`.
-* The float zero is `0.0`. Note that neither the integer part nor the decimal part can be omitted, so `.0` and `0.` are syntax errors.
 
 Numbers can be negated using the unary `-` operator:
 * The integer negative three is `-3`.
@@ -41,10 +47,6 @@ The usual arithmetic operations are also supported for integer, float and combin
 * Subtraction: `6 - 2.9` (result is a float)
 * Multiplication: `1.1 * 3` (result is a float)
 * Division: `1.0 / 4.2` (result is a float)
-
-## Working With Text
-
-In Simple-ML strings are used to work with text. Currently Simple-ML only has special syntax for string literals and not for string operations like concatenation. Instead specific methods must be [called](#Calls). String literals are simply text enclosed by double quotes: `"Hello, world!"`.
 
 ## Working With Booleans
 
