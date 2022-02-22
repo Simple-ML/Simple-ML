@@ -1,4 +1,4 @@
-**Warning: This concept might be subject to change**
+# Global Functions
 
 In order to use a method of a [class](./Stub-Language-Classes.md) we first must get hold of an instance of this class. Global functions do not have this requirement, so they are prime candidates to implement global utility operations that exist independently of any class.
 
