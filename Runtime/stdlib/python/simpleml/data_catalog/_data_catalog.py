@@ -277,7 +277,7 @@ def addSpatialDistribution(dataset: Dataset):
     query = load_query("getDatasetSpatialDistribution", parameters)
     results = run_query(query)
 
-    areas = {}
+    areas = {}  # attribute identifier to count (instances in area)
 
     for result in results["results"]["bindings"]:
         attribute_identifier = result["identifier"]["value"]

@@ -22,39 +22,40 @@ from simpleml.dataset._stats import getStatistics
 
 
 class Dataset:
-    def __init__(self, id: str = None, title: str = None, description: str = None, fileName: str = None,
+    def __init__(self, id, title: str, description: str = None, fileName: str = None,
                  hasHeader: bool = True, null_value="", separator=",", number_of_instances: int = None,
-                 titles: dict = None, descriptions: dict = None, subjects: dict = None, coordinate_system: int = 4326,
+                 titles: dict = {}, descriptions: dict = None, subjects: dict = {}, coordinate_system: int = 4326,
                  lat_before_lon: bool = False):
         self.id = id
         self.title = title
         self.description = description
         self.fileName = fileName
-        self.data = None
+        self.data = pd.DataFrame()
         self.hasHeader = hasHeader
         self.null_value = null_value
         self.separator = separator
         self.domain_model = None
-        self.attribute_graph = {}
-        self.attribute_statistics = {}
-        self.data_types = {}
-        self.attribute_labels = {}
-        self.stats = None
+        self.attribute_graph = {}  # attribute identifier to dictionary of RDF relations
+        self.data_types = {}  # attribute identifier to data type
+        self.attribute_labels = {}  # attribute identifier to label
+        self.stats = {}  # attribute identifier to statistics dictionary
         self.data_sample = pd.DataFrame()
         self.sample_info = None
-        self.lon_lat_pairs = []
-        self.wkt_columns = []
-        self.wkb_columns = []
-        self.attributes = []
+        self.lon_lat_pairs = []  # list of attribute pairs which are latitude-longitude pairs
+        self.wkt_columns = []  # list of attribute identifiers for attributes with Well-Known-Text data
+        self.wkb_columns = []  # list of attribute identifiers for attributes with Well-Known-Binary data
+        self.attributes = []  # list of attribute identifiers
         self.sample_for_profile = None
         self.number_of_instances = number_of_instances
         self.titles = titles
+        if not titles:
+            titles["en"] = title
         self.descriptions = descriptions
         self.subjects = subjects
-        self.simple_data_types = {}
+        self.simple_data_types = {}  # attribute identifier to simple data type (numeric, ...)
         self.coordinate_system = coordinate_system
         self.lat_before_lon = lat_before_lon
-        self.parse_dates = []
+        self.parse_dates = []  # list of attribute identifiers of attributes that should be parsed as date
 
     def sample(self, nInstances: int) -> Dataset:
 
@@ -467,7 +468,7 @@ def joinTwoDatasets(first_data: Dataset, second_data: Dataset, join_column_name_
         # joint_data = first_data.data.append(second_data.data, sort=False)
         # print(joint_data.shape[0])
         dataset = Dataset(id=first_data.id + '-' + second_data.id, title=first_data.title + '-' + second_data.title,
-                          fileName=None, hasHeader=None, separator=None,
+                          fileName=None, hasHeader=first_data.hasHeader, separator=None,
                           null_value='', description=first_data.description + '-' + second_data.description,
                           subjects={'qw': 'qw'}, number_of_instances=joint_data.shape[0])
 
@@ -493,26 +494,6 @@ def joinTwoDatasets(first_data: Dataset, second_data: Dataset, join_column_name_
     else:
         raise TypeError('Datatypes of joined columns do not match.')
     return dataset
-
-
-def joinTwoDatasets2(first_file_name: str, second_file_name: str, separator: str, first_suffix: str,
-                     second_suffix: str) -> Dataset:
-    dir_name = os.path.dirname(__file__)
-    first_data_file_path = os.path.join(
-        dir_name, global_config.data_folder_name, first_file_name)
-    second_data_file_path = os.path.join(
-        dir_name, global_config.data_folder_name, second_file_name)
-
-    first_data = pd.read_csv(first_data_file_path, sep=separator)
-    second_data = pd.read_csv(second_data_file_path, sep=separator)
-    # joint_data = second_data.join(first_data.set_index('id'), on='id', lsuffix=first_suffix, rsuffix=second_suffix)
-    # joint_data = first_data.join(second_data, lsuffix=first_suffix, rsuffix=second_suffix)
-    # joint_data = first_data.merge(
-    #    second_data, on=('id'), suffixes=('_l', '_r'))
-
-    pd.set_option("max_columns", None)
-
-    return True
 
 
 def parseWKB(value, hex):
