@@ -115,11 +115,21 @@ Simple-ML also has shorthand versions for negated equality checks which should b
 
 The elvis operator `?:` (given its name because it resembles Elvis's haircut) is used to specify a default value that should be used instead if the left operand is `null`. This operator is not short-circuited, so both operand are always evaluated. In the following example the whole expression evaluates to `nullableExpression` if this value is not `null` and to `42` if it is:
 
-    nullableExpression ?: 42
+```
+nullableExpression ?: 42
+```
 
 ## Template Strings
 
-**TODO**
+[String literals](#string-literals) can only be used to denote a fixed string. Sometimes, however, parts of the string have to be computed and then interpolated into the remaining text. This is done with template strings. Here is an example:
+
+```
+"1 + 2 = {{ 1 + 2 }}"
+```
+
+The syntax for template strings is similar to [string literals](#string-literals): They are also delimited by double quotes, the text can contain escape sequences, and raw newlines can be inserted. The additional syntax are _template expressions_, which are any expression enclosed by `{{` and `}}`. There must be no space between the curly braces.
+
+These template expressions are evaluated, converted to a string and inserted into the template string at their position. The template string in the example above is, hence, equivalent to the [string literal](#string-literals) "1 + 2 = 3".
 
 ## References
 
