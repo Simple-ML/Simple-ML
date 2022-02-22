@@ -173,7 +173,7 @@ def addStatistics(dataset: Dataset):
             dataset.stats[attribute_identifier] = {}
 
         if evaluation_type not in dataset.stats[attribute_identifier]:
-            current_list: list(object) = []
+            current_list: list[object] = []
 
             list_data_type = get_datatype_from_rdf(result["value"]["datatype"])
 

@@ -35,7 +35,7 @@ class Dataset:
         self.null_value = null_value
         self.separator = separator
         self.domain_model = None
-        self.attribute_graph = {}  # attribute identifier to dictionary of RDF relations
+        self.attribute_graph: dict[str, dict] = {}  # attribute identifier to dictionary of RDF relations
         self.data_types: dict[str, str] = {}  # attribute identifier to data type
         self.attribute_labels: dict[str, str] = {}  # attribute identifier to label
         self.stats: dict[str, dict] = {}  # attribute identifier to statistics dictionary
@@ -52,7 +52,7 @@ class Dataset:
             titles["en"] = title
         self.descriptions = descriptions
         self.subjects = subjects
-        self.simple_data_types: dict[str, dict] = {}  # attribute identifier to simple data type (numeric, ...)
+        self.simple_data_types: dict[str, str] = {}  # attribute identifier to simple data type (numeric, ...)
         self.coordinate_system = coordinate_system
         self.lat_before_lon = lat_before_lon
         self.parse_dates: list[str] = []  # list of attribute identifiers of attributes that should be parsed as date
@@ -67,7 +67,7 @@ class Dataset:
         copy.data = copy.data.head(n=nInstances)
 
         # invalidate statistics
-        copy.stats = None
+        copy.stats = {}
 
         return copy
 
@@ -164,12 +164,15 @@ class Dataset:
 
         train = self.copy(basic_data_only=True)
         train.title += " (Train)"
-        train.description += " (Train)"
+
+        if train.description:
+            train.description += " (Train)"
         train.data = train_data
 
         test = self.copy(basic_data_only=True)
         test.title += " (Test)"
-        test.description += " (Test)"
+        if test.description:
+            test.description += " (Test)"
         test.data = test_data
 
         return train, test
@@ -192,7 +195,7 @@ class Dataset:
 
         # TODO: Check infer_datetime_format
 
-        parse_data_types = {}
+        parse_data_types: dict[str, object] = {}
         for attribute, value_type in self.data_types.items():
             parse_data_types[attribute] = value_type
             if value_type == np.datetime64:
