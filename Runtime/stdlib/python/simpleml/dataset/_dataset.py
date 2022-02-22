@@ -10,6 +10,7 @@ import pandas as pd  # For data processing
 import simpleml.util.global_configurations as global_config
 import simpleml.util.jsonLabels_util as config
 from shapely import wkt, wkb, geometry
+from shapely.errors import WKBReadingError, WKTReadingError
 from simpleml.dataset._instance import Instance
 from simpleml.dataset._stats import getStatistics
 
@@ -175,7 +176,7 @@ class Dataset:
     def parseWKT(self, value, hex):
         try:
             return wkt.loads(value)
-        except:
+        except (WKTReadingError, AttributeError, TypeError):
             return None
 
     def readFile(self, sep, number_of_lines: int = None):
@@ -425,7 +426,7 @@ def readDataSetFromCSV(file_name: str, dataset_id: str, separator: str, has_head
                     dataset.wkb_columns.append(attribute)
                     is_geometry = True
                     found_new_type = True
-                except:
+                except (WKBReadingError, AttributeError, TypeError):
                     pass
 
             if not found_new_type:
@@ -433,7 +434,7 @@ def readDataSetFromCSV(file_name: str, dataset_id: str, separator: str, has_head
                     data[attribute].apply(wkt.loads)
                     dataset.wkt_columns.append(attribute)
                     is_geometry = True
-                except:
+                except (WKTReadingError, AttributeError, TypeError):
                     pass
 
         dataset.addColumnDescription(attribute, None, None, None, None, dataTypes(data[attribute].dtype), attribute,
@@ -442,11 +443,6 @@ def readDataSetFromCSV(file_name: str, dataset_id: str, separator: str, has_head
     dataset.parse_geo_columns()
 
     return dataset
-
-
-def testx(x):
-    print("HAAA")
-    return "a"
 
 
 def dataTypes(type):
@@ -527,5 +523,5 @@ def joinTwoDatasets2(first_file_name: str, second_file_name: str, separator: str
 def parseWKB(value, hex):
     try:
         return wkb.loads(value, hex=hex)
-    except:
+    except (WKBReadingError, AttributeError, TypeError):
         return None
