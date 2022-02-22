@@ -117,34 +117,16 @@ The elvis operator `?:` (given its name because it resembles Elvis's haircut) is
 
     nullableExpression ?: 42
 
+## Template Strings
+
+**TODO**
+
 ## References
 
 References are used to refer to a declaration, such as a [class][classes] or a [placeholder][placeholders]. The syntax is to simply write the name of the declaration, as shown in the next snippet where we first declare a placeholder called "one" and then refer to it when computing the value for the placeholder called "two":
 
     val one = 1;
     val two = one + one;
-
-## Calls
-
-Calls are used to trigger the execution of a specific action, which can be the creation of an instance of a [class][classes] or executing the code in a (global) [function][global-functions] or [workflow step][steps]. In any case a call consists of a _receiver_, which is a [reference](#references) to the declaration to call, and a list of _arguments_ (inputs) enclosed by parentheses and separated by commas.
-
-Arguments can either be named or positional. For named arguments the name of the parameter the argument assigned to is given explicitly. Textually we write the name of the parameter, an assignment operator and the value.
-
-Positional arguments are implicitly assigned to the parameter with the same index. So the first argument is assigned to the first parameter etc. Note that to the right of a named argument all arguments must be named. Syntactically we only need to write the value.
-
-The following example first shows the declaration of a [class][classes] with the name "DecisionTree" that has a single parameter called "maxDepth" and then two calls that create an instance of this class.
-
-**Definition of the example class:**
-
-    class DecisionTree(maxDepth: Int) {}
-
-**Positional argument:**
-
-    DecisionTree(10)
-
-**Named argument:**
-
-    DecisionTree(maxDepth = 10)
 
 ## Member Accesses
 
@@ -176,10 +158,6 @@ Syntactically a member access starts with the _receiver_, which is a [reference]
 
     SvmKernel.Linear
 
-## Working With _null_
-
-In order to represent missing or unknown values Simple-ML has the literal `null` as well as special operators to deal with it.
-
 ### Safe member access
 
 If an expression could be null it cannot be used as the receiver of a regular [member access](#member-access), since null does not have members. Instead a safe member access must be used. The syntax is identical to a normal member access except that we replace the dot with the operator `?.`. A safe member access evaluates to null if the receiver is null. Otherwise it evaluates to the accessed member, just like a normal member access. Here is an example:
@@ -189,10 +167,28 @@ If an expression could be null it cannot be used as the receiver of a regular [m
 ## Indexed Access
 
 **TODO**
-## Template Strings
 
-**TODO**
+## Calls
 
+Calls are used to trigger the execution of a specific action, which can be the creation of an instance of a [class][classes] or executing the code in a (global) [function][global-functions] or [workflow step][steps]. In any case a call consists of a _receiver_, which is a [reference](#references) to the declaration to call, and a list of _arguments_ (inputs) enclosed by parentheses and separated by commas.
+
+Arguments can either be named or positional. For named arguments the name of the parameter the argument assigned to is given explicitly. Textually we write the name of the parameter, an assignment operator and the value.
+
+Positional arguments are implicitly assigned to the parameter with the same index. So the first argument is assigned to the first parameter etc. Note that to the right of a named argument all arguments must be named. Syntactically we only need to write the value.
+
+The following example first shows the declaration of a [class][classes] with the name "DecisionTree" that has a single parameter called "maxDepth" and then two calls that create an instance of this class.
+
+**Definition of the example class:**
+
+    class DecisionTree(maxDepth: Int) {}
+
+**Positional argument:**
+
+    DecisionTree(10)
+
+**Named argument:**
+
+    DecisionTree(maxDepth = 10)
 ## Lambdas
 
 **TODO**
@@ -205,7 +201,7 @@ If an expression could be null it cannot be used as the receiver of a regular [m
 
 ## Precedence
 
-We all know that `2 + 3 * 7` is 23 and not 35. The reason is that the `*` operator has a higher precedence than the `+` operator and is therefore evaluated first. These precedence rules are necessary for all types of expressions listed above and shown in the following list. The higher up an expression is in the list, the higher its precedence. Expressions listed beside each other have the same precedence and are evaluated from left to right:
+We all know that `2 + 3 * 7` is `23` and not `35`. The reason is that the `*` operator has a higher precedence than the `+` operator and is, therefore, evaluated first. These precedence rules are necessary for all types of expressions listed above and shown in the following list. The higher up an expression is in the list, the higher its precedence and the earlier it is evaluated. Expressions listed beside each other have the same precedence and are evaluated from left to right:
 
 * **HIGHER PRECEDENCE**
 * `()` (parentheses around an expression)
