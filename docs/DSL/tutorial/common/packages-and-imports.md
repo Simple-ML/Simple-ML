@@ -1,3 +1,5 @@
+# Packages and Imports
+
 In order to prevent name conflicts when multiple parties add functionality to Simple-ML using the [stub language](./Stub-Language.md) we support the concept of [packages](#packages). These are used to group [type definitions](./Stub-Language-Types.md) together under a common namespace. Other files can then use declarations from a package by [importing](#imports) it.
 
 ## Packages
