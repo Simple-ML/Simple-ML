@@ -105,7 +105,7 @@ _ = 1;
 
 ### Multiple Assignees
 
-So far, the left-hand side of the assignment always had a single assignee. However, when the right-hand side of the assignment produces more than one value, it is possible to freely decide for each value whether it should be [assigned to a placeholder](#declaring-placeholders), [yielded](#yielding-results) or [ignored](#ignoring-results). 
+So far, the left-hand side of the assignment always had a single assignee. However, when the right-hand side of the assignment produces more than one value, it is possible to freely decide for each value whether it should be [assigned to a placeholder](#declaring-placeholders), [yielded](#yielding-results) or [ignored](#ignoring-results).
 
 For example, the `split` method in the next example splits a large dataset into two datasets according to a given ratio. We then ignore the first dataset using a [wildcard](#ignoring-results) and [assign the second result to a placeholder](#declaring-placeholders) called `trainingDataset`. Afterwards, we train a `DecisionTree` using the `trainingDataset` and yield the trained model as a result:
 

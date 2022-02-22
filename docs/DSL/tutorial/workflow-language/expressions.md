@@ -52,22 +52,22 @@ To work with logic, Simple-ML has the two boolean literals `false` and `true` as
 * (Logical) negation (example `not a`): Output is `true` if and only if the operand is false:
 
 `not a` | false | true
----|---|---
-&nbsp; | true | false
+--------|-------|------
+&nbsp;  | true  | false
 
 * Conjunction (example `a and b`): Output is `true` if and only if both operands are `true`. Note that the second operand is always evaluated, even if the first operand is `false` and, thus, already determines the result of the expression. The operator is not _short-circuited:
 
 `a and b` | false | true
----|---|---
+----------|-------|------
 **false** | false | false
-**true** | false | true
+**true**  | false | true
 
 * Disjunction (example `a or b`): Output is `true` if and only if at least one operand is `true`. Note that the second operand is always evaluated, even if the first operand is `true` and, thus, already determines the result of the expression. The operator is not _short-circuited:
 
-`a or b` | false | true
----|---|---
+`a or b`  | false | true
+----------|-------|-----
 **false** | false | true
-**true** | true | true
+**true**  | true  | true
 
 ## References
 
@@ -80,10 +80,10 @@ References are used to refer to a declaration, such as a [class][classes] or a [
 
 Calls are used to trigger the execution of a specific action, which can be the creation of an instance of a [class][classes] or executing the code in a (global) [function][global-functions] or [workflow step][steps]. In any case a call consists of a _receiver_, which is a [reference](#references) to the declaration to call, and a list of _arguments_ (inputs) enclosed by parentheses and separated by commas.
 
-Arguments can either be named or positional. For named arguments the name of the parameter the argument assigned to is given explicitly. Textually we write the name of the parameter, an assignment operator and the value. 
+Arguments can either be named or positional. For named arguments the name of the parameter the argument assigned to is given explicitly. Textually we write the name of the parameter, an assignment operator and the value.
 
 Positional arguments are implicitly assigned to the parameter with the same index. So the first argument is assigned to the first parameter etc. Note that to the right of a named argument all arguments must be named. Syntactically we only need to write the value.
- 
+
 The following example first shows the declaration of a [class][classes] with the name "DecisionTree" that has a single parameter called "maxDepth" and then two calls that create an instance of this class.
 
 **Definition of the example class:**
@@ -100,7 +100,7 @@ The following example first shows the declaration of a [class][classes] with the
 
 ## Member Accesses
 
-A member access is used to refer to members of a [class][classes] or class instance, i. e. attributes and methods, and instances of an [enum][enums]. 
+A member access is used to refer to members of a [class][classes] or class instance, i. e. attributes and methods, and instances of an [enum][enums].
 
 Syntactically a member access starts with the _receiver_, which is a [reference](#references) to the program element containing the member followed by a dot and a reference to the member itself. Note that static class member are only accessible from the class itself while non-static class member are only accessible from instance of the class, as the following snippet shows:
 
