@@ -1,5 +1,5 @@
 [flake8]
-ignore =
+extend-ignore =
     # line too long (black handles that)
     E501
 per-file-ignores =
