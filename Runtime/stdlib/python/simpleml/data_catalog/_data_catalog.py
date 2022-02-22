@@ -9,7 +9,7 @@ from numpy import datetime64
 from rdflib import URIRef
 from simpleml.data_catalog._domain_model import DomainModel, getPythonType
 from simpleml.dataset import Dataset
-from simpleml.rdf import run_query, load_query
+from simpleml.rdf import load_query, run_query
 
 lang = "de"  # TODO: Configure in a global config
 
@@ -33,8 +33,12 @@ def getDatasets(domain=None, topic=None):
         identifier = result["identifier"]["value"]
         topics = result["subjects"]["value"].split(";")
         number_of_instances = int(result["numberOfInstances"]["value"])
-        dataset = Dataset(id=identifier, title=title, subjects={
-            lang: topics}, number_of_instances=number_of_instances)
+        dataset = Dataset(
+            id=identifier,
+            title=title,
+            subjects={lang: topics},
+            number_of_instances=number_of_instances,
+        )
         datasets.append(dataset)
     return datasets
 
@@ -76,8 +80,7 @@ def addDomainModel(dataset):
         propertyLabel = result["propertyLabel"]["value"]
         domain_node_uri = result["subjectClass"]["value"]
         domain_node_label = result["subjectClassLabel"]["value"]
-        domain_node = domain_model.createClass(
-            domain_node_uri, domain_node_label)
+        domain_node = domain_model.createClass(domain_node_uri, domain_node_label)
         resource_node = domain_model.createNode(subjectResource, domain_node)
         property_node = domain_model.createProperty(propertyURI, propertyLabel)
 
@@ -99,12 +102,16 @@ def addDomainModel(dataset):
 
         value_type = result["valueType"]["value"]
 
-        dataset.addColumnDescription(attribute_identifier=identifier, resource_node=resource_node,
-                                     domain_node=domain_node, property_node=property_node,
-                                     rdf_value_type=value_type, value_type=getPythonType(
-                value_type),
-                                     attribute_label=domain_node_label + " (" + propertyLabel + ")",
-                                     is_geometry=is_geometry)
+        dataset.addColumnDescription(
+            attribute_identifier=identifier,
+            resource_node=resource_node,
+            domain_node=domain_node,
+            property_node=property_node,
+            rdf_value_type=value_type,
+            value_type=getPythonType(value_type),
+            attribute_label=domain_node_label + " (" + propertyLabel + ")",
+            is_geometry=is_geometry,
+        )
 
     for lon_lat_pair in lon_lat_pairs.values():
         dataset.lon_lat_pairs.append(lon_lat_pair)
@@ -113,8 +120,13 @@ def addDomainModel(dataset):
     query = load_query("getClassRelations", {"datasetId": dataset.id})
     results = run_query(query)
     for result in results["results"]["bindings"]:
-        dataset.domain_model.addTriple((URIRef(result["domain_class1"]["value"]), URIRef(result["property"]["value"]),
-                                        URIRef(result["domain_class2"]["value"])))
+        dataset.domain_model.addTriple(
+            (
+                URIRef(result["domain_class1"]["value"]),
+                URIRef(result["property"]["value"]),
+                URIRef(result["domain_class2"]["value"]),
+            )
+        )
 
 
 def getDataset(dataset_id: str) -> Dataset:
@@ -145,11 +157,21 @@ def getDataset(dataset_id: str) -> Dataset:
         break  # we only expect one result row
 
     # TODO: Assign spatial columns
-    dataset = Dataset(id=dataset_id, title=title, fileName=file_name, hasHeader=has_header, separator=separator,
-                      null_value=null_value, description=description, subjects={
-            lang: topics},
-                      number_of_instances=number_of_instances, titles={lang: title}, descriptions={lang: description},
-                      coordinate_system=coordinate_system, lat_before_lon=lat_before_lon)
+    dataset = Dataset(
+        id=dataset_id,
+        title=title,
+        fileName=file_name,
+        hasHeader=has_header,
+        separator=separator,
+        null_value=null_value,
+        description=description,
+        subjects={lang: topics},
+        number_of_instances=number_of_instances,
+        titles={lang: title},
+        descriptions={lang: description},
+        coordinate_system=coordinate_system,
+        lat_before_lon=lat_before_lon,
+    )
 
     addDomainModel(dataset)
     addStatistics(dataset)
@@ -180,20 +202,26 @@ def addStatistics(dataset: Dataset):
             # Special case: quartiles are shown as box plots, not lists
 
             type = config.type_list
-            if (evaluation_type == 'quartile'):
+            if evaluation_type == "quartile":
                 type = config.type_box_plot
 
-            dataset.stats[attribute_identifier][evaluation_type] = {config.type: type,
-                                                                    config.id: evaluation_type,
-                                                                    config.list_data_type: list_data_type,
-                                                                    config.type_list_values: current_list}
+            dataset.stats[attribute_identifier][evaluation_type] = {
+                config.type: type,
+                config.id: evaluation_type,
+                config.list_data_type: list_data_type,
+                config.type_list_values: current_list,
+            }
 
         stats_datatype, value = getValue(result["value"])
 
         if "rank" not in result:
             # todo
-            addNumericValue(dataset.stats[attribute_identifier],
-                            evaluation_type, value, data_type=stats_datatype)
+            addNumericValue(
+                dataset.stats[attribute_identifier],
+                evaluation_type,
+                value,
+                data_type=stats_datatype,
+            )
 
             # dataset.stats[attribute_identifier][evaluation_type] = value
         else:
@@ -219,10 +247,17 @@ def getValue(result):
     if "datatype" in result:
         datatype = result["datatype"]
         stats_datatype = None
-        if datatype == "http://www.w3.org/2001/XMLSchema#double" or datatype == "http://www.w3.org/2001/XMLSchema#float" or datatype == "http://www.w3.org/2001/XMLSchema#decimal":
+        if (
+            datatype == "http://www.w3.org/2001/XMLSchema#double"
+            or datatype == "http://www.w3.org/2001/XMLSchema#float"
+            or datatype == "http://www.w3.org/2001/XMLSchema#decimal"
+        ):
             value = float(value)
             stats_datatype = config.type_float
-        elif datatype == "http://www.w3.org/2001/XMLSchema#nonNegativeInteger" or datatype == "http://www.w3.org/2001/XMLSchema#integer":
+        elif (
+            datatype == "http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+            or datatype == "http://www.w3.org/2001/XMLSchema#integer"
+        ):
             value = int(value)
             stats_datatype = config.type_integer
         elif datatype == "http://www.w3.org/2001/XMLSchema#long":
@@ -245,16 +280,21 @@ def addHistograms(dataset: Dataset):
         attribute_identifier = result["identifier"]["value"]
 
         if config.histogram not in dataset.stats[attribute_identifier]:
-            dataset.stats[attribute_identifier][config.histogram] = {config.type: config.type_histogram,
-                                                                     config.bucket_data_type:
-                                                                         getValue(result["minimum"])[0],
-                                                                     config.type_histogram_buckets: []}
+            dataset.stats[attribute_identifier][config.histogram] = {
+                config.type: config.type_histogram,
+                config.bucket_data_type: getValue(result["minimum"])[0],
+                config.type_histogram_buckets: [],
+            }
 
-        histogram = {config.bucketMinimum: getValue(result["minimum"])[1],
-                     config.bucketMaximum: getValue(result["maximum"])[1],
-                     config.value: getValue(result["instances"])[1]}
+        histogram = {
+            config.bucketMinimum: getValue(result["minimum"])[1],
+            config.bucketMaximum: getValue(result["maximum"])[1],
+            config.value: getValue(result["instances"])[1],
+        }
 
-        dataset.stats[attribute_identifier][config.histogram][config.type_histogram_buckets].append(histogram)
+        dataset.stats[attribute_identifier][config.histogram][
+            config.type_histogram_buckets
+        ].append(histogram)
 
 
 def addValueDistribution(dataset: Dataset):
@@ -268,8 +308,13 @@ def addValueDistribution(dataset: Dataset):
             dataset.stats[attribute_identifier][config.valueDistribution] = []
 
         dataset.stats[attribute_identifier][config.valueDistribution].append(
-            {config.value_distribution_value: result["value"]["value"],
-             config.value_distribution_number_of_instances: result["instances"]["value"]})
+            {
+                config.value_distribution_value: result["value"]["value"],
+                config.value_distribution_number_of_instances: result["instances"][
+                    "value"
+                ],
+            }
+        )
 
 
 def addSpatialDistribution(dataset: Dataset):
@@ -285,14 +330,18 @@ def addSpatialDistribution(dataset: Dataset):
         if attribute_identifier not in areas:
             areas[attribute_identifier] = {}
 
-        areas[attribute_identifier][result["region"]["value"]] = result["instances"]["value"]
+        areas[attribute_identifier][result["region"]["value"]] = result["instances"][
+            "value"
+        ]
 
     for attribute_identifier in areas:
         dataset.stats[attribute_identifier][config.spatialValueDistribution] = {}
         dataset.stats[attribute_identifier][config.spatialValueDistribution][
-            config.type] = config.type_spatial_distribution
-        dataset.stats[attribute_identifier][config.spatialValueDistribution][config.type_spatial_distribution_areas] = \
-            areas[attribute_identifier]
+            config.type
+        ] = config.type_spatial_distribution
+        dataset.stats[attribute_identifier][config.spatialValueDistribution][
+            config.type_spatial_distribution_areas
+        ] = areas[attribute_identifier]
 
 
 def addSample(dataset: Dataset):
@@ -305,33 +354,42 @@ def addSample(dataset: Dataset):
         sample_string += result["content"]["value"] + "\n"
 
     dataset.data_sample = pd.read_csv(
-        StringIO(sample_string), sep="\t", header=0, na_values='')
+        StringIO(sample_string), sep="\t", header=0, na_values=""
+    )
 
 
 def addNumericValue(column_stats, name, value, data_type=None):
     # simple_type = config.type_numeric
 
-    column_stats[name] = createNumericValue(
-        name, value, config.type_numeric, data_type)
+    column_stats[name] = createNumericValue(name, value, config.type_numeric, data_type)
 
 
 def createNumericValue(name, value, simple_type, data_type=None):
     if not data_type:
         data_type = config.data_type_labels[type(value)]
-    return {config.type: simple_type,
-            config.type_numeric_data_type: data_type,
-            config.type_numeric_value: value,
-            config.i18n_id: name}
+    return {
+        config.type: simple_type,
+        config.type_numeric_data_type: data_type,
+        config.type_numeric_value: value,
+        config.i18n_id: name,
+    }
 
 
 def get_pd_timestamp(datetime):
-    return pd.Timestamp(datetime, unit='s')
+    return pd.Timestamp(datetime, unit="s")
 
 
 def get_datatype_from_rdf(datatype):
-    if datatype == "http://www.w3.org/2001/XMLSchema#double" or datatype == "http://www.w3.org/2001/XMLSchema#float" or datatype == "http://www.w3.org/2001/XMLSchema#decimal":
+    if (
+        datatype == "http://www.w3.org/2001/XMLSchema#double"
+        or datatype == "http://www.w3.org/2001/XMLSchema#float"
+        or datatype == "http://www.w3.org/2001/XMLSchema#decimal"
+    ):
         return config.type_float
-    elif datatype == "http://www.w3.org/2001/XMLSchema#nonNegativeInteger" or datatype == "http://www.w3.org/2001/XMLSchema#integer":
+    elif (
+        datatype == "http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        or datatype == "http://www.w3.org/2001/XMLSchema#integer"
+    ):
         return config.type_integer
     elif datatype == "http://www.w3.org/2001/XMLSchema#long":
         return config.type_integer

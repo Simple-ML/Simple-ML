@@ -7,7 +7,7 @@ from rdflib import Literal
 from rdflib.namespace import OWL, RDF, RDFS, XSD
 from rdflib.plugins.sparql.datatypes import type_promotion
 
-SML = rdflib.Namespace('https://simple-ml.de/resource/')
+SML = rdflib.Namespace("https://simple-ml.de/resource/")
 
 
 class DomainModel:
@@ -21,8 +21,9 @@ class DomainModel:
     def createClass(self, classURI, classLabel):
         class_node = rdflib.URIRef(classURI)
         self.graph.add((class_node, RDFS.subClassOf, OWL.Class))
-        self.graph.add((class_node, RDFS.label, Literal(
-            classLabel, datatype=XSD.string)))
+        self.graph.add(
+            (class_node, RDFS.label, Literal(classLabel, datatype=XSD.string))
+        )
         return class_node
 
     def createNode(self, nodeURI, domainClass):
@@ -33,8 +34,9 @@ class DomainModel:
     def createProperty(self, propertyURI, propertyLabel):
         property_node = rdflib.URIRef(propertyURI)
         self.graph.add((property_node, RDF.type, OWL.DatatypeProperty))
-        self.graph.add((property_node, RDFS.label, Literal(
-            propertyLabel, datatype=XSD.string)))
+        self.graph.add(
+            (property_node, RDFS.label, Literal(propertyLabel, datatype=XSD.string))
+        )
         return property_node
 
     def addTriple(self, triple):
@@ -46,11 +48,12 @@ class DomainModel:
 
     def copy(self):
         copy = DomainModel()
-        copy.graph=self.graph
+        copy.graph = self.graph
         copy.triple_graph = rdflib.Graph()
-        for s,p,o in self.triple_graph.triples((None,None,None)):
-            copy.triple_graph.add((s,p,o))
+        for s, p, o in self.triple_graph.triples((None, None, None)):
+            copy.triple_graph.add((s, p, o))
         return copy
+
 
 def getPythonType(data_type):
     data_type = rdflib.URIRef(data_type)
