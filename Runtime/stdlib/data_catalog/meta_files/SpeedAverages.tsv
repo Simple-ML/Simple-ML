@@ -1,4 +1,4 @@
-FILE	/home/simon/Documents/SimpleML/data_sets/catalog_files/SpeedAverages.csv
+FILE	SpeedAverages.csv
 CREATOR_ID	0
 ID	SpeedAverages
 NULL	
@@ -12,6 +12,7 @@ DESCRIPTION_DE	Durchschnittsgeschwindigkeit auf niedersächsischen Straßen in e
 TOPICS_EN	Traffic
 TOPICS_DE	Verkehr
 LAT_LON_ORDER	lon_lat
+COORDINATE_SYSTEM	3857
 PROPERTIES
 sml:mobility/StreetSegment,sml:mobility/osmId
 sml:mobility/LocationType,rdfs:label

@@ -1,4 +1,4 @@
-FILE	/home/simon/Documents/SimpleML/data_sets/catalog_files/FloatingCarData.csv
+FILE	FloatingCarData.csv
 CREATOR_ID	0
 ID	FloatingCarData
 NULL	
@@ -11,6 +11,8 @@ DESCRIPTION_EN	Floating car data recorded in Lower Saxony, Germany.
 DESCRIPTION_DE	Floating Car Data aus Niedersachsen.
 TOPICS_EN	Traffic
 TOPICS_DE	Verkehr
+LAT_LON_ORDER	lon_lat
+COORDINATE_SYSTEM	3857
 PROPERTIES
 sml:mobility/FloatingCarDataPoint,sml:mobility/carId
 time:DateTimeDescription,time:inXSDDateTime

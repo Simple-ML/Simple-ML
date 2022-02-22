@@ -1,7 +1,7 @@
-FILE	/home/simon/Documents/SimpleML/data_sets/catalog_files/TrafficWarnings.tsv
+FILE	TrafficWarnings.tsv
 CREATOR_ID	0
 ID	TrafficWarnings
-NULL	
+NULL	'NULL'
 SEPARATOR	TAB
 HAS_HEADER	yes
 HAS_COLUMN_TITLES	yes
@@ -12,10 +12,11 @@ DESCRIPTION_DE	Verkehrswarnungen der Verkehrs-Management-Zentrale Niedersachsen 
 TOPICS_EN	Traffic
 TOPICS_DE	Verkehr
 LAT_LON_ORDER	lat_lon
+COORDINATE_SYSTEM	4326
 PROPERTIES
 
-time:DateTimeDescription@1,time:inXSDDate
-time:DateTimeDescription@2,time:inXSDDate
+time:DateTimeDescription@1,time:inXSDDateTime
+time:DateTimeDescription@2,time:inXSDDateTime
 sml:mobility/TrafficWarning,dcterms:title
 sml:mobility/TrafficWarning,dcterms:description
 

@@ -1,4 +1,4 @@
-FILE	/home/simon/Documents/SimpleML/data_sets/catalog_files/PostOffices.csv
+FILE	PostOffices.csv
 CREATOR_ID	0
 ID	PostOffices
 NULL	
@@ -12,6 +12,7 @@ DESCRIPTION_DE	Postämter, Paketstationen und Warenhäuser, die aus OpenStreetMa
 TOPICS_EN	Traffic,Logistics
 TOPICS_DE	Verkehr,Logistik
 LAT_LON_ORDER	lat_lon
+COORDINATE_SYSTEM	4326
 PROPERTIES
 dcterms:Location,sml:mobility/osmId
 sml:mobility/LocationType,rdfs:label
