@@ -44,7 +44,6 @@ def read_meta_file(file_path):
     properties = []
     graph = []
 
-    dataset = Dataset()
     attribute_number = []
 
     for line in file.readlines():
@@ -78,10 +77,12 @@ def read_meta_file(file_path):
 
         res[key] = val
 
-    dataset.titles = {}
+    titles = {}
     for title_key in [k for k, v in res.items() if k.startswith('TITLE_')]:
-        dataset.titles[title_key.replace("TITLE_", "").lower()] = res[title_key]
-    dataset.title = dataset.titles[global_config.language]
+        titles[title_key.replace("TITLE_", "").lower()] = res[title_key]
+    title = titles[global_config.language]
+
+    dataset = Dataset(id=res['ID'], title=title, titles=titles)
 
     dataset.descriptions = {}
     for title_key in [k for k, v in res.items() if k.startswith('DESCRIPTION_')]:

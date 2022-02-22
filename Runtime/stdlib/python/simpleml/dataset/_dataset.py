@@ -24,7 +24,7 @@ from simpleml.dataset._stats import getStatistics
 class Dataset:
     def __init__(self, id, title: str, description: str = None, fileName: str = None,
                  hasHeader: bool = True, null_value="", separator=",", number_of_instances: int = None,
-                 titles: dict = {}, descriptions: dict = None, subjects: dict = {}, coordinate_system: int = 4326,
+                 titles: dict = {}, descriptions: dict = {}, subjects: dict = {}, coordinate_system: int = 4326,
                  lat_before_lon: bool = False):
         self.id = id
         self.title = title
@@ -36,15 +36,15 @@ class Dataset:
         self.separator = separator
         self.domain_model = None
         self.attribute_graph = {}  # attribute identifier to dictionary of RDF relations
-        self.data_types = {}  # attribute identifier to data type
-        self.attribute_labels = {}  # attribute identifier to label
-        self.stats = {}  # attribute identifier to statistics dictionary
+        self.data_types: dict[str, str] = {}  # attribute identifier to data type
+        self.attribute_labels: dict[str, str] = {}  # attribute identifier to label
+        self.stats: dict[str, dict] = {}  # attribute identifier to statistics dictionary
         self.data_sample = pd.DataFrame()
         self.sample_info = None
-        self.lon_lat_pairs = []  # list of attribute pairs which are latitude-longitude pairs
-        self.wkt_columns = []  # list of attribute identifiers for attributes with Well-Known-Text data
-        self.wkb_columns = []  # list of attribute identifiers for attributes with Well-Known-Binary data
-        self.attributes = []  # list of attribute identifiers
+        self.lon_lat_pairs: list[str] = []  # list of attribute pairs which are latitude-longitude pairs
+        self.wkt_columns: list[str] = []  # list of attribute identifiers for attributes with Well-Known-Text data
+        self.wkb_columns: list[str] = []  # list of attribute identifiers for attributes with Well-Known-Binary data
+        self.attributes: list[str] = []  # list of attribute identifiers
         self.sample_for_profile = None
         self.number_of_instances = number_of_instances
         self.titles = titles
@@ -52,16 +52,16 @@ class Dataset:
             titles["en"] = title
         self.descriptions = descriptions
         self.subjects = subjects
-        self.simple_data_types = {}  # attribute identifier to simple data type (numeric, ...)
+        self.simple_data_types: dict[str, dict] = {}  # attribute identifier to simple data type (numeric, ...)
         self.coordinate_system = coordinate_system
         self.lat_before_lon = lat_before_lon
-        self.parse_dates = []  # list of attribute identifiers of attributes that should be parsed as date
+        self.parse_dates: list[str] = []  # list of attribute identifiers of attributes that should be parsed as date
 
     def sample(self, nInstances: int) -> Dataset:
 
         copy = self.copy()
 
-        if copy.data is None:
+        if copy.data.empty:
             copy.readFile(copy.separator, number_of_lines=nInstances)
 
         copy.data = copy.data.head(n=nInstances)
@@ -76,7 +76,7 @@ class Dataset:
         if not isinstance(attributeIDs, list):
             attributeIDs = [attributeIDs]
 
-        if self.data is None:
+        if self.data.empty:
             self.readFile(self.separator)
 
         copy = self.copy()
@@ -97,7 +97,7 @@ class Dataset:
 
     def dropAttributes(self, attributeIDs: Any) -> Dataset:
 
-        if self.data is None:
+        if self.data.empty:
             self.readFile(self.separator)
 
         copy = self.copy()
@@ -117,7 +117,7 @@ class Dataset:
 
     def filterByAttribute(self, attribute: str, value) -> Dataset:
 
-        if self.data is None:
+        if self.data.empty:
             self.readFile(self.separator)
 
         copy = self.copy()
@@ -133,7 +133,7 @@ class Dataset:
 
     def filterInstances(self, filter_func) -> Dataset:
 
-        if self.data is None:
+        if self.data.empty:
             self.readFile(self.separator)
 
         copy = self.copy()
@@ -145,8 +145,8 @@ class Dataset:
         return copy
 
     def getStatistics(self) -> dict:
-        if self.stats is None:
-            if self.data is None:
+        if not self.stats:
+            if self.data.empty:
                 self.readFile(self.separator)
             self.stats = getStatistics(dataset=self)
 
@@ -154,7 +154,7 @@ class Dataset:
 
     def splitIntoTrainAndTest(self, trainRatio: float, randomState=None) -> Tuple[Dataset, Dataset]:
 
-        if self.data is None:
+        if self.data.empty:
             self.readFile(self.separator)
 
         from sklearn.model_selection import train_test_split
@@ -181,6 +181,9 @@ class Dataset:
             return None
 
     def readFile(self, sep, number_of_lines: int = None):
+
+        if not self.fileName:
+            raise ValueError('No filename given for file reading.')
 
         # TODO: Create global config file where we define the data folder path
         dirName = os.path.dirname(__file__)
@@ -276,21 +279,21 @@ class Dataset:
         return json.dumps(json_input)
 
     def getColumn(self, column_identifier):
-        if self.data is None:
+        if self.data.empty:
             self.readFile(self.separator)
         return self.data[column_identifier]
 
     def getColumnNames(self):
-        if self.data is None:
+        if self.data.empty:
             self.readFile(self.separator)
         return self.data.columns.values.tolist()
 
     def getRow(self, row_number):
-        if self.data is None:
+        if self.data.empty:
             self.readFile(self.separator)
         return Instance(self.data.iloc[[row_number]].squeeze())
 
-    def copy(self, basic_data_only: bool = False):
+    def copy(self, basic_data_only: bool = False) -> Dataset:
         copy = Dataset(id=self.id, title=self.title, subjects=self.subjects, description=self.description,
                        separator=self.separator,
                        null_value=self.null_value,
@@ -341,6 +344,7 @@ class Dataset:
         profile[config.attributes] = profile_attributes
 
         for attribute in self.attributes:
+
             profile_attributes[attribute] = {}
             profile_attributes[attribute][config.attribute_label] = self.attribute_labels[attribute]
             profile_attributes[attribute][config.type] = config.data_type_labels[self.data_types[attribute]]
@@ -467,9 +471,14 @@ def joinTwoDatasets(first_data: Dataset, second_data: Dataset, join_column_name_
         # TODO: how tpo join based on two column names
         # joint_data = first_data.data.append(second_data.data, sort=False)
         # print(joint_data.shape[0])
+
+        new_description = None
+        if first_data.description and second_data.description:
+            new_description = first_data.description + '-' + second_data.description
+
         dataset = Dataset(id=first_data.id + '-' + second_data.id, title=first_data.title + '-' + second_data.title,
                           fileName=None, hasHeader=first_data.hasHeader, separator=None,
-                          null_value='', description=first_data.description + '-' + second_data.description,
+                          null_value='', description=new_description,
                           subjects={'qw': 'qw'}, number_of_instances=joint_data.shape[0])
 
         new_attribute_types = {}

@@ -173,7 +173,7 @@ def addStatistics(dataset: Dataset):
             dataset.stats[attribute_identifier] = {}
 
         if evaluation_type not in dataset.stats[attribute_identifier]:
-            current_list = []
+            current_list: list(object) = []
 
             list_data_type = get_datatype_from_rdf(result["value"]["datatype"])
 
@@ -277,7 +277,7 @@ def addSpatialDistribution(dataset: Dataset):
     query = load_query("getDatasetSpatialDistribution", parameters)
     results = run_query(query)
 
-    areas = {}  # attribute identifier to count (instances in area)
+    areas: dict[str, dict] = {}  # attribute identifier to count (instances in area)
 
     for result in results["results"]["bindings"]:
         attribute_identifier = result["identifier"]["value"]
@@ -285,14 +285,7 @@ def addSpatialDistribution(dataset: Dataset):
         if attribute_identifier not in areas:
             areas[attribute_identifier] = {}
 
-        # if config.spatialValueDistribution not in dataset.stats[attribute_identifier]:
-        #    dataset.stats[attribute_identifier][config.spatialValueDistribution] = []
-
         areas[attribute_identifier][result["region"]["value"]] = result["instances"]["value"]
-
-        # dataset.stats[attribute_identifier][config.spatialValueDistribution].append(
-        #    {config.value_distribution_value: result["region"]["value"].rsplit('/', 1)[1],
-        #     config.value_distribution_number_of_instances: result["instances"]["value"]})
 
     for attribute_identifier in areas:
         dataset.stats[attribute_identifier][config.spatialValueDistribution] = {}
