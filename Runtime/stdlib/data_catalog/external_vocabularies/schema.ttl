@@ -1,5 +1,5 @@
 @prefix dct: <http://purl.org/dc/terms/> .
-@prefix ns1: <http://www.w3.org/2004/02/skos/core#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfa: <http://www.w3.org/ns/rdfa#> .
@@ -1836,7 +1836,7 @@ schema:LocalBusiness a rdfs:Class ;
     rdfs:comment "A particular physical business or branch of an organization. Examples of LocalBusiness include a restaurant, a particular branch of a restaurant chain, a branch of a bank, a medical practice, a club, a bowling alley, etc." ;
     rdfs:subClassOf schema:Organization,
         schema:Place ;
-    ns1:closeMatch <http://www.w3.org/ns/regorg#RegisteredOrganization> .
+    skos:closeMatch <http://www.w3.org/ns/regorg#RegisteredOrganization> .
 
 schema:LocationFeatureSpecification a rdfs:Class ;
     rdfs:label "LocationFeatureSpecification" ;
@@ -10294,7 +10294,7 @@ schema:yield a rdf:Property ;
         schema:Text ;
     rdfs:comment "The quantity that results by performing instructions. For example, a paper airplane, 10 personalized candles." .
 
-<http://www.w3.org/ns/regorg#RegisteredOrganization> ns1:closeMatch schema:LocalBusiness .
+<http://www.w3.org/ns/regorg#RegisteredOrganization> skos:closeMatch schema:LocalBusiness .
 
 <http://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#GLEIF> a schema:Organization ;
     rdfs:label "GLEIF" ;

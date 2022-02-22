@@ -6,7 +6,7 @@ PREFIX csvw: <http://www.w3.org/ns/csvw#>
 SELECT ?content  WHERE
 {
 {
-SELECT ?content
+SELECT (-1 AS ?rank) ?content
 WHERE {
 
     ?dataset a dcat:Dataset .
@@ -21,7 +21,7 @@ WHERE {
 }
 }
 UNION {
-SELECT ?content
+SELECT ?rank ?content
 WHERE {
 
     ?dataset a dcat:Dataset .
@@ -34,6 +34,6 @@ WHERE {
     ] .
 
 
+}
+}
 } ORDER BY ?rank
-}
-}

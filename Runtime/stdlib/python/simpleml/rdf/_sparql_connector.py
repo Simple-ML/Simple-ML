@@ -2,16 +2,18 @@ from __future__ import annotations
 
 import os
 
-from SPARQLWrapper import SPARQLWrapper, JSON
+from SPARQLWrapper import JSON, SPARQLWrapper
 
 sparqlURI = "***REMOVED***/sparqlJSON"
+# sparqlURI = "http://localhost:4567/sparqlJSON"
 
 
 def run_query(query_string):
     sparql = SPARQLWrapper(sparqlURI)
     sparql.setQuery(query_string)
     sparql.setReturnFormat(JSON)
-    results = sparql.query().convert()
+    results = sparql.query()
+    results = results.convert()
     return results
 
 
@@ -21,7 +23,9 @@ def load_query(file_name, parameters=None, filter_parameters=None):
     if filter_parameters is None:
         filter_parameters = []
 
-    file_name_absolute = os.path.join(os.path.dirname(__file__), "../queries/" + file_name + ".sparql")
+    file_name_absolute = os.path.join(
+        os.path.dirname(__file__), "../queries/" + file_name + ".sparql"
+    )
     with open(file_name_absolute) as file:
         query = file.read()
     for key, value in parameters.items():
