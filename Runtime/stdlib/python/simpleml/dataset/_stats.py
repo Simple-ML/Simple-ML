@@ -8,15 +8,13 @@ from datetime import datetime as datet
 import numpy as np
 import pandas as pd
 import pyproj
+import simpleml.util.global_configurations as global_config
+import simpleml.util.jsonLabels_util as config
 from shapely import geometry, ops, wkt
 from shapely.geometry import Point, LineString, Polygon
 
-import simpleml.util.global_configurations as global_config
-import simpleml.util.jsonLabels_util as config
 
-
-def addSpatialValueDistribution(geometry_object, polygon_count, areas, proj = None) -> dict:
-
+def addSpatialValueDistribution(geometry_object, polygon_count, areas, proj=None) -> dict:
     if not geometry_object:
         if None not in polygon_count:
             polygon_count[None] = 1
@@ -115,7 +113,6 @@ def createNumericValue(name, value, simple_type, data_type=None):
 
 
 def addGenericStatistics(column, column_stats, column_type):
-
     # TODO: for efficiency and to avoid number overflow: don't compute total sum
     totalSpecialCharacters = 0
     totalNumberOfTokens = 0
@@ -125,7 +122,7 @@ def addGenericStatistics(column, column_stats, column_type):
     totalCountOfValidValues = 0
 
     for val in column:
-        if pd.isna(val) or not val :
+        if pd.isna(val) or not val:
             continue
         totalCountOfValidValues += 1
         val_str = str(val)
@@ -257,11 +254,11 @@ def getStatistics(dataset) -> dict:
 
             if geo_type == Polygon:
                 # TODO: We could also add statistics on the polygon area by adding the next line and removing pass
-                #column_data = data[colName].apply(area)
+                # column_data = data[colName].apply(area)
                 pass
             elif geo_type == LineString:
                 # TODO: We could also add statistics on the linestring length by adding the next line and removing pass
-                #column_data = data[colName].apply(get_line_length)
+                # column_data = data[colName].apply(get_line_length)
                 pass
             else:
                 # TODO: No statistics for points
@@ -291,7 +288,7 @@ def getStatistics(dataset) -> dict:
         # deciles
         if simple_type in [config.type_numeric, config.type_datetime]:
             deciles, deciles_data_type = addQuantiles(column_data, colName, 10,
-                         transform_timestamp=transform_timestamp)
+                                                      transform_timestamp=transform_timestamp)
             stats[colName][config.deciles] = {config.type: config.type_list,
                                               config.id: config.deciles,
                                               config.list_data_type: config.data_type_labels[deciles_data_type],
@@ -299,7 +296,8 @@ def getStatistics(dataset) -> dict:
 
         # quartiles
         if simple_type in [config.type_numeric, config.type_datetime]:
-            quartiles, quartiles_data_type = addQuantiles(column_data, colName, 4, transform_timestamp=transform_timestamp)
+            quartiles, quartiles_data_type = addQuantiles(column_data, colName, 4,
+                                                          transform_timestamp=transform_timestamp)
             stats[colName][config.quartiles] = {config.type: config.type_box_plot,
                                                 config.id: config.quartiles,
                                                 config.list_data_type: config.data_type_labels[quartiles_data_type],
@@ -339,9 +337,9 @@ def getStatistics(dataset) -> dict:
 
         if simple_type in [config.type_numeric, config.type_datetime]:
             buckets, buckets_data_type = addHistograms(stats, column_data,
-                          colName,
-                          number_of_distinct_values,
-                          transform_timestamp=transform_timestamp)
+                                                       colName,
+                                                       number_of_distinct_values,
+                                                       transform_timestamp=transform_timestamp)
             stats[colName][config.histogram] = {config.type: config.type_histogram,
                                                 config.bucket_data_type: config.data_type_labels[buckets_data_type],
                                                 config.type_histogram_buckets: buckets}
