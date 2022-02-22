@@ -14,11 +14,26 @@ Int literals denote integers. They use the expected syntax. For example, the int
 
 Float literals denote floating point numbers. There are two ways to specify them:
 * **Decimal form**: One half can be written as `0.5`. Note that neither the integer part nor the decimal part can be omitted, so `.5` and `0.` are syntax errors.
-* **Scientific notation**: Writing very large or very small numbers in decimal notation can be cumbersome. In those cases, [scientific notation](https://en.wikipedia.org/wiki/Scientific_notation) is helpful. For example, one thousandth can be written in Simple-ML as `1.0e-3` or `1.0E-3`. When scientific notation is used, it is allowed to omit the decimal part, so this can be shortened to `1e-3` or `1E-3`.
+* **Scientific notation**: Writing very large or very small numbers in decimal notation can be cumbersome. In those cases, [scientific notation](https://en.wikipedia.org/wiki/Scientific_notation) is helpful. For example, one thousandth can be written in Simple-ML as `1.0e-3` or `1.0E-3`. You can read this as `1.0 × 10⁻³`. When scientific notation is used, it is allowed to omit the decimal part, so this can be shortened to `1e-3` or `1E-3`.
 
 ### String Literals
 
-String literals describe text. Their syntax is simply text enclosed by double quotes: `"Hello, world!"`. String literals can contain also contain line breaks:
+String literals describe text. Their syntax is simply text enclosed by double quotes: `"Hello, world!"`. Various special characters can be denoted with _escape sequences_:
+
+|Escape sequence|Meaning|
+|-|-|
+|`\b`|Backspace|
+|`\t`|Tab|
+|`\n`|New line|
+|`\f`|Form feed|
+|`\r`|Carriage return|
+|`\"`|Double quote|
+|`\'`|Single quote|
+|`\\`|Backslash|
+|`\{`|Opening curly brace (used for [template strings](#template-strings))|
+|`\uXXXX`|Unicode character, where `XXXX` is its hexadecimal index|
+
+String literals can contain also contain raw line breaks:
 
 ```
 "Hello,
@@ -30,7 +45,7 @@ In order to interpolate text with other computed values, use [template strings](
 
 ### Boolean Literals
 
-To work with logic, Simple-ML has the two boolean literals `false` and `true`.
+To work with truthiness, Simple-ML has the two boolean literals `false` and `true`.
 
 ### `null` Literal
 
@@ -42,11 +57,18 @@ Numbers can be negated using the unary `-` operator:
 * The integer negative three is `-3`.
 * The float negative three is `-3.0`.
 
-The usual arithmetic operations are also supported for integer, float and combinations of the two. Note that when either operand is a float, the whole expression is evaluated to a float.
+The usual arithmetic operations are also supported for integers, floats and combinations of the two. Note that when either operand is a float, the whole expression is evaluated to a float.
 * Addition: `0 + 5` (result is an integer)
 * Subtraction: `6 - 2.9` (result is a float)
 * Multiplication: `1.1 * 3` (result is a float)
 * Division: `1.0 / 4.2` (result is a float)
+
+Finally, two numbers can be compared, which results in a boolean. The integer `3` for example is less than the integer `5`. Simple-ML offers operators to do such checks for order:
+
+* Less than: `5 < 6`
+* Less than or equal: `1 <= 3`
+* Greater than or equal: `7 >= 7`
+* Greater than: `9 > 2`
 
 ## Working With Booleans
 
@@ -161,16 +183,6 @@ Simple-ML also has shorthand versions for negated equality checks which should b
 
 * Negated identity: `1 !== 2`
 * Negated structural equality: `1 != 2`
-
-## Checking for Order
-
-Some objects, like numbers, can naturally be brought into some order. The integer `3` for example is less than the integer `5`. Simple-ML offers operators to do such checks for order. They all return a boolean literal `true` if the check was positive and `false` if the check was negative:
-
-* Less than: `5 < 6`
-* Less than or equal: `1 <= 3`
-* Greater than or equal: `7 >= 7`
-* Greater than: `9 > 2`
-
 ## Template Strings
 
 **TODO**
