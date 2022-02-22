@@ -51,7 +51,13 @@ To work with truthiness, Simple-ML has the two boolean literals `false` and `tru
 
 To denote that a value is unknown or absent, use the literal `null`.
 
-## Working With Numbers
+## Operations
+
+Operations are special functions that can be applied to one or two expressions. Simple-ML has a fixed set of operations that cannot be extended. We distinguish between
+* prefix operations (general form `<operator> <operand>`), and
+* infix operations (general form `<left operand> <operator> <right operand>`).
+
+### Operations on Numbers
 
 Numbers can be negated using the unary `-` operator:
 * The integer negative three is `-3`.
@@ -70,7 +76,7 @@ Finally, two numbers can be compared, which results in a boolean. The integer `3
 * Greater than or equal: `7 >= 7`
 * Greater than: `9 > 2`
 
-## Working With Booleans
+### Logical Operations
 
 To work with logic, Simple-ML has the two boolean literals `false` and `true` as well as operations to work with them:
 * (Logical) negation (example `not a`): Output is `true` if and only if the operand is false:
@@ -92,6 +98,24 @@ To work with logic, Simple-ML has the two boolean literals `false` and `true` as
 ----------|-------|-----
 **false** | false | true
 **true**  | true  | true
+
+### Equality Checks
+
+There are two different types of equality in Simple-ML, _identity_ and _structural equality_. Identity checks if two objects are one and the same, whereas structural equality checks if two objects have the same structure and content. Using a real world example, two phones of the same type would be structurally equal but not identical. Both types of equality checks return a boolean literal `true` if the check was positive and `false` if the check was negative. The syntax for these operations is as follows:
+
+* Identity: `1 === 2`
+* Structural equality: `1 == 2`
+
+Simple-ML also has shorthand versions for negated equality checks which should be used instead of an explicit logical negation with the `not` operator:
+
+* Negated identity: `1 !== 2`
+* Negated structural equality: `1 != 2`
+
+### Elvis Operator
+
+The elvis operator `?:` (given its name because it resembles Elvis's haircut) is used to specify a default value that should be used instead if the left operand is `null`. This operator is not short-circuited, so both operand are always evaluated. In the following example the whole expression evaluates to `nullableExpression` if this value is not `null` and to `42` if it is:
+
+    nullableExpression ?: 42
 
 ## References
 
@@ -162,27 +186,9 @@ If an expression could be null it cannot be used as the receiver of a regular [m
 
     nullableExpression?.member1?.member2
 
-### Elvis operator
-
-The elvis operator `?:` (given its name because it resembles Elvis's haircut) is used to specify a default value that should be used instead in case an expression is null. In the following example the whole expression evaluated to `nullableExpression` if this value is not null and to `42` if it is:
-
-    nullableExpression ?: 42
-
 ## Indexed Access
 
 **TODO**
-
-## Checking for Equality
-
-There are two different types of equality in Simple-ML, _identity_ and _structural equality_. Identity checks if two objects are one and the same, whereas structural equality checks if two objects have the same structure and content. Using a real world example, two phones of the same type would be structurally equal but not identical. Both types of equality checks return a boolean literal `true` if the check was positive and `false` if the check was negative. The syntax for these operations is as follows:
-
-* Identity: `1 === 2`
-* Structural equality: `1 == 2`
-
-Simple-ML also has shorthand versions for negated equality checks which should be used instead of an explicit logical negation with the `not` operator:
-
-* Negated identity: `1 !== 2`
-* Negated structural equality: `1 != 2`
 ## Template Strings
 
 **TODO**
@@ -197,13 +203,14 @@ Simple-ML also has shorthand versions for negated equality checks which should b
 
 **TODO**
 
-## Operator precedence
+## Precedence
 
 We all know that `2 + 3 * 7` is 23 and not 35. The reason is that the `*` operator has a higher precedence than the `+` operator and is therefore evaluated first. These precedence rules are necessary for all types of expressions listed above and shown in the following list. The higher up an expression is in the list, the higher its precedence. Expressions listed beside each other have the same precedence and are evaluated from left to right:
 
 * **HIGHER PRECEDENCE**
 * `()` (parentheses around an expression)
-* `1` ([integer literals](#working-with-numbers)), `1.0` ([float literals](#working-with-numbers)), `"a"` ([string literals](#working-with-text)), `true`/`false` ([boolean literals](#working-with-logic)), `someName` ([references](#references)), `null` ([null literal](#working-with-null)), `"age: {{ age }}"` (template strings)
+* `1` ([integer literals](#int-literals)), `1.0` ([float literals](#float-literals)), `"a"` ([string literals](#string-literals)), `true`/`false` ([boolean literals](#boolean-literals)), `null` ([null literal](#null-literal)), `someName` ([references](#references)), `"age: {{ age }}"` (template strings)
+* **TODO: Update links below**
 * `()` ([calls](#calls)), `.` ([member accesses](#member-accesses)), `?.` ([safe member accesses](#working-with-null)), `[]` (indexed access)
 * `-` (unary, [arithmetic negations](#working-with-numbers))
 * `?:` ([Elvis operators](#working-with-null))
