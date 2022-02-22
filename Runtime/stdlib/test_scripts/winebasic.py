@@ -4,6 +4,7 @@ from simpleml.util import exportDictionaryAsJSON
 
 # Workflow steps ---------------------------------------------------------------
 
+
 def exampleWorkflow():
     dataset = loadDataset("WhiteWineQuality")
     print(exportDictionaryAsJSON(dataset.getProfile()))
@@ -13,7 +14,7 @@ def exampleWorkflow():
     X_test = test.dropAttributes("quality")
     y_train = train.keepAttributes("quality")
 
-    #DecisionTreeClassifier().fit(X_train, y_train)
+    # DecisionTreeClassifier().fit(X_train, y_train)
 
     # compute statistics from the dataset
     print(exportDictionaryAsJSON(X_train.getProfile()))
@@ -21,7 +22,5 @@ def exampleWorkflow():
     print(exportDictionaryAsJSON(X_test.getProfile()))
 
 
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     exampleWorkflow()

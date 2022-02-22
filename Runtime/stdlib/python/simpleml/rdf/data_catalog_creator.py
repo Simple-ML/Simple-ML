@@ -20,7 +20,9 @@ for filename in os.listdir(meta_files_folder):
     filepath = os.path.join(meta_files_folder, filename)
     dataset = read_meta_file(filepath)
 
-    output_filepath = os.path.join(catalog_files_folder, filename.replace(".tsv", ".ttl"))
+    output_filepath = os.path.join(
+        catalog_files_folder, filename.replace(".tsv", ".ttl")
+    )
 
     print(exportDictionaryAsJSON(dataset.getProfile()))
     exportStatisticsAsRDF(dataset, filename=output_filepath)

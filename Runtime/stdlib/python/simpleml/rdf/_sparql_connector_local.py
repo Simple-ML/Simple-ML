@@ -34,7 +34,7 @@ for folder in folders:
         filename = os.path.join(folderPath, filename)
 
         format = "ttl"
-        if (folder != 'datasets'):
+        if folder != "datasets":
             format = guess_format(filename)
 
         graph.parse(filename, format=format)
@@ -59,8 +59,9 @@ def load_query(file_name, parameters=None, filter_parameters=None):
     if filter_parameters is None:
         filter_parameters = []
 
-    file_name_absolute = os.path.join(os.path.dirname(
-        __file__), "../queries/" + file_name + ".sparql")
+    file_name_absolute = os.path.join(
+        os.path.dirname(__file__), "../queries/" + file_name + ".sparql"
+    )
     with open(file_name_absolute) as file:
         query = file.read()
     for key, value in parameters.items():

@@ -4,8 +4,8 @@ from re import sub
 
 import simpleml.rdf._rdf_labels as rdf_config
 import simpleml.util.jsonLabels_util as config
-from rdflib import Graph, Literal, RDF, Namespace, URIRef
-from rdflib.namespace import XSD, DCTERMS, CSVW, DCAT
+from rdflib import RDF, Graph, Literal, Namespace, URIRef
+from rdflib.namespace import CSVW, DCAT, DCTERMS, XSD
 from simpleml.dataset import Dataset
 from simpleml.rdf._sparql_connector_local import get_graph
 
@@ -17,18 +17,28 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
     g.namespaces = get_graph().namespaces  # get all namespaces
 
     for x in g.namespaces():
-        if not x[0].startswith("default"):  # in external vocabularies, namespaces are sometimes the default
+        if not x[0].startswith(
+            "default"
+        ):  # in external vocabularies, namespaces are sometimes the default
             g.bind(x[0], x[1])
 
     SML = Namespace("https://simple-ml.de/resource/")
     SEAS = Namespace("https://w3id.org/seas/")
 
     rdf_dataset = SML[dataset.id]
-    g.add((SML['simple-ml'], DCAT.dataset, rdf_dataset))
+    g.add((SML["simple-ml"], DCAT.dataset, rdf_dataset))
     g.add((rdf_dataset, RDF.type, DCAT.Dataset))
     g.add((rdf_dataset, DCTERMS.identifier, Literal(dataset.id)))
-    g.add((rdf_dataset, SML.numberOfInstances, Literal(dataset.number_of_instances, datatype=XSD.nonNegativeInteger)))
-    g.add((rdf_dataset, SML.creatorId, Literal(0, datatype=XSD.nonNegativeInteger)))  # TODO: is this required?
+    g.add(
+        (
+            rdf_dataset,
+            SML.numberOfInstances,
+            Literal(dataset.number_of_instances, datatype=XSD.nonNegativeInteger),
+        )
+    )
+    g.add(
+        (rdf_dataset, SML.creatorId, Literal(0, datatype=XSD.nonNegativeInteger))
+    )  # TODO: is this required?
 
     for lang, title in dataset.titles.items():
         g.add((rdf_dataset, DCTERMS.title, Literal(title, lang)))
@@ -41,17 +51,29 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
             g.add((rdf_dataset, DCTERMS.subject, Literal(subject, lang)))
 
     if dataset.lat_before_lon:
-        g.add((rdf_dataset, SML.latBeforeLon, Literal(dataset.lat_before_lon, datatype=XSD.boolean)))
+        g.add(
+            (
+                rdf_dataset,
+                SML.latBeforeLon,
+                Literal(dataset.lat_before_lon, datatype=XSD.boolean),
+            )
+        )
 
     if dataset.coordinate_system:
-        g.add((rdf_dataset, SML.coordinateSystem, Literal(dataset.coordinate_system, datatype=XSD.nonNegativeInteger)))
+        g.add(
+            (
+                rdf_dataset,
+                SML.coordinateSystem,
+                Literal(dataset.coordinate_system, datatype=XSD.nonNegativeInteger),
+            )
+        )
 
     # file
     rdf_file = SML[dataset.id + "File"]
     g.add((rdf_dataset, SML.hasFile, rdf_file))
     g.add((rdf_file, RDF.type, SML.TextFile))
     g.add((rdf_file, SML.fileLocation, Literal(dataset.fileName)))
-    g.add((rdf_file, DCTERMS['format'], Literal("text/comma-separated-values")))
+    g.add((rdf_file, DCTERMS["format"], Literal("text/comma-separated-values")))
     g.add((rdf_file, CSVW.separator, Literal(dataset.separator)))
     g.add((rdf_file, CSVW.header, Literal(dataset.hasHeader, datatype=XSD.boolean)))
     g.add((rdf_file, CSVW.null, Literal(dataset.null_value)))
@@ -65,44 +87,109 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
     rdf_sample_header = SML[dataset.id + "SampleHeader"]
     g.add((rdf_sample, SML.hasHeader, rdf_sample_header))
     g.add((rdf_sample_header, RDF.type, SML.DatasetSampleLine))
-    g.add((rdf_sample_header, SML.hasContent,
-           Literal('\t'.join(map(str, dataset.attribute_labels.values())), datatype=XSD.string)))
+    g.add(
+        (
+            rdf_sample_header,
+            SML.hasContent,
+            Literal(
+                "\t".join(map(str, dataset.attribute_labels.values())),
+                datatype=XSD.string,
+            ),
+        )
+    )
 
     for line_number in range(0, len(dataset.data_sample)):
-        sample_line_content = dataset.data_sample.loc[[line_number]].to_csv(header=None, index=False, sep='\t',
-                                                                            na_rep='').strip()
+        sample_line_content = (
+            dataset.data_sample.loc[[line_number]]
+            .to_csv(header=None, index=False, sep="\t", na_rep="")
+            .strip()
+        )
         # fillna(dataset.null_value)
 
         rdf_sample_line = SML[dataset.id + "SampleLine" + str(line_number)]
         g.add((rdf_sample, SML.hasLine, rdf_sample_line))
         g.add((rdf_sample_line, RDF.type, SML.DatasetSampleLine))
-        g.add((rdf_sample_line, SML.hasContent, Literal(sample_line_content, datatype=XSD.string)))
+        g.add(
+            (
+                rdf_sample_line,
+                SML.hasContent,
+                Literal(sample_line_content, datatype=XSD.string),
+            )
+        )
         g.add((rdf_sample_line, SML.rank, Literal(line_number, datatype=XSD.integer)))
 
     # attributes
     for column_index, attribute in enumerate(dataset.attributes):
 
         attribute_val = profile[config.attributes][attribute]
-        rdf_attribute = SML[dataset.id + "Attribute" + urify(attribute)[0].upper() + urify(attribute)[1:]]
+        rdf_attribute = SML[
+            dataset.id
+            + "Attribute"
+            + urify(attribute)[0].upper()
+            + urify(attribute)[1:]
+        ]
 
         g.add((rdf_dataset, SML.hasAttribute, rdf_attribute))
         g.add((rdf_attribute, RDF.type, SML.Attribute))
         g.add((rdf_attribute, DCTERMS.identifier, Literal(attribute)))
-        g.add((rdf_attribute, SML.columnIndex, Literal(column_index, datatype=XSD.nonNegativeInteger)))
+        g.add(
+            (
+                rdf_attribute,
+                SML.columnIndex,
+                Literal(column_index, datatype=XSD.nonNegativeInteger),
+            )
+        )
 
         # semantic graph
         if attribute in dataset.attribute_graph:
-            g.add((rdf_attribute, SML.valueType, URIRef(dataset.attribute_graph[attribute]["value_type"])))
-            g.add((rdf_attribute, SML.mapsToProperty, dataset.attribute_graph[attribute]["property"]))
-            g.add((rdf_attribute, SML.mapsToDomain, URIRef(dataset.attribute_graph[attribute]["resource"])))
-            g.add((URIRef(dataset.attribute_graph[attribute]["resource"]), SML.mapsTo,
-                   dataset.attribute_graph[attribute]["class"]))
-            g.add((URIRef(dataset.attribute_graph[attribute]["resource"]), RDF.type, SML.ClassInstance))
+            g.add(
+                (
+                    rdf_attribute,
+                    SML.valueType,
+                    URIRef(dataset.attribute_graph[attribute]["value_type"]),
+                )
+            )
+            g.add(
+                (
+                    rdf_attribute,
+                    SML.mapsToProperty,
+                    dataset.attribute_graph[attribute]["property"],
+                )
+            )
+            g.add(
+                (
+                    rdf_attribute,
+                    SML.mapsToDomain,
+                    URIRef(dataset.attribute_graph[attribute]["resource"]),
+                )
+            )
+            g.add(
+                (
+                    URIRef(dataset.attribute_graph[attribute]["resource"]),
+                    SML.mapsTo,
+                    dataset.attribute_graph[attribute]["class"],
+                )
+            )
+            g.add(
+                (
+                    URIRef(dataset.attribute_graph[attribute]["resource"]),
+                    RDF.type,
+                    SML.ClassInstance,
+                )
+            )
 
             # add classInstance Property
             if "resource_rank" in dataset.attribute_graph[attribute]:
-                g.add((URIRef(dataset.attribute_graph[attribute]["resource"]), SML.classInstance,
-                       Literal(dataset.attribute_graph[attribute]["resource_rank"], datatype=XSD.integer)))
+                g.add(
+                    (
+                        URIRef(dataset.attribute_graph[attribute]["resource"]),
+                        SML.classInstance,
+                        Literal(
+                            dataset.attribute_graph[attribute]["resource_rank"],
+                            datatype=XSD.integer,
+                        ),
+                    )
+                )
 
         for key, value in attribute_val["statistics"].items():
             if config.values in value:
@@ -110,10 +197,16 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
 
                 for sub_value in value[config.values]:
                     rdf_attribute_stat = SML[
-                        dataset.id + "Attribute" + urifyCapitalised(attribute) + capitalise(value[config.id]) + str(
-                            rank)]
+                        dataset.id
+                        + "Attribute"
+                        + urifyCapitalised(attribute)
+                        + capitalise(value[config.id])
+                        + str(rank)
+                    ]
 
-                    evaluation_type = "Distribution" + capitalise(value[config.id]) + "Evaluation"
+                    evaluation_type = (
+                        "Distribution" + capitalise(value[config.id]) + "Evaluation"
+                    )
 
                     # some evaluation types are defined in SEAS, others in SML
                     if capitalise(value[config.id]) in ["Quartile", "Decile"]:
@@ -122,10 +215,19 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
                         evaluation_type = SML[evaluation_type]
 
                     g.add((rdf_attribute_stat, RDF.type, evaluation_type))
-                    g.add((rdf_attribute_stat, SEAS.evaluatedValue,
-                           Literal(sub_value, datatype=rdf_config.xsd_data_types[value[config.list_data_type]])))
-                    g.add((rdf_attribute_stat, SEAS.rank,
-                           Literal(rank)))
+                    g.add(
+                        (
+                            rdf_attribute_stat,
+                            SEAS.evaluatedValue,
+                            Literal(
+                                sub_value,
+                                datatype=rdf_config.xsd_data_types[
+                                    value[config.list_data_type]
+                                ],
+                            ),
+                        )
+                    )
+                    g.add((rdf_attribute_stat, SEAS.rank, Literal(rank)))
                     g.add((rdf_attribute, SEAS.evaluation, rdf_attribute_stat))
                     rank += 1
             elif config.type_histogram_buckets in value:
@@ -133,58 +235,154 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
                 bucket_rank = 0
                 for bucket in value[config.type_histogram_buckets]:
                     rdf_attribute_stat = SML[
-                        dataset.id + "Attribute" + urifyCapitalised(attribute) + "Histogram" + str(
-                            bucket_rank)]
+                        dataset.id
+                        + "Attribute"
+                        + urifyCapitalised(attribute)
+                        + "Histogram"
+                        + str(bucket_rank)
+                    ]
                     g.add((rdf_attribute, SEAS.evaluation, rdf_attribute_stat))
-                    g.add((rdf_attribute_stat, RDF.type,
-                           SML["DistributionHistogramEvaluation"]))
-                    g.add((rdf_attribute_stat, SML.bucketMinimum,
-                           Literal(bucket[config.bucketMinimum], datatype=rdf_config.xsd_data_types[bucket_data_type])))
-                    g.add((rdf_attribute_stat, SML.bucketMaximum,
-                           Literal(bucket[config.bucketMaximum], datatype=rdf_config.xsd_data_types[bucket_data_type])))
-                    g.add((rdf_attribute_stat, SML.instancesInBucket,
-                           Literal(bucket[config.bucketValue], datatype=XSD.nonNegativeInteger)))
+                    g.add(
+                        (
+                            rdf_attribute_stat,
+                            RDF.type,
+                            SML["DistributionHistogramEvaluation"],
+                        )
+                    )
+                    g.add(
+                        (
+                            rdf_attribute_stat,
+                            SML.bucketMinimum,
+                            Literal(
+                                bucket[config.bucketMinimum],
+                                datatype=rdf_config.xsd_data_types[bucket_data_type],
+                            ),
+                        )
+                    )
+                    g.add(
+                        (
+                            rdf_attribute_stat,
+                            SML.bucketMaximum,
+                            Literal(
+                                bucket[config.bucketMaximum],
+                                datatype=rdf_config.xsd_data_types[bucket_data_type],
+                            ),
+                        )
+                    )
+                    g.add(
+                        (
+                            rdf_attribute_stat,
+                            SML.instancesInBucket,
+                            Literal(
+                                bucket[config.bucketValue],
+                                datatype=XSD.nonNegativeInteger,
+                            ),
+                        )
+                    )
                     bucket_rank += 1
             elif config.type_bar_chart_bars in value:
                 value_rank = 0
                 for bar_value in value[config.type_bar_chart_bars]:
                     rdf_attribute_stat = SML[
-                        dataset.id + "Attribute" + urifyCapitalised(attribute) + "ValueDistributionValue" + str(
-                            value_rank)]
-                    g.add((rdf_attribute, SEAS.valueDistributionValue, rdf_attribute_stat))
-                    g.add((rdf_attribute_stat, SML.numberOfInstancesOfValue,
-                           Literal(bar_value[config.number_of_instances], datatype=XSD.nonNegativeInteger)))
-                    g.add((rdf_attribute_stat, SML.instancesOfValue,
-                           Literal(bar_value[config.value])))
+                        dataset.id
+                        + "Attribute"
+                        + urifyCapitalised(attribute)
+                        + "ValueDistributionValue"
+                        + str(value_rank)
+                    ]
+                    g.add(
+                        (rdf_attribute, SEAS.valueDistributionValue, rdf_attribute_stat)
+                    )
+                    g.add(
+                        (
+                            rdf_attribute_stat,
+                            SML.numberOfInstancesOfValue,
+                            Literal(
+                                bar_value[config.number_of_instances],
+                                datatype=XSD.nonNegativeInteger,
+                            ),
+                        )
+                    )
+                    g.add(
+                        (
+                            rdf_attribute_stat,
+                            SML.instancesOfValue,
+                            Literal(bar_value[config.value]),
+                        )
+                    )
                     g.add((rdf_attribute_stat, RDF.type, SML.ValueDistributionValue))
                     value_rank += 1
             elif config.type_spatial_distribution_areas in value:
                 rdf_attribute_stat = SML[
-                    dataset.id + "Attribute" + urifyCapitalised(attribute) + "SpatialDistribution"]
+                    dataset.id
+                    + "Attribute"
+                    + urifyCapitalised(attribute)
+                    + "SpatialDistribution"
+                ]
                 g.add((rdf_attribute, SML.hasSpatialDistribution, rdf_attribute_stat))
                 g.add((rdf_attribute_stat, RDF.type, SML.SpatialDistribution))
 
-                for area, count in value[config.type_spatial_distribution_areas].items():
+                for area, count in value[
+                    config.type_spatial_distribution_areas
+                ].items():
                     rdf_attribute_sub_stat = SML[
-                        dataset.id + "Attribute" + urifyCapitalised(
-                            attribute) + "SpatialDistributionLocation" + urifyCapitalised(area)]
-                    g.add((rdf_attribute_stat, SML.spatialDistributionValue, rdf_attribute_sub_stat))
-                    g.add((rdf_attribute_sub_stat, RDF.type, SML.SpatialDistributionValue))
-                    g.add((rdf_attribute_sub_stat, SML.instancesOfRegion, Literal(area)))
-                    g.add((rdf_attribute_sub_stat, SML.numberOfInstancesInRegion,
-                           Literal(count, datatype=XSD.nonNegativeInteger)))
+                        dataset.id
+                        + "Attribute"
+                        + urifyCapitalised(attribute)
+                        + "SpatialDistributionLocation"
+                        + urifyCapitalised(area)
+                    ]
+                    g.add(
+                        (
+                            rdf_attribute_stat,
+                            SML.spatialDistributionValue,
+                            rdf_attribute_sub_stat,
+                        )
+                    )
+                    g.add(
+                        (rdf_attribute_sub_stat, RDF.type, SML.SpatialDistributionValue)
+                    )
+                    g.add(
+                        (rdf_attribute_sub_stat, SML.instancesOfRegion, Literal(area))
+                    )
+                    g.add(
+                        (
+                            rdf_attribute_sub_stat,
+                            SML.numberOfInstancesInRegion,
+                            Literal(count, datatype=XSD.nonNegativeInteger),
+                        )
+                    )
 
             else:
                 rdf_attribute_stat = SML[
-                    dataset.id + "Attribute" + urifyCapitalised(attribute) + capitalise(value[config.id])]
+                    dataset.id
+                    + "Attribute"
+                    + urifyCapitalised(attribute)
+                    + capitalise(value[config.id])
+                ]
                 g.add((rdf_attribute, SEAS.evaluation, rdf_attribute_stat))
-                g.add((rdf_attribute_stat, SEAS.evaluatedValue,
-                       Literal(value[config.value], datatype=rdf_config.xsd_data_types[value['data_type']])))
+                g.add(
+                    (
+                        rdf_attribute_stat,
+                        SEAS.evaluatedValue,
+                        Literal(
+                            value[config.value],
+                            datatype=rdf_config.xsd_data_types[value["data_type"]],
+                        ),
+                    )
+                )
 
                 # some evaluation types are defined in SEAS, others in SML
-                evaluation_type = "Distribution" + capitalise(value[config.id]) + "Evaluation"
-                if capitalise(value[config.id]) in ["Median", "Mean", "Maximum", "Minimum",
-                                                    "StandardDeviation"]:
+                evaluation_type = (
+                    "Distribution" + capitalise(value[config.id]) + "Evaluation"
+                )
+                if capitalise(value[config.id]) in [
+                    "Median",
+                    "Mean",
+                    "Maximum",
+                    "Minimum",
+                    "StandardDeviation",
+                ]:
                     evaluation_type = SEAS[evaluation_type]
                 else:
                     evaluation_type = SML[evaluation_type]
@@ -196,7 +394,10 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
             g.add((s, p, o))
 
     if filename:
-        g.serialize(filename, format="turtle", )
+        g.serialize(
+            filename,
+            format="turtle",
+        )
     else:
         return g.serialize(format="turtle")  # .decode("utf-8")
 

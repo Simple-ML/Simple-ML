@@ -1,8 +1,8 @@
-data_folder_name = '../../../data/'
+data_folder_name = "../../../data/"
 
-areas_file_path = '../../../data/ni_areas.tsv'
+areas_file_path = "../../../data/ni_areas.tsv"
 
-language = 'en'
+language = "en"
 
 local_rdf = False
-#use_hdt = False
+# use_hdt = False

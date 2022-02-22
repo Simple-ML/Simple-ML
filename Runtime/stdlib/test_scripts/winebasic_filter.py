@@ -1,6 +1,5 @@
 # Imports ----------------------------------------------------------------------
-from simpleml.dataset import loadDataset, Instance
-
+from simpleml.dataset import Instance, loadDataset
 
 # Workflow steps ---------------------------------------------------------------
 
@@ -16,5 +15,5 @@ def exampleWorkflow():
     print("Example quality value:", dataset_filtered.getRow(3).getValue("quality"))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     exampleWorkflow()

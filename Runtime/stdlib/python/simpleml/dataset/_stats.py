@@ -11,7 +11,7 @@ import pyproj
 import simpleml.util.global_configurations as global_config
 import simpleml.util.jsonLabels_util as config
 from shapely import geometry, ops, wkt
-from shapely.geometry import Point, LineString, Polygon
+from shapely.geometry import LineString, Point, Polygon
 
 
 def addSpatialValueDistribution(geometry_object, polygon_count, areas, proj=None):
@@ -29,7 +29,7 @@ def addSpatialValueDistribution(geometry_object, polygon_count, areas, proj=None
 
     for polygon_id, polygonObject in areas.items():
         if transformedGeometryObject.within(polygonObject):
-            if (polygon_id not in polygon_count):
+            if polygon_id not in polygon_count:
                 polygon_count[polygon_id] = 1
             else:
                 polygon_count[polygon_id] = polygon_count[polygon_id] + 1
@@ -39,21 +39,29 @@ def addValueDistribution(stats, column, name):
     value_distribution = []
 
     for value, count in column.value_counts().head(10).iteritems():
-        value_distribution.append({config.value_distribution_value: value,
-                                   config.value_distribution_number_of_instances: int(count)})
+        value_distribution.append(
+            {
+                config.value_distribution_value: value,
+                config.value_distribution_number_of_instances: int(count),
+            }
+        )
 
     return value_distribution
 
 
-def addHistograms(stats, column, name, number_of_unique_values, transform_timestamp=False):
+def addHistograms(
+    stats, column, name, number_of_unique_values, transform_timestamp=False
+):
     count = []
     division = []
     column = column.dropna()
 
     count, division = np.histogram(column, bins=min(10, number_of_unique_values))
 
-    histograms = [{config.bucketMinimum: i, config.bucketValue: int(
-        j)} for i, j in zip(division, count)]
+    histograms = [
+        {config.bucketMinimum: i, config.bucketValue: int(j)}
+        for i, j in zip(division, count)
+    ]
 
     # add bucket maximum from the column maximum and the bucket minimum of the next bucket
     bucket_maximum = stats[name][config.maximum][config.type_numeric_value]
@@ -67,10 +75,12 @@ def addHistograms(stats, column, name, number_of_unique_values, transform_timest
         for bucket in histograms:
             i += 1
             bucket[config.bucketMinimum] = get_pd_timestamp(
-                bucket[config.bucketMinimum])
+                bucket[config.bucketMinimum]
+            )
             if i < len(histograms):  # the last bucket maximum is date already
                 bucket[config.bucketMaximum] = get_pd_timestamp(
-                    bucket[config.bucketMaximum])
+                    bucket[config.bucketMaximum]
+                )
 
     bucket_data_type = type(histograms[0][config.bucketMaximum])
 
@@ -78,15 +88,18 @@ def addHistograms(stats, column, name, number_of_unique_values, transform_timest
 
 
 def addQuantiles(column, name, bins, transform_timestamp=False):
-    quantiles = pd.qcut(column, bins, retbins=True,
-                        labels=False, duplicates='drop')[1].tolist()
+    quantiles = pd.qcut(column, bins, retbins=True, labels=False, duplicates="drop")[
+        1
+    ].tolist()
     if transform_timestamp:
         quantiles = [get_pd_timestamp(item) for item in quantiles]
 
     return quantiles, type(quantiles[0])
 
 
-def addNumericValue(column_stats, name, value, data_type=None, transform_timestamp=False):
+def addNumericValue(
+    column_stats, name, value, data_type=None, transform_timestamp=False
+):
     simple_type = config.type_numeric
 
     if transform_timestamp:
@@ -94,8 +107,7 @@ def addNumericValue(column_stats, name, value, data_type=None, transform_timesta
         data_type = config.type_datetime
         simple_type = config.type_datetime
 
-    column_stats[name] = createNumericValue(
-        name, value, simple_type, data_type)
+    column_stats[name] = createNumericValue(name, value, simple_type, data_type)
 
 
 def createNumericValue(name, value, simple_type, data_type=None):
@@ -106,10 +118,12 @@ def createNumericValue(name, value, simple_type, data_type=None):
     if type(value).__module__ == np.__name__:
         value = value.item()
 
-    return {config.type: simple_type,
-            config.type_numeric_data_type: data_type,
-            config.type_numeric_value: value,
-            config.i18n_id: name}
+    return {
+        config.type: simple_type,
+        config.type_numeric_data_type: data_type,
+        config.type_numeric_value: value,
+        config.i18n_id: name,
+    }
 
 
 def addGenericStatistics(column, column_stats, column_type):
@@ -130,33 +144,48 @@ def addGenericStatistics(column, column_stats, column_type):
             if not character.isalnum():
                 if character != " ":
                     totalSpecialCharacters += 1
-        totalNumberOfTokens += len(re.findall(r'\w+', val_str))
+        totalNumberOfTokens += len(re.findall(r"\w+", val_str))
         if val_str and val_str[0].isupper():
             totalNumberOfCapitalisedValues += 1
         totalNumberOfCharacters += len(val_str)
         totalNumberOfDigits += len(re.sub("[^0-9]", "", val_str))
 
-    if (totalCountOfValidValues == 0):
+    if totalCountOfValidValues == 0:
         totalCountOfValidValues = 1
 
     if column_type == config.type_string:
-        addNumericValue(column_stats, config.averageNumberOfSpecialCharacters,
-                        totalSpecialCharacters / totalCountOfValidValues)
+        addNumericValue(
+            column_stats,
+            config.averageNumberOfSpecialCharacters,
+            totalSpecialCharacters / totalCountOfValidValues,
+        )
     if column_type == config.type_string:
-        addNumericValue(column_stats, config.averageNumberOfTokens,
-                        totalNumberOfTokens / totalCountOfValidValues)
+        addNumericValue(
+            column_stats,
+            config.averageNumberOfTokens,
+            totalNumberOfTokens / totalCountOfValidValues,
+        )
     if column_type == config.type_string:
-        addNumericValue(column_stats, config.averageNumberOfCapitalisedValues,
-                        totalNumberOfCapitalisedValues / totalCountOfValidValues)
+        addNumericValue(
+            column_stats,
+            config.averageNumberOfCapitalisedValues,
+            totalNumberOfCapitalisedValues / totalCountOfValidValues,
+        )
     if column_type == config.type_string:
-        addNumericValue(column_stats, config.averageNumberOfCharacters,
-                        totalNumberOfCharacters / totalCountOfValidValues)
-    addNumericValue(column_stats, config.averageNumberOfDigits,
-                    totalNumberOfDigits / totalCountOfValidValues)
+        addNumericValue(
+            column_stats,
+            config.averageNumberOfCharacters,
+            totalNumberOfCharacters / totalCountOfValidValues,
+        )
+    addNumericValue(
+        column_stats,
+        config.averageNumberOfDigits,
+        totalNumberOfDigits / totalCountOfValidValues,
+    )
 
 
 def countAverageNumberOfCapitalisedValues(column):
-    totalCapitalisedValues = column.str.findall(r'[A-Z]').str.len().sum()
+    totalCapitalisedValues = column.str.findall(r"[A-Z]").str.len().sum()
     avgCapitalisedValues = totalCapitalisedValues / column.shape[0]
 
     return float(avgCapitalisedValues)
@@ -194,7 +223,7 @@ def get_timestamp(value):
 
 
 def get_pd_timestamp(datetime):
-    return pd.Timestamp(datetime, unit='s')
+    return pd.Timestamp(datetime, unit="s")
 
 
 def get_datetime_string(datetime):
@@ -227,29 +256,30 @@ def getStatistics(dataset):
 
             if not areas:
                 proj = pyproj.Transformer.from_crs(
-                    dataset.coordinate_system, 4326, always_xy=True).transform
+                    dataset.coordinate_system, 4326, always_xy=True
+                ).transform
                 dirName = os.path.dirname(__file__)
-                dataFilePath = os.path.join(
-                    dirName, global_config.areas_file_path)
-                areas_df = pd.read_csv(dataFilePath, sep='\t')
+                dataFilePath = os.path.join(dirName, global_config.areas_file_path)
+                areas_df = pd.read_csv(dataFilePath, sep="\t")
 
                 areas = {}
                 for indexArea, area in areas_df.iterrows():
-                    polygonArea = area['polygon']
+                    polygonArea = area["polygon"]
                     polygonWKT = wkt.loads(polygonArea)
                     polygonObject = geometry.Polygon(polygonWKT)
-                    areas[area['id']] = polygonObject
+                    areas[area["id"]] = polygonObject
 
             for geometry_object in data[colName]:
                 if type(geometry_object) == Polygon:
                     geo_type = Polygon
                 elif type(geometry_object) == LineString and geo_type == Point:
                     geo_type = LineString
-                addSpatialValueDistribution(
-                    geometry_object, polygon_count, areas, proj)
+                addSpatialValueDistribution(geometry_object, polygon_count, areas, proj)
 
-            stats[colName][config.spatialValueDistribution] = {config.type: config.type_spatial_distribution,
-                                                               config.type_spatial_distribution_areas: polygon_count}
+            stats[colName][config.spatialValueDistribution] = {
+                config.type: config.type_spatial_distribution,
+                config.type_spatial_distribution_areas: polygon_count,
+            }
 
             if geo_type == Polygon:
                 # TODO: We could also add statistics on the polygon area by adding the next line and removing pass
@@ -270,37 +300,54 @@ def getStatistics(dataset):
 
         column = data[colName]
 
-        addNumericValue(stats[colName], config.numberOfNullValues, int(
-            column.isnull().sum()))
         addNumericValue(
-            stats[colName], config.numberOfValidValues, int(totalRecords))
-        addNumericValue(stats[colName], config.numberOfInvalidValues, int(
-            data[colName].isna().sum()))
-        addNumericValue(stats[colName], config.numberOfValues, int(
-            totalRecords), data_type=config.type_integer)
-        addNumericValue(stats[colName], config.numberOfValidNonNullValues, int(data[colName].count()),
-                        data_type=config.type_integer)
+            stats[colName], config.numberOfNullValues, int(column.isnull().sum())
+        )
+        addNumericValue(stats[colName], config.numberOfValidValues, int(totalRecords))
+        addNumericValue(
+            stats[colName],
+            config.numberOfInvalidValues,
+            int(data[colName].isna().sum()),
+        )
+        addNumericValue(
+            stats[colName],
+            config.numberOfValues,
+            int(totalRecords),
+            data_type=config.type_integer,
+        )
+        addNumericValue(
+            stats[colName],
+            config.numberOfValidNonNullValues,
+            int(data[colName].count()),
+            data_type=config.type_integer,
+        )
 
         if simple_type in [config.type_numeric, config.type_string]:
             addGenericStatistics(column, stats[colName], simple_type)
 
         # deciles
         if simple_type in [config.type_numeric, config.type_datetime]:
-            deciles, deciles_data_type = addQuantiles(column_data, colName, 10,
-                                                      transform_timestamp=transform_timestamp)
-            stats[colName][config.deciles] = {config.type: config.type_list,
-                                              config.id: config.deciles,
-                                              config.list_data_type: config.data_type_labels[deciles_data_type],
-                                              config.type_list_values: deciles}
+            deciles, deciles_data_type = addQuantiles(
+                column_data, colName, 10, transform_timestamp=transform_timestamp
+            )
+            stats[colName][config.deciles] = {
+                config.type: config.type_list,
+                config.id: config.deciles,
+                config.list_data_type: config.data_type_labels[deciles_data_type],
+                config.type_list_values: deciles,
+            }
 
         # quartiles
         if simple_type in [config.type_numeric, config.type_datetime]:
-            quartiles, quartiles_data_type = addQuantiles(column_data, colName, 4,
-                                                          transform_timestamp=transform_timestamp)
-            stats[colName][config.quartiles] = {config.type: config.type_box_plot,
-                                                config.id: config.quartiles,
-                                                config.list_data_type: config.data_type_labels[quartiles_data_type],
-                                                config.type_box_plot_values: quartiles}
+            quartiles, quartiles_data_type = addQuantiles(
+                column_data, colName, 4, transform_timestamp=transform_timestamp
+            )
+            stats[colName][config.quartiles] = {
+                config.type: config.type_box_plot,
+                config.id: config.quartiles,
+                config.list_data_type: config.data_type_labels[quartiles_data_type],
+                config.type_box_plot_values: quartiles,
+            }
 
         # number of distinct values
         if simple_type == config.type_geometry:
@@ -308,45 +355,70 @@ def getStatistics(dataset):
         elif simple_type != config.type_bool:
             number_of_distinct_values = data[colName].nunique(dropna=True)
             addNumericValue(
-                stats[colName], config.numberOfDistinctValues, number_of_distinct_values)
+                stats[colName], config.numberOfDistinctValues, number_of_distinct_values
+            )
 
         # median
         if simple_type in [config.type_numeric, config.type_datetime]:
-            addNumericValue(stats[colName], config.median, column_data.median(),
-                            transform_timestamp=transform_timestamp)
+            addNumericValue(
+                stats[colName],
+                config.median,
+                column_data.median(),
+                transform_timestamp=transform_timestamp,
+            )
 
         # mean
         if simple_type in [config.type_numeric, config.type_datetime]:
-            addNumericValue(stats[colName], config.mean, column_data.mean(
-            ), transform_timestamp=transform_timestamp)
+            addNumericValue(
+                stats[colName],
+                config.mean,
+                column_data.mean(),
+                transform_timestamp=transform_timestamp,
+            )
 
         # maximum
         if simple_type in [config.type_numeric, config.type_datetime]:
-            addNumericValue(stats[colName], config.maximum, column_data.max(skipna=True),
-                            transform_timestamp=transform_timestamp)
+            addNumericValue(
+                stats[colName],
+                config.maximum,
+                column_data.max(skipna=True),
+                transform_timestamp=transform_timestamp,
+            )
 
         # minimum
         if simple_type in [config.type_numeric, config.type_datetime]:
-            addNumericValue(stats[colName], config.minimum, column_data.min(skipna=True),
-                            transform_timestamp=transform_timestamp)
+            addNumericValue(
+                stats[colName],
+                config.minimum,
+                column_data.min(skipna=True),
+                transform_timestamp=transform_timestamp,
+            )
 
         if simple_type in [config.type_numeric]:
-            addNumericValue(
-                stats[colName], config.standardDeviation, column_data.std())
+            addNumericValue(stats[colName], config.standardDeviation, column_data.std())
 
         if simple_type in [config.type_numeric, config.type_datetime]:
-            buckets, buckets_data_type = addHistograms(stats, column_data,
-                                                       colName,
-                                                       number_of_distinct_values,
-                                                       transform_timestamp=transform_timestamp)
-            stats[colName][config.histogram] = {config.type: config.type_histogram,
-                                                config.bucket_data_type: config.data_type_labels[buckets_data_type],
-                                                config.type_histogram_buckets: buckets}
+            buckets, buckets_data_type = addHistograms(
+                stats,
+                column_data,
+                colName,
+                number_of_distinct_values,
+                transform_timestamp=transform_timestamp,
+            )
+            stats[colName][config.histogram] = {
+                config.type: config.type_histogram,
+                config.bucket_data_type: config.data_type_labels[buckets_data_type],
+                config.type_histogram_buckets: buckets,
+            }
 
         if simple_type in [config.type_string, config.type_bool]:
-            stats[colName][config.value_distribution] = {config.type: config.type_bar_chart, config.id: config.value,
-                                                         config.type_bar_chart_bars: addValueDistribution(stats, column,
-                                                                                                          colName)}  # if data[colName].dtype == 'object' and colName != 'geometry' else 0
+            stats[colName][config.value_distribution] = {
+                config.type: config.type_bar_chart,
+                config.id: config.value,
+                config.type_bar_chart_bars: addValueDistribution(
+                    stats, column, colName
+                ),
+            }  # if data[colName].dtype == 'object' and colName != 'geometry' else 0
         i = i + 1
 
     # sample

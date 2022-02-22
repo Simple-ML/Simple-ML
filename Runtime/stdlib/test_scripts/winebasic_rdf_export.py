@@ -3,8 +3,8 @@ from simpleml.data_catalog._rdf_profile_creator import exportStatisticsAsRDF
 from simpleml.dataset import loadDataset
 from simpleml.util import exportDictionaryAsJSON
 
-
 # Workflow steps ---------------------------------------------------------------
+
 
 def exampleWorkflow():
 
@@ -18,7 +18,5 @@ def exampleWorkflow():
     print(exportStatisticsAsRDF(dataset))
 
 
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     exampleWorkflow()

@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 import simpleml.util.global_configurations as global_config
-from rdflib import URIRef, Namespace, RDFS
+from rdflib import RDFS, Namespace, URIRef
 from simpleml.data_catalog._domain_model import DomainModel, getPythonType
 from simpleml.dataset import Dataset
 from simpleml.rdf._sparql_connector_local import get_graph
@@ -14,6 +14,7 @@ def get_uri(namespace_dict, uri_str):
 
 
 #    return URIRef(namespace_dict[parts[0]] + parts[1] )
+
 
 def get_label(graph, node_uri):
     node = URIRef(node_uri)
@@ -35,7 +36,7 @@ def read_meta_file(file_path):
 
     namespace_dict = {c[0]: c[1] for c in g.namespace_manager.namespaces()}
 
-    file = open(file_path, 'r', encoding='utf-8')
+    file = open(file_path, "r", encoding="utf-8")
 
     res = dict()
 
@@ -50,11 +51,11 @@ def read_meta_file(file_path):
 
         line = line.strip()
 
-        if line == 'PROPERTIES':
+        if line == "PROPERTIES":
             in_properties = True
             continue
 
-        if line == 'GRAPH':
+        if line == "GRAPH":
             in_graph = True
             in_properties = False
             continue
@@ -78,42 +79,49 @@ def read_meta_file(file_path):
         res[key] = val
 
     titles = {}
-    for title_key in [k for k, v in res.items() if k.startswith('TITLE_')]:
+    for title_key in [k for k, v in res.items() if k.startswith("TITLE_")]:
         titles[title_key.replace("TITLE_", "").lower()] = res[title_key]
     title = titles[global_config.language]
 
-    dataset = Dataset(id=res['ID'], title=title, titles=titles)
+    dataset = Dataset(id=res["ID"], title=title, titles=titles)
 
     dataset.descriptions = {}
-    for title_key in [k for k, v in res.items() if k.startswith('DESCRIPTION_')]:
-        dataset.descriptions[title_key.replace("DESCRIPTION_", "").lower()] = res[title_key]
+    for title_key in [k for k, v in res.items() if k.startswith("DESCRIPTION_")]:
+        dataset.descriptions[title_key.replace("DESCRIPTION_", "").lower()] = res[
+            title_key
+        ]
 
     dataset.subjects = {}
     # topics are comma-separated
-    for title_key in [k for k, v in res.items() if k.startswith('TOPICS_')]:
-        dataset.subjects[title_key.replace("TOPICS_", "").lower()] = res[title_key].split(",")
+    for title_key in [k for k, v in res.items() if k.startswith("TOPICS_")]:
+        dataset.subjects[title_key.replace("TOPICS_", "").lower()] = res[
+            title_key
+        ].split(",")
 
     dataset.fileName = res["FILE"]
 
-    dataset.id = res['ID']
-    dataset.separator = res['SEPARATOR']
-    if dataset.separator == 'TAB':
+    dataset.id = res["ID"]
+    dataset.separator = res["SEPARATOR"]
+    if dataset.separator == "TAB":
         dataset.separator = "\t"
-    dataset.null_value = res['NULL']
-    dataset.hasHeader = res['HAS_HEADER'] == 'YES'
+    dataset.null_value = res["NULL"]
+    dataset.hasHeader = res["HAS_HEADER"] == "YES"
 
-    if 'COORDINATE_SYSTEM' in res:
-        dataset.coordinate_system = int(res['COORDINATE_SYSTEM'])
-    if 'LAT_LON_ORDER' in res:
-        if res['LAT_LON_ORDER'] == 'lat_lon':
+    if "COORDINATE_SYSTEM" in res:
+        dataset.coordinate_system = int(res["COORDINATE_SYSTEM"])
+    if "LAT_LON_ORDER" in res:
+        if res["LAT_LON_ORDER"] == "lat_lon":
             dataset.lat_before_lon = True
         else:
             dataset.lat_before_lon = False
 
     dir_name = os.path.dirname(__file__)
     data_file_path = os.path.join(
-        dir_name, global_config.data_folder_name, dataset.fileName)
-    header = pd.read_csv(data_file_path, nrows=0, sep=dataset.separator, na_values=dataset.null_value).columns.tolist()
+        dir_name, global_config.data_folder_name, dataset.fileName
+    )
+    header = pd.read_csv(
+        data_file_path, nrows=0, sep=dataset.separator, na_values=dataset.null_value
+    ).columns.tolist()
     attributes = []
     for attribute in header:
         attributes.append(attribute)
@@ -152,20 +160,27 @@ def read_meta_file(file_path):
         domain_node_uri = get_uri(namespace_dict, domain_str)
 
         resource_parts = domain_str.split(":", 1)
-        subjectResource = SML[dataset.id] + "_" + resource_parts[0] + "_" + resource_parts[1]
+        subjectResource = (
+            SML[dataset.id] + "_" + resource_parts[0] + "_" + resource_parts[1]
+        )
 
         resource_instance_number = None
         if "@" in domain_node_uri:
             domain_node_uri_tmp = domain_node_uri
             domain_node_uri = domain_node_uri_tmp.split("@")[0]
             resource_instance_number = int(domain_node_uri_tmp.split("@")[1])
-            subjectResource = SML[dataset.id] + "_" + resource_parts[0] + "_" + str(resource_instance_number)
+            subjectResource = (
+                SML[dataset.id]
+                + "_"
+                + resource_parts[0]
+                + "_"
+                + str(resource_instance_number)
+            )
 
         domain_node_label = get_label(g, domain_node_uri)
         propertyLabel = get_label(g, propertyURI)
 
-        domain_node = domain_model.createClass(
-            domain_node_uri, domain_node_label)
+        domain_node = domain_model.createClass(domain_node_uri, domain_node_label)
         resource_node = domain_model.createNode(subjectResource, domain_node)
         property_node = domain_model.createProperty(propertyURI, propertyLabel)
 
@@ -190,12 +205,17 @@ def read_meta_file(file_path):
                 lon_lat_pairs[subjectResource] = {}
             lon_lat_pairs[subjectResource]["longitude"] = identifier
 
-        dataset.addColumnDescription(attribute_identifier=identifier, resource_node=resource_node,
-                                     domain_node=domain_node, property_node=property_node,
-                                     rdf_value_type=value_type, value_type=getPythonType(
-                value_type),
-                                     attribute_label=domain_node_label + " (" + propertyLabel + ")",
-                                     resource_rank=resource_instance_number, is_geometry=is_geometry)
+        dataset.addColumnDescription(
+            attribute_identifier=identifier,
+            resource_node=resource_node,
+            domain_node=domain_node,
+            property_node=property_node,
+            rdf_value_type=value_type,
+            value_type=getPythonType(value_type),
+            attribute_label=domain_node_label + " (" + propertyLabel + ")",
+            resource_rank=resource_instance_number,
+            is_geometry=is_geometry,
+        )
 
     for lon_lat_pair in lon_lat_pairs.values():
         dataset.lon_lat_pairs.append(lon_lat_pair)
@@ -210,9 +230,12 @@ def read_meta_file(file_path):
 
         propertyURI = get_uri(namespace_dict, property_str)
 
-        domain_model.addTriple((resource_map[domain_str], URIRef(propertyURI), resource_map[object_str]))
+        domain_model.addTriple(
+            (resource_map[domain_str], URIRef(propertyURI), resource_map[object_str])
+        )
 
     return dataset
+
 
 # dataset = read_meta_file("../../../data_catalog/meta_files/SpeedAverages.tsv")
 

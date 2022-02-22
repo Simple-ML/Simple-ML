@@ -1,1 +1,9 @@
-from ._data_catalog import getDataset, getDatasets, getDatasetsJson, addStatistics, addDomainModel, DomainModel, getPythonType
+from ._data_catalog import (
+    DomainModel,
+    addDomainModel,
+    addStatistics,
+    getDataset,
+    getDatasets,
+    getDatasetsJson,
+    getPythonType,
+)
