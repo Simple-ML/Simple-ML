@@ -234,6 +234,7 @@ The term _result record_ warrants further explanation: A result record maps [res
 * [method][methods],
 * [step][steps], or
 * [lambda](#lambdas)
+
 to their computed values.
 
 If the result record only has a single entry, its value can be accessed directly. Otherwise, the result record must be _deconstructed_ either by an [assignment][assignment-multiple-assignees] (can access multiple results) or by a [member access](#member-access-of-results) (can access a single result).
@@ -249,6 +250,10 @@ A member access is used to refer to members of a complex data structure such as
 
 **TODO**
 
+#### Null-Safe Member Access
+
+**TODO**
+
 ### Member Access of Enum Variants
 
 **TODO**
@@ -256,9 +261,7 @@ A member access is used to refer to members of a complex data structure such as
 
 **TODO**
 
-### Null-Safe Member Access
 
-**TODO**
 
 **Definition of the example class and enum:**
 
