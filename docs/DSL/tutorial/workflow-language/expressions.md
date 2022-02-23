@@ -246,13 +246,66 @@ A member access is used to refer to members of a complex data structure such as
 * an [enum][enums], or
 * the [result record](#result-record) of a [call](#calls).
 
+The general syntax of a member access is this:
+```
+<receiver>.<member>
+```
+
+Here, the receiver is some expression (the legal choices are explained below), while the member is always a [reference](#references).
+
 ### Member Access of Class Members
 
-**TODO**
+To understand how we can access members of a [class][classes] we must first look briefly at a declaration of the [class][classes] we use in the following examples:
 
-#### Null-Safe Member Access
+```
+class DecisionTree() {
+    static attr verboseTraining: Boolean
+    
+    attr maxDepth: Int
+}
+```
 
-**TODO**
+This class has a static [attribute][attributes] called `verboseTraining`, which has type `Boolean`. Static means that the attribute is shared between all instances of the class and can be accessed on the class itself, rather than a specific instance.
+
+Moreover, the class has an instance [attribute][attributes]`maxDepth`, which is an integer. This must be accessed on a specific instance of the class.
+
+#### Member Access of Static Class Member
+
+Let us look at how to access the static [attribute][attributes] `verboseTraining` to retrieve its value:
+
+```
+DecisionTree.verboseTraining
+```
+
+These are the syntactic elements of this member access:
+* The receiver, which is the name of the class (here `DecisionTree`)
+* A dot.
+* The name of the static member of the class (here `verboseTraining`)
+
+Note that we cannot access a static member from an instance of the class. We must use the class itself.
+
+#### Member Access of Instance Class Member
+
+Contrary to static member accesses, we can only access instance members on an instance of a class:
+
+```
+DecisionTree().maxDepth
+```
+
+We now take apart the syntax again:
+* The receiver, here a [call](#calls) of the constructor of the class `DecisionTree`. This creates an instance of this class.
+* A dot.
+* The name of the instance member (here `maxDepth`).
+
+Note that instance members cannot be accessed from the class itself, but only from its instances.
+
+##### Null-Safe Member Access
+
+If an expression could be null it cannot be used as the receiver of a regular member access, since `null` does not have members. Instead a null-safe member access must be used. The syntax is identical to a normal member access except that we replace the dot with the operator `?.`. A safe member access evaluates to null if the receiver is null. Otherwise it evaluates to the accessed member, just like a normal member access. Here is an example:
+
+```
+nullableExpression?.member1?.member2
+```
 
 ### Member Access of Enum Variants
 
@@ -266,10 +319,7 @@ A member access is used to refer to members of a complex data structure such as
 **Definition of the example class and enum:**
 
 ```
-class DecisionTree() {
-    static val verboseTraining: Boolean
-    val score: Float
-}
+
 
 enum SvmKernel {
     Linear,
@@ -295,17 +345,36 @@ DecisionTree().score
 SvmKernel.Linear
 ```
 
-### Safe member access
-
-If an expression could be null it cannot be used as the receiver of a regular [member access](#member-access), since null does not have members. Instead a safe member access must be used. The syntax is identical to a normal member access except that we replace the dot with the operator `?.`. A safe member access evaluates to null if the receiver is null. Otherwise it evaluates to the accessed member, just like a normal member access. Here is an example:
-
-```
-nullableExpression?.member1?.member2
-```
-
 ## Indexed Accesses
 
 **TODO**
+
+## Chaining
+
+Multiple [calls](#calls), [member accesses](#member-accesses), and [indexed accesses](#member-accesses) can be chained together. Let us first look at the declaration of the [class][classes] we need for the example:
+
+```
+class LinearRegression() {
+    fun drawAsGraph()
+}
+```
+
+This is a [class][classes] `LinearRegression`, which has a constructor and an instance [method][methods] called `drawAsGraph`.
+
+We can then use those declarations in a [step][steps]:
+
+```
+step myStep(vararg regressions: LinearRegression) {
+    regressions[0].drawAsGraph();
+}
+```
+
+This step is called `myStep` and has a [variadic parameter][variadic-parameters] `regressions` of type `LinearRegression`. This means we can pass an arbitrary number of instances of `LinearRegression` to the step when we [call](#calls) it.
+
+In the body of the step we then
+1. access the first instance that was pass using an [indexed access](#indexed-accesses),
+2. access the instance method `drawAsGraph` of this instance using a [member access](#member-accesses),
+3. [call](#calls) this method.
 
 ## Lambdas
 
@@ -324,7 +393,7 @@ We all know that `2 + 3 * 7` is `23` and not `35`. The reason is that the `*` op
 * **HIGHER PRECEDENCE**
 * `()` (parentheses around an expression)
 * `1` ([integer literals](#int-literals)), `1.0` ([float literals](#float-literals)), `"a"` ([string literals](#string-literals)), `true`/`false` ([boolean literals](#boolean-literals)), `null` ([null literal](#null-literal)), `someName` ([references](#references)), `"age: {{ age }}"` ([template strings](#template-strings))
-* `()` ([calls](#calls)), `.` ([member accesses](#member-accesses)), `?.` ([safe member accesses](#working-with-null)), `[]` ([indexed accesses](#indexed-accesses))
+* `()` ([calls](#calls)), `.` ([member accesses](#member-accesses)), `?.` ([null-safe member accesses](#null-safe-member-access)), `[]` ([indexed accesses](#indexed-accesses))
 * `-` (unary, [arithmetic negations](#operations-on-numbers))
 * `?:` ([Elvis operators](#elvis-operator))
 * `*`, `/` ([multiplicative operators](#operations-on-numberss))
@@ -348,10 +417,11 @@ If the default precedence of operators is not sufficient, parentheses can be use
 [types]: ../common/types.md
 [callable-types]: ../common/types.md#callable-type
 [classes]: ../stub-language/classes.md
+[attributes]: ../stub-language/classes.md#defining-attributes
+[methods]: ../stub-language/classes.md#defining-methods
 [enums]: ../stub-language/enumerations.md
 [enum-variants]: ../stub-language/enumerations.md#enum-variants
 [global-functions]: ../stub-language/global-functions.md
-[methods]: ../stub-language/classes.md#defining-methods
 [workflow-language]: ./README.md
 [packages]: ./packages.md
 [assignment-multiple-assignees]: ./statements.md#multiple-assignees
