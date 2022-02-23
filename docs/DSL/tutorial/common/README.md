@@ -9,7 +9,7 @@ Several parts of the Simple-ML DSL are shared between the [workflow lanugage][wo
 * [Comments][comments] document the code.
 
 [workflow-language]: ../workflow-language/README.md
-[stub-language]: ../stub-anguage/README.md
+[stub-language]: ../stub-language/README.md
 [calls]: ../workflow-language/expressions.md#calls
 [imports]: ./imports.md
 [parameters]: ./parameters.md
