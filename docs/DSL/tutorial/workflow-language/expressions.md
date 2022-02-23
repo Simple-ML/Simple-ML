@@ -303,7 +303,7 @@ If an expression could be null it cannot be used as the receiver of a regular [m
 nullableExpression?.member1?.member2
 ```
 
-## Indexed Access
+## Indexed Accesses
 
 **TODO**
 
@@ -323,19 +323,18 @@ We all know that `2 + 3 * 7` is `23` and not `35`. The reason is that the `*` op
 
 * **HIGHER PRECEDENCE**
 * `()` (parentheses around an expression)
-* `1` ([integer literals](#int-literals)), `1.0` ([float literals](#float-literals)), `"a"` ([string literals](#string-literals)), `true`/`false` ([boolean literals](#boolean-literals)), `null` ([null literal](#null-literal)), `someName` ([references](#references)), `"age: {{ age }}"` (template strings)
-* **TODO: Update links below**
-* `()` ([calls](#calls)), `.` ([member accesses](#member-accesses)), `?.` ([safe member accesses](#working-with-null)), `[]` (indexed access)
-* `-` (unary, [arithmetic negations](#working-with-numbers))
-* `?:` ([Elvis operators](#working-with-null))
-* `*`, `/` ([multiplicative operators](#working-with-numbers))
-* `+`, `-` (binary, [additive operators](#working-with-numbers))
-* `<`, `<=`, `>=`, `>` ([ordering operators](#checking-for-order))
-* `===`, `==`, `!==`, `!=` ([equality operators](#checking-for-equality))
-* `not` ([logical negations](#working-with-logic))
-* `and` ([conjunctions](#working-with-logic))
-* `or` ([disjunctions](#working-with-logic))
-* `() -> 1` (expression lambda), `() {}` (block lambda)
+* `1` ([integer literals](#int-literals)), `1.0` ([float literals](#float-literals)), `"a"` ([string literals](#string-literals)), `true`/`false` ([boolean literals](#boolean-literals)), `null` ([null literal](#null-literal)), `someName` ([references](#references)), `"age: {{ age }}"` ([template strings](#template-strings))
+* `()` ([calls](#calls)), `.` ([member accesses](#member-accesses)), `?.` ([safe member accesses](#working-with-null)), `[]` ([indexed accesses](#indexed-accesses))
+* `-` (unary, [arithmetic negations](#operations-on-numbers))
+* `?:` ([Elvis operators](#elvis-operator))
+* `*`, `/` ([multiplicative operators](#operations-on-numberss))
+* `+`, `-` (binary, [additive operators](#operations-on-numbers))
+* `<`, `<=`, `>=`, `>` ([comparison operators](#operations-on-numbersa))
+* `===`, `==`, `!==`, `!=` ([equality operators](#equality-checks))
+* `not` ([logical negations](#logical-operations))
+* `and` ([conjunctions](#logical-operations))
+* `or` ([disjunctions](#logical-operations))
+* `() -> 1` ([expression lambdas](#expression-lambdas)), `() {}` ([block lambdas](#block-lambdas))
 * **LOWER PRECEDENCE**
 
 If the default precedence of operators is not sufficient, parentheses can be used to force a part of an expression to be evaluated first.
