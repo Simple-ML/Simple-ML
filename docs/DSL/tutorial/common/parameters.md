@@ -13,3 +13,5 @@
 ## Variadic Parameters
 
 **TODO**
+
+## Multiple Parameters
