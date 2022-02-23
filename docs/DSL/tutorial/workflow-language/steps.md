@@ -112,7 +112,7 @@ The step `internalStep` is only visible in files with the same [package][package
 
 ## Calling a Step
 
-Inside of a workflow, another step, or a [lambda][lambdas] we can then [call][calls] a step, which means the step is executed when the call is reached: The results of a step can then be used as needed. In the following example, where we call the step `loadMovieRatingsSample` that we defined above, we [assign the results to placeholders][assignments-to-placeholders]:
+Inside of a [workflow][workflows], another step, or a [lambda][lambdas] we can then [call][calls] a step, which means the step is executed when the call is reached: The results of a step can then be used as needed. In the following example, where we call the step `loadMovieRatingsSample` that we defined above, we [assign the results to placeholders][assignments-to-placeholders]:
 
 ```
 val features, val target = loadMovieRatingsSample(nInstances = 1000);
@@ -132,3 +132,4 @@ More information about calls can be found in the [linked document][calls].
 [calls]: ./expressions.md#calls
 [lambdas]: ./expressions.md#lambdas
 [references]: ./expressions.md#references
+[workflows]: ./workflows.md
