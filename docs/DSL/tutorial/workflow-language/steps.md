@@ -100,7 +100,7 @@ The order of the [result declarations](#result-declaration) does not need to mat
 
 ## Visibility
 
-By default a step can be imported in any other file and reused there. We say they have `public` visibility. However, it is possible to restrict the visibility of a step with modifiers:
+By default a step can be [imported][imports] in any other file and reused there. We say they have `public` visibility. However, it is possible to restrict the visibility of a step with modifiers:
 
 ```
 internal step internalStep() {}
@@ -120,6 +120,7 @@ val features, val target = loadMovieRatingsSample(nInstances = 1000);
 
 More information about calls can be found in the [linked document][calls].
 
+[imports]: ../common/imports.md
 [parameters]: ../common/parameters.md
 [results]: ../common/results.md
 [types]: ../common/types.md

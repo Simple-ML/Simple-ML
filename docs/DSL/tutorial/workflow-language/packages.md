@@ -1,11 +1,19 @@
 # Packages
 
-In order to prevent name conflicts when multiple parties add functionality to Simple-ML using the [stub language](./Stub-Language.md) we support the concept of [packages](#packages). These are used to group [type definitions](./Stub-Language-Types.md) together under a common namespace.
+_Packages_ are used to prevent conflicts when multiple files have declarations with the same name. They accomplish this by grouping all declarations in a file into a namespace. Here is an example for a package declaration:
 
-Packages are used to provide namespaces, thereby preventing name conflicts. For example, it is perfectly fine to have two [classes](./Stub-Language-Classes.md) named "DecisionTree" as long as they are in different packages.
+```
+package de.unibonn.speedPrediction
+```
 
-Each file must declare its package right at the top. The syntax is the keyword `package` followed by the name of the package, which can be split hierarchically using dots. Here is an example:
+It has these syntactic elements:
+* The keyword `package`.
+* The name of the package, which consists of multiple _segments_ separated by dots. Each segment can be any combination of upper- and lowercase letters, underscores, and numbers, as long as it does not start with a number. However, we suggest to use `lowerCamelCase` for all segments. We also recommend to use the [reverse domain name notation](https://en.wikipedia.org/wiki/Reverse_domain_name_notation) for the package name.
 
-    package simpleml.model.regression
+Multiple files can belong to the same package but each non-empty workflow file (extension `.smlflow`) must declare its package before any [import][imports], [workflow][workflows], or [step][steps]. Moreover, within the same package the names of declarations must be unique.
 
-Multiple files can be part of the same package. For custom files that are not part of the standard library we recommend to use the [reverse domain name notation](https://en.wikipedia.org/wiki/Reverse_domain_name_notation).
+Continue with the explanation of [imports][imports] to understand how to access declarations that are defined in other packages.
+
+[imports]: ../common/imports.md
+[steps]: ./steps.md
+[workflows]: ./workflows.md
