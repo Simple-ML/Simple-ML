@@ -20,18 +20,18 @@ Float literals denote floating point numbers. There are two ways to specify them
 
 String literals describe text. Their syntax is simply text enclosed by double quotes: `"Hello, world!"`. Various special characters can be denoted with _escape sequences_:
 
-|Escape sequence|Meaning|
-|-|-|
-|`\b`|Backspace|
-|`\t`|Tab|
-|`\n`|New line|
-|`\f`|Form feed|
-|`\r`|Carriage return|
-|`\"`|Double quote|
-|`\'`|Single quote|
-|`\\`|Backslash|
-|`\{`|Opening curly brace (used for [template strings](#template-strings))|
-|`\uXXXX`|Unicode character, where `XXXX` is its hexadecimal index|
+| Escape sequence | Meaning                                                              |
+|-----------------|----------------------------------------------------------------------|
+| `\b`            | Backspace                                                            |
+| `\t`            | Tab                                                                  |
+| `\n`            | New line                                                             |
+| `\f`            | Form feed                                                            |
+| `\r`            | Carriage return                                                      |
+| `\"`            | Double quote                                                         |
+| `\'`            | Single quote                                                         |
+| `\\`            | Backslash                                                            |
+| `\{`            | Opening curly brace (used for [template strings](#template-strings)) |
+| `\uXXXX`        | Unicode character, where `XXXX` is its hexadecimal index             |
 
 String literals can contain also contain raw line breaks:
 
@@ -166,7 +166,7 @@ The syntax consists of these elements:
 * The _callee_ of the call, which is the expression to call (here a [reference](#references) to the [step][steps] `createDecisionTree`)
 * The list of arguments, which is delimited by parentheses. In this case the list is empty, so no arguments are passed.
 
-If we want to override the default value of an optional [parameter][parameters] or if the callee has required [parameters][parameters], we need to pass arguments. We can either use _positional arguments_ or _named arguments_. 
+If we want to override the default value of an optional [parameter][parameters] or if the callee has required [parameters][parameters], we need to pass arguments. We can either use _positional arguments_ or _named arguments_.
 
 In the case of positional arguments, they are mapped to parameters by position, i.e. the first argument is assigned to the first parameter, the second argument is assigned to the second parameter and so forth. We do this in the following example to set `maxDepth` to 5:
 
@@ -216,12 +216,12 @@ There are some restriction regarding the choice of positional vs. named argument
 
 Depending on the callee, a call can do different things. The following table lists all legal callees and what happens if they are called:
 
-|Callee|Meaning|
-|-|-|
-|[Class][classes]|Create a new instance of the class. The class must have a constructor to be callable. The call evaluates to this new instance.|
-|[Enum Variant][enum-variants]|Creates a new instance of the enum variant. Enum variants are always callable. The call evaluates to this new instance.|
-|[Global Function][global-functions]|Invokes the function and runs the associated Python code. The call evaluates to the result record of the function.|
-|[Method][methods]|Invokes the method and runs the associated Python code. The call evaluates to the result record of the method.|
+| Callee                              | Meaning                                                                                                                        |
+|-------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| [Class][classes]                    | Create a new instance of the class. The class must have a constructor to be callable. The call evaluates to this new instance. |
+| [Enum Variant][enum-variants]       | Creates a new instance of the enum variant. Enum variants are always callable. The call evaluates to this new instance.        |
+| [Global Function][global-functions] | Invokes the function and runs the associated Python code. The call evaluates to the result record of the function.             |
+| [Method][methods]                   | Invokes the method and runs the associated Python code. The call evaluates to the result record of the method.                 |
 |[Step][steps]|Invokes the step and runs the Simple-ML code in its body. The call evaluates to the result record of the step.||
 |[Block Lambda](#block-lambdas)|Invokes the lambda and runs the Simple-ML code in its body. The call evaluates to the result record of the lambda.||
 |[Expression Lambda](#expression-lambdas)|Invokes the lambda and runs the Simple-ML code in its body. The call evaluates to the result record of the lambda.||
@@ -301,7 +301,7 @@ Note that instance members cannot be accessed from the class itself, but only fr
 
 ##### Null-Safe Member Access
 
-If an expression could be `null` it cannot be used as the receiver of a regular member access, since `null` does not have members. Instead a null-safe member access must be used. A null-safe member access evaluates to `null` if its receiver is `null`. Otherwise, it evaluates to the accessed member, just like a normal member access. 
+If an expression could be `null` it cannot be used as the receiver of a regular member access, since `null` does not have members. Instead a null-safe member access must be used. A null-safe member access evaluates to `null` if its receiver is `null`. Otherwise, it evaluates to the accessed member, just like a normal member access.
 
 The syntax is identical to a normal member access except that we replace the dot with the operator `?.`:
 
@@ -356,7 +356,7 @@ Here are the syntactic elements:
 * A dot.
 * The name of the result (here `remainder`).
 
-While it is also possible to access the result by name if the [result record](#result-record) contains only a single entry, there is no need to do so, since this result can be used directly. If you still use a member access and the singular result of the call has the same name as an instance member of the corresponding class, the instance member wins. 
+While it is also possible to access the result by name if the [result record](#result-record) contains only a single entry, there is no need to do so, since this result can be used directly. If you still use a member access and the singular result of the call has the same name as an instance member of the corresponding class, the instance member wins.
 
 To explain this concept further, we need the following declarations:
 
@@ -483,7 +483,7 @@ The results of a block lambda are [declared in its body using assignments][assig
 
 ### Expression Lambdas
 
-Often, the body of a [block lambda](#block-lambdas) only consists of yielding a single result, as is the case in the example above. The syntax of [block lambdas](#block-lambdas) is quite verbose for such a common use-case, which is why Simple-ML has _expression lambdas_ as a shorter but less flexible alternative. Using an expression lambda we can rewrite the example above as 
+Often, the body of a [block lambda](#block-lambdas) only consists of yielding a single result, as is the case in the example above. The syntax of [block lambdas](#block-lambdas) is quite verbose for such a common use-case, which is why Simple-ML has _expression lambdas_ as a shorter but less flexible alternative. Using an expression lambda we can rewrite the example above as
 
 ```
 intListOf(1, 4, 11).filter(
