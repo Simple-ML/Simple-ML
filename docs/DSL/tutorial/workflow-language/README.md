@@ -6,7 +6,7 @@ The workflow language is the part of the Simple-ML DSL that is designed to solve
 * [Imports][imports] make declarations in other packages accessible.
 * [Workflows][workflows] define the entry point of a Machine Learning program.
 * [Steps][steps] encapsulate parts of a Machine Learning program and make them reusable.
-* [Statements][statements] are the instructions that are executed as part of a [workflow][workflows] or [step][steps].
+* [Statements][statements] are the instructions that are executed as part of a [workflow][workflows], [step][steps], or [block lambda][block-lambdas].
 * [Expressions][expressions] are computations that produce some value.
 * [Comments][comments] document the code.
 
@@ -18,4 +18,5 @@ Files that use the workflow language must have the extension `.smlflow`.
 [steps]: ./steps.md
 [statements]: ./statements.md
 [expressions]: ./expressions.md
+[block-lambdas]: ./expressions.md#block-lambdas
 [comments]: ../common/comments.md
