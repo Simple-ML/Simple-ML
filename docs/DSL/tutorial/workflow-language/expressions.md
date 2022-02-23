@@ -301,53 +301,106 @@ Note that instance members cannot be accessed from the class itself, but only fr
 
 ##### Null-Safe Member Access
 
-If an expression could be null it cannot be used as the receiver of a regular member access, since `null` does not have members. Instead a null-safe member access must be used. The syntax is identical to a normal member access except that we replace the dot with the operator `?.`. A safe member access evaluates to null if the receiver is null. Otherwise it evaluates to the accessed member, just like a normal member access. Here is an example:
+If an expression could be `null` it cannot be used as the receiver of a regular member access, since `null` does not have members. Instead a null-safe member access must be used. A null-safe member access evaluates to `null` if its receiver is `null`. Otherwise, it evaluates to the accessed member, just like a normal member access. 
+
+The syntax is identical to a normal member access except that we replace the dot with the operator `?.`:
 
 ```
-nullableExpression?.member1?.member2
+nullableExpression?.member
 ```
 
 ### Member Access of Enum Variants
 
-**TODO**
-### Member Access of Results
-
-**TODO**
-
-
-
-**Definition of the example class and enum:**
+A member access can also be used to access the [variants][enum-variants] of an [enum][enums]. Here is the declaration of the [enum][enums] that we use in the example:
 
 ```
-
-
 enum SvmKernel {
     Linear,
     RBF
 }
 ```
 
-**Accessing static class member:**
+This [enum][enums] is called `SvmKernel` and has the two [variants][enum-variants] `Linear` and `RBF`.
 
-```
-DecisionTree.verboseTraining
-```
-
-**Accessing non-static class member (note that we create an instance of the "DecisionTree" class by [calling](#calls) it):**
-
-```
-DecisionTree().score
-```
-
-**Accessing enum instances:**
+We can access the [variant][enum-variants] `Linear` using this member access:
 
 ```
 SvmKernel.Linear
 ```
 
+These are the elements of the syntax:
+* The receiver, which is the name of the [enum][enums] (here `SvmKernel`).
+* A dot.
+* The name of the [variant][enum-variants] (here `Linear`).
+
+This syntax is identical to the [member access of static class members](#member-access-of-static-class-member).
+
+### Member Access of Results
+
+If the [result record](#result-record) that is produced by a [call](#calls) has multiple results, we can use a member access to select a single one. Here is the [global function][global-functions] we use to explain this concept:
+
+```
+fun divideWithRemainder(dividend: Int, divisor: Int) -> (quotient: Int, remainder: Int)
+```
+
+The [global function][global-functions] `divideWithRemainder` has two [parameters][parameters], namely `dividend` and `divisor`, both of which have type `Int`. It produces two [results][results], `quotient` and `remainder`, which also have type `Int`.
+
+If we are only interested in the remainder of `12` divided by `5`, we can use a member access:
+
+```
+divideWithRemainder(12, 5).remainder
+```
+
+Here are the syntactic elements:
+* The receiver, which is a [call](#calls).
+* A dot.
+* The name of the result (here `remainder`).
+
+While it is also possible to access the result by name if the [result record](#result-record) contains only a single entry, there is no need to do so, since this result can be used directly. If you still use a member access and the singular result of the call has the same name as an instance member of the corresponding class, the instance member wins. 
+
+To explain this concept further, we need the following declarations:
+
+```
+class ValueWrapper {
+    attr value: Int
+}
+
+fun createValueWrapper() -> value: ValueWrapper
+```
+
+We first declare a [class][classes] called `ValueWrapper`, which has an [attribute][attributes] `value` of type `Int`. Next, we declare a function, which is supposed to create an instance of the [class][classes] `ValueWrapper` and put it into the [result][results] `value`.
+
+Let us now look at this member access:
+
+```
+createValueWrapper().value
+```
+
+This evaluates to the [attribute][attributes], i.e. an integer, rather than the [result][results], which would be an instance of `ValueWrapper`.
+
+If you want the result instead, simply omit the member access:
+
+```
+createValueWrapper()
+```
+
 ## Indexed Accesses
 
-**TODO**
+An indexed access is currently only used to access one value assigned to a [variadic parameter][variadic-parameters]. In the following example, we use an index access to retrieve the first value that is assigned to the [variadic parameter][variadic-parameters] `values` of the step `printFirst`:
+
+```
+step printFirst(vararg values: Int) {
+    print(values[0]);
+}
+```
+
+These are the elements of the syntax:
+* The name of the variadic parameter (here `values`).
+* An opening square bracket.
+* The index, which is an expression that evaluates to an integer. The first element has index 0.
+* A closing square bracket.
+
+Note that accessing a value at an index outside the bounds of the value list currently only raises an error at runtime.
 
 ## Chaining
 
