@@ -98,6 +98,18 @@ In the assignment beginning with `yield features =` we specify the value of the 
 
 The order of the [result declarations](#result-declaration) does not need to match the order of assignment. However, **each result musts be assigned exactly once**. Note that unlike the `return` in other programming languages, `yield` does not stop the execution of the step, which allows [assignments][assignments] to different results to be split across multiple [statements][statements].
 
+## Visibility
+
+By default a step can be imported in any other file and reused there. We say they have `public` visibility. However, it is possible to restrict the visibility of a step with modifiers:
+
+```
+internal step internalStep() {}
+
+private step privateStep() {}
+```
+
+The step `internalStep` is only visible in files with the same [package][packages]. The step `privateStep` is only visible in the file it is declared in.
+
 ## Calling a Step
 
 Inside of a workflow, another step, or a [lambda][lambdas] we can then [call][calls] a step, which means the step is executed when the call is reached: The results of a step can then be used as needed. In the following example, where we call the step `loadMovieRatingsSample` that we defined above, we [assign the results to placeholders][assignments-to-placeholders]:
@@ -111,6 +123,7 @@ More information about calls can be found in the [linked document][calls].
 [parameters]: ../common/parameters.md
 [results]: ../common/results.md
 [types]: ../common/types.md
+[packages]: ./packages.md
 [statements]: ./statements.md
 [assignments]: ./statements.md#assignments
 [assignments-to-placeholders]: ./statements.md#assigning-placeholders
