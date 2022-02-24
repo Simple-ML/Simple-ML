@@ -176,11 +176,11 @@ class Dataset:
 
     def addAttribute(self, columnName, transformFunc) -> Dataset:
 
-        if self.data is None:
+        if self.data.empty:
             self.readFile(self.separator)
 
         copy = self.copy()
-        print(copy.data)
+        # print(copy.data)
 
         for index, row in copy.data.iterrows():
             copy.data.at[index, columnName] = transformFunc(Instance(row))
