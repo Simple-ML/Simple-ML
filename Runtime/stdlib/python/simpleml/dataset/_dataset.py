@@ -166,10 +166,24 @@ class Dataset:
             self.readFile(self.separator)
 
         copy = self.copy()
+        # print(copy.data)
 
         for index, row in copy.data.iterrows():
             if not filter_func(Instance(row)):
                 copy.data.drop(index, inplace=True)
+
+        return copy
+
+    def addAttribute(self, columnName, transformFunc) -> Dataset:
+
+        if self.data is None:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+        print(copy.data)
+
+        for index, row in copy.data.iterrows():
+            copy.data.at[index, columnName] = transformFunc(Instance(row))
 
         return copy
 
