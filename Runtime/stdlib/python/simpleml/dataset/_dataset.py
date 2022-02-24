@@ -7,14 +7,12 @@ from typing import Any, Tuple
 import geopandas
 import numpy as np  # For huge arrays and matrices
 import pandas as pd  # For data processing
-from shapely import geometry, wkb, wkt
-from shapely.errors import WKBReadingError, WKTReadingError
-
 import simpleml.util.global_configurations as global_config
 import simpleml.util.jsonLabels_util as config
+from shapely import geometry, wkb, wkt
+from shapely.errors import WKBReadingError, WKTReadingError
 from simpleml.dataset._instance import Instance
 from simpleml.dataset._stats import getStatistics
-
 
 # import Statistics
 
@@ -24,20 +22,20 @@ from simpleml.dataset._stats import getStatistics
 
 class Dataset:
     def __init__(
-            self,
-            id,
-            title: str,
-            description: str = None,
-            fileName: str = None,
-            hasHeader: bool = True,
-            null_value="",
-            separator=",",
-            number_of_instances: int = None,
-            titles: dict = {},
-            descriptions: dict = {},
-            subjects: dict = {},
-            coordinate_system: int = 4326,
-            lat_before_lon: bool = False,
+        self,
+        id,
+        title: str,
+        description: str = None,
+        fileName: str = None,
+        hasHeader: bool = True,
+        null_value="",
+        separator=",",
+        number_of_instances: int = None,
+        titles: dict = {},
+        descriptions: dict = {},
+        subjects: dict = {},
+        coordinate_system: int = 4326,
+        lat_before_lon: bool = False,
     ):
         self.id = id
         self.title = title
@@ -198,7 +196,7 @@ class Dataset:
         return self.stats
 
     def splitIntoTrainAndTest(
-            self, trainRatio: float, randomState=None
+        self, trainRatio: float, randomState=None
     ) -> Tuple[Dataset, Dataset]:
 
         if self.data.empty:
@@ -301,16 +299,16 @@ class Dataset:
             lon_lat_pair_number += 1
 
     def addColumnDescription(
-            self,
-            attribute_identifier,
-            resource_node,
-            domain_node,
-            property_node,
-            rdf_value_type,
-            value_type,
-            attribute_label,
-            is_geometry: bool,
-            resource_rank=None,
+        self,
+        attribute_identifier,
+        resource_node,
+        domain_node,
+        property_node,
+        rdf_value_type,
+        value_type,
+        attribute_label,
+        is_geometry: bool,
+        resource_rank=None,
     ):
         self.attributes.append(attribute_identifier)
 
@@ -335,9 +333,9 @@ class Dataset:
             # self.data_types[attribute_identifier] = np.str
             self.simple_data_types[attribute_identifier] = config.type_datetime
         elif (
-                value_type == np.integer
-                or value_type == pd.Int32Dtype()
-                or value_type == pd.Int64Dtype()
+            value_type == np.integer
+            or value_type == pd.Int32Dtype()
+            or value_type == pd.Int64Dtype()
         ):
             self.simple_data_types[attribute_identifier] = config.type_numeric
         elif value_type == np.float64:
@@ -489,14 +487,14 @@ def loadDataset(datasetID: str) -> Dataset:
 
 
 def readDataSetFromCSV(
-        file_name: str,
-        dataset_id: str,
-        separator: str,
-        has_header: bool,
-        null_value: str,
-        dataset_name: str = None,
-        coordinate_system=3857,
-        lon_lat_pairs=[],
+    file_name: str,
+    dataset_id: str,
+    separator: str,
+    has_header: bool,
+    null_value: str,
+    dataset_name: str = None,
+    coordinate_system=3857,
+    lon_lat_pairs=[],
 ) -> Dataset:
     dir_name = os.path.dirname(__file__)
     data_file_path = os.path.join(dir_name, global_config.data_folder_name, file_name)
@@ -582,17 +580,17 @@ def dataTypes(type):
 
 
 def joinTwoDatasets(
-        first_data: Dataset,
-        second_data: Dataset,
-        join_column_name_1: str,
-        join_column_name_2: str,
-        first_suffix: str,
-        second_suffix: str,
+    first_data: Dataset,
+    second_data: Dataset,
+    join_column_name_1: str,
+    join_column_name_2: str,
+    first_suffix: str,
+    second_suffix: str,
 ) -> Dataset:
     # TODO: check that types are join_column_name_1 and join_column_name_2 are the same
     if (
-            first_data.data[join_column_name_1].dtypes
-            == second_data.data[join_column_name_2].dtypes
+        first_data.data[join_column_name_1].dtypes
+        == second_data.data[join_column_name_2].dtypes
     ):
         # print(second_data.data)
         joint_data = first_data.data.merge(
