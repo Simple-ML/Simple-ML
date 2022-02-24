@@ -1,6 +1,6 @@
 # Workflows
 
-Workflows are machine learning programs designed to solve a specific task. They act as the entry point to start execution. Workflows are not meant to be reusable, instead extract reusable code into a [step][steps].
+Workflows are Machine Learning programs designed to solve a specific task. They act as the entry point to start execution. Workflows are not meant to be reusable, instead extract reusable code into a [step][steps].
 
 ## Syntax
 
@@ -30,7 +30,7 @@ workflow predictSpeed {
 }
 ```
 
-More information about statements can be found in the [linked document][statements]. Note, however, that all statements must end with a semicolon.
+More information about statements can be found in the [linked document][statements]. Note particularly, that all statements must end with a semicolon.
 
 [steps]: ./steps.md
 [statements]: ./statements.md
