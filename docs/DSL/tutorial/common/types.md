@@ -11,6 +11,18 @@ Types describe the values that a declaration can accept. Simple-ML has various c
 
 **TODO**
 
+#### Type Arguments
+
+**TODO**
+
+##### Star Projection
+
+**TODO**
+
+##### Use-Site Variance
+
+**TODO**
+
 ### Member Types
 
 **TODO**
@@ -24,14 +36,6 @@ Types describe the values that a declaration can accept. Simple-ML has various c
 ### Parenthesized Types
 
 **TODO**
-
-## Type Parameters
-
-### Variance
-
-### Type Parameter Constraints
-
-## Type Arguments
 
 ## Corresponding Python Code
 
@@ -49,8 +53,6 @@ Also add the following import, which brings the declarations that are used by th
 from typing import Callable, Optional, Tuple, TypeVar, Union
 ```
 
-### Translation of Various Categories of Types
-
 The following table shows how Simple-ML types can be written as Python [type hints][type-hints]:
 
 |Simple-ML Type|Python Type Hint|
@@ -63,6 +65,7 @@ The following table shows how Simple-ML types can be written as Python [type hin
 |`SomeEnum`|`SomeEnum`|
 |`SomeClass?`|`Optional[SomeClass]`|
 |`SomeEnum?`|`Optional[SomeEnum]`|
+|`SomeSpecialList<Int>`|`SomeSpecialList[int]`|
 |`SomeOuterClass.SomeInnerClass`|`SomeOuterClass.SomeInnerClass`|
 |`union<Float, Int>`|`Union[Float, Int]`|
 |`(a: Int, b: Int) -> r: Int`|`Callable[[int, int], int]`|
@@ -85,12 +88,6 @@ Getting the `<result type`> depends on the number of results. If there is only a
 2. separate them all by commas,
 3. add the prefix `Tuple[`,
 4. add the suffix `]`.
-
-### Translation of Type Parameters
-
-**TODO**
-
-|`fun id<T>(input: T) -> output: T`|```py ```|
 
 [mypy]: http://mypy-lang.org/
 [type-hints]: https://docs.python.org/3/library/typing.html
