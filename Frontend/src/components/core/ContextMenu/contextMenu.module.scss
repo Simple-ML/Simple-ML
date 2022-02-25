@@ -1,67 +1,67 @@
 
 .toolbar {
-  cursor: pointer;
-  position: absolute;
-  background-color: #ffffff;
-  color: #000000;
+  background-color: rgb(255, 255, 255);
   border-radius: 3px;
-  min-width: 200px;
+  color: rgb(0, 0, 0);
   display: flex;
   flex-direction: column;
+  min-width: 200px;
+  position: absolute;
   z-index: 999;
+  cursor: pointer;
 
   .toolbar-button {
+    align-items: center;
     display: flex;
     flex-direction: row;
-    align-items: center;
     padding: 8px 16px 8px 16px;
 
     .icon {
+      padding-right: 10px;
       width: 20px;
       height: 20px;
-      padding-right: 10px;
     }
     &:disabled {
-      opacity: 0.5;
+      opacity: .5;
     }
   }
 }
 
 .toolbar-outside {
-  position: absolute;
-  opacity: 0;
-  top: 0;
   bottom: 0;
   left: 0;
+  opacity: 0;
+  position: absolute;
   right: 0;
+  top: 0;
   z-index: 998;
 }
 
 .assign-placeholder-modal {
-  position: absolute;
-  top: 256px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 4px;
+  left: 0;
   margin-left: auto;
   margin-right: auto;
-  left: 0;
+  opacity: 1;
+  padding: 24px 49px;
+  position: absolute;
   right: 0;
   text-align: center;
+  top: 256px;
   width: 650px;
-  padding: 24px 49px;
-  background-color: rgba(255, 255, 255, 1);
-  border-radius: 4px;
-  opacity: 1;
 }
 
 .assign-placeholder-modal-headline {
+  color: rgb(0, 0, 0);
   font-size: 28px;
-  text-align: left;
-  color: rgba(0, 0, 0, 1);
   padding-bottom: 14px;
+  text-align: left;
 }
 
 .assign-placeholder-modal-text-field {
-  width: 100%;
   height: 54px;
+  width: 100%;
 }
 
 .assign-placeholder-modal-button-container {
@@ -71,29 +71,29 @@
 }
 
 .assign-placeholder-modal-cancel-button {
+  background-color: rgb(255, 255, 255);
+  border: 1px solid;
+  border-color: rgb(189, 189, 189);
+  border-radius: 4px;
+  color: rgba(189, 189, 189);
   display: flex;
-  justify-content: center;
-  width: 115px;
-  height: 36px;
   font-size: 16px;
+  height: 36px;
+  justify-content: center;
   line-height: 36px;
   margin-right: 24px;
-  border: 1px solid;
-  border-radius: 4px;
-  border-color: rgba(189, 189, 189, 1);
-  background-color: rgba(255, 255, 255, 1);
-  color: rgba(189, 189, 189, 1);
+  width: 115px;
 }
 
 .assign-placeholder-modal-create-button {
-  display: flex;
-  justify-content: center;
-  width: 115px;
-  height: 36px;
-  font-size: 16px;
-  line-height: 36px;
-  background-color: rgba(232, 78, 26, 1);
+  background-color: rgb(232, 78, 26);
   border: 0;
   border-radius: 4px;
-  color: #ffffff;
+  color: rgb(255, 255, 255);
+  display: flex;
+  font-size: 16px;
+  height: 36px;
+  justify-content: center;
+  line-height: 36px;
+  width: 115px;
 }
