@@ -1,5 +1,4 @@
-@base <https://simple-ml.de/resource/wine/> .
-
+@prefix sml-wine: <https://simple-ml.de/resource/wine/> .
 @prefix sml: <https://simple-ml.de/resource/> .
 @prefix geo: <https://www.w3.org/2003/01/geo/wgs84_pos#> .
 @prefix geom: <http://geovocab.org/geometry#> .
@@ -13,92 +12,92 @@
 @prefix seas: <https://w3id.org/seas/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
-<WineClass> rdfs:subClassOf sml:DomainClass ;
+sml-wine:WineClass rdfs:subClassOf sml:DomainClass ;
     dcterms:description "a class used in the wine domain" ;
-    sml:domain <WineDomain> .
+    sml:domain sml-wine:WineDomain .
 
-<WineModel> a owl:Ontology ;
+sml-wine:WineModel a owl:Ontology ;
     dcterms:description "a data model about the wine domain" .
 
-<Wine> a <WineClass> ;
+sml-wine:Wine a sml-wine:WineClass ;
 	rdfs:label "Wine"@en, "Wein"@de.
 
-<fixedAcidity> a owl:DatatypeProperty ;
+sml-wine:fixedAcidity a owl:DatatypeProperty ;
         rdfs:label "fixed acidity"@en ;
         rdfs:label "fester Säurebestand"@de ;
-        rdfs:domain <Wine> ;
+        rdfs:domain sml-wine:Wine ;
         rdfs:range xsd:double .
 
-<volatileAcidity> a owl:DatatypeProperty ;
+sml-wine:volatileAcidity a owl:DatatypeProperty ;
         rdfs:label "volatile acidity"@en ;
         rdfs:label "flüchtiger Säurebestand"@de ;
-        rdfs:domain <Wine> ;
+        rdfs:domain sml-wine:Wine ;
         rdfs:range xsd:double .
 
-<citricAcid> a owl:DatatypeProperty ;
+sml-wine:citricAcid a owl:DatatypeProperty ;
         rdfs:label "citric acid"@en ;
         rdfs:label "Zitronensäure"@de ;
-        rdfs:domain <Wine> ;
+        rdfs:domain sml-wine:Wine ;
         rdfs:range xsd:double .
 
-<residualSugar> a owl:DatatypeProperty ;
+sml-wine:residualSugar a owl:DatatypeProperty ;
         rdfs:label "residual sugar"@en ;
         rdfs:label "Restzucker"@de ;
-        rdfs:domain <Wine> ;
+        rdfs:domain sml-wine:Wine ;
         rdfs:range xsd:double .
-        
-<chlorides> a owl:DatatypeProperty ;
+
+sml-wine:chlorides a owl:DatatypeProperty ;
         rdfs:label "chlorides"@en ;
         rdfs:label "Chloride"@de ;
-        rdfs:domain <Wine> ;
+        rdfs:domain sml-wine:Wine ;
         rdfs:range xsd:double .
 
-<freeSulfurDioxide> a owl:DatatypeProperty ;
+sml-wine:freeSulfurDioxide a owl:DatatypeProperty ;
         rdfs:label "free sulfur dioxide"@en ;
         rdfs:label "freier Schwefeldioxid"@de ;
-        rdfs:domain <Wine> ;
+        rdfs:domain sml-wine:Wine ;
         rdfs:range xsd:double .
 
-<totalSulfurDioxide> a owl:DatatypeProperty ;
+sml-wine:totalSulfurDioxide a owl:DatatypeProperty ;
         rdfs:label "total sulfur dioxide"@en ;
         rdfs:label "Gesamt-Schwefeldioxid"@de ;
-        rdfs:domain <Wine> ;
+        rdfs:domain sml-wine:Wine ;
         rdfs:range xsd:double .
 
-<density> a owl:DatatypeProperty ;
+sml-wine:density a owl:DatatypeProperty ;
         rdfs:label "density"@en ;
         rdfs:label "Dichte"@de ;
-        rdfs:domain <Wine> ;
+        rdfs:domain sml-wine:Wine ;
         rdfs:range xsd:double .
 
-<pH> a owl:DatatypeProperty ;
+sml-wine:pH a owl:DatatypeProperty ;
         rdfs:label "pH"@en ;
         rdfs:label "pH-Wert"@de ;
-        rdfs:domain <Wine> ;
+        rdfs:domain sml-wine:Wine ;
         rdfs:range xsd:double .
 
-<sulphates> a owl:DatatypeProperty ;
+sml-wine:sulphates a owl:DatatypeProperty ;
         rdfs:label "sulphates"@en ;
         rdfs:label "Sulphate"@de ;
-        rdfs:domain <Wine> ;
-        rdfs:range xsd:double .
-        
-<alcohol> a owl:DatatypeProperty ;
-        rdfs:label "alcohol"@en ;
-        rdfs:label "Alkohol"@de ;
-        rdfs:domain <Wine> ;
+        rdfs:domain sml-wine:Wine ;
         rdfs:range xsd:double .
 
-<qualityBinary> a owl:DatatypeProperty ;
+sml-wine:alcohol a owl:DatatypeProperty ;
+        rdfs:label "alcohol"@en ;
+        rdfs:label "Alkohol"@de ;
+        rdfs:domain sml-wine:Wine ;
+        rdfs:range xsd:double .
+
+sml-wine:qualityBinary a owl:DatatypeProperty ;
         rdfs:label "quality (binary)"@en ;
         rdfs:label "Qualität (binär)"@de ;
-        rdfs:domain <Wine> ;
+        rdfs:domain sml-wine:Wine ;
         rdfs:range xsd:nonNegativeInteger .
-        
-<quality> a owl:DatatypeProperty ;
+
+sml-wine:quality a owl:DatatypeProperty ;
         rdfs:label "quality"@en ;
         rdfs:label "Qualität"@de ;
-        rdfs:domain <Wine> ;
+        rdfs:domain sml-wine:Wine ;
         rdfs:range xsd:nonNegativeInteger .
         
  

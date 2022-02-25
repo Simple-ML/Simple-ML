@@ -32,7 +32,7 @@
 
 1. Update the [resource description strategy][resource-description-strategy] if your concept is a declaration that should be visible from another file.
 
-1. Update [static analyses][static-analysis]. (**TODO**: requires more information)
+1. Update the [static analyses][static-analysis].
 
 1. Update the validator.
    1. Create [validation tests][validation-tests]
@@ -58,6 +58,8 @@
    1. Run the tests (`./gradlew test`). There should be failures.
    1. Update the [converter to Prolog][prolog-converter].
    1. Run the tests again (`./gradlew test`). Tests should now pass.
+
+1. Update the [tutorial][tutorial].
 
 <!-- Links -->
 
@@ -104,3 +106,5 @@
 [prolog-tests]: ../../../DSL/de.unibonn.simpleml/src/test/kotlin/de/unibonn/simpleml/prologBridge/AstToPrologFactbaseTest.kt
 
 [prolog-converter]: ../../../DSL/de.unibonn.simpleml/src/main/kotlin/de/unibonn/simpleml/prologBridge/converters/AstToPrologFactbase.kt
+
+[tutorial]: ../tutorial/README.md

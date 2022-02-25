@@ -1,30 +1,22 @@
 # Imports ----------------------------------------------------------------------
-from simpleml.data_catalog import exportStatisticsAsRDF
+from simpleml.data_catalog._rdf_profile_creator import exportStatisticsAsRDF
 from simpleml.dataset import loadDataset
 from simpleml.util import exportDictionaryAsJSON
 
-
 # Workflow steps ---------------------------------------------------------------
 
+
 def exampleWorkflow():
-    dataset = loadDataset("WhiteWineQualityBinary")
-    # print(exportDictionaryAsJSON(dataset.getProfile()))
+
+    dataset = loadDataset("WhiteWineQuality")
+    print(exportDictionaryAsJSON(dataset.getProfile()))
 
     dataset = dataset.sample(10000)
 
-    # train, test = dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
-    # X_train = train.dropAttributes("quality")
-    # X_test = test.dropAttributes("quality")
-    # y_train = train.keepAttributes("quality")
-
-    # compute statistics from the dataset
-    # print(exportDictionaryAsJSON(X_train.getProfile()))
-    # print(exportDictionaryAsJSON(y_train.getProfile()))
-    # print(exportDictionaryAsJSON(X_test.getProfile()))
-    print("RDF:")
+    print(exportDictionaryAsJSON(dataset.getProfile()))
 
     print(exportStatisticsAsRDF(dataset))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     exampleWorkflow()
