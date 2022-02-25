@@ -548,7 +548,7 @@ If the default precedence of operators is not sufficient, parentheses can be use
 [variadic-parameters]: ../common/parameters.md#variadic-parameters
 [results]: ../common/results.md
 [types]: ../common/types.md
-[callable-types]: ../common/types.md#callable-type
+[callable-types]: ../common/types.md#callable-types
 [classes]: ../stub-language/classes.md
 [attributes]: ../stub-language/classes.md#defining-attributes
 [methods]: ../stub-language/classes.md#defining-methods
