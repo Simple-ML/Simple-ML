@@ -97,7 +97,7 @@ Generally, this method is preferable to our initial solution in the Section ["Fi
 ### `@PythonModule` Annotation
 
 Choosing the Simple-ML package according to the rules described above is essential for code generation to work properly. However, we might sometimes get warnings related to the Simple-ML naming convention, which wants the segments of the Simple-ML package to be `lowerCamelCase`. We now have several options:
-* If the declaration is not part of the Simple-ML standard library, we can ignore it.
+* If the declaration is not part of the Simple-ML standard library, we can ignore the warning.
 * We can update the Python code.
 * We can use the `@PythonModule` annotation.
 
