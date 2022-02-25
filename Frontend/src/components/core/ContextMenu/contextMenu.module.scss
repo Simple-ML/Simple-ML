@@ -3,12 +3,12 @@
   background-color: rgb(255, 255, 255);
   border-radius: 3px;
   color: rgb(0, 0, 0);
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   min-width: 200px;
   position: absolute;
   z-index: 999;
-  cursor: pointer;
 
   .toolbar-button {
     align-items: center;
@@ -17,9 +17,9 @@
     padding: 8px 16px 8px 16px;
 
     .icon {
+      height: 20px;
       padding-right: 10px;
       width: 20px;
-      height: 20px;
     }
     &:disabled {
       opacity: .5;
