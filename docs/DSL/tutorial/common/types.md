@@ -29,13 +29,31 @@ Types describe the values that a declaration can accept. Simple-ML has various c
 
 ### Union Types
 
-**TODO**
+If a declaration can have one of multiple types you can denote that with a _union type_:
+
+```
+union<String, Int>
+```
+
+Here is a breakdown of the syntax:
+* The keyword `union`.
+* An opening angle bracket.
+* A list of types, which are separated by commas. A trailing comma is allowed.
+* A closing angle bracket
+
+Note that it is preferable to write the common superclass if this is equivalent to the union type. For example, `Number` has the two subclasses `Int` and `Float`. Therefore, it is usually better to write `Number` as the type rather than `union<Int, Float>`. Use the union type only when you are not able to handle the later addition of further subclasses of `Number` other than `Int` or `Float`.
+
 ### Callable Types
 
 **TODO**
+
 ### Parenthesized Types
 
-**TODO**
+To improve clarity, parts of a type or the entire type can be enclosed in parentheses. The parentheses have no special meaning and are just meant as a visual guide. Here is an example:
+
+```
+(Int)
+```
 
 ## Corresponding Python Code
 
@@ -67,7 +85,7 @@ The following table shows how Simple-ML types can be written as Python [type hin
 |`SomeEnum?`|`Optional[SomeEnum]`|
 |`SomeSpecialList<Int>`|`SomeSpecialList[int]`|
 |`SomeOuterClass.SomeInnerClass`|`SomeOuterClass.SomeInnerClass`|
-|`union<Float, Int>`|`Union[Float, Int]`|
+|`union<String, Int>`|`Union[str, int]`|
 |`(a: Int, b: Int) -> r: Int`|`Callable[[int, int], int]`|
 |`(a: Int, b: Int) -> (r: Int, s: Int)`|`Callable[[int, int], Tuple[int, int]]`|
 |`(SomeClass)`|No exact equivalent. Convert the type without parentheses instead.|
