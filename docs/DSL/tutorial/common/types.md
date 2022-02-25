@@ -57,6 +57,8 @@ To improve clarity, parts of a type or the entire type can be enclosed in parent
 
 ## Corresponding Python Code
 
+**Note:** This section is only relevant if you are interested in the [stub language][stub-language].
+
 Optionally, [type hints][type-hints] can be used in Python to denote the type of a declaration. This is generally advisable, since IDEs can use this information to offer additional feature, like improved refactorings. Moreover, static type checker like [mypy][mypy] can detect misuse of an API without running the code. We will now briefly describe how to best use Python's [type hints][type-hints] and explain how they relate to Simple-ML types.
 
 First, to get [type hints][type-hints] in Python closer to the expected behavior, add the following import to your Python file:
@@ -106,6 +108,8 @@ Getting the `<result type`> depends on the number of results. If there is only a
 2. separate them all by commas,
 3. add the prefix `Tuple[`,
 4. add the suffix `]`.
+
+[stub-language]: ../stub-language/README.md
 
 [mypy]: http://mypy-lang.org/
 [type-hints]: https://docs.python.org/3/library/typing.html
