@@ -7,7 +7,7 @@ step myFunction() -> a: Int {
     // no_semantic_warning "This statement does nothing."
     »yield a = 1;«
 
-    lambda () {
+    () {
         // semantic_warning "This statement does nothing."
         »_ = 1 + 2;«
 

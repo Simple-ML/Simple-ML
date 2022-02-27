@@ -1,16 +1,15 @@
 package de.unibonn.simpleml.validation.other
 
+import de.unibonn.simpleml.emf.isNamed
+import de.unibonn.simpleml.emf.isPositional
 import de.unibonn.simpleml.simpleML.SmlTypeArgumentList
-import de.unibonn.simpleml.utils.isNamed
-import de.unibonn.simpleml.utils.isPositional
-import de.unibonn.simpleml.utils.typeParameterOrNull
-import de.unibonn.simpleml.utils.typeParametersOrNull
+import de.unibonn.simpleml.staticAnalysis.linking.typeParameterOrNull
+import de.unibonn.simpleml.staticAnalysis.linking.typeParametersOrNull
+import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.codes.ErrorCode
+import de.unibonn.simpleml.validation.codes.InfoCode
 import org.eclipse.xtext.validation.Check
-
-const val MISSING_REQUIRED_TYPE_PARAMETER = "MISSING_REQUIRED_TYPE_PARAMETER"
-const val NO_POSITIONAL_TYPE_ARGUMENTS_AFTER_FIRST_NAMED_TYPE_ARGUMENT =
-    "NO_POSITIONAL_TYPE_ARGUMENTS_AFTER_FIRST_NAMED_TYPE_ARGUMENT"
 
 class TypeArgumentListChecker : AbstractSimpleMLChecker() {
 
@@ -24,7 +23,7 @@ class TypeArgumentListChecker : AbstractSimpleMLChecker() {
             error(
                 "The type parameter '${it.name}' is required and must be set here.",
                 null,
-                MISSING_REQUIRED_TYPE_PARAMETER
+                ErrorCode.MISSING_REQUIRED_TYPE_PARAMETER
             )
         }
     }
@@ -44,8 +43,61 @@ class TypeArgumentListChecker : AbstractSimpleMLChecker() {
                     "After the first named type argument all type arguments must be named.",
                     it,
                     null,
-                    NO_POSITIONAL_TYPE_ARGUMENTS_AFTER_FIRST_NAMED_TYPE_ARGUMENT
+                    ErrorCode.NO_POSITIONAL_TYPE_ARGUMENTS_AFTER_FIRST_NAMED_TYPE_ARGUMENT
                 )
             }
+    }
+
+    @Check
+    fun tooManyTypeArguments(smlTypeArgumentList: SmlTypeArgumentList) {
+        val typeParameter = smlTypeArgumentList.typeParametersOrNull() ?: return
+
+        val maximumExpectedNumberOfArguments = typeParameter.size
+        val actualNumberOfArguments = smlTypeArgumentList.typeArguments.size
+
+        if (actualNumberOfArguments > maximumExpectedNumberOfArguments) {
+            val message = buildString {
+                append("Expected ")
+
+                when (maximumExpectedNumberOfArguments) {
+                    1 -> append("exactly 1 type argument")
+                    else -> append("exactly $maximumExpectedNumberOfArguments type arguments")
+                }
+
+                append(" but got $actualNumberOfArguments.")
+            }
+
+            error(
+                message,
+                null,
+                ErrorCode.TooManyTypeArguments
+            )
+        }
+    }
+
+    @Check
+    fun uniqueTypeParameters(smlTypeArgumentList: SmlTypeArgumentList) {
+        smlTypeArgumentList.typeArguments
+            .duplicatesBy { it.typeParameterOrNull()?.name }
+            .forEach {
+                error(
+                    "The type parameter '${it.typeParameterOrNull()?.name}' is already set.",
+                    it,
+                    null,
+                    ErrorCode.UniqueTypeParameters
+                )
+            }
+    }
+
+    @Check
+    fun unnecessaryTypeArgumentList(smlTypeArgumentList: SmlTypeArgumentList) {
+        val typeParametersOrNull = smlTypeArgumentList.typeParametersOrNull()
+        if (typeParametersOrNull != null && typeParametersOrNull.isEmpty()) {
+            info(
+                "Unnecessary type argument list.",
+                null,
+                InfoCode.UnnecessaryTypeArgumentList
+            )
+        }
     }
 }

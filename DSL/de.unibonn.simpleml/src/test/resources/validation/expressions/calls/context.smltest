@@ -21,15 +21,15 @@ step stepOneResult() -> first: Int {}
 step stepTwoResults() -> (first: Int, second: Int) {}
 
 step test(
-    paramNoResults: callable () -> (),
-    paramOneResult: callable () -> first: Int,
-    paramTwoResults: callable () -> (first: Int, second: Int)
+    paramNoResults: () -> (),
+    paramOneResult: () -> first: Int,
+    paramTwoResults: () -> (first: Int, second: Int)
 ) {
-    val lambdaNoResults = lambda () {};
-    val lambdaOneResult = lambda () {
+    val lambdaNoResults = () {};
+    val lambdaOneResult = () {
         yield first = 1;
     };
-    val lambdaTwoResults = lambda () {
+    val lambdaTwoResults = () {
         yield first = 1;
         yield second = 2;
     };
@@ -112,5 +112,5 @@ step test(
     // semantic_error "A call that produces no results is not allowed in this context."
     val x = »functionNoResults«();
     // no_semantic_error "A call that produces multiple results is not allowed in this context."
-    (val y, val z) = »functionTwoResults«();
+    val y, val z = »functionTwoResults«();
 }

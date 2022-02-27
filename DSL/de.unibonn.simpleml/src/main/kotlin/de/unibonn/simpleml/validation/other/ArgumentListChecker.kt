@@ -1,19 +1,15 @@
 package de.unibonn.simpleml.validation.other
 
+import de.unibonn.simpleml.emf.isNamed
+import de.unibonn.simpleml.emf.isPositional
+import de.unibonn.simpleml.emf.isRequired
 import de.unibonn.simpleml.simpleML.SmlArgumentList
+import de.unibonn.simpleml.staticAnalysis.linking.parameterOrNull
+import de.unibonn.simpleml.staticAnalysis.linking.parametersOrNull
 import de.unibonn.simpleml.utils.duplicatesBy
-import de.unibonn.simpleml.utils.isNamed
-import de.unibonn.simpleml.utils.isPositional
-import de.unibonn.simpleml.utils.isRequired
-import de.unibonn.simpleml.utils.parameterOrNull
-import de.unibonn.simpleml.utils.parametersOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
+import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.validation.Check
-
-const val MISSING_REQUIRED_PARAMETER = "MISSING_REQUIRED_PARAMETER"
-const val NO_POSITIONAL_ARGUMENTS_AFTER_FIRST_NAMED_ARGUMENT = "NO_POSITIONAL_ARGUMENTS_AFTER_FIRST_NAMED_ARGUMENT"
-const val TOO_MANY_ARGUMENTS = "TOO_MANY_ARGUMENTS"
-const val UNIQUE_PARAMETERS = "UNIQUE_PARAMETERS"
 
 class ArgumentListChecker : AbstractSimpleMLChecker() {
 
@@ -22,13 +18,13 @@ class ArgumentListChecker : AbstractSimpleMLChecker() {
         val parameters = smlArgumentList.parametersOrNull() ?: return
         val requiredParameters = parameters.filter { it.isRequired() }
         val givenParameters = smlArgumentList.arguments.mapNotNull { it.parameterOrNull() }
-        val missingRequiredParameters = requiredParameters - givenParameters
+        val missingRequiredParameters = requiredParameters - givenParameters.toSet()
 
         missingRequiredParameters.forEach {
             error(
                 "The parameter '${it.name}' is required and must be set here.",
                 null,
-                MISSING_REQUIRED_PARAMETER
+                ErrorCode.MISSING_REQUIRED_PARAMETER
             )
         }
     }
@@ -48,7 +44,7 @@ class ArgumentListChecker : AbstractSimpleMLChecker() {
                     "After the first named argument all arguments must be named.",
                     it,
                     null,
-                    NO_POSITIONAL_ARGUMENTS_AFTER_FIRST_NAMED_ARGUMENT
+                    ErrorCode.NO_POSITIONAL_ARGUMENTS_AFTER_FIRST_NAMED_ARGUMENT
                 )
             }
     }
@@ -56,7 +52,7 @@ class ArgumentListChecker : AbstractSimpleMLChecker() {
     @Check
     fun tooManyArguments(smlArgumentList: SmlArgumentList) {
         val parameters = smlArgumentList.parametersOrNull()
-        if (parameters == null || parameters.any { it.isVararg }) {
+        if (parameters == null || parameters.any { it.isVariadic }) {
             return
         }
 
@@ -82,7 +78,7 @@ class ArgumentListChecker : AbstractSimpleMLChecker() {
             error(
                 message,
                 null,
-                TOO_MANY_ARGUMENTS
+                ErrorCode.TOO_MANY_ARGUMENTS
             )
         }
     }
@@ -90,14 +86,19 @@ class ArgumentListChecker : AbstractSimpleMLChecker() {
     @Check
     fun uniqueParameters(smlArgumentList: SmlArgumentList) {
         smlArgumentList.arguments
-            .filter { it.parameterOrNull() != null }
-            .duplicatesBy { it.parameterOrNull()?.name }
+            .duplicatesBy {
+                val parameter = it.parameterOrNull() ?: return@duplicatesBy null
+                when {
+                    parameter.isVariadic -> null
+                    else -> parameter.name
+                }
+            }
             .forEach {
                 error(
                     "The parameter '${it.parameterOrNull()?.name}' is already set.",
                     it,
                     null,
-                    UNIQUE_PARAMETERS
+                    ErrorCode.UNIQUE_PARAMETERS
                 )
             }
     }

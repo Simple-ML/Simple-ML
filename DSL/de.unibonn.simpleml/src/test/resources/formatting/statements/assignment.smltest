@@ -1,11 +1,14 @@
 workflow myWorkflow {
           val
      a     =      0      ;
-    (  val    a   ,    _ ,       yield   b   )  =    call()        ;
-    lambda () {
+        val    a   ,    _ ,         yield   b     =    call()        ;
+    () {
         val         a
         =   0 ;
-        (val      a,       _   ,    yield    b   )   =
+        
+            
+    
+    val      a,       _   ,    yield    b      =
          call()    ;
     };
 }
@@ -14,9 +17,9 @@ workflow myWorkflow {
 
 workflow myWorkflow {
     val a = 0;
-    (val a, _, yield b) = call();
-    lambda () {
+    val a, _, yield b = call();
+    () {
         val a = 0;
-        (val a, _, yield b) = call();
+        val a, _, yield b = call();
     };
 }

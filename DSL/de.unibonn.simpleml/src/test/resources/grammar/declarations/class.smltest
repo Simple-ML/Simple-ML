@@ -3,14 +3,14 @@
 class MySimpleClass
 
 @AnnotationUse
-static class MyComplexClass
-    <@AnnotationUse static T1, in T2, out T3>
-    (@AnnotationUse static a: Int, vararg b: Int or 3)
+class MyComplexClass
+    <@AnnotationUse T1, in T2, out T3>
+    (@AnnotationUse a: Int, vararg b: Int = 3)
     sub SuperClass1, SuperClass2
     where T2 super Number, T3 sub Number
 {
     @AnnotationUse static attr myAttribute: Int
-    @AnnotationUse static class MyClass
-    @AnnotationUse static enum MyEnum
+    @AnnotationUse class MyClass
+    @AnnotationUse enum MyEnum
     @AnnotationUse static fun MyFunction()
 }

@@ -1,14 +1,8 @@
-      workflow      myWorkflow1        {}  @Annotation1        @Annotation2 workflow myWorkflow2 {}
+      workflow      myWorkflow1        {}  
 
-      open
-      static
-            workflow    myWorkflow3    {
+                        
 
-             }
-
-      @Annotation1        @Annotation2      open
-        static
-      workflow    myWorkflow4    {
+      @Annotation1        @Annotation2                    workflow    myWorkflow2    {
               val a = 1;
        }
 
@@ -18,12 +12,6 @@ workflow myWorkflow1 {}
 
 @Annotation1
 @Annotation2
-workflow myWorkflow2 {}
-
-open static workflow myWorkflow3 {}
-
-@Annotation1
-@Annotation2
-open static workflow myWorkflow4 {
+workflow myWorkflow2 {
     val a = 1;
 }

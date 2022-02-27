@@ -3,7 +3,7 @@ package tests.languageTests.scoping.namedType1
 import tests.languageTests.scoping.namedType2.ClassInOtherPackage1
 import tests.languageTests.scoping.namedType2.EnumInOtherPackage1
 
-open class SuperClass {
+class SuperClass {
     class ClassInSuperClass
     enum EnumInSuperClass
 }
@@ -54,3 +54,12 @@ fun inheritedMemberTypes(
     paramClassInSuperClass: ClassInSameFile<*>.ClassInSuperClass,
     paramEnumInSuperClass: ClassInSameFile<*>.EnumInSuperClass,
 )
+
+class ClassWithTypeParameter<TYPE_PARAMETER_IN_OUTER_CLASS> {
+    attr attributeInClassWithTypeParameter: TYPE_PARAMETER_IN_OUTER_CLASS
+    class NestedClass(paramClassInClassWithTypeParameter: TYPE_PARAMETER_IN_OUTER_CLASS)
+    enum NestedEnum {
+        Variant(paramEnumInClassWithTypeParameter: TYPE_PARAMETER_IN_OUTER_CLASS)
+    }
+    fun method(paramMethodInClassWithTypeParameter: TYPE_PARAMETER_IN_OUTER_CLASS)
+}

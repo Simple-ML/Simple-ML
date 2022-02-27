@@ -1,68 +1,51 @@
 package de.unibonn.simpleml.validation.declarations
 
-import de.unibonn.simpleml.constants.isInStubFile
-import de.unibonn.simpleml.constants.isInTestFile
-import de.unibonn.simpleml.emf.uniquePackageOrNull
+import de.unibonn.simpleml.constant.isInStubFile
+import de.unibonn.simpleml.constant.isInTestFile
+import de.unibonn.simpleml.emf.compilationUnitMembersOrEmpty
+import de.unibonn.simpleml.emf.importedNameOrNull
+import de.unibonn.simpleml.emf.isQualified
+import de.unibonn.simpleml.naming.qualifiedNameOrNull
+import de.unibonn.simpleml.scoping.externalGlobalDeclarations
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
-import de.unibonn.simpleml.simpleML.SmlPackage
+import de.unibonn.simpleml.simpleML.SmlImport
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlWorkflow
-import de.unibonn.simpleml.simpleML.SmlWorkflowStep
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
-import de.unibonn.simpleml.validation.REDECLARATION
+import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.validation.Check
-
-const val FILE_MUST_DECLARE_PACKAGE = "STUB_FILE_MUST_DECLARE_PACKAGE"
-const val FILE_MUST_HAVE_ONLY_ONE_PACKAGE = "STUB_FILE_MUST_HAVE_ONLY_ONE_PACKAGE"
-const val PACKAGE_MUST_COME_FIRST = "PACKAGE_MUST_COME_FIRST"
-const val STUB_FILE_MUST_NOT_DECLARE_WORKFLOWS = "STUB_FILE_MUST_NOT_DECLARE_WORKFLOWS"
-const val WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_WORKFLOW_STEPS =
-    "WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_FUNCTIONS"
+import org.eclipse.xtext.validation.CheckType
 
 class CompilationUnitChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun members(smlCompilationUnit: SmlCompilationUnit) {
         if (smlCompilationUnit.isInStubFile()) {
-            smlCompilationUnit.members
-                .filter { it is SmlWorkflow || it is SmlWorkflowStep }
+            smlCompilationUnit.compilationUnitMembersOrEmpty()
+                .filter { it is SmlWorkflow || it is SmlStep }
                 .forEach {
                     error(
-                        "A stub file must not declare workflows or workflow steps.",
+                        "A stub file must not declare workflows or steps.",
                         it,
-                        Literals.SML_DECLARATION__NAME,
-                        STUB_FILE_MUST_NOT_DECLARE_WORKFLOWS
+                        Literals.SML_ABSTRACT_DECLARATION__NAME,
+                        ErrorCode.StubFileMustNotDeclareWorkflowsOrSteps
                     )
                 }
         } else if (!smlCompilationUnit.isInTestFile()) {
-            smlCompilationUnit.members
-                .filter { it !is SmlWorkflow && it !is SmlWorkflowStep }
+            smlCompilationUnit.compilationUnitMembersOrEmpty()
+                .filter { it !is SmlWorkflow && it !is SmlStep }
                 .forEach {
                     error(
-                        "A workflow file must only declare workflows and workflow steps.",
+                        "A workflow file must only declare workflows and steps.",
                         it,
-                        Literals.SML_DECLARATION__NAME,
-                        WORKFLOW_FILE_MUST_ONLY_DECLARE_WORKFLOWS_AND_WORKFLOW_STEPS
+                        Literals.SML_ABSTRACT_DECLARATION__NAME,
+                        ErrorCode.WorkflowFileMustOnlyDeclareWorkflowsAndSteps
                     )
                 }
         }
-    }
-
-    @Check
-    fun packageDeclarationPosition(smlCompilationUnit: SmlCompilationUnit) {
-        smlCompilationUnit.members
-            .asSequence()
-            .drop(1)
-            .filterIsInstance<SmlPackage>()
-            .forEach {
-                error(
-                    "The package declaration and imports must come first.",
-                    it,
-                    null,
-                    PACKAGE_MUST_COME_FIRST
-                )
-            }
     }
 
     @Check
@@ -71,38 +54,78 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
             return
         }
 
-        val packageDeclarations = smlCompilationUnit.members.filterIsInstance<SmlPackage>()
-        if (packageDeclarations.size > 1) {
-            packageDeclarations.asSequence()
-                .drop(1)
-                .forEach {
-                    error(
-                        "A file must have only one package.",
-                        it,
-                        Literals.SML_DECLARATION__NAME,
-                        FILE_MUST_HAVE_ONLY_ONE_PACKAGE
-                    )
-                }
-        } else if (smlCompilationUnit.uniquePackageOrNull()?.name == null) {
-            error(
-                "A file must declare its package.",
-                null,
-                FILE_MUST_DECLARE_PACKAGE
-            )
+        if (smlCompilationUnit.name == null) {
+            smlCompilationUnit.compilationUnitMembersOrEmpty().firstOrNull()?.let {
+                error(
+                    "A file with declarations must declare its package.",
+                    it,
+                    Literals.SML_ABSTRACT_DECLARATION__NAME,
+                    ErrorCode.FileMustDeclarePackage
+                )
+            }
         }
     }
 
     @Check
     fun uniqueNames(smlCompilationUnit: SmlCompilationUnit) {
-        smlCompilationUnit.members
-            .duplicatesBy { it.name }
-            .forEach {
+        val namedEObjects = smlCompilationUnit.imports.filter { it.isQualified() } + smlCompilationUnit.members
+
+        namedEObjects.duplicatesBy {
+            when (it) {
+                is SmlImport -> it.importedNameOrNull()
+                is SmlAbstractDeclaration -> it.name
+                else -> null
+            }
+        }.forEach {
+            when {
+                it is SmlImport && it.alias == null -> {
+                    error(
+                        "A declaration with name '${it.importedNameOrNull()}' exists already in this file.",
+                        it,
+                        Literals.SML_IMPORT__IMPORTED_NAMESPACE,
+                        ErrorCode.REDECLARATION
+                    )
+                }
+                it is SmlImport && it.alias != null -> {
+                    error(
+                        "A declaration with name '${it.importedNameOrNull()}' exists already in this file.",
+                        it.alias,
+                        Literals.SML_IMPORT_ALIAS__NAME,
+                        ErrorCode.REDECLARATION
+                    )
+                }
+                it is SmlAbstractDeclaration -> {
+                    error(
+                        "A declaration with name '${it.name}' exists already in this file.",
+                        it,
+                        Literals.SML_ABSTRACT_DECLARATION__NAME,
+                        ErrorCode.REDECLARATION
+                    )
+                }
+            }
+        }
+    }
+
+    @Check(CheckType.NORMAL)
+    fun uniqueNamesAcrossFiles(smlCompilationUnit: SmlCompilationUnit) {
+
+        // Since the stdlib is automatically loaded into a workspace, every declaration would be marked as a duplicate
+        // when editing the stdlib
+        if (smlCompilationUnit.isInStubFile() && smlCompilationUnit.name.startsWith("simpleml")) {
+            return
+        }
+
+        val externalGlobalDeclarations = smlCompilationUnit.externalGlobalDeclarations()
+        smlCompilationUnit.compilationUnitMembersOrEmpty().forEach { member ->
+            val qualifiedName = member.qualifiedNameOrNull()
+            if (externalGlobalDeclarations.any { it.qualifiedName == qualifiedName }) {
                 error(
-                    "A declaration with name '${it.name}' exists already in this file.",
-                    it,
-                    Literals.SML_DECLARATION__NAME,
-                    REDECLARATION
+                    "A declaration with qualified name '$qualifiedName' exists already.",
+                    member,
+                    Literals.SML_ABSTRACT_DECLARATION__NAME,
+                    ErrorCode.REDECLARATION_IN_OTHER_FILE
                 )
             }
+        }
     }
 }

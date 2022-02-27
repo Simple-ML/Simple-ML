@@ -3,10 +3,10 @@ package simpleml.model.regression
 import simpleml.model.*
 import simpleml.dataset.Dataset
 
-open class Lasso(regularizationStrength: Float or 0.5) sub Estimator {
+class Lasso(regularizationStrength: Float = 0.5) sub Estimator {
     attr regularizationStrength: Float
 
-    override fun fit(features: Dataset, target: Dataset) -> trainedModel: TrainedLasso
+    fun fit(features: Dataset, target: Dataset) -> trainedModel: TrainedLasso
 }
 
 class TrainedLasso sub Model {
@@ -14,5 +14,5 @@ class TrainedLasso sub Model {
 
     attr yIntercept: Int
 
-    override fun predict(features: Dataset) -> results: Any
+    fun predict(features: Dataset) -> results: Any
 }

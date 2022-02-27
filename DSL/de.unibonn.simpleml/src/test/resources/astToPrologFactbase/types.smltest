@@ -1,9 +1,9 @@
-package myPackage
+package tests.astToPrologFactbase.types
 
 // Callable types ------------------------------------------------------------------------------------------------------
-step myWorkflowStepWithSimpleCallableType(a: callable () -> ()) {}
+step myWorkflowStepWithSimpleCallableType(a: () -> ()) {}
 
-step myWorkflowStepWithComplexCallableType(a: callable (o, p) -> (s, r)) {}
+step myWorkflowStepWithComplexCallableType(a: (o, p) -> (s, r)) {}
 
 
 // Member types --------------------------------------------------------------------------------------------------------
@@ -26,10 +26,6 @@ step myWorkflowStepWithParenthesizedType(a: (C)) {}
 workflow myWorkflowWithStarProjection {
     val starProjection = C<*>();
 }
-
-
-// This types ----------------------------------------------------------------------------------------------------------
-step myWorkflowStepWithThisType(a: this) {}
 
 
 // Type arguments ------------------------------------------------------------------------------------------------------

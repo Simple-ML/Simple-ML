@@ -1,7 +1,8 @@
 package example
 
 import simpleml.dataset.loadDataset
-import simpleml.model.supervised.classification.DecisionTreeClassifier
+import simpleml.metric.classification.accuracy
+import simpleml.model.classification.DecisionTreeClassifier
 
 workflow winebasic {
 
@@ -15,6 +16,7 @@ workflow winebasic {
     val X_train = df_train.dropAttributes("quality");
     val X_test = df_test.dropAttributes("quality");
     val y_train = df_train.keepAttributes("quality");
+    val y_test = df_train.keepAttributes("quality");
 
     // Create estimator
     val estimator = DecisionTreeClassifier();
@@ -24,4 +26,7 @@ workflow winebasic {
     
     // Predict something with the model
     val y_pred = model.predict(X_test);
+
+    // Evalutate model with a metric
+    val accuracy = accuracy(y_pred, y_test); // Order could also be reversed (expected, actual); it should just be consistent across all metrics
 }

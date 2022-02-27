@@ -1,2083 +1,632 @@
-@base <https://simple-ml.de/resource/> .
-
-@prefix sml: <https://simple-ml.de/resource/> .
-@prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
-@prefix sml-logistics: <https://simple-ml.de/resource/logistics/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix seas: <https://w3id.org/seas/> .
+@prefix sml: <https://simple-ml.de/resource/> .
+@prefix sml-log: <https://simple-ml.de/resource/logistics/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-### Dataset: RossmannStores
-<simple-ml> dcat:dataset <RossmannStores> .
-<RossmannStores> a dcat:Dataset ;
- dcterms:identifier "RossmannStores" ;
- dcterms:title "1,115 Rossmann stores"@en ;
- dcterms:title "1115 Rossmann-Geschäfte"@de ;
- dcterms:description "1,115 Rossmann stores (Source: Kaggle)"@en ;
- dcterms:description "1115 Rossmann-Geschäfte (Quelle: Kaggle)"@de ;
- dcterms:subject "Logistics"@en ;
- dcterms:subject "Logistik"@de ;
- <creatorId> "0"^^xsd:nonNegativeInteger ;
- <numberOfInstances> "1115"^^xsd:nonNegativeInteger ;
- <latBeforeLon> "true"^^xsd:boolean .
+sml:simple-ml dcat:dataset sml:RossmannStores .
 
-### File (RossmannStores)
+sml:RossmannStores a dcat:Dataset ;
+    dct:description "1115 Rossmann-Geschäfte (Quelle: Kaggle)"@de,
+        "1,115 Rossmann stores (Source: Kaggle)"@en ;
+    dct:identifier "RossmannStores" ;
+    dct:subject "Logistik"@de,
+        "Logistics"@en ;
+    dct:title "1115 Rossmann-Geschäfte"@de,
+        "1,115 Rossmann stores"@en ;
+    sml:coordinateSystem "3857"^^xsd:nonNegativeInteger ;
+    sml:creatorId "0"^^xsd:nonNegativeInteger ;
+    sml:hasAttribute sml:RossmannStoresAttributeAssortment,
+        sml:RossmannStoresAttributeCompetitiondistance,
+        sml:RossmannStoresAttributeStore,
+        sml:RossmannStoresAttributeStoretype ;
+    sml:hasFile sml:RossmannStoresFile ;
+    sml:hasSample sml:RossmannStoresSample ;
+    sml:latBeforeLon true ;
+    sml:numberOfInstances "1115"^^xsd:nonNegativeInteger .
 
-<RossmannStores> <hasFile> <RossmannStoresFile> .
-<RossmannStoresFile> a <TextFile> ;
- <fileLocation> "RossmannStores.csv" ;
- dcterms:format "text/comma-separated-values" ;
- csvw:separator "," ;
- csvw:header "true"^^xsd:boolean ;
- csvw:null "" .
+sml:RossmannStoresAttributeAssortment a sml:Attribute ;
+    dct:identifier "Assortment" ;
+    sml:columnIndex "2"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/RossmannStores_sml_logistics/Assortment> ;
+    sml:mapsToProperty rdfs:label ;
+    sml:valueType rdfs:Literal ;
+    seas:evaluation sml:RossmannStoresAttributeAssortmentAverageNumberOfCapitalisedValues,
+        sml:RossmannStoresAttributeAssortmentAverageNumberOfCharacters,
+        sml:RossmannStoresAttributeAssortmentAverageNumberOfDigits,
+        sml:RossmannStoresAttributeAssortmentAverageNumberOfSpecialCharacters,
+        sml:RossmannStoresAttributeAssortmentAverageNumberOfTokens,
+        sml:RossmannStoresAttributeAssortmentNumberOfDistinctValues,
+        sml:RossmannStoresAttributeAssortmentNumberOfInvalidValues,
+        sml:RossmannStoresAttributeAssortmentNumberOfNullValues,
+        sml:RossmannStoresAttributeAssortmentNumberOfValidNonNullValues,
+        sml:RossmannStoresAttributeAssortmentNumberOfValidValues,
+        sml:RossmannStoresAttributeAssortmentNumberOfValues ;
+    seas:valueDistributionValue sml:RossmannStoresAttributeAssortmentValueDistributionValue0,
+        sml:RossmannStoresAttributeAssortmentValueDistributionValue1,
+        sml:RossmannStoresAttributeAssortmentValueDistributionValue2 .
 
-### Attributes (RossmannStores)
+sml:RossmannStoresAttributeAssortmentAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
 
-<RossmannStores> <hasAttribute> <RossmannStoresAttributeStore> .
-<RossmannStoresAttributeStore> a <Attribute> ;
- dcterms:identifier "Store" ;
- <columnIndex> "0"^^xsd:integer ;
- <valueType> xsd:nonNegativeInteger ;
- <mapsToDomain> <RossmannStores_Store> ;
- <mapsToProperty> sml-logistics:storeId .
+sml:RossmannStoresAttributeAssortmentAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
 
-<RossmannStores> <hasAttribute> <RossmannStoresAttributeStoreType> .
-<RossmannStoresAttributeStoreType> a <Attribute> ;
- dcterms:identifier "StoreType" ;
- <columnIndex> "1"^^xsd:integer ;
- <valueType> xsd:string ;
- <mapsToDomain> <RossmannStores_StoreType> ;
- <mapsToProperty> rdfs:label .
+sml:RossmannStoresAttributeAssortmentAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
 
-<RossmannStores> <hasAttribute> <RossmannStoresAttributeAssortment> .
-<RossmannStoresAttributeAssortment> a <Attribute> ;
- dcterms:identifier "Assortment" ;
- <columnIndex> "2"^^xsd:integer ;
- <valueType> xsd:string ;
- <mapsToDomain> <RossmannStores_Assortment> ;
- <mapsToProperty> rdfs:label .
+sml:RossmannStoresAttributeAssortmentAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
 
-<RossmannStores> <hasAttribute> <RossmannStoresAttributeCompetitionDistance> .
-<RossmannStoresAttributeCompetitionDistance> a <Attribute> ;
- dcterms:identifier "CompetitionDistance" ;
- <columnIndex> "3"^^xsd:integer ;
- <valueType> xsd:nonNegativeInteger ;
- <mapsToDomain> <RossmannStores_Store> ;
- <mapsToProperty> sml-logistics:competitionDistance .
+sml:RossmannStoresAttributeAssortmentAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
 
-<RossmannStores> <hasAttribute> <RossmannStoresAttributeCompetitionOpenSinceMonth> .
-<RossmannStoresAttributeCompetitionOpenSinceMonth> a <Attribute> ;
- dcterms:identifier "CompetitionOpenSinceMonth" ;
- <columnIndex> "4"^^xsd:integer ;
- <valueType> xsd:nonNegativeInteger .
+sml:RossmannStoresAttributeAssortmentNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 3 .
 
-<RossmannStores> <hasAttribute> <RossmannStoresAttributeCompetitionOpenSinceYear> .
-<RossmannStoresAttributeCompetitionOpenSinceYear> a <Attribute> ;
- dcterms:identifier "CompetitionOpenSinceYear" ;
- <columnIndex> "5"^^xsd:integer ;
- <valueType> xsd:date .
+sml:RossmannStoresAttributeAssortmentNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
 
-<RossmannStores> <hasAttribute> <RossmannStoresAttributePromo2> .
-<RossmannStoresAttributePromo2> a <Attribute> ;
- dcterms:identifier "Promo2" ;
- <columnIndex> "6"^^xsd:integer ;
- <valueType> xsd:nonNegativeInteger .
+sml:RossmannStoresAttributeAssortmentNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
 
-<RossmannStores> <hasAttribute> <RossmannStoresAttributePromo2SinceWeek> .
-<RossmannStoresAttributePromo2SinceWeek> a <Attribute> ;
- dcterms:identifier "Promo2SinceWeek" ;
- <columnIndex> "7"^^xsd:integer ;
- <valueType> xsd:nonNegativeInteger .
+sml:RossmannStoresAttributeAssortmentNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1115 .
 
-<RossmannStores> <hasAttribute> <RossmannStoresAttributePromo2SinceYear> .
-<RossmannStoresAttributePromo2SinceYear> a <Attribute> ;
- dcterms:identifier "Promo2SinceYear" ;
- <columnIndex> "8"^^xsd:integer ;
- <valueType> xsd:date .
+sml:RossmannStoresAttributeAssortmentNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1115 .
 
-<RossmannStores> <hasAttribute> <RossmannStoresAttributePromoInterval> .
-<RossmannStoresAttributePromoInterval> a <Attribute> ;
- dcterms:identifier "PromoInterval" ;
- <columnIndex> "9"^^xsd:integer ;
- <valueType> xsd:string .
+sml:RossmannStoresAttributeAssortmentNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1115 .
 
-### Semantic graph (RossmannStores)
+sml:RossmannStoresAttributeAssortmentValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "a" ;
+    sml:numberOfInstancesOfValue "593"^^xsd:nonNegativeInteger .
 
-<RossmannStores_Store> rdf:type <ClassInstance> ;
- <mapsTo> sml-logistics:Store ;
- sml-logistics:hasAssortment <RossmannStores_Assortment> ;
- sml-logistics:storeType <RossmannStores_StoreType> .
-<RossmannStores_StoreType> rdf:type <ClassInstance> ;
- <mapsTo> sml-logistics:StoreType .
-<RossmannStores_Assortment> rdf:type <ClassInstance> ;
- <mapsTo> sml-logistics:Assortment .
+sml:RossmannStoresAttributeAssortmentValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "c" ;
+    sml:numberOfInstancesOfValue "513"^^xsd:nonNegativeInteger .
 
-### Statistics (RossmannStores)
-<RossmannStores> <numberOfInstances> "1115"^^xsd:integer .
-### Statistics for "Store" (RossmannStores)
-<RossmannStoresAttributeStore> seas:evaluation <RossmannStoresAttributeStoreNumberOfValues> ;
- seas:evaluation <RossmannStoresAttributeStoreNumberOfNullValues> ;
- seas:evaluation <RossmannStoresAttributeStoreNumberOfValidValues> ;
- seas:evaluation <RossmannStoresAttributeStoreNumberOfValidNonNullValues> ;
- seas:evaluation <RossmannStoresAttributeStoreNumberOfInvalidValues> ;
- seas:evaluation <RossmannStoresAttributeStoreAverageNumberOfDigits> ;
- seas:evaluation <RossmannStoresAttributeStoreAverageNumberOfCharacters> ;
- seas:evaluation <RossmannStoresAttributeStoreAverageNumberOfTokens> ;
- seas:evaluation <RossmannStoresAttributeStoreAverageNumberOfCapitalisedValues> ;
- seas:evaluation <RossmannStoresAttributeStoreAverageNumberOfSpecialCharacters> ;
- seas:evaluation <RossmannStoresAttributeStoreMinimum> ;
- seas:evaluation <RossmannStoresAttributeStoreMaximum> ;
- seas:evaluation <RossmannStoresAttributeStoreMean> ;
- seas:evaluation <RossmannStoresAttributeStoreNumberOfDistinctValues> ;
- seas:evaluation <RossmannStoresAttributeStoreStandardDeviation> ;
- seas:evaluation <RossmannStoresAttributeStoreQuartile0> ;
- seas:evaluation <RossmannStoresAttributeStoreQuartile1> ;
- seas:evaluation <RossmannStoresAttributeStoreQuartile2> ;
- seas:evaluation <RossmannStoresAttributeStoreQuartile3> ;
- seas:evaluation <RossmannStoresAttributeStoreQuartile4> ;
- seas:evaluation <RossmannStoresAttributeStoreDecile0> ;
- seas:evaluation <RossmannStoresAttributeStoreDecile1> ;
- seas:evaluation <RossmannStoresAttributeStoreDecile2> ;
- seas:evaluation <RossmannStoresAttributeStoreDecile3> ;
- seas:evaluation <RossmannStoresAttributeStoreDecile4> ;
- seas:evaluation <RossmannStoresAttributeStoreDecile5> ;
- seas:evaluation <RossmannStoresAttributeStoreDecile6> ;
- seas:evaluation <RossmannStoresAttributeStoreDecile7> ;
- seas:evaluation <RossmannStoresAttributeStoreDecile8> ;
- seas:evaluation <RossmannStoresAttributeStoreDecile9> ;
- seas:evaluation <RossmannStoresAttributeStoreDecile10> ;
- seas:evaluation <RossmannStoresAttributeStoreNumberOfOutliersBelow> ;
- seas:evaluation <RossmannStoresAttributeStoreNumberOfOutliersAbove> ;
- seas:evaluation <RossmannStoresAttributeStoreHistogram0> ;
- seas:evaluation <RossmannStoresAttributeStoreHistogram1> ;
- seas:evaluation <RossmannStoresAttributeStoreHistogram2> ;
- seas:evaluation <RossmannStoresAttributeStoreHistogram3> ;
- seas:evaluation <RossmannStoresAttributeStoreHistogram4> ;
- seas:evaluation <RossmannStoresAttributeStoreHistogram5> ;
- seas:evaluation <RossmannStoresAttributeStoreHistogram6> ;
- seas:evaluation <RossmannStoresAttributeStoreHistogram7> ;
- seas:evaluation <RossmannStoresAttributeStoreHistogram8> ;
- seas:evaluation <RossmannStoresAttributeStoreHistogram9> ;
- seas:evaluation <RossmannStoresAttributeStoreMedian> .
-<RossmannStoresAttributeStoreNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "3.0071748878923765"^^xsd:double .
-<RossmannStoresAttributeStoreAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "3.0071748878923765"^^xsd:double .
-<RossmannStoresAttributeStoreAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<RossmannStoresAttributeStoreAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributeStoreAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributeStoreMinimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer .
-<RossmannStoresAttributeStoreMaximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "1115"^^xsd:integer .
-<RossmannStoresAttributeStoreMean> rdf:type seas:DistributionMeanEvaluation ;
- seas:evaluatedValue "558.0"^^xsd:double .
-<RossmannStoresAttributeStoreNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
- seas:evaluatedValue "322.0170802923348"^^xsd:double .
-<RossmannStoresAttributeStoreQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer ;
- seas:rank "0"^^xsd:integer .
-<RossmannStoresAttributeStoreQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "279.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer .
-<RossmannStoresAttributeStoreQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "558.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer .
-<RossmannStoresAttributeStoreQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "837.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer .
-<RossmannStoresAttributeStoreQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1115"^^xsd:integer ;
- seas:rank "4"^^xsd:integer .
-<RossmannStoresAttributeStoreDecile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer ;
- seas:rank "0"^^xsd:integer .
-<RossmannStoresAttributeStoreDecile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "112.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer .
-<RossmannStoresAttributeStoreDecile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "223.5"^^xsd:double ;
- seas:rank "2"^^xsd:integer .
-<RossmannStoresAttributeStoreDecile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "335.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer .
-<RossmannStoresAttributeStoreDecile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "446.5"^^xsd:double ;
- seas:rank "4"^^xsd:integer .
-<RossmannStoresAttributeStoreDecile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "558.0"^^xsd:double ;
- seas:rank "5"^^xsd:integer .
-<RossmannStoresAttributeStoreDecile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "669.5"^^xsd:double ;
- seas:rank "6"^^xsd:integer .
-<RossmannStoresAttributeStoreDecile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "781.0"^^xsd:double ;
- seas:rank "7"^^xsd:integer .
-<RossmannStoresAttributeStoreDecile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "892.5"^^xsd:double ;
- seas:rank "8"^^xsd:integer .
-<RossmannStoresAttributeStoreDecile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1004.0"^^xsd:double ;
- seas:rank "9"^^xsd:integer .
-<RossmannStoresAttributeStoreDecile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1115"^^xsd:integer ;
- seas:rank "10"^^xsd:integer .
-<RossmannStoresAttributeStoreNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreHistogram0> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "112"^^xsd:integer ;
- <bucketMinimum> "1"^^xsd:integer ;
- <instancesInBucket> "112"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreHistogram1> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "113"^^xsd:integer ;
- <bucketMaximum> "223"^^xsd:integer ;
- <instancesInBucket> "111"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreHistogram2> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "335"^^xsd:integer ;
- <bucketMinimum> "224"^^xsd:integer ;
- <instancesInBucket> "112"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreHistogram3> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "111"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "446"^^xsd:integer ;
- <bucketMinimum> "336"^^xsd:integer .
-<RossmannStoresAttributeStoreHistogram4> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "558"^^xsd:integer ;
- <bucketMinimum> "447"^^xsd:integer ;
- <instancesInBucket> "112"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreHistogram5> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "111"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "558"^^xsd:integer ;
- <bucketMaximum> "669"^^xsd:integer .
-<RossmannStoresAttributeStoreHistogram6> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "780"^^xsd:integer ;
- <bucketMinimum> "670"^^xsd:integer ;
- <instancesInBucket> "111"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreHistogram7> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "781"^^xsd:integer ;
- <instancesInBucket> "112"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "892"^^xsd:integer .
-<RossmannStoresAttributeStoreHistogram8> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "111"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "893"^^xsd:integer ;
- <bucketMaximum> "1003"^^xsd:integer .
-<RossmannStoresAttributeStoreHistogram9> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "1115"^^xsd:integer ;
- <instancesInBucket> "112"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "1004"^^xsd:integer .
-<RossmannStoresAttributeStoreMedian> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "558.0"^^xsd:double .
-### Statistics for "StoreType" (RossmannStores)
-<RossmannStoresAttributeStoreType> seas:evaluation <RossmannStoresAttributeStoreTypeNumberOfValues> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeNumberOfNullValues> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeNumberOfValidValues> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeNumberOfValidNonNullValues> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeNumberOfInvalidValues> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeAverageNumberOfDigits> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeAverageNumberOfCharacters> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeAverageNumberOfTokens> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeAverageNumberOfCapitalisedValues> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeAverageNumberOfSpecialCharacters> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeNumberOfDistinctValues> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeMinimum> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeMaximum> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeMedian> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeMean> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeStandardDeviation> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeNumberOfOutliersBelow> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeNumberOfOutliersAbove> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeHistogram0> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeHistogram1> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeHistogram2> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeHistogram3> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeHistogram4> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeHistogram5> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeHistogram6> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeHistogram7> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeHistogram8> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeHistogram9> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeQuartile0> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeQuartile1> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeQuartile2> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeQuartile3> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeQuartile4> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeDecile0> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeDecile1> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeDecile2> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeDecile3> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeDecile4> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeDecile5> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeDecile6> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeDecile7> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeDecile8> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeDecile9> ;
- seas:evaluation <RossmannStoresAttributeStoreTypeDecile10> ;
- <hasValueDistribution> <RossmannStoresAttributeStoreTypeValueDistribution> .
-<RossmannStoresAttributeStoreTypeNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreTypeNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreTypeNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreTypeNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreTypeNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreTypeAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributeStoreTypeAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<RossmannStoresAttributeStoreTypeAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<RossmannStoresAttributeStoreTypeAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributeStoreTypeAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributeStoreTypeNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "4"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreTypeMinimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "1"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeMaximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "1"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeMedian> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeMean> rdf:type seas:DistributionMeanEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeHistogram0> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "1"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreTypeHistogram1> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "1"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeHistogram2> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "1"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeHistogram3> rdf:type <DistributionHistogramEvaluation> ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "1"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "1"^^xsd:integer .
-<RossmannStoresAttributeStoreTypeHistogram4> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "1"^^xsd:integer .
-<RossmannStoresAttributeStoreTypeHistogram5> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "1"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "1"^^xsd:integer .
-<RossmannStoresAttributeStoreTypeHistogram6> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "1"^^xsd:integer .
-<RossmannStoresAttributeStoreTypeHistogram7> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "1"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeHistogram8> rdf:type <DistributionHistogramEvaluation> ;
- <comment> "string length"^^xsd:string ;
- <bucketMinimum> "1"^^xsd:integer ;
- <bucketMaximum> "1"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreTypeHistogram9> rdf:type <DistributionHistogramEvaluation> ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "1"^^xsd:integer ;
- <bucketMinimum> "1"^^xsd:integer ;
- <instancesInBucket> "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreTypeQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer ;
- seas:rank "0"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer ;
- seas:rank "4"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeDecile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer ;
- seas:rank "0"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeDecile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeDecile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeDecile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeDecile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "4"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeDecile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "5"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeDecile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "6"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeDecile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "7"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeDecile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "8"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeDecile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "9"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeDecile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer ;
- seas:rank "10"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeStoreTypeValueDistribution> rdf:type <ValueDistribution> ;
- <valueDistributionValue> <RossmannStoresAttributeStoreTypeValueDistributionValue0> ;
- <valueDistributionValue> <RossmannStoresAttributeStoreTypeValueDistributionValue1> ;
- <valueDistributionValue> <RossmannStoresAttributeStoreTypeValueDistributionValue2> ;
- <valueDistributionValue> <RossmannStoresAttributeStoreTypeValueDistributionValue3> .
-<RossmannStoresAttributeStoreTypeValueDistributionValue0> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "a"^^xsd:string ;
- <numberOfInstancesOfValue> "602"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreTypeValueDistributionValue1> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "b"^^xsd:string ;
- <numberOfInstancesOfValue> "17"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreTypeValueDistributionValue2> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "c"^^xsd:string ;
- <numberOfInstancesOfValue> "148"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeStoreTypeValueDistributionValue3> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "d"^^xsd:string ;
- <numberOfInstancesOfValue> "348"^^xsd:nonNegativeInteger .
-### Statistics for "Assortment" (RossmannStores)
-<RossmannStoresAttributeAssortment> seas:evaluation <RossmannStoresAttributeAssortmentNumberOfValues> ;
- seas:evaluation <RossmannStoresAttributeAssortmentNumberOfNullValues> ;
- seas:evaluation <RossmannStoresAttributeAssortmentNumberOfValidValues> ;
- seas:evaluation <RossmannStoresAttributeAssortmentNumberOfValidNonNullValues> ;
- seas:evaluation <RossmannStoresAttributeAssortmentNumberOfInvalidValues> ;
- seas:evaluation <RossmannStoresAttributeAssortmentAverageNumberOfDigits> ;
- seas:evaluation <RossmannStoresAttributeAssortmentAverageNumberOfCharacters> ;
- seas:evaluation <RossmannStoresAttributeAssortmentAverageNumberOfTokens> ;
- seas:evaluation <RossmannStoresAttributeAssortmentAverageNumberOfCapitalisedValues> ;
- seas:evaluation <RossmannStoresAttributeAssortmentAverageNumberOfSpecialCharacters> ;
- seas:evaluation <RossmannStoresAttributeAssortmentNumberOfDistinctValues> ;
- seas:evaluation <RossmannStoresAttributeAssortmentMinimum> ;
- seas:evaluation <RossmannStoresAttributeAssortmentMaximum> ;
- seas:evaluation <RossmannStoresAttributeAssortmentMedian> ;
- seas:evaluation <RossmannStoresAttributeAssortmentMean> ;
- seas:evaluation <RossmannStoresAttributeAssortmentStandardDeviation> ;
- seas:evaluation <RossmannStoresAttributeAssortmentNumberOfOutliersBelow> ;
- seas:evaluation <RossmannStoresAttributeAssortmentNumberOfOutliersAbove> ;
- seas:evaluation <RossmannStoresAttributeAssortmentHistogram0> ;
- seas:evaluation <RossmannStoresAttributeAssortmentHistogram1> ;
- seas:evaluation <RossmannStoresAttributeAssortmentHistogram2> ;
- seas:evaluation <RossmannStoresAttributeAssortmentHistogram3> ;
- seas:evaluation <RossmannStoresAttributeAssortmentHistogram4> ;
- seas:evaluation <RossmannStoresAttributeAssortmentHistogram5> ;
- seas:evaluation <RossmannStoresAttributeAssortmentHistogram6> ;
- seas:evaluation <RossmannStoresAttributeAssortmentHistogram7> ;
- seas:evaluation <RossmannStoresAttributeAssortmentHistogram8> ;
- seas:evaluation <RossmannStoresAttributeAssortmentHistogram9> ;
- seas:evaluation <RossmannStoresAttributeAssortmentQuartile0> ;
- seas:evaluation <RossmannStoresAttributeAssortmentQuartile1> ;
- seas:evaluation <RossmannStoresAttributeAssortmentQuartile2> ;
- seas:evaluation <RossmannStoresAttributeAssortmentQuartile3> ;
- seas:evaluation <RossmannStoresAttributeAssortmentQuartile4> ;
- seas:evaluation <RossmannStoresAttributeAssortmentDecile0> ;
- seas:evaluation <RossmannStoresAttributeAssortmentDecile1> ;
- seas:evaluation <RossmannStoresAttributeAssortmentDecile2> ;
- seas:evaluation <RossmannStoresAttributeAssortmentDecile3> ;
- seas:evaluation <RossmannStoresAttributeAssortmentDecile4> ;
- seas:evaluation <RossmannStoresAttributeAssortmentDecile5> ;
- seas:evaluation <RossmannStoresAttributeAssortmentDecile6> ;
- seas:evaluation <RossmannStoresAttributeAssortmentDecile7> ;
- seas:evaluation <RossmannStoresAttributeAssortmentDecile8> ;
- seas:evaluation <RossmannStoresAttributeAssortmentDecile9> ;
- seas:evaluation <RossmannStoresAttributeAssortmentDecile10> ;
- <hasValueDistribution> <RossmannStoresAttributeAssortmentValueDistribution> .
-<RossmannStoresAttributeAssortmentNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeAssortmentNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeAssortmentNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeAssortmentNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeAssortmentNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeAssortmentAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributeAssortmentAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<RossmannStoresAttributeAssortmentAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<RossmannStoresAttributeAssortmentAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributeAssortmentAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributeAssortmentNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "3"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeAssortmentMinimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "1"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentMaximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "1"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentMedian> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentMean> rdf:type seas:DistributionMeanEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentHistogram0> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "1"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentHistogram1> rdf:type <DistributionHistogramEvaluation> ;
- <comment> "string length"^^xsd:string ;
- <bucketMinimum> "1"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "1"^^xsd:integer .
-<RossmannStoresAttributeAssortmentHistogram2> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "1"^^xsd:integer .
-<RossmannStoresAttributeAssortmentHistogram3> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "1"^^xsd:integer .
-<RossmannStoresAttributeAssortmentHistogram4> rdf:type <DistributionHistogramEvaluation> ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "1"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "1"^^xsd:integer .
-<RossmannStoresAttributeAssortmentHistogram5> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "1"^^xsd:integer ;
- <bucketMinimum> "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeAssortmentHistogram6> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "1"^^xsd:integer ;
- <bucketMaximum> "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeAssortmentHistogram7> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string ;
- <bucketMinimum> "1"^^xsd:integer ;
- <bucketMaximum> "1"^^xsd:integer .
-<RossmannStoresAttributeAssortmentHistogram8> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "1"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "1"^^xsd:integer .
-<RossmannStoresAttributeAssortmentHistogram9> rdf:type <DistributionHistogramEvaluation> ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "1115"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "1"^^xsd:integer ;
- <bucketMaximum> "1"^^xsd:integer .
-<RossmannStoresAttributeAssortmentQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer ;
- seas:rank "0"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer ;
- seas:rank "4"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentDecile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer ;
- seas:rank "0"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentDecile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentDecile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentDecile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentDecile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "4"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentDecile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "5"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentDecile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "6"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentDecile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "7"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentDecile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "8"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentDecile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "9"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentDecile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer ;
- seas:rank "10"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributeAssortmentValueDistribution> rdf:type <ValueDistribution> ;
- <valueDistributionValue> <RossmannStoresAttributeAssortmentValueDistributionValue0> ;
- <valueDistributionValue> <RossmannStoresAttributeAssortmentValueDistributionValue1> ;
- <valueDistributionValue> <RossmannStoresAttributeAssortmentValueDistributionValue2> .
-<RossmannStoresAttributeAssortmentValueDistributionValue0> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "a"^^xsd:string ;
- <numberOfInstancesOfValue> "593"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeAssortmentValueDistributionValue1> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "b"^^xsd:string ;
- <numberOfInstancesOfValue> "9"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeAssortmentValueDistributionValue2> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "c"^^xsd:string ;
- <numberOfInstancesOfValue> "513"^^xsd:nonNegativeInteger .
-### Statistics for "CompetitionDistance" (RossmannStores)
-<RossmannStoresAttributeCompetitionDistance> seas:evaluation <RossmannStoresAttributeCompetitionDistanceNumberOfValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceNumberOfNullValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceNumberOfValidValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceNumberOfValidNonNullValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceNumberOfInvalidValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceAverageNumberOfDigits> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceAverageNumberOfCharacters> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceAverageNumberOfTokens> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceAverageNumberOfCapitalisedValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceAverageNumberOfSpecialCharacters> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceMinimum> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceMaximum> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceMean> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceNumberOfDistinctValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceStandardDeviation> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceQuartile0> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceQuartile1> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceQuartile2> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceQuartile3> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceQuartile4> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceDecile0> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceDecile1> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceDecile2> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceDecile3> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceDecile4> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceDecile5> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceDecile6> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceDecile7> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceDecile8> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceDecile9> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceDecile10> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceNumberOfOutliersBelow> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceNumberOfOutliersAbove> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceHistogram0> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceHistogram1> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceHistogram2> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceHistogram3> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceHistogram4> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceHistogram5> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceHistogram6> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceHistogram7> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceHistogram8> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceHistogram9> ;
- seas:evaluation <RossmannStoresAttributeCompetitionDistanceMedian> .
-<RossmannStoresAttributeCompetitionDistanceNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionDistanceNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "3"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionDistanceNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionDistanceNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "1112"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionDistanceNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionDistanceAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "3.8408273381294964"^^xsd:double .
-<RossmannStoresAttributeCompetitionDistanceAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "3.8408273381294964"^^xsd:double .
-<RossmannStoresAttributeCompetitionDistanceAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<RossmannStoresAttributeCompetitionDistanceAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributeCompetitionDistanceAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributeCompetitionDistanceMinimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "20"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceMaximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "75860"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceMean> rdf:type seas:DistributionMeanEvaluation ;
- seas:evaluatedValue "5404.901079136686"^^xsd:double .
-<RossmannStoresAttributeCompetitionDistanceNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "654"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionDistanceStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
- seas:evaluatedValue "7663.174720367944"^^xsd:double .
-<RossmannStoresAttributeCompetitionDistanceQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "20"^^xsd:integer ;
- seas:rank "0"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "715.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "2325.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "6885.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "75860"^^xsd:integer ;
- seas:rank "4"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceDecile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "20"^^xsd:integer ;
- seas:rank "0"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceDecile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "250.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceDecile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "520.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceDecile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1040.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceDecile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1600.0"^^xsd:double ;
- seas:rank "4"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceDecile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2325.0"^^xsd:double ;
- seas:rank "5"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceDecile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "3450.0"^^xsd:double ;
- seas:rank "6"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceDecile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "5300.0"^^xsd:double ;
- seas:rank "7"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceDecile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "8670.0"^^xsd:double ;
- seas:rank "8"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceDecile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "15700.0"^^xsd:double ;
- seas:rank "9"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceDecile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "75860"^^xsd:integer ;
- seas:rank "10"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionDistanceNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "108"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionDistanceHistogram0> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "1595"^^xsd:integer ;
- <bucketMinimum> "20"^^xsd:integer ;
- <instancesInBucket> "444"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionDistanceHistogram1> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "3170"^^xsd:integer ;
- <bucketMinimum> "1595"^^xsd:integer ;
- <instancesInBucket> "195"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionDistanceHistogram2> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "3170"^^xsd:integer ;
- <instancesInBucket> "115"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "4745"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceHistogram3> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "6320"^^xsd:integer ;
- <bucketMinimum> "4745"^^xsd:integer ;
- <instancesInBucket> "61"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionDistanceHistogram4> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "49"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "6320"^^xsd:integer ;
- <bucketMaximum> "7895"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceHistogram5> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "9470"^^xsd:integer ;
- <bucketMinimum> "7895"^^xsd:integer ;
- <instancesInBucket> "45"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionDistanceHistogram6> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "9470"^^xsd:integer ;
- <bucketMaximum> "11045"^^xsd:integer ;
- <instancesInBucket> "31"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionDistanceHistogram7> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "12620"^^xsd:integer ;
- <bucketMinimum> "11045"^^xsd:integer ;
- <instancesInBucket> "18"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionDistanceHistogram8> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "23"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "14195"^^xsd:integer ;
- <bucketMinimum> "12620"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceHistogram9> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "14195"^^xsd:integer ;
- <instancesInBucket> "23"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "15770"^^xsd:integer .
-<RossmannStoresAttributeCompetitionDistanceMedian> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "2325.0"^^xsd:double .
-### Statistics for "CompetitionOpenSinceMonth" (RossmannStores)
-<RossmannStoresAttributeCompetitionOpenSinceMonth> seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthNumberOfValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthNumberOfNullValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthNumberOfValidValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthNumberOfValidNonNullValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthNumberOfInvalidValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthAverageNumberOfDigits> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthAverageNumberOfCharacters> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthAverageNumberOfTokens> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthAverageNumberOfCapitalisedValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthAverageNumberOfSpecialCharacters> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthMinimum> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthMaximum> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthMean> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthNumberOfDistinctValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthStandardDeviation> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthQuartile0> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthQuartile1> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthQuartile2> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthQuartile3> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthQuartile4> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthDecile0> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthDecile1> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthDecile2> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthDecile3> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthDecile4> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthDecile5> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthDecile6> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthDecile7> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthDecile8> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthDecile9> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthDecile10> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthNumberOfOutliersBelow> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthNumberOfOutliersAbove> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthHistogram0> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthHistogram1> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthHistogram2> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthHistogram3> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthHistogram4> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthHistogram5> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthHistogram6> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthHistogram7> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthHistogram8> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthHistogram9> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceMonthMedian> ;
- <hasValueDistribution> <RossmannStoresAttributeCompetitionOpenSinceMonthValueDistribution> .
-<RossmannStoresAttributeCompetitionOpenSinceMonthNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "354"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "761"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "1.2851511169513798"^^xsd:double .
-<RossmannStoresAttributeCompetitionOpenSinceMonthAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "1.2851511169513798"^^xsd:double .
-<RossmannStoresAttributeCompetitionOpenSinceMonthAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<RossmannStoresAttributeCompetitionOpenSinceMonthAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributeCompetitionOpenSinceMonthAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributeCompetitionOpenSinceMonthMinimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthMaximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "12"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthMean> rdf:type seas:DistributionMeanEvaluation ;
- seas:evaluatedValue "7.224704336399472"^^xsd:double .
-<RossmannStoresAttributeCompetitionOpenSinceMonthNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "12"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
- seas:evaluatedValue "3.2123477966147043"^^xsd:double .
-<RossmannStoresAttributeCompetitionOpenSinceMonthQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer ;
- seas:rank "0"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "4.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "8.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "10.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "12"^^xsd:integer ;
- seas:rank "4"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthDecile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer ;
- seas:rank "0"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthDecile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "3.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthDecile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "4.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthDecile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "5.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthDecile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "6.0"^^xsd:double ;
- seas:rank "4"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthDecile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "8.0"^^xsd:double ;
- seas:rank "5"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthDecile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "9.0"^^xsd:double ;
- seas:rank "6"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthDecile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "9.0"^^xsd:double ;
- seas:rank "7"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthDecile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "11.0"^^xsd:double ;
- seas:rank "8"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthDecile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "11.0"^^xsd:double ;
- seas:rank "9"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthDecile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "12"^^xsd:integer ;
- seas:rank "10"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthHistogram0> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "1"^^xsd:integer ;
- <bucketMaximum> "2"^^xsd:integer ;
- <instancesInBucket> "55"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthHistogram1> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "70"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "3"^^xsd:integer ;
- <bucketMaximum> "3"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthHistogram2> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "4"^^xsd:integer ;
- <bucketMinimum> "4"^^xsd:integer ;
- <instancesInBucket> "94"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthHistogram3> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "5"^^xsd:integer ;
- <bucketMinimum> "5"^^xsd:integer ;
- <instancesInBucket> "44"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthHistogram4> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "6"^^xsd:integer ;
- <instancesInBucket> "50"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "6"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthHistogram5> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "67"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "7"^^xsd:integer ;
- <bucketMinimum> "7"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthHistogram6> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "39"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "8"^^xsd:integer ;
- <bucketMinimum> "8"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthHistogram7> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "125"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "9"^^xsd:integer ;
- <bucketMinimum> "9"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthHistogram8> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "10"^^xsd:integer ;
- <instancesInBucket> "61"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "10"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceMonthHistogram9> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "11"^^xsd:integer ;
- <bucketMaximum> "12"^^xsd:integer ;
- <instancesInBucket> "156"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthMedian> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "8.0"^^xsd:double .
-<RossmannStoresAttributeCompetitionOpenSinceMonthValueDistribution> rdf:type <ValueDistribution> ;
- <valueDistributionValue> <RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue0> ;
- <valueDistributionValue> <RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue1> ;
- <valueDistributionValue> <RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue2> ;
- <valueDistributionValue> <RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue3> ;
- <valueDistributionValue> <RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue4> ;
- <valueDistributionValue> <RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue5> ;
- <valueDistributionValue> <RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue6> ;
- <valueDistributionValue> <RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue7> ;
- <valueDistributionValue> <RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue8> ;
- <valueDistributionValue> <RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue9> ;
- <valueDistributionValue> <RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue10> ;
- <valueDistributionValue> <RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue11> .
-<RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue0> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "1"^^xsd:nonNegativeInteger ;
- <numberOfInstancesOfValue> "14"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue1> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "2"^^xsd:nonNegativeInteger ;
- <numberOfInstancesOfValue> "41"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue2> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "3"^^xsd:nonNegativeInteger ;
- <numberOfInstancesOfValue> "70"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue3> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "4"^^xsd:nonNegativeInteger ;
- <numberOfInstancesOfValue> "94"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue4> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "5"^^xsd:nonNegativeInteger ;
- <numberOfInstancesOfValue> "44"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue5> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "6"^^xsd:nonNegativeInteger ;
- <numberOfInstancesOfValue> "50"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue6> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "7"^^xsd:nonNegativeInteger ;
- <numberOfInstancesOfValue> "67"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue7> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "8"^^xsd:nonNegativeInteger ;
- <numberOfInstancesOfValue> "39"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue8> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "9"^^xsd:nonNegativeInteger ;
- <numberOfInstancesOfValue> "125"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue9> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "10"^^xsd:nonNegativeInteger ;
- <numberOfInstancesOfValue> "61"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue10> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "11"^^xsd:nonNegativeInteger ;
- <numberOfInstancesOfValue> "92"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceMonthValueDistributionValue11> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "12"^^xsd:nonNegativeInteger ;
- <numberOfInstancesOfValue> "64"^^xsd:nonNegativeInteger .
-### Statistics for "CompetitionOpenSinceYear" (RossmannStores)
-<RossmannStoresAttributeCompetitionOpenSinceYear> seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearNumberOfValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearNumberOfNullValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearNumberOfValidValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearNumberOfValidNonNullValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearNumberOfInvalidValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearAverageNumberOfDigits> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearAverageNumberOfCharacters> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearAverageNumberOfTokens> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearAverageNumberOfCapitalisedValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearAverageNumberOfSpecialCharacters> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearNumberOfDistinctValues> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearNumberOfOutliersBelow> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearNumberOfOutliersAbove> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearHistogram0> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearHistogram1> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearHistogram2> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearHistogram3> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearHistogram4> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearHistogram5> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearHistogram6> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearHistogram7> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearHistogram8> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearHistogram9> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearminimum> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearmaximum> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearmedian> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearQuartile0> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearQuartile1> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearQuartile2> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearQuartile3> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearQuartile4> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearDecile0> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearDecile1> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearDecile2> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearDecile3> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearDecile4> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearDecile5> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearDecile6> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearDecile7> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearDecile8> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearDecile9> ;
- seas:evaluation <RossmannStoresAttributeCompetitionOpenSinceYearDecile10> .
-<RossmannStoresAttributeCompetitionOpenSinceYearNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceYearNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "354"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceYearNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceYearNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "761"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceYearNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceYearAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "12.943495400788436"^^xsd:double .
-<RossmannStoresAttributeCompetitionOpenSinceYearAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "12.943495400788436"^^xsd:double .
-<RossmannStoresAttributeCompetitionOpenSinceYearAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<RossmannStoresAttributeCompetitionOpenSinceYearAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributeCompetitionOpenSinceYearAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributeCompetitionOpenSinceYearNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "23"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceYearNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "11"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceYearNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceYearHistogram0> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "9"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "1998-01-01T12:00:00"^^xsd:dateTime ;
- <bucketMaximum> "1999-09-13T10:36:00"^^xsd:dateTime .
-<RossmannStoresAttributeCompetitionOpenSinceYearHistogram1> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "2001-05-26T08:12:00"^^xsd:dateTime ;
- <instancesInBucket> "26"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "1999-09-13T10:36:00"^^xsd:dateTime .
-<RossmannStoresAttributeCompetitionOpenSinceYearHistogram2> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "46"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "2003-02-06T04:48:00"^^xsd:dateTime ;
- <bucketMinimum> "2001-05-26T08:12:00"^^xsd:dateTime .
-<RossmannStoresAttributeCompetitionOpenSinceYearHistogram3> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "22"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "2004-10-19T03:24:00"^^xsd:dateTime ;
- <bucketMinimum> "2003-02-06T04:48:00"^^xsd:dateTime .
-<RossmannStoresAttributeCompetitionOpenSinceYearHistogram4> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "2004-10-19T03:24:00"^^xsd:dateTime ;
- <bucketMaximum> "2006-07-02T01:00:00"^^xsd:dateTime ;
- <instancesInBucket> "109"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceYearHistogram5> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "2006-07-02T01:00:00"^^xsd:dateTime ;
- <bucketMaximum> "2008-03-14T09:36:00"^^xsd:dateTime ;
- <instancesInBucket> "102"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceYearHistogram6> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "2008-03-14T09:36:00"^^xsd:dateTime ;
- <instancesInBucket> "54"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "2009-11-25T07:12:00"^^xsd:dateTime .
-<RossmannStoresAttributeCompetitionOpenSinceYearHistogram7> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "109"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "2009-11-25T07:12:00"^^xsd:dateTime ;
- <bucketMaximum> "2011-08-08T05:48:00"^^xsd:dateTime .
-<RossmannStoresAttributeCompetitionOpenSinceYearHistogram8> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "165"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "2011-08-08T05:48:00"^^xsd:dateTime ;
- <bucketMaximum> "2013-04-20T03:24:00"^^xsd:dateTime .
-<RossmannStoresAttributeCompetitionOpenSinceYearHistogram9> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "2013-04-20T03:24:00"^^xsd:dateTime ;
- <bucketMaximum> "2015-01-01T12:00:00"^^xsd:dateTime ;
- <instancesInBucket> "108"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributeCompetitionOpenSinceYearminimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "1900-01-01T12:00:00"^^xsd:dateTime .
-<RossmannStoresAttributeCompetitionOpenSinceYearmaximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "2015-01-01T12:00:00"^^xsd:dateTime .
-<RossmannStoresAttributeCompetitionOpenSinceYearmedian> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "2010-01-01T12:00:00"^^xsd:dateTime .
-<RossmannStoresAttributeCompetitionOpenSinceYearQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1900-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "0"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceYearQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "2006-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "1"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceYearQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "2010-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "2"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceYearQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "2013-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "3"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceYearQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "2015-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "4"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceYearDecile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1900-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "0"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceYearDecile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2003-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "1"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceYearDecile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2005-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "2"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceYearDecile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2007-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "3"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceYearDecile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2008-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "4"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceYearDecile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2010-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "5"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceYearDecile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2011-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "6"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceYearDecile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2012-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "7"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceYearDecile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2013-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "8"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceYearDecile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2014-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "9"^^xsd:integer .
-<RossmannStoresAttributeCompetitionOpenSinceYearDecile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2015-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "10"^^xsd:integer .
-### Statistics for "Promo2" (RossmannStores)
-<RossmannStoresAttributePromo2> seas:evaluation <RossmannStoresAttributePromo2NumberOfValues> ;
- seas:evaluation <RossmannStoresAttributePromo2NumberOfNullValues> ;
- seas:evaluation <RossmannStoresAttributePromo2NumberOfValidValues> ;
- seas:evaluation <RossmannStoresAttributePromo2NumberOfValidNonNullValues> ;
- seas:evaluation <RossmannStoresAttributePromo2NumberOfInvalidValues> ;
- seas:evaluation <RossmannStoresAttributePromo2AverageNumberOfDigits> ;
- seas:evaluation <RossmannStoresAttributePromo2AverageNumberOfCharacters> ;
- seas:evaluation <RossmannStoresAttributePromo2AverageNumberOfTokens> ;
- seas:evaluation <RossmannStoresAttributePromo2AverageNumberOfCapitalisedValues> ;
- seas:evaluation <RossmannStoresAttributePromo2AverageNumberOfSpecialCharacters> ;
- seas:evaluation <RossmannStoresAttributePromo2Minimum> ;
- seas:evaluation <RossmannStoresAttributePromo2Maximum> ;
- seas:evaluation <RossmannStoresAttributePromo2Mean> ;
- seas:evaluation <RossmannStoresAttributePromo2NumberOfDistinctValues> ;
- seas:evaluation <RossmannStoresAttributePromo2StandardDeviation> ;
- seas:evaluation <RossmannStoresAttributePromo2Quartile0> ;
- seas:evaluation <RossmannStoresAttributePromo2Quartile1> ;
- seas:evaluation <RossmannStoresAttributePromo2Quartile2> ;
- seas:evaluation <RossmannStoresAttributePromo2Quartile3> ;
- seas:evaluation <RossmannStoresAttributePromo2Quartile4> ;
- seas:evaluation <RossmannStoresAttributePromo2Decile0> ;
- seas:evaluation <RossmannStoresAttributePromo2Decile1> ;
- seas:evaluation <RossmannStoresAttributePromo2Decile2> ;
- seas:evaluation <RossmannStoresAttributePromo2Decile3> ;
- seas:evaluation <RossmannStoresAttributePromo2Decile4> ;
- seas:evaluation <RossmannStoresAttributePromo2Decile5> ;
- seas:evaluation <RossmannStoresAttributePromo2Decile6> ;
- seas:evaluation <RossmannStoresAttributePromo2Decile7> ;
- seas:evaluation <RossmannStoresAttributePromo2Decile8> ;
- seas:evaluation <RossmannStoresAttributePromo2Decile9> ;
- seas:evaluation <RossmannStoresAttributePromo2Decile10> ;
- seas:evaluation <RossmannStoresAttributePromo2NumberOfOutliersBelow> ;
- seas:evaluation <RossmannStoresAttributePromo2NumberOfOutliersAbove> ;
- seas:evaluation <RossmannStoresAttributePromo2Histogram0> ;
- seas:evaluation <RossmannStoresAttributePromo2Histogram1> ;
- seas:evaluation <RossmannStoresAttributePromo2Histogram2> ;
- seas:evaluation <RossmannStoresAttributePromo2Histogram3> ;
- seas:evaluation <RossmannStoresAttributePromo2Histogram4> ;
- seas:evaluation <RossmannStoresAttributePromo2Histogram5> ;
- seas:evaluation <RossmannStoresAttributePromo2Histogram6> ;
- seas:evaluation <RossmannStoresAttributePromo2Histogram7> ;
- seas:evaluation <RossmannStoresAttributePromo2Histogram8> ;
- seas:evaluation <RossmannStoresAttributePromo2Histogram9> ;
- seas:evaluation <RossmannStoresAttributePromo2Median> ;
- <hasValueDistribution> <RossmannStoresAttributePromo2ValueDistribution> .
-<RossmannStoresAttributePromo2NumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2NumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2NumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2NumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2NumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2AverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<RossmannStoresAttributePromo2AverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<RossmannStoresAttributePromo2AverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<RossmannStoresAttributePromo2AverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributePromo2AverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributePromo2Minimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "0"^^xsd:integer .
-<RossmannStoresAttributePromo2Maximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer .
-<RossmannStoresAttributePromo2Mean> rdf:type seas:DistributionMeanEvaluation ;
- seas:evaluatedValue "0.5121076233183862"^^xsd:double .
-<RossmannStoresAttributePromo2NumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "2"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2StandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
- seas:evaluatedValue "0.5000776843468299"^^xsd:double .
-<RossmannStoresAttributePromo2Quartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "0"^^xsd:integer ;
- seas:rank "0"^^xsd:integer .
-<RossmannStoresAttributePromo2Quartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer .
-<RossmannStoresAttributePromo2Quartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer .
-<RossmannStoresAttributePromo2Quartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer .
-<RossmannStoresAttributePromo2Quartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer ;
- seas:rank "4"^^xsd:integer .
-<RossmannStoresAttributePromo2Decile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "0"^^xsd:integer ;
- seas:rank "0"^^xsd:integer .
-<RossmannStoresAttributePromo2Decile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer .
-<RossmannStoresAttributePromo2Decile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer .
-<RossmannStoresAttributePromo2Decile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer .
-<RossmannStoresAttributePromo2Decile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- seas:rank "4"^^xsd:integer .
-<RossmannStoresAttributePromo2Decile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "5"^^xsd:integer .
-<RossmannStoresAttributePromo2Decile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "6"^^xsd:integer .
-<RossmannStoresAttributePromo2Decile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "7"^^xsd:integer .
-<RossmannStoresAttributePromo2Decile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "8"^^xsd:integer .
-<RossmannStoresAttributePromo2Decile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double ;
- seas:rank "9"^^xsd:integer .
-<RossmannStoresAttributePromo2Decile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer ;
- seas:rank "10"^^xsd:integer .
-<RossmannStoresAttributePromo2NumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2NumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2Histogram0> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "0"^^xsd:integer ;
- <instancesInBucket> "544"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "0"^^xsd:integer .
-<RossmannStoresAttributePromo2Histogram1> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "1"^^xsd:integer ;
- <bucketMaximum> "0"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2Histogram2> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "0"^^xsd:integer ;
- <bucketMinimum> "1"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2Histogram3> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "0"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "1"^^xsd:integer .
-<RossmannStoresAttributePromo2Histogram4> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "1"^^xsd:integer ;
- <bucketMaximum> "0"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2Histogram5> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "0"^^xsd:integer ;
- <bucketMinimum> "1"^^xsd:integer .
-<RossmannStoresAttributePromo2Histogram6> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "0"^^xsd:integer ;
- <bucketMinimum> "1"^^xsd:integer .
-<RossmannStoresAttributePromo2Histogram7> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "1"^^xsd:integer ;
- <bucketMaximum> "0"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2Histogram8> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "1"^^xsd:integer ;
- <bucketMaximum> "0"^^xsd:integer .
-<RossmannStoresAttributePromo2Histogram9> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "1"^^xsd:integer ;
- <bucketMinimum> "1"^^xsd:integer ;
- <instancesInBucket> "571"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2Median> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<RossmannStoresAttributePromo2ValueDistribution> rdf:type <ValueDistribution> ;
- <valueDistributionValue> <RossmannStoresAttributePromo2ValueDistributionValue0> ;
- <valueDistributionValue> <RossmannStoresAttributePromo2ValueDistributionValue1> .
-<RossmannStoresAttributePromo2ValueDistributionValue0> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "0"^^xsd:nonNegativeInteger ;
- <numberOfInstancesOfValue> "544"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2ValueDistributionValue1> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "1"^^xsd:nonNegativeInteger ;
- <numberOfInstancesOfValue> "571"^^xsd:nonNegativeInteger .
-### Statistics for "Promo2SinceWeek" (RossmannStores)
-<RossmannStoresAttributePromo2SinceWeek> seas:evaluation <RossmannStoresAttributePromo2SinceWeekNumberOfValues> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekNumberOfNullValues> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekNumberOfValidValues> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekNumberOfValidNonNullValues> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekNumberOfInvalidValues> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekAverageNumberOfDigits> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekAverageNumberOfCharacters> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekAverageNumberOfTokens> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekAverageNumberOfCapitalisedValues> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekAverageNumberOfSpecialCharacters> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekMinimum> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekMaximum> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekMean> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekNumberOfDistinctValues> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekStandardDeviation> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekQuartile0> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekQuartile1> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekQuartile2> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekQuartile3> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekQuartile4> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekDecile0> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekDecile1> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekDecile2> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekDecile3> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekDecile4> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekDecile5> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekDecile6> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekDecile7> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekDecile8> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekDecile9> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekDecile10> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekNumberOfOutliersBelow> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekNumberOfOutliersAbove> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekHistogram0> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekHistogram1> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekHistogram2> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekHistogram3> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekHistogram4> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekHistogram5> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekHistogram6> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekHistogram7> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekHistogram8> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekHistogram9> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceWeekMedian> .
-<RossmannStoresAttributePromo2SinceWeekNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceWeekNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "544"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceWeekNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceWeekNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "571"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceWeekNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceWeekAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "1.8441330998248686"^^xsd:double .
-<RossmannStoresAttributePromo2SinceWeekAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "1.8441330998248686"^^xsd:double .
-<RossmannStoresAttributePromo2SinceWeekAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<RossmannStoresAttributePromo2SinceWeekAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributePromo2SinceWeekAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributePromo2SinceWeekMinimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekMaximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "50"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekMean> rdf:type seas:DistributionMeanEvaluation ;
- seas:evaluatedValue "23.595446584938706"^^xsd:double .
-<RossmannStoresAttributePromo2SinceWeekNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "24"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceWeekStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
- seas:evaluatedValue "14.141983542922219"^^xsd:double .
-<RossmannStoresAttributePromo2SinceWeekQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer ;
- seas:rank "0"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "13.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "22.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "37.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "50"^^xsd:integer ;
- seas:rank "4"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekDecile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer ;
- seas:rank "0"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekDecile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "5.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekDecile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "10.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekDecile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "14.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekDecile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "14.0"^^xsd:double ;
- seas:rank "4"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekDecile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "22.0"^^xsd:double ;
- seas:rank "5"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekDecile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "31.0"^^xsd:double ;
- seas:rank "6"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekDecile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "36.0"^^xsd:double ;
- seas:rank "7"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekDecile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "40.0"^^xsd:double ;
- seas:rank "8"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekDecile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "40.0"^^xsd:double ;
- seas:rank "9"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekDecile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "50"^^xsd:integer ;
- seas:rank "10"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceWeekNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceWeekHistogram0> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "5"^^xsd:integer ;
- <bucketMinimum> "1"^^xsd:integer ;
- <instancesInBucket> "74"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceWeekHistogram1> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "10"^^xsd:integer ;
- <instancesInBucket> "57"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "6"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekHistogram2> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "15"^^xsd:integer ;
- <instancesInBucket> "115"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "11"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekHistogram3> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "29"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "16"^^xsd:integer ;
- <bucketMaximum> "20"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekHistogram4> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "25"^^xsd:integer ;
- <instancesInBucket> "38"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "21"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekHistogram5> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "30"^^xsd:integer ;
- <instancesInBucket> "13"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "26"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekHistogram6> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "69"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "31"^^xsd:integer ;
- <bucketMaximum> "35"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekHistogram7> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "36"^^xsd:integer ;
- <bucketMaximum> "40"^^xsd:integer ;
- <instancesInBucket> "128"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceWeekHistogram8> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "45"^^xsd:integer ;
- <instancesInBucket> "37"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "41"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekHistogram9> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "11"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "46"^^xsd:integer ;
- <bucketMaximum> "50"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceWeekMedian> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "22.0"^^xsd:double .
-### Statistics for "Promo2SinceYear" (RossmannStores)
-<RossmannStoresAttributePromo2SinceYear> seas:evaluation <RossmannStoresAttributePromo2SinceYearNumberOfValues> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearNumberOfNullValues> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearNumberOfValidValues> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearNumberOfValidNonNullValues> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearNumberOfInvalidValues> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearAverageNumberOfDigits> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearAverageNumberOfCharacters> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearAverageNumberOfTokens> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearAverageNumberOfCapitalisedValues> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearAverageNumberOfSpecialCharacters> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearNumberOfDistinctValues> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearNumberOfOutliersBelow> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearNumberOfOutliersAbove> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearHistogram0> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearHistogram1> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearHistogram2> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearHistogram3> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearHistogram4> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearHistogram5> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearHistogram6> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearHistogram7> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearHistogram8> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearHistogram9> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearminimum> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearmaximum> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearmedian> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearQuartile0> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearQuartile1> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearQuartile2> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearQuartile3> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearQuartile4> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearDecile0> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearDecile1> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearDecile2> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearDecile3> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearDecile4> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearDecile5> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearDecile6> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearDecile7> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearDecile8> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearDecile9> ;
- seas:evaluation <RossmannStoresAttributePromo2SinceYearDecile10> ;
- <hasValueDistribution> <RossmannStoresAttributePromo2SinceYearValueDistribution> .
-<RossmannStoresAttributePromo2SinceYearNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceYearNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "544"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceYearNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceYearNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "571"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceYearNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceYearAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "13.0"^^xsd:double .
-<RossmannStoresAttributePromo2SinceYearAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "13.0"^^xsd:double .
-<RossmannStoresAttributePromo2SinceYearAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<RossmannStoresAttributePromo2SinceYearAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributePromo2SinceYearAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributePromo2SinceYearNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "7"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceYearNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceYearNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceYearHistogram0> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "2009-01-01T12:00:00"^^xsd:dateTime ;
- <bucketMaximum> "2009-08-08T03:24:00"^^xsd:dateTime ;
- <instancesInBucket> "73"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceYearHistogram1> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "2009-08-08T03:24:00"^^xsd:dateTime ;
- <instancesInBucket> "64"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "2010-03-15T04:48:00"^^xsd:dateTime .
-<RossmannStoresAttributePromo2SinceYearHistogram2> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "2010-10-20T08:12:00"^^xsd:dateTime ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "2010-03-15T04:48:00"^^xsd:dateTime .
-<RossmannStoresAttributePromo2SinceYearHistogram3> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "2011-05-27T10:36:00"^^xsd:dateTime ;
- <instancesInBucket> "128"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "2010-10-20T08:12:00"^^xsd:dateTime .
-<RossmannStoresAttributePromo2SinceYearHistogram4> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "2011-05-27T10:36:00"^^xsd:dateTime ;
- <bucketMaximum> "2012-01-01T12:00:00"^^xsd:dateTime ;
- <instancesInBucket> "81"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceYearHistogram5> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "2012-01-01T12:00:00"^^xsd:dateTime ;
- <bucketMaximum> "2012-08-07T03:24:00"^^xsd:dateTime .
-<RossmannStoresAttributePromo2SinceYearHistogram6> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "120"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "2012-08-07T03:24:00"^^xsd:dateTime ;
- <bucketMaximum> "2013-03-14T04:48:00"^^xsd:dateTime .
-<RossmannStoresAttributePromo2SinceYearHistogram7> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "2013-03-14T04:48:00"^^xsd:dateTime ;
- <bucketMaximum> "2013-10-19T08:12:00"^^xsd:dateTime ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceYearHistogram8> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "2013-10-19T08:12:00"^^xsd:dateTime ;
- <bucketMaximum> "2014-05-26T10:36:00"^^xsd:dateTime ;
- <instancesInBucket> "95"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceYearHistogram9> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "2015-01-01T12:00:00"^^xsd:dateTime ;
- <instancesInBucket> "10"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "2014-05-26T10:36:00"^^xsd:dateTime .
-<RossmannStoresAttributePromo2SinceYearminimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "2009-01-01T12:00:00"^^xsd:dateTime .
-<RossmannStoresAttributePromo2SinceYearmaximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "2015-01-01T12:00:00"^^xsd:dateTime .
-<RossmannStoresAttributePromo2SinceYearmedian> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "2012-01-01T12:00:00"^^xsd:dateTime .
-<RossmannStoresAttributePromo2SinceYearQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "2009-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "0"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceYearQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "2011-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "1"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceYearQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "2012-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "2"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceYearQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "2013-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "3"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceYearQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "2015-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "4"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceYearDecile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2009-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "0"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceYearDecile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2009-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "1"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceYearDecile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2010-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "2"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceYearDecile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2011-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "3"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceYearDecile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2011-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "4"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceYearDecile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2012-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "5"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceYearDecile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2012-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "6"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceYearDecile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2013-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "7"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceYearDecile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2013-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "8"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceYearDecile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2014-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "9"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceYearDecile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2015-01-01T12:00:00"^^xsd:dateTime ;
- seas:rank "10"^^xsd:integer .
-<RossmannStoresAttributePromo2SinceYearValueDistribution> rdf:type <ValueDistribution> ;
- <valueDistributionValue> <RossmannStoresAttributePromo2SinceYearValueDistributionValue0> ;
- <valueDistributionValue> <RossmannStoresAttributePromo2SinceYearValueDistributionValue1> ;
- <valueDistributionValue> <RossmannStoresAttributePromo2SinceYearValueDistributionValue2> ;
- <valueDistributionValue> <RossmannStoresAttributePromo2SinceYearValueDistributionValue3> ;
- <valueDistributionValue> <RossmannStoresAttributePromo2SinceYearValueDistributionValue4> ;
- <valueDistributionValue> <RossmannStoresAttributePromo2SinceYearValueDistributionValue5> ;
- <valueDistributionValue> <RossmannStoresAttributePromo2SinceYearValueDistributionValue6> .
-<RossmannStoresAttributePromo2SinceYearValueDistributionValue0> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "Wed Jan 01 00:00:00 CET 2014"^^xsd:date ;
- <numberOfInstancesOfValue> "95"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceYearValueDistributionValue1> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "Fri Jan 01 00:00:00 CET 2010"^^xsd:date ;
- <numberOfInstancesOfValue> "64"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceYearValueDistributionValue2> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "Sat Jan 01 00:00:00 CET 2011"^^xsd:date ;
- <numberOfInstancesOfValue> "128"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceYearValueDistributionValue3> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "Thu Jan 01 00:00:00 CET 2009"^^xsd:date ;
- <numberOfInstancesOfValue> "73"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceYearValueDistributionValue4> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "Thu Jan 01 00:00:00 CET 2015"^^xsd:date ;
- <numberOfInstancesOfValue> "10"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceYearValueDistributionValue5> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "Tue Jan 01 00:00:00 CET 2013"^^xsd:date ;
- <numberOfInstancesOfValue> "120"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromo2SinceYearValueDistributionValue6> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "Sun Jan 01 00:00:00 CET 2012"^^xsd:date ;
- <numberOfInstancesOfValue> "81"^^xsd:nonNegativeInteger .
-### Statistics for "PromoInterval" (RossmannStores)
-<RossmannStoresAttributePromoInterval> seas:evaluation <RossmannStoresAttributePromoIntervalNumberOfValues> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalNumberOfNullValues> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalNumberOfValidValues> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalNumberOfValidNonNullValues> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalNumberOfInvalidValues> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalAverageNumberOfDigits> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalAverageNumberOfCharacters> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalAverageNumberOfTokens> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalAverageNumberOfCapitalisedValues> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalAverageNumberOfSpecialCharacters> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalNumberOfDistinctValues> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalMinimum> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalMaximum> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalMedian> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalMean> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalStandardDeviation> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalNumberOfOutliersBelow> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalNumberOfOutliersAbove> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalHistogram0> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalHistogram1> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalHistogram2> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalHistogram3> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalHistogram4> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalHistogram5> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalHistogram6> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalHistogram7> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalHistogram8> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalHistogram9> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalQuartile0> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalQuartile1> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalQuartile2> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalQuartile3> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalQuartile4> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalDecile0> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalDecile1> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalDecile2> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalDecile3> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalDecile4> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalDecile5> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalDecile6> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalDecile7> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalDecile8> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalDecile9> ;
- seas:evaluation <RossmannStoresAttributePromoIntervalDecile10> ;
- <hasValueDistribution> <RossmannStoresAttributePromoIntervalValueDistribution> .
-<RossmannStoresAttributePromoIntervalNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromoIntervalNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "544"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromoIntervalNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "1115"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromoIntervalNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "571"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromoIntervalNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromoIntervalAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<RossmannStoresAttributePromoIntervalAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "15.185639229422067"^^xsd:double .
-<RossmannStoresAttributePromoIntervalAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<RossmannStoresAttributePromoIntervalAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<RossmannStoresAttributePromoIntervalAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "3.0"^^xsd:double .
-<RossmannStoresAttributePromoIntervalNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "3"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromoIntervalMinimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "15"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalMaximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "16"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalMedian> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "15.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalMean> rdf:type seas:DistributionMeanEvaluation ;
- seas:evaluatedValue "15.185639229422067"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
- seas:evaluatedValue "0.3891561759311683"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "106.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalHistogram0> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "15"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <bucketMinimum> "15"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromoIntervalHistogram1> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "15"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "15"^^xsd:integer .
-<RossmannStoresAttributePromoIntervalHistogram2> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "15"^^xsd:integer ;
- <bucketMinimum> "15"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalHistogram3> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "15"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "15"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalHistogram4> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "15"^^xsd:integer ;
- <bucketMinimum> "15"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromoIntervalHistogram5> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "15"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "15"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromoIntervalHistogram6> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "15"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string ;
- <bucketMinimum> "15"^^xsd:integer .
-<RossmannStoresAttributePromoIntervalHistogram7> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "15"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "15"^^xsd:integer .
-<RossmannStoresAttributePromoIntervalHistogram8> rdf:type <DistributionHistogramEvaluation> ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "15"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "15"^^xsd:integer .
-<RossmannStoresAttributePromoIntervalHistogram9> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "15"^^xsd:integer ;
- <bucketMaximum> "15"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "465"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromoIntervalQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "15"^^xsd:integer ;
- seas:rank "0"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "15.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "15.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "15.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "16"^^xsd:integer ;
- seas:rank "4"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalDecile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "15"^^xsd:integer ;
- seas:rank "0"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalDecile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "15.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalDecile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "15.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalDecile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "15.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalDecile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "15.0"^^xsd:double ;
- seas:rank "4"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalDecile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "15.0"^^xsd:double ;
- seas:rank "5"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalDecile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "15.0"^^xsd:double ;
- seas:rank "6"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalDecile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "15.0"^^xsd:double ;
- seas:rank "7"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalDecile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "15.0"^^xsd:double ;
- seas:rank "8"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalDecile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "16.0"^^xsd:double ;
- seas:rank "9"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalDecile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "16"^^xsd:integer ;
- seas:rank "10"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<RossmannStoresAttributePromoIntervalValueDistribution> rdf:type <ValueDistribution> ;
- <valueDistributionValue> <RossmannStoresAttributePromoIntervalValueDistributionValue0> ;
- <valueDistributionValue> <RossmannStoresAttributePromoIntervalValueDistributionValue1> ;
- <valueDistributionValue> <RossmannStoresAttributePromoIntervalValueDistributionValue2> .
-<RossmannStoresAttributePromoIntervalValueDistributionValue0> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "Jan,Apr,Jul,Oct"^^xsd:string ;
- <numberOfInstancesOfValue> "335"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromoIntervalValueDistributionValue1> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "Mar,Jun,Sept,Dec"^^xsd:string ;
- <numberOfInstancesOfValue> "106"^^xsd:nonNegativeInteger .
-<RossmannStoresAttributePromoIntervalValueDistributionValue2> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "Feb,May,Aug,Nov"^^xsd:string ;
- <numberOfInstancesOfValue> "130"^^xsd:nonNegativeInteger .
+sml:RossmannStoresAttributeAssortmentValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "b" ;
+    sml:numberOfInstancesOfValue "9"^^xsd:nonNegativeInteger .
 
-### Sample (RossmannStores)
-<RossmannStores> <hasSample> <RossmannStoresSample> .
-<RossmannStoresSample> rdf:type <DatasetSample> ;
- csvw:separator "	" ;
- <hasHeader> <RossmannStoresSampleHeader> ;
- <hasHeaderAttributes> <RossmannStoresSampleHeaderAttributes> ;
- <hasLine> <RossmannStoresSample0> ;
- <hasLine> <RossmannStoresSample1> ;
- <hasLine> <RossmannStoresSample2> ;
- <hasLine> <RossmannStoresSample3> ;
- <hasLine> <RossmannStoresSample4> ;
- <hasLine> <RossmannStoresSample5> ;
- <hasLine> <RossmannStoresSample6> ;
- <hasLine> <RossmannStoresSample7> ;
- <hasLine> <RossmannStoresSample8> ;
- <hasLine> <RossmannStoresSample9> .
-<RossmannStoresSampleHeader> rdf:type <DatasetSampleLine> ;
- <hasContent> "Store: store ID	Store type: label	assortment: label	Store: distance to the nearest competitor store	-	-	-	-	-	-" .
-<RossmannStoresSampleHeaderAttributes> rdf:type <DatasetSampleLine> ;
- <hasContent> "RossmannStoresAttributeStore	RossmannStoresAttributeStoreType	RossmannStoresAttributeAssortment	RossmannStoresAttributeCompetitionDistance	RossmannStoresAttributeCompetitionOpenSinceMonth	RossmannStoresAttributeCompetitionOpenSinceYear	RossmannStoresAttributePromo2	RossmannStoresAttributePromo2SinceWeek	RossmannStoresAttributePromo2SinceYear	RossmannStoresAttributePromoInterval" .
-<RossmannStoresSample0> rdf:type <DatasetSampleLine> ;
- <hasContent> "1	c	a	1270	9	2008-01-01	0	NULL	NULL	NULL" ;
- <rank> "0"^^xsd:integer .
-<RossmannStoresSample1> rdf:type <DatasetSampleLine> ;
- <hasContent> "2	a	a	570	11	2007-01-01	1	13	2010-01-01	Jan,Apr,Jul,Oct" ;
- <rank> "1"^^xsd:integer .
-<RossmannStoresSample2> rdf:type <DatasetSampleLine> ;
- <hasContent> "3	a	a	14130	12	2006-01-01	1	14	2011-01-01	Jan,Apr,Jul,Oct" ;
- <rank> "2"^^xsd:integer .
-<RossmannStoresSample3> rdf:type <DatasetSampleLine> ;
- <hasContent> "4	c	c	620	9	2009-01-01	0	NULL	NULL	NULL" ;
- <rank> "3"^^xsd:integer .
-<RossmannStoresSample4> rdf:type <DatasetSampleLine> ;
- <hasContent> "5	a	a	29910	4	2015-01-01	0	NULL	NULL	NULL" ;
- <rank> "4"^^xsd:integer .
-<RossmannStoresSample5> rdf:type <DatasetSampleLine> ;
- <hasContent> "6	a	a	310	12	2013-01-01	0	NULL	NULL	NULL" ;
- <rank> "5"^^xsd:integer .
-<RossmannStoresSample6> rdf:type <DatasetSampleLine> ;
- <hasContent> "7	a	c	24000	4	2013-01-01	0	NULL	NULL	NULL" ;
- <rank> "6"^^xsd:integer .
-<RossmannStoresSample7> rdf:type <DatasetSampleLine> ;
- <hasContent> "8	a	a	7520	10	2014-01-01	0	NULL	NULL	NULL" ;
- <rank> "7"^^xsd:integer .
-<RossmannStoresSample8> rdf:type <DatasetSampleLine> ;
- <hasContent> "9	a	c	2030	8	2000-01-01	0	NULL	NULL	NULL" ;
- <rank> "8"^^xsd:integer .
-<RossmannStoresSample9> rdf:type <DatasetSampleLine> ;
- <hasContent> "10	a	a	3160	9	2009-01-01	0	NULL	NULL	NULL" ;
- <rank> "9"^^xsd:integer .
+sml:RossmannStoresAttributeCompetitionDistanceAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "3.8408273381294964"^^xsd:float .
+
+sml:RossmannStoresAttributeCompetitionDistanceDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "20.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RossmannStoresAttributeCompetitionDistanceDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "250.0"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RossmannStoresAttributeCompetitionDistanceDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "75860.0"^^xsd:float ;
+    seas:rank 10 .
+
+sml:RossmannStoresAttributeCompetitionDistanceDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "520.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RossmannStoresAttributeCompetitionDistanceDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1040.0"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RossmannStoresAttributeCompetitionDistanceDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1600.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RossmannStoresAttributeCompetitionDistanceDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2325.0"^^xsd:float ;
+    seas:rank 5 .
+
+sml:RossmannStoresAttributeCompetitionDistanceDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "3450.0"^^xsd:float ;
+    seas:rank 6 .
+
+sml:RossmannStoresAttributeCompetitionDistanceDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "5297.0"^^xsd:float ;
+    seas:rank 7 .
+
+sml:RossmannStoresAttributeCompetitionDistanceDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "8666.000000000002"^^xsd:float ;
+    seas:rank 8 .
+
+sml:RossmannStoresAttributeCompetitionDistanceDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "15678.999999999995"^^xsd:float ;
+    seas:rank 9 .
+
+sml:RossmannStoresAttributeCompetitionDistanceHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "7604.0"^^xsd:float ;
+    sml:bucketMinimum "20.0"^^xsd:float ;
+    sml:instancesInBucket "854"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeCompetitionDistanceHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "15188.0"^^xsd:float ;
+    sml:bucketMinimum "7604.0"^^xsd:float ;
+    sml:instancesInBucket "141"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeCompetitionDistanceHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "22772.0"^^xsd:float ;
+    sml:bucketMinimum "15188.0"^^xsd:float ;
+    sml:instancesInBucket "80"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeCompetitionDistanceHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "30356.0"^^xsd:float ;
+    sml:bucketMinimum "22772.0"^^xsd:float ;
+    sml:instancesInBucket "19"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeCompetitionDistanceHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "37940.0"^^xsd:float ;
+    sml:bucketMinimum "30356.0"^^xsd:float ;
+    sml:instancesInBucket "8"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeCompetitionDistanceHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "45524.0"^^xsd:float ;
+    sml:bucketMinimum "37940.0"^^xsd:float ;
+    sml:instancesInBucket "5"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeCompetitionDistanceHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "53108.0"^^xsd:float ;
+    sml:bucketMinimum "45524.0"^^xsd:float ;
+    sml:instancesInBucket "3"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeCompetitionDistanceHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "60692.0"^^xsd:float ;
+    sml:bucketMinimum "53108.0"^^xsd:float ;
+    sml:instancesInBucket "1"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeCompetitionDistanceHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "68276.0"^^xsd:float ;
+    sml:bucketMinimum "60692.0"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeCompetitionDistanceHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "75860"^^xsd:float ;
+    sml:bucketMinimum "68276.0"^^xsd:float ;
+    sml:instancesInBucket "1"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeCompetitionDistanceMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue 75860 .
+
+sml:RossmannStoresAttributeCompetitionDistanceMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "5404.901079136691"^^xsd:float .
+
+sml:RossmannStoresAttributeCompetitionDistanceMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "2325.0"^^xsd:float .
+
+sml:RossmannStoresAttributeCompetitionDistanceMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue 20 .
+
+sml:RossmannStoresAttributeCompetitionDistanceNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 654 .
+
+sml:RossmannStoresAttributeCompetitionDistanceNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 3 .
+
+sml:RossmannStoresAttributeCompetitionDistanceNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 3 .
+
+sml:RossmannStoresAttributeCompetitionDistanceNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1112 .
+
+sml:RossmannStoresAttributeCompetitionDistanceNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1115 .
+
+sml:RossmannStoresAttributeCompetitionDistanceNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1115 .
+
+sml:RossmannStoresAttributeCompetitionDistanceQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "20.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RossmannStoresAttributeCompetitionDistanceQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "717.5"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RossmannStoresAttributeCompetitionDistanceQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2325.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RossmannStoresAttributeCompetitionDistanceQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "6882.5"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RossmannStoresAttributeCompetitionDistanceQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "75860.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RossmannStoresAttributeCompetitionDistanceStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "7663.174720367944"^^xsd:float .
+
+sml:RossmannStoresAttributeCompetitiondistance a sml:Attribute ;
+    dct:identifier "CompetitionDistance" ;
+    sml:columnIndex "3"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/RossmannStores_sml_logistics/Store> ;
+    sml:mapsToProperty sml-log:competitionDistance ;
+    sml:valueType xsd:nonNegativeInteger ;
+    seas:evaluation sml:RossmannStoresAttributeCompetitionDistanceAverageNumberOfDigits,
+        sml:RossmannStoresAttributeCompetitionDistanceDecile0,
+        sml:RossmannStoresAttributeCompetitionDistanceDecile1,
+        sml:RossmannStoresAttributeCompetitionDistanceDecile10,
+        sml:RossmannStoresAttributeCompetitionDistanceDecile2,
+        sml:RossmannStoresAttributeCompetitionDistanceDecile3,
+        sml:RossmannStoresAttributeCompetitionDistanceDecile4,
+        sml:RossmannStoresAttributeCompetitionDistanceDecile5,
+        sml:RossmannStoresAttributeCompetitionDistanceDecile6,
+        sml:RossmannStoresAttributeCompetitionDistanceDecile7,
+        sml:RossmannStoresAttributeCompetitionDistanceDecile8,
+        sml:RossmannStoresAttributeCompetitionDistanceDecile9,
+        sml:RossmannStoresAttributeCompetitionDistanceHistogram0,
+        sml:RossmannStoresAttributeCompetitionDistanceHistogram1,
+        sml:RossmannStoresAttributeCompetitionDistanceHistogram2,
+        sml:RossmannStoresAttributeCompetitionDistanceHistogram3,
+        sml:RossmannStoresAttributeCompetitionDistanceHistogram4,
+        sml:RossmannStoresAttributeCompetitionDistanceHistogram5,
+        sml:RossmannStoresAttributeCompetitionDistanceHistogram6,
+        sml:RossmannStoresAttributeCompetitionDistanceHistogram7,
+        sml:RossmannStoresAttributeCompetitionDistanceHistogram8,
+        sml:RossmannStoresAttributeCompetitionDistanceHistogram9,
+        sml:RossmannStoresAttributeCompetitionDistanceMaximum,
+        sml:RossmannStoresAttributeCompetitionDistanceMean,
+        sml:RossmannStoresAttributeCompetitionDistanceMedian,
+        sml:RossmannStoresAttributeCompetitionDistanceMinimum,
+        sml:RossmannStoresAttributeCompetitionDistanceNumberOfDistinctValues,
+        sml:RossmannStoresAttributeCompetitionDistanceNumberOfInvalidValues,
+        sml:RossmannStoresAttributeCompetitionDistanceNumberOfNullValues,
+        sml:RossmannStoresAttributeCompetitionDistanceNumberOfValidNonNullValues,
+        sml:RossmannStoresAttributeCompetitionDistanceNumberOfValidValues,
+        sml:RossmannStoresAttributeCompetitionDistanceNumberOfValues,
+        sml:RossmannStoresAttributeCompetitionDistanceQuartile0,
+        sml:RossmannStoresAttributeCompetitionDistanceQuartile1,
+        sml:RossmannStoresAttributeCompetitionDistanceQuartile2,
+        sml:RossmannStoresAttributeCompetitionDistanceQuartile3,
+        sml:RossmannStoresAttributeCompetitionDistanceQuartile4,
+        sml:RossmannStoresAttributeCompetitionDistanceStandardDeviation .
+
+sml:RossmannStoresAttributeStore a sml:Attribute ;
+    dct:identifier "Store" ;
+    sml:columnIndex "0"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/RossmannStores_sml_logistics/Store> ;
+    sml:mapsToProperty sml-log:storeId ;
+    sml:valueType xsd:nonNegativeInteger ;
+    seas:evaluation sml:RossmannStoresAttributeStoreAverageNumberOfDigits,
+        sml:RossmannStoresAttributeStoreDecile0,
+        sml:RossmannStoresAttributeStoreDecile1,
+        sml:RossmannStoresAttributeStoreDecile10,
+        sml:RossmannStoresAttributeStoreDecile2,
+        sml:RossmannStoresAttributeStoreDecile3,
+        sml:RossmannStoresAttributeStoreDecile4,
+        sml:RossmannStoresAttributeStoreDecile5,
+        sml:RossmannStoresAttributeStoreDecile6,
+        sml:RossmannStoresAttributeStoreDecile7,
+        sml:RossmannStoresAttributeStoreDecile8,
+        sml:RossmannStoresAttributeStoreDecile9,
+        sml:RossmannStoresAttributeStoreHistogram0,
+        sml:RossmannStoresAttributeStoreHistogram1,
+        sml:RossmannStoresAttributeStoreHistogram2,
+        sml:RossmannStoresAttributeStoreHistogram3,
+        sml:RossmannStoresAttributeStoreHistogram4,
+        sml:RossmannStoresAttributeStoreHistogram5,
+        sml:RossmannStoresAttributeStoreHistogram6,
+        sml:RossmannStoresAttributeStoreHistogram7,
+        sml:RossmannStoresAttributeStoreHistogram8,
+        sml:RossmannStoresAttributeStoreHistogram9,
+        sml:RossmannStoresAttributeStoreMaximum,
+        sml:RossmannStoresAttributeStoreMean,
+        sml:RossmannStoresAttributeStoreMedian,
+        sml:RossmannStoresAttributeStoreMinimum,
+        sml:RossmannStoresAttributeStoreNumberOfDistinctValues,
+        sml:RossmannStoresAttributeStoreNumberOfInvalidValues,
+        sml:RossmannStoresAttributeStoreNumberOfNullValues,
+        sml:RossmannStoresAttributeStoreNumberOfValidNonNullValues,
+        sml:RossmannStoresAttributeStoreNumberOfValidValues,
+        sml:RossmannStoresAttributeStoreNumberOfValues,
+        sml:RossmannStoresAttributeStoreQuartile0,
+        sml:RossmannStoresAttributeStoreQuartile1,
+        sml:RossmannStoresAttributeStoreQuartile2,
+        sml:RossmannStoresAttributeStoreQuartile3,
+        sml:RossmannStoresAttributeStoreQuartile4,
+        sml:RossmannStoresAttributeStoreStandardDeviation .
+
+sml:RossmannStoresAttributeStoreAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "3.0071748878923765"^^xsd:float .
+
+sml:RossmannStoresAttributeStoreDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RossmannStoresAttributeStoreDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "112.4"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RossmannStoresAttributeStoreDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1115.0"^^xsd:float ;
+    seas:rank 10 .
+
+sml:RossmannStoresAttributeStoreDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "223.8"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RossmannStoresAttributeStoreDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "335.20000000000005"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RossmannStoresAttributeStoreDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "446.6"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RossmannStoresAttributeStoreDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "558.0"^^xsd:float ;
+    seas:rank 5 .
+
+sml:RossmannStoresAttributeStoreDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "669.4000000000001"^^xsd:float ;
+    seas:rank 6 .
+
+sml:RossmannStoresAttributeStoreDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "780.8000000000001"^^xsd:float ;
+    seas:rank 7 .
+
+sml:RossmannStoresAttributeStoreDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "892.2"^^xsd:float ;
+    seas:rank 8 .
+
+sml:RossmannStoresAttributeStoreDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1003.6"^^xsd:float ;
+    seas:rank 9 .
+
+sml:RossmannStoresAttributeStoreHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "112.4"^^xsd:float ;
+    sml:bucketMinimum "1.0"^^xsd:float ;
+    sml:instancesInBucket "112"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "223.8"^^xsd:float ;
+    sml:bucketMinimum "112.4"^^xsd:float ;
+    sml:instancesInBucket "111"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "335.20000000000005"^^xsd:float ;
+    sml:bucketMinimum "223.8"^^xsd:float ;
+    sml:instancesInBucket "112"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "446.6"^^xsd:float ;
+    sml:bucketMinimum "335.20000000000005"^^xsd:float ;
+    sml:instancesInBucket "111"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "558.0"^^xsd:float ;
+    sml:bucketMinimum "446.6"^^xsd:float ;
+    sml:instancesInBucket "111"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "669.4000000000001"^^xsd:float ;
+    sml:bucketMinimum "558.0"^^xsd:float ;
+    sml:instancesInBucket "112"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "780.8000000000001"^^xsd:float ;
+    sml:bucketMinimum "669.4000000000001"^^xsd:float ;
+    sml:instancesInBucket "111"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "892.2"^^xsd:float ;
+    sml:bucketMinimum "780.8000000000001"^^xsd:float ;
+    sml:instancesInBucket "112"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1003.6"^^xsd:float ;
+    sml:bucketMinimum "892.2"^^xsd:float ;
+    sml:instancesInBucket "111"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1115"^^xsd:float ;
+    sml:bucketMinimum "1003.6"^^xsd:float ;
+    sml:instancesInBucket "112"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue 1115 .
+
+sml:RossmannStoresAttributeStoreMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "558.0"^^xsd:float .
+
+sml:RossmannStoresAttributeStoreMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "558.0"^^xsd:float .
+
+sml:RossmannStoresAttributeStoreMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue 1 .
+
+sml:RossmannStoresAttributeStoreNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 1115 .
+
+sml:RossmannStoresAttributeStoreNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RossmannStoresAttributeStoreNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RossmannStoresAttributeStoreNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1115 .
+
+sml:RossmannStoresAttributeStoreNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1115 .
+
+sml:RossmannStoresAttributeStoreNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1115 .
+
+sml:RossmannStoresAttributeStoreQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RossmannStoresAttributeStoreQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "279.5"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RossmannStoresAttributeStoreQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "558.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RossmannStoresAttributeStoreQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "836.5"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RossmannStoresAttributeStoreQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "1115.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RossmannStoresAttributeStoreStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "322.0170802923348"^^xsd:float .
+
+sml:RossmannStoresAttributeStoreTypeAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:RossmannStoresAttributeStoreTypeAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
+
+sml:RossmannStoresAttributeStoreTypeAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:RossmannStoresAttributeStoreTypeAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:RossmannStoresAttributeStoreTypeAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
+
+sml:RossmannStoresAttributeStoreTypeNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 4 .
+
+sml:RossmannStoresAttributeStoreTypeNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RossmannStoresAttributeStoreTypeNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:RossmannStoresAttributeStoreTypeNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 1115 .
+
+sml:RossmannStoresAttributeStoreTypeNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 1115 .
+
+sml:RossmannStoresAttributeStoreTypeNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 1115 .
+
+sml:RossmannStoresAttributeStoreTypeValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "a" ;
+    sml:numberOfInstancesOfValue "602"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreTypeValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "d" ;
+    sml:numberOfInstancesOfValue "348"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreTypeValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "c" ;
+    sml:numberOfInstancesOfValue "148"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreTypeValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "b" ;
+    sml:numberOfInstancesOfValue "17"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoretype a sml:Attribute ;
+    dct:identifier "StoreType" ;
+    sml:columnIndex "1"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain <https://simple-ml.de/resource/RossmannStores_sml_logistics/StoreType> ;
+    sml:mapsToProperty rdfs:label ;
+    sml:valueType rdfs:Literal ;
+    seas:evaluation sml:RossmannStoresAttributeStoreTypeAverageNumberOfCapitalisedValues,
+        sml:RossmannStoresAttributeStoreTypeAverageNumberOfCharacters,
+        sml:RossmannStoresAttributeStoreTypeAverageNumberOfDigits,
+        sml:RossmannStoresAttributeStoreTypeAverageNumberOfSpecialCharacters,
+        sml:RossmannStoresAttributeStoreTypeAverageNumberOfTokens,
+        sml:RossmannStoresAttributeStoreTypeNumberOfDistinctValues,
+        sml:RossmannStoresAttributeStoreTypeNumberOfInvalidValues,
+        sml:RossmannStoresAttributeStoreTypeNumberOfNullValues,
+        sml:RossmannStoresAttributeStoreTypeNumberOfValidNonNullValues,
+        sml:RossmannStoresAttributeStoreTypeNumberOfValidValues,
+        sml:RossmannStoresAttributeStoreTypeNumberOfValues ;
+    seas:valueDistributionValue sml:RossmannStoresAttributeStoreTypeValueDistributionValue0,
+        sml:RossmannStoresAttributeStoreTypeValueDistributionValue1,
+        sml:RossmannStoresAttributeStoreTypeValueDistributionValue2,
+        sml:RossmannStoresAttributeStoreTypeValueDistributionValue3 .
+
+sml:RossmannStoresFile a sml:TextFile ;
+    dct:format "text/comma-separated-values" ;
+    csvw:header false ;
+    csvw:null "" ;
+    csvw:separator "," ;
+    sml:fileLocation "RossmannStores.csv" .
+
+sml:RossmannStoresSample a sml:DatasetSample ;
+    csvw:separator "	" ;
+    sml:hasHeader sml:RossmannStoresSampleHeader ;
+    sml:hasLine sml:RossmannStoresSampleLine0,
+        sml:RossmannStoresSampleLine1,
+        sml:RossmannStoresSampleLine2,
+        sml:RossmannStoresSampleLine3,
+        sml:RossmannStoresSampleLine4,
+        sml:RossmannStoresSampleLine5,
+        sml:RossmannStoresSampleLine6,
+        sml:RossmannStoresSampleLine7,
+        sml:RossmannStoresSampleLine8,
+        sml:RossmannStoresSampleLine9 .
+
+sml:RossmannStoresSampleHeader a sml:DatasetSampleLine ;
+    sml:hasContent "Store (store ID)	Store type (label)	assortment (label)	Store (distance to the nearest competitor store)"^^xsd:string .
+
+sml:RossmannStoresSampleLine0 a sml:DatasetSampleLine ;
+    sml:hasContent "1	c	a	1270"^^xsd:string ;
+    sml:rank 0 .
+
+sml:RossmannStoresSampleLine1 a sml:DatasetSampleLine ;
+    sml:hasContent "2	a	a	570"^^xsd:string ;
+    sml:rank 1 .
+
+sml:RossmannStoresSampleLine2 a sml:DatasetSampleLine ;
+    sml:hasContent "3	a	a	14130"^^xsd:string ;
+    sml:rank 2 .
+
+sml:RossmannStoresSampleLine3 a sml:DatasetSampleLine ;
+    sml:hasContent "4	c	c	620"^^xsd:string ;
+    sml:rank 3 .
+
+sml:RossmannStoresSampleLine4 a sml:DatasetSampleLine ;
+    sml:hasContent "5	a	a	29910"^^xsd:string ;
+    sml:rank 4 .
+
+sml:RossmannStoresSampleLine5 a sml:DatasetSampleLine ;
+    sml:hasContent "6	a	a	310"^^xsd:string ;
+    sml:rank 5 .
+
+sml:RossmannStoresSampleLine6 a sml:DatasetSampleLine ;
+    sml:hasContent "7	a	c	24000"^^xsd:string ;
+    sml:rank 6 .
+
+sml:RossmannStoresSampleLine7 a sml:DatasetSampleLine ;
+    sml:hasContent "8	a	a	7520"^^xsd:string ;
+    sml:rank 7 .
+
+sml:RossmannStoresSampleLine8 a sml:DatasetSampleLine ;
+    sml:hasContent "9	a	c	2030"^^xsd:string ;
+    sml:rank 8 .
+
+sml:RossmannStoresSampleLine9 a sml:DatasetSampleLine ;
+    sml:hasContent "10	a	a	3160"^^xsd:string ;
+    sml:rank 9 .
+
+<https://simple-ml.de/resource/RossmannStores_sml_logistics/Assortment> a sml:ClassInstance ;
+    sml:mapsTo sml-log:Assortment .
+
+<https://simple-ml.de/resource/RossmannStores_sml_logistics/Store> a sml:ClassInstance ;
+    sml-log:hasAssortment <https://simple-ml.de/resource/RossmannStores_sml_logistics/Assortment> ;
+    sml-log:storeType <https://simple-ml.de/resource/RossmannStores_sml_logistics/StoreType> ;
+    sml:mapsTo sml-log:Store .
+
+<https://simple-ml.de/resource/RossmannStores_sml_logistics/StoreType> a sml:ClassInstance ;
+    sml:mapsTo sml-log:StoreType .
+

@@ -13,18 +13,22 @@ enum EnumInSameFile {
 @AnnotationInSameFile(parameterInAnnotationInSameFile = 1)
 fun functionInSameFile(parameterInFunctionSameFile: Int)
 
-step workflowStepInSameFile(parameterInWorkflowStepInSameFile: Int) {}
+step stepInSameFile(parameterInStepInSameFile: Int) {}
 
 enum notAParameter
 
-step workflowStepForArgument(callableInSameStep: callable (parameterInCallableInSameStep: Int) -> ()) {
-    val lambdaInSameStep = lambda (parameterInLambdaInSameStep: Int) {};
+step stepForArgument(callableInSameStep: (parameterInCallableInSameStep: Int) -> ()) {
+    val blockLambdaInSameStep = (parameterInBlockLambdaInSameStep) {};
+    val expressionLambdaInSameStep = (parameterInExpressionLambdaInSameStep) -> 1;
+
+    blockLambdaInSameStep(parameterInBlockLambdaInSameStep = 1);
     callableInSameStep(parameterInCallableInSameStep = 1);
     ClassInSameFile(parameterInClassInSameFile = 1);
     EnumInSameFile.EnumVariantInSameFile(parameterInEnumVariantInSameFile = 1);
+    expressionLambdaInSameStep(parameterInExpressionLambdaInSameStep = 1);
     functionInSameFile(parameterInFunctionSameFile = 1);
-    lambdaInSameStep(parameterInLambdaInSameStep = 1);
-    workflowStepInSameFile(parameterInWorkflowStepInSameFile = 1);
+    stepInSameFile(parameterInStepInSameFile = 1);
+    
     functionInSamePackage(parameterInSamePackage = 1);
     functionInOtherPackage1(parameterInOtherPackage1 = 1);
     functionInOtherPackage2(parameterInOtherPackage2 = 1);

@@ -1,27 +1,22 @@
 enum myEnum {
     MyVariant1
 
-    @Annotation1     @Annotation2
-         MyVariant2
 
-    open    static
-      MyVariant3
 
     @Annotation1       @Annotation2
-       open
-   static     MyVariant4     <
+              MyVariant2     <
    @AnnotationUse 
-             static   
+               
        T1, in T2,    out 
        T3    >    
        (
          
          @AnnotationUse 
-static      a : 
+     a : 
    Int ,  vararg 
                
                b: 
-      Int   or  3
+      Int   =  3
        )         where    T2 
   super  Number   ,    T3   sub
      Number
@@ -34,11 +29,5 @@ enum myEnum {
 
     @Annotation1
     @Annotation2
-    MyVariant2
-
-    open static MyVariant3
-
-    @Annotation1
-    @Annotation2
-    open static MyVariant4<@AnnotationUse static T1, in T2, out T3>(@AnnotationUse static a: Int, vararg b: Int or 3) where T2 super Number, T3 sub Number
+    MyVariant2<@AnnotationUse T1, in T2, out T3>(@AnnotationUse a: Int, vararg b: Int = 3) where T2 super Number, T3 sub Number
 }

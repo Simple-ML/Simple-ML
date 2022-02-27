@@ -1,5 +1,5 @@
 // syntax_error
 
 workflow myWorkflow {
-    "template {{ ??? }}";
+    "}} template {{ ??? }}";
 }

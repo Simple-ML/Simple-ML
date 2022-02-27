@@ -11,7 +11,6 @@ class DataSetModal extends React.Component{
 
     render() {
         const placeholderValue = this.getPlaceholder();
-        console.log(placeholderValue)
         return (
             <div>
 					{JSON.stringify(placeholderValue)} <br/>

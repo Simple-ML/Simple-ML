@@ -5,14 +5,45 @@ import PropTypes from 'prop-types';
 //redux
 import InferenceCreator from './InferenceCreator';
 import { closeContextMenu } from '../../../reducers/contextMenu';
+//services
+import XtextServices from '../../../serverConnection/XtextServices';
 //style
 import ContextMenuStyle from './contextMenu.module.scss';
+//icons
+import editIcon from '../../../images/contextToolbar/Edit.svg';
 
 class ContextMenu extends React.Component {
     constructor(props) {
         super(props);
 
         this.myself = React.createRef();
+
+        this.inferFromContextDynamically = this.inferFromContextDynamically.bind(this);
+        this.prepareMetaData = this.prepareMetaData.bind(this);
+    }
+
+    inferFromContextDynamically = (context, context2) => {
+        let result = [];
+
+        if(context?.emfReference?.id + '' === context2?.frontendId) {
+            context2.proposals?.forEach((item) => {
+                result.push({
+                    metaData: {
+                        icon: editIcon,
+                        text: item.name
+                    },
+                    func: () => {
+                        XtextServices.createEntity({
+                            className: '',
+                            referenceIfFunktion: item.emfPath, 
+                            placeholderName: 'temp',
+                            associationTargetPath: context.associationTargetPath || ''
+                        });
+                    }
+                });
+            });
+        }
+        return result;
     }
 
     /**
@@ -28,18 +59,18 @@ class ContextMenu extends React.Component {
 
     render() {
         /**
-         * Expected MetaData-Object:
-         * {
+         * Expected MetaData[]:
          *     metadata: {
          *         icon: object,                        // source or path of image what can be passed to src-parameter in a html-tag
          *         text: string                         // will be displayed
          *         disabled: () => { returns bool }     // indicates if func (below) can be executed
          *     },
          *     func: () => { returns void }             // function to be executed (div->onClick())
-         * }
          * @type {Array}
          */
-        let buttonMetaData = InferenceCreator.inferFromContext(this.props.context);
+        let buttonMetaData = [];
+        buttonMetaData = buttonMetaData.concat(InferenceCreator.inferFromContext(this.props.context));
+        buttonMetaData = buttonMetaData.concat(this.inferFromContextDynamically(this.props.context, this.props.proposals));
         this.prepareMetaData(buttonMetaData);
 
         let { posX, posY, visible } = this.props;
@@ -91,7 +122,8 @@ const mapStateToProps = state => {
         context: state.contextMenu.context,
         posX: state.contextMenu.posX,
         posY: state.contextMenu.posY,
-        visible: state.contextMenu.visible
+        visible: state.contextMenu.visible,
+        proposals: state.emfModel.processProposals
     };
 };
 

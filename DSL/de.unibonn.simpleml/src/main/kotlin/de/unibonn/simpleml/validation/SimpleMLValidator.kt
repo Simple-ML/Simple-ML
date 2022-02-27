@@ -9,18 +9,24 @@ import de.unibonn.simpleml.validation.declarations.EnumChecker
 import de.unibonn.simpleml.validation.declarations.EnumVariantChecker
 import de.unibonn.simpleml.validation.declarations.FunctionChecker
 import de.unibonn.simpleml.validation.declarations.ImportChecker
-import de.unibonn.simpleml.validation.declarations.PackageChecker
+import de.unibonn.simpleml.validation.declarations.NameConventionChecker
 import de.unibonn.simpleml.validation.declarations.ParameterChecker
 import de.unibonn.simpleml.validation.declarations.ParameterListChecker
 import de.unibonn.simpleml.validation.declarations.PlaceholderChecker
 import de.unibonn.simpleml.validation.declarations.ResultChecker
+import de.unibonn.simpleml.validation.declarations.StepChecker
 import de.unibonn.simpleml.validation.declarations.WorkflowChecker
-import de.unibonn.simpleml.validation.declarations.WorkflowStepChecker
+import de.unibonn.simpleml.validation.expressions.ArgumentChecker
 import de.unibonn.simpleml.validation.expressions.CallChecker
+import de.unibonn.simpleml.validation.expressions.InfixOperationChecker
 import de.unibonn.simpleml.validation.expressions.LambdaChecker
 import de.unibonn.simpleml.validation.expressions.MemberAccessChecker
-import de.unibonn.simpleml.validation.other.AnnotationUseChecker
+import de.unibonn.simpleml.validation.expressions.ReferenceChecker
+import de.unibonn.simpleml.validation.expressions.TemplateStringChecker
+import de.unibonn.simpleml.validation.other.AnnotationCallChecker
 import de.unibonn.simpleml.validation.other.ArgumentListChecker
+import de.unibonn.simpleml.validation.other.DeprecationChecker
+import de.unibonn.simpleml.validation.other.ProtocolChecker
 import de.unibonn.simpleml.validation.other.TypeArgumentListChecker
 import de.unibonn.simpleml.validation.statements.AssignmentChecker
 import de.unibonn.simpleml.validation.statements.ExpressionsStatementChecker
@@ -36,7 +42,6 @@ import org.eclipse.xtext.validation.ComposedChecks
  */
 @ComposedChecks(
     validators = [
-        PrologChecker::class,
 
         // Declarations
         AnnotationChecker::class,
@@ -48,18 +53,23 @@ import org.eclipse.xtext.validation.ComposedChecks
         EnumVariantChecker::class,
         FunctionChecker::class,
         ImportChecker::class,
-        PackageChecker::class,
         ParameterChecker::class,
         ParameterListChecker::class,
         PlaceholderChecker::class,
         ResultChecker::class,
         WorkflowChecker::class,
-        WorkflowStepChecker::class,
+        StepChecker::class,
+
+        NameConventionChecker::class,
 
         // Expressions
+        ArgumentChecker::class,
         CallChecker::class,
+        InfixOperationChecker::class,
         LambdaChecker::class,
         MemberAccessChecker::class,
+        ReferenceChecker::class,
+        TemplateStringChecker::class,
 
         // Statements
         AssignmentChecker::class,
@@ -71,8 +81,10 @@ import org.eclipse.xtext.validation.ComposedChecks
         UnionTypeChecker::class,
 
         // Other
-        AnnotationUseChecker::class,
+        AnnotationCallChecker::class,
         ArgumentListChecker::class,
+        DeprecationChecker::class,
+        ProtocolChecker::class,
         TypeArgumentListChecker::class,
     ]
 )

@@ -1,16 +1,14 @@
-     annotation  MyAnnotation1   @Annotation1      @Annotation2
+     annotation  MyAnnotation1   
 
-         annotation   MyAnnotation2
-
-   open     static   annotation
-       MyAnnotation3
-
- @Annotation1 @Annotation2     open
-       static
-  annotation MyAnnotation4
-   (    @AnnotationUse    static      a  :     Int
+ @Annotation1 @Annotation2     
+         annotation MyAnnotation2
+   (    @AnnotationUse         a  :     Int
     ,   vararg   b    :  Int
-     or  3     )
+     =  3     ) 
+     
+     where     T2    super 
+Number  , 
+T3   sub    Number
 
 // -----------------------------------------------------------------------------
 
@@ -18,10 +16,4 @@ annotation MyAnnotation1
 
 @Annotation1
 @Annotation2
-annotation MyAnnotation2
-
-open static annotation MyAnnotation3
-
-@Annotation1
-@Annotation2
-open static annotation MyAnnotation4(@AnnotationUse static a: Int, vararg b: Int or 3)
+annotation MyAnnotation2(@AnnotationUse a: Int, vararg b: Int = 3) where T2 super Number, T3 sub Number

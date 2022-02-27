@@ -15,29 +15,50 @@ enum AnnotationTarget {
     Function
     Parameter
     Result
+    Step
     TypeParameter
     Workflow
-    WorkflowStep
 }
 
-@Description("The annotation can only be used once per declaration (default if neither @SingleUse nor @MultiUse is used).")
+@Description("The annotation can be called multiple times for the same declaration.")
 @Target(AnnotationTarget.Annotation)
-annotation SingleUse
-
-@Description("The annotation can be used multiple times for the same declaration.")
-@Target(AnnotationTarget.Annotation)
-annotation MultiUse
+annotation Repeatable
 
 @Description("The declaration should no longer be used.")
+@Target(
+    AnnotationTarget.Annotation,
+    AnnotationTarget.Attribute,
+    AnnotationTarget.Class,
+    AnnotationTarget.Enum,
+    AnnotationTarget.EnumVariant,
+    AnnotationTarget.Function,
+    AnnotationTarget.Parameter,
+    AnnotationTarget.Result,
+    AnnotationTarget.Step,
+    AnnotationTarget.TypeParameter,
+)
 annotation Deprecated(
-    @Description("Use this instead.")
-    alternative: String
+    @Description("What to use instead.")
+    alternative: String? = null,
+
+    @Description("Why the declaration was deprecated.")
+    reason: String? = null,
+
+    @Description("When the declaration was deprecated.")
+    sinceVersion: String? = null,
+
+    @Description("When the declaration will be removed.")
+    removalVersion: String? = null,
 )
 
-@Description("The function returns the same results for the same arguments and has no side effects.")
+@Description("The function has no side effects and returns the same results for the same arguments.")
 @Target(AnnotationTarget.Function)
 annotation Pure
 
-@Description("The function can return different results for the same arguments or has side effects (default assumption if neither @Pure nor @Impure is used.")
+@Description("The function has no side effects.")
 @Target(AnnotationTarget.Function)
-annotation Impure
+annotation NoSideEffects
+
+@Description("Values assigned to this parameter must be constant.")
+@Target(AnnotationTarget.Parameter)
+annotation Constant

@@ -10,9 +10,9 @@
     "galleryBanner": {
         "color": "#ffffff"
     },
-    "version": "0.0.11",
+    "version": "0.0.12",
     "engines": {
-        "vscode": "^1.59.0"
+        "vscode": "^1.62.0"
     },
     "categories": [
         "Programming Languages",
@@ -57,11 +57,11 @@
         "vscode-languageclient": "^7.0.0"
     },
     "devDependencies": {
-        "@types/node": "^16.11.6",
-        "@types/vscode": "^1.59.0",
-        "esbuild": "^0.13.12",
-        "prettier": "^2.4.1",
-        "typescript": "^4.4.4",
+        "@types/node": "^16.11.12",
+        "@types/vscode": "^1.62.0",
+        "esbuild": "^0.14.21",
+        "prettier": "^2.5.1",
+        "typescript": "^4.5.5",
         "vscode-test": "^1.6.1"
     }
 }

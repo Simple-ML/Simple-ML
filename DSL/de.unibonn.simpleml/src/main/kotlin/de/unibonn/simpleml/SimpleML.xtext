@@ -16,55 +16,49 @@ import 'http://www.unibonn.de/simpleml/SimpleML'
 // Compilations Units --------------------------------------------------------------------------------------------------
 
 SmlCompilationUnit
-    : {SmlCompilationUnit} members+=SmlCompilationUnitMember*
+    : {SmlCompilationUnit}
+      =>annotationCalls+=SmlAnnotationCall* // Annotation calls before a package declaration belong to the compilation unit
+      ('package' name=QualifiedName)?
+      imports+=SmlImport*
+      members+=SmlCompilationUnitMember*
     ;
 
-SmlCompilationUnitMember returns SmlDeclaration
-    : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
+SmlCompilationUnitMember returns SmlAbstractAnnotatedObject
+    : {SmlAnnotationCallList} annotationCalls+=SmlAnnotationCall*
 
-    ( {SmlPackage.annotationHolder=current}
-          ( ('package' name=QualifiedName =>imports+=SmlImport*)
-          | (imports+=SmlImport =>imports+=SmlImport*)
-          )
-          =>members+=SmlPackageMember*
-
-    | {SmlAnnotation.annotationHolder=current}
-          modifiers+=SmlModifier*
+    ( {SmlAnnotation.annotationCallList=current}
           'annotation' name=ID
           parameterList=SmlParameterList?
+          constraintList=SmlConstraintList?
 
-    | {SmlClass.annotationHolder=current}
-          modifiers+=SmlModifier*
+    | {SmlClass.annotationCallList=current}
           'class' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
           parentTypeList=SmlParentTypeList?
-          typeParameterConstraintList=SmlTypeParameterConstraintList?
+          constraintList=SmlConstraintList?
           body=SmlClassBody?
 
-    | {SmlEnum.annotationHolder=current}
-          modifiers+=SmlModifier*
+    | {SmlEnum.annotationCallList=current}
           'enum' name=ID
           body=SmlEnumBody?
 
-    | {SmlFunction.annotationHolder=current}
-          modifiers+=SmlModifier*
+    | {SmlFunction.annotationCallList=current}
           'fun' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList
           resultList=SmlResultList?
-          typeParameterConstraintList=SmlTypeParameterConstraintList?
+          constraintList=SmlConstraintList?
 
-    | {SmlWorkflow.annotationHolder=current}
-          modifiers+=SmlModifier*
-          'workflow' name=ID
-          body=SmlBlock
-
-    | {SmlWorkflowStep.annotationHolder=current}
-          modifiers+=SmlModifier*
+    | {SmlStep.annotationCallList=current}
+          visibility=('internal'|'private')?
           'step' name=ID
           parameterList=SmlParameterList
-          resultList=SmlWorkflowStepResultList?
+          resultList=SmlResultList?
+          body=SmlBlock
+
+    | {SmlWorkflow.annotationCallList=current}
+          'workflow' name=ID
           body=SmlBlock
     )
     ;
@@ -77,62 +71,18 @@ SmlImportAlias
     : 'as' name=ID
     ;
 
-SmlPackageMember returns SmlDeclaration
-    : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
-
-    ( {SmlAnnotation.annotationHolder=current}
-          modifiers+=SmlModifier*
-          'annotation' name=ID
-          parameterList=SmlParameterList?
-
-    | {SmlClass.annotationHolder=current}
-          modifiers+=SmlModifier*
-          'class' name=ID
-          typeParameterList=SmlTypeParameterList?
-          parameterList=SmlParameterList?
-          parentTypeList=SmlParentTypeList?
-          typeParameterConstraintList=SmlTypeParameterConstraintList?
-          body=SmlClassBody?
-
-    | {SmlEnum.annotationHolder=current}
-          modifiers+=SmlModifier*
-          'enum' name=ID
-          body=SmlEnumBody?
-
-    | {SmlFunction.annotationHolder=current}
-          modifiers+=SmlModifier*
-          'fun' name=ID
-          typeParameterList=SmlTypeParameterList?
-          parameterList=SmlParameterList
-          resultList=SmlResultList?
-          typeParameterConstraintList=SmlTypeParameterConstraintList?
-
-    | {SmlWorkflow.annotationHolder=current}
-          modifiers+=SmlModifier*
-          'workflow' name=ID
-          body=SmlBlock
-
-    | {SmlWorkflowStep.annotationHolder=current}
-          modifiers+=SmlModifier*
-          'step' name=ID
-          parameterList=SmlParameterList
-          resultList=SmlWorkflowStepResultList?
-          body=SmlBlock
-    )
-    ;
-
 
 // Annotations ---------------------------------------------------------------------------------------------------------
 
-SmlAnnotationUse
-    : '@' annotation=[SmlAnnotation] argumentList=SmlAnnotationUseArgumentList?
+SmlAnnotationCall
+    : '@' annotation=[SmlAnnotation] argumentList=SmlAnnotationCallArgumentList?
     ;
 
-SmlAnnotationUseArgumentList returns SmlArgumentList
-    : {SmlArgumentList} '(' (arguments+=SmlAnnotationUseArgument (',' arguments+=SmlAnnotationUseArgument)* ','?)? ')'
+SmlAnnotationCallArgumentList returns SmlArgumentList
+    : {SmlArgumentList} '(' (arguments+=SmlAnnotationCallArgument (',' arguments+=SmlAnnotationCallArgument)* ','?)? ')'
     ;
 
-SmlAnnotationUseArgument returns SmlArgument
+SmlAnnotationCallArgument returns SmlArgument
     : (parameter=[SmlParameter] '=')? value=SmlExpression
     ;
 
@@ -143,11 +93,11 @@ SmlParentTypeList
     : 'sub' parentTypes+=SmlParentType (',' parentTypes+=SmlParentType)* ','?
     ;
 
-SmlParentType returns SmlType
+SmlParentType returns SmlAbstractType
     : SmlParentPrimaryType =>({SmlMemberType.receiver=current} '.' member=SmlNamedType)*
     ;
 
-SmlParentPrimaryType returns SmlType
+SmlParentPrimaryType returns SmlAbstractType
     : SmlNamedType
     | SmlParentParenthesizedType
     ;
@@ -160,35 +110,127 @@ SmlClassBody
     : {SmlClassBody} '{' members+=SmlClassMember* '}'
     ;
 
-SmlClassMember returns SmlDeclaration
-    : {SmlAnnotationUseHolder} annotations+=SmlAnnotationUse*
+SmlClassMember returns SmlAbstractObject
+    : SmlAnnotatedClassMember
+    | SmlProtocol
+    ;
 
-    ( {SmlAttribute.annotationHolder=current}
-          modifiers+=SmlModifier*
+SmlAnnotatedClassMember returns SmlAbstractAnnotatedObject
+    : {SmlAnnotationCallList} annotationCalls+=SmlAnnotationCall*
+
+    ( {SmlAttribute.annotationCallList=current}
+          static?='static'?
           'attr' name=ID (':' type=SmlType)?
 
-    | {SmlClass.annotationHolder=current}
-          modifiers+=SmlModifier*
+    | {SmlClass.annotationCallList=current}
           'class' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
           parentTypeList=SmlParentTypeList?
-          typeParameterConstraintList=SmlTypeParameterConstraintList?
+          constraintList=SmlConstraintList?
           body=SmlClassBody?
 
-    | {SmlEnum.annotationHolder=current}
-          modifiers+=SmlModifier*
+    | {SmlEnum.annotationCallList=current}
           'enum' name=ID
           body=SmlEnumBody?
 
-    | {SmlFunction.annotationHolder=current}
-          modifiers+=SmlModifier*
+    | {SmlFunction.annotationCallList=current}
+          static?='static'?
           'fun' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList
           resultList=SmlResultList?
-          typeParameterConstraintList=SmlTypeParameterConstraintList?
+          constraintList=SmlConstraintList?
     )
+    ;
+
+SmlProtocol
+    : 'protocol' body=SmlProtocolBody
+    ;
+
+SmlProtocolBody
+    : {SmlProtocolBody}
+      '{'
+      subtermList=SmlProtocolSubtermList?
+      term=SmlProtocolTerm?
+      '}'
+    ;
+
+SmlProtocolSubtermList
+    : subterms+=SmlProtocolSubterm+
+    ;
+
+SmlProtocolSubterm
+    : 'subterm' name=ID '=' term=SmlProtocolTerm ';'
+    ;
+
+SmlProtocolTerm returns SmlAbstractProtocolTerm
+    : SmlProtocolAlternative
+    ;
+
+SmlProtocolAlternative returns SmlAbstractProtocolTerm
+    : SmlProtocolSequence
+    (
+        {SmlProtocolAlternative.terms+=current} '|' terms+=SmlProtocolSequence
+        ('|' terms+=SmlProtocolSequence)*
+    )?
+    ;
+
+SmlProtocolSequence returns SmlAbstractProtocolTerm
+    : SmlProtocolQuantifiedTerm
+    (
+        {SmlProtocolSequence.terms+=current} terms+=SmlProtocolQuantifiedTerm
+        (terms+=SmlProtocolQuantifiedTerm)*
+    )?
+    ;
+
+SmlProtocolQuantifiedTerm returns SmlAbstractProtocolTerm
+    : SmlProtocolPrimaryElement
+      ({SmlProtocolQuantifiedTerm.term=current} quantifier=SmlProtocolQuantifier)?
+    ;
+
+SmlProtocolQuantifier
+    : '?'
+    | '*'
+    | '+'
+    ;
+
+SmlProtocolPrimaryElement returns SmlAbstractProtocolTerm
+    : SmlProtocolComplement
+    | SmlProtocolReference
+    | SmlProtocolTokenClass
+    | SmlProtocolParenthesizedTerm
+    ;
+
+SmlProtocolComplement
+    : {SmlProtocolComplement}
+      '['
+      universe=SmlProtocolTokenClass?
+      '^'
+      referenceList=SmlProtocolReferenceList?
+      ']'
+    ;
+
+SmlProtocolReferenceList
+    : references+=SmlProtocolReference+
+    ;
+
+SmlProtocolReference
+    : token=[SmlAbstractProtocolToken]
+    ;
+
+SmlProtocolTokenClass
+    : value=SmlProtocolTokenClassValue
+    ;
+
+SmlProtocolTokenClassValue
+    : '.'
+    | '\\a'
+    | '\\f'
+    ;
+
+SmlProtocolParenthesizedTerm
+    : '(' term=SmlProtocolTerm ')'
     ;
 
 
@@ -199,12 +241,11 @@ SmlEnumBody
     ;
 
 SmlEnumVariant
-    : annotations+=SmlAnnotationUse*
-      modifiers+=SmlModifier*
+    : annotationCalls+=SmlAnnotationCall*
       name=ID
       typeParameterList=SmlTypeParameterList?
       parameterList=SmlParameterList?
-      typeParameterConstraintList=SmlTypeParameterConstraintList?
+      constraintList=SmlConstraintList?
     ;
 
 
@@ -214,20 +255,16 @@ SmlParameterList
     : {SmlParameterList} '(' (parameters+=SmlParameter (',' parameters+=SmlParameter)* ','?)? ')'
     ;
 
+// Used while parsing lambdas to avoid left-recursion. Can be treated like a normal parameter list.
+SmlLambdaParameterList
+    : {SmlLambdaParameterList} '(' (parameters+=SmlParameter (',' parameters+=SmlParameter)* ','?)? ')'
+    ;
+
 SmlParameter
-    : annotations+=SmlAnnotationUse*
-      modifiers+=SmlModifier*
-      vararg?='vararg'?
+    : annotationCalls+=SmlAnnotationCall*
+      variadic?='vararg'?
       name=ID (':' type=SmlType)?
-      ('or' defaultValue=SmlExpression)?
-    ;
-
-SmlSimpleParameterList returns SmlParameterList
-    : {SmlParameterList} '(' (parameters+=SmlSimpleParameter (',' parameters+=SmlSimpleParameter)* ','?)? ')'
-    ;
-
-SmlSimpleParameter returns SmlParameter
-    : name=ID (':' type=SmlType)?
+      ('=' defaultValue=SmlExpression)?
     ;
 
 
@@ -239,18 +276,8 @@ SmlResultList
     ;
 
 SmlResult
-    : annotations+=SmlAnnotationUse*
-      modifiers+=SmlModifier*
+    : annotationCalls+=SmlAnnotationCall*
       name=ID (':' type=SmlType)?
-    ;
-
-SmlWorkflowStepResultList returns SmlResultList
-    : {SmlResultList} '->' results+=SmlWorkflowStepResult // If there is exactly one result we need no parentheses
-    | {SmlResultList} '->' '(' (results+=SmlWorkflowStepResult (',' results+=SmlWorkflowStepResult)* ','?)? ')'
-    ;
-
-SmlWorkflowStepResult returns SmlResult
-    : name=ID (':' type=SmlType)?
     ;
 
 
@@ -265,7 +292,7 @@ SmlBlock
     : {SmlBlock} '{' statements+=SmlStatement* '}'
     ;
 
-SmlStatement
+SmlStatement returns SmlAbstractStatement
     : SmlAssignment
     | SmlExpressionStatement
     ;
@@ -275,11 +302,10 @@ SmlAssignment
     ;
 
 SmlAssigneeList
-    : {SmlAssigneeList} assignees+=SmlAssignee
-    | {SmlAssigneeList} '(' (assignees+=SmlAssignee (',' assignees+=SmlAssignee)* ','?)? ')'
+    : assignees+=SmlAssignee (',' assignees+=SmlAssignee)* ','?
     ;
 
-SmlAssignee
+SmlAssignee returns SmlAbstractAssignee
     : {SmlPlaceholder} 'val' name=ID
     | {SmlWildcard}    '_'
     | {SmlYield}       'yield' result=[SmlResult]
@@ -289,62 +315,59 @@ SmlExpressionStatement
     : expression=SmlExpression ';'
     ;
 
-
-// Lambdas -------------------------------------------------------------------------------------------------------------
-
-SmlLambda
-    : 'lambda'
-      parameterList=SmlSimpleParameterList?
-      body=SmlLambdaBlock
-    ;
-
-SmlLambdaBlock returns SmlBlock
-    : {SmlBlock} '{' statements+=SmlLambdaStatement* '}'
-    ;
-
-SmlLambdaStatement returns SmlStatement
-    : SmlLambdaAssignment
-    | SmlExpressionStatement
-    ;
-
-SmlLambdaAssignment returns SmlAssignment
-    : assigneeList=SmlLambdaAssigneeList '=' expression=SmlExpression ';'
-    ;
-
-SmlLambdaAssigneeList returns SmlAssigneeList
-    : {SmlAssigneeList} assignees+=SmlLambdaAssignee
-    | {SmlAssigneeList} '(' (assignees+=SmlLambdaAssignee (',' assignees+=SmlLambdaAssignee)* ','?)? ')'
-    ;
-
-SmlLambdaAssignee returns SmlAssignee
-    : {SmlPlaceholder} 'val' name=ID
-    | {SmlWildcard}    '_'
-    | {SmlLambdaYield} 'yield' name=ID
-    ;
-
-
 /**********************************************************************************************************************
  * Expressions
  **********************************************************************************************************************/
 
-SmlExpression
-    : SmlOrExpression
+SmlExpression returns SmlAbstractExpression
+    : SmlLambda
+    | SmlOrExpression
     ;
 
-SmlOrExpression returns SmlExpression
+SmlLambda returns SmlAbstractExpression
+    : SmlLambdaParameterList
+    ( {SmlBlockLambda.parameterList=current}      body=SmlBlockLambdaBlock
+    | {SmlExpressionLambda.parameterList=current} '->' result=SmlExpression
+    )
+    ;
+
+SmlBlockLambdaBlock returns SmlBlock
+    : {SmlBlock} '{' statements+=SmlBlockLambdaStatement* '}'
+    ;
+
+SmlBlockLambdaStatement returns SmlAbstractStatement
+    : SmlBlockLambdaAssignment
+    | SmlExpressionStatement
+    ;
+
+SmlBlockLambdaAssignment returns SmlAssignment
+    : assigneeList=SmlBlockLambdaAssigneeList '=' expression=SmlExpression ';'
+    ;
+
+SmlBlockLambdaAssigneeList returns SmlAssigneeList
+    : assignees+=SmlBlockLambdaAssignee (',' assignees+=SmlBlockLambdaAssignee)* ','?
+    ;
+
+SmlBlockLambdaAssignee returns SmlAbstractAssignee
+    : {SmlWildcard} '_'
+    | {SmlPlaceholder} 'val' name=ID
+    | {SmlBlockLambdaResult} 'yield' name=ID
+    ;
+
+SmlOrExpression returns SmlAbstractExpression
     : SmlAndExpression ({SmlInfixOperation.leftOperand=current} operator='or' rightOperand=SmlAndExpression)*
     ;
 
-SmlAndExpression returns SmlExpression
+SmlAndExpression returns SmlAbstractExpression
     : SmlNotExpression ({SmlInfixOperation.leftOperand=current} operator='and' rightOperand=SmlNotExpression)*
     ;
 
-SmlNotExpression returns SmlExpression
+SmlNotExpression returns SmlAbstractExpression
     : {SmlPrefixOperation} operator='not' operand=SmlNotExpression
     | SmlEqualityExpression
     ;
 
-SmlEqualityExpression returns SmlExpression
+SmlEqualityExpression returns SmlAbstractExpression
     : SmlComparisonExpression ({SmlInfixOperation.leftOperand=current} operator=SmlEqualityOperator rightOperand=SmlComparisonExpression)?
     ;
 
@@ -355,7 +378,7 @@ SmlEqualityOperator
     | '!=='
     ;
 
-SmlComparisonExpression returns SmlExpression
+SmlComparisonExpression returns SmlAbstractExpression
     : SmlAdditiveExpression ({SmlInfixOperation.leftOperand=current} operator=SmlComparisonOperator rightOperand=SmlAdditiveExpression)?
     ;
 
@@ -366,7 +389,7 @@ SmlComparisonOperator
     | '>'
     ;
 
-SmlAdditiveExpression returns SmlExpression
+SmlAdditiveExpression returns SmlAbstractExpression
     : SmlMultiplicativeExpression ({SmlInfixOperation.leftOperand=current} operator=SmlAdditiveOperator rightOperand=SmlMultiplicativeExpression)*
     ;
 
@@ -375,7 +398,7 @@ SmlAdditiveOperator
     | '-'
     ;
 
-SmlMultiplicativeExpression returns SmlExpression
+SmlMultiplicativeExpression returns SmlAbstractExpression
     : SmlElvisExpression ({SmlInfixOperation.leftOperand=current} operator=SmlMultiplicativeOperator rightOperand=SmlElvisExpression)*
     ;
 
@@ -384,19 +407,20 @@ SmlMultiplicativeOperator
     | '/'
     ;
 
-SmlElvisExpression returns SmlExpression
+SmlElvisExpression returns SmlAbstractExpression
     : SmlUnaryOperation ({SmlInfixOperation.leftOperand=current} operator='?:' rightOperand=SmlUnaryOperation)*
     ;
 
-SmlUnaryOperation returns SmlExpression
+SmlUnaryOperation returns SmlAbstractExpression
     : {SmlPrefixOperation} operator='-' operand=SmlUnaryOperation
     | SmlChainedExpression
     ;
 
-SmlChainedExpression returns SmlExpression
+SmlChainedExpression returns SmlAbstractExpression
     : SmlPrimaryExpression =>(
           {SmlCall.receiver=current}          typeArgumentList=SmlTypeArgumentList? argumentList=SmlCallArgumentList
-        | {SmlMemberAccess.receiver=current}  (nullable?='?')? '.' member=SmlReference
+        | {SmlIndexedAccess.receiver=current} '[' index=SmlExpression ']'
+        | {SmlMemberAccess.receiver=current}  (nullSafe?='?')? '.' member=SmlReference
     )*
     ;
 
@@ -408,15 +432,14 @@ SmlCallArgument returns SmlArgument
     : (parameter=[SmlParameter] '=')? value=SmlExpression
     ;
 
-SmlPrimaryExpression returns SmlExpression
-    : SmlLambda
-    | SmlLiteral
+SmlPrimaryExpression returns SmlAbstractExpression
+    : SmlLiteral
     | SmlParenthesizedExpression
     | SmlReference
     | SmlTemplateString
     ;
 
-SmlLiteral
+SmlLiteral returns SmlAbstractLiteral
     : SmlBoolean
     | SmlFloat
     | SmlInt
@@ -445,26 +468,8 @@ SmlString
     : value=STRING
     ;
 
-SmlTemplateString
-    : expressions+=SmlTemplateStringStart expressions+=SmlExpression?
-      (expressions+=SmlTemplateStringInbetween expressions+=SmlExpression?)*
-      expressions+=SmlTemplateStringEnd
-    ;
-
-SmlTemplateStringStart returns SmlTemplateStringPart
-    : value=TEMPLATE_STRING_START
-    ;
-
-SmlTemplateStringInbetween returns SmlTemplateStringPart
-    : value=TEMPLATE_STRING_INBETWEEN
-    ;
-
-SmlTemplateStringEnd returns SmlTemplateStringPart
-    : value=TEMPLATE_STRING_END
-    ;
-
 SmlReference
-    : declaration=[SmlDeclaration]
+    : declaration=[SmlAbstractDeclaration]
     ;
 
 SmlParenthesizedExpression
@@ -472,15 +477,24 @@ SmlParenthesizedExpression
     ;
 
 
+// Template strings ----------------------------------------------------------------------------------------------------
 
-/**********************************************************************************************************************
- * Modifiers
- **********************************************************************************************************************/
+SmlTemplateString
+    : expressions+=SmlTemplateStringStart expressions+=SmlExpression?
+      (expressions+=SmlTemplateStringInner expressions+=SmlExpression?)*
+      expressions+=SmlTemplateStringEnd
+    ;
 
-SmlModifier
-    : 'open'
-    | 'override'
-    | 'static'
+SmlTemplateStringStart
+    : value=TEMPLATE_STRING_START
+    ;
+
+SmlTemplateStringInner
+    : value=TEMPLATE_STRING_INNER
+    ;
+
+SmlTemplateStringEnd
+    : value=TEMPLATE_STRING_END
     ;
 
 
@@ -494,7 +508,7 @@ QualifiedName
     ;
 
 QualifiedNameWithWildcard
-    : QualifiedName '.*'?
+    : QualifiedName ('.' '*')?
     ;
 
 
@@ -503,11 +517,11 @@ QualifiedNameWithWildcard
  * Types
  **********************************************************************************************************************/
 
-SmlType
+SmlType returns SmlAbstractType
     : SmlPrimaryType =>({SmlMemberType.receiver=current} '.' member=SmlNamedType)*
     ;
 
-SmlPrimaryType returns SmlType
+SmlPrimaryType returns SmlAbstractType
     : SmlCallableType
     | SmlNamedType
     | SmlUnionType
@@ -521,8 +535,7 @@ SmlParenthesizedType
 // Callable Types ------------------------------------------------------------------------------------------------------
 
 SmlCallableType
-    : 'callable'
-      parameterList=SmlParameterList
+    : parameterList=SmlParameterList
       resultList=SmlResultList
     ;
 
@@ -530,7 +543,7 @@ SmlCallableType
 // Named Types ---------------------------------------------------------------------------------------------------------
 
 SmlNamedType
-    : declaration=[SmlNamedTypeDeclaration]
+    : declaration=[SmlAbstractNamedTypeDeclaration]
       typeArgumentList=SmlTypeArgumentList?
       (nullable?='?')?
     ;
@@ -550,7 +563,7 @@ SmlUnionTypeArgument returns SmlTypeArgument
     : value=SmlUnionTypeArgumentValue
     ;
 
-SmlUnionTypeArgumentValue returns SmlTypeArgumentValue
+SmlUnionTypeArgumentValue returns SmlAbstractTypeArgumentValue
     : {SmlTypeProjection} type=SmlType
     ;
 
@@ -562,8 +575,7 @@ SmlTypeParameterList
     ;
 
 SmlTypeParameter
-    : annotations+=SmlAnnotationUse*
-      modifiers+=SmlModifier*
+    : annotationCalls+=SmlAnnotationCall*
       variance=SmlTypeParameterVariance?
       name=ID
     ;
@@ -573,7 +585,7 @@ SmlTypeParameterVariance
     | 'out'
     ;
 
-SmlTypeParameterConstraintList
+SmlConstraintList
     : 'where' constraints+=SmlTypeParameterConstraint (',' constraints+=SmlTypeParameterConstraint)* ','?
     ;
 
@@ -594,7 +606,7 @@ SmlTypeArgument
     : (typeParameter=[SmlTypeParameter] '=')? value=SmlTypeArgumentValue
     ;
 
-SmlTypeArgumentValue
+SmlTypeArgumentValue returns SmlAbstractTypeArgumentValue
     : {SmlStarProjection} '*'
     | {SmlTypeProjection} variance=SmlTypeParameterVariance? type=SmlType
     ;
@@ -639,10 +651,18 @@ terminal SL_COMMENT
     : '//' !('\r'|'\n')* ('\r'? '\n')?
     ;
 
-terminal STRING
-    : STRING_DELIMITER
+terminal STRING returns ecore::EString
+    : STRING_START
       STRING_TEXT*
-      STRING_DELIMITER
+      STRING_END
+    ;
+
+terminal fragment STRING_START
+    : STRING_DELIMITER
+    ;
+
+terminal fragment STRING_END
+    : '{'? STRING_DELIMITER
     ;
 
 terminal fragment STRING_DELIMITER
@@ -650,13 +670,12 @@ terminal fragment STRING_DELIMITER
     ;
 
 terminal fragment STRING_TEXT
-    : ESCAPE_SEQUENCE
-    | '{' !'{'
-    | !('\\'|STRING_DELIMITER|'{')
+    : '{'? ESCAPE_SEQUENCE
+    | '{'? !('\\'|STRING_DELIMITER|'{')
     ;
 
 terminal fragment ESCAPE_SEQUENCE
-    : '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */
+    : '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\'|'{' */
     ;
 
 terminal fragment TEMPLATE_EXPRESSION_START
@@ -668,12 +687,12 @@ terminal fragment TEMPLATE_EXPRESSION_END
     ;
 
 terminal TEMPLATE_STRING_START
-    : STRING_DELIMITER
+    : STRING_START
       STRING_TEXT*
       TEMPLATE_EXPRESSION_START
     ;
 
-terminal TEMPLATE_STRING_INBETWEEN
+terminal TEMPLATE_STRING_INNER
     : TEMPLATE_EXPRESSION_END
       STRING_TEXT*
       TEMPLATE_EXPRESSION_START
@@ -682,7 +701,7 @@ terminal TEMPLATE_STRING_INBETWEEN
 terminal TEMPLATE_STRING_END
     : TEMPLATE_EXPRESSION_END
       STRING_TEXT*
-      STRING_DELIMITER
+      STRING_END
     ;
 
 terminal TEST_MARKER

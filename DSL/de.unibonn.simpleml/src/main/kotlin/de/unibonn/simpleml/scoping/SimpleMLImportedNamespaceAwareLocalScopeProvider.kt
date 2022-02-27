@@ -1,7 +1,8 @@
 package de.unibonn.simpleml.scoping
 
-import de.unibonn.simpleml.simpleML.SmlPackage
-import de.unibonn.simpleml.utils.aliasName
+import de.unibonn.simpleml.emf.aliasNameOrNull
+import de.unibonn.simpleml.naming.qualifiedNameOrNull
+import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.scoping.impl.ImportNormalizer
@@ -28,17 +29,17 @@ class SimpleMLImportedNamespaceAwareLocalScopeProvider : ImportedNamespaceAwareL
         ignoreCase: Boolean
     ): List<ImportNormalizer> {
 
-        if (context !is SmlPackage) {
+        if (context !is SmlCompilationUnit) {
             return emptyList()
         }
 
         // Resolve imports - including aliases
         val resolvers = context.imports.mapNotNull {
-            createImportedNamespaceResolver(it.importedNamespace, it.aliasName(), ignoreCase)
+            createImportedNamespaceResolver(it.importedNamespace, it.aliasNameOrNull(), ignoreCase)
         }.toMutableList()
 
         // Implicitly import declarations in same package
-        qualifiedNameProvider.getFullyQualifiedName(context)?.let {
+        context.qualifiedNameOrNull()?.let {
             resolvers += ImportNormalizer(
                 it,
                 true,

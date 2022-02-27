@@ -1,5 +1,8 @@
 package de.unibonn.simpleml.validation.expressions
 
+import de.unibonn.simpleml.emf.argumentsOrEmpty
+import de.unibonn.simpleml.emf.parametersOrEmpty
+import de.unibonn.simpleml.emf.typeArgumentsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAssignment
@@ -9,23 +12,15 @@ import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
-import de.unibonn.simpleml.utils.CallableResult
-import de.unibonn.simpleml.utils.callableOrNull
-import de.unibonn.simpleml.utils.isRecursive
-import de.unibonn.simpleml.utils.maybeCallable
-import de.unibonn.simpleml.utils.resultsOrNull
-import de.unibonn.simpleml.utils.typeParametersOrNull
+import de.unibonn.simpleml.staticAnalysis.CallableResult
+import de.unibonn.simpleml.staticAnalysis.callableOrNull
+import de.unibonn.simpleml.staticAnalysis.isRecursive
+import de.unibonn.simpleml.staticAnalysis.maybeCallable
+import de.unibonn.simpleml.staticAnalysis.resultsOrNull
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
-import de.unibonn.simpleml.validation.types.MISSING_TYPE_ARGUMENT_LIST
+import de.unibonn.simpleml.validation.codes.ErrorCode
+import de.unibonn.simpleml.validation.codes.InfoCode
 import org.eclipse.xtext.validation.Check
-
-const val CONTEXT_OF_CALL_WITHOUT_RESULTS = "CONTEXT_OF_CALL_WITHOUT_RESULTS"
-const val CONTEXT_OF_CALL_WITH_MANY_RESULTS = "CONTEXT_OF_CALL_WITH_MANY_RESULTS"
-const val NO_RECURSION = "NO_RECURSION"
-const val RECEIVER_MUST_BE_CALLABLE = "RECEIVER_MUST_BE_CALLABLE"
-const val CALLED_CLASS_MUST_HAVE_CONSTRUCTOR = "CALLED_CLASS_MUST_HAVE_CONSTRUCTOR"
-const val CALLED_ENUM_VARIANT_MUST_HAVE_CONSTRUCTOR = "CALLED_ENUM_VARIANT_MUST_HAVE_CONSTRUCTOR"
-const val UNNECESSARY_TYPE_ARGUMENT_LIST = "UNNECESSARY_TYPE_ARGUMENT_LIST"
 
 class CallChecker : AbstractSimpleMLChecker() {
 
@@ -45,24 +40,8 @@ class CallChecker : AbstractSimpleMLChecker() {
         if (typeParameters.isNotEmpty()) {
             error(
                 "Missing type argument list.",
-                Literals.SML_CHAINED_EXPRESSION__RECEIVER,
-                MISSING_TYPE_ARGUMENT_LIST
-            )
-        }
-    }
-
-    @Check
-    fun unnecessaryTypeArgumentList(smlCall: SmlCall) {
-        if (smlCall.typeArgumentList == null) {
-            return
-        }
-
-        val typeParametersOrNull = smlCall.typeArgumentList.typeParametersOrNull()
-        if (typeParametersOrNull != null && typeParametersOrNull.isEmpty()) {
-            warning(
-                "Unnecessary type argument list.",
-                Literals.SML_CALL__TYPE_ARGUMENT_LIST,
-                UNNECESSARY_TYPE_ARGUMENT_LIST
+                Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
+                ErrorCode.MISSING_TYPE_ARGUMENT_LIST
             )
         }
     }
@@ -76,7 +55,7 @@ class CallChecker : AbstractSimpleMLChecker() {
         }
         val feature = when (smlCall.receiver) {
             is SmlMemberAccess -> Literals.SML_MEMBER_ACCESS__MEMBER
-            else -> Literals.SML_CHAINED_EXPRESSION__RECEIVER
+            else -> Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER
         }
 
         if (results.isEmpty() && !smlCall.hasValidContextForCallWithoutResults()) {
@@ -84,14 +63,14 @@ class CallChecker : AbstractSimpleMLChecker() {
                 "A call that produces no results is not allowed in this context.",
                 source,
                 feature,
-                CONTEXT_OF_CALL_WITHOUT_RESULTS
+                ErrorCode.CONTEXT_OF_CALL_WITHOUT_RESULTS
             )
         } else if (results.size > 1 && !smlCall.hasValidContextForCallWithMultipleResults()) {
             error(
                 "A call that produces multiple results is not allowed in this context.",
                 source,
                 feature,
-                CONTEXT_OF_CALL_WITH_MANY_RESULTS
+                ErrorCode.CONTEXT_OF_CALL_WITH_MANY_RESULTS
             )
         }
     }
@@ -111,8 +90,8 @@ class CallChecker : AbstractSimpleMLChecker() {
         if (smlCall.isRecursive()) {
             error(
                 "Recursive calls are not allowed.",
-                Literals.SML_CHAINED_EXPRESSION__RECEIVER,
-                NO_RECURSION
+                Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
+                ErrorCode.NO_RECURSION
             )
         }
     }
@@ -123,8 +102,8 @@ class CallChecker : AbstractSimpleMLChecker() {
             CallableResult.NotCallable -> {
                 error(
                     "This expression must not be called.",
-                    Literals.SML_CHAINED_EXPRESSION__RECEIVER,
-                    RECEIVER_MUST_BE_CALLABLE
+                    Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
+                    ErrorCode.RECEIVER_MUST_BE_CALLABLE
                 )
             }
             is CallableResult.Callable -> {
@@ -132,17 +111,43 @@ class CallChecker : AbstractSimpleMLChecker() {
                 if (callable is SmlClass && callable.parameterList == null) {
                     error(
                         "Cannot create an instance of a class that has no constructor.",
-                        Literals.SML_CHAINED_EXPRESSION__RECEIVER,
-                        CALLED_CLASS_MUST_HAVE_CONSTRUCTOR
-                    )
-                } else if (callable is SmlEnumVariant && callable.parameterList == null) {
-                    error(
-                        "Cannot create an instance of an enum variant that has no constructor.",
-                        Literals.SML_CHAINED_EXPRESSION__RECEIVER,
-                        CALLED_ENUM_VARIANT_MUST_HAVE_CONSTRUCTOR
+                        Literals.SML_ABSTRACT_CHAINED_EXPRESSION__RECEIVER,
+                        ErrorCode.CALLED_CLASS_MUST_HAVE_CONSTRUCTOR
                     )
                 }
             }
+            else -> {}
+        }
+    }
+
+    @Check
+    fun unnecessaryArgumentList(smlCall: SmlCall) {
+
+        // Call has no argument list anyway
+        if (smlCall.argumentList == null) {
+            return
+        }
+
+        // Call is used to pass type arguments or arguments
+        if (smlCall.typeArgumentsOrEmpty().isNotEmpty() || smlCall.argumentsOrEmpty().isNotEmpty()) {
+            return
+        }
+
+        // Receiver is not callable or cannot be resolved
+        val callable = smlCall.callableOrNull() ?: return
+
+        // Only calls to enum variants can sometimes be omitted without changing the meaning of the program
+        if (callable !is SmlEnumVariant) {
+            return
+        }
+
+        // This enum variant does not need to be called
+        if (callable.typeParametersOrEmpty().isEmpty() && callable.parametersOrEmpty().isEmpty()) {
+            info(
+                "Unnecessary argument list.",
+                Literals.SML_ABSTRACT_CALL__ARGUMENT_LIST,
+                InfoCode.UnnecessaryArgumentList
+            )
         }
     }
 }

@@ -1,7 +1,7 @@
 package tests.uniqueNames
 
 step s(
-    f: callable (
+    f: (
         // semantic_error "A parameter or result with name 'duplicateParameter' exists already in this callable type."
         »duplicateParameter«: Int,
         // semantic_error "A parameter or result with name 'duplicateParameter' exists already in this callable type."

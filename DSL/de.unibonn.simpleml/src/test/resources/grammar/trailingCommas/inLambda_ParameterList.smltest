@@ -1,7 +1,0 @@
-package tests.trailingComma.inLambdaParameterList
-
-// no_syntax_error
-
-workflow w {
-    lambda (first: Int, second: Int, ) {};
-}

@@ -1,8 +1,8 @@
 package tests.validation.declarations.enumVariants.unnecessaryTypeParameterList
 
 enum MyEnum {
-    // semantic_warning "Unnecessary type parameter list."
+    // semantic_info "Unnecessary type parameter list."
     MyVariant1»<>«
-    // no_semantic_warning "Unnecessary type parameter list."
+    // no_semantic_info "Unnecessary type parameter list."
     MyVariant2»<T>«
 }

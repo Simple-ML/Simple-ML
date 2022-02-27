@@ -1,3 +1,6 @@
+# IntelliJ
+.idea/
+
 # MacOS
 .DS_Store/
 
@@ -5,7 +8,9 @@
 report/
 
 # Generated stuff
+bin/
 src-gen/
+xtend-gen/
 *.log
 
 # python stuff

@@ -1,13 +1,13 @@
 // no_syntax_error
 
 step s1(
-    f: callable () -> ()
+    f: () -> ()
 ) {}
 
 step s2(
-    f: callable () -> result: Int
+    f: () -> result: Int
 ) {}
 
 step s3(
-    f: callable (@AnnotationUse static a: Int, vararg b: Int or 3) -> (@AnnotationUse static a: Int, b: Int)
+    f: (@AnnotationUse a: Int, vararg b: Int = 3) -> (@AnnotationUse a: Int, b: Int)
 ) {}

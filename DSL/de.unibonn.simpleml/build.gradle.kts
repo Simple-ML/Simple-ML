@@ -5,6 +5,7 @@ val xtextVersion: String by rootProject.extra
 
 plugins {
     `java-library`
+    `java-test-fixtures`
     kotlin("jvm")
     idea
 }
@@ -23,24 +24,21 @@ idea {
 
 // Dependencies --------------------------------------------------------------------------------------------------------
 
-val mwe2: Configuration by configurations.creating {
-    extendsFrom(configurations.compileClasspath.get())
-}
-
 dependencies {
     api(platform("org.eclipse.xtext:xtext-dev-bom:$xtextVersion"))
     implementation("org.eclipse.xtext:org.eclipse.xtext:$xtextVersion")
 
-    mwe2("org.eclipse.emf:org.eclipse.emf.mwe2.launch")
-    mwe2("org.eclipse.xtext:org.eclipse.xtext.common.types:$xtextVersion")
-    mwe2("org.eclipse.xtext:org.eclipse.xtext.xtext.generator:$xtextVersion")
-    mwe2("org.eclipse.xtext:xtext-antlr-generator")
-
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
     testImplementation("org.eclipse.xtext:org.eclipse.xtext.testing:$xtextVersion")
     testImplementation("org.eclipse.xtext:org.eclipse.xtext.xbase.testing:$xtextVersion")
-    testImplementation("io.kotest:kotest-assertions-core-jvm:5.0.1")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:5.1.0")
+
+    testFixturesImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testFixturesImplementation("org.eclipse.xtext:org.eclipse.xtext.testing:$xtextVersion")
+    testFixturesImplementation("org.eclipse.xtext:org.eclipse.xtext.xbase.testing:$xtextVersion")
+    testFixturesImplementation("io.kotest:kotest-assertions-core-jvm:5.0.3")
 }
 
 // Source sets ---------------------------------------------------------------------------------------------------------
@@ -60,84 +58,54 @@ sourceSets {
 
 // Tasks ---------------------------------------------------------------------------------------------------------------
 
-tasks.register<JavaExec>("generateXtextLanguage") {
-    group = "Build"
-    description = "Generate language files (e.g. EMF classes)"
-
-    classpath = mwe2
-    mainClass.set("org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher")
-    args = listOf("src/main/kotlin/de/unibonn/simpleml/GenerateSimpleML.mwe2", "-p", "rootPath=/$projectDir/..")
-
-    inputs.files(
-        "model/custom/SimpleML.ecore",
-        "model/custom/SimpleML.genmodel",
-        "src/main/kotlin/de/unibonn/simpleml/GenerateSimpleML.mwe2",
-        "src/main/kotlin/de/unibonn/simpleml/SimpleML.xtext"
-    )
-    outputs.dirs(
-        "META-INF",
-        "src-gen",
-        "emf-gen",
-        "../de.unibonn.simpleml.ide/src-gen",
-        "../de.unibonn.simpleml.tests/src-gen",
-        "../de.unibonn.simpleml.web/src-gen"
-    )
-    outputs.files("build.properties", "plugin.properties", "plugin.xml")
-
-    doLast {
-        delete(
-            fileTree("src") {
-                include("**/*.xtend")
-            }
-        )
-        delete(
-            fileTree("../de.unibonn.simpleml.ide/src") {
-                include("**/*.xtend")
-            }
-        )
-        delete(file("../de.unibonn.simpleml.tests"))
-        delete(
-            fileTree("../de.unibonn.simpleml.web/src/de/unibonn/simpleml/web") {
-                include("**/*.xtend")
-            }
-        )
-    }
-}
+val koverExcludes = listOf(
+    "de.unibonn.simpleml.parser.antlr.*",
+    "de.unibonn.simpleml.serializer.AbstractSimpleMLSemanticSequencer",
+    "de.unibonn.simpleml.serializer.AbstractSimpleMLSyntacticSequencer",
+    "de.unibonn.simpleml.services.*",
+    "de.unibonn.simpleml.simpleML.*",
+    "de.unibonn.simpleml.testing.*"
+)
 
 tasks {
     compileJava {
-        dependsOn("generateXtextLanguage")
+        dependsOn(rootProject.tasks.named("generateXtextLanguage"))
     }
 
     compileKotlin {
-        dependsOn("generateXtextLanguage")
+        dependsOn(rootProject.tasks.named("generateXtextLanguage"))
     }
 
     processResources {
-        dependsOn("generateXtextLanguage")
+        dependsOn(rootProject.tasks.named("generateXtextLanguage"))
     }
 
     clean {
-        dependsOn("cleanGenerateXtextLanguage")
+        dependsOn(rootProject.tasks.named("cleanGenerateXtextLanguage"))
     }
 
     test {
         useJUnitPlatform()
 
         extensions.configure(kotlinx.kover.api.KoverTaskExtension::class) {
-            excludes = listOf(
-
-                // Classes in emf-gen
-                "de\\.unibonn\\.simpleml\\.simpleML\\..*",
-            )
+            excludes = koverExcludes
         }
     }
 
+    koverHtmlReport {
+        excludes = koverExcludes
+    }
+
+    koverXmlReport {
+        excludes = koverExcludes
+    }
+
     koverVerify {
+        excludes = koverExcludes
         rule {
             name = "Minimal line coverage rate in percents"
             bound {
-                minValue = 75
+                minValue = 80
             }
         }
     }

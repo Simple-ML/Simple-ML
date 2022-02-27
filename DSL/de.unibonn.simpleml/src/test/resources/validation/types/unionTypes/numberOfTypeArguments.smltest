@@ -5,7 +5,7 @@ step myStep1(
     f: »union<>«
 ) {}
 
-// semantic_warning "A union type with one type argument is equivalent to the the type argument itself."
+// semantic_info "A union type with one type argument is equivalent to the the type argument itself."
 step myStep1(
     f: »union<Int>«
 ) {}
@@ -15,7 +15,7 @@ step myStep1(
     f: »union<Int, Float>«
 ) {}
 
-// no_semantic_warning "A union type with one type argument is equivalent to the the type argument itself."
+// no_semantic_info "A union type with one type argument is equivalent to the the type argument itself."
 step myStep1(
     f: »union<Int, Float>«
 ) {}

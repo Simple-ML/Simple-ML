@@ -14,6 +14,8 @@ fun globalFunctionInOtherPackage2()
 
 step stepInOtherPackage1() {}
 step stepInOtherPackage2() {}
+internal step internalStepInOtherPackage() {}
+private step privateStepInOtherPackage() {}
 
 workflow workflowInOtherPackage1 {}
 workflow workflowInOtherPackage2 {}

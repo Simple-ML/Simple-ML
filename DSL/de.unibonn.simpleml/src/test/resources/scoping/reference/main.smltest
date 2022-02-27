@@ -5,11 +5,13 @@ import tests.languageTests.scoping.reference2.ClassInOtherPackage1
 import tests.languageTests.scoping.reference2.EnumInOtherPackage1
 import tests.languageTests.scoping.reference2.globalFunctionInOtherPackage1
 import tests.languageTests.scoping.reference2.stepInOtherPackage1
+import tests.languageTests.scoping.reference2.internalStepInOtherPackage
+import tests.languageTests.scoping.reference2.privateStepInOtherPackage
 import tests.languageTests.scoping.reference2.workflowInOtherPackage1
 
 annotation AnnotationInSameFile
 
-open class SuperClass {
+class SuperClass {
     static attr superClassStaticAttribute: Int
     attr superClassInstanceAttribute: Int
 
@@ -47,19 +49,22 @@ step stepInSameFile(stepParameterInSameFile: Int) -> stepResultInSameFile: Int {
 step stepWithOneResultWithIdenticalMember() -> result: ClassForResultMemberAccess {}
 step stepWithTwoResults() -> (result1: Int, result2: Int) {}
 
+step internalStepInSameFile() {}
+step privateStepInSameFile() {}
+
 workflow workflowInSameFile {}
 
-open class SuperClassForOverriding() {
+class SuperClassForOverriding() {
     attr instanceAttributeForOverriding: Int
-    open override fun instanceMethodForOverriding()
+    fun instanceMethodForOverriding()
 }
 class SubClassForOverriding()
 sub SuperClassForOverriding {
     attr instanceAttributeForOverriding: Int
-    override fun instanceMethodForOverriding()
+    fun instanceMethodForOverriding()
 }
 
-open class SuperClassForHiding {
+class SuperClassForHiding {
     static attr staticAttributeForHiding: Int
     class NestedClassForHiding
     enum NestedEnumForHiding
@@ -110,37 +115,39 @@ step directReferencesToGlobalFunctions() {
     globalFunctionInOtherPackage2;
 }
 
-step directReferencesToLambdaYields() {
-    val f = lambda {
-        yield lambdaYield = 1;
-        lambdaYield;
+step directReferencesToLambdaResults() {
+    val f = () {
+        yield lambdaResult = 1;
+        lambdaResult;
     };
 }
 
 step directReferencesToParameters(parameterInStep: Int) {
     parameterInStep;
 
-    val f = lambda (parameterInLambda: Int) {
+    val f = (parameterInBlockLambda) {
         parameterInStep;
-        parameterInLambda;
+        parameterInBlockLambda;
 
-        val f = lambda {
+        val f = () {
             parameterInStep;
-            parameterInLambda;
+            parameterInBlockLambda;
         };
     };
+
+    val g = (parameterInExpressionLambda) -> parameterInExpressionLambda;
 }
 
 step directReferencesToPlaceholders() {
     val placeholderInStep = 1;
     placeholderInStep;
 
-    val f = lambda () {
+    val f = () {
         val placeholderInLambda = 1;
         placeholderInStep;
         placeholderInLambda;
 
-        val f = lambda {
+        val f = () {
             placeholderInStep;
             placeholderInLambda;
         };
@@ -151,11 +158,18 @@ step directReferencesToTypeParameters() {
     TYPE_PARAMETER_IN_SAME_FILE;
 }
 
-step directReferencesToWorkflowSteps() {
+step directReferencesToSteps() {
     stepInSameFile;
     stepInSamePackage;
     stepInOtherPackage1;
     stepInOtherPackage2;
+
+    internalStepInSameFile;
+    privateStepInSameFile;
+    internalStepInSamePackage;
+    privateStepInSamePackage;
+    internalStepInOtherPackage;
+    privateStepInOtherPackage;
 }
 
 step directReferencesToWorkflows() {
@@ -167,7 +181,7 @@ step directReferencesToWorkflows() {
 
 step forwardReferences() {
     a;
-    val f = lambda {
+    val f = () {
         a;
         f;
     };
@@ -181,7 +195,7 @@ step shadowedReferences(ClassInSameFile: Int) {
     val ClassInSameFile = 1;
     ClassInSameFile;
 
-    val f = lambda (ClassInSameFile: Int) {
+    val f = (ClassInSameFile) {
         ClassInSameFile;
 
         val ClassInSameFile = 1;
@@ -278,10 +292,10 @@ step referencesToInstanceClassMembersFromClass() {
 // Access to results of callable -----------------------------------------------
 
 step referencesToCallableTypeResults(
-    callableWithOneResult: callable () -> (singleResult: Int),
-    callableWithOneResultWithIdenticalClassAttribute: callable () -> (result: ClassForResultMemberAccess),
-    callableWithOneResultWithIdenticalEnumVariant: callable () -> (result: EnumForResultMemberAccess),
-    callableWithTwoResults: callable () -> (result1: Int, result2: Int)
+    callableWithOneResult: () -> (singleResult: Int),
+    callableWithOneResultWithIdenticalClassAttribute: () -> (result: ClassForResultMemberAccess),
+    callableWithOneResultWithIdenticalEnumVariant: () -> (result: EnumForResultMemberAccess),
+    callableWithTwoResults: () -> (result1: Int, result2: Int)
 ) {
     callableWithOneResult().singleResult;
     callableWithOneResultWithIdenticalClassAttribute().result;
@@ -296,13 +310,13 @@ step referencesToFunctionResults() {
 }
 
 step referencesToLambdaResults() {
-    val lambdaWithOneResult = lambda {
+    val lambdaWithOneResult = () {
         yield singleResult = 1;
     };
-    val lambdaWithOneResultWithIdenticalMember = lambda {
+    val lambdaWithOneResultWithIdenticalMember = () {
         yield result = ClassForResultMemberAccess();
     };
-    val lambdaWithTwoResults = lambda {
+    val lambdaWithTwoResults = () {
         yield result1 = 1;
         yield result2 = 1;
     };
@@ -312,7 +326,7 @@ step referencesToLambdaResults() {
     lambdaWithTwoResults().result1;
 }
 
-step referencesToWorkflowStepResults() {
+step referencesToStepResults() {
     stepInSameFile(1).stepResultInSameFile;
     stepWithOneResultWithIdenticalMember().result;
     stepWithTwoResults().result1;
@@ -326,7 +340,7 @@ step referencesToFunctionLocals() {
 }
 
 step referencesToLambdaLocals() {
-    val f = lambda (lambdaParameter: Int) {
+    val f = (lambdaParameter) {
         val lambdaPlaceholder = 1;
         yield lambdaYield = 1;
     };
@@ -336,7 +350,7 @@ step referencesToLambdaLocals() {
     lambdaYield;
 }
 
-step referencesToWorkflowStepLocals() {
+step referencesToStepLocals() {
     stepParameterInSameFile;
     stepResultInSameFile;
     placeholderInSameFile;

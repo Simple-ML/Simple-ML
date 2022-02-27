@@ -7,7 +7,24 @@ class Dataset {
 
     fun dropAttributes(vararg attributes: String) -> dataset: Dataset
 
-    fun splitIntoTrainAndTest(trainRatio: Float, randomState: Int? or null) -> (dataset1: Dataset, dataset2: Dataset)
+    fun splitIntoTrainAndTest(trainRatio: Float, randomState: Int? = null) -> (dataset1: Dataset, dataset2: Dataset)
+
+    fun exportDataAsFile(filePath: String)
+
+    fun filterInstances(@PythonName("filter_func") filterFunc: () -> ()) -> dataset: Dataset
+
+    fun getRow(rowNumber: Int) -> instance: Instance
+}
+
+class Instance {
+    fun getValue(attribute: String)
+
 }
 
 fun loadDataset(name: String) -> dataset: Dataset
+
+fun readDataSetFromCSV(fileName: String, datasetName: String, separator: String, hasHeader: String) -> dataset: Dataset
+
+fun joinTwoDatasets(firstData: Dataset, secondData: Dataset, joinColumnName1: String, joinColumnName2: String, firstSuffix: String, secondSuffix: String) -> dataset: Dataset
+
+fun filterGoodQuality(instance: Instance) -> isGoodQuality: Boolean

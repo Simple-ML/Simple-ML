@@ -1,4 +1,4 @@
-package myPackage
+package tests.astToPrologFactbase.declarations
 
 import myPackage.MyClass
 import myPackage.MyOtherClass as Class
@@ -9,18 +9,18 @@ import myPackage.*
 annotation MySimpleAnnotation
 
 @MySimpleAnnotation
-static annotation MyComplexAnnotation(
+annotation MyComplexAnnotation(
     a: Int,
     b: Int
-)
+) where T1 super Number, T2 sub Number
 
 
 // Classes, Attributes & Type parameters -------------------------------------------------------------------------------
 class MySimpleClass
 
 @MySimpleAnnotation
-static class MyComplexClass
-    <MY_SIMPLE_TYPE_PARAMETER, @AnnotationUse static out MY_COMPLEX_TYPE_PARAMETER>
+class MyComplexClass
+    <MY_SIMPLE_TYPE_PARAMETER, @AnnotationUse out MY_COMPLEX_TYPE_PARAMETER>
     (a, b)
     sub SuperClass1, SuperClass2
     where T1 super Number, T2 sub Number
@@ -30,7 +30,7 @@ static class MyComplexClass
 
     class MyClass
     enum MyEnum
-    fun MyFunction()
+    static fun myStaticMethod()
 }
 
 
@@ -38,9 +38,9 @@ static class MyComplexClass
 enum MySimpleEnum
 
 @MySimpleAnnotation
-static enum MyComplexEnum {
+enum MyComplexEnum {
     MySimpleVariant
-    @AnnotationUse static MyComplexVariant<T1, T2>(a, b) where T1 super Number, T2 sub Number
+    @AnnotationUse MyComplexVariant<T1, T2>(a, b) where T1 super Number, T2 sub Number
 }
 
 
@@ -48,26 +48,26 @@ static enum MyComplexEnum {
 fun mySimpleFunction()
 
 @MySimpleAnnotation
-static fun myComplexFunction
+fun myComplexFunction
     <T1, T2>
-    (mySimpleParameter, @AnnotationUse static vararg myComplexParameter: Int or 3)
-    -> (mySimpleResult, @AnnotationUse static myComplexResult: Int)
+    (mySimpleParameter, @AnnotationUse vararg myComplexParameter: Int = 3)
+    -> (mySimpleResult, @AnnotationUse myComplexResult: Int)
     where T1 super Number, T2 sub Number
+
+
+// Steps ---------------------------------------------------------------------------------------------------------------
+step mySimpleStep() {}
+
+@MySimpleAnnotation
+private step myComplexStep (a, b) -> (a, b) {
+    val a = 1;
+}
 
 
 // Workflows -----------------------------------------------------------------------------------------------------------
 workflow mySimpleWorkflow {}
 
 @MySimpleAnnotation
-static workflow myComplexWorkflow {
-    val a = 1;
-}
-
-
-// Workflow steps ------------------------------------------------------------------------------------------------------
-step mySimpleStep() {}
-
-@MySimpleAnnotation
-static step myComplexStep (a, b) -> (a, b) {
+workflow myComplexWorkflow {
     val a = 1;
 }
