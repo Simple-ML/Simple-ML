@@ -5,7 +5,7 @@ import simpleml.dataset.Dataset
 
 open class RandomForestClassifier() sub Estimator {
     attr nEstimator: Int?
-    attr criterion: Str?
+    attr criterion: String?
     attr maxDepth: Int?
     attr randomState: Int?
 
