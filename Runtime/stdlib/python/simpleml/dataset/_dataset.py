@@ -254,6 +254,22 @@ class Dataset:
 
         return copy
 
+    def flattenData(self):
+
+        if self.data.empty:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+
+        for atribute in copy.attributes:
+            # print(atribute)
+            if copy.simple_data_types[atribute] == config.type_numeric_list:
+                # print(atribute)
+                attribute_column_names = [atribute + str(i) for i in range(len(copy.data[atribute].iloc[0]))]
+                copy.data[attribute_column_names] = pd.DataFrame(copy.data[atribute].tolist(), index=copy.data.index)
+
+        return copy
+
     def getStatistics(self) -> dict:
         if not self.stats:
             if self.data.empty:

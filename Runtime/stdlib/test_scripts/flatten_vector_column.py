@@ -9,6 +9,9 @@ def exampleWorkflow():
     dataset = loadDataset("SpeedAverages")
 
     dataset = dataset.categoryToVector('season')
+    dataset = dataset.flattenData()
+
+    print(dataset.data.columns.values.tolist())
     print(dataset.data)
 
 
