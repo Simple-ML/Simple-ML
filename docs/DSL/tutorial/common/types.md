@@ -118,7 +118,7 @@ We will again go over the syntax:
 
 * The usual named type (here `SomeSpecialMap`).
 * An opening angle bracket.
-* The list of type arguments. Each element is either a positional or a named type argument (see above). Individual elements are separated by commas.
+* The list of type arguments. Each element is either a positional or a named type argument (see above). Individual elements are separated by commas. A trailing comma is allowed
 * A closing angle bracket.
 
 We will now look at the values that we can pass within type arguments.
@@ -135,7 +135,7 @@ The value of the type argument is just another named type (here `Int`).
 
 ###### Use-Site Variance
 
-It is also possible to set the [variance][variance] of a [type parameter] at the use-site, i.e. where we use the containing declaration as a named type. This is only possible, however, if we did not [specify the variance at the declaration-site][declaration-site-variance].
+It is also possible to set the [variance][variance] of a [type parameter][type-parameters] at the use-site, i.e. where we use the containing declaration as a named type. This is only possible, however, if we did not [specify the variance at the declaration-site][declaration-site-variance].
 
 Covariance is denoted by the keyword `out`. If the variance of a [type parameter][type-parameters] is set to `out`, we can only access methods of the class that only use the [type parameter][type-parameters] in the out-position, i.e. as [results][results]. Methods that use the [type parameter][type-parameters] in the in-position, i.e. as [parameters][parameters] are hidden. Here is an example for the syntax:
 
@@ -285,7 +285,58 @@ Note that it is preferable to write the common superclass if this is equivalent 
 
 ### Callable Types
 
-**TODO**
+A _callable type_ denotes that only values that can be [called][calls] are accepted. This includes:
+* [class constructors][class-constructors]
+* [constructors of enum variants][enum-variant-constructors]
+* [methods][methods]
+* [global functions][global-functions]
+* [steps][steps]
+* [lambdas][lambdas]
+
+Additionally, a callable types specifies the names and types of parameters and results. Here is the most basic callable type that expects neither parameters nor results:
+
+```
+() -> ()
+```
+
+Let us break down the syntax:
+* A pair of parentheses, which is the list of expected [parameters][parameters].
+* An arrow `->`.
+* A pair of parentheses, which is the list of expected [results][results].
+
+We can now add some expected [parameters][parameters]:
+
+```
+(a: Int, b: Int) -> ()
+```
+
+These are the syntactic elements:
+* [Parameters][parameters] are written in the first pair of parentheses.
+* For each [parameter][parameters], specify:
+    * Its name.
+    * A colon.
+    * Its type.
+* Separate [parameters][parameters] by commas. A trailing comma is permitted.
+
+Finally, we can add some expected [results][results]:
+
+```
+(a: Int, b: Int) -> (r: Int, s: Int)
+```
+
+The syntax is reminiscent of the notation for [parameters][parameters]:
+* [Results][results] are written in the second pair of parentheses.
+* For each [result][results], specify:
+    * Its name.
+    * A colon.
+    * Its type.
+* Separate [result][results] by commas. A trailing comma is permitted.
+
+If exactly one result is expected, the surrounding parentheses may be also removed:
+
+```
+(a: Int, b: Int) -> r: Int
+```
 
 ### Parenthesized Types
 
@@ -362,10 +413,17 @@ Getting the `<result type`> depends on the number of results. If there is only a
 [type-parameters]: ../stub-language/type-parameters.md
 [type-parameter-bounds]: ../stub-language/type-parameters.md#bounds
 [declaration-site-variance]: ../stub-language/type-parameters.md#declaration-site-variance
+[class-constructors]: ../stub-language/classes.md
+[enum-variant-constructors]: ../stub-language/enumerations.md#constructors
+[methods]: ../stub-language/classes.md#defining-methods
+[global-functions]: ../stub-language/global-functions.md
+
 
 [member-accesses]: ../workflow-language/expressions.md#member-access-of-enum-variants
 [null-literal]: ../workflow-language/expressions.md#null-literal
 [calls]: ../workflow-language/expressions.md#calls
+[steps]: ../workflow-language/steps.md
+[lambdas]: ../workflow-language/expressions.md#lambdas
 
 [mypy]: http://mypy-lang.org/
 [type-hints]: https://docs.python.org/3/library/typing.html
