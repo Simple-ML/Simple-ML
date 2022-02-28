@@ -3,25 +3,171 @@
 Types describe the values that a declaration can accept. Simple-ML has various categories of types, which are explained in this document.
 
 ## Categories of Types
+
 ### Named Types
 
-**TODO**
+_Named types_ either denote that a declaration must be an instance of a [class][classes] or one of its [subclasses][subclassing], or an instance of a [variant][variants] of an [enum][enums]. In either case the syntax of the type is just the name of the [class][classes] or the [enum][enums] respectively.
 
-#### Nullable Named Types
+#### Class Types
 
-**TODO**
+A declaration with a _class type_ must be an instance of a [class][classes] or one of its [subclasses][subclassing]. Let us use the following [classes][classes] for our example:
+
+```
+class SomeClass
+
+class SomeSubclass sub SomeClass
+```
+
+To denote that a declaration accepts instances of `SomeClass` and its [subclass][subclassing] `SomeSubclass`, we write the name of the class as the type:
+
+```
+SomeClass
+```
+
+##### Nullable Class Types
+
+The value `null` (see [null][null-literal]) deserves special treatment since it is not possible to operate on it in the same manner as on proper instances of a [class][classes]. For this reason `null` cannot be assigned to declarations with class types such as `SomeClass`.
+
+To specifically allow `null` as a value, simply add a question mark to the named type:
+
+```
+SomeClass?
+```
+
+#### Enum Types
+
+A declaration with an _enum type_ must be one of the [variants][variants] of the [enum][enums]. Let us use the following [enum][enums] for our example:
+
+```
+enum SomeEnum {
+    SomeEnumVariant,
+    SomeOtherEnumVariant(count: Int)
+}
+```
+
+To denote that a declaration accepts instances of any [variant][variants] of `SomeEnum`, use the name of the enum as the type:
+
+```
+SomeEnum
+```
+
+This type expects either the value `SomeEnum.SomeEnumVariant` (see [member access][member-accesses]) or anything constructed from the [variant][variants] `SomeOtherEnumVariant` such as `SomeEnum.SomeOtherEnumVariant(3)`.
 
 #### Type Arguments
 
-**TODO**
+**Note:** This is an advanced section. Feel free to skip it initially.
+
+If a declaration has [type parameters][type-parameters] we need to assign all of them when we use the declaration as a named type. This assignment happens in the form of _type arguments_. We explain this using the following declaration:
+
+```
+class SomeSpecialList<T>
+```
+
+When we use this [class][classes] as a named type, we need to specify the value for the [type parameter][type-parameters] `T`, which is supposed to denote the type of the elements in the list.Similar to [calls][calls], we can either use _positional type arguments_ or _named type arguments_.
+
+In the case of positional type arguments, they are mapped to [type parameters][type-parameters] by position, i.e. the first type argument is assigned to the first [type parameter][type-parameters], the second type argument is assigned to the second [type parameter][type-parameters] and so forth.
+
+If a positional type argument is used, we just write down its value. The value is either
+* a [type projection](#type-projection), or
+* a [star projection](#star-projection).
+
+For example, if we expect a list of integers, we could use the following type:
+
+```
+SomeSpecialList<Int>
+```
+
+Let us break down the syntax:
+* The usual named type (here `SomeSpecialList`).
+* Opening angle bracket.
+* A positional type argument (here `Int`).
+* A closing angle bracket.
+
+When a named type argument is used, we explicitly specify the [type parameter][type-parameters] that we want to assign. This allows us to specify them in any order. It can also improve the clarity of the code since the meaning of the type argument becomes more apparent. Here is the type for our list of integers when a named argument is used:
+
+```
+SomeSpecialList<T = Int>
+```
+
+These are the syntactic elements:
+* The usual named type (here `SomeSpecialList`).
+* Opening angle bracket.
+* A named type argument (here `T = Int`). This in turn consists of 
+  * The name of the [type parameter][type-parameters] (here `T`)
+  * An equals sign.
+  * The value of the type argument, which is still either a [type projection](#type-projection), or a [star projection](#star-projection).
+* A closing angle bracket.
+
+Within a list of type arguments both positional and named type arguments can be used. However, after the first named type arguments all type arguments must be named. 
+
+Let us finally look at how multiple type arguments are passed. For this we use the following declaration:
+
+```
+class SomeSpecialMap<K, V>
+```
+
+This [class][classes] has to [type parameters][type-parameters], namely `K` and `V`, which must both be set if we use this [class][classes] as a named type.
+
+Here is a valid use:
+
+```
+SomeSpecialMap<String, V = Int>
+```
+
+We will again go over the syntax:
+
+* The usual named type (here `SomeSpecialMap`).
+* An opening angle bracket.
+* The list of type arguments. Each element is either a positional or a named type argument (see above). Individual elements are separated by commas.
+* A closing angle bracket.
+
+We will now look at the values that we can pass within type arguments.
+
+##### Type Projection
+
+The most basic case is that we pass a concrete type as the value. We have already seen this in the example above where we constructed the type for a list of integers:
+
+```
+SomeSpecialList<Int>
+```
+
+The value of the type argument is just another named type (here `Int`).
+
+###### Use-Site Variance
+
+It is also possible to set the [variance][variance] of a [type parameter] at the use-site, i.e. where we use the containing declaration as a named type. This is only possible, however, if we did not [specify the variance at the declaration-site][declaration-site-variance].
+
+Covariance is denoted by the keyword `out`. If the variance of a [type parameter][type-parameters] is set to `out`, we can only access methods of the class that only use the [type parameter][type-parameters] in the out-position, i.e. as [results][results]. Methods that use the [type parameter][type-parameters] in the in-position, i.e. as [parameters][parameters] are hidden. Here is an example for the syntax:
+
+```
+SomeSpecialList<out Int>
+```
+
+The key element here is the keyword `out` that is added to the type argument. This essentially creates a list of integers that can be read from but that cannot be written to.
+
+Contravariance is denoted by the keyword `in`. If the variance of a [type parameter][type-parameters] is set to `in`, we can only access methods of the class that only use the [type parameter][type-parameters] in the in-position, i.e. as [parameters][parameters]. Methods that use the [type parameter][type-parameters] in the out-position, i.e. as [results][results] are hidden. Here is an example of the syntax:
+
+```
+SomeSpecialList<in Int>
+```
+
+The key element here is the keyword `in` that is added to the type argument. Here we essentially create a list of integers that can be written to but not read from.
 
 ##### Star Projection
 
-**TODO**
+If we do not want to specify a value for a [type parameter][type-parameters] and just accept everything, we can use a _star projection_. Here is the syntax:
 
-##### Use-Site Variance
+```
+SomeSpecialList<*>
+```
 
-**TODO**
+It consists only of the `*`, which we use as the value of the type argument.
+
+The star projection is equivalent to the type projections
+* `out Any?` (`Any?` is the supertype of everything), or
+* `in Nothing` (`Nothing` is the subtype of everything).
+
+For the sake of clarity, however, a star projection is preferable.
 
 ### Member Types
 
@@ -87,6 +233,7 @@ The following table shows how Simple-ML types can be written as Python [type hin
 |`SomeEnum?`|`Optional[SomeEnum]`|
 |`SomeSpecialList<Int>`|`SomeSpecialList[int]`|
 |`SomeOuterClass.SomeInnerClass`|`SomeOuterClass.SomeInnerClass`|
+|`SomeEnum.SomeEnumVariant`|`SomeEnum.SomeEnumVariant`|
 |`union<String, Int>`|`Union[str, int]`|
 |`(a: Int, b: Int) -> r: Int`|`Callable[[int, int], int]`|
 |`(a: Int, b: Int) -> (r: Int, s: Int)`|`Callable[[int, int], Tuple[int, int]]`|
@@ -109,7 +256,21 @@ Getting the `<result type`> depends on the number of results. If there is only a
 3. add the prefix `Tuple[`,
 4. add the suffix `]`.
 
+[variance]: ./variance.md
+[parameters]: ./parameters.md
+[results]: ./results.md
+
 [stub-language]: ../stub-language/README.md
+[classes]: ../stub-language/classes.md
+[subclassing]: ../stub-language/classes.md#subclassing
+[enums]: ../stub-language/enumerations.md
+[variants]: ../stub-language/enumerations.md#enum-variants
+[type-parameters]: ../stub-language/type-parameters.md
+[declaration-site-variance]: ../stub-language/type-parameters.md#declaration-site-variance
+
+[member-accesses]: ../workflow-language/expressions.md#member-access-of-enum-variants
+[null-literal]: ../workflow-language/expressions.md#null-literal
+[calls]: ../workflow-language/expressions.md#calls
 
 [mypy]: http://mypy-lang.org/
 [type-hints]: https://docs.python.org/3/library/typing.html

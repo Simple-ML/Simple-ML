@@ -52,6 +52,10 @@ class Lasso(regularizationStrength: Float) {
 }
 ```
 
+## Subclassing
+
+**TODO**
+
 ## Using a Class as a Type
 
 To express that the type of a declaration is some class we simply write the name of the class as the type. For example, we could declare a function that plots the line learned by a ridge regression model like this:
