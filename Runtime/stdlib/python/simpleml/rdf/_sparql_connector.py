@@ -2,10 +2,22 @@ from __future__ import annotations
 
 import os
 
+import requests
 from SPARQLWrapper import JSON, SPARQLWrapper
 
 sparqlURI = "***REMOVED***/sparqlJSON"
+
+
 # sparqlURI = "http://localhost:4567/sparqlJSON"
+
+
+def endpoint_is_running():
+    # check if the endpoint is running and has no time out
+    try:
+        r = requests.get(sparqlURI, timeout=2)
+        return bool(r)
+    except requests.exceptions.Timeout:
+        return False
 
 
 def run_query(query_string):
