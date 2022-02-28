@@ -190,6 +190,53 @@ class Dataset:
 
         return copy
 
+    def addIsWeekendAttribute(self, columnName):
+
+        if self.data.empty:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+
+        def transformIntoWeekend(instance: Instance):
+            week_num = instance.getValue(columnName).weekday()
+            if week_num < 5:
+                return False
+            else:
+                return True
+            # return instance.getValue(columnName) is weekend
+
+        copy.data = self.addAttribute(columnName + '_isWeekend', transformIntoWeekend).data
+
+        return copy
+
+    def addDayOfTheYearAttribute(self, columnName):
+
+        if self.data.empty:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+
+        def transformIntoWDayOfTheYear(instance: Instance):
+            return instance.getValue(columnName).timetuple().tm_yday
+
+        copy.data = self.addAttribute(columnName + '_DayOfTheYear', transformIntoWDayOfTheYear).data
+
+        return copy
+
+    def addWeekDayAttribute(self, columnName):
+
+        if self.data.empty:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+
+        def transformIntoWeekDay(instance: Instance):
+            return instance.getValue(columnName).strftime("%A")
+
+        copy.data = self.addAttribute(columnName + '_WeekDay', transformIntoWeekDay).data
+
+        return copy
+
     def categoryToVector(self, columnName):
 
         if self.data.empty:
