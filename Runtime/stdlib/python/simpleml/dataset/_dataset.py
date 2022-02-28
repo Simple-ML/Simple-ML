@@ -4,6 +4,7 @@ import json
 import os
 from typing import Any, Tuple
 
+import category_encoders as ce  # For one hot encoding
 import geopandas
 import numpy as np  # For huge arrays and matrices
 import pandas as pd  # For data processing
@@ -186,6 +187,23 @@ class Dataset:
 
         for index, row in copy.data.iterrows():
             copy.data.at[index, columnName] = transformFunc(Instance(row))
+
+        return copy
+
+    def categoryToVector(self, columnName):
+
+        if self.data.empty:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+        column_data = copy.data[columnName]
+
+        column_encoder = ce.OneHotEncoder(cols=columnName, handle_unknown='return_nan', return_df=True,
+                                          use_cat_names=True)
+        column_data = column_encoder.fit_transform(column_data)
+        copy.data[columnName + '_encoded'] = column_data.values.tolist()
+        copy.simple_data_types[columnName + '_encoded'] = config.type_numeric_list
+        copy.attributes.append(columnName + '_encoded')
 
         return copy
 
