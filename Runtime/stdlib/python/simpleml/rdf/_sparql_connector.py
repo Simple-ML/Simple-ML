@@ -15,7 +15,7 @@ def endpoint_is_running():
     try:
         r = requests.get(sparqlURI, timeout=2)
         return bool(r)
-    except requests.exceptions.Timeout as e:
+    except requests.exceptions.Timeout:
         return False
 
 
