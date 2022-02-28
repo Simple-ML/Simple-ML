@@ -10,6 +10,7 @@ sparqlURI = "http://smldapi.l3s.uni-hannover.de/sparqlJSON"
 
 # sparqlURI = "http://localhost:4567/sparqlJSON"
 
+
 def endpoint_is_running():
     # check if the endpoint is running and has no time out
     try:
