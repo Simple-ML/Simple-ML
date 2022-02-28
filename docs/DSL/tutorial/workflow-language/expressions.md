@@ -542,6 +542,7 @@ We all know that `2 + 3 * 7` is `23` and not `35`. The reason is that the `*` op
 If the default precedence of operators is not sufficient, parentheses can be used to force a part of an expression to be evaluated first.
 
 [imports]: ../common/imports.md
+[packages]: ../common/packages.md
 [parameters]: ../common/parameters.md
 [required-parameters]: ../common/parameters.md#required-parameters
 [optional-parameters]: ../common/parameters.md#optional-parameters
@@ -549,14 +550,15 @@ If the default precedence of operators is not sufficient, parentheses can be use
 [results]: ../common/results.md
 [types]: ../common/types.md
 [callable-types]: ../common/types.md#callable-types
+
 [classes]: ../stub-language/classes.md
 [attributes]: ../stub-language/classes.md#defining-attributes
 [methods]: ../stub-language/classes.md#defining-methods
 [enums]: ../stub-language/enumerations.md
 [enum-variants]: ../stub-language/enumerations.md#enum-variants
 [global-functions]: ../stub-language/global-functions.md
+
 [workflow-language]: ./README.md
-[packages]: ./packages.md
 [statements]: ./statements.md
 [assignment-multiple-assignees]: ./statements.md#multiple-assignees
 [assignments-to-step-results]: ./statements.md#yielding-results-of-steps
