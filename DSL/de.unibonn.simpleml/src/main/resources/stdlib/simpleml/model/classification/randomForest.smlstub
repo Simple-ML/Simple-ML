@@ -3,15 +3,15 @@ package simpleml.model.classification
 import simpleml.model.*
 import simpleml.dataset.Dataset
 
-open class RandomForestClassifier() sub Estimator {
+class RandomForestClassifier() sub Estimator {
     attr nEstimator: Int?
     attr criterion: String?
     attr maxDepth: Int?
     attr randomState: Int?
 
-    override fun fit(features: Dataset, target: Dataset) -> trainedModel: RandomForestModel
+    fun fit(features: Dataset, target: Dataset) -> trainedModel: RandomForestClassifierModel
 }
 
-class RandomForestModel sub Model {
-    override fun predict(features: Dataset) -> results: Any
+class RandomForestClassifierModel() sub Model {
+    fun predict(features: Dataset) -> results: Any
 }

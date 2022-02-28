@@ -1,7 +1,7 @@
 from numpy.typing import ArrayLike
 
 from simpleml.model.supervised._domain import Estimator, Model, DataType
-from sklearn.svm import LinearSCV as SkLinearSVC
+from sklearn.svm import LinearSVC as SkLinearSVC
 from typing import Union, Optional, Dict, List
 
 class SupportVectorMachineClassifierModel(Model):
@@ -15,32 +15,32 @@ class SupportVectorMachineClassifierModel(Model):
 class SupportVectorMachineClassifier(Estimator):
     
     def __init__(self,
-                 criterion: str = "gini",
-                 splitter: str = "best",
-                 maxDepth: Optional[int] = None,
-                 minSamplesSplit: Union[int, float] = 2,
-                 minSamplesLeaf: Union[int, float] = 1,
-                 minWeightFractionLeaf: float = 0.0,
-                 maxFeatures: Optional[Union[int, float, str]] = None,
-                 randomState: Optional[int] = None,
-                 maxLeafNodes: int = None,
-                 minImpurityDecrease: float = 0.0,
+                 penalty: str = "l2",
+                 loss: str = "squared_hinge",
+                 dual: bool = True,
+                 tol: float = 1e-4,
+                 c: float = 1.0,
+                 multiClass: str = "ovr",
+                 fitIntercept: bool = True,
+                 interceptScaling: float = 1,
                  classWeight: Union[str, Dict[int, int], List[Dict[int, int]]] = None,
-                 ccpAlpha: float = 0.0
+                 verbose: int = 0,
+                 randomState: Optional[int] = None,
+                 maxIter: int = 1000
                  ):
         self._underlying = SkLinearSVC(
-            criterion=criterion,
-            splitter=splitter,
-            max_depth=maxDepth,
-            min_samples_split=minSamplesSplit,
-            min_samples_leaf=minSamplesLeaf,
-            min_weight_fraction_leaf=minWeightFractionLeaf,
-            max_features=maxFeatures,
-            random_state=randomState,
-            max_leaf_nodes=maxLeafNodes,
-            min_impurity_decrease=minImpurityDecrease,
+            penalty=penalty,
+            loss=loss,
+            dual=dual,
+            tol=tol,
+            C=c,
+            multi_class=multiClass,
+            fit_intercept=fitIntercept,
+            intercept_scaling=interceptScaling,
             class_weight=classWeight,
-            ccp_alpha=ccpAlpha
+            verbose=verbose,
+            random_state=randomState,
+            max_iter=maxIter
         )
 
     def fit(self, train_data: DataType, labels: DataType, **kwargs) -> Model:

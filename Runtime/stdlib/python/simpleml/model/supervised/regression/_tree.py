@@ -1,0 +1,95 @@
+from numpy.typing import ArrayLike
+
+from simpleml.model.supervised._domain import Estimator, Model, DataType
+from sklearn.tree import DecisionTreeRegressor as SkDecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor as SkRandomForestRegressor
+from typing import Union, Optional, Dict, List
+
+
+class DecisionTreeRegressorModel(Model):
+    def __init__(self, underlying: SkDecisionTreeRegressor):
+        self._underlying = underlying
+
+    def predict(self, data: DataType) -> ArrayLike:
+        return self._underlying.predict(data.toArray())
+
+
+class DecisionTreeRegressor(Estimator):
+    
+    def __init__(self,
+                 criterion: str = "squared_error",
+                 splitter: str = "best",
+                 maxDepth: Optional[int] = None,
+                 minSamplesSplit: Union[int, float] = 2,
+                 minSamplesLeaf: Union[int, float] = 1,
+                 minWeightFractionLeaf: float = 0.0,
+                 maxFeatures: Optional[Union[int, float, str]] = None,
+                 randomState: Optional[int] = None,
+                 maxLeafNodes: int = None,
+                 minImpurityDecrease: float = 0.0,
+                 ccpAlpha: float = 0.0
+                 ):
+        self._underlying = SkDecisionTreeRegressor(
+            criterion=criterion,
+            splitter=splitter,
+            max_depth=maxDepth,
+            min_samples_split=minSamplesSplit,
+            min_samples_leaf=minSamplesLeaf,
+            min_weight_fraction_leaf=minWeightFractionLeaf,
+            max_features=maxFeatures,
+            random_state=randomState,
+            max_leaf_nodes=maxLeafNodes,
+            min_impurity_decrease=minImpurityDecrease,
+            ccp_alpha=ccpAlpha
+        )
+
+    def fit(self, train_data: DataType, labels: DataType, **kwargs) -> Model:
+        return DecisionTreeRegressorModel(self._underlying.fit(train_data.toArray(), labels.toArray(), **kwargs))
+
+class RandomForestRegressorModel(Model):
+    def __init__(self, underlying: SkRandomForestRegressor):
+        self._underlying = underlying
+
+    def predict(self, data: DataType) -> ArrayLike:
+        return self._underlying.predict(data.toArray())
+
+class RandomForestRegressor(Estimator):
+    def __init__(self, 
+                nEstimator: int = 100,
+                criterion: str = "gini",
+                maxDepth: Optional[int] = None,
+                minSamplesSplit: Union[int, float] = 2,
+                minSamplesLeaf: Union[int, float] = 1,
+                minWeightFractionLeaf: Optional[float] = 0.0,
+                maxFeatures: Union[int, str, float] = "auto",
+                maxLeafNodes: Optional[int] = None,
+                minImpurityDecrease: float = 0.0,
+                bootstrap: bool = True,
+                oobScore: bool = False,
+                warmStart: bool = False,
+                ccpAlpha: float = 0.0,
+                maxSamples: Optional[Union[int, float]] = None,
+                randomState: Optional[int] = None
+            ):
+        self._underlying = SkRandomForestRegressor(
+                n_estimators=nEstimator,
+                criterion=criterion,
+                max_depth=maxDepth,
+                min_samples_split=minSamplesSplit,
+                min_samples_leaf=minSamplesLeaf,
+                min_weight_fraction_leaf=minWeightFractionLeaf,
+                max_features=maxFeatures,
+                random_state=randomState,
+                max_leaf_nodes=maxLeafNodes,
+                min_impurity_decrease=minImpurityDecrease,
+                ccp_alpha=ccpAlpha,
+                bootstrap=bootstrap,
+                oob_score=oobScore,
+                warm_start=warmStart,
+                max_samples=maxSamples
+            )
+
+    def fit(self, train_data: DataType, labels: DataType, **kwargs) -> Model:
+        return RandomForestRegressorModel(self._underlying.fit(train_data.toArray(), labels.toArray(), **kwargs))
+
+
