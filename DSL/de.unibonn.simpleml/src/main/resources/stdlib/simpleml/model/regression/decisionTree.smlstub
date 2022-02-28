@@ -3,7 +3,9 @@ package simpleml.model.regression
 import simpleml.model.*
 import simpleml.dataset.Dataset
 
-class DecisionTreeRegressor() sub Estimator {
+class DecisionTreeRegressor(
+    maxDepth: Int?
+) sub Estimator {
     attr maxDepth: Int?
 
     fun fit(features: Dataset, target: Dataset) -> trainedModel: DecisionTreeRegressorModel

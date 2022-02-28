@@ -3,7 +3,12 @@ package simpleml.model.regression
 import simpleml.model.*
 import simpleml.dataset.Dataset
 
-class RandomForestRegressor() sub Estimator {
+class RandomForestRegressor(
+    nEstimator: Int = 100,
+    criterion: String = "gini",
+    maxDepth: Int?,
+    randomState: Int?
+) sub Estimator {
     attr nEstimator: Int?
     attr criterion: String?
     attr maxDepth: Int?

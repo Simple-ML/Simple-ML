@@ -3,7 +3,9 @@ package simpleml.model.classification
 import simpleml.model.*
 import simpleml.dataset.Dataset
 
-class DecisionTreeClassifier() sub Estimator {
+class DecisionTreeClassifier(
+    maxDepth: Int?
+) sub Estimator {
     attr maxDepth: Int?
 
     fun fit(features: Dataset, target: Dataset) -> trainedModel: DecisionTreeClassifierModel

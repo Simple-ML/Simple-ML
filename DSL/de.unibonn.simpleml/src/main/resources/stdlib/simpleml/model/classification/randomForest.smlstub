@@ -3,9 +3,14 @@ package simpleml.model.classification
 import simpleml.model.*
 import simpleml.dataset.Dataset
 
-class RandomForestClassifier() sub Estimator {
-    attr nEstimator: Int?
-    attr criterion: String?
+class RandomForestClassifier(
+    nEstimator: Int = 100,
+    criterion: String = "gini",
+    maxDepth: Int?,
+    randomState: Int?
+) sub Estimator {
+    attr nEstimator: Int
+    attr criterion: String
     attr maxDepth: Int?
     attr randomState: Int?
 
