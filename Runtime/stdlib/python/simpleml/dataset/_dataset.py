@@ -6,8 +6,12 @@ from typing import Any, Tuple
 
 import category_encoders as ce  # For one hot encoding
 import geopandas
+import networkx as nx
 import numpy as np  # For huge arrays and matrices
 import pandas as pd  # For data processing
+from libpysal.weights import Kernel
+from node2vec import Node2Vec
+from pysal.lib import cg as geometry
 from shapely import geometry, wkb, wkt
 from shapely.errors import WKBReadingError, WKTReadingError
 
@@ -234,6 +238,32 @@ class Dataset:
             return instance.getValue(columnName).strftime("%A")
 
         copy.data = self.addAttribute(columnName + '_WeekDay', transformIntoWeekDay).data
+
+        return copy
+
+    def addGeometryEmbeddings(self, columnName):
+
+        if self.data.empty:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+
+        # w = libpysal.weights.DistanceBand.from_dataframe(self.data, threshold=50000, binary=False)
+        # print(w.islands)
+
+        w = Kernel.from_dataframe(self.data, fixed=False, function='gaussian')
+        # print(w.islands)
+        nodes = w.weights.keys()
+        edges = [(node, neighbour) for node in nodes for neighbour in w[node]]
+        my_graph = nx.Graph(edges)
+        print(my_graph)
+
+        node2vec = Node2Vec(my_graph, dimensions=64, walk_length=30, num_walks=200, workers=4)
+        model = node2vec.fit(window=10, min_count=1, batch_words=4)
+
+        copy.data[columnName + 'embeddings'] = ""
+        for index, row in copy.data.iterrows():
+            copy.data.at[index, columnName + '_embeddings'] = model.wv[index]
 
         return copy
 
