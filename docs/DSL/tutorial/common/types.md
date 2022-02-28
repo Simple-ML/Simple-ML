@@ -92,13 +92,13 @@ SomeSpecialList<T = Int>
 These are the syntactic elements:
 * The usual named type (here `SomeSpecialList`).
 * Opening angle bracket.
-* A named type argument (here `T = Int`). This in turn consists of 
+* A named type argument (here `T = Int`). This in turn consists of
   * The name of the [type parameter][type-parameters] (here `T`)
   * An equals sign.
   * The value of the type argument, which is still either a [type projection](#type-projection), or a [star projection](#star-projection).
 * A closing angle bracket.
 
-Within a list of type arguments both positional and named type arguments can be used. However, after the first named type arguments all type arguments must be named. 
+Within a list of type arguments both positional and named type arguments can be used. However, after the first named type arguments all type arguments must be named.
 
 Let us finally look at how multiple type arguments are passed. For this we use the following declaration:
 
@@ -171,7 +171,7 @@ If the [type parameter][type-parameters] has [bounds][type-parameter-bounds], ho
 
 ### Member Types
 
-A member type is essentially the same as a [named type](#named-types) with the difference that the declaration we refer to is nested inside [classes][classes] or [enums][enums]. 
+A member type is essentially the same as a [named type](#named-types) with the difference that the declaration we refer to is nested inside [classes][classes] or [enums][enums].
 
 #### Class Member Types
 
@@ -313,9 +313,9 @@ We can now add some expected [parameters][parameters]:
 These are the syntactic elements:
 * [Parameters][parameters] are written in the first pair of parentheses.
 * For each [parameter][parameters], specify:
-    * Its name.
-    * A colon.
-    * Its type.
+  * Its name.
+  * A colon.
+  * Its type.
 * Separate [parameters][parameters] by commas. A trailing comma is permitted.
 
 Finally, we can add some expected [results][results]:
@@ -327,9 +327,9 @@ Finally, we can add some expected [results][results]:
 The syntax is reminiscent of the notation for [parameters][parameters]:
 * [Results][results] are written in the second pair of parentheses.
 * For each [result][results], specify:
-    * Its name.
-    * A colon.
-    * Its type.
+  * Its name.
+  * A colon.
+  * Its type.
 * Separate [result][results] by commas. A trailing comma is permitted.
 
 If exactly one result is expected, the surrounding parentheses may be also removed:
@@ -366,31 +366,31 @@ from typing import Callable, Optional, Tuple, TypeVar, Union
 
 The following table shows how Simple-ML types can be written as Python [type hints][type-hints]:
 
-|Simple-ML Type|Python Type Hint|
-|-|-|
-|`Boolean`|`bool`|
-|`Float`|`float`|
-|`Int`|`int`|
-|`String`|`str`|
-|`SomeClass`|`SomeClass`|
-|`SomeEnum`|`SomeEnum`|
-|`SomeClass?`|`Optional[SomeClass]`|
-|`SomeEnum?`|`Optional[SomeEnum]`|
-|`SomeSpecialList<Int>`|`SomeSpecialList[int]`|
-|`SomeOuterClass.SomeInnerClass`|`SomeOuterClass.SomeInnerClass`|
-|`SomeEnum.SomeEnumVariant`|`SomeEnum.SomeEnumVariant`|
-|`union<String, Int>`|`Union[str, int]`|
-|`(a: Int, b: Int) -> r: Int`|`Callable[[int, int], int]`|
-|`(a: Int, b: Int) -> (r: Int, s: Int)`|`Callable[[int, int], Tuple[int, int]]`|
-|`(SomeClass)`|No exact equivalent. Convert the type without parentheses instead.|
+| Simple-ML Type                         | Python Type Hint                                                   |
+|----------------------------------------|--------------------------------------------------------------------|
+| `Boolean`                              | `bool`                                                             |
+| `Float`                                | `float`                                                            |
+| `Int`                                  | `int`                                                              |
+| `String`                               | `str`                                                              |
+| `SomeClass`                            | `SomeClass`                                                        |
+| `SomeEnum`                             | `SomeEnum`                                                         |
+| `SomeClass?`                           | `Optional[SomeClass]`                                              |
+| `SomeEnum?`                            | `Optional[SomeEnum]`                                               |
+| `SomeSpecialList<Int>`                 | `SomeSpecialList[int]`                                             |
+| `SomeOuterClass.SomeInnerClass`        | `SomeOuterClass.SomeInnerClass`                                    |
+| `SomeEnum.SomeEnumVariant`             | `SomeEnum.SomeEnumVariant`                                         |
+| `union<String, Int>`                   | `Union[str, int]`                                                  |
+| `(a: Int, b: Int) -> r: Int`           | `Callable[[int, int], int]`                                        |
+| `(a: Int, b: Int) -> (r: Int, s: Int)` | `Callable[[int, int], Tuple[int, int]]`                            |
+| `(SomeClass)`                          | No exact equivalent. Convert the type without parentheses instead. |
 
-Most of these are rather self-explanatory. We will, however, cover the translation of [callable types](#callable-types) in a little more detail: In Python, the type hint for a callable type has the following general syntax: 
+Most of these are rather self-explanatory. We will, however, cover the translation of [callable types](#callable-types) in a little more detail: In Python, the type hint for a callable type has the following general syntax:
 
 ```
 Callable[<list of parameter types>, <result type>]
 ```
 
-To get the `<list of parameter types>`, simply 
+To get the `<list of parameter types>`, simply
 1. convert the types of the parameters to their Python syntax,
 2. separate them all by commas,
 3. surround them by square brackets.

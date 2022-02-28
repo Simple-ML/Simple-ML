@@ -62,13 +62,13 @@ class Stack<in T> {
 
 ## Specifying Variance
 
-The variance of a [type parameter][type-parameters] can either be declared at its [declaration site][declaration-site-variance] or its [use site][use-site-variance]. If it is specified already at the [declaration site][declaration-site-variance], however, [use-site variance][use-site-variance] is no longer available. 
+The variance of a [type parameter][type-parameters] can either be declared at its [declaration site][declaration-site-variance] or its [use site][use-site-variance]. If it is specified already at the [declaration site][declaration-site-variance], however, [use-site variance][use-site-variance] is no longer available.
 
 The following table sums up the syntax of [declaration-site variance][declaration-site-variance], where the [class][classes] declaration is changed, and [use-site variance][use-site-variance], where the [type arguments][type-arguments] passed by the [named type][named-types] Refer to the linked documents for more details.
 
-|Desired Variance|Declaration Site|Use Site|
-|-|-|-|
-|Invariant|`class Stack<T>`|`Stack<T>`|
+| Desired Variance | Declaration Site | Use Site   |
+|------------------|------------------|------------|
+| Invariant        | `class Stack<T>` | `Stack<T>` |
 |Covariant|`class Stack<out T>`|`Stack<out T>`
 |Contravariant|`class Stack<in T>`|`Stack<in T>`|
 
