@@ -171,7 +171,101 @@ If the [type parameter][type-parameters] has [bounds][type-parameter-bounds], ho
 
 ### Member Types
 
-**TODO**
+A member type is essentially the same as a [named type](#named-types) with the difference that the declaration we refer to is nested inside [classes][classes] or [enums][enums]. 
+
+#### Class Member Types
+
+We begin with nested classes and use these declarations to illustrate the concept:
+
+```
+class SomeOuterClass {
+    class SomeInnerClass
+}
+```
+
+To specify that a declaration accepts instances of `SomeInnerClass` or its [subclasses][subclassing], use the following member type:
+
+```
+SomeOuterClass.SomeInnerClass
+```
+
+This has the following syntactic elements:
+* Name of the outer [class][classes] (here `SomeOuterClass`).
+* A dot.
+* Name of the inner [class][classes] (here `SomeInnerClass`).
+
+Classes can be nested multiple levels deep. In this case, use a member access for each level. Let us use the following declarations to explain this:
+
+```
+class SomeOuterClass {
+    class SomeMiddleClass {
+        class SomeInnerClass
+    }
+}
+```
+
+To specify that a declaration accepts instances of `SomeInnerClass`, or its [subclasses][subclassing], use the following member type:
+
+```
+SomeOuterClass.SomeMiddleClass.SomeInnerClass
+```
+
+If any referenced class has [type parameters][type-parameters] these must be specified by [type arguments](#type-arguments). For this we use these declarations:
+
+```
+class SomeOuterClass<A> {
+    class SomeInnerClass<B>
+}
+```
+
+To specify that a declaration accepts instances of `SomeInnerClass` where all type parameters are set to `Int`, or its [subclasses][subclassing], use the following member type:
+
+```
+SomeOuterClass<Int>.SomeInnerClass<Int>
+```
+
+Finally, as with [named types](#named-types), `null` is not an allowed value by default. To allow it, add a question mark at the end of the member type. This can be used independently from [type arguments](#type-arguments):
+
+```
+SomeOuterClass<Int>.SomeInnerClass<Int>?
+```
+
+#### Enum Variant Types
+
+Member types are also used to specify that a declaration is an instance of a single [variant][variants] of an [enum][enums]. For this, we use the following declarations:
+
+```
+enum SomeEnum {
+    SomeEnumVariant(count: Int),
+    SomeOtherEnumVariant
+}
+```
+
+To allow only instances of the [variant][variants] `SomeEnumVariant`, use the following member type:
+
+```
+SomeEnum.SomeEnumVariant
+```
+
+Let us take apart the syntax:
+* The name of the [enum][enums] (here `SomeEnum`).
+* A dot.
+* The name of the [enum variant][variants] (here `SomeEnumVariant`).
+
+Identical to [class member types](#class-member-types), all [type parameters][type-parameters] of the [enum variant][variants] must be assigned by [type arguments](#type-arguments). We use these declarations to explain the concept:
+
+```
+enum SomeEnum {
+    SomeEnumVariant<T>(value: T),
+    SomeOtherEnumVariant
+}
+```
+
+To now allow only instances of the [variant][variants] `SomeEnumVariant` with `Int` values, use the following member type:
+
+```
+SomeEnum.SomeEnumVariant<Int>
+```
 
 ### Union Types
 
