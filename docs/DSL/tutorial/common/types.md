@@ -163,11 +163,11 @@ SomeSpecialList<*>
 
 It consists only of the `*`, which we use as the value of the type argument.
 
-The star projection is equivalent to the type projections
+The star projection is usually equivalent to the type projections
 * `out Any?` (`Any?` is the supertype of everything), or
 * `in Nothing` (`Nothing` is the subtype of everything).
 
-For the sake of clarity, however, a star projection is preferable.
+If the [type parameter][type-parameters] has [bounds][type-parameter-bounds], however, the star projection denotes that any type within the [bounds][type-parameter-bounds] is acceptable.
 
 ### Member Types
 
@@ -266,6 +266,7 @@ Getting the `<result type`> depends on the number of results. If there is only a
 [enums]: ../stub-language/enumerations.md
 [variants]: ../stub-language/enumerations.md#enum-variants
 [type-parameters]: ../stub-language/type-parameters.md
+[type-parameter-bounds]: ../stub-language/type-parameters.md#bounds
 [declaration-site-variance]: ../stub-language/type-parameters.md#declaration-site-variance
 
 [member-accesses]: ../workflow-language/expressions.md#member-access-of-enum-variants
