@@ -17,3 +17,4 @@ dependencies:
   - shapely=1.7.1
   - sparqlwrapper=1.8.5
   - websockets=9.1
+  - requests=2.27.1
