@@ -1,8 +1,6 @@
 from simpleml.model.supervised.classification._tree import DecisionTreeClassifier, DecisionTreeClassifierModel
 from simpleml.dataset import loadDataset
-from simpleml.util import exportDictionaryAsJSON
 from simpleml.metrics import precision
-import pytest
 
 
 def test_create():

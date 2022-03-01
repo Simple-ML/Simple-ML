@@ -1,6 +1,5 @@
 from simpleml.model.supervised.regression._linear_regression import LinearRegression, LinearRegressionModel
 from simpleml.dataset import loadDataset
-from simpleml.util import exportDictionaryAsJSON
 from simpleml.metrics import meanAbsoluteError
 
 
@@ -22,5 +21,5 @@ def test_train_and_infer():
     pred = model.predict(X_test)
 
     meanAbsoluteError(test.keepAttributes("quality"), pred)
-    
+
     assert len(pred) > 0

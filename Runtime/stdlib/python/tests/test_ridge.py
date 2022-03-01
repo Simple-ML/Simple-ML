@@ -1,7 +1,5 @@
 from simpleml.model.supervised.regression._ridge import RidgeRegression
 from simpleml.dataset import loadDataset
-from simpleml.util import exportDictionaryAsJSON
-import pytest
 
 
 def test_create():

@@ -1,7 +1,5 @@
 from simpleml.model.supervised.classification._tree import RandomForestClassifier, RandomForestClassifierModel
 from simpleml.dataset import loadDataset
-from simpleml.util import exportDictionaryAsJSON
-import pytest
 
 
 def test_create():

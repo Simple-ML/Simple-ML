@@ -1,7 +1,5 @@
 from simpleml.model.supervised.regression._tree import RandomForestRegressor, DecisionTreeRegressor
 from simpleml.dataset import loadDataset
-from simpleml.util import exportDictionaryAsJSON
-import pytest
 
 
 def test_create_forest():
