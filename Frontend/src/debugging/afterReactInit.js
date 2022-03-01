@@ -52,7 +52,7 @@ workflow winebasic {
     val df = loadDataset("WhiteWineQualityBinary");
 
     // Splitting the data into test and training sets
-    (val df_train, val df_test) = df.splitIntoTrainAndTest(trainRatio=0.75, randomState=1);
+    val df_train, val df_test = df.splitIntoTrainAndTest(trainRatio=0.75, randomState=1);
 
     // split df_train and df_test into features and target
     val X_train = df_train.dropAttributes("quality");
