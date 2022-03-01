@@ -8,7 +8,7 @@ simple_type = "simple_type"
 i18n_id = "id"
 
 type_numeric = "numeric"
-type_numeric_list = 'numeric_list'
+type_numeric_list = "numeric_list"
 type_integer = "integer"
 type_long = "long"
 type_float = "float"

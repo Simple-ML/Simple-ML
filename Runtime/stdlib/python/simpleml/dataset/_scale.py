@@ -5,7 +5,6 @@ from sklearn import preprocessing
 
 
 class StandardScaler:
-
     def scale(self, dataset):
         if dataset.data.empty:
             dataset.readFile(dataset.separator)
@@ -15,6 +14,8 @@ class StandardScaler:
         scaler = preprocessing.StandardScaler()
         scaled_features = scaler.fit_transform(copy.data)
 
-        copy.data = pd.DataFrame(scaled_features, index=copy.data.index, columns=copy.data.columns)
+        copy.data = pd.DataFrame(
+            scaled_features, index=copy.data.index, columns=copy.data.columns
+        )
 
         return copy

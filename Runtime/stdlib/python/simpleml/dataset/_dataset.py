@@ -9,16 +9,14 @@ import geopandas
 import networkx as nx
 import numpy as np  # For huge arrays and matrices
 import pandas as pd  # For data processing
+import simpleml.util.global_configurations as global_config
+import simpleml.util.jsonLabels_util as config
 from libpysal.weights import Kernel
 from node2vec import Node2Vec
 from shapely import geometry, wkb, wkt
 from shapely.errors import WKBReadingError, WKTReadingError
-
-import simpleml.util.global_configurations as global_config
-import simpleml.util.jsonLabels_util as config
 from simpleml.dataset._instance import Instance
 from simpleml.dataset._stats import getStatistics
-
 
 # import Statistics
 
@@ -28,20 +26,20 @@ from simpleml.dataset._stats import getStatistics
 
 class Dataset:
     def __init__(
-            self,
-            id,
-            title: str,
-            description: str = None,
-            fileName: str = None,
-            hasHeader: bool = True,
-            null_value="",
-            separator=",",
-            number_of_instances: int = None,
-            titles: dict = {},
-            descriptions: dict = {},
-            subjects: dict = {},
-            coordinate_system: int = 4326,
-            lat_before_lon: bool = False,
+        self,
+        id,
+        title: str,
+        description: str = None,
+        fileName: str = None,
+        hasHeader: bool = True,
+        null_value="",
+        separator=",",
+        number_of_instances: int = None,
+        titles: dict = {},
+        descriptions: dict = {},
+        subjects: dict = {},
+        coordinate_system: int = 4326,
+        lat_before_lon: bool = False,
     ):
         self.id = id
         self.title = title
@@ -208,7 +206,9 @@ class Dataset:
                 return True
             # return instance.getValue(columnName) is weekend
 
-        copy.data = self.addAttribute(columnName + '_isWeekend', transformIntoWeekend).data
+        copy.data = self.addAttribute(
+            columnName + "_isWeekend", transformIntoWeekend
+        ).data
 
         return copy
 
@@ -222,7 +222,9 @@ class Dataset:
         def transformIntoWDayOfTheYear(instance: Instance):
             return instance.getValue(columnName).timetuple().tm_yday
 
-        copy.data = self.addAttribute(columnName + '_DayOfTheYear', transformIntoWDayOfTheYear).data
+        copy.data = self.addAttribute(
+            columnName + "_DayOfTheYear", transformIntoWDayOfTheYear
+        ).data
 
         return copy
 
@@ -236,7 +238,9 @@ class Dataset:
         def transformIntoWeekDay(instance: Instance):
             return instance.getValue(columnName).strftime("%A")
 
-        copy.data = self.addAttribute(columnName + '_WeekDay', transformIntoWeekDay).data
+        copy.data = self.addAttribute(
+            columnName + "_WeekDay", transformIntoWeekDay
+        ).data
 
         return copy
 
@@ -250,19 +254,21 @@ class Dataset:
         # w = libpysal.weights.DistanceBand.from_dataframe(self.data, threshold=50000, binary=False)
         # print(w.islands)
 
-        w = Kernel.from_dataframe(self.data, fixed=False, function='gaussian')
+        w = Kernel.from_dataframe(self.data, fixed=False, function="gaussian")
         # print(w.islands)
         nodes = w.weights.keys()
         edges = [(node, neighbour) for node in nodes for neighbour in w[node]]
         my_graph = nx.Graph(edges)
         print(my_graph)
 
-        node2vec = Node2Vec(my_graph, dimensions=64, walk_length=30, num_walks=200, workers=4)
+        node2vec = Node2Vec(
+            my_graph, dimensions=64, walk_length=30, num_walks=200, workers=4
+        )
         model = node2vec.fit(window=10, min_count=1, batch_words=4)
 
-        copy.data[columnName + 'embeddings'] = ""
+        copy.data[columnName + "embeddings"] = ""
         for index, row in copy.data.iterrows():
-            copy.data.at[index, columnName + '_embeddings'] = model.wv[index]
+            copy.data.at[index, columnName + "_embeddings"] = model.wv[index]
 
         return copy
 
@@ -274,12 +280,16 @@ class Dataset:
         copy = self.copy()
         column_data = copy.data[columnName]
 
-        column_encoder = ce.OneHotEncoder(cols=columnName, handle_unknown='return_nan', return_df=True,
-                                          use_cat_names=True)
+        column_encoder = ce.OneHotEncoder(
+            cols=columnName,
+            handle_unknown="return_nan",
+            return_df=True,
+            use_cat_names=True,
+        )
         column_data = column_encoder.fit_transform(column_data)
-        copy.data[columnName + '_encoded'] = column_data.values.tolist()
-        copy.simple_data_types[columnName + '_encoded'] = config.type_numeric_list
-        copy.attributes.append(columnName + '_encoded')
+        copy.data[columnName + "_encoded"] = column_data.values.tolist()
+        copy.simple_data_types[columnName + "_encoded"] = config.type_numeric_list
+        copy.attributes.append(columnName + "_encoded")
 
         return copy
 
@@ -294,8 +304,12 @@ class Dataset:
             # print(atribute)
             if copy.simple_data_types[atribute] == config.type_numeric_list:
                 # print(atribute)
-                attribute_column_names = [atribute + str(i) for i in range(len(copy.data[atribute].iloc[0]))]
-                copy.data[attribute_column_names] = pd.DataFrame(copy.data[atribute].tolist(), index=copy.data.index)
+                attribute_column_names = [
+                    atribute + str(i) for i in range(len(copy.data[atribute].iloc[0]))
+                ]
+                copy.data[attribute_column_names] = pd.DataFrame(
+                    copy.data[atribute].tolist(), index=copy.data.index
+                )
 
         return copy
 
@@ -308,7 +322,7 @@ class Dataset:
         return self.stats
 
     def splitIntoTrainAndTest(
-            self, trainRatio: float, randomState=None
+        self, trainRatio: float, randomState=None
     ) -> Tuple[Dataset, Dataset]:
 
         if self.data.empty:
@@ -411,16 +425,16 @@ class Dataset:
             lon_lat_pair_number += 1
 
     def addColumnDescription(
-            self,
-            attribute_identifier,
-            resource_node,
-            domain_node,
-            property_node,
-            rdf_value_type,
-            value_type,
-            attribute_label,
-            is_geometry: bool,
-            resource_rank=None,
+        self,
+        attribute_identifier,
+        resource_node,
+        domain_node,
+        property_node,
+        rdf_value_type,
+        value_type,
+        attribute_label,
+        is_geometry: bool,
+        resource_rank=None,
     ):
         self.attributes.append(attribute_identifier)
 
@@ -445,9 +459,9 @@ class Dataset:
             # self.data_types[attribute_identifier] = np.str
             self.simple_data_types[attribute_identifier] = config.type_datetime
         elif (
-                value_type == np.integer
-                or value_type == pd.Int32Dtype()
-                or value_type == pd.Int64Dtype()
+            value_type == np.integer
+            or value_type == pd.Int32Dtype()
+            or value_type == pd.Int64Dtype()
         ):
             self.simple_data_types[attribute_identifier] = config.type_numeric
         elif value_type == np.float64:
@@ -599,14 +613,14 @@ def loadDataset(datasetID: str) -> Dataset:
 
 
 def readDataSetFromCSV(
-        file_name: str,
-        dataset_id: str,
-        separator: str,
-        has_header: bool,
-        null_value: str,
-        dataset_name: str = None,
-        coordinate_system=3857,
-        lon_lat_pairs=[],
+    file_name: str,
+    dataset_id: str,
+    separator: str,
+    has_header: bool,
+    null_value: str,
+    dataset_name: str = None,
+    coordinate_system=3857,
+    lon_lat_pairs=[],
 ) -> Dataset:
     dir_name = os.path.dirname(__file__)
     data_file_path = os.path.join(dir_name, global_config.data_folder_name, file_name)
@@ -692,17 +706,17 @@ def dataTypes(type):
 
 
 def joinTwoDatasets(
-        first_data: Dataset,
-        second_data: Dataset,
-        join_column_name_1: str,
-        join_column_name_2: str,
-        first_suffix: str,
-        second_suffix: str,
+    first_data: Dataset,
+    second_data: Dataset,
+    join_column_name_1: str,
+    join_column_name_2: str,
+    first_suffix: str,
+    second_suffix: str,
 ) -> Dataset:
     # TODO: check that types are join_column_name_1 and join_column_name_2 are the same
     if (
-            first_data.data[join_column_name_1].dtypes
-            == second_data.data[join_column_name_2].dtypes
+        first_data.data[join_column_name_1].dtypes
+        == second_data.data[join_column_name_2].dtypes
     ):
         # print(second_data.data)
         joint_data = first_data.data.merge(

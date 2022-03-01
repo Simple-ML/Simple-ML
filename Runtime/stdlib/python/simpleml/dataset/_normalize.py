@@ -5,7 +5,6 @@ from sklearn.preprocessing import Normalizer
 
 
 class StandardNormalizer:
-
     def normalize(self, dataset):
         if dataset.data.empty:
             dataset.readFile(dataset.separator)
@@ -14,6 +13,8 @@ class StandardNormalizer:
 
         normalizer = Normalizer().fit_transform(copy.data)
 
-        copy.data = pd.DataFrame(normalizer, index=copy.data.index, columns=copy.data.columns)
+        copy.data = pd.DataFrame(
+            normalizer, index=copy.data.index, columns=copy.data.columns
+        )
 
         return copy

@@ -1,8 +1,6 @@
 # Imports ----------------------------------------------------------------------
 from dataset._normalize import StandardNormalizer
-
 from simpleml.dataset import loadDataset
-
 
 # Workflow steps ---------------------------------------------------------------
 
@@ -14,5 +12,5 @@ def exampleWorkflow():
     print(dataset.data)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     exampleWorkflow()
