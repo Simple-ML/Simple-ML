@@ -1,2 +1,7 @@
-from ._tree import DecisionTreeClassifierModel, DecisionTreeClassifier, RandomForestClassifier, RandomForestClassifierModel
 from ._svm import SupportVectorMachineClassifier, SupportVectorMachineClassifierModel
+from ._tree import (
+    DecisionTreeClassifier,
+    DecisionTreeClassifierModel,
+    RandomForestClassifier,
+    RandomForestClassifierModel,
+)

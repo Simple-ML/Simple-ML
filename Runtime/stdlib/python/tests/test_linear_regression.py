@@ -1,11 +1,12 @@
-from simpleml.model.supervised.regression._linear_regression import LinearRegression
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError
+from simpleml.model.supervised.regression._linear_regression import LinearRegression
 
 
 def test_create():
     rf = LinearRegression()
-    assert rf is not None # nosec
+    assert rf is not None  # nosec
+
 
 def test_train_and_infer():
     rf = LinearRegression()
@@ -22,4 +23,4 @@ def test_train_and_infer():
 
     meanAbsoluteError(test.keepAttributes("quality"), pred)
 
-    assert len(pred) > 0 # nosec
+    assert len(pred) > 0  # nosec

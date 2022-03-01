@@ -1,10 +1,10 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 if __name__ == "__main__":
     setup(
-        name='Simple-ML',
-        version='0.0.1',
-        description='Adapters for various ML libraries',
+        name="Simple-ML",
+        version="0.0.1",
+        description="Adapters for various ML libraries",
         packages=find_packages(include="simpleml.*"),
         include_package_data=True,
         install_requires=[
@@ -23,6 +23,6 @@ if __name__ == "__main__":
             "category_encoders==2.3.0",
             "networkx==2.6.3",
             "libpysal==4.6.0",
-            "node2vec==0.4.4"
-        ]
-    ) 
+            "node2vec==0.4.4",
+        ],
+    )

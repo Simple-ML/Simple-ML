@@ -1,10 +1,11 @@
-from simpleml.model.supervised.classification._svm import SupportVectorMachineClassifier
 from simpleml.dataset import loadDataset
+from simpleml.model.supervised.classification._svm import SupportVectorMachineClassifier
 
 
 def test_create():
     rf = SupportVectorMachineClassifier()
-    assert rf is not None # nosec
+    assert rf is not None  # nosec
+
 
 def test_train_and_infer():
     rf = SupportVectorMachineClassifier()
@@ -19,4 +20,4 @@ def test_train_and_infer():
 
     pred = model.predict(X_test)
 
-    assert len(pred) > 0 # nosec
+    assert len(pred) > 0  # nosec
