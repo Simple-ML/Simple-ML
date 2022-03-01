@@ -22,6 +22,6 @@ def test_train_and_infer():
     pred = model.predict(X_test)
 
     m = precision(test.keepAttributes("quality"), pred)
-
+    assert m > 0
     assert len(pred) > 0
 
