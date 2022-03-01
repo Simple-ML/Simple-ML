@@ -27,8 +27,10 @@ dirName = os.path.dirname(__file__)
 folders = ["datasets", "external_vocabularies", "schema"]  # "ml_catalog", "schema"]
 
 for folder in folders:
-    baseFolder = os.getenv("SML_DATA_CATALOG_PATH", os.path.join(dirName, "../../../data_catalog/"))
-    folderPath =  os.path.join(baseFolder, folder)
+    baseFolder = os.getenv(
+        "SML_DATA_CATALOG_PATH", os.path.join(dirName, "../../../data_catalog/")
+    )
+    folderPath = os.path.join(baseFolder, folder)
 
     for filename in os.listdir(folderPath):
 

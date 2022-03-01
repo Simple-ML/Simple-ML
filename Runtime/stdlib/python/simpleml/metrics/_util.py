@@ -1,9 +1,13 @@
-from simpleml.model.supervised._domain import DataType
-from typing import Union, Optional
-from numpy.typing import ArrayLike
+from typing import Optional, Union
 
-def convert_to_array(o: Union[DataType, ArrayLike], type: Optional[str] = None) -> ArrayLike:
-    
+from numpy.typing import ArrayLike
+from simpleml.model.supervised._domain import DataType
+
+
+def convert_to_array(
+    o: Union[DataType, ArrayLike], type: Optional[str] = None
+) -> ArrayLike:
+
     try:
         r = o.toArray()
     except AttributeError:

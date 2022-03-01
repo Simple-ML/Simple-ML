@@ -1,6 +1,6 @@
 from numpy.typing import ArrayLike
+from simpleml.model.supervised._domain import DataType, Estimator, Model
 from sklearn.linear_model import Ridge as SkRidge
-from simpleml.model.supervised._domain import Estimator, Model, DataType
 
 
 class RidgeRegressionModel(Model):
@@ -12,7 +12,6 @@ class RidgeRegressionModel(Model):
 
 
 class RidgeRegression(Estimator):
-    
     def __init__(self, regularizationStrength: float = 1.0):
         self._underlying = SkRidge(
             alpha=regularizationStrength,
@@ -22,8 +21,12 @@ class RidgeRegression(Estimator):
             max_iter=None,
             tol=1e-3,
             solver="auto",
-            random_state=None
+            random_state=None,
         )
 
     def fit(self, train_data: DataType, labels: DataType, **kwargs) -> Model:
-        return RidgeRegressionModel(self._underlying.fit(train_data.toArray(), labels.toArray().astype('float'), **kwargs))
+        return RidgeRegressionModel(
+            self._underlying.fit(
+                train_data.toArray(), labels.toArray().astype("float"), **kwargs
+            )
+        )

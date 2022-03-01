@@ -363,10 +363,10 @@ class Dataset:
 
         # TODO: Create global config file where we define the data folder path
         dirName = os.path.dirname(__file__)
-        rootFolder = os.getenv("SML_DATASET_PATH", os.path.join(dirName, global_config.data_folder_name))
-        dataFilePath = os.path.join(
-             rootFolder, self.fileName
+        rootFolder = os.getenv(
+            "SML_DATASET_PATH", os.path.join(dirName, global_config.data_folder_name)
         )
+        dataFilePath = os.path.join(rootFolder, self.fileName)
 
         # TODO: Check infer_datetime_format
 
