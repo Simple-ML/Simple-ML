@@ -12,7 +12,7 @@ The workflow language is the part of the Simple-ML DSL that is designed to solve
 
 Files that use the workflow language must have the extension `.smlflow`.
 
-[packages]: ./packages.md
+[packages]: ../common/packages.md
 [imports]: ../common/imports.md
 [workflows]: ./workflows.md
 [steps]: ./steps.md
