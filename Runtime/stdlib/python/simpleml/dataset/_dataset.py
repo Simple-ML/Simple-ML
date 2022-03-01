@@ -11,7 +11,6 @@ import numpy as np  # For huge arrays and matrices
 import pandas as pd  # For data processing
 from libpysal.weights import Kernel
 from node2vec import Node2Vec
-from pysal.lib import cg as geometry
 from shapely import geometry, wkb, wkt
 from shapely.errors import WKBReadingError, WKTReadingError
 
