@@ -21,4 +21,4 @@ dependencies:
   - category_encoders=2.3.0
   - networkx=2.6.3
   - libpysal=4.6.0
-  - node2vec=0.4.4
+  - node2vec
