@@ -1,8 +1,13 @@
 
+$orange: rgb(232, 78, 26); 
+$white: rgb(255, 255, 255);
+$gray: rgb(189, 189, 189);
+$black: rgb(0, 0, 0);
+
 .toolbar {
-  background-color: rgb(255, 255, 255);
+  background-color: $white;
   border-radius: 3px;
-  color: rgb(0, 0, 0);
+  color: $black;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -14,7 +19,7 @@
     align-items: center;
     display: flex;
     flex-direction: row;
-    padding: 8px 16px 8px 16px;
+    padding: 8px 16px;
 
     .icon {
       height: 20px;
@@ -39,7 +44,7 @@
 }
 
 .assign-placeholder-modal {
-  background-color: rgb(255, 255, 255);
+  background-color: $white;
   border-radius: 4px;
   left: 0;
   margin-left: auto;
@@ -54,7 +59,7 @@
 }
 
 .assign-placeholder-modal-headline {
-  color: rgb(0, 0, 0);
+  color: $black;
   font-size: 28px;
   padding-bottom: 14px;
   text-align: left;
@@ -72,11 +77,11 @@
 }
 
 .assign-placeholder-modal-cancel-button {
-  background-color: rgb(255, 255, 255);
+  background-color: $white;
   border: 1px solid;
-  border-color: rgb(189, 189, 189);
+  border-color: $gray;
   border-radius: 4px;
-  color: rgb(189, 189, 189);
+  color: $gray;
   display: flex;
   font-size: 16px;
   height: 36px;
@@ -87,10 +92,10 @@
 }
 
 .assign-placeholder-modal-create-button {
-  background-color: rgb(232, 78, 26);
+  background-color: $orange;
   border: 0;
   border-radius: 4px;
-  color: rgb(255, 255, 255);
+  color: $white;
   display: flex;
   font-size: 16px;
   height: 36px;
