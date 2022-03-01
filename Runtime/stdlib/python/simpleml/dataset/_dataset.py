@@ -4,11 +4,15 @@ import json
 import os
 from typing import Any, Tuple
 
+import category_encoders as ce  # For one hot encoding
 import geopandas
+import networkx as nx
 import numpy as np  # For huge arrays and matrices
 import pandas as pd  # For data processing
 import simpleml.util.global_configurations as global_config
 import simpleml.util.jsonLabels_util as config
+from libpysal.weights import Kernel
+from node2vec import Node2Vec
 from shapely import geometry, wkb, wkt
 from shapely.errors import WKBReadingError, WKTReadingError
 from simpleml.dataset._instance import Instance
@@ -184,6 +188,128 @@ class Dataset:
 
         for index, row in copy.data.iterrows():
             copy.data.at[index, columnName] = transformFunc(Instance(row))
+
+        return copy
+
+    def addIsWeekendAttribute(self, columnName):
+
+        if self.data.empty:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+
+        def transformIntoWeekend(instance: Instance):
+            week_num = instance.getValue(columnName).weekday()
+            if week_num < 5:
+                return False
+            else:
+                return True
+            # return instance.getValue(columnName) is weekend
+
+        copy.data = self.addAttribute(
+            columnName + "_isWeekend", transformIntoWeekend
+        ).data
+
+        return copy
+
+    def addDayOfTheYearAttribute(self, columnName):
+
+        if self.data.empty:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+
+        def transformIntoWDayOfTheYear(instance: Instance):
+            return instance.getValue(columnName).timetuple().tm_yday
+
+        copy.data = self.addAttribute(
+            columnName + "_DayOfTheYear", transformIntoWDayOfTheYear
+        ).data
+
+        return copy
+
+    def addWeekDayAttribute(self, columnName):
+
+        if self.data.empty:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+
+        def transformIntoWeekDay(instance: Instance):
+            return instance.getValue(columnName).strftime("%A")
+
+        copy.data = self.addAttribute(
+            columnName + "_WeekDay", transformIntoWeekDay
+        ).data
+
+        return copy
+
+    def addGeometryEmbeddings(self, columnName):
+
+        if self.data.empty:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+
+        # w = libpysal.weights.DistanceBand.from_dataframe(self.data, threshold=50000, binary=False)
+        # print(w.islands)
+
+        w = Kernel.from_dataframe(self.data, fixed=False, function="gaussian")
+        # print(w.islands)
+        nodes = w.weights.keys()
+        edges = [(node, neighbour) for node in nodes for neighbour in w[node]]
+        my_graph = nx.Graph(edges)
+        print(my_graph)
+
+        node2vec = Node2Vec(
+            my_graph, dimensions=64, walk_length=30, num_walks=200, workers=4
+        )
+        model = node2vec.fit(window=10, min_count=1, batch_words=4)
+
+        copy.data[columnName + "embeddings"] = ""
+        for index, row in copy.data.iterrows():
+            copy.data.at[index, columnName + "_embeddings"] = model.wv[index]
+
+        return copy
+
+    def categoryToVector(self, columnName):
+
+        if self.data.empty:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+        column_data = copy.data[columnName]
+
+        column_encoder = ce.OneHotEncoder(
+            cols=columnName,
+            handle_unknown="return_nan",
+            return_df=True,
+            use_cat_names=True,
+        )
+        column_data = column_encoder.fit_transform(column_data)
+        copy.data[columnName + "_encoded"] = column_data.values.tolist()
+        copy.simple_data_types[columnName + "_encoded"] = config.type_numeric_list
+        copy.attributes.append(columnName + "_encoded")
+
+        return copy
+
+    def flattenData(self):
+
+        if self.data.empty:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+
+        for atribute in copy.attributes:
+            # print(atribute)
+            if copy.simple_data_types[atribute] == config.type_numeric_list:
+                # print(atribute)
+                attribute_column_names = [
+                    atribute + str(i) for i in range(len(copy.data[atribute].iloc[0]))
+                ]
+                copy.data[attribute_column_names] = pd.DataFrame(
+                    copy.data[atribute].tolist(), index=copy.data.index
+                )
 
         return copy
 
