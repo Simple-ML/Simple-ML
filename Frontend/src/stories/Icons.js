@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function Icons(props) {
 	const classes = useStyles();
-	console.log(props);
 	// TODO should not include all props but only those related to style
 	let style = {
 		...props
