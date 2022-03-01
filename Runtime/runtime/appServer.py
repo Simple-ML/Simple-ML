@@ -95,7 +95,7 @@ async def requestHandler(websocket, path):
             elif data["action"] == "get_available_dataset":
                 dataset_list=getDatasets()
                 placeholder_value = jsonpickler.flatten(dataset_list)
-                notify_placeholder(
+                await notify_placeholder(
                     json.dumps({"type": "[placeholder]:VALUE",
                                 "description": "Available datasets",
                                 "name": "datasets",
@@ -110,7 +110,7 @@ async def requestHandler(websocket, path):
                         if type(PlaceholderMap[data["placeholder"]["sessionId"]][
                                     data["placeholder"]["name"]]).__name__ == "Dataset":
                             placeholder_value = PlaceholderMap[data["placeholder"]["sessionId"]][
-                                data["placeholder"]["name"]].toArray().tolist()
+                                data["placeholder"]["name"]]
                             placeholder_value = jsonpickler.flatten(placeholder_value)
                         else:
                             placeholder_value = jsonpickler.flatten(

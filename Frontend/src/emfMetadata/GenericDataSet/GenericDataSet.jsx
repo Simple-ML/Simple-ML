@@ -81,6 +81,8 @@ export default class GenericDataSet extends MxGraphVertexComponent {
                         this.props.emfEntity.id, 
                         associationTargetPath
                     )
+
+                    this.entitySelect(this.props.emfEntity);
                     
                     this.openContextMenu({
                         vertex: true,

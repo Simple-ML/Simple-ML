@@ -11,9 +11,11 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import XtextServices from '../../../../serverConnection/XtextServices';
+import EmfModelHelper from '../../../../helper/EmfModelHelper';
 import Button from '@mui/material/Button';
 import { showDataViewBackdrop } from '../../../../reducers/graphicalEditor';
 import Icons from '../../../../stories/Icons';
+import { event } from 'jquery';
 
 class Sidebar extends React.Component {
     constructor(props) {
@@ -31,9 +33,12 @@ class Sidebar extends React.Component {
     onStoreChange = (state) => {
 
       return {
-          //selectedEntityType: this.getEntityType(state.graphicalEditor.entitySelected?.data?.className),
-          //selectedEntityName: this.getEntityName(state.graphicalEditor.entitySelected),
+          selectedEntity: state.graphicalEditor.entitySelected,
+          selectedEntityType: this.getEntityType(state.graphicalEditor.entitySelected?.data?.className),
+          selectedEntityName: this.getEntityName(state.graphicalEditor.entitySelected),
+          selectedEntityDataset: this.getDataset(state.graphicalEditor.entitySelected, state.runtime?.placeholder),
           placeholders: this.getPlaceholders(state.runtime?.placeholder),
+          allAvailableDatasets: this.getAllDatasets(state.runtime?.placeholder.datasets)
       };
     }    
     
@@ -41,18 +46,16 @@ class Sidebar extends React.Component {
         this.unsubscribe();
     }
 
-    /*
-    getEntityType = (entitySelectedClasName) => {
-        switch(entitySelectedClasName) {
+    getEntityType = (entitySelectedClassName) => {
+        switch(entitySelectedClassName) {
           case 'de.unibonn.simpleml.simpleML.SmlPlaceholder':
             return 'Dataset';
           case 'de.unibonn.simpleml.simpleML.SmlCall':
-            return 'Process';
+            return 'Load Dataset';
           default:
             return '';
         }
     }
-    */
 
     getEntityName = (entitySelected) => {
         if (entitySelected?.data?.name !== undefined) {
@@ -70,6 +73,40 @@ class Sidebar extends React.Component {
         } else {
             return '';
         }
+      
+    }    
+    
+    getAllDatasets = (datasets) => {
+        if (datasets !== undefined) { 
+            const availableDatasets = [];
+            for (let dataset of datasets) {
+                availableDatasets.push(dataset.id);
+            }
+            return availableDatasets;
+        } else {
+            return [];
+        }
+      
+    }
+
+    getDataset = (selectedEntity, placeholders) => {
+        for (const [key, value] of Object.entries(placeholders)) {
+            if(key === selectedEntity?.data?.name) {
+                return value;
+            }
+        }
+    }
+
+    setDataset = (dataset) => {
+        console.log(dataset);
+        const editProcessParameterDTO =  {
+            entityPath: EmfModelHelper.getFullHierarchy(this.state.selectedEntity),
+            parameterType: "string",
+            parameterIndex: 0,
+            value: dataset
+        }
+        console.log(editProcessParameterDTO)
+        XtextServices.editProcessParameter(editProcessParameterDTO);
     }
 
     handleOpen= () => {
@@ -77,56 +114,90 @@ class Sidebar extends React.Component {
     }
 
     render() {
-        const { placeholders } = this.state;
+        const { selectedEntityName, selectedEntityType, allAvailableDatasets, selectedEntityDataset } = this.state;
             return(
-              <div style= {{backgroundColor: 'white'}}>
-                <header style= {{backgroundColor: 'white'}}>
-                    <h1>{'Select data set'}</h1>
-                </header> 
-                {
-                <Autocomplete
-                    freeSolo
-                    id="free-solo-2-demo"
-                    disableClearable
-                    options={['WhiteWineQualityBinary']}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Search input"
-                            InputProps={{
-                            ...params.InputProps,
-                            type: 'search',
-                            }}
+                <div style= {{backgroundColor: 'white'}}>
+                    <header style= {{backgroundColor: 'white'}}>
+                        <h1>{selectedEntityType ? selectedEntityType : ''}</h1>
+                    </header>
+                    { selectedEntityType ?
+                        <Autocomplete
+                            freeSolo
+                            id="free-solo-2-demo"
+                            disableClearable
+                            options={allAvailableDatasets}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Search input"
+                                    InputProps={{
+                                        ...params.InputProps,
+                                        type: 'search',
+                                    }}
+                                />
+                            )}
                         />
-                    )}
-                />
-                }
-                { 
-                Object.keys(placeholders).length !== 0 ? (
-                    Object.keys(placeholders).map((placeholder) => (
-                        placeholder ? (
-                            <Accordion>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls="panel1a-content"
-                                    id="panel1a-header"
-                                >
-                                    <Typography>{placeholder}</Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <Typography>{placeholders[placeholder].id}</Typography>
-                                    <Button onClick={this.handleOpen}>
-                                        <Icons icons="tableChart"/>
-                                    </Button>
-                                </AccordionDetails>
-                            </Accordion>
-                        ): <div></div>
-                    ))
-                ): <div></div>}
-              </div>
+                    : <div></div>}
+                    {
+                        (() => {
+                            switch(selectedEntityType) {
+                                case 'Dataset':
+                                    return (
+                                        <Accordion>
+                                            <AccordionSummary
+                                                expandIcon={<ExpandMoreIcon />}
+                                                aria-controls="panel1a-content"
+                                                id="panel1a-header"
+                                            >
+                                                <Typography>{selectedEntityName}</Typography>
+                                            </AccordionSummary>
+                                            {selectedEntityDataset?
+                                                <AccordionDetails>
+                                                    <Typography>{selectedEntityDataset.id}</Typography>
+                                                    <Button onClick={this.handleOpen}>
+                                                        <Icons icons="tableChart"/>
+                                                    </Button>
+                                                </AccordionDetails>
+                                            :<div></div>}
+                                        </Accordion>
+                                    )
+                                case 'Load Dataset':
+                                    return (
+                                        <Accordion>
+                                            <AccordionSummary
+                                                expandIcon={<ExpandMoreIcon />}
+                                                aria-controls="panel1a-content"
+                                                id="panel1a-header"
+                                            >
+                                                <Typography>{'Select Dataset'}</Typography>
+                                            </AccordionSummary>
+                                            {allAvailableDatasets.length !== 0 ? (
+                                                allAvailableDatasets).map((dataset) => (
+                                                    dataset ? (
+                                                        <AccordionDetails>
+                                                            <Typography>{dataset}</Typography>
+                                                            <Button onClick={this.handleOpen}>
+                                                                <Icons icons="tableChart"/>
+                                                            </Button>
+                                                            <Button onClick={() => {this.setDataset(dataset)}}>
+                                                                <Icons icons="tableChart"/>
+                                                            </Button>
+                                                        </AccordionDetails>
+                                                    ): <div></div>
+                                                )
+                                            ): <div></div>
+                                            }
+                                        </Accordion>
+                                    )
+                                default:
+                                    break;
+                            }
+                        })()
+                    }
+                </div>
             )
-      }
     }
+}
 
 Sidebar.propTypes = {
 };

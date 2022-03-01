@@ -55,7 +55,6 @@ class EditorView extends React.Component {
     };
 
     render() {
-        console.log(this.props.isDataviewBackdropActive);
         return(
             <div className={'editor-view'}>
                 <EditorHeader>
