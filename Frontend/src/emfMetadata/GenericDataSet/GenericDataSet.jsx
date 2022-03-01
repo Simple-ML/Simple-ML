@@ -78,7 +78,7 @@ export default class GenericDataSet extends MxGraphVertexComponent {
                 onClick={() => {
                     let associationTargetPath = '//' + EmfModelHelper.getFullHierarchy2(this.props.emfEntity)
                     associationTargetPath = associationTargetPath.substring(0, associationTargetPath.length - 1)
-                    console.log(associationTargetPath)
+
                     XtextServices.getProcessProposals(
                         this.props.emfEntity.id, 
                         associationTargetPath
