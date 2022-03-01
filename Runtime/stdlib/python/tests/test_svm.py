@@ -1,4 +1,4 @@
-from simpleml.model.supervised.classification._svm import SupportVectorMachineClassifier, SupportVectorMachineClassifierModel
+from simpleml.model.supervised.classification._svm import SupportVectorMachineClassifier
 from simpleml.dataset import loadDataset
 
 

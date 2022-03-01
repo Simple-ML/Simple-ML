@@ -1,4 +1,4 @@
-from simpleml.model.supervised.regression._linear_regression import LinearRegression, LinearRegressionModel
+from simpleml.model.supervised.regression._linear_regression import LinearRegression
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError
 

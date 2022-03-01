@@ -6,7 +6,7 @@ def convert_to_array(o: Union[DataType, ArrayLike], type: Optional[str] = None) 
     
     try:
         r = o.toArray()
-    except:
+    except AttributeError:
         r = o
 
     if type is not None:

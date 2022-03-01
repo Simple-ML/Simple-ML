@@ -1,4 +1,4 @@
-from simpleml.model.supervised.classification._tree import RandomForestClassifier, RandomForestClassifierModel
+from simpleml.model.supervised.classification._tree import RandomForestClassifier
 from simpleml.dataset import loadDataset
 
 

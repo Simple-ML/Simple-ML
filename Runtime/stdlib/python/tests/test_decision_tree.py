@@ -1,4 +1,4 @@
-from simpleml.model.supervised.classification._tree import DecisionTreeClassifier, DecisionTreeClassifierModel
+from simpleml.model.supervised.classification._tree import DecisionTreeClassifier
 from simpleml.dataset import loadDataset
 from simpleml.metrics import precision
 

@@ -3,7 +3,7 @@ from numpy.typing import ArrayLike
 from simpleml.model.supervised._domain import Estimator, Model, DataType
 from sklearn.tree import DecisionTreeRegressor as SkDecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor as SkRandomForestRegressor
-from typing import Union, Optional, Dict, List
+from typing import Union, Optional
 
 
 class DecisionTreeRegressorModel(Model):
