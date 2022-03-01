@@ -4,7 +4,7 @@ from simpleml.dataset import loadDataset
 
 def test_create():
     rf = RidgeRegression()
-    assert rf is not None
+    assert rf is not None # nosec
 
 def test_train_and_infer():
     rf = RidgeRegression()
@@ -19,4 +19,4 @@ def test_train_and_infer():
 
     pred = model.predict(X_test)
 
-    assert len(pred) > 0
+    assert len(pred) > 0 # nosec

@@ -5,7 +5,7 @@ from simpleml.metrics import precision
 
 def test_create():
     dt = DecisionTreeClassifier()
-    assert dt is not None
+    assert dt is not None # nosec
 
 
 def test_train_and_infer():
@@ -22,6 +22,6 @@ def test_train_and_infer():
     pred = model.predict(X_test)
 
     m = precision(test.keepAttributes("quality"), pred)
-    assert m > 0
-    assert len(pred) > 0
+    assert m > 0 # nosec
+    assert len(pred) > 0 # nosec
 

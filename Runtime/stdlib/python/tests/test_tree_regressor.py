@@ -4,7 +4,7 @@ from simpleml.dataset import loadDataset
 
 def test_create_forest():
     rf = RandomForestRegressor()
-    assert rf is not None
+    assert rf is not None # nosec
 
 def test_train_and_infer_forest():
     rf = RandomForestRegressor()
@@ -19,11 +19,11 @@ def test_train_and_infer_forest():
 
     pred = model.predict(X_test)
 
-    assert len(pred) > 0
+    assert len(pred) > 0 # nosec
 
 def test_create_tree():
     rf = DecisionTreeRegressor()
-    assert rf is not None
+    assert rf is not None # nosec
 
 def test_train_and_infer_tree():
     rf = DecisionTreeRegressor()
@@ -38,4 +38,4 @@ def test_train_and_infer_tree():
 
     pred = model.predict(X_test)
 
-    assert len(pred) > 0
+    assert len(pred) > 0 # nosec

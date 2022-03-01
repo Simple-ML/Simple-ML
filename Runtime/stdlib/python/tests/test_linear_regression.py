@@ -5,7 +5,7 @@ from simpleml.metrics import meanAbsoluteError
 
 def test_create():
     rf = LinearRegression()
-    assert rf is not None
+    assert rf is not None # nosec
 
 def test_train_and_infer():
     rf = LinearRegression()
@@ -22,4 +22,4 @@ def test_train_and_infer():
 
     meanAbsoluteError(test.keepAttributes("quality"), pred)
 
-    assert len(pred) > 0
+    assert len(pred) > 0 # nosec
