@@ -21,9 +21,11 @@
       padding-right: 10px;
       width: 20px;
     }
+    // scss-lint:disable ImportantRule
     &:disabled {
       opacity: .5;
     }
+    // scss-lint:enable ImportantRule
   }
 }
 
