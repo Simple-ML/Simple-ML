@@ -21,5 +21,5 @@ class LinearRegression(Estimator):
         )
 
     def fit(self, train_data: DataType, labels: DataType, **kwargs) -> Model:
-        return LinearRegressionModel(self._underlying.fit(train_data.toArray(), labels.toArray(), **kwargs))
+        return LinearRegressionModel(self._underlying.fit(train_data.toArray(), labels.toArray().astype('float'), **kwargs))
 

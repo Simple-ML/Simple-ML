@@ -9,12 +9,10 @@ def test_create():
     assert dt is not None
 
 
-@pytest.mark.skip(reason="dataset resolution do not work")
 def test_train_and_infer():
     dt = DecisionTreeClassifier()
     dataset = loadDataset("WhiteWineQualityBinary")
-    print(exportDictionaryAsJSON(dataset.getProfile()))
-
+    
     train, test = dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
     X_train = train.dropAttributes("quality")
     X_test = test.dropAttributes("quality")

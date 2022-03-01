@@ -5,7 +5,7 @@ import simpleml.dataset.Dataset
 
 class RandomForestRegressor(
     nEstimator: Int = 100,
-    criterion: String = "gini",
+    criterion: String = "mse",
     maxDepth: Int?,
     randomState: Int?
 ) sub Estimator {

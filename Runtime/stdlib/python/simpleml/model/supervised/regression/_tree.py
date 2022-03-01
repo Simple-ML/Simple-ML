@@ -17,7 +17,7 @@ class DecisionTreeRegressorModel(Model):
 class DecisionTreeRegressor(Estimator):
     
     def __init__(self,
-                 criterion: str = "squared_error",
+                 criterion: str = "mse",
                  splitter: str = "best",
                  maxDepth: Optional[int] = None,
                  minSamplesSplit: Union[int, float] = 2,
@@ -44,7 +44,7 @@ class DecisionTreeRegressor(Estimator):
         )
 
     def fit(self, train_data: DataType, labels: DataType, **kwargs) -> Model:
-        return DecisionTreeRegressorModel(self._underlying.fit(train_data.toArray(), labels.toArray(), **kwargs))
+        return DecisionTreeRegressorModel(self._underlying.fit(train_data.toArray(), labels.toArray().astype('float'), **kwargs))
 
 class RandomForestRegressorModel(Model):
     def __init__(self, underlying: SkRandomForestRegressor):
@@ -56,7 +56,7 @@ class RandomForestRegressorModel(Model):
 class RandomForestRegressor(Estimator):
     def __init__(self, 
                 nEstimator: int = 100,
-                criterion: str = "gini",
+                criterion: str = "mse",
                 maxDepth: Optional[int] = None,
                 minSamplesSplit: Union[int, float] = 2,
                 minSamplesLeaf: Union[int, float] = 1,
@@ -90,6 +90,6 @@ class RandomForestRegressor(Estimator):
             )
 
     def fit(self, train_data: DataType, labels: DataType, **kwargs) -> Model:
-        return RandomForestRegressorModel(self._underlying.fit(train_data.toArray(), labels.toArray(), **kwargs))
+        return RandomForestRegressorModel(self._underlying.fit(train_data.toArray(), labels.toArray().astype('float'), **kwargs))
 
 

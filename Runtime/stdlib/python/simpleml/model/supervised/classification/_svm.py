@@ -44,4 +44,4 @@ class SupportVectorMachineClassifier(Estimator):
         )
 
     def fit(self, train_data: DataType, labels: DataType, **kwargs) -> Model:
-        return SupportVectorMachineClassifierModel(self._underlying.fit(train_data.toArray(), labels.toArray(), **kwargs))
+        return SupportVectorMachineClassifierModel(self._underlying.fit(train_data.toArray(), labels.toArray().astype('int'), **kwargs))

@@ -46,7 +46,7 @@ class DecisionTreeClassifier(Estimator):
         )
 
     def fit(self, train_data: DataType, labels: DataType, **kwargs) -> Model:
-        return DecisionTreeClassifierModel(self._underlying.fit(train_data.toArray(), labels.toArray(), **kwargs))
+        return DecisionTreeClassifierModel(self._underlying.fit(train_data.toArray(), labels.toArray().astype('int'), **kwargs))
 
 class RandomForestClassifierModel(Model):
     def __init__(self, underlying: SkRandomForestClassifier):
@@ -94,6 +94,6 @@ class RandomForestClassifier(Estimator):
             )
 
     def fit(self, train_data: DataType, labels: DataType, **kwargs) -> Model:
-        return RandomForestClassifierModel(self._underlying.fit(train_data.toArray(), labels.toArray(), **kwargs))
+        return RandomForestClassifierModel(self._underlying.fit(train_data.toArray(), labels.toArray().astype('int'), **kwargs))
 
 

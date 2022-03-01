@@ -8,12 +8,10 @@ def test_create():
     rf = RandomForestClassifier()
     assert rf is not None
 
-@pytest.mark.skip(reason="dataset resolution do not work")
 def test_train_and_infer():
     rf = RandomForestClassifier()
     dataset = loadDataset("WhiteWineQualityBinary")
-    print(exportDictionaryAsJSON(dataset.getProfile()))
-
+    
     train, test = dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
     X_train = train.dropAttributes("quality")
     X_test = test.dropAttributes("quality")
