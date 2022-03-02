@@ -6,8 +6,8 @@ import simpleml.dataset.Dataset
 class RandomForestRegressor(
     nEstimator: Int = 100,
     criterion: String = "mse",
-    maxDepth: Int?,
-    randomState: Int?
+    maxDepth: Int? = null,
+    randomState: Int? = null
 ) sub Estimator {
     attr nEstimator: Int?
     attr criterion: String?

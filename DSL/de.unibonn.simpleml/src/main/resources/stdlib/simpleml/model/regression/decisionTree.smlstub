@@ -4,7 +4,7 @@ import simpleml.model.*
 import simpleml.dataset.Dataset
 
 class DecisionTreeRegressor(
-    maxDepth: Int?
+    maxDepth: Int? = null
 ) sub Estimator {
     attr maxDepth: Int?
 

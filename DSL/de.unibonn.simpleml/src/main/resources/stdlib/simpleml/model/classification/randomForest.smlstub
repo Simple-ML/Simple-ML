@@ -6,8 +6,8 @@ import simpleml.dataset.Dataset
 class RandomForestClassifier(
     nEstimator: Int = 100,
     criterion: String = "gini",
-    maxDepth: Int?,
-    randomState: Int?
+    maxDepth: Int? = null,
+    randomState: Int? = null
 ) sub Estimator {
     attr nEstimator: Int
     attr criterion: String

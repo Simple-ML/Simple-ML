@@ -4,7 +4,7 @@ import simpleml.model.*
 import simpleml.dataset.Dataset
 
 class DecisionTreeClassifier(
-    maxDepth: Int?
+    maxDepth: Int? = null
 ) sub Estimator {
     attr maxDepth: Int?
 
