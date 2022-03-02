@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+from datetime import datetime
 from typing import Any, Tuple
 
 import category_encoders as ce  # For one hot encoding
@@ -240,6 +241,23 @@ class Dataset:
 
         copy.data = self.addAttribute(
             columnName + "_WeekDay", transformIntoWeekDay
+        ).data
+
+        return copy
+
+    def dateToTimestamp(self, columnName):
+
+        if self.data.empty:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+
+        def transformIntoTimestamp(instance: Instance):
+            date = datetime.strptime(str(instance.getValue(columnName)), '%Y-%m-%d %H:%M:%S')
+            return datetime.timestamp(date)
+
+        copy.data = self.addAttribute(
+            columnName + "_Timestamp", transformIntoTimestamp
         ).data
 
         return copy
