@@ -1,0 +1,12 @@
+package simpleml.model.regression
+
+import simpleml.model.*
+import simpleml.dataset.Dataset
+
+class LinearRegression() sub Estimator {
+    fun fit(features: Dataset, target: Dataset) -> trainedModel: LinearRegressionModel
+}
+
+class LinearRegressionModel() sub Model {
+    fun predict(features: Dataset) -> results: Any
+}

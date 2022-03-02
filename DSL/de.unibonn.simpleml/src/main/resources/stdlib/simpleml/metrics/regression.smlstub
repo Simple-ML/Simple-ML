@@ -1,0 +1,9 @@
+package simpleml.metrics.classification
+
+import simpleml.dataset.Dataset
+
+fun meanAbsoluteError(yTrue: Dataset, yPred: Dataset) -> score: Float
+fun meanSquaredError(yTrue: Dataset, yPred: Dataset) -> score: Float
+fun meanSquaredLogError(yTrue: Dataset, yPred: Dataset) -> score: Float
+fun medianAbsoluteError(yTrue: Dataset, yPred: Dataset) -> score: Float
+fun r2(yTrue: Dataset, yPred: Dataset) -> score: Float
