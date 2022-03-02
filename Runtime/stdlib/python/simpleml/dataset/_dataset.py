@@ -255,7 +255,8 @@ class Dataset:
         # print(w.islands)
 
         w = Kernel.from_dataframe(self.data, fixed=False, function="gaussian")
-        # print(w.islands)
+        #w = KNN.from_dataframe(self.data, k=5)
+        print(w.islands)
         nodes = w.weights.keys()
         edges = [(node, neighbour) for node in nodes for neighbour in w[node]]
         my_graph = nx.Graph(edges)
@@ -266,7 +267,7 @@ class Dataset:
         )
         model = node2vec.fit(window=10, min_count=1, batch_words=4)
 
-        copy.data[columnName + "embeddings"] = ""
+        copy.data[columnName + "_embeddings"] = ""
         for index, row in copy.data.iterrows():
             copy.data.at[index, columnName + "_embeddings"] = model.wv[index]
 
