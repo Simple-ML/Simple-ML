@@ -306,9 +306,11 @@ class Dataset:
             use_cat_names=True,
         )
         column_data = column_encoder.fit_transform(column_data)
-        copy.data[columnName + "_encoded"] = column_data.values.tolist()
-        copy.simple_data_types[columnName + "_encoded"] = config.type_numeric_list
-        copy.attributes.append(columnName + "_encoded")
+        copy.data[columnName + '_encoded'] = column_data.values.tolist()
+        copy.simple_data_types[columnName + '_encoded'] = config.type_numeric_list
+        copy.data_types[columnName + '_encoded'] = config.type_numeric_list
+        copy.attributes.append(columnName + '_encoded')
+        copy.attribute_labels[columnName + '_encoded'] = copy.attribute_labels[columnName] + " (Encoded)"
 
         return copy
 
