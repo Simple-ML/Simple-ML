@@ -1,0 +1,26 @@
+package simpleml.model.classification
+
+import simpleml.model.*
+import simpleml.dataset.Dataset
+
+class SupportVectorMachineClassifier(
+    penalty: String = "l2",
+    loss: String = "squared_hinge",
+    dual: Boolean = true,
+    tol: Float = 1e-4,
+    c: Float = 1.0,
+    multiClass: String = "ovr"
+) sub Estimator {
+    attr penalty: String
+    attr loss: String
+    attr dual: Boolean
+    attr tol: Float
+    attr c: Float
+    attr multiClass: String
+
+    fun fit(features: Dataset, target: Dataset) -> trainedModel: SupportVectorMachineClassifierModel
+}
+
+class SupportVectorMachineClassifierModel() sub Model {
+    fun predict(features: Dataset) -> results: Any
+}

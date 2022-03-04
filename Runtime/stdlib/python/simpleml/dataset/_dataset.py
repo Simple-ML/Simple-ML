@@ -384,9 +384,10 @@ class Dataset:
 
         # TODO: Create global config file where we define the data folder path
         dirName = os.path.dirname(__file__)
-        dataFilePath = os.path.join(
-            dirName, global_config.data_folder_name, self.fileName
+        rootFolder = os.getenv(
+            "SML_DATASET_PATH", os.path.join(dirName, global_config.data_folder_name)
         )
+        dataFilePath = os.path.join(rootFolder, self.fileName)
 
         # TODO: Check infer_datetime_format
 
@@ -623,6 +624,9 @@ class Dataset:
 
     def exportDataAsFile(self, file_path):
         self.data.to_csv(file_path, encoding="utf-8")
+
+    def toArray(self):
+        return self.data.to_numpy()
 
 
 def loadDataset(datasetID: str) -> Dataset:

@@ -12,3 +12,7 @@ bin/
 src-gen/
 xtend-gen/
 *.log
+
+# python stuff
+.tox/
+__pycache__/
