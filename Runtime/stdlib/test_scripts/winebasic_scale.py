@@ -1,5 +1,5 @@
 # Imports ----------------------------------------------------------------------
-from dataset._scale import StandardScaler
+from simpleml.dataset._scale import StandardScaler
 from simpleml.dataset import loadDataset
 
 # Workflow steps ---------------------------------------------------------------

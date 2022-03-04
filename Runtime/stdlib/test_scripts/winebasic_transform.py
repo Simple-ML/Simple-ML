@@ -1,6 +1,5 @@
 # Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset, Instance
-from simpleml.util import exportDictionaryAsJSON
 
 # Workflow steps ---------------------------------------------------------------
 

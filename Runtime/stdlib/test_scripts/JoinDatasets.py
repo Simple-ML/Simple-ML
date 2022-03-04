@@ -1,6 +1,5 @@
 # Imports ----------------------------------------------------------------------
 from simpleml.dataset import joinTwoDatasets, readDataSetFromCSV
-from simpleml.util import exportDictionaryAsJSON
 
 
 # Workflow steps ---------------------------------------------------------------
