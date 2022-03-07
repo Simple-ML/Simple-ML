@@ -253,7 +253,9 @@ class Dataset:
         copy = self.copy()
 
         def transformIntoTimestamp(instance: Instance):
-            date = datetime.strptime(str(instance.getValue(columnName)), '%Y-%m-%d %H:%M:%S')
+            date = datetime.strptime(
+                str(instance.getValue(columnName)), "%Y-%m-%d %H:%M:%S"
+            )
             return datetime.timestamp(date)
 
         copy.data = self.addAttribute(
@@ -273,7 +275,7 @@ class Dataset:
         # print(w.islands)
 
         w = Kernel.from_dataframe(self.data, fixed=False, function="gaussian")
-        #w = KNN.from_dataframe(self.data, k=5)
+        # w = KNN.from_dataframe(self.data, k=5)
         print(w.islands)
         nodes = w.weights.keys()
         edges = [(node, neighbour) for node in nodes for neighbour in w[node]]
@@ -306,11 +308,13 @@ class Dataset:
             use_cat_names=True,
         )
         column_data = column_encoder.fit_transform(column_data)
-        copy.data[columnName + '_encoded'] = column_data.values.tolist()
-        copy.simple_data_types[columnName + '_encoded'] = config.type_numeric_list
-        copy.data_types[columnName + '_encoded'] = config.type_numeric_list
-        copy.attributes.append(columnName + '_encoded')
-        copy.attribute_labels[columnName + '_encoded'] = copy.attribute_labels[columnName] + " (Encoded)"
+        copy.data[columnName + "_encoded"] = column_data.values.tolist()
+        copy.simple_data_types[columnName + "_encoded"] = config.type_numeric_list
+        copy.data_types[columnName + "_encoded"] = config.type_numeric_list
+        copy.attributes.append(columnName + "_encoded")
+        copy.attribute_labels[columnName + "_encoded"] = (
+            copy.attribute_labels[columnName] + " (Encoded)"
+        )
 
         return copy
 
