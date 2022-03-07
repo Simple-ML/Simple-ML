@@ -5,10 +5,10 @@ from simpleml.dataset import joinTwoDatasets, readDataSetFromCSV
 # Workflow steps ---------------------------------------------------------------
 
 def exampleWorkflow():
-    dataset1 = readDataSetFromCSV('SpeedAveragesMiniSampleWKT.csv', 'Local dataset', ',', 'True')
+    dataset1 = readDataSetFromCSV('SpeedAverages.csv', 'Local dataset', ',', 'True', '')
     sample_dataset1 = dataset1.sample(5)
 
-    dataset2 = readDataSetFromCSV('SpeedAveragesMiniSampleWKT.csv', 'Local dataset', ',', 'True')
+    dataset2 = readDataSetFromCSV('SpeedAverages.csv', 'Local dataset', ',', 'True', '')
     sample_dataset2 = dataset2.sample(5)
     #print(sample_dataset1.data)
 

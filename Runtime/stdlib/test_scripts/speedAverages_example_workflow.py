@@ -34,14 +34,14 @@ def speedAveragesExampleWorkflow():
     # X_test = test.keepAttributes(["street_type", "max_speed", "start_time", "number_of_records", "number_of_drivers",
     #                              "season", "daylight"])
     X_train = train.dropAttributes("average_speed")
-    X_test = train.dropAttributes("average_speed")
+    #X_test = train.dropAttributes("average_speed")
     y_train = train.keepAttributes("average_speed")
     y_test = test.keepAttributes("average_speed")
     print(y_test.data)
 
     lr = LinearRegression()
     lr = lr.fit(X_train, y_train)
-    y_pred = lr.predict(X_test)
+    #y_pred = lr.predict(X_test)
 
     # linearRegressionModel(dataset, "average_speed")
 
