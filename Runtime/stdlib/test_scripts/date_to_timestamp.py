@@ -1,14 +1,13 @@
 # Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
-from simpleml.dataset._normalize import StandardNormalizer
 
 # Workflow steps ---------------------------------------------------------------
 
 
 def exampleWorkflow():
-    dataset = loadDataset("WhiteWineQuality")
+    dataset = loadDataset("SpeedAverages")
 
-    dataset = StandardNormalizer().normalize(dataset)
+    dataset = dataset.dateToTimestamp("start_time")
     print(dataset.data)
 
 

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+from datetime import datetime
 from typing import Any, Tuple
 
 import category_encoders as ce  # For one hot encoding
@@ -244,6 +245,25 @@ class Dataset:
 
         return copy
 
+    def dateToTimestamp(self, columnName):
+
+        if self.data.empty:
+            self.readFile(self.separator)
+
+        copy = self.copy()
+
+        def transformIntoTimestamp(instance: Instance):
+            date = datetime.strptime(
+                str(instance.getValue(columnName)), "%Y-%m-%d %H:%M:%S"
+            )
+            return datetime.timestamp(date)
+
+        copy.data = self.addAttribute(
+            columnName + "_Timestamp", transformIntoTimestamp
+        ).data
+
+        return copy
+
     def addGeometryEmbeddings(self, columnName):
 
         if self.data.empty:
@@ -255,7 +275,8 @@ class Dataset:
         # print(w.islands)
 
         w = Kernel.from_dataframe(self.data, fixed=False, function="gaussian")
-        # print(w.islands)
+        # w = KNN.from_dataframe(self.data, k=5)
+        print(w.islands)
         nodes = w.weights.keys()
         edges = [(node, neighbour) for node in nodes for neighbour in w[node]]
         my_graph = nx.Graph(edges)
@@ -266,7 +287,7 @@ class Dataset:
         )
         model = node2vec.fit(window=10, min_count=1, batch_words=4)
 
-        copy.data[columnName + "embeddings"] = ""
+        copy.data[columnName + "_embeddings"] = ""
         for index, row in copy.data.iterrows():
             copy.data.at[index, columnName + "_embeddings"] = model.wv[index]
 
@@ -289,7 +310,11 @@ class Dataset:
         column_data = column_encoder.fit_transform(column_data)
         copy.data[columnName + "_encoded"] = column_data.values.tolist()
         copy.simple_data_types[columnName + "_encoded"] = config.type_numeric_list
+        copy.data_types[columnName + "_encoded"] = config.type_numeric_list
         copy.attributes.append(columnName + "_encoded")
+        copy.attribute_labels[columnName + "_encoded"] = (
+            copy.attribute_labels[columnName] + " (Encoded)"
+        )
 
         return copy
 
