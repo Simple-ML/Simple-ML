@@ -3,19 +3,18 @@ services:
   dsl:
     container_name: simple-ml_dsl
     build: ./DSL
-    ports: 
+    ports:
       - 8080:8080
   frontend:
     container_name: simple-ml_frontend
     build: ./Frontend
-    ports: 
+    ports:
       - 4200:4200
     depends_on:
       - dsl
       - runtime
   runtime:
     container_name: simple-ml_runtime
-    build:
-      context: ./Runtime
-    ports: 
+    build: ./Runtime
+    ports:
       - 6789:6789
