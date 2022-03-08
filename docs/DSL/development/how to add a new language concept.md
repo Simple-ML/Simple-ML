@@ -32,15 +32,19 @@
 
 1. Update the [resource description strategy][resource-description-strategy] if your concept is a declaration that should be visible from another file.
 
-1. Update [static analyses][static-analysis]. (**TODO**: requires more information)
+1. Update the [static analyses][static-analysis].
 
-1. Update the semantic checks.
+1. Update the validator.
    1. Create [validation tests][validation-tests]
    1. Run the tests (`./gradlew test`). There should be failures.
    1. Update the [validators][validators] or add a new one.
    1. Run the tests again (`./gradlew test`). Tests should now pass.
 
-1. Update [code generator][code-generator]. (**TODO**: requires more information)
+1. Update the code generator.
+   1. Create [generator tests][generator-tests]
+   1. Run the tests (`./gradlew test`). There should be failures.
+   1. Update the [generator][generator].
+   1. Run the tests again (`./gradlew test`). Tests should now pass.
 
 1. Update the formatter.
    1. Create [formatting tests][formatting-tests].
@@ -52,8 +56,10 @@
    1. Create [classes for facts][prolog-facts].
    1. Create [tests][prolog-tests].
    1. Run the tests (`./gradlew test`). There should be failures.
-   1. Update the [converter to Prolog][prolog-converter] or add a new one.
+   1. Update the [converter to Prolog][prolog-converter].
    1. Run the tests again (`./gradlew test`). Tests should now pass.
+
+1. Update the [tutorial][tutorial].
 
 <!-- Links -->
 
@@ -87,7 +93,9 @@
 
 [shortcuts]: ../../../DSL/de.unibonn.simpleml/src/main/kotlin/de/unibonn/simpleml/emf/SimpleShortcuts.kt
 
-[code-generator]: ../../../DSL/de.unibonn.simpleml/src/main/kotlin/de/unibonn/simpleml/generator/SimpleMLGenerator.kt
+[generator-tests]: ../../../DSL/de.unibonn.simpleml/src/test/resources/generator
+
+[generator]: ../../../DSL/de.unibonn.simpleml/src/main/kotlin/de/unibonn/simpleml/generator/SimpleMLGenerator.kt
 
 [formatting-tests]: ../../../DSL/de.unibonn.simpleml/src/test/resources/formatting
 
@@ -98,3 +106,5 @@
 [prolog-tests]: ../../../DSL/de.unibonn.simpleml/src/test/kotlin/de/unibonn/simpleml/prologBridge/AstToPrologFactbaseTest.kt
 
 [prolog-converter]: ../../../DSL/de.unibonn.simpleml/src/main/kotlin/de/unibonn/simpleml/prologBridge/converters/AstToPrologFactbase.kt
+
+[tutorial]: ../tutorial/README.md

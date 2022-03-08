@@ -16,6 +16,10 @@
     ```shell
     conda activate runtime
     ```
+1. Add the runtime as a local library:
+    ```shell
+    conda develop runtime
+    ```
 1. Add the stdlib files as a local library:
     ```shell
     conda develop stdlib/python

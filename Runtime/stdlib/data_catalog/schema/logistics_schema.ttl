@@ -1,5 +1,4 @@
-@base <https://simple-ml.de/resource/logistics/> .
-
+@prefix sml-log: <https://simple-ml.de/resource/logistics/> .
 @prefix sml: <https://simple-ml.de/resource/> .
 @prefix geo: <https://www.w3.org/2003/01/geo/wgs84_pos#> .
 @prefix geom: <http://geovocab.org/geometry#> .
@@ -13,112 +12,112 @@
 @prefix seas: <https://w3id.org/seas/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
-<LogisticsClass> rdfs:subClassOf sml:DomainClass ;
+sml-log:LogisticsClass rdfs:subClassOf sml:DomainClass ;
     dcterms:description "a class used in the wine domain" ;
-    sml:domain <LogisticsDomain> .
+    sml:domain sml-log:LogisticsDomain .
 
-<LogisticsModel> a owl:Ontology ;
+sml-log:LogisticsModel a owl:Ontology ;
     dcterms:description "a data model about the wine domain" .
 
-<Store> rdfs:subClassOf <LogisticsClass> ;
+sml-log:Store rdfs:subClassOf sml-log:LogisticsClass ;
 	rdfs:label "Store"@en, "Geschäft"@de.
-	
-<StoreType> rdfs:subClassOf <LogisticsClass> ;
+
+sml-log:StoreType rdfs:subClassOf sml-log:LogisticsClass ;
 	rdfs:label "Store type"@en, "Art des Geschäfts"@de.
-	
-<Assortment> rdfs:subClassOf <LogisticsClass> ;
+
+sml-log:Assortment rdfs:subClassOf sml-log:LogisticsClass ;
 	rdfs:label "assortment"@en, "Sortiment"@de.
 
-<StateHoliday> rdfs:subClassOf <LogisticsClass> ;
+sml-log:StateHoliday rdfs:subClassOf sml-log:LogisticsClass ;
 	rdfs:label "state holiday"@en, "öffentlicher Feiertag"@de.
 
-<Turnover> rdfs:subClassOf <LogisticsClass> ;
+sml-log:Turnover rdfs:subClassOf sml-log:LogisticsClass ;
 	rdfs:label "turnover in a time period"@en, "Umsatz in einem Zeitintervall"@de.
 
-<competitionDistance> a owl:DatatypeProperty ;
+sml-log:competitionDistance a owl:DatatypeProperty ;
         rdfs:label "distance to the nearest competitor store"@en ;
         rdfs:label "Distanz zum nächsten Wettbewerber"@de ;
-        rdfs:domain <Store> ;
+        rdfs:domain sml-log:Store ;
         rdfs:range xsd:nonNegativeInteger .
 
-<storeId> a owl:DatatypeProperty ;
+sml-log:storeId a owl:DatatypeProperty ;
         rdfs:label "store ID"@en ;
         rdfs:label "ID"@de ;
-        rdfs:domain <Store> ;
+        rdfs:domain sml-log:Store ;
         rdfs:range xsd:nonNegativeInteger .
 
-<store> a owl:ObjectProperty ;
+sml-log:store a owl:ObjectProperty ;
         rdfs:label "store"@en ;
         rdfs:label "Geschäft"@de ;
-        rdfs:domain <Turnover> ;
-        rdfs:range <Store> .
+        rdfs:domain sml-log:Turnover ;
+        rdfs:range sml-log:Store .
 
-<hasAssortment> a owl:ObjectProperty ;
+sml-log:hasAssortment a owl:ObjectProperty ;
         rdfs:label "has assortment"@en ;
         rdfs:label "hat Sortiment"@de ;
-        rdfs:domain <Store> ;
-        rdfs:range <Assortment> .
-        
-<storeType> a owl:ObjectProperty ;
+        rdfs:domain sml-log:Store ;
+        rdfs:range sml-log:Assortment .
+
+sml-log:storeType a owl:ObjectProperty ;
         rdfs:label "has type"@en ;
         rdfs:label "hat Typ"@de ;
-        rdfs:domain <Store> ;
-        rdfs:range <StoreType> .
+        rdfs:domain sml-log:Store ;
+        rdfs:range sml-log:StoreType .
 
-<sales> a owl:DatatypeProperty ;
+sml-log:sales a owl:DatatypeProperty ;
         rdfs:label "has sales"@en ;
         rdfs:label "hat Umsatz"@de ;
-        rdfs:domain <Turnover> ;
+        rdfs:domain sml-log:Turnover ;
         rdfs:range xsd:nonNegativeInteger .
 
-<customers> a owl:DatatypeProperty ;
+sml-log:customers a owl:DatatypeProperty ;
         rdfs:label "number of customers"@en ;
         rdfs:label "Anzahl Kunden"@de ;
-        rdfs:domain <Turnover> ;
+        rdfs:domain sml-log:Turnover ;
         rdfs:range xsd:nonNegativeInteger .
 
-<isOpen> a owl:DatatypeProperty ;
+sml-log:isOpen a owl:DatatypeProperty ;
         rdfs:label "is open"@en ;
         rdfs:label "ist geöffnet"@de ;
-        rdfs:domain <Turnover> ;
+        rdfs:domain sml-log:Turnover ;
         rdfs:range xsd:boolean .
-        
-<hasPromo> a owl:DatatypeProperty ;
+
+sml-log:hasPromo a owl:DatatypeProperty ;
         rdfs:label "is running a promo"@en ;
         rdfs:label "während einer Werbeaktion"@de ;
-        rdfs:domain <Turnover> ;
+        rdfs:domain sml-log:Turnover ;
         rdfs:range xsd:boolean .
-        
-<hasStateHoliday> a owl:ObjectProperty ;
+
+sml-log:hasStateHoliday a owl:ObjectProperty ;
         rdfs:label "during a public holiday"@en ;
         rdfs:label "während eines öffentlichen Feiertags"@de ;
-        rdfs:domain <Turnover> ;
-        rdfs:range <StateHoliday> .
+        rdfs:domain sml-log:Turnover ;
+        rdfs:range sml-log:StateHoliday .
 
-<isSchoolHoliday> a owl:DatatypeProperty ;
+sml-log:isSchoolHoliday a owl:DatatypeProperty ;
         rdfs:label "during school holidays"@en ;
         rdfs:label "während der Schulferien"@de ;
-        rdfs:domain <Turnover> ;
+        rdfs:domain sml-log:Turnover ;
         rdfs:range xsd:boolean .
-        
+
 # --------------------------- Time -------------------------
 
-<hasDateTimeString> a owl:DatatypeProperty ;
+sml-log:hasDateTimeString a owl:DatatypeProperty ;
 	rdfs:label "has date/time string"@en ;
 	rdfs:label "hat Datum/Zeit-Text"@de ;
 	rdfs:domain time:DateTimeDescription ;
 	rdfs:range xsd:string .
 
-time:DayOfWeek rdfs:subClassOf <MobilityClass> .
-time:DateTimeDescription rdfs:subClassOf <MobilityClass> .
-time:MonthOfYear rdfs:subClassOf <MobilityClass> .
+time:DayOfWeek rdfs:subClassOf sml-log:MobilityClass .
+time:DateTimeDescription rdfs:subClassOf sml-log:MobilityClass .
+time:MonthOfYear rdfs:subClassOf sml-log:MobilityClass .
 
-time:DayOfWeek <identificationProperty> rdfs:label .
-time:MonthOfYear <identificationProperty> rdfs:label .
-time:DateTimeDescription <identificationProperty> time:hour .
-time:DateTimeDescription <identificationProperty> time:day .
+time:DayOfWeek sml-log:identificationProperty rdfs:label .
+time:MonthOfYear sml-log:identificationProperty rdfs:label .
+time:DateTimeDescription sml-log:identificationProperty time:hour .
+time:DateTimeDescription sml-log:identificationProperty time:day .
 
-<isWeekend> a owl:DatatypeProperty ;
+sml-log:isWeekend a owl:DatatypeProperty ;
 	rdfs:label "is weekend"@en ;
 	rdfs:label "am Wochenende"@de ;
 	rdfs:domain time:DateTimeDescription ;

@@ -28,10 +28,10 @@ jobs:
       # MegaLinter
       - name: MegaLinter
         id: ml
-        uses: megalinter/megalinter@v5.4.0
+        uses: megalinter/megalinter@v5.8.0
         env:
           DISABLE: COPYPASTE,SPELL
-          FILTER_REGEX_EXCLUDE: (\.github/workflows/)
+          FILTER_REGEX_EXCLUDE: (\.github/workflows/|DSL/de\.unibonn\.simpleml/src/test/resources)
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_ALL_CODEBASE: false
 

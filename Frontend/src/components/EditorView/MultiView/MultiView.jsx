@@ -7,9 +7,8 @@ import $ from "jquery";
 
 // React.Components
 import GoldenLayoutComponent from './../../../helper/goldenLayoutServices/goldenLayoutComponent';
-import SideToolbar from './SideToolbar/SideToolbar';
-import Sidebar from './Sidebar/Sidebar'
 
+import Toolbar from './Toolbar/Toolbar';
 
 // Styles
 import './multiView.scss';
@@ -43,7 +42,7 @@ class MultiView extends React.Component {
     render() {
         return (
             <div className={'multi-view-container'}>
-                <SideToolbar componentConfigs={MultiViewConfig.getPureConfigList()} layout={this.state.myLayout} />
+                <Toolbar componentConfigs={MultiViewConfig.getPureConfigList()} layout={this.state.myLayout} />
                 <GoldenLayoutComponent
                     htmlAttrs={{ style: { minHeight: "780px", width: "100%" } }}
                     config={{
@@ -74,7 +73,6 @@ class MultiView extends React.Component {
                         })
                     }}
                 />
-                <Sidebar/>
             </div>
         )
     }

@@ -19,7 +19,7 @@ const debugInterface = {
             deleteAssociation: (fromEntityPath, toEntityPath) => XtextServices.deleteAssociation(fromEntityPath, toEntityPath),
             getEntityAttributes: (entities) => XtextServices.getEntityAttributes(entities),
             setEntityAttributes: (entity) => XtextServices.setEntityAttributes(entity),
-            generate: () => XtextServices.generate(),
+            generate: () => XtextServices.generate(),           
             editProcessParameter: (index ,value) => {
                 const temp =  {
                     entityPath: EmfModelHelper.getFullHierarchy(store.getState().graphicalEditor.entitySelected),
@@ -29,11 +29,13 @@ const debugInterface = {
                 }
                 XtextServices.editProcessParameter(temp);
             }
-        }
+        },
+        serviceObject: XtextServices
     },
     h: { //helper
         flattenEmfModelTree: (emfModelTree) => EmfModelHelper.flattenEmfModelTree(emfModelTree),
         getFullHierarchy: (emfEntity) => EmfModelHelper.getFullHierarchy(emfEntity),
+        getFullHierarchy2: (emfEntity) => EmfModelHelper.getFullHierarchy2(emfEntity),
         getSelectedEntity: () => {
             return store.getState().graphicalEditor.entitySelected;
         }

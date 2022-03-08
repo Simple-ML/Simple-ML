@@ -1,6 +1,5 @@
 # Imports ----------------------------------------------------------------------
-from simpleml.dataset import loadDataset, Instance
-from simpleml.util import exportDictionaryAsJSON
+from simpleml.dataset import Instance, loadDataset
 
 # Workflow steps ---------------------------------------------------------------
 
@@ -13,9 +12,8 @@ def exampleWorkflow():
 
     dataset_filtered = dataset.filterInstances(filter_func=filterByQuality)
 
-    print("Example quality value:", dataset_filtered.getRow(
-        3).getAttribute("quality"))
+    print("Example quality value:", dataset_filtered.getRow(3).getValue("quality"))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     exampleWorkflow()

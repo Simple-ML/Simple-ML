@@ -1,0 +1,18 @@
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX sml: <https://simple-ml.de/resource/>
+PREFIX csvw: <http://www.w3.org/ns/csvw#>
+
+SELECT DISTINCT ?domain_class1 ?property ?domain_class2
+WHERE {
+	?dataset a dcat:Dataset .
+	?dataset dcterms:identifier "@datasetId@" .
+
+	?dataset sml:hasAttribute ?attribute .
+
+	?attribute sml:mapsToDomain ?domain_class1 .
+
+	?domain_class1 rdf:type sml:ClassInstance .
+	?domain_class1 ?property ?domain_class2 .
+	?domain_class2 rdf:type sml:ClassInstance .
+}

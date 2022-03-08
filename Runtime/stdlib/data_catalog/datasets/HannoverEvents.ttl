@@ -1,1963 +1,762 @@
-@base <https://simple-ml.de/resource/> .
-
-@prefix sml: <https://simple-ml.de/resource/> .
-@prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sml-mobility: <https://simple-ml.de/resource/mobility/> .
-@prefix time: <http://www.w3.org/2006/time#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix so: <http://schema.org/> .
+@prefix schema: <http://schema.org/> .
 @prefix seas: <https://w3id.org/seas/> .
+@prefix sml: <https://simple-ml.de/resource/> .
+@prefix sml-mob: <https://simple-ml.de/resource/mobility/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-### Dataset: HannoverEvents
-<simple-ml> dcat:dataset <HannoverEvents> .
-<HannoverEvents> a dcat:Dataset ;
- dcterms:identifier "HannoverEvents" ;
- dcterms:title "Events in Hannover (Germany)"@en ;
- dcterms:title "Events in Hannover"@de ;
- dcterms:description "Events in Hannover, Germany."@en ;
- dcterms:description "Ereignisse in Hannover."@de ;
- dcterms:subject "Events"@en ;
- dcterms:subject "Ereignisse"@de ;
- <creatorId> "0"^^xsd:nonNegativeInteger ;
- <numberOfInstances> "161"^^xsd:nonNegativeInteger .
+sml:simple-ml dcat:dataset sml:HannoverEvents .
 
-### File (HannoverEvents)
+sml:HannoverEvents a dcat:Dataset ;
+    dct:description "Ereignisse in Hannover."@de,
+        "Events in Hannover, Germany."@en ;
+    dct:identifier "HannoverEvents" ;
+    dct:subject "Ereignisse"@de,
+        "Events"@en ;
+    dct:title "Events in Hannover"@de,
+        "Events in Hannover (Germany)"@en ;
+    sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
+    sml:creatorId "0"^^xsd:nonNegativeInteger ;
+    sml:hasAttribute sml:HannoverEventsAttributeCategory,
+        sml:HannoverEventsAttributeName,
+        sml:HannoverEventsAttributeNoParticipants,
+        sml:HannoverEventsAttributeStartTime,
+        sml:HannoverEventsAttributeVenue ;
+    sml:hasFile sml:HannoverEventsFile ;
+    sml:hasSample sml:HannoverEventsSample ;
+    sml:numberOfInstances "161"^^xsd:nonNegativeInteger .
 
-<HannoverEvents> <hasFile> <HannoverEventsFile> .
-<HannoverEventsFile> a <TextFile> ;
- <fileLocation> "HannoverEvents.tsv" ;
- dcterms:format "text/tab-separated-values" ;
- csvw:separator "	" ;
- csvw:header "true"^^xsd:boolean ;
- csvw:null "" .
+sml:HannoverEventsAttributeCategory a sml:Attribute ;
+    dct:identifier "Category" ;
+    sml:columnIndex "2"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:HannoverEvents_so_Event ;
+    sml:mapsToProperty sml-mob:eventCategory ;
+    sml:valueType xsd:string ;
+    seas:evaluation sml:HannoverEventsAttributeCategoryAverageNumberOfCapitalisedValues,
+        sml:HannoverEventsAttributeCategoryAverageNumberOfCharacters,
+        sml:HannoverEventsAttributeCategoryAverageNumberOfDigits,
+        sml:HannoverEventsAttributeCategoryAverageNumberOfSpecialCharacters,
+        sml:HannoverEventsAttributeCategoryAverageNumberOfTokens,
+        sml:HannoverEventsAttributeCategoryNumberOfDistinctValues,
+        sml:HannoverEventsAttributeCategoryNumberOfInvalidValues,
+        sml:HannoverEventsAttributeCategoryNumberOfNullValues,
+        sml:HannoverEventsAttributeCategoryNumberOfValidNonNullValues,
+        sml:HannoverEventsAttributeCategoryNumberOfValidValues,
+        sml:HannoverEventsAttributeCategoryNumberOfValues ;
+    seas:valueDistributionValue sml:HannoverEventsAttributeCategoryValueDistributionValue0,
+        sml:HannoverEventsAttributeCategoryValueDistributionValue1,
+        sml:HannoverEventsAttributeCategoryValueDistributionValue2,
+        sml:HannoverEventsAttributeCategoryValueDistributionValue3,
+        sml:HannoverEventsAttributeCategoryValueDistributionValue4,
+        sml:HannoverEventsAttributeCategoryValueDistributionValue5,
+        sml:HannoverEventsAttributeCategoryValueDistributionValue6 .
 
-### Attributes (HannoverEvents)
+sml:HannoverEventsAttributeCategoryAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
 
-<HannoverEvents> <hasAttribute> <HannoverEventsAttributeID> .
-<HannoverEventsAttributeID> a <Attribute> ;
- dcterms:identifier "ID" ;
- <columnIndex> "0"^^xsd:integer ;
- <valueType> xsd:nonNegativeInteger .
+sml:HannoverEventsAttributeCategoryAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "5.795031055900621"^^xsd:float .
 
-<HannoverEvents> <hasAttribute> <HannoverEventsAttributeName> .
-<HannoverEventsAttributeName> a <Attribute> ;
- dcterms:identifier "Name" ;
- <columnIndex> "1"^^xsd:integer ;
- <valueType> xsd:string ;
- <mapsToDomain> <HannoverEvents_Event> ;
- <mapsToProperty> rdfs:label .
+sml:HannoverEventsAttributeCategoryAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
 
-<HannoverEvents> <hasAttribute> <HannoverEventsAttributeVenue> .
-<HannoverEventsAttributeVenue> a <Attribute> ;
- dcterms:identifier "Venue" ;
- <columnIndex> "2"^^xsd:integer ;
- <valueType> xsd:string ;
- <mapsToDomain> <HannoverEvents_Location> ;
- <mapsToProperty> rdfs:label .
+sml:HannoverEventsAttributeCategoryAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
 
-<HannoverEvents> <hasAttribute> <HannoverEventsAttributeCategory> .
-<HannoverEventsAttributeCategory> a <Attribute> ;
- dcterms:identifier "Category" ;
- <columnIndex> "3"^^xsd:integer ;
- <valueType> xsd:string ;
- <mapsToDomain> <HannoverEvents_Event> ;
- <mapsToProperty> sml-mobility:eventCategory .
+sml:HannoverEventsAttributeCategoryAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
 
-<HannoverEvents> <hasAttribute> <HannoverEventsAttributeStartTime> .
-<HannoverEventsAttributeStartTime> a <Attribute> ;
- dcterms:identifier "Start Time" ;
- <columnIndex> "4"^^xsd:integer ;
- <valueType> xsd:dateTime ;
- <mapsToDomain> <HannoverEvents_DateTimeDescription> ;
- <mapsToProperty> time:inXSDDateTime .
+sml:HannoverEventsAttributeCategoryNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 7 .
 
-<HannoverEvents> <hasAttribute> <HannoverEventsAttributeNoParticipants> .
-<HannoverEventsAttributeNoParticipants> a <Attribute> ;
- dcterms:identifier "No Participants" ;
- <columnIndex> "5"^^xsd:integer ;
- <valueType> xsd:nonNegativeInteger ;
- <mapsToDomain> <HannoverEvents_Event> ;
- <mapsToProperty> sml-mobility:numberOfParticipants .
+sml:HannoverEventsAttributeCategoryNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
 
-<HannoverEvents> <hasAttribute> <HannoverEventsAttributeReoccurring> .
-<HannoverEventsAttributeReoccurring> a <Attribute> ;
- dcterms:identifier "Reoccurring" ;
- <columnIndex> "6"^^xsd:integer ;
- <valueType> xsd:boolean .
+sml:HannoverEventsAttributeCategoryNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
 
-<HannoverEvents> <hasAttribute> <HannoverEventsAttributeMostPopularEntity> .
-<HannoverEventsAttributeMostPopularEntity> a <Attribute> ;
- dcterms:identifier "Most Popular Entity" ;
- <columnIndex> "7"^^xsd:integer ;
- <valueType> xsd:string .
+sml:HannoverEventsAttributeCategoryNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 161 .
 
-<HannoverEvents> <hasAttribute> <HannoverEventsAttributeEntityPopularity> .
-<HannoverEventsAttributeEntityPopularity> a <Attribute> ;
- dcterms:identifier "Entity Popularity" ;
- <columnIndex> "8"^^xsd:integer ;
- <valueType> xsd:nonNegativeInteger .
+sml:HannoverEventsAttributeCategoryNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 161 .
 
-<HannoverEvents> <hasAttribute> <HannoverEventsAttributeAdditionalInformation> .
-<HannoverEventsAttributeAdditionalInformation> a <Attribute> ;
- dcterms:identifier "Additional Information" ;
- <columnIndex> "9"^^xsd:integer ;
- <valueType> xsd:string .
+sml:HannoverEventsAttributeCategoryNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 161 .
 
-### Semantic graph (HannoverEvents)
+sml:HannoverEventsAttributeCategoryValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "concert" ;
+    sml:numberOfInstancesOfValue "70"^^xsd:nonNegativeInteger .
 
-<HannoverEvents_Event> rdf:type <ClassInstance> ;
- <mapsTo> so:Event ;
- dcterms:spatial <HannoverEvents_Location> ;
- time:hasTime <HannoverEvents_DateTimeDescription> .
-<HannoverEvents_Location> rdf:type <ClassInstance> ;
- <mapsTo> dcterms:Location .
-<HannoverEvents_DateTimeDescription> rdf:type <ClassInstance> ;
- <mapsTo> time:DateTimeDescription .
+sml:HannoverEventsAttributeCategoryValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "show" ;
+    sml:numberOfInstancesOfValue "23"^^xsd:nonNegativeInteger .
 
-### Statistics (HannoverEvents)
-<HannoverEvents> <numberOfInstances> "161"^^xsd:integer .
-### Statistics for "ID" (HannoverEvents)
-<HannoverEventsAttributeID> seas:evaluation <HannoverEventsAttributeIDNumberOfValues> ;
- seas:evaluation <HannoverEventsAttributeIDNumberOfNullValues> ;
- seas:evaluation <HannoverEventsAttributeIDNumberOfValidValues> ;
- seas:evaluation <HannoverEventsAttributeIDNumberOfValidNonNullValues> ;
- seas:evaluation <HannoverEventsAttributeIDNumberOfInvalidValues> ;
- seas:evaluation <HannoverEventsAttributeIDAverageNumberOfDigits> ;
- seas:evaluation <HannoverEventsAttributeIDAverageNumberOfCharacters> ;
- seas:evaluation <HannoverEventsAttributeIDAverageNumberOfTokens> ;
- seas:evaluation <HannoverEventsAttributeIDAverageNumberOfCapitalisedValues> ;
- seas:evaluation <HannoverEventsAttributeIDAverageNumberOfSpecialCharacters> ;
- seas:evaluation <HannoverEventsAttributeIDMinimum> ;
- seas:evaluation <HannoverEventsAttributeIDMaximum> ;
- seas:evaluation <HannoverEventsAttributeIDMean> ;
- seas:evaluation <HannoverEventsAttributeIDNumberOfDistinctValues> ;
- seas:evaluation <HannoverEventsAttributeIDStandardDeviation> ;
- seas:evaluation <HannoverEventsAttributeIDQuartile0> ;
- seas:evaluation <HannoverEventsAttributeIDQuartile1> ;
- seas:evaluation <HannoverEventsAttributeIDQuartile2> ;
- seas:evaluation <HannoverEventsAttributeIDQuartile3> ;
- seas:evaluation <HannoverEventsAttributeIDQuartile4> ;
- seas:evaluation <HannoverEventsAttributeIDDecile0> ;
- seas:evaluation <HannoverEventsAttributeIDDecile1> ;
- seas:evaluation <HannoverEventsAttributeIDDecile2> ;
- seas:evaluation <HannoverEventsAttributeIDDecile3> ;
- seas:evaluation <HannoverEventsAttributeIDDecile4> ;
- seas:evaluation <HannoverEventsAttributeIDDecile5> ;
- seas:evaluation <HannoverEventsAttributeIDDecile6> ;
- seas:evaluation <HannoverEventsAttributeIDDecile7> ;
- seas:evaluation <HannoverEventsAttributeIDDecile8> ;
- seas:evaluation <HannoverEventsAttributeIDDecile9> ;
- seas:evaluation <HannoverEventsAttributeIDDecile10> ;
- seas:evaluation <HannoverEventsAttributeIDNumberOfOutliersBelow> ;
- seas:evaluation <HannoverEventsAttributeIDNumberOfOutliersAbove> ;
- seas:evaluation <HannoverEventsAttributeIDHistogram0> ;
- seas:evaluation <HannoverEventsAttributeIDHistogram1> ;
- seas:evaluation <HannoverEventsAttributeIDHistogram2> ;
- seas:evaluation <HannoverEventsAttributeIDHistogram3> ;
- seas:evaluation <HannoverEventsAttributeIDHistogram4> ;
- seas:evaluation <HannoverEventsAttributeIDHistogram5> ;
- seas:evaluation <HannoverEventsAttributeIDHistogram6> ;
- seas:evaluation <HannoverEventsAttributeIDHistogram7> ;
- seas:evaluation <HannoverEventsAttributeIDHistogram8> ;
- seas:evaluation <HannoverEventsAttributeIDHistogram9> ;
- seas:evaluation <HannoverEventsAttributeIDMedian> .
-<HannoverEventsAttributeIDNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeIDNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeIDNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeIDNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeIDNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeIDAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "2.6335403726708075"^^xsd:double .
-<HannoverEventsAttributeIDAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "2.6335403726708075"^^xsd:double .
-<HannoverEventsAttributeIDAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<HannoverEventsAttributeIDAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<HannoverEventsAttributeIDAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<HannoverEventsAttributeIDMinimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "2"^^xsd:integer .
-<HannoverEventsAttributeIDMaximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "314"^^xsd:integer .
-<HannoverEventsAttributeIDMean> rdf:type seas:DistributionMeanEvaluation ;
- seas:evaluatedValue "157.63354037267084"^^xsd:double .
-<HannoverEventsAttributeIDNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeIDStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
- seas:evaluatedValue "92.42420471939384"^^xsd:double .
-<HannoverEventsAttributeIDQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "2"^^xsd:integer ;
- seas:rank "0"^^xsd:integer .
-<HannoverEventsAttributeIDQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "72.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer .
-<HannoverEventsAttributeIDQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "156.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer .
-<HannoverEventsAttributeIDQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "241.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer .
-<HannoverEventsAttributeIDQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "314"^^xsd:integer ;
- seas:rank "4"^^xsd:integer .
-<HannoverEventsAttributeIDDecile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2"^^xsd:integer ;
- seas:rank "0"^^xsd:integer .
-<HannoverEventsAttributeIDDecile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "38.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer .
-<HannoverEventsAttributeIDDecile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "62.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer .
-<HannoverEventsAttributeIDDecile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "84.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer .
-<HannoverEventsAttributeIDDecile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "120.0"^^xsd:double ;
- seas:rank "4"^^xsd:integer .
-<HannoverEventsAttributeIDDecile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "156.0"^^xsd:double ;
- seas:rank "5"^^xsd:integer .
-<HannoverEventsAttributeIDDecile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "187.0"^^xsd:double ;
- seas:rank "6"^^xsd:integer .
-<HannoverEventsAttributeIDDecile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "223.0"^^xsd:double ;
- seas:rank "7"^^xsd:integer .
-<HannoverEventsAttributeIDDecile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "257.0"^^xsd:double ;
- seas:rank "8"^^xsd:integer .
-<HannoverEventsAttributeIDDecile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "286.0"^^xsd:double ;
- seas:rank "9"^^xsd:integer .
-<HannoverEventsAttributeIDDecile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "314"^^xsd:integer ;
- seas:rank "10"^^xsd:integer .
-<HannoverEventsAttributeIDNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeIDNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeIDHistogram0> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "12"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "2"^^xsd:integer ;
- <bucketMaximum> "33"^^xsd:integer .
-<HannoverEventsAttributeIDHistogram1> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "34"^^xsd:integer ;
- <instancesInBucket> "22"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "64"^^xsd:integer .
-<HannoverEventsAttributeIDHistogram2> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "95"^^xsd:integer ;
- <instancesInBucket> "21"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "65"^^xsd:integer .
-<HannoverEventsAttributeIDHistogram3> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "126"^^xsd:integer ;
- <bucketMinimum> "96"^^xsd:integer ;
- <instancesInBucket> "15"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeIDHistogram4> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "158"^^xsd:integer ;
- <bucketMinimum> "127"^^xsd:integer ;
- <instancesInBucket> "12"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeIDHistogram5> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "158"^^xsd:integer ;
- <instancesInBucket> "17"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "189"^^xsd:integer .
-<HannoverEventsAttributeIDHistogram6> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "220"^^xsd:integer ;
- <bucketMinimum> "190"^^xsd:integer ;
- <instancesInBucket> "11"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeIDHistogram7> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "221"^^xsd:integer ;
- <instancesInBucket> "15"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "251"^^xsd:integer .
-<HannoverEventsAttributeIDHistogram8> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "282"^^xsd:integer ;
- <bucketMinimum> "252"^^xsd:integer ;
- <instancesInBucket> "18"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeIDHistogram9> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "283"^^xsd:integer ;
- <instancesInBucket> "18"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "314"^^xsd:integer .
-<HannoverEventsAttributeIDMedian> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "156.0"^^xsd:double .
-### Statistics for "Name" (HannoverEvents)
-<HannoverEventsAttributeName> seas:evaluation <HannoverEventsAttributeNameNumberOfValues> ;
- seas:evaluation <HannoverEventsAttributeNameNumberOfNullValues> ;
- seas:evaluation <HannoverEventsAttributeNameNumberOfValidValues> ;
- seas:evaluation <HannoverEventsAttributeNameNumberOfValidNonNullValues> ;
- seas:evaluation <HannoverEventsAttributeNameNumberOfInvalidValues> ;
- seas:evaluation <HannoverEventsAttributeNameAverageNumberOfDigits> ;
- seas:evaluation <HannoverEventsAttributeNameAverageNumberOfCharacters> ;
- seas:evaluation <HannoverEventsAttributeNameAverageNumberOfTokens> ;
- seas:evaluation <HannoverEventsAttributeNameAverageNumberOfCapitalisedValues> ;
- seas:evaluation <HannoverEventsAttributeNameAverageNumberOfSpecialCharacters> ;
- seas:evaluation <HannoverEventsAttributeNameNumberOfDistinctValues> ;
- seas:evaluation <HannoverEventsAttributeNameMinimum> ;
- seas:evaluation <HannoverEventsAttributeNameMaximum> ;
- seas:evaluation <HannoverEventsAttributeNameMedian> ;
- seas:evaluation <HannoverEventsAttributeNameMean> ;
- seas:evaluation <HannoverEventsAttributeNameStandardDeviation> ;
- seas:evaluation <HannoverEventsAttributeNameNumberOfOutliersBelow> ;
- seas:evaluation <HannoverEventsAttributeNameNumberOfOutliersAbove> ;
- seas:evaluation <HannoverEventsAttributeNameHistogram0> ;
- seas:evaluation <HannoverEventsAttributeNameHistogram1> ;
- seas:evaluation <HannoverEventsAttributeNameHistogram2> ;
- seas:evaluation <HannoverEventsAttributeNameHistogram3> ;
- seas:evaluation <HannoverEventsAttributeNameHistogram4> ;
- seas:evaluation <HannoverEventsAttributeNameHistogram5> ;
- seas:evaluation <HannoverEventsAttributeNameHistogram6> ;
- seas:evaluation <HannoverEventsAttributeNameHistogram7> ;
- seas:evaluation <HannoverEventsAttributeNameHistogram8> ;
- seas:evaluation <HannoverEventsAttributeNameHistogram9> ;
- seas:evaluation <HannoverEventsAttributeNameQuartile0> ;
- seas:evaluation <HannoverEventsAttributeNameQuartile1> ;
- seas:evaluation <HannoverEventsAttributeNameQuartile2> ;
- seas:evaluation <HannoverEventsAttributeNameQuartile3> ;
- seas:evaluation <HannoverEventsAttributeNameQuartile4> ;
- seas:evaluation <HannoverEventsAttributeNameDecile0> ;
- seas:evaluation <HannoverEventsAttributeNameDecile1> ;
- seas:evaluation <HannoverEventsAttributeNameDecile2> ;
- seas:evaluation <HannoverEventsAttributeNameDecile3> ;
- seas:evaluation <HannoverEventsAttributeNameDecile4> ;
- seas:evaluation <HannoverEventsAttributeNameDecile5> ;
- seas:evaluation <HannoverEventsAttributeNameDecile6> ;
- seas:evaluation <HannoverEventsAttributeNameDecile7> ;
- seas:evaluation <HannoverEventsAttributeNameDecile8> ;
- seas:evaluation <HannoverEventsAttributeNameDecile9> ;
- seas:evaluation <HannoverEventsAttributeNameDecile10> .
-<HannoverEventsAttributeNameNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNameNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNameNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNameNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNameNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNameAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "0.37267080745341613"^^xsd:double .
-<HannoverEventsAttributeNameAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "20.720496894409937"^^xsd:double .
-<HannoverEventsAttributeNameAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "3.142857142857143"^^xsd:double .
-<HannoverEventsAttributeNameAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "0.9751552795031055"^^xsd:double .
-<HannoverEventsAttributeNameAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "2.9440993788819876"^^xsd:double .
-<HannoverEventsAttributeNameNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "120"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNameMinimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "4"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameMaximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "66"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameMedian> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "16.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameMean> rdf:type seas:DistributionMeanEvaluation ;
- seas:evaluatedValue "20.720496894409933"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
- seas:evaluatedValue "12.99096377300594"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "2.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameHistogram0> rdf:type <DistributionHistogramEvaluation> ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "9"^^xsd:integer ;
- <instancesInBucket> "25"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "4"^^xsd:integer .
-<HannoverEventsAttributeNameHistogram1> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "10"^^xsd:integer ;
- <bucketMaximum> "14"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "48"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNameHistogram2> rdf:type <DistributionHistogramEvaluation> ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "21"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "19"^^xsd:integer ;
- <bucketMinimum> "15"^^xsd:integer .
-<HannoverEventsAttributeNameHistogram3> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "20"^^xsd:integer ;
- <bucketMaximum> "24"^^xsd:integer ;
- <instancesInBucket> "17"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameHistogram4> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "25"^^xsd:integer ;
- <instancesInBucket> "16"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "30"^^xsd:integer .
-<HannoverEventsAttributeNameHistogram5> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "35"^^xsd:integer ;
- <instancesInBucket> "10"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "30"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameHistogram6> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "36"^^xsd:integer ;
- <bucketMaximum> "40"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "10"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNameHistogram7> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "45"^^xsd:integer ;
- <instancesInBucket> "5"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "41"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameHistogram8> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "50"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "3"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "46"^^xsd:integer .
-<HannoverEventsAttributeNameHistogram9> rdf:type <DistributionHistogramEvaluation> ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "56"^^xsd:integer ;
- <bucketMinimum> "51"^^xsd:integer ;
- <instancesInBucket> "4"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNameQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "4"^^xsd:integer ;
- seas:rank "0"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "11.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "16.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "29.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "66"^^xsd:integer ;
- seas:rank "4"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameDecile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "4"^^xsd:integer ;
- seas:rank "0"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameDecile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "8.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameDecile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "10.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameDecile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "13.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameDecile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "13.0"^^xsd:double ;
- seas:rank "4"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameDecile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "16.0"^^xsd:double ;
- seas:rank "5"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameDecile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "20.0"^^xsd:double ;
- seas:rank "6"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameDecile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "27.0"^^xsd:double ;
- seas:rank "7"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameDecile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "32.0"^^xsd:double ;
- seas:rank "8"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameDecile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "38.0"^^xsd:double ;
- seas:rank "9"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeNameDecile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "66"^^xsd:integer ;
- seas:rank "10"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-### Statistics for "Venue" (HannoverEvents)
-<HannoverEventsAttributeVenue> seas:evaluation <HannoverEventsAttributeVenueNumberOfValues> ;
- seas:evaluation <HannoverEventsAttributeVenueNumberOfNullValues> ;
- seas:evaluation <HannoverEventsAttributeVenueNumberOfValidValues> ;
- seas:evaluation <HannoverEventsAttributeVenueNumberOfValidNonNullValues> ;
- seas:evaluation <HannoverEventsAttributeVenueNumberOfInvalidValues> ;
- seas:evaluation <HannoverEventsAttributeVenueAverageNumberOfDigits> ;
- seas:evaluation <HannoverEventsAttributeVenueAverageNumberOfCharacters> ;
- seas:evaluation <HannoverEventsAttributeVenueAverageNumberOfTokens> ;
- seas:evaluation <HannoverEventsAttributeVenueAverageNumberOfCapitalisedValues> ;
- seas:evaluation <HannoverEventsAttributeVenueAverageNumberOfSpecialCharacters> ;
- seas:evaluation <HannoverEventsAttributeVenueNumberOfDistinctValues> ;
- seas:evaluation <HannoverEventsAttributeVenueMinimum> ;
- seas:evaluation <HannoverEventsAttributeVenueMaximum> ;
- seas:evaluation <HannoverEventsAttributeVenueMedian> ;
- seas:evaluation <HannoverEventsAttributeVenueMean> ;
- seas:evaluation <HannoverEventsAttributeVenueStandardDeviation> ;
- seas:evaluation <HannoverEventsAttributeVenueNumberOfOutliersBelow> ;
- seas:evaluation <HannoverEventsAttributeVenueNumberOfOutliersAbove> ;
- seas:evaluation <HannoverEventsAttributeVenueHistogram0> ;
- seas:evaluation <HannoverEventsAttributeVenueHistogram1> ;
- seas:evaluation <HannoverEventsAttributeVenueHistogram2> ;
- seas:evaluation <HannoverEventsAttributeVenueHistogram3> ;
- seas:evaluation <HannoverEventsAttributeVenueHistogram4> ;
- seas:evaluation <HannoverEventsAttributeVenueHistogram5> ;
- seas:evaluation <HannoverEventsAttributeVenueHistogram6> ;
- seas:evaluation <HannoverEventsAttributeVenueHistogram7> ;
- seas:evaluation <HannoverEventsAttributeVenueHistogram8> ;
- seas:evaluation <HannoverEventsAttributeVenueHistogram9> ;
- seas:evaluation <HannoverEventsAttributeVenueQuartile0> ;
- seas:evaluation <HannoverEventsAttributeVenueQuartile1> ;
- seas:evaluation <HannoverEventsAttributeVenueQuartile2> ;
- seas:evaluation <HannoverEventsAttributeVenueQuartile3> ;
- seas:evaluation <HannoverEventsAttributeVenueQuartile4> ;
- seas:evaluation <HannoverEventsAttributeVenueDecile0> ;
- seas:evaluation <HannoverEventsAttributeVenueDecile1> ;
- seas:evaluation <HannoverEventsAttributeVenueDecile2> ;
- seas:evaluation <HannoverEventsAttributeVenueDecile3> ;
- seas:evaluation <HannoverEventsAttributeVenueDecile4> ;
- seas:evaluation <HannoverEventsAttributeVenueDecile5> ;
- seas:evaluation <HannoverEventsAttributeVenueDecile6> ;
- seas:evaluation <HannoverEventsAttributeVenueDecile7> ;
- seas:evaluation <HannoverEventsAttributeVenueDecile8> ;
- seas:evaluation <HannoverEventsAttributeVenueDecile9> ;
- seas:evaluation <HannoverEventsAttributeVenueDecile10> ;
- <hasValueDistribution> <HannoverEventsAttributeVenueValueDistribution> .
-<HannoverEventsAttributeVenueNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeVenueNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeVenueNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeVenueNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeVenueNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeVenueAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<HannoverEventsAttributeVenueAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "11.434782608695652"^^xsd:double .
-<HannoverEventsAttributeVenueAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "1.9565217391304348"^^xsd:double .
-<HannoverEventsAttributeVenueAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<HannoverEventsAttributeVenueAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "1.1180124223602483"^^xsd:double .
-<HannoverEventsAttributeVenueNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "7"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeVenueMinimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "7"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueMaximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "17"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueMedian> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "12.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueMean> rdf:type seas:DistributionMeanEvaluation ;
- seas:evaluatedValue "11.434782608695656"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
- seas:evaluatedValue "3.689143885604852"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueHistogram0> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "7"^^xsd:integer ;
- <instancesInBucket> "49"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "8"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueHistogram1> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "24"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "8"^^xsd:integer ;
- <bucketMaximum> "9"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueHistogram2> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "10"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string ;
- <bucketMinimum> "9"^^xsd:integer .
-<HannoverEventsAttributeVenueHistogram3> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "10"^^xsd:integer ;
- <bucketMaximum> "11"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueHistogram4> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "12"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <bucketMinimum> "11"^^xsd:integer ;
- <instancesInBucket> "20"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeVenueHistogram5> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "12"^^xsd:integer ;
- <bucketMaximum> "13"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueHistogram6> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "13"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "14"^^xsd:integer .
-<HannoverEventsAttributeVenueHistogram7> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "15"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "57"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "14"^^xsd:integer .
-<HannoverEventsAttributeVenueHistogram8> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "16"^^xsd:integer ;
- <bucketMinimum> "15"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueHistogram9> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "16"^^xsd:integer ;
- <bucketMaximum> "17"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "11"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeVenueQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "7"^^xsd:integer ;
- seas:rank "0"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "7.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "12.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "15.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "17"^^xsd:integer ;
- seas:rank "4"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueDecile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "7"^^xsd:integer ;
- seas:rank "0"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueDecile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "7.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueDecile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "7.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueDecile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "7.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueDecile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "9.0"^^xsd:double ;
- seas:rank "4"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueDecile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "12.0"^^xsd:double ;
- seas:rank "5"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueDecile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "15.0"^^xsd:double ;
- seas:rank "6"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueDecile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "15.0"^^xsd:double ;
- seas:rank "7"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueDecile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "15.0"^^xsd:double ;
- seas:rank "8"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueDecile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "15.0"^^xsd:double ;
- seas:rank "9"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueDecile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "17"^^xsd:integer ;
- seas:rank "10"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeVenueValueDistribution> rdf:type <ValueDistribution> ;
- <valueDistributionValue> <HannoverEventsAttributeVenueValueDistributionValue0> ;
- <valueDistributionValue> <HannoverEventsAttributeVenueValueDistributionValue1> ;
- <valueDistributionValue> <HannoverEventsAttributeVenueValueDistributionValue2> ;
- <valueDistributionValue> <HannoverEventsAttributeVenueValueDistributionValue3> ;
- <valueDistributionValue> <HannoverEventsAttributeVenueValueDistributionValue4> ;
- <valueDistributionValue> <HannoverEventsAttributeVenueValueDistributionValue5> ;
- <valueDistributionValue> <HannoverEventsAttributeVenueValueDistributionValue6> .
-<HannoverEventsAttributeVenueValueDistributionValue0> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "Capitol"^^xsd:string ;
- <numberOfInstancesOfValue> "49"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeVenueValueDistributionValue1> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "Theater am Aegi"^^xsd:string ;
- <numberOfInstancesOfValue> "39"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeVenueValueDistributionValue2> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "Swiss Life Hall"^^xsd:string ;
- <numberOfInstancesOfValue> "18"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeVenueValueDistributionValue3> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "Kuppelsaal im HCC"^^xsd:string ;
- <numberOfInstancesOfValue> "11"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeVenueValueDistributionValue4> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "TUI Arena"^^xsd:string ;
- <numberOfInstancesOfValue> "18"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeVenueValueDistributionValue5> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "HDI-Arena"^^xsd:string ;
- <numberOfInstancesOfValue> "6"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeVenueValueDistributionValue6> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "Messegelände"^^xsd:string ;
- <numberOfInstancesOfValue> "20"^^xsd:nonNegativeInteger .
-### Statistics for "Category" (HannoverEvents)
-<HannoverEventsAttributeCategory> seas:evaluation <HannoverEventsAttributeCategoryNumberOfValues> ;
- seas:evaluation <HannoverEventsAttributeCategoryNumberOfNullValues> ;
- seas:evaluation <HannoverEventsAttributeCategoryNumberOfValidValues> ;
- seas:evaluation <HannoverEventsAttributeCategoryNumberOfValidNonNullValues> ;
- seas:evaluation <HannoverEventsAttributeCategoryNumberOfInvalidValues> ;
- seas:evaluation <HannoverEventsAttributeCategoryAverageNumberOfDigits> ;
- seas:evaluation <HannoverEventsAttributeCategoryAverageNumberOfCharacters> ;
- seas:evaluation <HannoverEventsAttributeCategoryAverageNumberOfTokens> ;
- seas:evaluation <HannoverEventsAttributeCategoryAverageNumberOfCapitalisedValues> ;
- seas:evaluation <HannoverEventsAttributeCategoryAverageNumberOfSpecialCharacters> ;
- seas:evaluation <HannoverEventsAttributeCategoryNumberOfDistinctValues> ;
- seas:evaluation <HannoverEventsAttributeCategoryMinimum> ;
- seas:evaluation <HannoverEventsAttributeCategoryMaximum> ;
- seas:evaluation <HannoverEventsAttributeCategoryMedian> ;
- seas:evaluation <HannoverEventsAttributeCategoryMean> ;
- seas:evaluation <HannoverEventsAttributeCategoryStandardDeviation> ;
- seas:evaluation <HannoverEventsAttributeCategoryNumberOfOutliersBelow> ;
- seas:evaluation <HannoverEventsAttributeCategoryNumberOfOutliersAbove> ;
- seas:evaluation <HannoverEventsAttributeCategoryHistogram0> ;
- seas:evaluation <HannoverEventsAttributeCategoryHistogram1> ;
- seas:evaluation <HannoverEventsAttributeCategoryHistogram2> ;
- seas:evaluation <HannoverEventsAttributeCategoryHistogram3> ;
- seas:evaluation <HannoverEventsAttributeCategoryHistogram4> ;
- seas:evaluation <HannoverEventsAttributeCategoryHistogram5> ;
- seas:evaluation <HannoverEventsAttributeCategoryHistogram6> ;
- seas:evaluation <HannoverEventsAttributeCategoryHistogram7> ;
- seas:evaluation <HannoverEventsAttributeCategoryHistogram8> ;
- seas:evaluation <HannoverEventsAttributeCategoryHistogram9> ;
- seas:evaluation <HannoverEventsAttributeCategoryQuartile0> ;
- seas:evaluation <HannoverEventsAttributeCategoryQuartile1> ;
- seas:evaluation <HannoverEventsAttributeCategoryQuartile2> ;
- seas:evaluation <HannoverEventsAttributeCategoryQuartile3> ;
- seas:evaluation <HannoverEventsAttributeCategoryQuartile4> ;
- seas:evaluation <HannoverEventsAttributeCategoryDecile0> ;
- seas:evaluation <HannoverEventsAttributeCategoryDecile1> ;
- seas:evaluation <HannoverEventsAttributeCategoryDecile2> ;
- seas:evaluation <HannoverEventsAttributeCategoryDecile3> ;
- seas:evaluation <HannoverEventsAttributeCategoryDecile4> ;
- seas:evaluation <HannoverEventsAttributeCategoryDecile5> ;
- seas:evaluation <HannoverEventsAttributeCategoryDecile6> ;
- seas:evaluation <HannoverEventsAttributeCategoryDecile7> ;
- seas:evaluation <HannoverEventsAttributeCategoryDecile8> ;
- seas:evaluation <HannoverEventsAttributeCategoryDecile9> ;
- seas:evaluation <HannoverEventsAttributeCategoryDecile10> ;
- <hasValueDistribution> <HannoverEventsAttributeCategoryValueDistribution> .
-<HannoverEventsAttributeCategoryNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeCategoryNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeCategoryNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeCategoryNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeCategoryNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeCategoryAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<HannoverEventsAttributeCategoryAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "5.795031055900621"^^xsd:double .
-<HannoverEventsAttributeCategoryAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<HannoverEventsAttributeCategoryAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<HannoverEventsAttributeCategoryAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<HannoverEventsAttributeCategoryNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "7"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeCategoryMinimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "4"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryMaximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "8"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryMedian> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "6.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryMean> rdf:type seas:DistributionMeanEvaluation ;
- seas:evaluatedValue "5.7950310559006235"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
- seas:evaluatedValue "1.3375257587349485"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryHistogram0> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "4"^^xsd:integer ;
- <bucketMinimum> "4"^^xsd:integer ;
- <instancesInBucket> "42"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryHistogram1> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "4"^^xsd:integer ;
- <bucketMinimum> "5"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeCategoryHistogram2> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "5"^^xsd:integer ;
- <bucketMaximum> "5"^^xsd:integer ;
- <instancesInBucket> "31"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryHistogram3> rdf:type <DistributionHistogramEvaluation> ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "6"^^xsd:integer ;
- <bucketMaximum> "5"^^xsd:integer .
-<HannoverEventsAttributeCategoryHistogram4> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "6"^^xsd:integer ;
- <instancesInBucket> "12"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "6"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryHistogram5> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "6"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "6"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryHistogram6> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "6"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "7"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryHistogram7> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "7"^^xsd:integer ;
- <instancesInBucket> "70"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string ;
- <bucketMinimum> "7"^^xsd:integer .
-<HannoverEventsAttributeCategoryHistogram8> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "8"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "7"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryHistogram9> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "8"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <bucketMinimum> "8"^^xsd:integer ;
- <instancesInBucket> "6"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeCategoryQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "4"^^xsd:integer ;
- seas:rank "0"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "4.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "6.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "7.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "8"^^xsd:integer ;
- seas:rank "4"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryDecile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "4"^^xsd:integer ;
- seas:rank "0"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryDecile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "4.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryDecile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "4.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryDecile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "5.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryDecile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "5.0"^^xsd:double ;
- seas:rank "4"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryDecile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "6.0"^^xsd:double ;
- seas:rank "5"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryDecile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "7.0"^^xsd:double ;
- seas:rank "6"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryDecile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "7.0"^^xsd:double ;
- seas:rank "7"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryDecile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "7.0"^^xsd:double ;
- seas:rank "8"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryDecile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "7.0"^^xsd:double ;
- seas:rank "9"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryDecile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "8"^^xsd:integer ;
- seas:rank "10"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeCategoryValueDistribution> rdf:type <ValueDistribution> ;
- <valueDistributionValue> <HannoverEventsAttributeCategoryValueDistributionValue0> ;
- <valueDistributionValue> <HannoverEventsAttributeCategoryValueDistributionValue1> ;
- <valueDistributionValue> <HannoverEventsAttributeCategoryValueDistributionValue2> ;
- <valueDistributionValue> <HannoverEventsAttributeCategoryValueDistributionValue3> ;
- <valueDistributionValue> <HannoverEventsAttributeCategoryValueDistributionValue4> ;
- <valueDistributionValue> <HannoverEventsAttributeCategoryValueDistributionValue5> ;
- <valueDistributionValue> <HannoverEventsAttributeCategoryValueDistributionValue6> .
-<HannoverEventsAttributeCategoryValueDistributionValue0> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "other"^^xsd:string ;
- <numberOfInstancesOfValue> "16"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeCategoryValueDistributionValue1> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "comedy"^^xsd:string ;
- <numberOfInstancesOfValue> "12"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeCategoryValueDistributionValue2> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "show"^^xsd:string ;
- <numberOfInstancesOfValue> "23"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeCategoryValueDistributionValue3> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "concert"^^xsd:string ;
- <numberOfInstancesOfValue> "70"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeCategoryValueDistributionValue4> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "fair"^^xsd:string ;
- <numberOfInstancesOfValue> "19"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeCategoryValueDistributionValue5> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "football"^^xsd:string ;
- <numberOfInstancesOfValue> "6"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeCategoryValueDistributionValue6> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "party"^^xsd:string ;
- <numberOfInstancesOfValue> "15"^^xsd:nonNegativeInteger .
-### Statistics for "Start Time" (HannoverEvents)
-<HannoverEventsAttributeStartTime> seas:evaluation <HannoverEventsAttributeStartTimeNumberOfValues> ;
- seas:evaluation <HannoverEventsAttributeStartTimeNumberOfNullValues> ;
- seas:evaluation <HannoverEventsAttributeStartTimeNumberOfValidValues> ;
- seas:evaluation <HannoverEventsAttributeStartTimeNumberOfValidNonNullValues> ;
- seas:evaluation <HannoverEventsAttributeStartTimeNumberOfInvalidValues> ;
- seas:evaluation <HannoverEventsAttributeStartTimeAverageNumberOfDigits> ;
- seas:evaluation <HannoverEventsAttributeStartTimeAverageNumberOfCharacters> ;
- seas:evaluation <HannoverEventsAttributeStartTimeAverageNumberOfTokens> ;
- seas:evaluation <HannoverEventsAttributeStartTimeAverageNumberOfCapitalisedValues> ;
- seas:evaluation <HannoverEventsAttributeStartTimeAverageNumberOfSpecialCharacters> ;
- seas:evaluation <HannoverEventsAttributeStartTimeNumberOfDistinctValues> ;
- seas:evaluation <HannoverEventsAttributeStartTimeNumberOfOutliersBelow> ;
- seas:evaluation <HannoverEventsAttributeStartTimeNumberOfOutliersAbove> ;
- seas:evaluation <HannoverEventsAttributeStartTimeHistogram0> ;
- seas:evaluation <HannoverEventsAttributeStartTimeHistogram1> ;
- seas:evaluation <HannoverEventsAttributeStartTimeHistogram2> ;
- seas:evaluation <HannoverEventsAttributeStartTimeHistogram3> ;
- seas:evaluation <HannoverEventsAttributeStartTimeHistogram4> ;
- seas:evaluation <HannoverEventsAttributeStartTimeHistogram5> ;
- seas:evaluation <HannoverEventsAttributeStartTimeHistogram6> ;
- seas:evaluation <HannoverEventsAttributeStartTimeHistogram7> ;
- seas:evaluation <HannoverEventsAttributeStartTimeHistogram8> ;
- seas:evaluation <HannoverEventsAttributeStartTimeHistogram9> ;
- seas:evaluation <HannoverEventsAttributeStartTimeminimum> ;
- seas:evaluation <HannoverEventsAttributeStartTimemaximum> ;
- seas:evaluation <HannoverEventsAttributeStartTimemedian> ;
- seas:evaluation <HannoverEventsAttributeStartTimeQuartile0> ;
- seas:evaluation <HannoverEventsAttributeStartTimeQuartile1> ;
- seas:evaluation <HannoverEventsAttributeStartTimeQuartile2> ;
- seas:evaluation <HannoverEventsAttributeStartTimeQuartile3> ;
- seas:evaluation <HannoverEventsAttributeStartTimeQuartile4> ;
- seas:evaluation <HannoverEventsAttributeStartTimeDecile0> ;
- seas:evaluation <HannoverEventsAttributeStartTimeDecile1> ;
- seas:evaluation <HannoverEventsAttributeStartTimeDecile2> ;
- seas:evaluation <HannoverEventsAttributeStartTimeDecile3> ;
- seas:evaluation <HannoverEventsAttributeStartTimeDecile4> ;
- seas:evaluation <HannoverEventsAttributeStartTimeDecile5> ;
- seas:evaluation <HannoverEventsAttributeStartTimeDecile6> ;
- seas:evaluation <HannoverEventsAttributeStartTimeDecile7> ;
- seas:evaluation <HannoverEventsAttributeStartTimeDecile8> ;
- seas:evaluation <HannoverEventsAttributeStartTimeDecile9> ;
- seas:evaluation <HannoverEventsAttributeStartTimeDecile10> .
-<HannoverEventsAttributeStartTimeNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeStartTimeNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeStartTimeNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeStartTimeNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeStartTimeNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeStartTimeAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "13.0"^^xsd:double .
-<HannoverEventsAttributeStartTimeAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "13.0"^^xsd:double .
-<HannoverEventsAttributeStartTimeAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<HannoverEventsAttributeStartTimeAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<HannoverEventsAttributeStartTimeAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<HannoverEventsAttributeStartTimeNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "146"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeStartTimeNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeStartTimeNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "11"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeStartTimeHistogram0> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "26"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "2017-10-12T10:00:00"^^xsd:dateTime ;
- <bucketMaximum> "2017-10-22T10:36:00"^^xsd:dateTime .
-<HannoverEventsAttributeStartTimeHistogram1> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "16"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "2017-10-22T10:36:00"^^xsd:dateTime ;
- <bucketMaximum> "2017-11-01T10:12:00"^^xsd:dateTime .
-<HannoverEventsAttributeStartTimeHistogram2> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "2017-11-11T10:48:00"^^xsd:dateTime ;
- <instancesInBucket> "10"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "2017-11-01T10:12:00"^^xsd:dateTime .
-<HannoverEventsAttributeStartTimeHistogram3> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "2017-11-11T10:48:00"^^xsd:dateTime ;
- <bucketMaximum> "2017-11-21T11:24:00"^^xsd:dateTime ;
- <instancesInBucket> "24"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeStartTimeHistogram4> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "2017-12-01T12:00:00"^^xsd:dateTime ;
- <instancesInBucket> "14"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "2017-11-21T11:24:00"^^xsd:dateTime .
-<HannoverEventsAttributeStartTimeHistogram5> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "14"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "2017-12-01T12:00:00"^^xsd:dateTime ;
- <bucketMaximum> "2017-12-11T12:36:00"^^xsd:dateTime .
-<HannoverEventsAttributeStartTimeHistogram6> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "2017-12-11T12:36:00"^^xsd:dateTime ;
- <bucketMaximum> "2017-12-21T01:12:00"^^xsd:dateTime ;
- <instancesInBucket> "19"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeStartTimeHistogram7> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "2017-12-31T01:48:00"^^xsd:dateTime ;
- <bucketMinimum> "2017-12-21T01:12:00"^^xsd:dateTime ;
- <instancesInBucket> "12"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeStartTimeHistogram8> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "2017-12-31T01:48:00"^^xsd:dateTime ;
- <instancesInBucket> "3"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "2018-01-10T02:24:00"^^xsd:dateTime .
-<HannoverEventsAttributeStartTimeHistogram9> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "2018-01-20T03:00:00"^^xsd:dateTime ;
- <instancesInBucket> "12"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "2018-01-10T02:24:00"^^xsd:dateTime .
-<HannoverEventsAttributeStartTimeminimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "2017-10-12T10:00:00"^^xsd:dateTime .
-<HannoverEventsAttributeStartTimemaximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "2018-12-01T08:00:00"^^xsd:dateTime .
-<HannoverEventsAttributeStartTimemedian> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "2017-11-22T08:00:00"^^xsd:dateTime .
-<HannoverEventsAttributeStartTimeQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "2017-10-12T10:00:00"^^xsd:dateTime ;
- seas:rank "0"^^xsd:integer .
-<HannoverEventsAttributeStartTimeQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "2017-10-30T08:00:00"^^xsd:dateTime ;
- seas:rank "1"^^xsd:integer .
-<HannoverEventsAttributeStartTimeQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "2017-11-22T08:00:00"^^xsd:dateTime ;
- seas:rank "2"^^xsd:integer .
-<HannoverEventsAttributeStartTimeQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "2017-12-17T06:00:00"^^xsd:dateTime ;
- seas:rank "3"^^xsd:integer .
-<HannoverEventsAttributeStartTimeQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "2018-12-01T08:00:00"^^xsd:dateTime ;
- seas:rank "4"^^xsd:integer .
-<HannoverEventsAttributeStartTimeDecile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2017-10-12T10:00:00"^^xsd:dateTime ;
- seas:rank "0"^^xsd:integer .
-<HannoverEventsAttributeStartTimeDecile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2017-10-18T07:00:00"^^xsd:dateTime ;
- seas:rank "1"^^xsd:integer .
-<HannoverEventsAttributeStartTimeDecile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2017-10-26T08:00:00"^^xsd:dateTime ;
- seas:rank "2"^^xsd:integer .
-<HannoverEventsAttributeStartTimeDecile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2017-11-08T08:00:00"^^xsd:dateTime ;
- seas:rank "3"^^xsd:integer .
-<HannoverEventsAttributeStartTimeDecile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2017-11-16T09:00:00"^^xsd:dateTime ;
- seas:rank "4"^^xsd:integer .
-<HannoverEventsAttributeStartTimeDecile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2017-11-22T08:00:00"^^xsd:dateTime ;
- seas:rank "5"^^xsd:integer .
-<HannoverEventsAttributeStartTimeDecile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2017-12-07T08:00:00"^^xsd:dateTime ;
- seas:rank "6"^^xsd:integer .
-<HannoverEventsAttributeStartTimeDecile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2017-12-15T07:00:00"^^xsd:dateTime ;
- seas:rank "7"^^xsd:integer .
-<HannoverEventsAttributeStartTimeDecile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2017-12-26T07:30:00"^^xsd:dateTime ;
- seas:rank "8"^^xsd:integer .
-<HannoverEventsAttributeStartTimeDecile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2018-01-14T10:00:00"^^xsd:dateTime ;
- seas:rank "9"^^xsd:integer .
-<HannoverEventsAttributeStartTimeDecile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2018-12-01T08:00:00"^^xsd:dateTime ;
- seas:rank "10"^^xsd:integer .
-### Statistics for "No Participants" (HannoverEvents)
-<HannoverEventsAttributeNoParticipants> seas:evaluation <HannoverEventsAttributeNoParticipantsNumberOfValues> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsNumberOfNullValues> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsNumberOfValidValues> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsNumberOfValidNonNullValues> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsNumberOfInvalidValues> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsAverageNumberOfDigits> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsAverageNumberOfCharacters> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsAverageNumberOfTokens> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsAverageNumberOfCapitalisedValues> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsAverageNumberOfSpecialCharacters> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsMinimum> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsMaximum> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsMean> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsNumberOfDistinctValues> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsStandardDeviation> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsQuartile0> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsQuartile1> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsQuartile2> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsQuartile3> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsQuartile4> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsDecile0> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsDecile1> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsDecile2> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsDecile3> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsDecile4> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsDecile5> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsDecile6> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsDecile7> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsDecile8> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsDecile9> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsDecile10> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsNumberOfOutliersBelow> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsNumberOfOutliersAbove> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsHistogram0> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsHistogram1> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsHistogram2> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsHistogram3> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsHistogram4> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsHistogram5> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsHistogram6> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsHistogram7> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsHistogram8> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsHistogram9> ;
- seas:evaluation <HannoverEventsAttributeNoParticipantsMedian> .
-<HannoverEventsAttributeNoParticipantsNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNoParticipantsNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "93"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNoParticipantsNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNoParticipantsNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "68"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNoParticipantsNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNoParticipantsAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "4.338235294117647"^^xsd:double .
-<HannoverEventsAttributeNoParticipantsAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "4.338235294117647"^^xsd:double .
-<HannoverEventsAttributeNoParticipantsAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<HannoverEventsAttributeNoParticipantsAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<HannoverEventsAttributeNoParticipantsAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<HannoverEventsAttributeNoParticipantsMinimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "350"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsMaximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "187000"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsMean> rdf:type seas:DistributionMeanEvaluation ;
- seas:evaluatedValue "17598.45588235294"^^xsd:double .
-<HannoverEventsAttributeNoParticipantsNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "32"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNoParticipantsStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
- seas:evaluatedValue "29595.132529115916"^^xsd:double .
-<HannoverEventsAttributeNoParticipantsQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "350"^^xsd:integer ;
- seas:rank "0"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1600.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "5000.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "18800.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "187000"^^xsd:integer ;
- seas:rank "4"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsDecile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "350"^^xsd:integer ;
- seas:rank "0"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsDecile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1000.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsDecile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1400.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsDecile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1600.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsDecile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "2200.0"^^xsd:double ;
- seas:rank "4"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsDecile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "5000.0"^^xsd:double ;
- seas:rank "5"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsDecile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "9000.0"^^xsd:double ;
- seas:rank "6"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsDecile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "10000.0"^^xsd:double ;
- seas:rank "7"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsDecile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "36800.0"^^xsd:double ;
- seas:rank "8"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsDecile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "65000.0"^^xsd:double ;
- seas:rank "9"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsDecile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "187000"^^xsd:integer ;
- seas:rank "10"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNoParticipantsNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "9"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNoParticipantsHistogram0> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "350"^^xsd:integer ;
- <bucketMaximum> "4665"^^xsd:integer ;
- <instancesInBucket> "32"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNoParticipantsHistogram1> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "8980"^^xsd:integer ;
- <bucketMinimum> "4665"^^xsd:integer ;
- <instancesInBucket> "7"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNoParticipantsHistogram2> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "13295"^^xsd:integer ;
- <bucketMinimum> "8980"^^xsd:integer ;
- <instancesInBucket> "12"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNoParticipantsHistogram3> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "13295"^^xsd:integer ;
- <bucketMaximum> "17610"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsHistogram4> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "21925"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "17610"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsHistogram5> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "21925"^^xsd:integer ;
- <instancesInBucket> "1"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "26240"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsHistogram6> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "30555"^^xsd:integer ;
- <bucketMinimum> "26240"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsHistogram7> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "30555"^^xsd:integer ;
- <bucketMaximum> "34870"^^xsd:integer ;
- <instancesInBucket> "2"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNoParticipantsHistogram8> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "34870"^^xsd:integer ;
- <instancesInBucket> "1"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "39185"^^xsd:integer .
-<HannoverEventsAttributeNoParticipantsHistogram9> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "39185"^^xsd:integer ;
- <bucketMaximum> "43500"^^xsd:integer ;
- <instancesInBucket> "4"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeNoParticipantsMedian> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "5000.0"^^xsd:double .
-### Statistics for "Reoccurring" (HannoverEvents)
-<HannoverEventsAttributeReoccurring> seas:evaluation <HannoverEventsAttributeReoccurringNumberOfValues> ;
- seas:evaluation <HannoverEventsAttributeReoccurringNumberOfNullValues> ;
- seas:evaluation <HannoverEventsAttributeReoccurringNumberOfValidValues> ;
- seas:evaluation <HannoverEventsAttributeReoccurringNumberOfValidNonNullValues> ;
- seas:evaluation <HannoverEventsAttributeReoccurringNumberOfInvalidValues> ;
- seas:evaluation <HannoverEventsAttributeReoccurringAverageNumberOfDigits> ;
- seas:evaluation <HannoverEventsAttributeReoccurringAverageNumberOfCharacters> ;
- seas:evaluation <HannoverEventsAttributeReoccurringAverageNumberOfTokens> ;
- seas:evaluation <HannoverEventsAttributeReoccurringAverageNumberOfCapitalisedValues> ;
- seas:evaluation <HannoverEventsAttributeReoccurringAverageNumberOfSpecialCharacters> ;
- seas:evaluation <HannoverEventsAttributeReoccurringNumberOfTrueValues> ;
- seas:evaluation <HannoverEventsAttributeReoccurringNumberOfFalseValues> ;
- seas:evaluation <HannoverEventsAttributeReoccurringNumberOfDistinctValues> ;
- <hasValueDistribution> <HannoverEventsAttributeReoccurringValueDistribution> .
-<HannoverEventsAttributeReoccurringNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeReoccurringNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeReoccurringNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeReoccurringNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeReoccurringNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeReoccurringAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<HannoverEventsAttributeReoccurringAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<HannoverEventsAttributeReoccurringAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<HannoverEventsAttributeReoccurringAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<HannoverEventsAttributeReoccurringAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<HannoverEventsAttributeReoccurringNumberOfTrueValues> rdf:type <DistributionNumberOfTrueValuesEvaluation> ;
- seas:evaluatedValue "46"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeReoccurringNumberOfFalseValues> rdf:type <DistributionNumberOfFalseValuesEvaluation> ;
- seas:evaluatedValue "115"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeReoccurringNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "2"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeReoccurringValueDistribution> rdf:type <ValueDistribution> ;
- <valueDistributionValue> <HannoverEventsAttributeReoccurringValueDistributionValue0> ;
- <valueDistributionValue> <HannoverEventsAttributeReoccurringValueDistributionValue1> .
-<HannoverEventsAttributeReoccurringValueDistributionValue0> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "false"^^xsd:boolean ;
- <numberOfInstancesOfValue> "115"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeReoccurringValueDistributionValue1> rdf:type <ValueDistributionValue> ;
- <instancesOfValue> "true"^^xsd:boolean ;
- <numberOfInstancesOfValue> "46"^^xsd:nonNegativeInteger .
-### Statistics for "Most Popular Entity" (HannoverEvents)
-<HannoverEventsAttributeMostPopularEntity> seas:evaluation <HannoverEventsAttributeMostPopularEntityNumberOfValues> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityNumberOfNullValues> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityNumberOfValidValues> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityNumberOfValidNonNullValues> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityNumberOfInvalidValues> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityAverageNumberOfDigits> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityAverageNumberOfCharacters> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityAverageNumberOfTokens> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityAverageNumberOfCapitalisedValues> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityAverageNumberOfSpecialCharacters> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityNumberOfDistinctValues> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityMinimum> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityMaximum> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityMedian> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityMean> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityStandardDeviation> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityNumberOfOutliersBelow> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityNumberOfOutliersAbove> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityHistogram0> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityHistogram1> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityHistogram2> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityHistogram3> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityHistogram4> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityHistogram5> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityHistogram6> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityHistogram7> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityHistogram8> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityHistogram9> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityQuartile0> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityQuartile1> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityQuartile2> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityQuartile3> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityQuartile4> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityDecile0> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityDecile1> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityDecile2> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityDecile3> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityDecile4> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityDecile5> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityDecile6> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityDecile7> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityDecile8> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityDecile9> ;
- seas:evaluation <HannoverEventsAttributeMostPopularEntityDecile10> .
-<HannoverEventsAttributeMostPopularEntityNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeMostPopularEntityNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "19"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeMostPopularEntityNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeMostPopularEntityNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "142"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeMostPopularEntityNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeMostPopularEntityAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "0.5422535211267606"^^xsd:double .
-<HannoverEventsAttributeMostPopularEntityAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "14.091549295774648"^^xsd:double .
-<HannoverEventsAttributeMostPopularEntityAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "2.204225352112676"^^xsd:double .
-<HannoverEventsAttributeMostPopularEntityAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "0.9154929577464789"^^xsd:double .
-<HannoverEventsAttributeMostPopularEntityAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "1.5211267605633803"^^xsd:double .
-<HannoverEventsAttributeMostPopularEntityNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "114"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeMostPopularEntityMinimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "1"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityMaximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "74"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityMedian> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "13.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityMean> rdf:type seas:DistributionMeanEvaluation ;
- seas:evaluatedValue "14.091549295774648"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
- seas:evaluatedValue "7.545516661974462"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "5.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityHistogram0> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "3"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "4"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "1"^^xsd:integer .
-<HannoverEventsAttributeMostPopularEntityHistogram1> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "4"^^xsd:integer ;
- <bucketMaximum> "5"^^xsd:integer ;
- <instancesInBucket> "3"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityHistogram2> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "4"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "7"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <bucketMinimum> "6"^^xsd:integer .
-<HannoverEventsAttributeMostPopularEntityHistogram3> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "30"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "10"^^xsd:integer ;
- <bucketMinimum> "8"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityHistogram4> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "12"^^xsd:integer ;
- <bucketMinimum> "11"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "26"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeMostPopularEntityHistogram5> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "13"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "14"^^xsd:integer ;
- <instancesInBucket> "18"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeMostPopularEntityHistogram6> rdf:type <DistributionHistogramEvaluation> ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "17"^^xsd:integer ;
- <instancesInBucket> "29"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "15"^^xsd:integer .
-<HannoverEventsAttributeMostPopularEntityHistogram7> rdf:type <DistributionHistogramEvaluation> ;
- <instancesInBucket> "8"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "18"^^xsd:integer ;
- <bucketMaximum> "19"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityHistogram8> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "20"^^xsd:integer ;
- <instancesInBucket> "7"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "21"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityHistogram9> rdf:type <DistributionHistogramEvaluation> ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "8"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "22"^^xsd:integer ;
- <bucketMaximum> "24"^^xsd:integer .
-<HannoverEventsAttributeMostPopularEntityQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer ;
- seas:rank "0"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "10.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "13.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "17.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "74"^^xsd:integer ;
- seas:rank "4"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityDecile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1"^^xsd:integer ;
- seas:rank "0"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityDecile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "8.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityDecile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "9.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityDecile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "11.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityDecile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "12.0"^^xsd:double ;
- seas:rank "4"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityDecile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "13.0"^^xsd:double ;
- seas:rank "5"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityDecile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "15.0"^^xsd:double ;
- seas:rank "6"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityDecile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "17.0"^^xsd:double ;
- seas:rank "7"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityDecile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "17.0"^^xsd:double ;
- seas:rank "8"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityDecile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "21.0"^^xsd:double ;
- seas:rank "9"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeMostPopularEntityDecile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "74"^^xsd:integer ;
- seas:rank "10"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-### Statistics for "Entity Popularity" (HannoverEvents)
-<HannoverEventsAttributeEntityPopularity> seas:evaluation <HannoverEventsAttributeEntityPopularityNumberOfValues> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityNumberOfNullValues> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityNumberOfValidValues> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityNumberOfValidNonNullValues> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityNumberOfInvalidValues> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityAverageNumberOfDigits> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityAverageNumberOfCharacters> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityAverageNumberOfTokens> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityAverageNumberOfCapitalisedValues> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityAverageNumberOfSpecialCharacters> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityMinimum> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityMaximum> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityMean> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityNumberOfDistinctValues> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityStandardDeviation> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityQuartile0> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityQuartile1> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityQuartile2> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityQuartile3> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityQuartile4> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityDecile0> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityDecile1> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityDecile2> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityDecile3> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityDecile4> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityDecile5> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityDecile6> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityDecile7> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityDecile8> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityDecile9> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityDecile10> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityNumberOfOutliersBelow> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityNumberOfOutliersAbove> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityHistogram0> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityHistogram1> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityHistogram2> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityHistogram3> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityHistogram4> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityHistogram5> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityHistogram6> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityHistogram7> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityHistogram8> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityHistogram9> ;
- seas:evaluation <HannoverEventsAttributeEntityPopularityMedian> .
-<HannoverEventsAttributeEntityPopularityNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeEntityPopularityNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "29"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeEntityPopularityNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeEntityPopularityNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "132"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeEntityPopularityNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeEntityPopularityAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "6.424242424242424"^^xsd:double .
-<HannoverEventsAttributeEntityPopularityAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "6.424242424242424"^^xsd:double .
-<HannoverEventsAttributeEntityPopularityAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "1.0"^^xsd:double .
-<HannoverEventsAttributeEntityPopularityAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<HannoverEventsAttributeEntityPopularityAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double .
-<HannoverEventsAttributeEntityPopularityMinimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "357"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityMaximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "810000000"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityMean> rdf:type seas:DistributionMeanEvaluation ;
- seas:evaluatedValue "1.9022605719696976E7"^^xsd:double .
-<HannoverEventsAttributeEntityPopularityNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "106"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeEntityPopularityStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
- seas:evaluatedValue "7.75060528370261E7"^^xsd:double .
-<HannoverEventsAttributeEntityPopularityQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "357"^^xsd:integer ;
- seas:rank "0"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "146500.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "500000.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "8370000.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "810000000"^^xsd:integer ;
- seas:rank "4"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityDecile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "357"^^xsd:integer ;
- seas:rank "0"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityDecile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "55700.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityDecile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "125000.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityDecile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "258000.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityDecile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "385000.0"^^xsd:double ;
- seas:rank "4"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityDecile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "500000.0"^^xsd:double ;
- seas:rank "5"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityDecile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "708000.0"^^xsd:double ;
- seas:rank "6"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityDecile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1700000.0"^^xsd:double ;
- seas:rank "7"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityDecile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "1.16E7"^^xsd:double ;
- seas:rank "8"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityDecile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "4.07E7"^^xsd:double ;
- seas:rank "9"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityDecile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "810000000"^^xsd:integer ;
- seas:rank "10"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeEntityPopularityNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "20"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeEntityPopularityHistogram0> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "2050321"^^xsd:integer ;
- <bucketMinimum> "357"^^xsd:integer ;
- <instancesInBucket> "93"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeEntityPopularityHistogram1> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "2050322"^^xsd:integer ;
- <bucketMaximum> "4100285"^^xsd:integer ;
- <instancesInBucket> "5"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeEntityPopularityHistogram2> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "4100286"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "6150249"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityHistogram3> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "6150250"^^xsd:integer ;
- <instancesInBucket> "1"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "8200214"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityHistogram4> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "10250178"^^xsd:integer ;
- <instancesInBucket> "5"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "8200215"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityHistogram5> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "10250179"^^xsd:integer ;
- <instancesInBucket> "4"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "12300142"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityHistogram6> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "14350107"^^xsd:integer ;
- <instancesInBucket> "1"^^xsd:nonNegativeInteger ;
- <bucketMinimum> "12300143"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityHistogram7> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "14350108"^^xsd:integer ;
- <instancesInBucket> "0"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "16400071"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityHistogram8> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "16400072"^^xsd:integer ;
- <instancesInBucket> "1"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "18450035"^^xsd:integer .
-<HannoverEventsAttributeEntityPopularityHistogram9> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "18450036"^^xsd:integer ;
- <bucketMaximum> "20500000"^^xsd:integer ;
- <instancesInBucket> "2"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeEntityPopularityMedian> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "500000.0"^^xsd:double .
-### Statistics for "Additional Information" (HannoverEvents)
-<HannoverEventsAttributeAdditionalInformation> seas:evaluation <HannoverEventsAttributeAdditionalInformationNumberOfValues> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationNumberOfNullValues> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationNumberOfValidValues> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationNumberOfValidNonNullValues> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationNumberOfInvalidValues> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationAverageNumberOfDigits> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationAverageNumberOfCharacters> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationAverageNumberOfTokens> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationAverageNumberOfCapitalisedValues> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationAverageNumberOfSpecialCharacters> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationNumberOfDistinctValues> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationMinimum> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationMaximum> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationMedian> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationMean> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationStandardDeviation> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationNumberOfOutliersBelow> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationNumberOfOutliersAbove> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationHistogram0> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationHistogram1> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationHistogram2> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationHistogram3> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationHistogram4> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationHistogram5> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationHistogram6> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationHistogram7> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationHistogram8> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationHistogram9> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationQuartile0> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationQuartile1> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationQuartile2> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationQuartile3> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationQuartile4> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationDecile0> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationDecile1> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationDecile2> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationDecile3> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationDecile4> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationDecile5> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationDecile6> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationDecile7> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationDecile8> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationDecile9> ;
- seas:evaluation <HannoverEventsAttributeAdditionalInformationDecile10> .
-<HannoverEventsAttributeAdditionalInformationNumberOfValues> rdf:type <DistributionNumberOfValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeAdditionalInformationNumberOfNullValues> rdf:type <DistributionNumberOfNullValuesEvaluation> ;
- seas:evaluatedValue "28"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeAdditionalInformationNumberOfValidValues> rdf:type <DistributionNumberOfValidValuesEvaluation> ;
- seas:evaluatedValue "161"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeAdditionalInformationNumberOfValidNonNullValues> rdf:type <DistributionNumberOfValidNonNullValuesEvaluation> ;
- seas:evaluatedValue "133"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeAdditionalInformationNumberOfInvalidValues> rdf:type <DistributionNumberOfInvalidValuesEvaluation> ;
- seas:evaluatedValue "0"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeAdditionalInformationAverageNumberOfDigits> rdf:type <DistributionAverageNumberOfDigitsEvaluation> ;
- seas:evaluatedValue "3.0150375939849625"^^xsd:double .
-<HannoverEventsAttributeAdditionalInformationAverageNumberOfCharacters> rdf:type <DistributionAverageNumberOfCharactersEvaluation> ;
- seas:evaluatedValue "90.93984962406014"^^xsd:double .
-<HannoverEventsAttributeAdditionalInformationAverageNumberOfTokens> rdf:type <DistributionAverageNumberOfTokensEvaluation> ;
- seas:evaluatedValue "1.0601503759398496"^^xsd:double .
-<HannoverEventsAttributeAdditionalInformationAverageNumberOfCapitalisedValues> rdf:type <DistributionAverageNumberOfCapitalisedValuesEvaluation> ;
- seas:evaluatedValue "0.007518796992481203"^^xsd:double .
-<HannoverEventsAttributeAdditionalInformationAverageNumberOfSpecialCharacters> rdf:type <DistributionAverageNumberOfSpecialCharactersEvaluation> ;
- seas:evaluatedValue "15.203007518796992"^^xsd:double .
-<HannoverEventsAttributeAdditionalInformationNumberOfDistinctValues> rdf:type <DistributionNumberOfDistinctValuesEvaluation> ;
- seas:evaluatedValue "96"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeAdditionalInformationMinimum> rdf:type seas:DistributionMinimumEvaluation ;
- seas:evaluatedValue "30"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationMaximum> rdf:type seas:DistributionMaximumEvaluation ;
- seas:evaluatedValue "226"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationMedian> rdf:type seas:DistributionMedianEvaluation ;
- seas:evaluatedValue "89.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationMean> rdf:type seas:DistributionMeanEvaluation ;
- seas:evaluatedValue "90.93984962406012"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationStandardDeviation> rdf:type seas:DistributionStandardDeviationEvaluation ;
- seas:evaluatedValue "30.668748133864693"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationNumberOfOutliersBelow> rdf:type <DistributionNumberOfOutliersBelowEvaluation> ;
- seas:evaluatedValue "0.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationNumberOfOutliersAbove> rdf:type <DistributionNumberOfOutliersAboveEvaluation> ;
- seas:evaluatedValue "3.0"^^xsd:double ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationHistogram0> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "30"^^xsd:integer ;
- <instancesInBucket> "3"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "42"^^xsd:integer .
-<HannoverEventsAttributeAdditionalInformationHistogram1> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "43"^^xsd:integer ;
- <instancesInBucket> "16"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "54"^^xsd:integer .
-<HannoverEventsAttributeAdditionalInformationHistogram2> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "55"^^xsd:integer ;
- <bucketMaximum> "66"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "9"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeAdditionalInformationHistogram3> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "67"^^xsd:integer ;
- <instancesInBucket> "18"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "78"^^xsd:integer .
-<HannoverEventsAttributeAdditionalInformationHistogram4> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "79"^^xsd:integer ;
- <instancesInBucket> "24"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string ;
- <bucketMaximum> "91"^^xsd:integer .
-<HannoverEventsAttributeAdditionalInformationHistogram5> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMaximum> "103"^^xsd:integer ;
- <bucketMinimum> "91"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "28"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeAdditionalInformationHistogram6> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "104"^^xsd:integer ;
- <bucketMaximum> "115"^^xsd:integer ;
- <instancesInBucket> "12"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationHistogram7> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "116"^^xsd:integer ;
- <bucketMaximum> "127"^^xsd:integer ;
- <instancesInBucket> "7"^^xsd:nonNegativeInteger ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationHistogram8> rdf:type <DistributionHistogramEvaluation> ;
- <bucketMinimum> "128"^^xsd:integer ;
- <bucketMaximum> "139"^^xsd:integer ;
- <comment> "string length"^^xsd:string ;
- <instancesInBucket> "5"^^xsd:nonNegativeInteger .
-<HannoverEventsAttributeAdditionalInformationHistogram9> rdf:type <DistributionHistogramEvaluation> ;
- <comment> "string length"^^xsd:string ;
- <bucketMinimum> "140"^^xsd:integer ;
- <instancesInBucket> "8"^^xsd:nonNegativeInteger ;
- <bucketMaximum> "152"^^xsd:integer .
-<HannoverEventsAttributeAdditionalInformationQuartile0> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "30"^^xsd:integer ;
- seas:rank "0"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationQuartile1> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "74.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationQuartile2> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "89.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationQuartile3> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "106.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationQuartile4> rdf:type seas:DistributionQuartileEvaluation ;
- seas:evaluatedValue "226"^^xsd:integer ;
- seas:rank "4"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationDecile0> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "30"^^xsd:integer ;
- seas:rank "0"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationDecile1> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "53.0"^^xsd:double ;
- seas:rank "1"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationDecile2> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "58.0"^^xsd:double ;
- seas:rank "2"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationDecile3> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "78.0"^^xsd:double ;
- seas:rank "3"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationDecile4> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "81.0"^^xsd:double ;
- seas:rank "4"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationDecile5> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "89.0"^^xsd:double ;
- seas:rank "5"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationDecile6> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "96.0"^^xsd:double ;
- seas:rank "6"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationDecile7> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "101.0"^^xsd:double ;
- seas:rank "7"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationDecile8> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "110.0"^^xsd:double ;
- seas:rank "8"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationDecile9> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "129.0"^^xsd:double ;
- seas:rank "9"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
-<HannoverEventsAttributeAdditionalInformationDecile10> rdf:type seas:DistributionDecileEvaluation ;
- seas:evaluatedValue "226"^^xsd:integer ;
- seas:rank "10"^^xsd:integer ;
- <comment> "string length"^^xsd:string .
+sml:HannoverEventsAttributeCategoryValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "fair" ;
+    sml:numberOfInstancesOfValue "19"^^xsd:nonNegativeInteger .
 
-### Sample (HannoverEvents)
-<HannoverEvents> <hasSample> <HannoverEventsSample> .
-<HannoverEventsSample> rdf:type <DatasetSample> ;
- csvw:separator "	" ;
- <hasHeader> <HannoverEventsSampleHeader> ;
- <hasHeaderAttributes> <HannoverEventsSampleHeaderAttributes> ;
- <hasLine> <HannoverEventsSample0> ;
- <hasLine> <HannoverEventsSample1> ;
- <hasLine> <HannoverEventsSample2> ;
- <hasLine> <HannoverEventsSample3> ;
- <hasLine> <HannoverEventsSample4> ;
- <hasLine> <HannoverEventsSample5> ;
- <hasLine> <HannoverEventsSample6> ;
- <hasLine> <HannoverEventsSample7> ;
- <hasLine> <HannoverEventsSample8> ;
- <hasLine> <HannoverEventsSample9> .
-<HannoverEventsSampleHeader> rdf:type <DatasetSampleLine> ;
- <hasContent> "-	null: label	Location: label	null: event category	Date-Time description: in XSD Date-Time	null: number of participants	-	-	-	-" .
-<HannoverEventsSampleHeaderAttributes> rdf:type <DatasetSampleLine> ;
- <hasContent> "HannoverEventsAttributeID	HannoverEventsAttributeName	HannoverEventsAttributeVenue	HannoverEventsAttributeCategory	HannoverEventsAttributeStartTime	HannoverEventsAttributeNoParticipants	HannoverEventsAttributeReoccurring	HannoverEventsAttributeMostPopularEntity	HannoverEventsAttributeEntityPopularity	HannoverEventsAttributeAdditionalInformation" .
-<HannoverEventsSample0> rdf:type <DatasetSampleLine> ;
- <hasContent> "103	Beethoven: 9. Sinfonie	Kuppelsaal im HCC	concert	2017-12-27 08:00:00	NULL	false	Beethoven: 9. Sinfonie	2920000	NULL" ;
- <rank> "0"^^xsd:integer .
-<HannoverEventsSample1> rdf:type <DatasetSampleLine> ;
- <hasContent> "105	Chris Rea	Kuppelsaal im HCC	concert	2017-10-28 08:00:00	2500	false	Chris Rea	30400000	http://www.haz.de/Nachrichten/Kultur/Uebersicht/Konzertkritik-zu-Chris-Rea-im-Kuppelsaal" ;
- <rank> "1"^^xsd:integer .
-<HannoverEventsSample2> rdf:type <DatasetSampleLine> ;
- <hasContent> "111	Julia Engelmann: Jetzt, Baby – Poesie und Musik	Kuppelsaal im HCC	concert	2017-11-24 08:00:00	NULL	false	Julia Engelmann	NULL	http://www.hcc.de/de/events-details/event,85fc37b18c57097425b52fc7afbb6969" ;
- <rank> "2"^^xsd:integer .
-<HannoverEventsSample3> rdf:type <DatasetSampleLine> ;
- <hasContent> "112	Klaus Maria Brandauer und das NDR Elbphilharmonie Orchester	Kuppelsaal im HCC	concert	2017-10-25 08:00:00	NULL	false	Klaus Maria Brandauer	NULL	https://www.hcc.de/en/events-details/event,f770b62bc8f42a0b66751fe636fc6eb0" ;
- <rank> "3"^^xsd:integer .
-<HannoverEventsSample4> rdf:type <DatasetSampleLine> ;
- <hasContent> "113	Max Raabe & Palastorchester	Kuppelsaal im HCC	concert	2017-11-11 06:00:00	NULL	false	Max Raabe	NULL	https://stadtleben.de/hannover/kalender/2017/11/11/max-raabe-und-palast-orchester-das-hat-mir-noch-gefehlt/" ;
- <rank> "4"^^xsd:integer .
-<HannoverEventsSample5> rdf:type <DatasetSampleLine> ;
- <hasContent> "114	Max Raabe & Palastorchester	Kuppelsaal im HCC	concert	2017-12-11 06:00:00	NULL	false	Max Raabe	NULL	https://was-wann-wo.de/event/hh7ujwni" ;
- <rank> "5"^^xsd:integer .
-<HannoverEventsSample6> rdf:type <DatasetSampleLine> ;
- <hasContent> "115	Michael Jackson – The Symphony Experience	Kuppelsaal im HCC	concert	2017-10-29 08:00:00	NULL	false	Michael Jackson (aber nicht wirklich korrect, daher potentiell misleading)	NULL	http://www.hcc.de/de/events-details/event,d7a728a67d909e714c0774e22cb806f2" ;
- <rank> "6"^^xsd:integer .
-<HannoverEventsSample7> rdf:type <DatasetSampleLine> ;
- <hasContent> "118	St. Petersburger Philharmoniker	Kuppelsaal im HCC	concert	2017-12-05 07:30:00	NULL	false	St. Petersburger Philharmoniker	173000	NULL" ;
- <rank> "7"^^xsd:integer .
-<HannoverEventsSample8> rdf:type <DatasetSampleLine> ;
- <hasContent> "119	Status Quo: Aqoustic Live – It Rocks!	Kuppelsaal im HCC	concert	2017-11-22 08:00:00	1200	false	Status Quo	51800000	http://www.haz.de/Nachrichten/Kultur/Uebersicht/Status-Quo-mit-Akustik-Show-im-Kuppelsaal-Hannover" ;
- <rank> "8"^^xsd:integer .
-<HannoverEventsSample9> rdf:type <DatasetSampleLine> ;
- <hasContent> "120	The Voice of Germany	Kuppelsaal im HCC	show	2018-11-01 08:00:00	2200	false	The Voice of Germany	35900000	http://www.haz.de/Hannover/Aus-der-Stadt/Uebersicht/Castingstars-von-The-Voice-of-Germany-geben-im-Kuppelsaal-ein-Live-Konzert" ;
- <rank> "9"^^xsd:integer .
+sml:HannoverEventsAttributeCategoryValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "other" ;
+    sml:numberOfInstancesOfValue "16"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeCategoryValueDistributionValue4 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "party" ;
+    sml:numberOfInstancesOfValue "15"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeCategoryValueDistributionValue5 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "comedy" ;
+    sml:numberOfInstancesOfValue "12"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeCategoryValueDistributionValue6 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "football" ;
+    sml:numberOfInstancesOfValue "6"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeName a sml:Attribute ;
+    dct:identifier "Name" ;
+    sml:columnIndex "0"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:HannoverEvents_so_Event ;
+    sml:mapsToProperty rdfs:label ;
+    sml:valueType rdfs:Literal ;
+    seas:evaluation sml:HannoverEventsAttributeNameAverageNumberOfCapitalisedValues,
+        sml:HannoverEventsAttributeNameAverageNumberOfCharacters,
+        sml:HannoverEventsAttributeNameAverageNumberOfDigits,
+        sml:HannoverEventsAttributeNameAverageNumberOfSpecialCharacters,
+        sml:HannoverEventsAttributeNameAverageNumberOfTokens,
+        sml:HannoverEventsAttributeNameNumberOfDistinctValues,
+        sml:HannoverEventsAttributeNameNumberOfInvalidValues,
+        sml:HannoverEventsAttributeNameNumberOfNullValues,
+        sml:HannoverEventsAttributeNameNumberOfValidNonNullValues,
+        sml:HannoverEventsAttributeNameNumberOfValidValues,
+        sml:HannoverEventsAttributeNameNumberOfValues ;
+    seas:valueDistributionValue sml:HannoverEventsAttributeNameValueDistributionValue0,
+        sml:HannoverEventsAttributeNameValueDistributionValue1,
+        sml:HannoverEventsAttributeNameValueDistributionValue2,
+        sml:HannoverEventsAttributeNameValueDistributionValue3,
+        sml:HannoverEventsAttributeNameValueDistributionValue4,
+        sml:HannoverEventsAttributeNameValueDistributionValue5,
+        sml:HannoverEventsAttributeNameValueDistributionValue6,
+        sml:HannoverEventsAttributeNameValueDistributionValue7,
+        sml:HannoverEventsAttributeNameValueDistributionValue8,
+        sml:HannoverEventsAttributeNameValueDistributionValue9 .
+
+sml:HannoverEventsAttributeNameAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "0.9751552795031055"^^xsd:float .
+
+sml:HannoverEventsAttributeNameAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "20.720496894409937"^^xsd:float .
+
+sml:HannoverEventsAttributeNameAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "0.37267080745341613"^^xsd:float .
+
+sml:HannoverEventsAttributeNameAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.5590062111801242"^^xsd:float .
+
+sml:HannoverEventsAttributeNameAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "3.080745341614907"^^xsd:float .
+
+sml:HannoverEventsAttributeNameNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 120 .
+
+sml:HannoverEventsAttributeNameNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:HannoverEventsAttributeNameNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:HannoverEventsAttributeNameNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeNameNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeNameNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeNameValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Forever Young" ;
+    sml:numberOfInstancesOfValue "14"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNameValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "AGRI TECHNICA" ;
+    sml:numberOfInstancesOfValue "7"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNameValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Bundesliga 2017/2018" ;
+    sml:numberOfInstancesOfValue "6"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNameValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Holiday on Ice: Atlantis" ;
+    sml:numberOfInstancesOfValue "4"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNameValueDistributionValue4 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Domotex" ;
+    sml:numberOfInstancesOfValue "4"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNameValueDistributionValue5 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Maybebop: Weihnachtsprogramm für Euch" ;
+    sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNameValueDistributionValue6 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Drei Haselnüsse für Aschenbrödel" ;
+    sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNameValueDistributionValue7 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Ralf Schmitz: Schmitzenklasse" ;
+    sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNameValueDistributionValue8 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Schwanensee – Bolschoi Staatsballett Belarus" ;
+    sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNameValueDistributionValue9 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Völkerball" ;
+    sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipants a sml:Attribute ;
+    dct:identifier "No Participants" ;
+    sml:columnIndex "4"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:HannoverEvents_so_Event ;
+    sml:mapsToProperty sml-mob:numberOfParticipants ;
+    sml:valueType xsd:nonNegativeInteger ;
+    seas:evaluation sml:HannoverEventsAttributeNoParticipantsAverageNumberOfDigits,
+        sml:HannoverEventsAttributeNoParticipantsDecile0,
+        sml:HannoverEventsAttributeNoParticipantsDecile1,
+        sml:HannoverEventsAttributeNoParticipantsDecile10,
+        sml:HannoverEventsAttributeNoParticipantsDecile2,
+        sml:HannoverEventsAttributeNoParticipantsDecile3,
+        sml:HannoverEventsAttributeNoParticipantsDecile4,
+        sml:HannoverEventsAttributeNoParticipantsDecile5,
+        sml:HannoverEventsAttributeNoParticipantsDecile6,
+        sml:HannoverEventsAttributeNoParticipantsDecile7,
+        sml:HannoverEventsAttributeNoParticipantsDecile8,
+        sml:HannoverEventsAttributeNoParticipantsDecile9,
+        sml:HannoverEventsAttributeNoParticipantsHistogram0,
+        sml:HannoverEventsAttributeNoParticipantsHistogram1,
+        sml:HannoverEventsAttributeNoParticipantsHistogram2,
+        sml:HannoverEventsAttributeNoParticipantsHistogram3,
+        sml:HannoverEventsAttributeNoParticipantsHistogram4,
+        sml:HannoverEventsAttributeNoParticipantsHistogram5,
+        sml:HannoverEventsAttributeNoParticipantsHistogram6,
+        sml:HannoverEventsAttributeNoParticipantsHistogram7,
+        sml:HannoverEventsAttributeNoParticipantsHistogram8,
+        sml:HannoverEventsAttributeNoParticipantsHistogram9,
+        sml:HannoverEventsAttributeNoParticipantsMaximum,
+        sml:HannoverEventsAttributeNoParticipantsMean,
+        sml:HannoverEventsAttributeNoParticipantsMedian,
+        sml:HannoverEventsAttributeNoParticipantsMinimum,
+        sml:HannoverEventsAttributeNoParticipantsNumberOfDistinctValues,
+        sml:HannoverEventsAttributeNoParticipantsNumberOfInvalidValues,
+        sml:HannoverEventsAttributeNoParticipantsNumberOfNullValues,
+        sml:HannoverEventsAttributeNoParticipantsNumberOfValidNonNullValues,
+        sml:HannoverEventsAttributeNoParticipantsNumberOfValidValues,
+        sml:HannoverEventsAttributeNoParticipantsNumberOfValues,
+        sml:HannoverEventsAttributeNoParticipantsQuartile0,
+        sml:HannoverEventsAttributeNoParticipantsQuartile1,
+        sml:HannoverEventsAttributeNoParticipantsQuartile2,
+        sml:HannoverEventsAttributeNoParticipantsQuartile3,
+        sml:HannoverEventsAttributeNoParticipantsQuartile4,
+        sml:HannoverEventsAttributeNoParticipantsStandardDeviation .
+
+sml:HannoverEventsAttributeNoParticipantsAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "4.338235294117647"^^xsd:float .
+
+sml:HannoverEventsAttributeNoParticipantsDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "350.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1000.0"^^xsd:float ;
+    seas:rank 1 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "187000.0"^^xsd:float ;
+    seas:rank 10 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1440.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1600.0"^^xsd:float ;
+    seas:rank 3 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2160.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "5000.0"^^xsd:float ;
+    seas:rank 5 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "9200.000000000004"^^xsd:float ;
+    seas:rank 6 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "10000.0"^^xsd:float ;
+    seas:rank 7 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "35880.0"^^xsd:float ;
+    seas:rank 8 .
+
+sml:HannoverEventsAttributeNoParticipantsDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "65000.0"^^xsd:float ;
+    seas:rank 9 .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "19015.0"^^xsd:float ;
+    sml:bucketMinimum "350.0"^^xsd:float ;
+    sml:instancesInBucket "51"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "37680.0"^^xsd:float ;
+    sml:bucketMinimum "19015.0"^^xsd:float ;
+    sml:instancesInBucket "4"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "56345.0"^^xsd:float ;
+    sml:bucketMinimum "37680.0"^^xsd:float ;
+    sml:instancesInBucket "5"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "75010.0"^^xsd:float ;
+    sml:bucketMinimum "56345.0"^^xsd:float ;
+    sml:instancesInBucket "7"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "93675.0"^^xsd:float ;
+    sml:bucketMinimum "75010.0"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "112340.0"^^xsd:float ;
+    sml:bucketMinimum "93675.0"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "131005.0"^^xsd:float ;
+    sml:bucketMinimum "112340.0"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "149670.0"^^xsd:float ;
+    sml:bucketMinimum "131005.0"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "168335.0"^^xsd:float ;
+    sml:bucketMinimum "149670.0"^^xsd:float ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "187000"^^xsd:float ;
+    sml:bucketMinimum "168335.0"^^xsd:float ;
+    sml:instancesInBucket "1"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeNoParticipantsMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue 187000 .
+
+sml:HannoverEventsAttributeNoParticipantsMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "17598.45588235294"^^xsd:float .
+
+sml:HannoverEventsAttributeNoParticipantsMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "5000.0"^^xsd:float .
+
+sml:HannoverEventsAttributeNoParticipantsMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue 350 .
+
+sml:HannoverEventsAttributeNoParticipantsNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 32 .
+
+sml:HannoverEventsAttributeNoParticipantsNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 93 .
+
+sml:HannoverEventsAttributeNoParticipantsNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 93 .
+
+sml:HannoverEventsAttributeNoParticipantsNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 68 .
+
+sml:HannoverEventsAttributeNoParticipantsNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeNoParticipantsNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeNoParticipantsQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "350.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:HannoverEventsAttributeNoParticipantsQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "1600.0"^^xsd:float ;
+    seas:rank 1 .
+
+sml:HannoverEventsAttributeNoParticipantsQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "5000.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:HannoverEventsAttributeNoParticipantsQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "15400.0"^^xsd:float ;
+    seas:rank 3 .
+
+sml:HannoverEventsAttributeNoParticipantsQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "187000.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:HannoverEventsAttributeNoParticipantsStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "29595.132529115916"^^xsd:float .
+
+sml:HannoverEventsAttributeStartTime a sml:Attribute ;
+    dct:identifier "Start Time" ;
+    sml:columnIndex "3"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:HannoverEvents_time_DateTimeDescription ;
+    sml:mapsToProperty time:inXSDDateTime ;
+    sml:valueType xsd:dateTime ;
+    seas:evaluation sml:HannoverEventsAttributeStartTimeDecile0,
+        sml:HannoverEventsAttributeStartTimeDecile1,
+        sml:HannoverEventsAttributeStartTimeDecile10,
+        sml:HannoverEventsAttributeStartTimeDecile2,
+        sml:HannoverEventsAttributeStartTimeDecile3,
+        sml:HannoverEventsAttributeStartTimeDecile4,
+        sml:HannoverEventsAttributeStartTimeDecile5,
+        sml:HannoverEventsAttributeStartTimeDecile6,
+        sml:HannoverEventsAttributeStartTimeDecile7,
+        sml:HannoverEventsAttributeStartTimeDecile8,
+        sml:HannoverEventsAttributeStartTimeDecile9,
+        sml:HannoverEventsAttributeStartTimeHistogram0,
+        sml:HannoverEventsAttributeStartTimeHistogram1,
+        sml:HannoverEventsAttributeStartTimeHistogram2,
+        sml:HannoverEventsAttributeStartTimeHistogram3,
+        sml:HannoverEventsAttributeStartTimeHistogram4,
+        sml:HannoverEventsAttributeStartTimeHistogram5,
+        sml:HannoverEventsAttributeStartTimeHistogram6,
+        sml:HannoverEventsAttributeStartTimeHistogram7,
+        sml:HannoverEventsAttributeStartTimeHistogram8,
+        sml:HannoverEventsAttributeStartTimeHistogram9,
+        sml:HannoverEventsAttributeStartTimeMaximum,
+        sml:HannoverEventsAttributeStartTimeMean,
+        sml:HannoverEventsAttributeStartTimeMedian,
+        sml:HannoverEventsAttributeStartTimeMinimum,
+        sml:HannoverEventsAttributeStartTimeNumberOfDistinctValues,
+        sml:HannoverEventsAttributeStartTimeNumberOfInvalidValues,
+        sml:HannoverEventsAttributeStartTimeNumberOfNullValues,
+        sml:HannoverEventsAttributeStartTimeNumberOfValidNonNullValues,
+        sml:HannoverEventsAttributeStartTimeNumberOfValidValues,
+        sml:HannoverEventsAttributeStartTimeNumberOfValues,
+        sml:HannoverEventsAttributeStartTimeQuartile0,
+        sml:HannoverEventsAttributeStartTimeQuartile1,
+        sml:HannoverEventsAttributeStartTimeQuartile2,
+        sml:HannoverEventsAttributeStartTimeQuartile3,
+        sml:HannoverEventsAttributeStartTimeQuartile4 .
+
+sml:HannoverEventsAttributeStartTimeDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-10-12T08:00:00"^^xsd:dateTime ;
+    seas:rank 0 .
+
+sml:HannoverEventsAttributeStartTimeDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-10-18T17:00:00"^^xsd:dateTime ;
+    seas:rank 1 .
+
+sml:HannoverEventsAttributeStartTimeDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2018-12-01T19:00:00"^^xsd:dateTime ;
+    seas:rank 10 .
+
+sml:HannoverEventsAttributeStartTimeDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-10-26T18:00:00"^^xsd:dateTime ;
+    seas:rank 2 .
+
+sml:HannoverEventsAttributeStartTimeDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-11-08T19:00:00"^^xsd:dateTime ;
+    seas:rank 3 .
+
+sml:HannoverEventsAttributeStartTimeDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-11-16T08:00:00"^^xsd:dateTime ;
+    seas:rank 4 .
+
+sml:HannoverEventsAttributeStartTimeDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-11-22T19:00:00"^^xsd:dateTime ;
+    seas:rank 5 .
+
+sml:HannoverEventsAttributeStartTimeDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-12-07T19:00:00"^^xsd:dateTime ;
+    seas:rank 6 .
+
+sml:HannoverEventsAttributeStartTimeDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-12-15T18:00:00"^^xsd:dateTime ;
+    seas:rank 7 .
+
+sml:HannoverEventsAttributeStartTimeDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2017-12-26T18:30:00"^^xsd:dateTime ;
+    seas:rank 8 .
+
+sml:HannoverEventsAttributeStartTimeDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "2018-01-14T09:00:00"^^xsd:dateTime ;
+    seas:rank 9 .
+
+sml:HannoverEventsAttributeStartTimeHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2017-11-22T21:06:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-10-12T08:00:00"^^xsd:dateTime ;
+    sml:instancesInBucket "81"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-01-03T10:12:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2017-11-22T21:06:00"^^xsd:dateTime ;
+    sml:instancesInBucket "56"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-02-13T23:18:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-01-03T10:12:00"^^xsd:dateTime ;
+    sml:instancesInBucket "13"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-03-27T12:24:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-02-13T23:18:00"^^xsd:dateTime ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-05-08T01:30:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-03-27T12:24:00"^^xsd:dateTime ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-06-18T14:36:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-05-08T01:30:00"^^xsd:dateTime ;
+    sml:instancesInBucket "2"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-07-30T03:42:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-06-18T14:36:00"^^xsd:dateTime ;
+    sml:instancesInBucket "2"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-09-09T16:48:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-07-30T03:42:00"^^xsd:dateTime ;
+    sml:instancesInBucket "2"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-10-21T05:54:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-09-09T16:48:00"^^xsd:dateTime ;
+    sml:instancesInBucket "0"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "2018-12-01T19:00:00"^^xsd:dateTime ;
+    sml:bucketMinimum "2018-10-21T05:54:00"^^xsd:dateTime ;
+    sml:instancesInBucket "5"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeStartTimeMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "2018-12-01T19:00:00"^^xsd:dateTime .
+
+sml:HannoverEventsAttributeStartTimeMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "2017-12-13T03:52:38.385093212"^^xsd:dateTime .
+
+sml:HannoverEventsAttributeStartTimeMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "2017-11-22T19:00:00"^^xsd:dateTime .
+
+sml:HannoverEventsAttributeStartTimeMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "2017-10-12T08:00:00"^^xsd:dateTime .
+
+sml:HannoverEventsAttributeStartTimeNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 146 .
+
+sml:HannoverEventsAttributeStartTimeNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:HannoverEventsAttributeStartTimeNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:HannoverEventsAttributeStartTimeNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeStartTimeNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeStartTimeNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeStartTimeQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-10-12T08:00:00"^^xsd:dateTime ;
+    seas:rank 0 .
+
+sml:HannoverEventsAttributeStartTimeQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-10-30T19:00:00"^^xsd:dateTime ;
+    seas:rank 1 .
+
+sml:HannoverEventsAttributeStartTimeQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-11-22T19:00:00"^^xsd:dateTime ;
+    seas:rank 2 .
+
+sml:HannoverEventsAttributeStartTimeQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2017-12-17T17:00:00"^^xsd:dateTime ;
+    seas:rank 3 .
+
+sml:HannoverEventsAttributeStartTimeQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "2018-12-01T19:00:00"^^xsd:dateTime ;
+    seas:rank 4 .
+
+sml:HannoverEventsAttributeVenue a sml:Attribute ;
+    dct:identifier "Venue" ;
+    sml:columnIndex "1"^^xsd:nonNegativeInteger ;
+    sml:mapsToDomain sml:HannoverEvents_dcterms_Location ;
+    sml:mapsToProperty rdfs:label ;
+    sml:valueType rdfs:Literal ;
+    seas:evaluation sml:HannoverEventsAttributeVenueAverageNumberOfCapitalisedValues,
+        sml:HannoverEventsAttributeVenueAverageNumberOfCharacters,
+        sml:HannoverEventsAttributeVenueAverageNumberOfDigits,
+        sml:HannoverEventsAttributeVenueAverageNumberOfSpecialCharacters,
+        sml:HannoverEventsAttributeVenueAverageNumberOfTokens,
+        sml:HannoverEventsAttributeVenueNumberOfDistinctValues,
+        sml:HannoverEventsAttributeVenueNumberOfInvalidValues,
+        sml:HannoverEventsAttributeVenueNumberOfNullValues,
+        sml:HannoverEventsAttributeVenueNumberOfValidNonNullValues,
+        sml:HannoverEventsAttributeVenueNumberOfValidValues,
+        sml:HannoverEventsAttributeVenueNumberOfValues ;
+    seas:valueDistributionValue sml:HannoverEventsAttributeVenueValueDistributionValue0,
+        sml:HannoverEventsAttributeVenueValueDistributionValue1,
+        sml:HannoverEventsAttributeVenueValueDistributionValue2,
+        sml:HannoverEventsAttributeVenueValueDistributionValue3,
+        sml:HannoverEventsAttributeVenueValueDistributionValue4,
+        sml:HannoverEventsAttributeVenueValueDistributionValue5,
+        sml:HannoverEventsAttributeVenueValueDistributionValue6 .
+
+sml:HannoverEventsAttributeVenueAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float .
+
+sml:HannoverEventsAttributeVenueAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
+    seas:evaluatedValue "11.434782608695652"^^xsd:float .
+
+sml:HannoverEventsAttributeVenueAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float .
+
+sml:HannoverEventsAttributeVenueAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+    seas:evaluatedValue "0.037267080745341616"^^xsd:float .
+
+sml:HannoverEventsAttributeVenueAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
+    seas:evaluatedValue "1.9937888198757765"^^xsd:float .
+
+sml:HannoverEventsAttributeVenueNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
+    seas:evaluatedValue 7 .
+
+sml:HannoverEventsAttributeVenueNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:HannoverEventsAttributeVenueNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:HannoverEventsAttributeVenueNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeVenueNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeVenueNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 161 .
+
+sml:HannoverEventsAttributeVenueValueDistributionValue0 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Capitol" ;
+    sml:numberOfInstancesOfValue "49"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeVenueValueDistributionValue1 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Theater am Aegi" ;
+    sml:numberOfInstancesOfValue "39"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeVenueValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Messegelände" ;
+    sml:numberOfInstancesOfValue "20"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeVenueValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Swiss Life Hall" ;
+    sml:numberOfInstancesOfValue "18"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeVenueValueDistributionValue4 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "TUI Arena" ;
+    sml:numberOfInstancesOfValue "18"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeVenueValueDistributionValue5 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Kuppelsaal im HCC" ;
+    sml:numberOfInstancesOfValue "11"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsAttributeVenueValueDistributionValue6 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "HDI-Arena" ;
+    sml:numberOfInstancesOfValue "6"^^xsd:nonNegativeInteger .
+
+sml:HannoverEventsFile a sml:TextFile ;
+    dct:format "text/comma-separated-values" ;
+    csvw:header false ;
+    csvw:null "" ;
+    csvw:separator "	" ;
+    sml:fileLocation "HannoverEvents.tsv" .
+
+sml:HannoverEventsSample a sml:DatasetSample ;
+    csvw:separator "	" ;
+    sml:hasHeader sml:HannoverEventsSampleHeader ;
+    sml:hasLine sml:HannoverEventsSampleLine0,
+        sml:HannoverEventsSampleLine1,
+        sml:HannoverEventsSampleLine2,
+        sml:HannoverEventsSampleLine3,
+        sml:HannoverEventsSampleLine4,
+        sml:HannoverEventsSampleLine5,
+        sml:HannoverEventsSampleLine6,
+        sml:HannoverEventsSampleLine7,
+        sml:HannoverEventsSampleLine8,
+        sml:HannoverEventsSampleLine9 .
+
+sml:HannoverEventsSampleHeader a sml:DatasetSampleLine ;
+    sml:hasContent "Event (label)	Location (label)	Event (event category)	Date-Time description (in XSD Date-Time)	Event (number of participants)"^^xsd:string .
+
+sml:HannoverEventsSampleLine0 a sml:DatasetSampleLine ;
+    sml:hasContent "Beethoven: 9. Sinfonie	Kuppelsaal im HCC	concert	2017-12-27 20:00:00"^^xsd:string ;
+    sml:rank 0 .
+
+sml:HannoverEventsSampleLine1 a sml:DatasetSampleLine ;
+    sml:hasContent "Chris Rea	Kuppelsaal im HCC	concert	2017-10-28 20:00:00	2500"^^xsd:string ;
+    sml:rank 1 .
+
+sml:HannoverEventsSampleLine2 a sml:DatasetSampleLine ;
+    sml:hasContent "Julia Engelmann: Jetzt, Baby – Poesie und Musik	Kuppelsaal im HCC	concert	2017-11-24 20:00:00"^^xsd:string ;
+    sml:rank 2 .
+
+sml:HannoverEventsSampleLine3 a sml:DatasetSampleLine ;
+    sml:hasContent "Klaus Maria Brandauer und das NDR Elbphilharmonie Orchester	Kuppelsaal im HCC	concert	2017-10-25 20:00:00"^^xsd:string ;
+    sml:rank 3 .
+
+sml:HannoverEventsSampleLine4 a sml:DatasetSampleLine ;
+    sml:hasContent "Max Raabe & Palastorchester	Kuppelsaal im HCC	concert	2017-11-11 18:00:00"^^xsd:string ;
+    sml:rank 4 .
+
+sml:HannoverEventsSampleLine5 a sml:DatasetSampleLine ;
+    sml:hasContent "Max Raabe & Palastorchester	Kuppelsaal im HCC	concert	2017-12-11 18:00:00"^^xsd:string ;
+    sml:rank 5 .
+
+sml:HannoverEventsSampleLine6 a sml:DatasetSampleLine ;
+    sml:hasContent "Michael Jackson – The Symphony Experience	Kuppelsaal im HCC	concert	2017-10-29 20:00:00"^^xsd:string ;
+    sml:rank 6 .
+
+sml:HannoverEventsSampleLine7 a sml:DatasetSampleLine ;
+    sml:hasContent "St. Petersburger Philharmoniker	Kuppelsaal im HCC	concert	2017-12-05 19:30:00"^^xsd:string ;
+    sml:rank 7 .
+
+sml:HannoverEventsSampleLine8 a sml:DatasetSampleLine ;
+    sml:hasContent "Status Quo: Aqoustic Live – It Rocks!	Kuppelsaal im HCC	concert	2017-11-22 20:00:00	1200"^^xsd:string ;
+    sml:rank 8 .
+
+sml:HannoverEventsSampleLine9 a sml:DatasetSampleLine ;
+    sml:hasContent "The Voice of Germany	Kuppelsaal im HCC	show	2018-11-01 20:00:00	2200"^^xsd:string ;
+    sml:rank 9 .
+
+sml:HannoverEvents_dcterms_Location a sml:ClassInstance ;
+    sml:mapsTo dct:Location .
+
+sml:HannoverEvents_time_DateTimeDescription a sml:ClassInstance ;
+    sml:mapsTo time:DateTimeDescription .
+
+sml:HannoverEvents_so_Event a sml:ClassInstance ;
+    dct:spatial sml:HannoverEvents_dcterms_Location ;
+    time:hasTime sml:HannoverEvents_time_DateTimeDescription ;
+    sml:mapsTo schema:Event .
+
