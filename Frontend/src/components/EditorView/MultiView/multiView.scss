@@ -18,9 +18,9 @@
 .multi-view-container {
     min-height: 830px;
     height: 100%;
-    width: 100%;
+    width: 80%;
     background-color: #2f1433;
-    display:grid;
+    display: flex;
   
     .textEditor {
         position: relative;
