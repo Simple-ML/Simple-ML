@@ -16,6 +16,8 @@ import './multiView.scss';
 // Config
 import MultiViewConfig from './MultiViewConfig';
 
+import Sidebar from './Sidebar/Sidebar'
+
 class MultiView extends React.Component {
     constructor(props) {
         super(props);
@@ -73,6 +75,7 @@ class MultiView extends React.Component {
                         })
                     }}
                 />
+                <Sidebar/>
             </div>
         )
     }

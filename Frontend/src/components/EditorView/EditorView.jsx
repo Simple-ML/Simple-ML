@@ -23,8 +23,6 @@ import viewbarIcon from '../../images/headerButtons/viewbar-closed.svg';
 //Datasets
 import DataView from './DataView/DataView';
 import Backdrop from '@mui/material/Backdrop';
-import IconButton from '@mui/material/IconButton';
-import Sidebar from './MultiView/Sidebar/Sidebar';
 import Icons from '../../stories/Icons';
 
 import { hideDataViewBackdrop } from '../../reducers/graphicalEditor';
@@ -71,7 +69,6 @@ class EditorView extends React.Component {
                             'textEditor'
                         ]}
                     />
-                    <Sidebar></Sidebar>
                     <Backdrop
                         style= {{backgroundColor:'white'}}
                         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
