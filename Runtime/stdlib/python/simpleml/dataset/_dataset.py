@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-import json
 import os
 from datetime import datetime
 from typing import Any, Tuple
 
 import category_encoders as ce  # For one hot encoding
-import geopandas
 import networkx as nx
 import numpy as np  # For huge arrays and matrices
 import pandas as pd  # For data processing
@@ -18,29 +16,25 @@ from shapely import geometry, wkb, wkt
 from shapely.errors import WKBReadingError, WKTReadingError
 from simpleml.dataset._instance import Instance
 from simpleml.dataset._stats import getStatistics
-
-# import Statistics
-
-
-# data_folder_name = '../../../data/'  # TODO: Configure globally
+from sklearn.model_selection import train_test_split
 
 
 class Dataset:
     def __init__(
-        self,
-        id,
-        title: str,
-        description: str = None,
-        fileName: str = None,
-        hasHeader: bool = True,
-        null_value="",
-        separator=",",
-        number_of_instances: int = None,
-        titles: dict = {},
-        descriptions: dict = {},
-        subjects: dict = {},
-        coordinate_system: int = 4326,
-        lat_before_lon: bool = False,
+            self,
+            id,
+            title: str,
+            description: str = None,
+            fileName: str = None,
+            hasHeader: bool = True,
+            null_value="",
+            separator=",",
+            number_of_instances: int = None,
+            titles: dict = {},
+            descriptions: dict = {},
+            subjects: dict = {},
+            coordinate_system: int = 4326,
+            lat_before_lon: bool = False,
     ):
         self.id = id
         self.title = title
@@ -91,12 +85,11 @@ class Dataset:
             []
         )  # list of attribute identifiers of attributes that should be parsed as date
 
+    ### USER FUNCTIONS ###
+
     def sample(self, nInstances: int) -> Dataset:
 
-        copy = self.copy()
-
-        if copy.data.empty:
-            copy.readFile(copy.separator, number_of_lines=nInstances)
+        copy = self.copy_and_read(number_of_lines=nInstances)
 
         copy.data = copy.data.head(n=nInstances)
 
@@ -110,10 +103,8 @@ class Dataset:
         if not isinstance(attributeIDs, list):
             attributeIDs = [attributeIDs]
 
-        if self.data.empty:
-            self.readFile(self.separator)
+        copy = self.copy_and_read()
 
-        copy = self.copy()
         copy.data = copy.data.filter(items=attributeIDs)
 
         # remove columns from statistics
@@ -130,10 +121,7 @@ class Dataset:
 
     def dropAttributes(self, attributeIDs: Any) -> Dataset:
 
-        if self.data.empty:
-            self.readFile(self.separator)
-
-        copy = self.copy()
+        copy = self.copy_and_read()
 
         copy.data = copy.data.drop(columns=attributeIDs)
 
@@ -151,27 +139,15 @@ class Dataset:
 
     def filterByAttribute(self, attribute: str, value) -> Dataset:
 
-        if self.data.empty:
-            self.readFile(self.separator)
-
-        copy = self.copy()
+        copy = self.copy_and_read()
 
         copy.data = copy.data.loc[copy.data[attribute] > value]
-
-        # copy.data = copy.data[copy.data.column_name != 'False']
-        # df = df[df.column_name != value]
-        # print('Dataset class')
-        # print(copy.data)
 
         return copy
 
     def filterInstances(self, filter_func) -> Dataset:
 
-        if self.data.empty:
-            self.readFile(self.separator)
-
-        copy = self.copy()
-        # print(copy.data)
+        copy = self.copy_and_read()
 
         for index, row in copy.data.iterrows():
             if not filter_func(Instance(row)):
@@ -181,11 +157,7 @@ class Dataset:
 
     def addAttribute(self, columnName, transformFunc) -> Dataset:
 
-        if self.data.empty:
-            self.readFile(self.separator)
-
-        copy = self.copy()
-        # print(copy.data)
+        copy = self.copy_and_read()
 
         for index, row in copy.data.iterrows():
             copy.data.at[index, columnName] = transformFunc(Instance(row))
@@ -194,10 +166,7 @@ class Dataset:
 
     def addIsWeekendAttribute(self, columnName):
 
-        if self.data.empty:
-            self.readFile(self.separator)
-
-        copy = self.copy()
+        copy = self.copy_and_read()
 
         def transformIntoWeekend(instance: Instance):
             week_num = instance.getValue(columnName).weekday()
@@ -215,10 +184,7 @@ class Dataset:
 
     def addDayOfTheYearAttribute(self, columnName):
 
-        if self.data.empty:
-            self.readFile(self.separator)
-
-        copy = self.copy()
+        copy = self.copy_and_read()
 
         def transformIntoWDayOfTheYear(instance: Instance):
             return instance.getValue(columnName).timetuple().tm_yday
@@ -231,10 +197,7 @@ class Dataset:
 
     def addWeekDayAttribute(self, columnName):
 
-        if self.data.empty:
-            self.readFile(self.separator)
-
-        copy = self.copy()
+        copy = self.copy_and_read()
 
         def transformIntoWeekDay(instance: Instance):
             return instance.getValue(columnName).strftime("%A")
@@ -245,117 +208,24 @@ class Dataset:
 
         return copy
 
-    def dateToTimestamp(self, columnName):
+    def splitIntoTrainAndTestAndLabels(targetColumn: str, trainRatio: float, randomState=None) -> Tuple[
+        Dataset, Dataset, Dataset, Dataset]:
 
-        if self.data.empty:
-            self.readFile(self.separator)
+        train, test = self.splitIntoTrainAndTest(trainRatio, randomState)
 
-        copy = self.copy()
+        X_train = train.dropAttributes(targetColumn)
+        X_test = test.dropAttributes(targetColumn)
+        y_train = train.keepAttributes(targetColumn)
+        y_test = test.keepAttributes(targetColumn)
 
-        def transformIntoTimestamp(instance: Instance):
-            date = datetime.strptime(
-                str(instance.getValue(columnName)), "%Y-%m-%d %H:%M:%S"
-            )
-            return datetime.timestamp(date)
-
-        copy.data = self.addAttribute(
-            columnName + "_Timestamp", transformIntoTimestamp
-        ).data
-
-        return copy
-
-    def addGeometryEmbeddings(self, columnName):
-
-        if self.data.empty:
-            self.readFile(self.separator)
-
-        copy = self.copy()
-
-        # w = libpysal.weights.DistanceBand.from_dataframe(self.data, threshold=50000, binary=False)
-        # print(w.islands)
-
-        w = Kernel.from_dataframe(self.data, fixed=False, function="gaussian")
-        # w = KNN.from_dataframe(self.data, k=5)
-        print(w.islands)
-        nodes = w.weights.keys()
-        edges = [(node, neighbour) for node in nodes for neighbour in w[node]]
-        my_graph = nx.Graph(edges)
-        print(my_graph)
-
-        node2vec = Node2Vec(
-            my_graph, dimensions=64, walk_length=30, num_walks=200, workers=4
-        )
-        model = node2vec.fit(window=10, min_count=1, batch_words=4)
-
-        copy.data[columnName + "_embeddings"] = ""
-        for index, row in copy.data.iterrows():
-            copy.data.at[index, columnName + "_embeddings"] = model.wv[index]
-
-        return copy
-
-    def categoryToVector(self, columnName):
-
-        if self.data.empty:
-            self.readFile(self.separator)
-
-        copy = self.copy()
-        column_data = copy.data[columnName]
-
-        column_encoder = ce.OneHotEncoder(
-            cols=columnName,
-            handle_unknown="return_nan",
-            return_df=True,
-            use_cat_names=True,
-        )
-        column_data = column_encoder.fit_transform(column_data)
-        copy.data[columnName + "_encoded"] = column_data.values.tolist()
-        copy.simple_data_types[columnName + "_encoded"] = config.type_numeric_list
-        copy.data_types[columnName + "_encoded"] = config.type_numeric_list
-        copy.attributes.append(columnName + "_encoded")
-        copy.attribute_labels[columnName + "_encoded"] = (
-            copy.attribute_labels[columnName] + " (Encoded)"
-        )
-
-        return copy
-
-    def flattenData(self):
-
-        if self.data.empty:
-            self.readFile(self.separator)
-
-        copy = self.copy()
-
-        for atribute in copy.attributes:
-            # print(atribute)
-            if copy.simple_data_types[atribute] == config.type_numeric_list:
-                # print(atribute)
-                attribute_column_names = [
-                    atribute + str(i) for i in range(len(copy.data[atribute].iloc[0]))
-                ]
-                copy.data[attribute_column_names] = pd.DataFrame(
-                    copy.data[atribute].tolist(), index=copy.data.index
-                )
-
-        return copy
-
-    def getStatistics(self) -> dict:
-        if not self.stats:
-            if self.data.empty:
-                self.readFile(self.separator)
-            self.stats = getStatistics(dataset=self)
-
-        return self.stats
+        return X_train, X_test, y_train, y_test
 
     def splitIntoTrainAndTest(
-        self, trainRatio: float, randomState=None
+            self, trainRatio: float, randomState=None
     ) -> Tuple[Dataset, Dataset]:
 
-        if self.data.empty:
-            self.readFile(self.separator)
+        copy = self.copy_and_read()
 
-        from sklearn.model_selection import train_test_split
-
-        # self.data.head()
         train_data, test_data = train_test_split(
             self.data, train_size=trainRatio, random_state=randomState
         )
@@ -375,150 +245,22 @@ class Dataset:
 
         return train, test
 
-    def parseWKT(self, value, hex):
-        try:
-            return wkt.loads(value)
-        except (WKTReadingError, AttributeError, TypeError):
-            return None
-
-    def readFile(self, sep, number_of_lines: int = None):
-
-        if not self.fileName:
-            raise ValueError("No filename given for file reading.")
-
-        # TODO: Create global config file where we define the data folder path
-        dirName = os.path.dirname(__file__)
-        rootFolder = os.getenv(
-            "SML_DATASET_PATH", os.path.join(dirName, global_config.data_folder_name)
-        )
-        dataFilePath = os.path.join(rootFolder, self.fileName)
-
-        # TODO: Check infer_datetime_format
-
-        parse_data_types: dict[str, object] = {}
-        for attribute, value_type in self.data_types.items():
-            parse_data_types[attribute] = value_type
-            if value_type == np.datetime64:
-                parse_data_types[attribute] = str
-            elif value_type == geometry:
-                parse_data_types[attribute] = object
-
-        self.data = pd.read_csv(
-            dataFilePath,
-            sep=sep,
-            dtype=parse_data_types,
-            parse_dates=self.parse_dates,
-            na_values=[self.null_value],
-            usecols=self.attributes,
-            nrows=number_of_lines,
-        )
-
-        self.parse_geo_columns()
-
-    def parse_geo_columns(self):
-        # parse geo data
-        # WKT columns
-        for wkt_column in self.wkt_columns:
-            self.data[wkt_column] = self.data[wkt_column].apply(self.parseWKT, hex=True)
-            self.simple_data_types[wkt_column] = config.type_geometry
-        # WKB columns
-        for wkb_column in self.wkb_columns:
-            self.data[wkb_column] = self.data[wkb_column].apply(parseWKB, hex=True)
-            # latitude/longitude pairs
-            self.simple_data_types[wkb_column] = config.type_geometry
-
-        lon_lat_pair_number = 1
-        for lon_lat_pair in self.lon_lat_pairs:
-
-            # new column is either called "geometry" or "geometry1", "geometry2", ..., if there are multiple ones.
-            if "geometry" in self.data:
-                geo_column_number = 2
-                while True:
-                    column_name = "geometry" + geo_column_number
-                    if column_name not in self.data:
-                        break
-            else:
-                column_name = "geometry"
-
-            if len(self.lon_lat_pairs) > 1:
-                column_name += str(lon_lat_pair_number)
-            self.data[column_name] = geopandas.points_from_xy(
-                self.data[lon_lat_pair["longitude"]],
-                self.data[lon_lat_pair["latitude"]],
-            )
-            self.data_types[column_name] = geometry
-            self.simple_data_types[column_name] = config.type_geometry
-            lon_lat_pair_number += 1
-
-    def addColumnDescription(
-        self,
-        attribute_identifier,
-        resource_node,
-        domain_node,
-        property_node,
-        rdf_value_type,
-        value_type,
-        attribute_label,
-        is_geometry: bool,
-        resource_rank=None,
-    ):
-        self.attributes.append(attribute_identifier)
-
-        if resource_node:
-            self.attribute_graph[attribute_identifier] = {
-                "value_type": rdf_value_type,
-                "resource": resource_node,
-                "property": property_node,
-                "class": domain_node,
-            }
-            if resource_rank:
-                self.attribute_graph[attribute_identifier][
-                    "resource_rank"
-                ] = resource_rank
-        self.data_types[attribute_identifier] = value_type
-
-        self.attribute_labels[attribute_identifier] = attribute_label
-
-        # create simple types
-        if value_type == np.datetime64:
-            self.parse_dates.append(attribute_identifier)
-            # self.data_types[attribute_identifier] = np.str
-            self.simple_data_types[attribute_identifier] = config.type_datetime
-        elif (
-            value_type == np.integer
-            or value_type == pd.Int32Dtype()
-            or value_type == pd.Int64Dtype()
-        ):
-            self.simple_data_types[attribute_identifier] = config.type_numeric
-        elif value_type == np.float64:
-            self.simple_data_types[attribute_identifier] = config.type_numeric
-        elif value_type == np.bool:
-            self.simple_data_types[attribute_identifier] = config.type_bool
-        else:
-            self.simple_data_types[attribute_identifier] = config.type_string
-
-        if is_geometry:
-            self.simple_data_types[attribute_identifier] = config.type_geometry
-            self.data_types[attribute_identifier] = geometry
-
-    def getJson(self):
-        json_input = {"id": self.id, "title": self.title, "topics": self.subjects}
-        return json.dumps(json_input)
-
     def getColumn(self, column_identifier):
         if self.data.empty:
-            self.readFile(self.separator)
+            self.readFile()
         return self.data[column_identifier]
-
-    def getColumnNames(self):
-        if self.data.empty:
-            self.readFile(self.separator)
-        return self.data.columns.values.tolist()
 
     def getRow(self, row_number):
         if self.data.empty:
-            self.readFile(self.separator)
+            self.readFile()
         return Instance(self.data.iloc[[row_number]].squeeze())
+
+    ### NON-USER FUNCTIONS ###
+
+    def getColumnNames(self):
+        if self.data.empty:
+            self.readFile()
+        return self.data.columns.values.tolist()
 
     def copy(self, basic_data_only: bool = False) -> Dataset:
         copy = Dataset(
@@ -551,6 +293,127 @@ class Dataset:
             if self.data is not None:
                 copy.data = self.data.copy()
         return copy
+
+    def dateToTimestamp(self, columnName):
+
+        copy = self.copy_and_read()
+
+        def transformIntoTimestamp(instance: Instance):
+            return datetime.timestamp(instance.getValue(columnName))
+
+        copy.data = self.addAttribute(
+            columnName + "_Timestamp", transformIntoTimestamp
+        ).data
+
+        return copy
+
+    def addGeometryEmbeddings(self, columnName):
+
+        copy = self.copy_and_read()
+
+        # w = libpysal.weights.DistanceBand.from_dataframe(self.data, threshold=50000, binary=False)
+        # print(w.islands)
+
+        w = Kernel.from_dataframe(self.data, fixed=False, function="gaussian")
+        # w = KNN.from_dataframe(self.data, k=5)
+        print(w.islands)
+        nodes = w.weights.keys()
+        edges = [(node, neighbour) for node in nodes for neighbour in w[node]]
+        my_graph = nx.Graph(edges)
+        print(my_graph)
+
+        node2vec = Node2Vec(
+            my_graph, dimensions=64, walk_length=30, num_walks=200, workers=4
+        )
+        model = node2vec.fit(window=10, min_count=1, batch_words=4)
+
+        copy.data[columnName + "_embeddings"] = ""
+        for index, row in copy.data.iterrows():
+            copy.data.at[index, columnName + "_embeddings"] = model.wv[index]
+
+        return copy
+
+    def categoryToVector(self, columnName):
+
+        copy = self.copy_and_read()
+
+        column_data = copy.data[columnName]
+
+        column_encoder = ce.OneHotEncoder(
+            cols=columnName,
+            handle_unknown="return_nan",
+            return_df=True,
+            use_cat_names=True,
+        )
+        column_data = column_encoder.fit_transform(column_data)
+        copy.data[columnName + "_encoded"] = column_data.values.tolist()
+        copy.simple_data_types[columnName + "_encoded"] = config.type_numeric_list
+        copy.data_types[columnName + "_encoded"] = config.type_numeric_list
+        copy.attributes.append(columnName + "_encoded")
+        copy.attribute_labels[columnName + "_encoded"] = (
+                copy.attribute_labels[columnName] + " (Encoded)"
+        )
+
+        return copy
+
+    def flattenData(self):
+
+        copy = self.copy_and_read()
+
+        for atribute in copy.attributes:
+            # print(atribute)
+            if copy.simple_data_types[atribute] == config.type_numeric_list:
+                # print(atribute)
+                attribute_column_names = [
+                    atribute + str(i) for i in range(len(copy.data[atribute].iloc[0]))
+                ]
+                copy.data[attribute_column_names] = pd.DataFrame(
+                    copy.data[atribute].tolist(), index=copy.data.index
+                )
+
+        return copy
+
+    def getStatistics(self) -> dict:
+        if not self.stats:
+            if self.data.empty:
+                self.readFile()
+            self.stats = getStatistics(dataset=self)
+
+        return self.stats
+
+    def readFile(self, number_of_lines: int = None):
+
+        if not self.fileName:
+            raise ValueError("No filename given for file reading.")
+
+        # TODO: Create global config file where we define the data folder path
+        dirName = os.path.dirname(__file__)
+        rootFolder = os.getenv(
+            "SML_DATASET_PATH", os.path.join(dirName, global_config.data_folder_name)
+        )
+        dataFilePath = os.path.join(rootFolder, self.fileName)
+
+        # TODO: Check infer_datetime_format
+
+        parse_data_types: dict[str, object] = {}
+        for attribute, value_type in self.data_types.items():
+            parse_data_types[attribute] = value_type
+            if value_type == np.datetime64:
+                parse_data_types[attribute] = str
+            elif value_type == geometry:
+                parse_data_types[attribute] = object
+
+        self.data = pd.read_csv(
+            dataFilePath,
+            sep=self.separator,
+            dtype=parse_data_types,
+            parse_dates=self.parse_dates,
+            na_values=[self.null_value],
+            usecols=self.attributes,
+            nrows=number_of_lines,
+        )
+
+        self.parse_geo_columns()
 
     def getProfile(self):
 
@@ -599,6 +462,96 @@ class Dataset:
 
         return profile
 
+    def parse_geo_columns(self):
+        # parse geo data
+        # WKT columns
+        for wkt_column in self.wkt_columns:
+            self.data[wkt_column] = self.data[wkt_column].apply(parseWKT, hex=True)
+            self.simple_data_types[wkt_column] = config.type_geometry
+        # WKB columns
+        for wkb_column in self.wkb_columns:
+            self.data[wkb_column] = self.data[wkb_column].apply(parseWKB, hex=True)
+            # latitude/longitude pairs
+            self.simple_data_types[wkb_column] = config.type_geometry
+
+        lon_lat_pair_number = 1
+        for lon_lat_pair in self.lon_lat_pairs:
+
+            # new column is either called "geometry" or "geometry1", "geometry2", ..., if there are multiple ones.
+            if "geometry" in self.data:
+                geo_column_number = 2
+                while True:
+                    column_name = "geometry" + geo_column_number
+                    if column_name not in self.data:
+                        break
+            else:
+                column_name = "geometry"
+
+            if len(self.lon_lat_pairs) > 1:
+                column_name += str(lon_lat_pair_number)
+            self.data[column_name] = geopandas.points_from_xy(
+                self.data[lon_lat_pair["longitude"]],
+                self.data[lon_lat_pair["latitude"]],
+            )
+            self.data_types[column_name] = geometry
+            self.simple_data_types[column_name] = config.type_geometry
+            lon_lat_pair_number += 1
+
+    def addColumnDescription(
+            self,
+            attribute_identifier,
+            resource_node,
+            domain_node,
+            property_node,
+            rdf_value_type,
+            value_type,
+            attribute_label,
+            is_geometry: bool,
+            resource_rank=None,
+    ):
+        self.attributes.append(attribute_identifier)
+
+        if resource_node:
+            self.attribute_graph[attribute_identifier] = {
+                "value_type": rdf_value_type,
+                "resource": resource_node,
+                "property": property_node,
+                "class": domain_node,
+            }
+            if resource_rank:
+                self.attribute_graph[attribute_identifier][
+                    "resource_rank"
+                ] = resource_rank
+        self.data_types[attribute_identifier] = value_type
+
+        self.attribute_labels[attribute_identifier] = attribute_label
+
+        # create simple types
+        if value_type == np.datetime64:
+            self.parse_dates.append(attribute_identifier)
+            # self.data_types[attribute_identifier] = np.str
+            self.simple_data_types[attribute_identifier] = config.type_datetime
+        elif (
+                value_type == np.integer
+                or value_type == pd.Int32Dtype()
+                or value_type == pd.Int64Dtype()
+        ):
+            self.simple_data_types[attribute_identifier] = config.type_numeric
+        elif value_type == np.float64:
+            self.simple_data_types[attribute_identifier] = config.type_numeric
+        elif value_type == np.bool:
+            self.simple_data_types[attribute_identifier] = config.type_bool
+        else:
+            self.simple_data_types[attribute_identifier] = config.type_string
+
+        if is_geometry:
+            self.simple_data_types[attribute_identifier] = config.type_geometry
+            self.data_types[attribute_identifier] = geometry
+
+    def getJson(self):
+        json_input = {"id": self.id, "title": self.title, "topics": self.subjects}
+        return json.dumps(json_input)
+
     def get_sample_info_for_profile(self):
         sample_as_list = []
         for i in range(0, len(self.data_sample)):
@@ -629,6 +582,13 @@ class Dataset:
     def exportDataAsFile(self, file_path):
         self.data.to_csv(file_path, encoding="utf-8")
 
+    def copy_and_read(self, number_of_lines: int = None):
+        if self.data.empty:
+            self.readFile(number_of_lines)
+
+        copy = self.copy()
+        return copy
+
     def toArray(self):
         return self.data.to_numpy()
 
@@ -642,14 +602,14 @@ def loadDataset(datasetID: str) -> Dataset:
 
 
 def readDataSetFromCSV(
-    file_name: str,
-    dataset_id: str,
-    separator: str,
-    has_header: bool,
-    null_value: str,
-    dataset_name: str = None,
-    coordinate_system=3857,
-    lon_lat_pairs=[],
+        file_name: str,
+        dataset_id: str,
+        separator: str,
+        has_header: bool,
+        null_value: str,
+        dataset_name: str = None,
+        coordinate_system=3857,
+        lon_lat_pairs=[],
 ) -> Dataset:
     dir_name = os.path.dirname(__file__)
     data_file_path = os.path.join(dir_name, global_config.data_folder_name, file_name)
@@ -735,17 +695,17 @@ def dataTypes(type):
 
 
 def joinTwoDatasets(
-    first_data: Dataset,
-    second_data: Dataset,
-    join_column_name_1: str,
-    join_column_name_2: str,
-    first_suffix: str,
-    second_suffix: str,
+        first_data: Dataset,
+        second_data: Dataset,
+        join_column_name_1: str,
+        join_column_name_2: str,
+        first_suffix: str,
+        second_suffix: str,
 ) -> Dataset:
     # TODO: check that types are join_column_name_1 and join_column_name_2 are the same
     if (
-        first_data.data[join_column_name_1].dtypes
-        == second_data.data[join_column_name_2].dtypes
+            first_data.data[join_column_name_1].dtypes
+            == second_data.data[join_column_name_2].dtypes
     ):
         # print(second_data.data)
         joint_data = first_data.data.merge(
@@ -804,4 +764,11 @@ def parseWKB(value, hex):
     try:
         return wkb.loads(value, hex=hex)
     except (WKBReadingError, AttributeError, TypeError):
+        return None
+
+
+def parseWKT(value, hex):
+    try:
+        return wkt.loads(value)
+    except (WKTReadingError, AttributeError, TypeError):
         return None
