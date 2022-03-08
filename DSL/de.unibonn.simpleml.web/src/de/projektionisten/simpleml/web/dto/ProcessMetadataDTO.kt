@@ -5,7 +5,8 @@ data class ProcessMetadataDTO(
     val emfPath: String, 
     val error: String,
     val input: List<ParameterDTO?>,
-    val output: List<ParameterDTO?>
+    val output: List<ParameterDTO?>,
+    val description: String?
 ) {
 
 }

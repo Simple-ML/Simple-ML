@@ -1,0 +1,9 @@
+package simpleml.metrics.classification
+
+import simpleml.dataset.Dataset
+
+fun accuracy(yTrue: Dataset, yPred: Dataset) -> score: Float
+fun balancedAccuracy(yTrue: Dataset, yPred: Dataset) -> score: Float
+fun averagePrecision(yTrue: Dataset, yPred: Dataset) -> score: Float
+fun precision(yTrue: Dataset, yPred: Dataset) -> score: Float
+fun recall(yTrue: Dataset, yPred: Dataset) -> score: Float

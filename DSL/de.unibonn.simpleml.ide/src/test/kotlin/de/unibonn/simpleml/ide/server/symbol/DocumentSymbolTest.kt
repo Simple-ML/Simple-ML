@@ -29,7 +29,8 @@ class DocumentSymbolTest : AbstractSimpleMLLanguageServerTest() {
      * Checks if the given program is a valid test. If there are issues a description of the issue is returned, otherwise
      * this returns null.
      */
-    private fun validateTestFile(program: String, filePath: Path): String? {
+    @Suppress("UNUSED_PARAMETER")
+    private fun validateTestFile(resourcePath: Path, filePath: Path, program: String): String? {
         val symbolComments = try {
             symbolComments(program)
         } catch (e: IllegalArgumentException) {

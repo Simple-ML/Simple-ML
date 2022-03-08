@@ -548,6 +548,62 @@ class ScopingTest {
             referencedInterface.shouldNotBeResolved()
         }
 
+        @Test
+        fun `should resolve type parameters in containing class from attribute`() = withResource(NAMED_TYPE) {
+            val attributeInClassWithTypeParameter =
+                findUniqueDeclarationOrFail<SmlAttribute>("attributeInClassWithTypeParameter")
+            val typeParameter = findUniqueDeclarationOrFail<SmlTypeParameter>("TYPE_PARAMETER_IN_OUTER_CLASS")
+
+            val attributeType = attributeInClassWithTypeParameter.type
+            attributeType.shouldBeInstanceOf<SmlNamedType>()
+
+            val referencedTypeParameter = attributeType.declaration
+            referencedTypeParameter.shouldBeResolved()
+            referencedTypeParameter.shouldBe(typeParameter)
+        }
+
+        @Test
+        fun `should resolve type parameters in containing class from nested class`() = withResource(NAMED_TYPE) {
+            val paramClassInClassWithTypeParameter =
+                findUniqueDeclarationOrFail<SmlParameter>("paramClassInClassWithTypeParameter")
+            val typeParameter = findUniqueDeclarationOrFail<SmlTypeParameter>("TYPE_PARAMETER_IN_OUTER_CLASS")
+
+            val parameterType = paramClassInClassWithTypeParameter.type
+            parameterType.shouldBeInstanceOf<SmlNamedType>()
+
+            val referencedTypeParameter = parameterType.declaration
+            referencedTypeParameter.shouldBeResolved()
+            referencedTypeParameter.shouldBe(typeParameter)
+        }
+
+        @Test
+        fun `should resolve type parameters in containing class from nested enum variant`() = withResource(NAMED_TYPE) {
+            val paramEnumInClassWithTypeParameter =
+                findUniqueDeclarationOrFail<SmlParameter>("paramEnumInClassWithTypeParameter")
+            val typeParameter = findUniqueDeclarationOrFail<SmlTypeParameter>("TYPE_PARAMETER_IN_OUTER_CLASS")
+
+            val parameterType = paramEnumInClassWithTypeParameter.type
+            parameterType.shouldBeInstanceOf<SmlNamedType>()
+
+            val referencedTypeParameter = parameterType.declaration
+            referencedTypeParameter.shouldBeResolved()
+            referencedTypeParameter.shouldBe(typeParameter)
+        }
+
+        @Test
+        fun `should resolve type parameters in containing class from method`() = withResource(NAMED_TYPE) {
+            val paramMethodInClassWithTypeParameter =
+                findUniqueDeclarationOrFail<SmlParameter>("paramMethodInClassWithTypeParameter")
+            val typeParameter = findUniqueDeclarationOrFail<SmlTypeParameter>("TYPE_PARAMETER_IN_OUTER_CLASS")
+
+            val parameterType = paramMethodInClassWithTypeParameter.type
+            parameterType.shouldBeInstanceOf<SmlNamedType>()
+
+            val referencedTypeParameter = parameterType.declaration
+            referencedTypeParameter.shouldBeResolved()
+            referencedTypeParameter.shouldBe(typeParameter)
+        }
+
         @Nested
         inner class MemberType {
             @Test
@@ -2370,7 +2426,7 @@ class ScopingTest {
     ) {
 
         val compilationUnit =
-            parseHelper.parseResourceWithContext(
+            parseHelper.parseResource(
                 "scoping/$resourceName/main.${SmlFileExtension.Test}",
                 listOf(
                     "scoping/$resourceName/externalsInOtherPackage.${SmlFileExtension.Test}",

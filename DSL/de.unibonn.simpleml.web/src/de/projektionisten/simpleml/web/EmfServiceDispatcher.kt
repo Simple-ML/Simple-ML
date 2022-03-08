@@ -6,13 +6,35 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.inject.Inject
 import com.google.inject.Singleton
-import de.unibonn.simpleml.emf.containingCompilationUnitOrNull
+import de.projektionisten.simpleml.web.dto.CreateEntityDTO
+import de.projektionisten.simpleml.web.dto.ParameterDTO
+import de.projektionisten.simpleml.web.dto.ProcessMetadataDTO
+import de.projektionisten.simpleml.web.dto.ProcessProposalsDTO
 import de.unibonn.simpleml.emf.createSmlImport
+import de.unibonn.simpleml.emf.createSmlAssignment
+import de.unibonn.simpleml.emf.createSmlPlaceholder
+import de.unibonn.simpleml.emf.createSmlReference
+import de.unibonn.simpleml.emf.createSmlCall
+import de.unibonn.simpleml.emf.createSmlMemberAccess
+import de.unibonn.simpleml.emf.createSmlArgument
+import de.unibonn.simpleml.emf.isClassMember
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
-import de.unibonn.simpleml.ide.editor.contentassist.listCallables
+import de.unibonn.simpleml.stdlibAccess.descriptionOrNull
+import de.unibonn.simpleml.ide.editor.contentassist.listCallablesWithMatchingParameters
+import de.unibonn.simpleml.ide.editor.contentassist.listCallablesWithOnlyPrimitiveParameters
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
-import de.unibonn.simpleml.simpleML.*
+import de.unibonn.simpleml.simpleML.SimpleMLFactory
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
+import de.unibonn.simpleml.simpleML.SmlAbstractExpression
+import de.unibonn.simpleml.simpleML.SmlAbstractType
+import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.simpleML.SmlNamedType
+import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.web.SimpleMLResourceSetProvider
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
@@ -26,15 +48,6 @@ import org.emfjson.jackson.annotations.EcoreTypeInfo
 import org.emfjson.jackson.module.EMFModule
 import org.emfjson.jackson.resource.JsonResourceFactory
 import org.emfjson.jackson.utils.ValueWriter
-// import de.unibonn.simpleml.utils.parametersOrEmpty
-// import de.unibonn.simpleml.utils.resultsOrEmpty
-// import de.unibonn.simpleml.utils.QualifiedNameProvider
-// import de.unibonn.simpleml.utils.Proposals
-// import de.unibonn.simpleml.utils.containingCompilationUnitOrNull
-import de.projektionisten.simpleml.web.dto.*
-import org.eclipse.xtext.web.server.persistence.IServerResourceHandler
-import java.lang.IllegalArgumentException
-
 
 @Singleton
 class EmfServiceDispatcher @Inject constructor(
@@ -49,8 +62,8 @@ class EmfServiceDispatcher @Inject constructor(
         val mapper = ObjectMapper()
         val module = EMFModule()
 
-
-        module.typeInfo = EcoreTypeInfo("className",
+        module.typeInfo = EcoreTypeInfo(
+            "className",
             object : ValueWriter<EClass, String> {
                 override fun writeValue(value: EClass, context: SerializerProvider): String {
                     return (value as EClassImpl).instanceClassName
@@ -64,7 +77,6 @@ class EmfServiceDispatcher @Inject constructor(
         this.jsonMapper = factory.getMapper()
     }
 
-
     override fun createServiceDescriptor(serviceType: String, context: IServiceContext): ServiceDescriptor {
         return when (serviceType) {
             "getEmfModel" ->
@@ -75,21 +87,19 @@ class EmfServiceDispatcher @Inject constructor(
                 getProcessProposals(context)
             "createEntity" ->
                 createEntity(context)
-            "editProcessParameter" ->
-                editProcessParameter(context)
-//			"deleteEntity" ->
-//				deleteEntity(context)
-//			"createAssociation" ->
-//				createAssociation(context)
-//			"deleteAssociation" ->
-//				deleteAssociation(context)
+// 			"deleteEntity" ->
+// 				deleteEntity(context)
+// 			"createAssociation" ->
+// 				createAssociation(context)
+// 			"deleteAssociation" ->
+// 				deleteAssociation(context)
             else ->
                 super.createServiceDescriptor(serviceType, context)
         }
     }
 
-
     private fun getEmfModel(context: IServiceContext): ServiceDescriptor {
+        getValidationService(context).service.apply()
         return context.createDefaultGetServiceResult("")
     }
 
@@ -97,7 +107,7 @@ class EmfServiceDispatcher @Inject constructor(
         val type = object : TypeToken<ArrayList<String>>() {}.getType()
         val emfPathCollection =
             jsonConverter.fromJson(context.getParameter("entityPathCollection"), type) as ArrayList<String>
-        val result = ArrayList<ProcessMetadataDTO>();
+        val result = ArrayList<ProcessMetadataDTO>()
 
         emfPathCollection.forEach {
             result.add(getProcessMetadataFromURI(it, context))
@@ -124,8 +134,8 @@ class EmfServiceDispatcher @Inject constructor(
 
         val astRoot = resourceDocument.resource.contents[0]
         val proposals = when (emfEntity) {
-            null -> listCallables(astRoot, emptyList())
-            else -> listCallables(astRoot, listOf(emfEntity))
+            null -> listCallablesWithOnlyPrimitiveParameters(astRoot)
+            else -> listCallablesWithMatchingParameters(astRoot, listOf(emfEntity))
         }
         val result = proposals.map { getProcessMetadataFromURI(it.key.toString(), context) }
 
@@ -162,91 +172,63 @@ class EmfServiceDispatcher @Inject constructor(
         val resourceStdLib = stdLibResourceSetProvider.get(createEntityDTO.referenceIfFunktion, context)
         val functionRef = resourceStdLib.getEObject(URI.createURI(createEntityDTO.referenceIfFunktion), true)
 
-        val assignment = SimpleMLFactory.eINSTANCE.createSmlAssignment()
-        val assigneeList = SimpleMLFactory.eINSTANCE.createSmlAssigneeList()
-        val placeholder = SimpleMLFactory.eINSTANCE.createSmlPlaceholder()
-        val call = SimpleMLFactory.eINSTANCE.createSmlCall()
-        val argumentList = SimpleMLFactory.eINSTANCE.createSmlArgumentList()
-        val argument = SimpleMLFactory.eINSTANCE.createSmlArgument()
-        val reference = SimpleMLFactory.eINSTANCE.createSmlReference()
-        val reference2 = SimpleMLFactory.eINSTANCE.createSmlReference()
-
-        when (functionRef) {
-            is SmlFunction -> {
-                reference.declaration = functionRef
+        val assignment = when {
+            createEntityDTO.associationTargetPath == "" -> {
+                createSmlAssignment(
+                    listOf(createSmlPlaceholder(createEntityDTO.placeholderName)),
+                    createSmlCall(
+                        createSmlReference(functionRef as SmlAbstractDeclaration),
+                        arguments = listOf()
+                    )
+                )
             }
-            is SmlClass -> {
-                reference.declaration = functionRef
+            functionRef is SmlFunction && functionRef.isClassMember() -> {
+                createSmlAssignment(
+                    listOf(createSmlPlaceholder(createEntityDTO.placeholderName)),
+                    createSmlCall(
+                        createSmlMemberAccess(
+                            createSmlReference(getEmfEntityByPath(resourceDocument, createEntityDTO.associationTargetPath) as SmlAbstractDeclaration),
+                            createSmlReference(functionRef as SmlAbstractDeclaration)
+                        )
+                    )
+                )
+            } 
+            else -> {
+                createSmlAssignment(
+                    listOf(createSmlPlaceholder(createEntityDTO.placeholderName)),
+                    createSmlCall(
+                        createSmlReference(functionRef as SmlAbstractDeclaration),
+                        arguments = listOf(
+                            createSmlArgument(
+                                createSmlReference(getEmfEntityByPath(resourceDocument, createEntityDTO.associationTargetPath) as SmlAbstractDeclaration)
+                            )
+                        )
+                    )
+                )
             }
         }
-
-        // create entity
-        call.receiver = reference
-        call.argumentList = argumentList
-
-        placeholder.name = createEntityDTO.placeholderName
-        assigneeList.assignees.add(placeholder)
-
-        assignment.expression = call
-        assignment.assigneeList = assigneeList
 
         // attach to root-node
         (astRoot.members[0] as SmlWorkflow).body.statements.add(assignment)
 
-        if (!createEntityDTO.associationTargetPath.isNullOrEmpty()) {
-            val associationTarget = getEmfEntityByPath(resourceDocument, createEntityDTO.associationTargetPath)
-
-            reference2.declaration = associationTarget as SmlPlaceholder
-            argument.value = reference2 as SmlAbstractExpression
-            call.argumentList.arguments.add(argument)
-        }
-
         // create import-statement if necessary
         val importExists = astRoot.imports.any {
-            it.importedNamespace == reference.declaration.qualifiedNameOrNull().toString()
+            it.importedNamespace == functionRef.qualifiedNameOrNull().toString()
         }
-        if (!importExists) {
+        if (!importExists && !functionRef.isClassMember()) {
             astRoot.imports += createSmlImport(
-                importedNamespace = reference.declaration.qualifiedNameOrNull().toString()
+                importedNamespace = functionRef.qualifiedNameOrNull().toString()
             )
         }
 
         return context.createDefaultPostServiceResult("")
     }
 
-    private fun editProcessParameter(context: IServiceContext): ServiceDescriptor {
-		val resourceDocument = getResourceDocument(super.getResourceID(context), context)
-		val type = object: TypeToken<EditProcessParameterDTO>(){}.getType()
-		val editProcessParameterDTO = jsonConverter.fromJson(context.getParameter("editProcessParameterDTO"), type) as EditProcessParameterDTO		
-		val target = getEmfEntityByPath(resourceDocument, editProcessParameterDTO.entityPath) as SmlCall?
-
-		if(target != null) {
-			val argumentList = target.argumentList
-			var argument: SmlArgument
-			var valueContainer = SimpleMLFactory.eINSTANCE.createSmlString()
-			val indexAndSizeDiff = editProcessParameterDTO.parameterIndex.toInt() - target.argumentList.arguments.size
-
-			if(indexAndSizeDiff >= 0) {
-				for(i in 0..indexAndSizeDiff) {
-					argument = SimpleMLFactory.eINSTANCE.createSmlArgument()
-					argument.value = SimpleMLFactory.eINSTANCE.createSmlNull()
-					argumentList.arguments.add(argument)
-				}
-			}
-			
-			valueContainer.value = editProcessParameterDTO.value
-			argument = SimpleMLFactory.eINSTANCE.createSmlArgument()
-			argument.value = valueContainer
-			argumentList.arguments.set(editProcessParameterDTO.parameterIndex.toInt(), argument);
-		}
-		return context.createDefaultPostServiceResult("")
-	}
-
-
     private fun getProcessMetadataFromURI(uri: String, serviceContext: IServiceContext): ProcessMetadataDTO {
         val resourceDocument = getResourceDocument(super.getResourceID(serviceContext), serviceContext)
         var entityName = ""
-        var error = ""
+        var description: String? = ""
+        var error: String
         var entity = resourceDocument.resource.getEObject(uri)
         val parameterMetadata = ArrayList<ParameterDTO>()
         val resultMetadata = ArrayList<ParameterDTO>()
@@ -274,32 +256,16 @@ class EmfServiceDispatcher @Inject constructor(
                     entityName = entity.name
                 }
             }
+            description = (entity as? SmlAbstractDeclaration)?.descriptionOrNull() 
             error = ""
         } else {
             error = "Entity not found!"
         }
-        return ProcessMetadataDTO(entityName, uri, error, parameterMetadata, resultMetadata)
+        return ProcessMetadataDTO(entityName, uri, error, parameterMetadata, resultMetadata, description)
     }
 
     private fun SmlAbstractType.qualifiedNameOrNull(): String? {
         return (this as? SmlNamedType)?.declaration?.qualifiedNameOrNull()?.toString()
-    }
-
-    private fun XtextWebDocument.createErrorResult(text: String): ServiceDescriptor {
-        val serviceDescriptor = ServiceDescriptor()
-
-        serviceDescriptor.setService(fun(): EmfServiceResult {
-            return EmfServiceResult(
-                "",
-                "",
-                text,
-                this.stateId,
-                false
-            )
-        })
-        serviceDescriptor.setHasSideEffects(false)
-
-        return serviceDescriptor
     }
 
     private fun IServiceContext.createDefaultGetServiceResult(data: String): ServiceDescriptor {
@@ -312,25 +278,26 @@ class EmfServiceDispatcher @Inject constructor(
 
     private fun IServiceContext.createDefaultServiceResult(data: String, sideEffects: Boolean): ServiceDescriptor {
         val resourceDocument = getResourceDocument(super.getResourceID(this), this)
+        val emfModel = jsonMapper.writeValueAsString(resourceDocument.resource)
+        val serviceDescriptor = ServiceDescriptor()
+        var error = ""
 
         if (sideEffects) {
             try {
-
                 val astRoot = resourceDocument.resource.contents.get(0)
                 resourceDocument.text = serializer.serialize(astRoot)
                 getValidationService(this).service.apply()
             } catch (e: Exception) {
-                return resourceDocument.createErrorResult("Serialization failed: " + e.message)
+                error = "Serialization failed: " + e.message
             }
         }
-        val emfModel = jsonMapper.writeValueAsString(resourceDocument.resource)
-        val serviceDescriptor = ServiceDescriptor()
 
         serviceDescriptor.setService(fun(): EmfServiceResult {
             return EmfServiceResult(
                 resourceDocument.text,
                 emfModel,
                 data,
+                error,
                 resourceDocument.stateId,
                 sideEffects
             )

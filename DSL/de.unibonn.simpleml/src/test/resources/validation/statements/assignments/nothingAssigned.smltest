@@ -8,11 +8,11 @@ step f() {
     // semantic_error "No value is assigned to this assignee."
     »val a« = noResults();
     // semantic_error "No value is assigned to this assignee."
-    (_, »val b«) = oneResult();
+    _, »val b« = oneResult();
     // semantic_error "No value is assigned to this assignee."
-    (_, _, »val c«) = twoResults();
+    _, _, »val c« = twoResults();
     // semantic_error "No value is assigned to this assignee."
-    (_, »val d«) = 1;
+    _, »val d« = 1;
 
     // no_semantic_error "No value is assigned to this assignee."
     »val e« = oneResult();

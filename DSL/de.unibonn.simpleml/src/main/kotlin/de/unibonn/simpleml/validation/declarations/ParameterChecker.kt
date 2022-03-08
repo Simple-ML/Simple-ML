@@ -1,6 +1,7 @@
 package de.unibonn.simpleml.validation.declarations
 
 import de.unibonn.simpleml.emf.closestAncestorOrNull
+import de.unibonn.simpleml.emf.isOptional
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAbstractLambda
 import de.unibonn.simpleml.simpleML.SmlParameter
@@ -9,6 +10,7 @@ import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpression
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.validation.Check
+import org.eclipse.xtext.validation.CheckType
 
 class ParameterChecker : AbstractSimpleMLChecker() {
 
@@ -24,7 +26,7 @@ class ParameterChecker : AbstractSimpleMLChecker() {
         }
     }
 
-    @Check
+    @Check(CheckType.NORMAL)
     fun defaultValueMustBeConstant(smlParameter: SmlParameter) {
         val defaultValue = smlParameter.defaultValue ?: return
         if (defaultValue.toConstantExpressionOrNull() == null) {
@@ -32,6 +34,17 @@ class ParameterChecker : AbstractSimpleMLChecker() {
                 "Default values of parameters must be constant.",
                 Literals.SML_PARAMETER__DEFAULT_VALUE,
                 ErrorCode.MustBeConstant
+            )
+        }
+    }
+
+    @Check
+    fun variadicParametersMustHaveNoDefaultValue(smlParameter: SmlParameter) {
+        if (smlParameter.isVariadic && smlParameter.isOptional()) {
+            error(
+                "Variadic parameters must not have default values.",
+                Literals.SML_ABSTRACT_DECLARATION__NAME,
+                ErrorCode.VariadicParametersMustNotHaveDefaultValue
             )
         }
     }

@@ -2,6 +2,7 @@ package de.unibonn.simpleml.testing
 
 import de.unibonn.simpleml.constant.SmlFileExtension
 import org.eclipse.core.runtime.FileLocator
+import org.eclipse.emf.common.util.URI
 import org.junit.jupiter.api.DynamicContainer
 import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
@@ -13,12 +14,18 @@ import kotlin.streams.asSequence
 
 fun ClassLoader.getResourcePath(fileOrFolder: String): Path? {
     val resourceUrl = getResource(fileOrFolder) ?: return null
-    val resourceUri = FileLocator.resolve(resourceUrl).toURI()
-    return Paths.get(resourceUri)
+    val resourceFileUri = FileLocator.resolve(resourceUrl).toURI()
+    return Paths.get(resourceFileUri)
+}
+
+fun ClassLoader.getResourceEmfUri(fileOrFolder: String): URI? {
+    val resourceUrl = getResource(fileOrFolder) ?: return null
+    val resourceFileUri = FileLocator.resolve(resourceUrl).toURI()
+    return URI.createURI(resourceFileUri.toString(), false)
 }
 
 fun Path.createDynamicTestsFromResourceFolder(
-    validator: (program: String, filePath: Path) -> String?,
+    validator: (resourcePath: Path, filePath: Path, program: String) -> String?,
     categorizedTestCreator: (resourcePath: Path, filePath: Path, program: String) -> Sequence<CategorizedTest>
 ): Stream<out DynamicNode> {
     return Files.walk(this)
@@ -35,12 +42,12 @@ fun Path.createDynamicTestsFromResourceFolder(
 private fun createDynamicTestFromResource(
     resourcePath: Path,
     filePath: Path,
-    validator: (program: String, filePath: Path) -> String?,
+    validator: (resourcePath: Path, filePath: Path, program: String) -> String?,
     categorizedTestCreator: (resourcePath: Path, filePath: Path, program: String) -> Sequence<CategorizedTest>
 ) = sequence {
     val program = Files.readString(filePath)
 
-    val testFileError = validator(program, filePath)
+    val testFileError = validator(resourcePath, filePath, program)
     if (testFileError != null) {
         yield(
             CategorizedTest(

@@ -1,0 +1,13 @@
+package tests.generator.parameterWithPythonName
+
+fun f(param: Any?)
+
+step test1(param1: Int, @PythonName("param_2") param2: Int, @PythonName("param_3") param3: Int = 0) {
+    f((param1: Int, @PythonName("param_2") param2: Int, @PythonName("param_3") param3: Int = 0) -> 1);
+    f((param1: Int, @PythonName("param_2") param2: Int, @PythonName("param_3") param3: Int = 0) {});
+}
+
+step test2(param1: Int, @PythonName("param_2") param2: Int, @PythonName("param_4") vararg param4: Int) {
+    f((param1: Int, @PythonName("param_2") param2: Int, @PythonName("param_4") vararg param4: Int) -> 1);
+    f((param1: Int, @PythonName("param_2") param2: Int, @PythonName("param_4") vararg param4: Int) {});
+}

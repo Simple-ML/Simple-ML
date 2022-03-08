@@ -8,7 +8,6 @@ import de.unibonn.simpleml.emf.isQualified
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.scoping.externalGlobalDeclarations
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
-import de.unibonn.simpleml.simpleML.SimpleMLPackage.SML_ABSTRACT_DECLARATION__NAME
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlImport
@@ -75,8 +74,7 @@ class CompilationUnitChecker : AbstractSimpleMLChecker() {
             when (it) {
                 is SmlImport -> it.importedNameOrNull()
                 is SmlAbstractDeclaration -> it.name
-                // Should never happen
-                else -> throw AssertionError("$it is neither an import nor a declaration.")
+                else -> null
             }
         }.forEach {
             when {

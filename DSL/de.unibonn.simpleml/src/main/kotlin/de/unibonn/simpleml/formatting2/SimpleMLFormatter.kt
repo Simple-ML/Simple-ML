@@ -551,8 +551,8 @@ class SimpleMLFormatter : AbstractFormatter2() {
                 // EObject "type"
                 doc.formatObject(obj.type)
 
-                // Keyword "or"
-                doc.formatKeyword(obj, "or", oneSpace, oneSpace)
+                // Keyword "="
+                doc.formatKeyword(obj, "=", oneSpace, oneSpace)
 
                 // EObject "defaultValue"
                 doc.formatObject(obj.defaultValue)
@@ -770,46 +770,26 @@ class SimpleMLFormatter : AbstractFormatter2() {
             }
             is SmlAssigneeList -> {
 
-                // Keyword "("
-                doc.formatKeyword(obj, "(", null, noSpace)
-
-                // Feature "parameters"
+                // Feature "assignees"
                 obj.assignees.forEach {
                     doc.formatObject(it)
                 }
 
                 // Keywords ","
                 doc.formatCommas(obj)
-
-                // Keyword ")"
-                doc.formatKeyword(obj, ")", noSpace, null)
             }
             is SmlBlockLambdaResult -> {
 
-                // Features "annotations"
-                doc.formatAnnotations(obj, inlineAnnotations = true)
-
                 // Keyword "yield"
-                if (obj.annotationCallsOrEmpty().isEmpty()) {
-                    doc.formatKeyword(obj, "yield", null, oneSpace)
-                } else {
-                    doc.formatKeyword(obj, "yield", oneSpace, oneSpace)
-                }
+                doc.formatKeyword(obj, "yield", null, oneSpace)
 
                 // Feature "name"
                 doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME, oneSpace, null)
             }
             is SmlPlaceholder -> {
 
-                // Features "annotations"
-                doc.formatAnnotations(obj, inlineAnnotations = true)
-
                 // Keyword "val"
-                if (obj.annotationCallsOrEmpty().isEmpty()) {
-                    doc.formatKeyword(obj, "val", null, oneSpace)
-                } else {
-                    doc.formatKeyword(obj, "val", oneSpace, oneSpace)
-                }
+                doc.formatKeyword(obj, "val", null, oneSpace)
 
                 // Feature "name"
                 doc.formatFeature(obj, SML_ABSTRACT_DECLARATION__NAME, oneSpace, null)

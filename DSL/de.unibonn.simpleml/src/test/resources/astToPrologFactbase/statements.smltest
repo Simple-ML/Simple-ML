@@ -5,19 +5,14 @@ annotation MySimpleAnnotation
 step myFunctionalStep() -> a {
 
     // Assignment with placeholder, wildcard, and yield
-    (
-        val mySimplePlaceholder,
-        @MySimpleAnnotation val myComplexPlaceholder,
-        _, 
-        yield a
-    ) = f();
+    val mySimplePlaceholder, val myComplexPlaceholder, _, yield a = f();
 
     // Expression statement
     () {
 
         // Lambda result
         yield mySimpleLambdaResult = 1;
-        @MySimpleAnnotation yield myComplexLambdaResult = 1;
+        yield myComplexLambdaResult = 1;
     };
 }
 

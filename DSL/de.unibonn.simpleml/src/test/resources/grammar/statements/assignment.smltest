@@ -2,10 +2,10 @@
 
 workflow myWorkflow {
     val a = 0;
-    (@AnnotationUse val a, _, yield b) = call();
+    val a, _, yield b = call();
 
     () {
         val a = 0;
-        (@AnnotationUse val a, _, @AnnotationUse yield b) = call();
+        val a, _, yield b = call();
     };
 }

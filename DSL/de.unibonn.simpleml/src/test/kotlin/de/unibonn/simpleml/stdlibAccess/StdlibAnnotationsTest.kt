@@ -190,7 +190,7 @@ class StdlibAnnotationsTest {
 
     private fun withCompilationUnit(resourceName: String, check: SmlCompilationUnit.() -> Unit) {
         parseHelper
-            .parseResourceWithStdlib("$testRoot/$resourceName.${SmlFileExtension.Test}")
+            .parseResource("$testRoot/$resourceName.${SmlFileExtension.Test}")
             .shouldNotBeNull()
             .check()
     }

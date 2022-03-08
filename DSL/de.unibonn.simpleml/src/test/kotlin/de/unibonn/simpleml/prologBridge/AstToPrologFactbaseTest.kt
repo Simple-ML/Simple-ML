@@ -691,12 +691,6 @@ class AstToPrologFactbaseTest {
             }
 
             @Test
-            fun `should store annotation uses`() = withFactbaseFromFile("statements") {
-                val blockLambdaResultT = findUniqueFactOrFail<BlockLambdaResultT> { it.name == "myComplexLambdaResult" }
-                shouldHaveNAnnotationCalls(blockLambdaResultT, 1)
-            }
-
-            @Test
             fun `should store source location in separate relation`() = withFactbaseFromFile("statements") {
                 val blockLambdaResultT = findUniqueFactOrFail<BlockLambdaResultT> { it.name == "mySimpleLambdaResult" }
                 findUniqueFactOrFail<SourceLocationS> { it.target == blockLambdaResultT.id }
@@ -708,12 +702,6 @@ class AstToPrologFactbaseTest {
             @Test
             fun `should handle placeholders`() = withFactbaseFromFile("statements") {
                 findUniqueFactOrFail<PlaceholderT> { it.name == "mySimplePlaceholder" }
-            }
-
-            @Test
-            fun `should store annotation uses`() = withFactbaseFromFile("statements") {
-                val placeholderT = findUniqueFactOrFail<PlaceholderT> { it.name == "myComplexPlaceholder" }
-                shouldHaveNAnnotationCalls(placeholderT, 1)
             }
 
             @Test

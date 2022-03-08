@@ -51,10 +51,10 @@ Note: This solution requires that Git itself can clone this private repository f
 
 1. Build the image:
     ```shell
-    docker build -t simple-ml_dsl
+    docker build -t simpleml-dsl .
     ```
 1. Run a container:
     ```shell
-    docker run --name simple-ml_dsl -d --rm -p 8080:8080 simple-ml_dsl
+    docker run --name simpleml-dsl -d --rm -p 8080:8080 simpleml-dsl
     ```
 1. Visit [localhost:8080/simpleml](http://localhost:8080/simpleml) in your Browser to check that everything worked.

@@ -1,6 +1,6 @@
 package tests.validation.other.argumentLists.tooManyArguments
 
-annotation MyAnnotation1(a: Int, b: Int or 0)
+annotation MyAnnotation1(a: Int, b: Int = 0)
 annotation MyAnnotation2(a: Int)
 annotation MyAnnotation3(vararg a: Int)
 
@@ -8,7 +8,7 @@ annotation MyAnnotation3(vararg a: Int)
 @MyAnnotation1»(1, 2, 3)«
 // semantic_error "Expected exactly 1 argument but got 3."
 @MyAnnotation2»(1, 2, 3)«
-class MyClass1(a: Int, b: Int or 0)
+class MyClass1(a: Int, b: Int = 0)
 
 // no_semantic_error "Expected between 1 and 2 arguments but got 0."
 @MyAnnotation1»(1)«
@@ -20,16 +20,16 @@ class MyClass2(a: Int)
 class MyClass3(vararg a: Int)
 
 enum MyEnum {
-    MyVariant1(a: Int, b: Int or 0)
+    MyVariant1(a: Int, b: Int = 0)
     MyVariant2(a: Int)
     MyVariant3(vararg a: Int)
 }
 
-fun myFunction1(a: Int, b: Int or 0)
+fun myFunction1(a: Int, b: Int = 0)
 fun myFunction2(a: Int)
 fun myFunction3(vararg a: Int)
 
-step g(f1: (a: Int, b: Int or 0) -> (), f2: (a: Int) -> (), f3: (vararg a: Int) -> ()) {
+step g(f1: (a: Int, b: Int = 0) -> (), f2: (a: Int) -> (), f3: (vararg a: Int) -> ()) {
     // semantic_error "Expected between 1 and 2 arguments but got 3."
     f1»(1, 2, 3)«;
     // semantic_error "Expected exactly 1 argument but got 3."
@@ -77,9 +77,9 @@ workflow myWorkflow {
     myFunction3»(1, 2)«;
 
     // semantic_error "Expected exactly 1 argument but got 3."
-    (a) {}»(1, 2, 3)«;
+    ((a) {})»(1, 2, 3)«;
     // no_semantic_error "Expected exactly 1 argument but got 0."
-    (a) {}»(1)«;
+    ((a) {})»(1)«;
 
     // semantic_error "Expected exactly 1 argument but got 3."
     ((a) -> 1)»(1, 2, 3)«;

@@ -1,0 +1,22 @@
+package simpleml.model.regression
+
+import simpleml.model.*
+import simpleml.dataset.Dataset
+
+class RandomForestRegressor(
+    nEstimator: Int = 100,
+    criterion: String = "mse",
+    maxDepth: Int? = null,
+    randomState: Int? = null
+) sub Estimator {
+    attr nEstimator: Int?
+    attr criterion: String?
+    attr maxDepth: Int?
+    attr randomState: Int?
+
+    fun fit(features: Dataset, target: Dataset) -> trainedModel: RandomForestRegressorModel
+}
+
+class RandomForestRegressorModel() sub Model {
+    fun predict(features: Dataset) -> results: Any
+}

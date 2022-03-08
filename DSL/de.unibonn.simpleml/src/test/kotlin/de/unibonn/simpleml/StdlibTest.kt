@@ -42,7 +42,7 @@ class StdlibTest {
     }
 
     private fun actualIssues(filePath: Path, program: String): List<Issue> {
-        val parsingResult = parseHelper.parseProgramTextWithStdlib(program) ?: return emptyList()
+        val parsingResult = parseHelper.parseProgramText(program) ?: return emptyList()
         parsingResult.eResource().eAdapters().add(OriginalFilePath(filePath.toString()))
         return validationHelper.validate(parsingResult)
     }

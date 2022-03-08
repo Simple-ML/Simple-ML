@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.prologBridge.model.facts
 
-import de.unibonn.simpleml.prologBridge.utils.Id
+import de.unibonn.simpleml.utils.Id
 
 private const val factPrefix = "simpleml"
 

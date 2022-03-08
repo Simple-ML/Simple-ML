@@ -24,14 +24,14 @@ SmlCompilationUnit
     ;
 
 SmlCompilationUnitMember returns SmlAbstractAnnotatedObject
-    : {SmlAnnotationCallHolder} annotationCalls+=SmlAnnotationCall*
+    : {SmlAnnotationCallList} annotationCalls+=SmlAnnotationCall*
 
-    ( {SmlAnnotation.annotationCallHolder=current}
+    ( {SmlAnnotation.annotationCallList=current}
           'annotation' name=ID
           parameterList=SmlParameterList?
           constraintList=SmlConstraintList?
 
-    | {SmlClass.annotationCallHolder=current}
+    | {SmlClass.annotationCallList=current}
           'class' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
@@ -39,25 +39,25 @@ SmlCompilationUnitMember returns SmlAbstractAnnotatedObject
           constraintList=SmlConstraintList?
           body=SmlClassBody?
 
-    | {SmlEnum.annotationCallHolder=current}
+    | {SmlEnum.annotationCallList=current}
           'enum' name=ID
           body=SmlEnumBody?
 
-    | {SmlFunction.annotationCallHolder=current}
+    | {SmlFunction.annotationCallList=current}
           'fun' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList
           resultList=SmlResultList?
           constraintList=SmlConstraintList?
 
-    | {SmlStep.annotationCallHolder=current}
+    | {SmlStep.annotationCallList=current}
           visibility=('internal'|'private')?
           'step' name=ID
           parameterList=SmlParameterList
           resultList=SmlResultList?
           body=SmlBlock
 
-    | {SmlWorkflow.annotationCallHolder=current}
+    | {SmlWorkflow.annotationCallList=current}
           'workflow' name=ID
           body=SmlBlock
     )
@@ -116,13 +116,13 @@ SmlClassMember returns SmlAbstractObject
     ;
 
 SmlAnnotatedClassMember returns SmlAbstractAnnotatedObject
-    : {SmlAnnotationCallHolder} annotationCalls+=SmlAnnotationCall*
+    : {SmlAnnotationCallList} annotationCalls+=SmlAnnotationCall*
 
-    ( {SmlAttribute.annotationCallHolder=current}
+    ( {SmlAttribute.annotationCallList=current}
           static?='static'?
           'attr' name=ID (':' type=SmlType)?
 
-    | {SmlClass.annotationCallHolder=current}
+    | {SmlClass.annotationCallList=current}
           'class' name=ID
           typeParameterList=SmlTypeParameterList?
           parameterList=SmlParameterList?
@@ -130,11 +130,11 @@ SmlAnnotatedClassMember returns SmlAbstractAnnotatedObject
           constraintList=SmlConstraintList?
           body=SmlClassBody?
 
-    | {SmlEnum.annotationCallHolder=current}
+    | {SmlEnum.annotationCallList=current}
           'enum' name=ID
           body=SmlEnumBody?
 
-    | {SmlFunction.annotationCallHolder=current}
+    | {SmlFunction.annotationCallList=current}
           static?='static'?
           'fun' name=ID
           typeParameterList=SmlTypeParameterList?
@@ -255,11 +255,16 @@ SmlParameterList
     : {SmlParameterList} '(' (parameters+=SmlParameter (',' parameters+=SmlParameter)* ','?)? ')'
     ;
 
+// Used while parsing lambdas to avoid left-recursion. Can be treated like a normal parameter list.
+SmlLambdaParameterList
+    : {SmlLambdaParameterList} '(' (parameters+=SmlParameter (',' parameters+=SmlParameter)* ','?)? ')'
+    ;
+
 SmlParameter
     : annotationCalls+=SmlAnnotationCall*
       variadic?='vararg'?
       name=ID (':' type=SmlType)?
-      ('or' defaultValue=SmlExpression)?
+      ('=' defaultValue=SmlExpression)?
     ;
 
 
@@ -297,12 +302,11 @@ SmlAssignment
     ;
 
 SmlAssigneeList
-    : {SmlAssigneeList} assignees+=SmlAssignee
-    | {SmlAssigneeList} '(' (assignees+=SmlAssignee (',' assignees+=SmlAssignee)* ','?)? ')'
+    : assignees+=SmlAssignee (',' assignees+=SmlAssignee)* ','?
     ;
 
 SmlAssignee returns SmlAbstractAssignee
-    : {SmlPlaceholder} annotationCalls+=SmlAnnotationCall* 'val' name=ID
+    : {SmlPlaceholder} 'val' name=ID
     | {SmlWildcard}    '_'
     | {SmlYield}       'yield' result=[SmlResult]
     ;
@@ -316,14 +320,38 @@ SmlExpressionStatement
  **********************************************************************************************************************/
 
 SmlExpression returns SmlAbstractExpression
-    : SmlExpressionLambda
+    : SmlLambda
     | SmlOrExpression
     ;
 
-SmlExpressionLambda
-    : parameterList=SmlLambdaParameterList
-      '->'
-      result=SmlExpression
+SmlLambda returns SmlAbstractExpression
+    : SmlLambdaParameterList
+    ( {SmlBlockLambda.parameterList=current}      body=SmlBlockLambdaBlock
+    | {SmlExpressionLambda.parameterList=current} '->' result=SmlExpression
+    )
+    ;
+
+SmlBlockLambdaBlock returns SmlBlock
+    : {SmlBlock} '{' statements+=SmlBlockLambdaStatement* '}'
+    ;
+
+SmlBlockLambdaStatement returns SmlAbstractStatement
+    : SmlBlockLambdaAssignment
+    | SmlExpressionStatement
+    ;
+
+SmlBlockLambdaAssignment returns SmlAssignment
+    : assigneeList=SmlBlockLambdaAssigneeList '=' expression=SmlExpression ';'
+    ;
+
+SmlBlockLambdaAssigneeList returns SmlAssigneeList
+    : assignees+=SmlBlockLambdaAssignee (',' assignees+=SmlBlockLambdaAssignee)* ','?
+    ;
+
+SmlBlockLambdaAssignee returns SmlAbstractAssignee
+    : {SmlWildcard} '_'
+    | {SmlPlaceholder} 'val' name=ID
+    | {SmlBlockLambdaResult} 'yield' name=ID
     ;
 
 SmlOrExpression returns SmlAbstractExpression
@@ -405,8 +433,7 @@ SmlCallArgument returns SmlArgument
     ;
 
 SmlPrimaryExpression returns SmlAbstractExpression
-    : SmlBlockLambda
-    | SmlLiteral
+    : SmlLiteral
     | SmlParenthesizedExpression
     | SmlReference
     | SmlTemplateString
@@ -468,50 +495,6 @@ SmlTemplateStringInner
 
 SmlTemplateStringEnd
     : value=TEMPLATE_STRING_END
-    ;
-
-
-// Block lambdas -------------------------------------------------------------------------------------------------------
-
-SmlBlockLambda
-    : parameterList=SmlLambdaParameterList
-      body=SmlBlockLambdaBlock
-    ;
-
-SmlBlockLambdaBlock returns SmlBlock
-    : {SmlBlock} '{' statements+=SmlBlockLambdaStatement* '}'
-    ;
-
-SmlBlockLambdaStatement returns SmlAbstractStatement
-    : SmlBlockLambdaAssignment
-    | SmlExpressionStatement
-    ;
-
-SmlBlockLambdaAssignment returns SmlAssignment
-    : assigneeList=SmlBlockLambdaAssigneeList '=' expression=SmlExpression ';'
-    ;
-
-SmlBlockLambdaAssigneeList returns SmlAssigneeList
-    : {SmlAssigneeList} assignees+=SmlBlockLambdaAssignee
-    | {SmlAssigneeList} '(' (assignees+=SmlBlockLambdaAssignee (',' assignees+=SmlBlockLambdaAssignee)* ','?)? ')'
-    ;
-
-SmlBlockLambdaAssignee returns SmlAbstractAnnotatedObject
-    : {SmlWildcard} '_'
-    |
-    ( {SmlAnnotationCallHolder} annotationCalls+=SmlAnnotationCall*
-        ( {SmlPlaceholder.annotationCallHolder=current} 'val' name=ID
-        | {SmlBlockLambdaResult.annotationCallHolder=current} 'yield' name=ID
-        )
-    )
-    ;
-
-SmlLambdaParameterList returns SmlParameterList
-    : {SmlParameterList} '(' (parameters+=SmlLambdaParameter (',' parameters+=SmlLambdaParameter)* ','?)? ')'
-    ;
-
-SmlLambdaParameter returns SmlParameter
-    : name=ID
     ;
 
 

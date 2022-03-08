@@ -28,7 +28,7 @@ dependencies {
     api("org.eclipse.xtext:org.eclipse.xtext.web.servlet:$xtextVersion")
 
     providedCompile("org.eclipse.jetty:jetty-annotations:9.4.22.v20191022")
-    providedCompile("org.slf4j:slf4j-simple:1.7.32")
+    providedCompile("org.slf4j:slf4j-simple:1.7.36")
 }
 
 // Source sets ---------------------------------------------------------------------------------------------------------

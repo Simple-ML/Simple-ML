@@ -17,6 +17,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractCompilationUnitMember
 import de.unibonn.simpleml.simpleML.SmlAbstractConstraint
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
+import de.unibonn.simpleml.simpleML.SmlAbstractLambda
 import de.unibonn.simpleml.simpleML.SmlAbstractNamedTypeDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlAbstractProtocolTerm
@@ -26,12 +27,13 @@ import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAbstractTypeArgumentValue
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationCall
-import de.unibonn.simpleml.simpleML.SmlAnnotationCallHolder
+import de.unibonn.simpleml.simpleML.SmlAnnotationCallList
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlArgumentList
 import de.unibonn.simpleml.simpleML.SmlAssigneeList
 import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlAttribute
+import de.unibonn.simpleml.simpleML.SmlBlock
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlBoolean
@@ -51,6 +53,7 @@ import de.unibonn.simpleml.simpleML.SmlImportAlias
 import de.unibonn.simpleml.simpleML.SmlIndexedAccess
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
+import de.unibonn.simpleml.simpleML.SmlLambdaParameterList
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
@@ -145,7 +148,7 @@ fun createSmlAnnotation(
 ): SmlAnnotation {
     return factory.createSmlAnnotation().apply {
         this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
+        this.annotationCallList = createSmlAnnotationCallList(annotationCalls)
         this.parameterList = parameters.nullIfEmptyElse(::createSmlParameterList)
     }
 }
@@ -188,10 +191,10 @@ fun createSmlAnnotationCall(
 }
 
 /**
- * Returns a new object of class [SmlAnnotationCallHolder].
+ * Returns a new object of class [SmlAnnotationCallList].
  */
-private fun createSmlAnnotationCallHolder(annotationCalls: List<SmlAnnotationCall>): SmlAnnotationCallHolder {
-    return factory.createSmlAnnotationCallHolder().apply {
+private fun createSmlAnnotationCallList(annotationCalls: List<SmlAnnotationCall>): SmlAnnotationCallList {
+    return factory.createSmlAnnotationCallList().apply {
         this.annotationCalls += annotationCalls
     }
 }
@@ -282,7 +285,7 @@ fun createSmlAttribute(
 ): SmlAttribute {
     return factory.createSmlAttribute().apply {
         this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
+        this.annotationCallList = createSmlAnnotationCallList(annotationCalls)
         this.isStatic = isStatic
         this.type = type
     }
@@ -301,6 +304,19 @@ fun SmlClass.smlAttribute(
 }
 
 /**
+ * Returns a new object of class [SmlBlock].
+ */
+fun createSmlBlock(
+    statements: List<SmlAbstractStatement> = emptyList(),
+    init: SmlBlock.() -> Unit = {}
+): SmlBlock {
+    return factory.createSmlBlock().apply {
+        this.statements += statements
+        this.init()
+    }
+}
+
+/**
  * Returns a new object of class [SmlBlockLambda].
  */
 fun createSmlBlockLambda(
@@ -309,7 +325,7 @@ fun createSmlBlockLambda(
     init: SmlBlockLambda.() -> Unit = {}
 ): SmlBlockLambda {
     return factory.createSmlBlockLambda().apply {
-        this.parameterList = parameters.nullIfEmptyElse(::createSmlParameterList)
+        this.parameterList = createSmlLambdaParameterList(parameters)
         this.body = factory.createSmlBlock()
         statements.forEach { addStatement(it) }
         this.init()
@@ -330,13 +346,9 @@ private fun SmlBlockLambda.addStatement(statement: SmlAbstractStatement) {
 /**
  * Returns a new object of class [SmlBlockLambdaResult].
  */
-fun createSmlBlockLambdaResult(
-    name: String,
-    annotationCalls: List<SmlAnnotationCall> = emptyList()
-): SmlBlockLambdaResult {
+fun createSmlBlockLambdaResult(name: String): SmlBlockLambdaResult {
     return factory.createSmlBlockLambdaResult().apply {
         this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
     }
 }
 
@@ -390,7 +402,7 @@ fun createSmlClass(
 ): SmlClass {
     return factory.createSmlClass().apply {
         this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
+        this.annotationCallList = createSmlAnnotationCallList(annotationCalls)
         this.typeParameterList = typeParameters.nullIfEmptyElse(::createSmlTypeParameterList)
         this.parameterList = parameters?.nullIfEmptyElse(::createSmlParameterList)
         this.parentTypeList = parentTypes.nullIfEmptyElse(::createSmlParentTypeList)
@@ -516,7 +528,7 @@ fun createSmlEnum(
 ): SmlEnum {
     return factory.createSmlEnum().apply {
         this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
+        this.annotationCallList = createSmlAnnotationCallList(annotationCalls)
         variants.forEach { addVariant(it) }
         this.init()
     }
@@ -597,7 +609,7 @@ fun createSmlExpressionLambda(
     result: SmlAbstractExpression
 ): SmlExpressionLambda {
     return factory.createSmlExpressionLambda().apply {
-        this.parameterList = createSmlParameterList(parameters)
+        this.parameterList = createSmlLambdaParameterList(parameters)
         this.result = result
     }
 }
@@ -661,7 +673,7 @@ fun createSmlFunction(
 ): SmlFunction {
     return factory.createSmlFunction().apply {
         this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
+        this.annotationCallList = createSmlAnnotationCallList(annotationCalls)
         this.isStatic = isStatic
         this.typeParameterList = typeParameters.nullIfEmptyElse(::createSmlTypeParameterList)
         this.parameterList = createSmlParameterList(parameters)
@@ -860,6 +872,17 @@ fun createSmlParameterList(parameters: List<SmlParameter>): SmlParameterList {
 }
 
 /**
+ * Returns a new object of class [SmlLambdaParameterList]. These have to be used as parameter lists of an
+ * [SmlAbstractLambda]
+ */
+@Suppress("FunctionName")
+fun createSmlLambdaParameterList(parameters: List<SmlParameter>): SmlLambdaParameterList {
+    return factory.createSmlLambdaParameterList().apply {
+        this.parameters += parameters
+    }
+}
+
+/**
  * Returns a new object of class [SmlParenthesizedExpression].
  */
 fun createSmlParenthesizedExpression(expression: SmlAbstractExpression): SmlParenthesizedExpression {
@@ -889,13 +912,9 @@ fun createSmlParentTypeList(parentTypes: List<SmlAbstractType>): SmlParentTypeLi
 /**
  * Returns a new object of class [SmlPlaceholder].
  */
-fun createSmlPlaceholder(
-    name: String,
-    annotationCalls: List<SmlAnnotationCall> = emptyList()
-): SmlPlaceholder {
+fun createSmlPlaceholder(name: String): SmlPlaceholder {
     return factory.createSmlPlaceholder().apply {
         this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
     }
 }
 
@@ -1112,7 +1131,7 @@ fun createSmlStep(
 ): SmlStep {
     return factory.createSmlStep().apply {
         this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
+        this.annotationCallList = createSmlAnnotationCallList(annotationCalls)
         this.visibility = visibility.visibility
         this.parameterList = createSmlParameterList(parameters)
         this.resultList = results.nullIfEmptyElse(::createSmlResultList)
@@ -1353,7 +1372,7 @@ fun createSmlWorkflow(
 ): SmlWorkflow {
     return factory.createSmlWorkflow().apply {
         this.name = name
-        this.annotationCallHolder = createSmlAnnotationCallHolder(annotationCalls)
+        this.annotationCallList = createSmlAnnotationCallList(annotationCalls)
         this.body = factory.createSmlBlock()
         statements.forEach { addStatement(it) }
         this.init()

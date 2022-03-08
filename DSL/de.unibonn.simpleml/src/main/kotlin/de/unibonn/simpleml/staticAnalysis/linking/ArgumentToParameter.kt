@@ -19,23 +19,16 @@ fun SmlArgument.parameterOrNull(): SmlParameter? {
         isNamed() -> parameter.asResolvedOrNull()
         else -> {
             val argumentList = closestAncestorOrNull<SmlArgumentList>() ?: return null
-
-            // Cannot match positional argument if it is preceded by named arguments
-            val firstNamedArgumentIndex = argumentList.arguments.indexOfFirst { it.isNamed() }
-            val thisIndex = argumentList.arguments.indexOf(this)
-            if (firstNamedArgumentIndex != -1 && thisIndex > firstNamedArgumentIndex) {
-                return null
-            }
-
-            // Get the matching parameter
             val parameters = argumentList.parametersOrNull() ?: return null
-            val parameterAtIndex = parameters.getOrNull(thisIndex)
             val lastParameter = parameters.lastOrNull()
 
-            when {
-                parameterAtIndex != null -> parameterAtIndex
-                lastParameter != null && lastParameter.isVariadic -> lastParameter
-                else -> null
+            val firstNamedArgumentIndex = argumentList.arguments.indexOfFirst { it.isNamed() }
+            val thisIndex = argumentList.arguments.indexOf(this)
+
+            return when {
+                lastParameter?.isVariadic == true && thisIndex >= parameters.size - 1 -> lastParameter
+                firstNamedArgumentIndex != -1 && thisIndex > firstNamedArgumentIndex -> null
+                else -> parameters.getOrNull(thisIndex)
             }
         }
     }

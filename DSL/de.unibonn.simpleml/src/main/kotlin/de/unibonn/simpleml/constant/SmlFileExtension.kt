@@ -75,7 +75,7 @@ fun Resource.isTestFile() = this.hasExtension(SmlFileExtension.Test)
  */
 private fun Resource.hasExtension(fileExtension: SmlFileExtension): Boolean {
 
-    // The original file path is normally lost for dynamic tests, so they attach it as an EMF adapter
+    // The original file path is normally lost for dynamic tests, so it's attached as an EMF adapter
     this.eAdapters().filterIsInstance<OriginalFilePath>().firstOrNull()?.let {
         return it.path.endsWith(".$fileExtension")
     }

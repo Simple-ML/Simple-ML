@@ -10,7 +10,6 @@ import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAnnotationCall
 import de.unibonn.simpleml.simpleML.SmlAttribute
-import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlEnum
@@ -18,7 +17,6 @@ import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlParameter
-import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlTypeParameter
@@ -28,6 +26,8 @@ import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpression
 import de.unibonn.simpleml.stdlibAccess.StdlibAnnotations
 import de.unibonn.simpleml.stdlibAccess.StdlibEnums.AnnotationTarget
 import de.unibonn.simpleml.stdlibAccess.isPure
+import de.unibonn.simpleml.stdlibAccess.pythonModuleOrNull
+import de.unibonn.simpleml.stdlibAccess.pythonNameOrNull
 import de.unibonn.simpleml.stdlibAccess.validTargets
 import de.unibonn.simpleml.utils.duplicatesBy
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
@@ -35,6 +35,7 @@ import de.unibonn.simpleml.validation.codes.ErrorCode
 import de.unibonn.simpleml.validation.codes.InfoCode
 import de.unibonn.simpleml.validation.codes.WarningCode
 import org.eclipse.xtext.validation.Check
+import org.eclipse.xtext.validation.CheckType
 
 class AnnotationCallChecker : AbstractSimpleMLChecker() {
 
@@ -118,14 +119,8 @@ class AnnotationCallChecker : AbstractSimpleMLChecker() {
             actualTarget is SmlFunction && AnnotationTarget.Function !in legalTargets -> {
                 "a function"
             }
-            actualTarget is SmlBlockLambdaResult && AnnotationTarget.LambdaResult !in legalTargets -> {
-                "a lambda result"
-            }
             actualTarget is SmlParameter && AnnotationTarget.Parameter !in legalTargets -> {
                 "a parameter"
-            }
-            actualTarget is SmlPlaceholder && AnnotationTarget.Placeholder !in legalTargets -> {
-                "a placeholder"
             }
             actualTarget is SmlResult && AnnotationTarget.Result !in legalTargets -> {
                 "a result"
@@ -168,7 +163,7 @@ class AnnotationCallChecker : AbstractSimpleMLChecker() {
         }
     }
 
-    @Check
+    @Check(CheckType.NORMAL)
     fun argumentsMustBeConstant(smlAnnotationCall: SmlAnnotationCall) {
         smlAnnotationCall.argumentsOrEmpty().forEach {
             if (it.value?.toConstantExpressionOrNull() == null) {
@@ -194,6 +189,38 @@ class AnnotationCallChecker : AbstractSimpleMLChecker() {
                 "Purity implies absence of side effects (remove this annotation call).",
                 null,
                 InfoCode.PureImpliesNoSideEffects
+            )
+        }
+    }
+
+    @Check
+    fun identicalPythonModule(smlAnnotationCall: SmlAnnotationCall) {
+        if (smlAnnotationCall.annotation.qualifiedNameOrNull() != StdlibAnnotations.PythonModule) {
+            return
+        }
+
+        val target = smlAnnotationCall.targetOrNull() as? SmlCompilationUnit ?: return
+        if (target.name == target.pythonModuleOrNull()) {
+            info(
+                "Python module is identical to Simple-ML package (can remove annotation call).",
+                null,
+                InfoCode.IdenticalPythonModule
+            )
+        }
+    }
+
+    @Check
+    fun identicalPythonName(smlAnnotationCall: SmlAnnotationCall) {
+        if (smlAnnotationCall.annotation.qualifiedNameOrNull() != StdlibAnnotations.PythonName) {
+            return
+        }
+
+        val target = smlAnnotationCall.targetOrNull() ?: return
+        if (target.name == target.pythonNameOrNull()) {
+            info(
+                "Python name is identical to Simple-ML name (can remove annotation call).",
+                null,
+                InfoCode.IdenticalPythonName
             )
         }
     }

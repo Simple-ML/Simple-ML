@@ -24,7 +24,7 @@ internal object IndexExtensionsInjectionTarget {
 
 /**
  * Returns all global declarations that are visible from this context. If this [EObject] is not in a [Resource] or the
- * [Resource] not in a [ResourceSet] and empty list is returned.
+ * [Resource] not in a [ResourceSet] an empty list is returned.
  */
 fun EObject.allGlobalDeclarations(): List<IEObjectDescription> {
     return eResource()
@@ -39,7 +39,7 @@ fun EObject.allGlobalDeclarations(): List<IEObjectDescription> {
 
 /**
  * Returns all global declarations that are visible from this context and in the same [Resource]. If this [EObject] is
- * not in a [Resource] or the [Resource] not in a [ResourceSet] and empty list is returned.
+ * not in a [Resource] or the [Resource] not in a [ResourceSet] an empty list is returned.
  */
 fun EObject.ownGlobalDeclarations(): List<IEObjectDescription> {
     return eResource()
