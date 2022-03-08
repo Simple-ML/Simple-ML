@@ -24,6 +24,7 @@ import viewbarIcon from '../../images/headerButtons/viewbar-closed.svg';
 import DataView from './DataView/DataView';
 import Backdrop from '@mui/material/Backdrop';
 import Icons from '../../stories/Icons';
+import IconButton from '@mui/material/IconButton';
 
 import { hideDataViewBackdrop } from '../../reducers/graphicalEditor';
 

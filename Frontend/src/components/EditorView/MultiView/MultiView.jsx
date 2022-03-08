@@ -7,7 +7,7 @@ import $ from "jquery";
 
 // React.Components
 import GoldenLayoutComponent from './../../../helper/goldenLayoutServices/goldenLayoutComponent';
-
+import Sidebar from './Sidebar/Sidebar'
 import Toolbar from './Toolbar/Toolbar';
 
 // Styles
@@ -15,8 +15,6 @@ import './multiView.scss';
 
 // Config
 import MultiViewConfig from './MultiViewConfig';
-
-import Sidebar from './Sidebar/Sidebar'
 
 class MultiView extends React.Component {
     constructor(props) {
