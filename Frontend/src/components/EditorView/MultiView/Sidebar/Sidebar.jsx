@@ -37,7 +37,7 @@ class Sidebar extends React.Component {
           selectedEntityType: this.getEntityType(state.graphicalEditor.entitySelected?.data?.className),
           selectedEntityName: this.getEntityName(state.graphicalEditor.entitySelected),
           selectedEntityDataset: this.getDataset(state.graphicalEditor.entitySelected, state.runtime?.placeholder),
-          placeholders: this.getPlaceholders(state),
+          placeholders: this.getPlaceholders(state.runtime?.placeholder),
           allAvailableDatasets: this.getAllDatasets(state.runtime?.placeholder.datasets)
       };
     }    
@@ -68,7 +68,6 @@ class Sidebar extends React.Component {
     }
 
     getPlaceholders = (placeholders) => {
-        console.log(placeholders);
         if (placeholders !== undefined) {
             return placeholders;
         } else {

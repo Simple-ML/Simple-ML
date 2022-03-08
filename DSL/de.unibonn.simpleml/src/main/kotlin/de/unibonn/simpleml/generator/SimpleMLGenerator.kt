@@ -313,7 +313,7 @@ class SimpleMLGenerator : AbstractGenerator() {
 
                     if (shouldSavePlaceholders) {
                         stmt.placeholdersOrEmpty().forEach {
-                            imports += ImportData("$runtimeBridgePackage.save_placeholder")
+                            imports += ImportData("$runtimeBridgePackage")
                             stringBuilder.append("\n$runtimeBridgePackage.save_placeholder('${it.name}', ${it.name})")
                         }
                     }
