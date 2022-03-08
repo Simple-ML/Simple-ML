@@ -15,7 +15,6 @@ services:
       - runtime
   runtime:
     container_name: simple-ml_runtime
-    build:
-      context: ./Runtime
+    build: ./Runtime
     ports: 
       - 6789:6789
