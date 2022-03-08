@@ -20,7 +20,8 @@ const debugInterface = {
             getEntityAttributes: (entities) => XtextServices.getEntityAttributes(entities),
             setEntityAttributes: (entity) => XtextServices.setEntityAttributes(entity),
             generate: () => XtextServices.generate()
-        }
+        },
+        serviceObject: XtextServices
     },
     h: { //helper
         flattenEmfModelTree: (emfModelTree) => EmfModelHelper.flattenEmfModelTree(emfModelTree),

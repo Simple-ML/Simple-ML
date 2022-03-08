@@ -9,27 +9,20 @@ const defaultListeners = () => {
     XtextServices.addSuccessListener((serviceType, result) => {
         switch (serviceType) {
             case 'getEmfModel':
-                // let emfRaw = JSON.parse(result.emfModel);
-                // let emfFlat = EmfModelHelper.flattenEmfModelTree(emfRaw);
-                // let emfRenderable = EmfModelHelper.getRenderableEmfEntities(emfFlat);
-                // store.dispatch(setNewEmfModel(emfRaw, emfFlat, emfRenderable));
-                // break;
-            case 'createEntity':
-            case 'deleteEntity':
-            case 'deleteAssociation':
-            case 'createAssociation':
                 const emfRaw = JSON.parse(result.emfModel);
                 const emfFlat = EmfModelHelper.flattenEmfModelTree(emfRaw);
                 const emfRenderable = EmfModelHelper.getRenderableEmfEntities(emfFlat);
                 const emfAssosiatins = EmfModelHelper.getEmfEntityAssociations(emfFlat);
                 store.dispatch(setNewEmfModel(emfRaw, emfFlat, emfRenderable, emfAssosiatins));
-
-                const emfPathCollection = EmfModelHelper.getProcessEmfPathFromFlatEntities(emfFlat);
-
+                
+                const emfPathCollection = EmfModelHelper.getProcessEmfPathFromFlatEntities(store.getState().emfModel.flat);
                 XtextServices.getProcessMetadata(emfPathCollection);
-
-                // TODO: update text-editor XtextServices.validate does not work
-                XtextServices.validate();
+                break;
+            case 'createEntity':
+            case 'deleteEntity':
+            case 'deleteAssociation':
+            case 'createAssociation':
+                XtextServices.update();
                 break;
             case 'getProcessMetadata':
                 store.dispatch(setNewProcessMetadata(JSON.parse(result.info)));
@@ -53,6 +46,8 @@ const defaultListeners = () => {
                 else
                     store.dispatch(setEmfModelClean());
 
+                break;
+            case 'update':
                 XtextServices.getEmfModel();
                 break;
             case 'generate':

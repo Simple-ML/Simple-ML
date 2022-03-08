@@ -1,0 +1,22 @@
+package simpleml.model.classification
+
+import simpleml.model.*
+import simpleml.dataset.Dataset
+
+class RandomForestClassifier(
+    nEstimator: Int = 100,
+    criterion: String = "gini",
+    maxDepth: Int? = null,
+    randomState: Int? = null
+) sub Estimator {
+    attr nEstimator: Int
+    attr criterion: String
+    attr maxDepth: Int?
+    attr randomState: Int?
+
+    fun fit(features: Dataset, target: Dataset) -> trainedModel: RandomForestClassifierModel
+}
+
+class RandomForestClassifierModel() sub Model {
+    fun predict(features: Dataset) -> results: Any
+}

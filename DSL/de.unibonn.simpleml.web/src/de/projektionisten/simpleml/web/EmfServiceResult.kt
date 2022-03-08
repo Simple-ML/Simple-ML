@@ -6,6 +6,7 @@ data class EmfServiceResult(
     val fullText: String,	
 	val emfModel: String,
 	val info: String,
+    val error: String,
     val stateId: String,
     val dirty: Boolean
 ): IServiceResult  {
