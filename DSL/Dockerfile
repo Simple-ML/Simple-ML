@@ -25,7 +25,7 @@ RUN gradle war -i --stacktrace
 
 
 # Tomcat 10 expects Jakarta servlets rather than JavaEE HttpServlets and, thus, does not work
-FROM tomcat:9-jdk11 as runner
+FROM tomcat:10-jdk11 as runner
 
 COPY --from=builder \
     /app/de.unibonn.simpleml.web/build/libs/de.unibonn.simpleml.web-1.0.0-SNAPSHOT.war \
