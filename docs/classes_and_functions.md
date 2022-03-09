@@ -71,6 +71,19 @@ dropAttribute(attribute: String) -> dataset: Dataset
 * Output
   * `dataset`: The updated dataset.
 
+#### Set Target Attribute
+
+Set the specified attribute as prediction target.
+
+```
+setTargetAttribute(targetAttribute: String) -> dataset: Dataset
+```
+
+* Input
+  * `targetAttribute`: The name of the attribute to be predicted later on.
+* Output
+  * `dataset`: The updated dataset.
+
 #### Split into Train and Test 
 
 Split a dataset in a train and a test dataset.
@@ -148,6 +161,73 @@ addAttribute(columnName: String, transformFunc: (instance: Instance) -> value: A
 * Output
   * `dataset`: The updated dataset.
 
+#### Date Transformation
+
+Convert date column values into timestamps.
+
+```
+transformDateToTimestamp(columnName: String) -> dataset: Dataset
+```
+
+* Input
+  * `columnName`: The name of the attribute to be transformed.
+* Output
+  * `dataset`: The updated dataset.
+
+#### Datatype Transformations
+
+Convert all column values into numbers.
+
+```
+transformDatatypes() -> dataset: Dataset
+```
+
+* Output
+  * `dataset`: The updated dataset.
+
+
+
+#### Add "is weekend" Attribute
+
+Add a new attribute to the dataset specifying if the dates of the specified column are on the weekend or not.
+
+```
+addIsWeekendAttribute(columnName: String) -> dataset: Dataset
+```
+
+* Input
+  * `columnName`: The name of the date attribute.
+* Output
+  * `dataset`: The updated dataset.
+
+
+
+#### Add "day of the year" Attribute
+
+Add a new attribute to the dataset specifying the day of the year of the specified column.
+
+```
+addDayOfTheYearAttribute(columnName: String) -> dataset: Dataset
+```
+
+* Input
+  * `columnName`: The name of the date attribute.
+* Output
+  * `dataset`: The updated dataset.
+
+
+#### Add "week day" Attribute
+
+Add a new attribute to the dataset specifying the day of the week (string) of the specified column.
+
+```
+addWeekDayAttribute(columnName: String) -> dataset: Dataset
+```
+
+* Input
+  * `columnName`: The name of the date attribute.
+* Output
+  * `dataset`: The updated dataset.
 
 
 #### Date to File Export
