@@ -58,7 +58,7 @@ class DataView extends React.Component {
             barCharts: loadedBarCharts,
             histogramCharts: loadedHistogramCharts,
             filterOptions: loadedFilterOptions,
-            selectedFilter: loadedFilterOptions
+            selectedFilter: []
         });
     }
     

@@ -102,7 +102,7 @@ class EditorView extends React.Component {
                             : <div></div>
                     }
                     <Backdrop
-                        style= {{backgroundColor:'white'}}
+                        style= {{backgroundColor:'white', overflow: 'hidden'}}
                         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                         open={this.props.isDataviewBackdropActive}
                     >
