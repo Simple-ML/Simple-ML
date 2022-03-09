@@ -7,7 +7,7 @@ from simpleml.dataset import loadDataset
 def exampleWorkflow():
     dataset = loadDataset("SpeedAverages")
 
-    dataset = dataset.categoryToVector("season")
+    dataset = dataset.transformCategoryToVector("season")
     dataset = dataset.flattenData()
 
     print(dataset.data.columns.values.tolist())

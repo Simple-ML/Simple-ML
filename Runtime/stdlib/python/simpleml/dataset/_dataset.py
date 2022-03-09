@@ -166,12 +166,12 @@ class Dataset:
 
         return copy.provide_statistics()
 
-    def filterInstances(self, filter_func) -> Dataset:
+    def filterInstances(self, filterFunc) -> Dataset:
 
         copy = self.copy_and_read()
 
         for index, row in copy.data.iterrows():
-            if not filter_func(Instance(row)):
+            if not filterFunc(Instance(row)):
                 copy.data.drop(index, inplace=True)
 
         return copy.provide_statistics()
@@ -181,6 +181,7 @@ class Dataset:
     ) -> Dataset:
 
         copy = self.add_attribute_data(newColumnName, transformFunc)
+        # copy.data[newColumnName] = copy.data[newColumnName].convert_dtypes()
 
         data_type = dataTypes(copy.data[newColumnName].dtype)
 
@@ -188,7 +189,6 @@ class Dataset:
             newColumnLabel = newColumnName
 
         copy.add_column_description(newColumnName, newColumnLabel, data_type)
-
         copy.create_simple_type(newColumnName, data_type)
 
         return copy.provide_statistics()
@@ -835,15 +835,18 @@ def readDataSetFromCSV(
 
 
 def dataTypes(type):
-    if type == "Float64":
+
+    # TODO: Cleanup the whole attributes' type system
+
+    if type == "Float64" or type == np.float64 or type == np.float32:
         return np.float64
-    elif type == "Int64":
+    elif type == "Int64" or type == np.int64 or type == np.int32:
         return pd.Int32Dtype()
-    elif type == "string":
+    elif type == "string" or type == np.str:
         return np.str
-    elif type == "datetime64[ns]":
+    elif type == "datetime64[ns]" or type == np.datetime64:
         return np.datetime64
-    elif type == "boolean":
+    elif type == "boolean" or type == np.bool:
         return np.bool
     elif type == "object":
         return np.str
