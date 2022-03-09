@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import store from '../../../../reduxStore';
+import store from '../../../reduxStore';
 import './sidebar.scss'
 import PropTypes from 'prop-types';
 import Accordion from '@material-ui/core/Accordion';
@@ -10,11 +10,11 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
-import XtextServices from '../../../../serverConnection/XtextServices';
-import EmfModelHelper from '../../../../helper/EmfModelHelper';
+import XtextServices from '../../../serverConnection/XtextServices';
+import EmfModelHelper from '../../../helper/EmfModelHelper';
 import Button from '@mui/material/Button';
-import { showDataViewBackdrop } from '../../../../reducers/graphicalEditor';
-import Icons from '../../../../stories/Icons';
+import { showDataViewBackdrop } from '../../../reducers/graphicalEditor';
+import Icons from '../../../stories/Icons';
 import { event } from 'jquery';
 
 class Sidebar extends React.Component {
@@ -119,9 +119,8 @@ class Sidebar extends React.Component {
 
     render() {
         const { selectedEntityName, selectedEntityType, allAvailableDatasets, selectedEntityDataset, selectedEntity, searchValue } = this.state;
-        console.log(searchValue);
             return(
-                <div style= {{backgroundColor: 'white', width: '362px', height: '100vh', overflow: 'scroll'}}>
+                <div style= {{backgroundColor: 'white', width: '362px', height:'100vh', overflow: 'scroll'}}>
                     <header style= {{backgroundColor: 'white'}}>
                         <h1>{selectedEntityType ? selectedEntityType : ''}</h1>
                     </header>
@@ -183,18 +182,18 @@ class Sidebar extends React.Component {
                                                 aria-controls="panel1a-content"
                                                 id="panel1a-header"
                                             >
-                                                <Typography>{'Select Dataset'}</Typography>
+                                                <Typography>{'Available Datasets'}</Typography>
                                             </AccordionSummary>
                                             {allAvailableDatasets.length !== 0 ? (
                                                 allAvailableDatasets).map((dataset) => (
                                                     dataset && (searchValue !== undefined ? dataset.toLowerCase().includes(searchValue.toLowerCase()) : true) ? (
                                                         <AccordionDetails>
-                                                            <Typography style= {{cursor: 'pointer'}} onClick={this.handleOpen}>{dataset}</Typography>
-                                                            <Button 
+                                                            <Typography style= {{cursor: 'pointer'}} /*onClick={this.handleOpen}*/>{dataset}</Typography>
+                                                            {/*<Button 
                                                                 style= {{marginLeft: 'auto', marginRight: '0'}}
                                                                 onClick={() => {this.setDataset(selectedEntity, dataset)}}>
                                                                 <Icons icons="checkCircle"/>
-                                                            </Button>
+                                                            </Button>*/}
                                                         </AccordionDetails>
                                                     ): <div></div>
                                                 )

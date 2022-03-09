@@ -7,7 +7,6 @@ import $ from "jquery";
 
 // React.Components
 import GoldenLayoutComponent from './../../../helper/goldenLayoutServices/goldenLayoutComponent';
-import Sidebar from './Sidebar/Sidebar'
 import Toolbar from './Toolbar/Toolbar';
 
 // Styles
@@ -16,28 +15,12 @@ import './multiView.scss';
 // Config
 import MultiViewConfig from './MultiViewConfig';
 
-import store from '../../../reduxStore'
-
 class MultiView extends React.Component {
     constructor(props) {
         super(props);
-
-        this.onStoreChange = this.onStoreChange.bind(this);
-  
-        this.unsubscribe = store.subscribe(() => {
-            this.setState(this.onStoreChange(store.getState()));
-        });
-  
-        this.state = this.onStoreChange(store.getState());
-    }
-
-    onStoreChange = (state) => {
-
-        return {
-            selectedEntity: state.graphicalEditor.entitySelected,
-            placeholders: state.runtime?.placeholder
+        this.state = {
         };
-      }  
+    }
 
     wrapComponent = Component => {
         class Wrapped extends React.Component {
@@ -57,7 +40,6 @@ class MultiView extends React.Component {
     }
 
     render() {
-        const { placeholders, selectedEntity } = this.state;
         return (
             <div className={'multi-view-container'}>
                 <Toolbar componentConfigs={MultiViewConfig.getPureConfigList()} layout={this.state.myLayout} />
@@ -91,11 +73,6 @@ class MultiView extends React.Component {
                         })
                     }}
                 />
-                {
-                    Object.keys(placeholders).length !== 0 && Object.keys(selectedEntity).length !== 0?
-                        <Sidebar></Sidebar>
-                        : <div></div>
-                }
             </div>
         )
     }

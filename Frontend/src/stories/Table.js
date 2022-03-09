@@ -15,7 +15,7 @@ export default class DataTable extends React.Component {
 
   render () {
 		return (
-      <TableContainer>
+      <TableContainer style={{outline: '2px solid grey', height: 'fit-content'}}>
         <Table aria-label="customized table">
           <TableHead>
             <TableRow>

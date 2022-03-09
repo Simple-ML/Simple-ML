@@ -36,41 +36,30 @@ class DataView extends React.Component {
     };
 
     componentDidMount() {
-        fetch(this.props.url)
-        .then(res => res.json())
-        .then(
-            (result) => {
-                var attributes = result.attributes;
-                var loadedBarCharts = [];
-                var loadedHistogramCharts = [];
-                var loadedFilterOptions = [];
-                Object.keys(attributes).map(attributesKey => {
-                    loadedFilterOptions.push({label: attributes[attributesKey].label, value: attributesKey});
-                        Object.keys(attributes[attributesKey]["statistics"]).map(statisticsKey => {
-                            if(statisticsKey === 'value_distribution' && attributes[attributesKey]["statistics"][statisticsKey]["type"] === 'bar_chart') {
-                                loadedBarCharts.push({label: attributes[attributesKey].label , statistic: attributes[attributesKey]["statistics"][statisticsKey]["bars"]});
-                            }
-                            if(statisticsKey === 'histogram' && attributes[attributesKey]["statistics"][statisticsKey]["type"] === 'histogram') {
-                                loadedHistogramCharts.push({label: attributes[attributesKey].label , statistic: attributes[attributesKey]["statistics"][statisticsKey]["buckets"]});
-                            }
-                        })
-                })
-                this.setState({
-                isLoaded: true,
-                items: result,
-                barCharts: loadedBarCharts,
-                histogramCharts: loadedHistogramCharts,
-                filterOptions: loadedFilterOptions,
-                selectedFilter: loadedFilterOptions
-                });
-            },
-            (error) => {
-                this.setState({
-                isLoaded: true,
-                error
-                });
-            }
-        )
+        const selectedDataset = JSON.parse(this.props.dataset.dataset_json);
+        var attributes = selectedDataset.attributes;
+        var loadedBarCharts = [];
+        var loadedHistogramCharts = [];
+        var loadedFilterOptions = [];
+        Object.keys(attributes).map(attributesKey => {
+            loadedFilterOptions.push({label: attributes[attributesKey].label, value: attributesKey});
+            Object.keys(attributes[attributesKey]["statistics"]).map(statisticsKey => {
+                if(statisticsKey === 'value_distribution' && attributes[attributesKey]["statistics"][statisticsKey]["type"] === 'bar_chart') {
+                    loadedBarCharts.push({label: attributes[attributesKey].label , statistic: attributes[attributesKey]["statistics"][statisticsKey]["bars"]});
+                }
+                if(statisticsKey === 'histogram' && attributes[attributesKey]["statistics"][statisticsKey]["type"] === 'histogram') {
+                    loadedHistogramCharts.push({label: attributes[attributesKey].label , statistic: attributes[attributesKey]["statistics"][statisticsKey]["buckets"]});
+                }
+            })
+        })
+        this.setState({
+            isLoaded: true,
+            items: selectedDataset,
+            barCharts: loadedBarCharts,
+            histogramCharts: loadedHistogramCharts,
+            filterOptions: loadedFilterOptions,
+            selectedFilter: loadedFilterOptions
+        });
     }
     
 
@@ -112,9 +101,9 @@ class DataView extends React.Component {
                                 {barCharts.map((barChart) => (
                                     selectedFilter.map((selected) => (
                                         barChart.label === selected.label ? (
-                                                <SimpleBarChart 
+                                                <SimpleBarChart
                                                     title={barChart.label}
-                                                    //width='20vw'
+                                                    width='unset'
                                                     //height='20vh'
                                                     barChart={barChart.statistic}
                                                 />
@@ -126,7 +115,7 @@ class DataView extends React.Component {
                                         histogramChart.label === selected.label ? (
                                                 <SimpleHistogramChart 
                                                     title={histogramChart.label}
-                                                    //width='20vw'
+                                                    width='unset'
                                                     //height='20vh'
                                                     histogramChart={histogramChart.statistic}
                                                 />

@@ -28,6 +28,7 @@ import IconButton from '@mui/material/IconButton';
 
 import { hideDataViewBackdrop } from '../../reducers/graphicalEditor';
 import store from '../../reduxStore';
+import Sidebar from './Sidebar/Sidebar'
 
 class EditorView extends React.Component {
     constructor(props) {
@@ -48,7 +49,9 @@ class EditorView extends React.Component {
     onStoreChange = (state) => {
 
         return {
-            selectedEntityDataset: this.getDataset(state.graphicalEditor.entitySelected, state.runtime?.placeholder)
+            selectedEntityDataset: this.getDataset(state.graphicalEditor.entitySelected, state.runtime?.placeholder),
+            selectedEntity: state.graphicalEditor.entitySelected,
+            placeholders: state.runtime?.placeholder
         };
       }  
 
@@ -77,7 +80,7 @@ class EditorView extends React.Component {
     }   
 
     render() {
-        const { selectedEntityDataset } = this.state;
+        const { selectedEntityDataset, placeholders, selectedEntity  } = this.state;
         return(
             <div className={editorStyle['editor-view']}>
                 <EditorHeader>
@@ -93,14 +96,22 @@ class EditorView extends React.Component {
                             'textEditor'
                         ]}
                     />
+                    {
+                        Object.keys(placeholders).length !== 0 && Object.keys(selectedEntity).length !== 0?
+                            <Sidebar></Sidebar>
+                            : <div></div>
+                    }
                     <Backdrop
                         style= {{backgroundColor:'white'}}
                         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                         open={this.props.isDataviewBackdropActive}
                     >
-                        <DataView
-                            url={'data/example_profile_adac.json'/*selectedEntityDataset*/}
-                        />
+                        { selectedEntityDataset ?
+                            <DataView
+                                dataset={selectedEntityDataset}
+                            /> : <div></div>
+                        }
+                        
                         <IconButton 
                             style= {{marginBottom: 'auto', position: 'absolute', top: '5px', right: '0px'}}
                             sx={{ color: '#fff'}}
