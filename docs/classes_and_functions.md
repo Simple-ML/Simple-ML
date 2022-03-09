@@ -1,4 +1,6 @@
 
+This page gives an overview of the classes and functions required to create a data processing and machine learning workflow.
+
 # Overview
 
 * [Class: Dataset](#class-dataset)  
@@ -7,9 +9,10 @@
 * [Class: StandardScaler](#class-standardscaler)  
 * [Class: Global Functions](#global-functions)  
 
-# Classes and their Methods
+## Classes and their Methods
 
 <a name="class-dataset"/>
+
 ### Class: Dataset
 
 A dataset with its data instances (e.g., rows and columns).
@@ -252,7 +255,8 @@ exportDataAsFile(filePath: String)
   * `filePath`: The path and name of the file to be created.
 
 <a name="class-instance"/>
-### Class: Instance
+### 
+Instance
 
 A single instance (e.g., row) of a dataset.
 
@@ -270,6 +274,7 @@ getValue(attribute: String) -> value: Any
   * `value`: The specified value.
 
 <a name="class-standardnormalizer"/>
+
 ### Class: StandardNormalizer
 
 A normalizer to normalize dataset values.
@@ -288,6 +293,7 @@ normalize(dataset: Dataset) -> normalizedDataset: Dataset
   * `normalizedDataset`: The normalized dataset.
 
 <a name="class-standardscaler"/>
+
 ### Class: StandardScaler
 
 A normalizer to normalize dataset values.
@@ -306,6 +312,7 @@ scale(dataset: Dataset) -> scaledDataset: Dataset
   * `scaledDataset`: The scaled dataset.
 
 <a name="global-functions"/>
+
 ### Global Functions
 
 #### Load Dataset
