@@ -1,6 +1,7 @@
 from typing import Dict, List, Optional, Union
 
 from numpy.typing import ArrayLike
+from pandas import DataFrame
 from simpleml.model.supervised._domain import DataType, Estimator, Model
 from sklearn.svm import LinearSVC as SkLinearSVC
 

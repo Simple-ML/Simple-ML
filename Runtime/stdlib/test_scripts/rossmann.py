@@ -19,10 +19,9 @@ def exampleWorkflow():
 
     # compute statistics from the dataset
     print(exportDictionaryAsJSON(X_train.getProfile()))
+    print(exportDictionaryAsJSON(y_train.getProfile()))
+    print(exportDictionaryAsJSON(X_test.getProfile()))
 
-
-#    print(exportDictionaryAsJSON(y_train.getProfile()))
-#    print(exportDictionaryAsJSON(X_test.getProfile()))
 
 if __name__ == '__main__':
     exampleWorkflow()

@@ -1,6 +1,7 @@
 from typing import Optional, Union
 
 from numpy.typing import ArrayLike
+from pandas import DataFrame
 from simpleml.model.supervised._domain import DataType, Estimator, Model
 from sklearn.ensemble import RandomForestRegressor as SkRandomForestRegressor
 from sklearn.tree import DecisionTreeRegressor as SkDecisionTreeRegressor
