@@ -62,7 +62,7 @@ class RandomForestRegressorModel(Model):
 
     def predict(self, data: DataType) -> DataType:
         yPred = self._yTrain.copy(basic_data_only=True)
-        yPred.data = DataFrame(self._underlying.predict(data.toArray()), columns=self._yTrain.data.columns)
+        yPred.data = DataFrame(self._underlying.predict(data.toArray().ravel()), columns=self._yTrain.data.columns)
         yPred.title = self._yTrain.title.replace("(Train)", "(Predicton)")
         return yPred.provide_statistics()
 
@@ -107,6 +107,6 @@ class RandomForestRegressor(Estimator):
     def fit(self, train_data: DataType, labels: DataType, **kwargs) -> Model:
         return RandomForestRegressorModel(
             self._underlying.fit(
-                train_data.toArray(), labels.toArray().astype("float"), **kwargs
+                train_data.toArray(), labels.toArray().astype("float").ravel(), **kwargs
             ), labels
         )

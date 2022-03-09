@@ -1,61 +1,31 @@
 # Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
-
-# Workflow steps ---------------------------------------------------------------
+from simpleml.dataset._scale import StandardScaler
+from simpleml.metrics import meanAbsoluteError
 from simpleml.model.supervised.regression import LinearRegression
 
+# Workflow steps ---------------------------------------------------------------
 
-def speedAveragesExampleWorkflow():
-    dataset = loadDataset("SpeedAverages")
+dataset = loadDataset("SpeedAverages")
+print(dataset.dataset_json)
 
-    dataset = dataset.categoryToVector("street_type")
-    dataset = dataset.categoryToVector("max_speed")
-    dataset = dataset.categoryToVector("season")
-    dataset = dataset.categoryToVector("daylight")
+dataset = dataset.dropAttributes(["osm_id", "geometry"])
 
-    dataset = dataset.addDayOfTheYearAttribute("start_time")
-    dataset = dataset.dateToTimestamp("start_time")
-    # dataset = dataset.dateToTimestamp("end_time")
+dataset = dataset.setTargetAttribute("average_speed")
+dataset = dataset.addWeekDayAttribute("start_time")
 
-    dataset = dataset.flattenData()
+dataset = dataset.dropMissingValues("average_speed")
+dataset = dataset.transformDatatypes()
+dataset = StandardScaler().scale(dataset)
+# dataset = StandardNormalizer().normalize(dataset)
 
-    dataset = dataset.dropAttributes(
-        [
-            "osm_id",
-            "street_type",
-            "max_speed",
-            "start_time",
-            "end_time",
-            "season",
-            "daylight",
-            "street_type_encoded",
-            "max_speed_encoded",
-            "season_encoded",
-            "daylight_encoded",
-            "geometry",
-        ]
-    )
+X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.75)
 
-    print(dataset.data.columns.values.tolist())
-    # print(dataset.data.dtypes)
+print(X_test.dataset_json)
 
-    train, test = dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
-    # X_train = train.keepAttributes(["street_type", "max_speed", "start_time", "number_of_records", "number_of_drivers",
-    #                                "season", "daylight"])
-    # X_test = test.keepAttributes(["street_type", "max_speed", "start_time", "number_of_records", "number_of_drivers",
-    #                              "season", "daylight"])
-    X_train = train.dropAttribute("average_speed")
-    # X_test = train.dropAttribute("average_speed")
-    y_train = train.keepAttribute("average_speed")
-    y_test = test.keepAttribute("average_speed")
-    print(y_test.data)
+lr = LinearRegression().fit(X_train, y_train)
+y_pred = lr.predict(X_test)
+print(y_pred.dataset_json)
+print("MAE:", meanAbsoluteError(y_test, y_pred))
 
-    lr = LinearRegression()
-    lr = lr.fit(X_train, y_train)
-    # y_pred = lr.predict(X_test)
-
-    # linearRegressionModel(dataset, "average_speed")
-
-
-if __name__ == "__main__":
-    speedAveragesExampleWorkflow()
+print(y_train.dataset_json)

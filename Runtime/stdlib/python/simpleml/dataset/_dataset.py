@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import os
 from datetime import datetime
-from typing import Any, Tuple
+from typing import Tuple
 
 import category_encoders as ce  # For one hot encoding
 import geopandas
@@ -111,7 +111,7 @@ class Dataset:
         self.target_attribute = targetAttribute
         return self
 
-    def keepAttributes(self, attributeIDs: Any, recompute_statistics: bool = True) -> Dataset:
+    def keepAttributes(self, attributeIDs: list[str], recompute_statistics: bool = True) -> Dataset:
 
         if not isinstance(attributeIDs, list):
             attributeIDs = [attributeIDs]
@@ -136,7 +136,7 @@ class Dataset:
 
         return self.keepAttributes([attributeID], recompute_statistics)
 
-    def dropAttributes(self, attributeIDs: Any, recompute_statistics: bool = True) -> Dataset:
+    def dropAttributes(self, attributeIDs: list[str], recompute_statistics: bool = True) -> Dataset:
         copy = self.copy_and_read()
 
         copy.data = copy.data.drop(columns=attributeIDs)
