@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import os
 from datetime import datetime
-from typing import Any, Tuple
+from typing import Tuple
 
 import category_encoders as ce  # For one hot encoding
 import geopandas
@@ -18,11 +18,8 @@ from shapely import geometry, wkb, wkt
 from shapely.errors import WKBReadingError, WKTReadingError
 from simpleml.dataset._instance import Instance
 from simpleml.dataset._stats import getStatistics
-
-# import Statistics
-
-
-# data_folder_name = '../../../data/'  # TODO: Configure globally
+from simpleml.util import exportDictionaryAsJSON
+from sklearn.model_selection import train_test_split
 
 
 class Dataset:
@@ -51,6 +48,7 @@ class Dataset:
         self.null_value = null_value
         self.separator = separator
         self.domain_model = None
+        self.target_attribute = None
         self.attribute_graph: dict[
             str, dict
         ] = {}  # attribute identifier to dictionary of RDF relations
@@ -91,29 +89,37 @@ class Dataset:
             []
         )  # list of attribute identifiers of attributes that should be parsed as date
 
-    def sample(self, nInstances: int) -> Dataset:
+        self.dataset_json = None
 
-        copy = self.copy()
+    # USER FUNCTIONS
 
-        if copy.data.empty:
-            copy.readFile(copy.separator, number_of_lines=nInstances)
+    def sample(self, nInstances: int, recompute_statistics: bool = True) -> Dataset:
+
+        copy = self.copy_and_read(number_of_lines=nInstances)
 
         copy.data = copy.data.head(n=nInstances)
 
         # invalidate statistics
         copy.stats = {}
 
-        return copy
+        if recompute_statistics:
+            return copy.provide_statistics()
+        else:
+            return copy
 
-    def keepAttributes(self, attributeIDs: Any) -> Dataset:
+    def setTargetAttribute(self, targetAttribute):
+        self.target_attribute = targetAttribute
+        return self
+
+    def keepAttributes(
+        self, attributeIDs: list[str], recompute_statistics: bool = True
+    ) -> Dataset:
 
         if not isinstance(attributeIDs, list):
             attributeIDs = [attributeIDs]
 
-        if self.data.empty:
-            self.readFile(self.separator)
+        copy = self.copy_and_read()
 
-        copy = self.copy()
         copy.data = copy.data.filter(items=attributeIDs)
 
         # remove columns from statistics
@@ -126,80 +132,72 @@ class Dataset:
                 copy.data_types.pop(attribute)
         copy.attributes = [value for value in copy.attributes if value in attributeIDs]
 
-        return copy
+        return copy.provide_statistics(recompute_statistics)
 
-    def dropAttributes(self, attributeIDs: Any) -> Dataset:
+    def keepAttribute(
+        self, attributeID: str, recompute_statistics: bool = True
+    ) -> Dataset:
 
-        if self.data.empty:
-            self.readFile(self.separator)
+        return self.keepAttributes([attributeID], recompute_statistics)
 
-        copy = self.copy()
+    def dropAttributes(
+        self, attributeIDs: list[str], recompute_statistics: bool = True
+    ) -> Dataset:
+        copy = self.copy_and_read()
 
         copy.data = copy.data.drop(columns=attributeIDs)
 
-        # remove columns from statistics
-        for attribute in copy.attributes:
-            if attribute in attributeIDs:
-                if copy.stats:
-                    del copy.stats[attribute]
-                copy.attribute_labels.pop(attribute)
-        copy.attributes = [
-            value for value in copy.attributes if value not in attributeIDs
-        ]
+        # remove column descriptions
+        for attribute in attributeIDs:
+            copy.drop_column_description(attribute)
 
-        return copy
+        return copy.provide_statistics(recompute_statistics)
+
+    def dropAttribute(
+        self, attributeID: str, recompute_statistics: bool = True
+    ) -> Dataset:
+        return self.dropAttributes([attributeID], recompute_statistics)
 
     def filterByAttribute(self, attribute: str, value) -> Dataset:
 
-        if self.data.empty:
-            self.readFile(self.separator)
-
-        copy = self.copy()
+        copy = self.copy_and_read()
 
         copy.data = copy.data.loc[copy.data[attribute] > value]
 
-        # copy.data = copy.data[copy.data.column_name != 'False']
-        # df = df[df.column_name != value]
-        # print('Dataset class')
-        # print(copy.data)
-
-        return copy
+        return copy.provide_statistics()
 
     def filterInstances(self, filter_func) -> Dataset:
 
-        if self.data.empty:
-            self.readFile(self.separator)
-
-        copy = self.copy()
-        # print(copy.data)
+        copy = self.copy_and_read()
 
         for index, row in copy.data.iterrows():
             if not filter_func(Instance(row)):
                 copy.data.drop(index, inplace=True)
 
-        return copy
+        return copy.provide_statistics()
 
-    def addAttribute(self, columnName, transformFunc) -> Dataset:
+    def addAttribute(
+        self, newColumnName, transformFunc, newColumnLabel: str = None
+    ) -> Dataset:
 
-        if self.data.empty:
-            self.readFile(self.separator)
+        copy = self.add_attribute_data(newColumnName, transformFunc)
 
-        copy = self.copy()
-        # print(copy.data)
+        data_type = dataTypes(copy.data[newColumnName].dtype)
 
-        for index, row in copy.data.iterrows():
-            copy.data.at[index, columnName] = transformFunc(Instance(row))
+        if not newColumnLabel:
+            newColumnLabel = newColumnName
 
-        return copy
+        copy.add_column_description(newColumnName, newColumnLabel, data_type)
+
+        copy.create_simple_type(newColumnName, data_type)
+
+        return copy.provide_statistics()
 
     def addIsWeekendAttribute(self, columnName):
 
-        if self.data.empty:
-            self.readFile(self.separator)
+        copy = self.copy_and_read()
 
-        copy = self.copy()
-
-        def transformIntoWeekend(instance: Instance):
+        def transformIntoWeekend(instance: Instance) -> bool:
             week_num = instance.getValue(columnName).weekday()
             if week_num < 5:
                 return False
@@ -207,157 +205,83 @@ class Dataset:
                 return True
             # return instance.getValue(columnName) is weekend
 
-        copy.data = self.addAttribute(
-            columnName + "_isWeekend", transformIntoWeekend
-        ).data
+        copy = self.addAttribute(
+            columnName + "_isWeekend",
+            transformIntoWeekend,
+            self.attribute_labels[columnName] + " (is weekend)",
+        )
 
-        return copy
+        return copy.provide_statistics()
 
     def addDayOfTheYearAttribute(self, columnName):
 
-        if self.data.empty:
-            self.readFile(self.separator)
+        copy = self.copy_and_read()
 
-        copy = self.copy()
-
-        def transformIntoWDayOfTheYear(instance: Instance):
+        def transformIntoDayOfTheYear(instance: Instance):
             return instance.getValue(columnName).timetuple().tm_yday
 
-        copy.data = self.addAttribute(
-            columnName + "_DayOfTheYear", transformIntoWDayOfTheYear
-        ).data
+        copy = self.addAttribute(
+            columnName + "_DayOfTheYear",
+            transformIntoDayOfTheYear,
+            self.attribute_labels[columnName] + " (day of the year)",
+        )
 
-        return copy
+        return copy.provide_statistics()
 
     def addWeekDayAttribute(self, columnName):
 
-        if self.data.empty:
-            self.readFile(self.separator)
+        copy = self.copy_and_read()
 
-        copy = self.copy()
-
-        def transformIntoWeekDay(instance: Instance):
+        def transformIntoWeekDay(instance: Instance) -> str:
             return instance.getValue(columnName).strftime("%A")
 
-        copy.data = self.addAttribute(
-            columnName + "_WeekDay", transformIntoWeekDay
-        ).data
+        copy = self.addAttribute(
+            columnName + "_weekDay",
+            transformIntoWeekDay,
+            self.attribute_labels[columnName] + " (week day)",
+        )
 
-        return copy
+        return copy.provide_statistics()
 
-    def dateToTimestamp(self, columnName):
+    def dropMissingValues(self, attribute):
+        copy = self.copy_and_read()
+        copy.data.dropna(subset=[attribute], inplace=True)
 
-        if self.data.empty:
-            self.readFile(self.separator)
+        return copy.provide_statistics()
 
-        copy = self.copy()
+    def splitIntoTrainAndTestAndLabels(
+        self, trainRatio: float, randomState=None
+    ) -> Tuple[Dataset, Dataset, Dataset, Dataset]:
 
-        def transformIntoTimestamp(instance: Instance):
-            date = datetime.strptime(
-                str(instance.getValue(columnName)), "%Y-%m-%d %H:%M:%S"
+        if not self.target_attribute:
+            raise ValueError(
+                "No target attribute specified for this datatset (set it via setTargetAttribute)."
             )
-            return datetime.timestamp(date)
 
-        copy.data = self.addAttribute(
-            columnName + "_Timestamp", transformIntoTimestamp
-        ).data
+        copy = self.copy_and_read()
 
-        return copy
+        train, test = copy.splitIntoTrainAndTest(trainRatio, randomState)
 
-    def addGeometryEmbeddings(self, columnName):
+        X_train = train.dropAttribute(self.target_attribute)
+        X_test = test.dropAttribute(self.target_attribute)
+        y_train = train.keepAttribute(self.target_attribute)
+        y_test = test.keepAttribute(self.target_attribute)
 
-        if self.data.empty:
-            self.readFile(self.separator)
-
-        copy = self.copy()
-
-        # w = libpysal.weights.DistanceBand.from_dataframe(self.data, threshold=50000, binary=False)
-        # print(w.islands)
-
-        w = Kernel.from_dataframe(self.data, fixed=False, function="gaussian")
-        # w = KNN.from_dataframe(self.data, k=5)
-        print(w.islands)
-        nodes = w.weights.keys()
-        edges = [(node, neighbour) for node in nodes for neighbour in w[node]]
-        my_graph = nx.Graph(edges)
-        print(my_graph)
-
-        node2vec = Node2Vec(
-            my_graph, dimensions=64, walk_length=30, num_walks=200, workers=4
+        return (
+            X_train.provide_statistics(),
+            X_test.provide_statistics(),
+            y_train.provide_statistics(),
+            y_test.provide_statistics(),
         )
-        model = node2vec.fit(window=10, min_count=1, batch_words=4)
-
-        copy.data[columnName + "_embeddings"] = ""
-        for index, row in copy.data.iterrows():
-            copy.data.at[index, columnName + "_embeddings"] = model.wv[index]
-
-        return copy
-
-    def categoryToVector(self, columnName):
-
-        if self.data.empty:
-            self.readFile(self.separator)
-
-        copy = self.copy()
-        column_data = copy.data[columnName]
-
-        column_encoder = ce.OneHotEncoder(
-            cols=columnName,
-            handle_unknown="return_nan",
-            return_df=True,
-            use_cat_names=True,
-        )
-        column_data = column_encoder.fit_transform(column_data)
-        copy.data[columnName + "_encoded"] = column_data.values.tolist()
-        copy.simple_data_types[columnName + "_encoded"] = config.type_numeric_list
-        copy.data_types[columnName + "_encoded"] = config.type_numeric_list
-        copy.attributes.append(columnName + "_encoded")
-        copy.attribute_labels[columnName + "_encoded"] = (
-            copy.attribute_labels[columnName] + " (Encoded)"
-        )
-
-        return copy
-
-    def flattenData(self):
-
-        if self.data.empty:
-            self.readFile(self.separator)
-
-        copy = self.copy()
-
-        for atribute in copy.attributes:
-            # print(atribute)
-            if copy.simple_data_types[atribute] == config.type_numeric_list:
-                # print(atribute)
-                attribute_column_names = [
-                    atribute + str(i) for i in range(len(copy.data[atribute].iloc[0]))
-                ]
-                copy.data[attribute_column_names] = pd.DataFrame(
-                    copy.data[atribute].tolist(), index=copy.data.index
-                )
-
-        return copy
-
-    def getStatistics(self) -> dict:
-        if not self.stats:
-            if self.data.empty:
-                self.readFile(self.separator)
-            self.stats = getStatistics(dataset=self)
-
-        return self.stats
 
     def splitIntoTrainAndTest(
         self, trainRatio: float, randomState=None
     ) -> Tuple[Dataset, Dataset]:
 
-        if self.data.empty:
-            self.readFile(self.separator)
+        copy = self.copy_and_read()
 
-        from sklearn.model_selection import train_test_split
-
-        # self.data.head()
         train_data, test_data = train_test_split(
-            self.data, train_size=trainRatio, random_state=randomState
+            copy.data, train_size=trainRatio, random_state=randomState
         )
 
         train = self.copy(basic_data_only=True)
@@ -373,15 +297,201 @@ class Dataset:
             test.description += " (Test)"
         test.data = test_data
 
-        return train, test
+        return train.provide_statistics(), test.provide_statistics()
 
-    def parseWKT(self, value, hex):
-        try:
-            return wkt.loads(value)
-        except (WKTReadingError, AttributeError, TypeError):
-            return None
+    def getColumn(self, column_identifier):
+        if self.data.empty:
+            self.readFile()
+        return self.data[column_identifier]
 
-    def readFile(self, sep, number_of_lines: int = None):
+    def getRow(self, row_number):
+        if self.data.empty:
+            self.readFile()
+        return Instance(self.data.iloc[[row_number]].squeeze())
+
+    # NON-USER FUNCTIONS
+
+    def getColumnNames(self):
+        if self.data.empty:
+            self.readFile()
+        return self.data.columns.values.tolist()
+
+    def add_attribute_data(self, newColumnName, transformFunc) -> Dataset:
+        copy = self.copy_and_read()
+
+        # for index, row in copy.data.iterrows():
+        #    copy.data.at[index, newColumnName] = transformFunc(Instance(row))
+
+        copy.data[newColumnName] = copy.data.apply(
+            lambda row: transformFunc(Instance(row)), axis=1
+        )
+
+        # TODO: Enforce type information from transformFunc via transformFunc.__annotations__?
+        # copy.data[newColumnName] = copy.data[newColumnName].convert_dtypes()
+
+        return copy
+
+    def copy(self, basic_data_only: bool = False) -> Dataset:
+        copy = Dataset(
+            id=self.id,
+            title=self.title,
+            subjects=self.subjects,
+            description=self.description,
+            separator=self.separator,
+            null_value=self.null_value,
+            fileName=self.fileName,
+            hasHeader=self.hasHeader,
+            titles=self.titles,
+            descriptions=self.descriptions,
+        )
+        copy.attribute_labels = self.attribute_labels.copy()
+        copy.attributes = self.attributes.copy()
+        copy.data_types = self.data_types.copy()
+        copy.simple_data_types = self.simple_data_types.copy()
+        copy.attribute_graph = self.attribute_graph.copy()
+        copy.wkb_columns = self.wkb_columns.copy()
+        copy.wkt_columns = self.wkt_columns.copy()
+        copy.lon_lat_pairs = self.lon_lat_pairs.copy()
+        copy.coordinate_system = self.coordinate_system
+        copy.parse_dates = self.parse_dates.copy()
+        copy.target_attribute = self.target_attribute
+
+        if self.domain_model:
+            copy.domain_model = self.domain_model.copy()
+
+        if not basic_data_only:
+            if self.data is not None:
+                copy.data = self.data.copy()
+        return copy
+
+    def drop_column_description(self, attribute):
+
+        self.attributes.remove(attribute)
+        self.attribute_labels.pop(attribute)
+        self.simple_data_types.pop(attribute)
+        self.data_types.pop(attribute)
+        if attribute in self.attribute_graph:
+            self.attribute_graph.pop(attribute)
+        if self.stats:
+            del self.stats[attribute]
+
+    def add_column_description(
+        self, attribute, label, data_type, simple_data_type=None
+    ):
+        self.attributes.append(attribute)
+        self.attribute_labels[attribute] = label
+        self.data_types[attribute] = data_type
+        if simple_data_type:
+            self.simple_data_types[attribute] = simple_data_type
+
+    def transformGeometryToVector(self, columnName):
+
+        copy = self.copy_and_read()
+
+        # w = libpysal.weights.DistanceBand.from_dataframe(self.data, threshold=50000, binary=False)
+        # print(w.islands)
+
+        w = Kernel.from_dataframe(self.data, fixed=False, function="gaussian")
+        # w = KNN.from_dataframe(self.data, k=5)
+        nodes = w.weights.keys()
+        edges = [(node, neighbour) for node in nodes for neighbour in w[node]]
+        my_graph = nx.Graph(edges)
+
+        dimensions = 64
+        node2vec = Node2Vec(
+            my_graph, dimensions=dimensions, walk_length=15, num_walks=100, workers=1
+        )
+        model = node2vec.fit(window=10, min_count=1, batch_words=4)
+
+        copy.data[columnName + "_tmp"] = ""
+        for index, row in copy.data.iterrows():
+            copy.data.at[index, columnName + "_tmp"] = model.wv[str(index)]
+
+        copy = copy.dropAttribute(columnName, recompute_statistics=False)
+        copy.data = copy.data.rename(columns={columnName + "_tmp": columnName})
+        copy.add_column_description(
+            columnName,
+            self.attribute_labels[columnName],
+            config.type_numeric_list,
+            config.type_numeric_list,
+        )
+
+        return copy.provide_statistics()
+
+    def transformCategoryToVector(self, columnName):
+
+        copy = self.copy_and_read()
+
+        column_data = copy.data[columnName]
+
+        column_encoder = ce.OneHotEncoder(
+            cols=columnName,
+            handle_unknown="return_nan",
+            return_df=True,
+            use_cat_names=True,
+        )
+
+        column_data = column_encoder.fit_transform(column_data)
+
+        copy.data[columnName + "_tmp"] = column_data.values.tolist()
+
+        copy = copy.dropAttribute(columnName, recompute_statistics=False)
+        copy.data = copy.data.rename(columns={columnName + "_tmp": columnName})
+        copy.add_column_description(
+            columnName,
+            self.attribute_labels[columnName],
+            config.type_numeric_list,
+            config.type_numeric_list,
+        )
+
+        return copy.provide_statistics()
+
+    def transformDateToTimestamp(self, columnName):
+
+        copy = self.copy_and_read()
+
+        def transformIntoTimestamp(instance: Instance):
+            return datetime.timestamp(instance.getValue(columnName))
+
+        copy.data = self.add_attribute_data(
+            columnName + "_tmp", transformIntoTimestamp
+        ).data
+
+        copy = copy.dropAttribute(columnName, recompute_statistics=False)
+        copy.data = copy.data.rename(columns={columnName + "_tmp": columnName})
+        copy.add_column_description(
+            columnName, self.attribute_labels[columnName], np.float, config.type_numeric
+        )
+
+        return copy
+
+    def flattenData(self):
+
+        copy = self.copy_and_read()
+
+        for attribute in copy.attributes:
+            if copy.simple_data_types[attribute] == config.type_numeric_list:
+                attribute_column_names = [
+                    attribute + str(i) for i in range(len(copy.data[attribute].iloc[0]))
+                ]
+                copy.data[attribute_column_names] = pd.DataFrame(
+                    copy.data[attribute].tolist(), index=copy.data.index
+                )
+
+                # TODO: not re-read all the time
+                copy = copy.dropAttribute(attribute, recompute_statistics=False)
+
+        return copy
+
+    def getStatistics(self) -> dict:
+        if not self.stats:
+            if self.data.empty:
+                self.readFile()
+            self.stats = getStatistics(dataset=self)
+
+        return self.stats
+
+    def readFile(self, number_of_lines: int = None):
 
         if not self.fileName:
             raise ValueError("No filename given for file reading.")
@@ -405,7 +515,7 @@ class Dataset:
 
         self.data = pd.read_csv(
             dataFilePath,
-            sep=sep,
+            sep=self.separator,
             dtype=parse_data_types,
             parse_dates=self.parse_dates,
             na_values=[self.null_value],
@@ -415,11 +525,59 @@ class Dataset:
 
         self.parse_geo_columns()
 
+    def getProfile(self):
+
+        profile = {"type": config.type_dataset}
+
+        if not self.stats:
+            self.getStatistics()
+
+        profile[config.topics] = self.subjects
+        profile[config.title] = self.title
+        if self.description:
+            profile[config.description] = self.description
+        profile[config.null_value] = self.null_value
+        profile[config.separator] = self.separator
+        if self.fileName:
+            profile[config.file_location] = self.fileName
+        profile[config.has_header] = self.hasHeader
+        profile[config.sample] = self.sample_for_profile
+        if self.id:
+            profile[config.id] = self.id
+        profile[config.number_of_instances] = self.number_of_instances
+
+        # attributes
+        profile_attributes = {}
+        profile[config.attributes] = profile_attributes
+
+        for attribute in self.attributes:
+
+            profile_attributes[attribute] = {}
+            profile_attributes[attribute][
+                config.attribute_label
+            ] = self.attribute_labels[attribute]
+
+            profile_attributes[attribute][config.type] = config.data_type_labels[
+                self.data_types[attribute]
+            ]
+            profile_attributes[attribute][config.simple_type] = self.simple_data_types[
+                attribute
+            ]
+
+            profile_attributes[attribute][config.id] = attribute
+
+            if attribute in self.stats:
+                profile_attributes[attribute][config.statistics] = self.stats[attribute]
+
+        profile[config.sample] = self.get_sample_info_for_profile()
+
+        return profile
+
     def parse_geo_columns(self):
         # parse geo data
         # WKT columns
         for wkt_column in self.wkt_columns:
-            self.data[wkt_column] = self.data[wkt_column].apply(self.parseWKT, hex=True)
+            self.data[wkt_column] = self.data[wkt_column].apply(parseWKT, hex=True)
             self.simple_data_types[wkt_column] = config.type_geometry
         # WKB columns
         for wkb_column in self.wkb_columns:
@@ -479,6 +637,13 @@ class Dataset:
 
         self.attribute_labels[attribute_identifier] = attribute_label
 
+        self.create_simple_type(
+            attribute_identifier, value_type, is_geometry=is_geometry
+        )
+
+    def create_simple_type(
+        self, attribute_identifier, value_type, is_geometry: bool = False
+    ):
         # create simple types
         if value_type == np.datetime64:
             self.parse_dates.append(attribute_identifier)
@@ -504,100 +669,6 @@ class Dataset:
     def getJson(self):
         json_input = {"id": self.id, "title": self.title, "topics": self.subjects}
         return json.dumps(json_input)
-
-    def getColumn(self, column_identifier):
-        if self.data.empty:
-            self.readFile(self.separator)
-        return self.data[column_identifier]
-
-    def getColumnNames(self):
-        if self.data.empty:
-            self.readFile(self.separator)
-        return self.data.columns.values.tolist()
-
-    def getRow(self, row_number):
-        if self.data.empty:
-            self.readFile(self.separator)
-        return Instance(self.data.iloc[[row_number]].squeeze())
-
-    def copy(self, basic_data_only: bool = False) -> Dataset:
-        copy = Dataset(
-            id=self.id,
-            title=self.title,
-            subjects=self.subjects,
-            description=self.description,
-            separator=self.separator,
-            null_value=self.null_value,
-            fileName=self.fileName,
-            hasHeader=self.hasHeader,
-            titles=self.titles,
-            descriptions=self.descriptions,
-        )
-        copy.attribute_labels = self.attribute_labels.copy()
-        copy.attributes = self.attributes.copy()
-        copy.data_types = self.data_types.copy()
-        copy.simple_data_types = self.simple_data_types.copy()
-        copy.attribute_graph = self.attribute_graph.copy()
-        copy.wkb_columns = self.wkb_columns.copy()
-        copy.wkt_columns = self.wkt_columns.copy()
-        copy.lon_lat_pairs = self.lon_lat_pairs.copy()
-        copy.coordinate_system = self.coordinate_system
-        copy.parse_dates = self.parse_dates.copy()
-
-        if self.domain_model:
-            copy.domain_model = self.domain_model.copy()
-
-        if not basic_data_only:
-            if self.data is not None:
-                copy.data = self.data.copy()
-        return copy
-
-    def getProfile(self):
-
-        profile = {"type": config.type_dataset}
-
-        if not self.stats:
-            self.getStatistics()
-
-        profile[config.topics] = self.subjects
-        profile[config.title] = self.title
-        if self.description:
-            profile[config.description] = self.description
-        profile[config.null_value] = self.null_value
-        profile[config.separator] = self.separator
-        if self.fileName:
-            profile[config.file_location] = self.fileName
-        profile[config.has_header] = self.hasHeader
-        profile[config.sample] = self.sample_for_profile
-        if self.id:
-            profile[config.id] = self.id
-        profile[config.number_of_instances] = self.number_of_instances
-
-        # attributes
-        profile_attributes = {}
-        profile[config.attributes] = profile_attributes
-
-        for attribute in self.attributes:
-
-            profile_attributes[attribute] = {}
-            profile_attributes[attribute][
-                config.attribute_label
-            ] = self.attribute_labels[attribute]
-            profile_attributes[attribute][config.type] = config.data_type_labels[
-                self.data_types[attribute]
-            ]
-            profile_attributes[attribute][config.simple_type] = self.simple_data_types[
-                attribute
-            ]
-
-            profile_attributes[attribute][config.id] = attribute
-
-            if attribute in self.stats:
-                profile_attributes[attribute][config.statistics] = self.stats[attribute]
-
-        profile[config.sample] = self.get_sample_info_for_profile()
-
-        return profile
 
     def get_sample_info_for_profile(self):
         sample_as_list = []
@@ -629,8 +700,47 @@ class Dataset:
     def exportDataAsFile(self, file_path):
         self.data.to_csv(file_path, encoding="utf-8")
 
+    def copy_and_read(self, number_of_lines: int = None):
+
+        if self.data.empty:
+            self.readFile(number_of_lines)
+
+        copy = self.copy()
+        return copy
+
+    def transformDatatypes(self):
+
+        copy = self.copy_and_read()
+
+        # transform non-numeric columns
+        for attribute in self.attributes:
+            if self.simple_data_types[attribute] == config.type_string:
+                copy = copy.transformCategoryToVector(attribute)
+            elif self.simple_data_types[attribute] == config.type_datetime:
+                copy = copy.transformDateToTimestamp(attribute)
+            elif self.simple_data_types[attribute] == config.type_geometry:
+                copy = copy.transformGeometryToVector(attribute)
+
+        return copy
+
+    def provide_statistics(self, recompute_statistics: bool = True):
+
+        if recompute_statistics:
+            if not self.stats:
+                if self.data.empty:
+                    self.readFile()
+                self.stats = getStatistics(dataset=self)
+
+            self.dataset_json = exportDictionaryAsJSON(self.getProfile())
+
+        return self
+
     def toArray(self):
-        return self.data.to_numpy()
+        copy = self.copy_and_read()
+
+        copy = copy.flattenData()
+
+        return copy.data.to_numpy()
 
 
 def loadDataset(datasetID: str) -> Dataset:
@@ -732,6 +842,8 @@ def dataTypes(type):
         return np.datetime64
     elif type == "boolean":
         return np.bool
+    elif type == "object":
+        return np.str
 
 
 def joinTwoDatasets(
@@ -804,4 +916,11 @@ def parseWKB(value, hex):
     try:
         return wkb.loads(value, hex=hex)
     except (WKBReadingError, AttributeError, TypeError):
+        return None
+
+
+def parseWKT(value, hex):
+    try:
+        return wkt.loads(value)
+    except (WKTReadingError, AttributeError, TypeError):
         return None

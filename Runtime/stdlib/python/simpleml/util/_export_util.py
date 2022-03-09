@@ -3,7 +3,7 @@ import math
 
 import pandas as pd
 import simpleml.util.jsonLabels_util as config
-from numpy import bool_, datetime64, float32, float64, int32, int64
+from numpy import bool_, datetime64, float32, float64, int32, int64, ndarray
 from pandas import DataFrame
 
 
@@ -26,9 +26,18 @@ def round_floats_and_transform_temporal(o, precision):
         }
     elif isinstance(o, (list, tuple)):
         return [round_floats_and_transform_temporal(x, precision) for x in o]
+    elif isinstance(o, (ndarray)):
+        # convert numeric lists into string
+        return (
+            "<"
+            + ", ".join(
+                [str(round_floats_and_transform_temporal(x, precision)) for x in o]
+            )
+            + ">"
+        )
 
-    if pd.isna(o):
-        return None
+        if pd.isna(o):
+            return None
 
     if isinstance(o, (datetime64)):
         ts = pd.to_datetime(str(o))

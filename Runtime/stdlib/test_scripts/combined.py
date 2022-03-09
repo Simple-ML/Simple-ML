@@ -3,8 +3,8 @@ from simpleml.data_catalog import getDatasets
 from simpleml.dataset import loadDataset
 from simpleml.util import exportDictionaryAsJSON
 
-
 # Workflow steps ---------------------------------------------------------------
+
 
 def exampleWorkflow():
     # query the data catalog for its datasets
@@ -16,12 +16,12 @@ def exampleWorkflow():
         print("===", dataset.id, "===")
 
         # Pandas can't deal with missing boolean values, so skip this dataset.
-        if dataset.id == 'SpeedAveragesHeavilyCorrupted':
+        if dataset.id == "SpeedAveragesHeavilyCorrupted":
             continue
         # TODO: check
-        if dataset.id == 'TrafficWarnings' or dataset.id == 'TrafficTweets':
+        if dataset.id == "TrafficWarnings" or dataset.id == "TrafficTweets":
             continue
-        if dataset.id == 'SpeedAveragesCorrupted':
+        if dataset.id == "SpeedAveragesCorrupted":
             continue
 
         dataset = loadDataset(dataset.id)
@@ -30,13 +30,15 @@ def exampleWorkflow():
         dataset_sample = dataset.sample(500)
 
         column_names = dataset_sample.getColumnNames()
-        train, test = dataset_sample.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
+        train, test = dataset_sample.splitIntoTrainAndTest(
+            trainRatio=0.75, randomState=1
+        )
 
         print("Drop", column_names[0])
 
-        X_train = train.dropAttributes(column_names[0])
-        X_test = test.dropAttributes(column_names[0])
-        y_train = train.keepAttributes(column_names[0])
+        X_train = train.dropAttribute(column_names[0])
+        X_test = test.dropAttribute(column_names[0])
+        y_train = train.keepAttribute(column_names[0])
 
         # compute statistics from the dataset
         print(X_train.getProfile())
@@ -46,5 +48,5 @@ def exampleWorkflow():
         print("")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     exampleWorkflow()
