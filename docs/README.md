@@ -3,8 +3,8 @@
 * [Tutorial][tutorial]
    * [Basic Concepts][tutorial_concepts]
    * [The Interface][tutorial_interface]
+   * [DSL][dsl-tutorial]
 * Components
-   * [DSL][dsl]
    * [Frontend][frontend]
    * [Runtime][runtime]
    * [Data API][data_api]
@@ -12,7 +12,7 @@
 [tutorial]: ./Tutorial.md
 [tutorial_concepts]: ./Tutorial-Basic-Concepts.md
 [tutorial_interface]: ./Tutorial-The-Simple-ML-Interface.md
-[dsl]: ./DSL/tutorial/README.md
+[dsl-tutorial]: ./DSL/tutorial/README.md
 [data_api]: ./Data-API.md
 [data_set_api]: ./Data-Set-API.md
 [data_catalog_api]: ./Data-Catalog-API.md
