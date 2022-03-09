@@ -31,8 +31,8 @@ The definition of a domain-specific language (**DSL**) is a central contribution
 * [Tutorial][tutorial]
    * [Basic Concepts][tutorial_concepts]
    * [The Interface][tutorial_interface]
+   * [DSL][dsl-tutorial]
 * Components
-   * [DSL][dsl]
    * [Frontend][frontend]
    * [Runtime][runtime]
    * [Data API][data_api]
@@ -40,7 +40,7 @@ The definition of a domain-specific language (**DSL**) is a central contribution
 [tutorial]: ./docs/Tutorial.md
 [tutorial_concepts]: ./docs/Tutorial-Basic-Concepts.md
 [tutorial_interface]: ./docs/Tutorial-The-Simple-ML-Interface.md
-[dsl]: ./docs/DSL/tutorial/README.md
+[dsl-tutorial]: ./docs/DSL/tutorial/README.md
 [data_api]: ./docs/Data-API.md
 [data_set_api]: ./docs/Data-Set-API.md
 [data_catalog_api]: ./docs/Data-Catalog-API.md

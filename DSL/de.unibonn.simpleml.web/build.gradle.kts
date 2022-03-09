@@ -6,7 +6,6 @@ val xtextVersion: String by rootProject.extra
 plugins {
     java
     kotlin("jvm")
-    id("org.xtext.xtend")
     war
 }
 
@@ -20,7 +19,6 @@ java {
 
 dependencies {
     implementation(project(":de.unibonn.simpleml"))
-    implementation("org.eclipse.xtend:org.eclipse.xtend.lib:$xtextVersion")
     implementation("org.emfjson:emfjson-jackson:1.2.0")
 
     api(project(":de.unibonn.simpleml.ide"))
@@ -54,10 +52,4 @@ tasks.register<JavaExec>("jettyRun") {
 tasks.war {
     webAppDirectory.set(file("src"))
     webXml = file("src/web.xml")
-}
-
-tasks {
-    compileKotlin {
-        dependsOn(generateXtext)
-    }
 }

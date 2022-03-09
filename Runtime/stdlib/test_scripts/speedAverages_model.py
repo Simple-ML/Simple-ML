@@ -12,13 +12,13 @@ def test_train_and_infer():
     rf = LinearRegression()
     dataset = loadDataset("SpeedAverages")
 
-    dataset = dataset.categoryToVector("street_type")
-    dataset = dataset.categoryToVector("max_speed")
-    dataset = dataset.categoryToVector("season")
-    dataset = dataset.categoryToVector("daylight")
+    dataset = dataset.transformCategoryToVector("street_type")
+    dataset = dataset.transformCategoryToVector("max_speed")
+    dataset = dataset.transformCategoryToVector("season")
+    dataset = dataset.transformCategoryToVector("daylight")
 
     dataset = dataset.addDayOfTheYearAttribute("start_time")
-    dataset = dataset.dateToTimestamp("start_time")
+    dataset = dataset.transformDateToTimestamp("start_time")
     # dataset = dataset.dateToTimestamp("end_time")
 
     dataset = dataset.flattenData()
@@ -43,14 +43,14 @@ def test_train_and_infer():
     print(dataset.data.columns.values.tolist())
 
     train, test = dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
-    X_train = train.dropAttributes("average_speed")
-    X_test = test.dropAttributes("average_speed")
-    y_train = train.keepAttributes("average_speed")
+    X_train = train.dropAttribute("average_speed")
+    X_test = test.dropAttribute("average_speed")
+    y_train = train.keepAttribute("average_speed")
 
     model = rf.fit(X_train, y_train)
 
     pred = model.predict(X_test)
 
-    meanAbsoluteError(test.keepAttributes("average_speed"), pred)
+    meanAbsoluteError(test.keepAttribute("average_speed"), pred)
 
     assert len(pred) > 0  # nosec

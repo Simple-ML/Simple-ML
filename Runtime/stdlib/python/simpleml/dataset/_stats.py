@@ -241,6 +241,7 @@ def getStatistics(dataset):
     dataset.number_of_instances = data.shape[0]
 
     for colName in data:
+
         simple_type = dataset.simple_data_types[colName]
         stats[colName] = {}
         transform_timestamp = False
@@ -352,7 +353,9 @@ def getStatistics(dataset):
         # number of distinct values
         if simple_type == config.type_geometry:
             number_of_distinct_values = column_data.nunique(dropna=True)
-        elif simple_type != config.type_bool:
+        elif (
+            simple_type != config.type_bool and simple_type != config.type_numeric_list
+        ):
             number_of_distinct_values = data[colName].nunique(dropna=True)
             addNumericValue(
                 stats[colName], config.numberOfDistinctValues, number_of_distinct_values
@@ -422,12 +425,17 @@ def getStatistics(dataset):
         i = i + 1
 
     # sample
-    sample = dataset.sample(10)
+    sample = dataset.sample(10, recompute_statistics=False)
 
     # Drop all geometry columns. Not only "geometry" column
     for attribute in dataset.simple_data_types:
         if dataset.simple_data_types[attribute] == config.type_geometry:
             sample.data = sample.data.drop(labels=attribute, axis=1)
+        elif dataset.simple_data_types[attribute] == config.type_numeric_list:
+            # for the JSON export of the sample, better have the list as a string
+            sample.data[attribute] = sample.data[attribute].apply(
+                lambda row: "<" + ", ".join([str(x) for x in row]) + ">"
+            )
 
     dataset.data_sample = sample.data
 

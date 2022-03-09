@@ -1,17 +1,24 @@
 from typing import Dict, List, Optional, Union
 
 from numpy.typing import ArrayLike
+from pandas import DataFrame
 from simpleml.model.supervised._domain import DataType, Estimator, Model
 from sklearn.ensemble import RandomForestClassifier as SkRandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier as SkDecisionTreeClassifier
 
 
 class DecisionTreeClassifierModel(Model):
-    def __init__(self, underlying: SkDecisionTreeClassifier):
+    def __init__(self, underlying: SkDecisionTreeClassifier, yTrain: DataType):
         self._underlying = underlying
+        self._yTrain = yTrain
 
-    def predict(self, data: DataType) -> ArrayLike:
-        return self._underlying.predict(data.toArray())
+    def predict(self, data: DataType) -> DataType:
+        yPred = self._yTrain.copy(basic_data_only=True)
+        yPred.data = DataFrame(
+            self._underlying.predict(data.toArray()), columns=self._yTrain.data.columns
+        )
+        yPred.title = self._yTrain.title.replace("(Train)", "(Predicton)")
+        return yPred.provide_statistics()
 
 
 class DecisionTreeClassifier(Estimator):
@@ -49,16 +56,23 @@ class DecisionTreeClassifier(Estimator):
         return DecisionTreeClassifierModel(
             self._underlying.fit(
                 train_data.toArray(), labels.toArray().astype("int"), **kwargs
-            )
+            ),
+            labels,
         )
 
 
 class RandomForestClassifierModel(Model):
-    def __init__(self, underlying: SkRandomForestClassifier):
+    def __init__(self, underlying: SkRandomForestClassifier, yTrain: DataType):
         self._underlying = underlying
+        self._yTrain = yTrain
 
     def predict(self, data: DataType) -> ArrayLike:
-        return self._underlying.predict(data.toArray())
+        yPred = self._yTrain.copy(basic_data_only=True)
+        yPred.data = DataFrame(
+            self._underlying.predict(data.toArray()), columns=self._yTrain.data.columns
+        )
+        yPred.title = self._yTrain.title.replace("(Train)", "(Predicton)")
+        return yPred.provide_statistics()
 
 
 class RandomForestClassifier(Estimator):
@@ -104,5 +118,6 @@ class RandomForestClassifier(Estimator):
         return RandomForestClassifierModel(
             self._underlying.fit(
                 train_data.toArray(), labels.toArray().astype("int"), **kwargs
-            )
+            ),
+            labels,
         )
