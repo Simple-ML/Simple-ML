@@ -841,9 +841,9 @@ def dataTypes(type):
         return pd.Int32Dtype()
     elif type == "string" or type == np.str:
         return np.str
-    elif type == "datetime64[ns]" or type==np.datetime64:
+    elif type == "datetime64[ns]" or type == np.datetime64:
         return np.datetime64
-    elif type == "boolean" or type== np.bool:
+    elif type == "boolean" or type == np.bool:
         return np.bool
     elif type == "object":
         return np.str
