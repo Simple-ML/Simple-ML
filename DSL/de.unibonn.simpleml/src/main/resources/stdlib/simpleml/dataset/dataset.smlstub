@@ -23,7 +23,7 @@ class Dataset {
     fun splitIntoTrainAndTest(trainRatio: Float, randomState: Int? = null) -> (@Description("training dataset") dataset1: Dataset, @Description("test dataset") dataset2: Dataset)
 
     @Description("Splits dataset into four datasets: train/test and labels/features")
-    fun splitIntoTrainAndTestAndLabels(trainRatio: Float, randomState: Int? = null) -> (@Description("features of the training dataset") X_train: Dataset, @Description("features of the test dataset") X_test: Dataset, @Description("labels of the training dataset") y_train: Dataset, @Description("labels of the test dataset") y_test: Dataset)
+    fun splitIntoTrainAndTestAndLabels(trainRatio: Float, randomState: Int? = null) -> (@Description("features of the training dataset") xTrain: Dataset, @Description("features of the test dataset") xTest: Dataset, @Description("labels of the training dataset") yTrain: Dataset, @Description("labels of the test dataset") yTest: Dataset)
 
     @Description("Export any dataset to CSV file")
     fun exportDataAsFile(filePath: String)
