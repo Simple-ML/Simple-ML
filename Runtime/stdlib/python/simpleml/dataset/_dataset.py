@@ -166,12 +166,12 @@ class Dataset:
 
         return copy.provide_statistics()
 
-    def filterInstances(self, filter_func) -> Dataset:
+    def filterInstances(self, filterFunc) -> Dataset:
 
         copy = self.copy_and_read()
 
         for index, row in copy.data.iterrows():
-            if not filter_func(Instance(row)):
+            if not filterFunc(Instance(row)):
                 copy.data.drop(index, inplace=True)
 
         return copy.provide_statistics()

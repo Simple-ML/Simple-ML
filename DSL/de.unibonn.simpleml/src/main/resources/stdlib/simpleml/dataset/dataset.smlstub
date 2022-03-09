@@ -1,30 +1,71 @@
 package simpleml.dataset
 
+@Description("A dataset with its data instances")
 class Dataset {
-    fun sample(nInstances: Int) -> dataset: Dataset
+    @Description("Create a sample of the dataset")
+    fun sample(@Description("Number of instances in the sample") nInstances: Int) -> dataset: Dataset
 
+    @Description("Returns subset of dataset with only list of columns provided in argument")
     fun keepAttributes(vararg attributes: String) -> dataset: Dataset
 
+    @Description("Remove list of columns provided in argument from dataset")
     fun dropAttributes(vararg attributes: String) -> dataset: Dataset
 
-    fun splitIntoTrainAndTest(trainRatio: Float, randomState: Int? = null) -> (dataset1: Dataset, dataset2: Dataset)
+    @Description("Split dataset in train and test datasets")
+    fun splitIntoTrainAndTest(trainRatio: Float, randomState: Int? = null) -> (@Description("dataset1 is training data") dataset1: Dataset, @Description("dataset2 is testing data") dataset2: Dataset)
 
+    @Description("Export any dataset to CSV file")
     fun exportDataAsFile(filePath: String)
 
-    fun filterInstances(@PythonName("filter_func") filterFunc: () -> ()) -> dataset: Dataset
+    @Description("Filter dataset based on any specific value from a column")
+    fun filterInstances(filterFunc: (instance: Instance) -> shouldKeep: Boolean) -> dataset: Dataset
 
+    @Description("Get row of dataset")
     fun getRow(rowNumber: Int) -> instance: Instance
+
+    @Description("Add a new attribute in dataset with a transformed value")
+    fun addAttribute(columnName: String, transformFunc: (instance: Instance) -> value: Any, newColumnLabel: String) -> dataset: Dataset
+
+    @Description("Converts date into timestamp")
+    fun transformDateToTimestamp(columnName: String) -> dataset: Dataset
+
+    @Description("Extract IsWeekend from given date attribute and add new attribute in dataset with boolean value")
+    fun addIsWeekendAttribute(columnName: String) -> dataset: Dataset
+
+    @Description("Extract day of the year from given date attribute and add new attribute in dataset with numeric value")
+    fun addDayOfTheYearAttribute(columnName: String) -> dataset: Dataset
+
+    @Description("Extract week day from given date attribute and add new attribute in dataset with weekday name")
+    fun addWeekDayAttribute(columnName: String) -> dataset: Dataset
 }
 
+@Description("Individual instance in dataset")
 class Instance {
+    @Description("To get value of instance")
     fun getValue(attribute: String)
 
 }
 
-fun loadDataset(name: String) -> dataset: Dataset
+@Description("Data normalizer")
+class StandardNormalizer {
+    @Description("Normalize whole dataset")
+    fun normalize(dataset: Dataset)
 
-fun readDataSetFromCSV(fileName: String, datasetName: String, separator: String, hasHeader: String) -> dataset: Dataset
+}
 
+@Description("Data scaler")
+class StandardScaler {
+    @Description("Scale whole dataset")
+    fun scale(dataset: Dataset)
+
+}
+
+@Description("Load dataset")
+fun loadDataset(datasetID: String) -> dataset: Dataset
+
+@Description("Read dataset directly from CSV file")
+fun readDataSetFromCSV(fileName: String, datasetId: String, separator: String, hasHeader: String, datasetName: String, coordinateSystem: Int, vararg lonLatPairs: Float) -> dataset: Dataset
+
+@Description("Join two dataset and returns merged single dataset")
 fun joinTwoDatasets(firstData: Dataset, secondData: Dataset, joinColumnName1: String, joinColumnName2: String, firstSuffix: String, secondSuffix: String) -> dataset: Dataset
 
-fun filterGoodQuality(instance: Instance) -> isGoodQuality: Boolean
