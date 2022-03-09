@@ -7,7 +7,7 @@ This page gives an overview of the classes and functions required to create a da
 * [Class: Instance](#class-instance)  
 * [Class: StandardNormalizer](#class-standardnormalizer)  
 * [Class: StandardScaler](#class-standardscaler)  
-* [Class: Global Functions](#global-functions)  
+* [Global Functions](#global-functions)  
 
 ## Classes and their Methods
 
@@ -354,7 +354,11 @@ scale(dataset: Dataset) -> scaledDataset: Dataset
 
 <a name="global-functions"/>
 
-### Global Functions
+## Global Functions
+
+---
+
+### Global Functions (Datasets)
 
 ---
 
@@ -414,3 +418,172 @@ fun joinTwoDatasets(firstData: Dataset, secondData: Dataset, joinColumnName1: St
 
 * Output
   * `scaledDataset`: The joined dataset.
+
+
+---
+
+### Global Functions (Classification Metrics)
+
+---
+
+#### Accuracy
+
+Compute the accuracy.
+
+```
+accuracy(yTrue: Dataset, yPred: Dataset) -> score: Float
+```
+
+* Input
+  * `yTrue`: The test dataset labels.
+  * `yPred`: The predicted dataset labels.
+* Output
+  * `score`: The accuracy value.
+
+---
+
+#### Balanced Accuracy
+
+Compute the balanced accuracy.
+
+```
+balancedAccuracy(yTrue: Dataset, yPred: Dataset) -> score: Float
+```
+
+* Input
+  * `yTrue`: The test dataset labels.
+  * `yPred`: The predicted dataset labels.
+* Output
+  * `score`: The balanced accuracy value.
+
+---
+
+#### Balanced Accuracy
+
+Compute the balanced accuracy.
+
+```
+averagePrecision(yTrue: Dataset, yPred: Dataset) -> score: Float
+```
+
+* Input
+  * `yTrue`: The test dataset labels.
+  * `yPred`: The predicted dataset labels.
+* Output
+  * `score`: The balanced accuracy value.
+
+---
+
+#### Precision
+
+Compute the precision.
+
+```
+precision(yTrue: Dataset, yPred: Dataset) -> score: Float
+```
+
+* Input
+  * `yTrue`: The test dataset labels.
+  * `yPred`: The predicted dataset labels.
+* Output
+  * `score`: The precision value.
+
+---
+
+#### Recall
+
+Compute the recall.
+
+```
+recall(yTrue: Dataset, yPred: Dataset) -> score: Float
+```
+
+* Input
+  * `yTrue`: The test dataset labels.
+  * `yPred`: The predicted dataset labels.
+* Output
+  * `score`: The recall value.
+
+---
+
+### Global Functions (Regression Metrics)
+
+---
+
+#### Mean Absolute Error
+
+Compute the mean absolute error (MAE).
+
+```
+meanAbsoluteError(yTrue: Dataset, yPred: Dataset) -> score: Float
+```
+
+* Input
+  * `yTrue`: The test dataset labels.
+  * `yPred`: The predicted dataset labels.
+* Output
+  * `score`: The mean absolute error value.
+
+---
+
+#### Mean Absolute Error
+
+Compute the mean squared error (MSE).
+
+```
+meanSquaredError(yTrue: Dataset, yPred: Dataset) -> score: Float
+```
+
+* Input
+  * `yTrue`: The test dataset labels.
+  * `yPred`: The predicted dataset labels.
+* Output
+  * `score`: The mean squared error value.
+
+---
+
+#### Mean Absolute Error
+
+Compute the mean squared log error.
+
+```
+meanSquaredLogError(yTrue: Dataset, yPred: Dataset) -> score: Float
+```
+
+* Input
+  * `yTrue`: The test dataset labels.
+  * `yPred`: The predicted dataset labels.
+* Output
+  * `score`: The mean squared log error value.
+
+---
+
+#### Median Absolute Error
+
+Compute the median absolute error.
+
+```
+medianAbsoluteError(yTrue: Dataset, yPred: Dataset) -> score: Float
+```
+
+* Input
+  * `yTrue`: The test dataset labels.
+  * `yPred`: The predicted dataset labels.
+* Output
+  * `score`: The median absolute error value.
+
+---
+
+#### R^2
+
+Compute the R^2 score.
+
+```
+r2(yTrue: Dataset, yPred: Dataset) -> score: Float
+```
+
+* Input
+  * `yTrue`: The test dataset labels.
+  * `yPred`: The predicted dataset labels.
+* Output
+  * `score`: The R^2 value.
