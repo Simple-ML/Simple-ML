@@ -530,6 +530,141 @@ predict(features: Dataset) -> results: Dataset
 * Output
   * `trainedModel`: The dataset with predictions.
 
+
+---
+
+<a name="classes-classification"/>
+
+### Classes: Classification Models
+
+---
+
+#### Class: DecisionTreeClassifier
+
+A decision tree classifier.
+
+---
+
+##### Training
+
+Train the model.
+
+```
+fit(features: Dataset, target: Dataset) -> trainedModel: LinearRegressionModel
+```
+
+* Input
+  * `features`: The features of the training dataset.
+  * `target`: The labels of the training dataset.
+* Output
+  * `trainedModel`: The trained model.
+
+---
+
+#### Class: DecisionTreeClassifierModel
+
+A trained decision tree classification model.
+
+---
+
+##### Prediction
+
+Use the trained model for a prediction.
+
+```
+predict(features: Dataset) -> results: Dataset
+```
+
+* Input
+  * `features`: The features of the dataset.
+* Output
+  * `trainedModel`: The dataset with predictions.
+
+---
+
+#### Class: RandomForestClassifier
+
+A random forest classifier.
+
+---
+
+##### Training
+
+Train the model.
+
+```
+fit(features: Dataset, target: Dataset) -> trainedModel: LinearRegressionModel
+```
+
+* Input
+  * `features`: The features of the training dataset.
+  * `target`: The labels of the training dataset.
+* Output
+  * `trainedModel`: The trained model.
+
+---
+
+#### Class: RandomForestClassifierModel
+
+A random forest classification model.
+
+---
+
+##### Prediction
+
+Use the trained model for a prediction.
+
+```
+predict(features: Dataset) -> results: Dataset
+```
+
+* Input
+  * `features`: The features of the dataset.
+* Output
+  * `trainedModel`: The dataset with predictions.
+---
+
+#### Class: SupportVectorMachineClassifier
+
+An SVM classifier.
+
+---
+
+##### Training
+
+Train the model.
+
+```
+fit(features: Dataset, target: Dataset) -> trainedModel: LinearRegressionModel
+```
+
+* Input
+  * `features`: The features of the training dataset.
+  * `target`: The labels of the training dataset.
+* Output
+  * `trainedModel`: The trained model.
+
+---
+
+#### Class: SupportVectorMachineClassifierModel
+
+An SVM classification model.
+
+---
+
+##### Prediction
+
+Use the trained model for a prediction.
+
+```
+predict(features: Dataset) -> results: Dataset
+```
+
+* Input
+  * `features`: The features of the dataset.
+* Output
+  * `trainedModel`: The dataset with predictions.
+
 ---
 
 <a name="global-functions"/>
