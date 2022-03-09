@@ -7,7 +7,7 @@ from sklearn import preprocessing
 class StandardScaler:
     def scale(self, dataset):
         if dataset.data.empty:
-            dataset.readFile(dataset.separator)
+            dataset.readFile()
 
         copy = dataset.copy()
 
