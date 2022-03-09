@@ -16,11 +16,28 @@ import './multiView.scss';
 // Config
 import MultiViewConfig from './MultiViewConfig';
 
+import store from '../../../reduxStore'
+
 class MultiView extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+
+        this.onStoreChange = this.onStoreChange.bind(this);
+  
+        this.unsubscribe = store.subscribe(() => {
+            this.setState(this.onStoreChange(store.getState()));
+        });
+  
+        this.state = this.onStoreChange(store.getState());
     }
+
+    onStoreChange = (state) => {
+
+        return {
+            selectedEntity: state.graphicalEditor.entitySelected,
+            placeholders: state.runtime?.placeholder
+        };
+      }  
 
     wrapComponent = Component => {
         class Wrapped extends React.Component {
@@ -40,11 +57,12 @@ class MultiView extends React.Component {
     }
 
     render() {
+        const { placeholders, selectedEntity } = this.state;
         return (
             <div className={'multi-view-container'}>
                 <Toolbar componentConfigs={MultiViewConfig.getPureConfigList()} layout={this.state.myLayout} />
                 <GoldenLayoutComponent
-                    htmlAttrs={{ style: { minHeight: "780px", width: "100%" } }}
+                    htmlAttrs={{ style: { heigth: "780px", width: "100%" } }}
                     config={{
                         dimensions:{
                             headerHeight: "100%"
@@ -73,7 +91,11 @@ class MultiView extends React.Component {
                         })
                     }}
                 />
-                <Sidebar/>
+                {
+                    Object.keys(placeholders).length !== 0 && Object.keys(selectedEntity).length !== 0?
+                        <Sidebar></Sidebar>
+                        : <div></div>
+                }
             </div>
         )
     }

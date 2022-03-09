@@ -27,17 +27,30 @@ import Icons from '../../stories/Icons';
 import IconButton from '@mui/material/IconButton';
 
 import { hideDataViewBackdrop } from '../../reducers/graphicalEditor';
+import store from '../../reduxStore';
 
 class EditorView extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-        }
+        this.onStoreChange = this.onStoreChange.bind(this);
+
+        this.unsubscribe = store.subscribe(() => {
+            this.setState(this.onStoreChange(store.getState()));
+        });
+  
+        this.state = this.onStoreChange(store.getState());
         
         this.showHideToolbar = this.showHideToolbar.bind(this);
         this.flipGraph = this.flipGraph.bind(this);
     }
+
+    onStoreChange = (state) => {
+
+        return {
+            selectedEntityDataset: this.getDataset(state.graphicalEditor.entitySelected, state.runtime?.placeholder)
+        };
+      }  
 
     showHideToolbar = () => {
         if(this.props.isToolbarVisible)
@@ -52,9 +65,19 @@ class EditorView extends React.Component {
 
     handleClose = () => {
         this.props.hideDataViewBackdrop();
-    };
+    };    
+    
+    getDataset = (selectedEntity, placeholders) => {
+        for (const [key, value] of Object.entries(placeholders)) {
+            if(key === selectedEntity?.data?.name) {
+                return value;
+            }
+        }
+        return '';
+    }   
 
     render() {
+        const { selectedEntityDataset } = this.state;
         return(
             <div className={editorStyle['editor-view']}>
                 <EditorHeader>
@@ -76,10 +99,10 @@ class EditorView extends React.Component {
                         open={this.props.isDataviewBackdropActive}
                     >
                         <DataView
-                            url='data/example_profile_adac.json'
+                            url={'data/example_profile_adac.json'/*selectedEntityDataset*/}
                         />
                         <IconButton 
-                            style= {{marginBottom: 'auto'}}
+                            style= {{marginBottom: 'auto', position: 'absolute', top: '5px', right: '0px'}}
                             sx={{ color: '#fff'}}
                             onClick={this.handleClose}>
                             <Icons icons="close" color="black"/>

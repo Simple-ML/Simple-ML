@@ -72,6 +72,7 @@ class DataView extends React.Component {
             }
         )
     }
+    
 
     render() {
         const { error, isLoaded, items, barCharts, histogramCharts, selectedFilter, filterOptions } = this.state;
@@ -84,14 +85,14 @@ class DataView extends React.Component {
                 <div className={'data-view'}>
                     <TabContext value={this.state.value}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                        <TabList onChange={this.handleChange} aria-label="lab API tabs example">
-                            <Tab label="Data table" value="1" style= {{color: '#E84E1A'}}/>
-                            <Tab label="Summary" value="2" style= {{color: '#E84E1A'}}/>
+                        <TabList onChange={this.handleChange}>
+                            <Tab label="Data table" value="1" style= {{color: '#E84E1A', borderRadius: '4px', width:' 140px', height: '36px', outline: '2px solid', marginTop: '5px', marginBottom: '5px', marginRight: '5px', marginLeft: '5px'}}/>
+                            <Tab label="Summary" value="2" style= {{color: '#E84E1A', borderRadius: '4px', width:' 140px', height: '36px', outline: '2px solid', marginTop: '5px', marginBottom: '5px', marginRight: '50px', marginLeft: '5px'}}/>
                         </TabList>
                         </Box>
                         <TabPanel value="1">
                             <div className={'table-view'}>
-                                <Table
+                                <Table style= {{outline: '2px solid'}}
                                     tableHeads={items.sample_instances.header_labels}
                                     tableBodies={items.sample_instances.lines}
                                 />

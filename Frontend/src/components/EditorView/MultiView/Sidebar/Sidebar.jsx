@@ -95,11 +95,10 @@ class Sidebar extends React.Component {
                 return value;
             }
         }
+        return '';
     }
 
     setDataset = (selectedEntity, dataset) => {
-        console.log(selectedEntity);
-        console.log(dataset);
         const editProcessParameterDTO =  {
             entityPath: EmfModelHelper.getFullHierarchy(selectedEntity),
             parameterType: "string",
@@ -114,19 +113,29 @@ class Sidebar extends React.Component {
         this.props.showDataViewBackdrop();
     }
 
+    handleSelection = (selectedItems) => {
+        this.setState({ selectedFilter: selectedItems })
+    };
+
     render() {
-        const { selectedEntityName, selectedEntityType, allAvailableDatasets, selectedEntityDataset, selectedEntity } = this.state;
+        const { selectedEntityName, selectedEntityType, allAvailableDatasets, selectedEntityDataset, selectedEntity, searchValue } = this.state;
+        console.log(searchValue);
             return(
-                <div style= {{backgroundColor: 'white'}}>
+                <div style= {{backgroundColor: 'white', width: '362px', height: '100vh', overflow: 'scroll'}}>
                     <header style= {{backgroundColor: 'white'}}>
                         <h1>{selectedEntityType ? selectedEntityType : ''}</h1>
                     </header>
-                    { selectedEntityType ?
+                    { selectedEntityType !== undefined && selectedEntityType === 'Load Dataset' ?
                         <Autocomplete
+                            style= {{paddingLeft: '5px', paddingRight: '5px', paddingBottom: '20px'}}
                             freeSolo
                             id="free-solo-2-demo"
                             disableClearable
                             options={allAvailableDatasets}
+                            onSelect={event => {
+                                const { value } = event.target;
+                                this.setState({ searchValue: value });
+                            }}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
@@ -134,6 +143,10 @@ class Sidebar extends React.Component {
                                     InputProps={{
                                         ...params.InputProps,
                                         type: 'search',
+                                    }}        
+                                    onChange={event => {
+                                        const { value } = event.target;
+                                        this.setState({ searchValue: value });
                                     }}
                                 />
                             )}
@@ -155,7 +168,7 @@ class Sidebar extends React.Component {
                                             {selectedEntityDataset?
                                                 <AccordionDetails>
                                                     <Typography>{selectedEntityDataset.id}</Typography>
-                                                    <Button onClick={this.handleOpen}>
+                                                    <Button style= {{marginLeft: 'auto', marginRight: '0'}}onClick={this.handleOpen}>
                                                         <Icons icons="tableChart"/>
                                                     </Button>
                                                 </AccordionDetails>
@@ -174,14 +187,13 @@ class Sidebar extends React.Component {
                                             </AccordionSummary>
                                             {allAvailableDatasets.length !== 0 ? (
                                                 allAvailableDatasets).map((dataset) => (
-                                                    dataset ? (
+                                                    dataset && (searchValue !== undefined ? dataset.toLowerCase().includes(searchValue.toLowerCase()) : true) ? (
                                                         <AccordionDetails>
-                                                            <Typography>{dataset}</Typography>
-                                                            <Button onClick={this.handleOpen}>
-                                                                <Icons icons="tableChart"/>
-                                                            </Button>
-                                                            <Button onClick={() => {this.setDataset(selectedEntity, dataset)}}>
-                                                                <Icons icons="tableChart"/>
+                                                            <Typography style= {{cursor: 'pointer'}} onClick={this.handleOpen}>{dataset}</Typography>
+                                                            <Button 
+                                                                style= {{marginLeft: 'auto', marginRight: '0'}}
+                                                                onClick={() => {this.setDataset(selectedEntity, dataset)}}>
+                                                                <Icons icons="checkCircle"/>
                                                             </Button>
                                                         </AccordionDetails>
                                                     ): <div></div>
