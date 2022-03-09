@@ -8,11 +8,22 @@ class Dataset {
     @Description("Returns subset of dataset with only list of columns provided in argument")
     fun keepAttributes(vararg attributes: String) -> dataset: Dataset
 
+    @Description("Returns subset of dataset with only the provided column")
+    fun keepAttribute(attribute: String) -> dataset: Dataset
+
+
     @Description("Remove list of columns provided in argument from dataset")
     fun dropAttributes(vararg attributes: String) -> dataset: Dataset
 
+    @Description("Remove the provided attribute from the dataset")
+    fun dropAttribute(attribute: String) -> dataset: Dataset
+
+
     @Description("Split dataset in train and test datasets")
-    fun splitIntoTrainAndTest(trainRatio: Float, randomState: Int? = null) -> (@Description("dataset1 is training data") dataset1: Dataset, @Description("dataset2 is testing data") dataset2: Dataset)
+    fun splitIntoTrainAndTest(trainRatio: Float, randomState: Int? = null) -> (@Description("training dataset") dataset1: Dataset, @Description("test dataset") dataset2: Dataset)
+
+    @Description("Splits dataset into four datasets: train/test and labels/features")
+    fun splitIntoTrainAndTestAndLabels(trainRatio: Float, randomState: Int? = null) -> (@Description("features of the training dataset") xTrain: Dataset, @Description("features of the test dataset") xTest: Dataset, @Description("labels of the training dataset") yTrain: Dataset, @Description("labels of the test dataset") yTest: Dataset)
 
     @Description("Export any dataset to CSV file")
     fun exportDataAsFile(filePath: String)
@@ -28,6 +39,15 @@ class Dataset {
 
     @Description("Converts date into timestamp")
     fun transformDateToTimestamp(columnName: String) -> dataset: Dataset
+
+    @Description("Drops instances with missing values in the specified attribute")
+    fun dropMissingValues(attribute: String) -> dataset: Dataset
+
+    @Description("Set the specified attribute as prediction target")
+    fun setTargetAttribute(@Description("target attribute") targetAttribute: String) -> dataset: Dataset
+
+    @Description("Converts all column values into numbers")
+    fun transformDatatypes() -> dataset: Dataset
 
     @Description("Extract IsWeekend from given date attribute and add new attribute in dataset with boolean value")
     fun addIsWeekendAttribute(columnName: String) -> dataset: Dataset
