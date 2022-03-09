@@ -1,7 +1,6 @@
 # Imports ----------------------------------------------------------------------
 from simpleml.dataset import joinTwoDatasets, readDataSetFromCSV
 
-
 # Workflow steps ---------------------------------------------------------------
 
 

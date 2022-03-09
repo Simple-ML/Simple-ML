@@ -13,26 +13,28 @@ class SupportVectorMachineClassifierModel(Model):
 
     def predict(self, data: DataType) -> ArrayLike:
         yPred = self._yTrain.copy(basic_data_only=True)
-        yPred.data = DataFrame(self._underlying.predict(data.toArray()), columns=self._yTrain.data.columns)
+        yPred.data = DataFrame(
+            self._underlying.predict(data.toArray()), columns=self._yTrain.data.columns
+        )
         yPred.title = self._yTrain.title.replace("(Train)", "(Predicton)")
         return yPred.provide_statistics()
 
 
 class SupportVectorMachineClassifier(Estimator):
     def __init__(
-            self,
-            penalty: str = "l2",
-            loss: str = "squared_hinge",
-            dual: bool = True,
-            tol: float = 1e-4,
-            c: float = 1.0,
-            multiClass: str = "ovr",
-            fitIntercept: bool = True,
-            interceptScaling: float = 1,
-            classWeight: Union[str, Dict[int, int], List[Dict[int, int]]] = None,
-            verbose: int = 0,
-            randomState: Optional[int] = None,
-            maxIter: int = 1000,
+        self,
+        penalty: str = "l2",
+        loss: str = "squared_hinge",
+        dual: bool = True,
+        tol: float = 1e-4,
+        c: float = 1.0,
+        multiClass: str = "ovr",
+        fitIntercept: bool = True,
+        interceptScaling: float = 1,
+        classWeight: Union[str, Dict[int, int], List[Dict[int, int]]] = None,
+        verbose: int = 0,
+        randomState: Optional[int] = None,
+        maxIter: int = 1000,
     ):
         self._underlying = SkLinearSVC(
             penalty=penalty,
@@ -53,5 +55,6 @@ class SupportVectorMachineClassifier(Estimator):
         return SupportVectorMachineClassifierModel(
             self._underlying.fit(
                 train_data.toArray(), labels.toArray().astype("int"), **kwargs
-            ), labels
+            ),
+            labels,
         )

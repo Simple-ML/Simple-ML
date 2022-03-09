@@ -50,7 +50,7 @@ def addValueDistribution(stats, column, name):
 
 
 def addHistograms(
-        stats, column, name, number_of_unique_values, transform_timestamp=False
+    stats, column, name, number_of_unique_values, transform_timestamp=False
 ):
     count = []
     division = []
@@ -98,7 +98,7 @@ def addQuantiles(column, name, bins, transform_timestamp=False):
 
 
 def addNumericValue(
-        column_stats, name, value, data_type=None, transform_timestamp=False
+    column_stats, name, value, data_type=None, transform_timestamp=False
 ):
     simple_type = config.type_numeric
 
@@ -354,7 +354,7 @@ def getStatistics(dataset):
         if simple_type == config.type_geometry:
             number_of_distinct_values = column_data.nunique(dropna=True)
         elif (
-                simple_type != config.type_bool and simple_type != config.type_numeric_list
+            simple_type != config.type_bool and simple_type != config.type_numeric_list
         ):
             number_of_distinct_values = data[colName].nunique(dropna=True)
             addNumericValue(
@@ -434,7 +434,8 @@ def getStatistics(dataset):
         elif dataset.simple_data_types[attribute] == config.type_numeric_list:
             # for the JSON export of the sample, better have the list as a string
             sample.data[attribute] = sample.data[attribute].apply(
-                lambda row: "<" + ", ".join([str(x) for x in row]) + ">")
+                lambda row: "<" + ", ".join([str(x) for x in row]) + ">"
+            )
 
     dataset.data_sample = sample.data
 

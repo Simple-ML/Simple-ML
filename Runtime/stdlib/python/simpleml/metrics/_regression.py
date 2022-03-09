@@ -8,7 +8,7 @@ from ._util import convert_to_array
 
 
 def meanAbsoluteError(
-        yTrue: Union[DataType, ArrayLike], yPred: Union[DataType, ArrayLike]
+    yTrue: Union[DataType, ArrayLike], yPred: Union[DataType, ArrayLike]
 ):
     return skMetrics.mean_absolute_error(
         convert_to_array(yTrue, "float"), convert_to_array(yPred, "float")
@@ -16,7 +16,7 @@ def meanAbsoluteError(
 
 
 def meanSquaredError(
-        yTrue: Union[DataType, ArrayLike], yPred: Union[DataType, ArrayLike]
+    yTrue: Union[DataType, ArrayLike], yPred: Union[DataType, ArrayLike]
 ):
     return skMetrics.mean_squared_error(
         convert_to_array(yTrue, "float"), convert_to_array(yPred, "float")
@@ -24,7 +24,7 @@ def meanSquaredError(
 
 
 def meanSquaredLogError(
-        yTrue: Union[DataType, ArrayLike], yPred: Union[DataType, ArrayLike]
+    yTrue: Union[DataType, ArrayLike], yPred: Union[DataType, ArrayLike]
 ):
     return skMetrics.mean_squared_log_error(
         convert_to_array(yTrue, "float"), convert_to_array(yPred, "float")
@@ -32,7 +32,7 @@ def meanSquaredLogError(
 
 
 def medianAbsoluteError(
-        yTrue: Union[DataType, ArrayLike], yPred: Union[DataType, ArrayLike]
+    yTrue: Union[DataType, ArrayLike], yPred: Union[DataType, ArrayLike]
 ):
     return skMetrics.median_absolute_error(
         convert_to_array(yTrue, "float"), convert_to_array(yPred, "float")

@@ -2,7 +2,6 @@
 from simpleml.dataset import readDataSetFromCSV
 from simpleml.util import exportDictionaryAsJSON
 
-
 # Workflow steps ---------------------------------------------------------------
 
 

@@ -2,8 +2,8 @@
 from simpleml.dataset import loadDataset
 from simpleml.util import exportDictionaryAsJSON
 
-
 # Workflow steps ---------------------------------------------------------------
+
 
 def exampleWorkflow():
     dataset = loadDataset("RossmannSales")
@@ -23,5 +23,5 @@ def exampleWorkflow():
     print(exportDictionaryAsJSON(X_test.getProfile()))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     exampleWorkflow()

@@ -28,7 +28,13 @@ def round_floats_and_transform_temporal(o, precision):
         return [round_floats_and_transform_temporal(x, precision) for x in o]
     elif isinstance(o, (ndarray)):
         # convert numeric lists into string
-        return "<" + ", ".join([str(round_floats_and_transform_temporal(x, precision)) for x in o]) + ">"
+        return (
+            "<"
+            + ", ".join(
+                [str(round_floats_and_transform_temporal(x, precision)) for x in o]
+            )
+            + ">"
+        )
 
         if pd.isna(o):
             return None
