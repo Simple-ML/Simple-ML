@@ -24,7 +24,7 @@ class Dataset {
     fun getRow(rowNumber: Int) -> instance: Instance
 
     @Description("Add a new attribute in dataset with a transformed value")
-    fun addAttribute(columnName: String, transformFunc: (instance: Instance) -> value: Any, newColumnLabel: String) -> dataset: Dataset
+    fun addAttribute(columnName: String, transformFunc: (instance: Instance) -> value: Any?, newColumnLabel: String? = null) -> dataset: Dataset
 
     @Description("Converts date into timestamp")
     fun transformDateToTimestamp(columnName: String) -> dataset: Dataset
