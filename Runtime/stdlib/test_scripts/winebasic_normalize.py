@@ -1,6 +1,6 @@
 # Imports ----------------------------------------------------------------------
-from simpleml.dataset._normalize import StandardNormalizer
 from simpleml.dataset import loadDataset
+from simpleml.dataset._normalize import StandardNormalizer
 
 # Workflow steps ---------------------------------------------------------------
 

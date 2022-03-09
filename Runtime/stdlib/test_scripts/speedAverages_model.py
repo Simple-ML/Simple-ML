@@ -12,21 +12,33 @@ def test_train_and_infer():
     rf = LinearRegression()
     dataset = loadDataset("SpeedAverages")
 
-    dataset = dataset.categoryToVector('street_type')
-    dataset = dataset.categoryToVector('max_speed')
-    dataset = dataset.categoryToVector('season')
-    dataset = dataset.categoryToVector('daylight')
+    dataset = dataset.categoryToVector("street_type")
+    dataset = dataset.categoryToVector("max_speed")
+    dataset = dataset.categoryToVector("season")
+    dataset = dataset.categoryToVector("daylight")
 
-    dataset = dataset.addDayOfTheYearAttribute('start_time')
+    dataset = dataset.addDayOfTheYearAttribute("start_time")
     dataset = dataset.dateToTimestamp("start_time")
-    #dataset = dataset.dateToTimestamp("end_time")
+    # dataset = dataset.dateToTimestamp("end_time")
 
     dataset = dataset.flattenData()
 
     dataset = dataset.dropAttributes(
-        ["osm_id", "street_type", "max_speed", "start_time", "end_time", "season", "daylight", "street_type_encoded",
-         "max_speed_encoded",
-         "season_encoded", "daylight_encoded", "geometry"])
+        [
+            "osm_id",
+            "street_type",
+            "max_speed",
+            "start_time",
+            "end_time",
+            "season",
+            "daylight",
+            "street_type_encoded",
+            "max_speed_encoded",
+            "season_encoded",
+            "daylight_encoded",
+            "geometry",
+        ]
+    )
 
     print(dataset.data.columns.values.tolist())
 

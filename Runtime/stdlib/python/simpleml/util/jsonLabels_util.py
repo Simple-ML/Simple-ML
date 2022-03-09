@@ -48,6 +48,7 @@ data_type_labels = {
     geometry: type_geometry,
     Timestamp: type_datetime,
     StringDtype: type_string,
+    type_numeric_list: type_numeric_list
 }
 
 type_bar_chart = "bar_chart"
