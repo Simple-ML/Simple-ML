@@ -148,7 +148,7 @@ class Dataset:
         return copy.provide_statistics(recompute_statistics)
 
     def dropAttribute(self, attributeID: str, recompute_statistics: bool = True) -> Dataset:
-        return self.dropAttribute(attributeID, recompute_statistics)
+        return self.dropAttributes([attributeID], recompute_statistics)
 
     def filterByAttribute(self, attribute: str, value) -> Dataset:
 
@@ -172,15 +172,12 @@ class Dataset:
 
         copy = self.add_attribute_data(newColumnName, transformFunc)
 
-        print(newColumnName, copy.data[newColumnName].dtype)
         data_type = dataTypes(copy.data[newColumnName].dtype)
 
         if not newColumnLabel:
             newColumnLabel = newColumnName
 
         copy.add_column_description(newColumnName, newColumnLabel, data_type)
-
-        print(newColumnName, data_type)
 
         copy.create_simple_type(newColumnName, data_type)
 

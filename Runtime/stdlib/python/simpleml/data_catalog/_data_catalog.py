@@ -10,6 +10,7 @@ from rdflib import URIRef
 from simpleml.data_catalog._domain_model import DomainModel, getPythonType
 from simpleml.dataset import Dataset
 from simpleml.rdf import load_query, run_query
+from simpleml.util import exportDictionaryAsJSON
 
 lang = "de"  # TODO: Configure in a global config
 
@@ -176,6 +177,8 @@ def getDataset(dataset_id: str) -> Dataset:
     addDomainModel(dataset)
     addStatistics(dataset)
 
+    dataset.dataset_json = exportDictionaryAsJSON(dataset.getProfile())
+
     return dataset
 
 
@@ -248,15 +251,15 @@ def getValue(result):
         datatype = result["datatype"]
         stats_datatype = None
         if (
-            datatype == "http://www.w3.org/2001/XMLSchema#double"
-            or datatype == "http://www.w3.org/2001/XMLSchema#float"
-            or datatype == "http://www.w3.org/2001/XMLSchema#decimal"
+                datatype == "http://www.w3.org/2001/XMLSchema#double"
+                or datatype == "http://www.w3.org/2001/XMLSchema#float"
+                or datatype == "http://www.w3.org/2001/XMLSchema#decimal"
         ):
             value = float(value)
             stats_datatype = config.type_float
         elif (
-            datatype == "http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
-            or datatype == "http://www.w3.org/2001/XMLSchema#integer"
+                datatype == "http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+                or datatype == "http://www.w3.org/2001/XMLSchema#integer"
         ):
             value = int(value)
             stats_datatype = config.type_integer
@@ -381,14 +384,14 @@ def get_pd_timestamp(datetime):
 
 def get_datatype_from_rdf(datatype):
     if (
-        datatype == "http://www.w3.org/2001/XMLSchema#double"
-        or datatype == "http://www.w3.org/2001/XMLSchema#float"
-        or datatype == "http://www.w3.org/2001/XMLSchema#decimal"
+            datatype == "http://www.w3.org/2001/XMLSchema#double"
+            or datatype == "http://www.w3.org/2001/XMLSchema#float"
+            or datatype == "http://www.w3.org/2001/XMLSchema#decimal"
     ):
         return config.type_float
     elif (
-        datatype == "http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
-        or datatype == "http://www.w3.org/2001/XMLSchema#integer"
+            datatype == "http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+            or datatype == "http://www.w3.org/2001/XMLSchema#integer"
     ):
         return config.type_integer
     elif datatype == "http://www.w3.org/2001/XMLSchema#long":

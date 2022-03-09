@@ -26,3 +26,5 @@ print(X_test.dataset_json)
 lr = LinearRegression().fit(X_train, y_train)
 y_pred = lr.predict(X_test)
 print("MAE:", meanAbsoluteError(y_test, y_pred))
+
+print(y_pred)
