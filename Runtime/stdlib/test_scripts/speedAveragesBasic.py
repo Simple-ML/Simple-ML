@@ -1,27 +1,33 @@
 # Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
-from simpleml.util import exportDictionaryAsJSON
-
+from simpleml.dataset._scale import StandardScaler
+from simpleml.metrics import meanAbsoluteError
+from simpleml.model.supervised.regression import LinearRegression
 
 # Workflow steps ---------------------------------------------------------------
+from simpleml.util import exportDictionaryAsJSON
 
-def exampleWorkflow():
-    dataset = loadDataset("SpeedAveragesMiniSample")
-    print(exportDictionaryAsJSON(dataset.getProfile()))
+dataset = loadDataset("SpeedAverages")
+print(exportDictionaryAsJSON(dataset.getProfile()))
 
-    train, test = dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
-    # print(train.data)
-    X_train = train.dropAttributes("is_weekend")
-    X_test = test.dropAttributes("is_weekend")
-    y_train = train.keepAttributes("is_weekend")
-    # print(X_train.data)
+dataset = dataset.dropAttributes(
+    ["osm_id", "geometry"])
 
-    # compute statistics from the dataset
-    # print('x train', X_train.getProfile())
-    print(exportDictionaryAsJSON(X_train.getProfile()))
-    print(exportDictionaryAsJSON(X_test.getProfile()))
-    print(exportDictionaryAsJSON(y_train.getProfile()))
+dataset = dataset.setTargetAttribute("average_speed")
+dataset = dataset.addWeekDayAttribute("start_time")
 
+dataset = dataset.dropMissingValues("average_speed")
+dataset = dataset.transformDatatypes()
+print(exportDictionaryAsJSON(dataset.getProfile()))
+dataset = StandardScaler().scale(dataset)
+# dataset = StandardNormalizer().normalize(dataset)
 
-if __name__ == '__main__':
-    exampleWorkflow()
+print(dataset.data)
+
+X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.75)
+
+# print(exportDictionaryAsJSON(X_train.getProfile()))
+
+lr = LinearRegression().fit(X_train, y_train)
+y_pred = lr.predict(X_test)
+print("MAE:", meanAbsoluteError(y_test, y_pred))
