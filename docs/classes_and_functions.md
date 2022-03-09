@@ -1,5 +1,15 @@
+
+# Overview
+
+* [Class: Dataset](#class-dataset)  
+* [Class: Instance](#class-instance)  
+* [Class: StandardNormalizer](#class-standardnormalizer)  
+* [Class: StandardScaler](#class-standardscaler)  
+* [Class: Global Functions](#global-functions)  
+
 # Classes and their Methods
 
+<a name="class-dataset"/>
 ### Class: Dataset
 
 A dataset with its data instances (e.g., rows and columns).
@@ -241,7 +251,7 @@ exportDataAsFile(filePath: String)
 * Input
   * `filePath`: The path and name of the file to be created.
 
-
+<a name="class-instance"/>
 ### Class: Instance
 
 A single instance (e.g., row) of a dataset.
@@ -259,7 +269,7 @@ getValue(attribute: String) -> value: Any
 * Output
   * `value`: The specified value.
 
-
+<a name="class-standardnormalizer"/>
 ### Class: StandardNormalizer
 
 A normalizer to normalize dataset values.
@@ -277,7 +287,8 @@ normalize(dataset: Dataset) -> normalizedDataset: Dataset
 * Output
   * `normalizedDataset`: The normalized dataset.
 
-### Class: StandardNormalizer
+<a name="class-standardscaler"/>
+### Class: StandardScaler
 
 A normalizer to normalize dataset values.
 
@@ -294,7 +305,7 @@ scale(dataset: Dataset) -> scaledDataset: Dataset
 * Output
   * `scaledDataset`: The scaled dataset.
 
-
+<a name="global-functions"/>
 ### Global Functions
 
 #### Load Dataset
