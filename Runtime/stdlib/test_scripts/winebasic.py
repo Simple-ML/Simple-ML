@@ -18,6 +18,8 @@ def exampleWorkflow():
     y_test = test.keepAttribute("quality")
 
     print(X_train.dataset_json)
+    print(X_test.dataset_json)
+    print(y_train.dataset_json)
     print(y_test.dataset_json)
 
     # DecisionTreeClassifier().fit(X_train, y_train)

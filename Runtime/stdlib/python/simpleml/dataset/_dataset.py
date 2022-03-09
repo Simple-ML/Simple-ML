@@ -148,7 +148,7 @@ class Dataset:
         return copy.provide_statistics(recompute_statistics)
 
     def dropAttribute(self, attributeID: str, recompute_statistics: bool = True) -> Dataset:
-        return self.dropAttributes([attributeID], recompute_statistics)
+        return self.dropAttribute(attributeID, recompute_statistics)
 
     def filterByAttribute(self, attribute: str, value) -> Dataset:
 

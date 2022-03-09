@@ -1,6 +1,7 @@
 # Imports ----------------------------------------------------------------------
 from simpleml.dataset import joinTwoDatasets, readDataSetFromCSV
 
+
 # Workflow steps ---------------------------------------------------------------
 
 
@@ -26,9 +27,9 @@ def exampleWorkflow():
     """
     train, test = sample_dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
 
-    X_train = train.dropAttributes("chlorides")
-    X_test = test.dropAttributes("chlorides")
-    y_train = train.keepAttributes("chlorides")
+    X_train = train.dropAttribute("chlorides")
+    X_test = test.dropAttribute("chlorides")
+    y_train = train.keepAttribute("chlorides")
 
     # compute statistics from the dataset
     print(exportDictionaryAsJSON(X_train.getProfile()))

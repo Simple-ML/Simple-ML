@@ -13,8 +13,8 @@ def exampleWorkflow():
     print(sample.data_types)
 
     train, test = dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
-    X_train = train.dropAttributes("Sales")
-    X_test = test.dropAttributes("Sales")
+    X_train = train.dropAttribute("Sales")
+    X_test = test.dropAttribute("Sales")
     y_train = train.keepAttributes("Sales")
 
     # compute statistics from the dataset

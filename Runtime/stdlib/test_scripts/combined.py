@@ -34,9 +34,9 @@ def exampleWorkflow():
 
         print("Drop", column_names[0])
 
-        X_train = train.dropAttributes(column_names[0])
-        X_test = test.dropAttributes(column_names[0])
-        y_train = train.keepAttributes(column_names[0])
+        X_train = train.dropAttribute(column_names[0])
+        X_test = test.dropAttribute(column_names[0])
+        y_train = train.keepAttribute(column_names[0])
 
         # compute statistics from the dataset
         print(X_train.getProfile())
