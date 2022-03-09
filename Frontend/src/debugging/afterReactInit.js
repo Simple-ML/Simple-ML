@@ -103,10 +103,12 @@ workflow winebasic {
     TextEditorWrapper.setText(
         `package example
         import simpleml.dataset.loadDataset
+        import simpleml.model.classification.DecisionTreeClassifier
+
         workflow winebasic {
-            // load data
-            val df = loadDataset("WhiteWineQualityBinary");
-        }`
+            
+        }
+        `
     );
 }
 
