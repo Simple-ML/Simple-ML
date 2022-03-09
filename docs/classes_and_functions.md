@@ -7,6 +7,8 @@ This page gives an overview of the classes and functions required to create a da
 * [Class: Instance](#class-instance)  
 * [Class: StandardNormalizer](#class-standardnormalizer)  
 * [Class: StandardScaler](#class-standardscaler)  
+* [Class: Regression Models](#classes-regression)  
+* [Class: Classification Models](#classes-classification)  
 * [Global Functions](#global-functions)  
 
 ## Classes and their Methods
@@ -349,6 +351,184 @@ scale(dataset: Dataset) -> scaledDataset: Dataset
   * `dataset`: Dataset to be scaled.
 * Output
   * `scaledDataset`: The scaled dataset.
+
+---
+
+<a name="classes-regression"/>
+
+### Classes: Regression Models
+
+---
+
+#### Class: LinearRegression
+
+A linear regression.
+
+---
+
+##### Training
+
+Train the model.
+
+```
+fit(features: Dataset, target: Dataset) -> trainedModel: LinearRegressionModel
+```
+
+* Input
+  * `features`: The features of the training dataset.
+  * `target`: The labels of the training dataset.
+* Output
+  * `trainedModel`: The trained model.
+
+---
+
+#### Class: LinearRegressionModel
+
+A trained linear regression model.
+
+---
+
+##### Prediction
+
+Use the trained model for a prediction.
+
+```
+predict(features: Dataset) -> results: Dataset
+```
+
+* Input
+  * `features`: The features of the dataset.
+* Output
+  * `trainedModel`: The dataset with predictions.
+
+---
+
+#### Class: DecisionTreeRegressor
+
+A decision tree regressor.
+
+---
+
+##### Training
+
+Train the model.
+
+```
+fit(features: Dataset, target: Dataset) -> trainedModel: LinearRegressionModel
+```
+
+* Input
+  * `features`: The features of the training dataset.
+  * `target`: The labels of the training dataset.
+* Output
+  * `trainedModel`: The trained model.
+
+---
+
+#### Class: DecisionTreeRegressorModel
+
+A decision tree regression model.
+
+---
+
+##### Prediction
+
+Use the trained model for a prediction.
+
+```
+predict(features: Dataset) -> results: Dataset
+```
+
+* Input
+  * `features`: The features of the dataset.
+* Output
+  * `trainedModel`: The dataset with predictions.
+
+---
+
+#### Class: RandomForestRegressor
+
+A random forest regressor.
+
+---
+
+##### Training
+
+Train the model.
+
+```
+fit(features: Dataset, target: Dataset) -> trainedModel: LinearRegressionModel
+```
+
+* Input
+  * `features`: The features of the training dataset.
+  * `target`: The labels of the training dataset.
+* Output
+  * `trainedModel`: The trained model.
+
+---
+
+#### Class: RandomForestRegressorModel
+
+A trained random forest regression model.
+
+---
+
+##### Prediction
+
+Use the trained model for a prediction.
+
+```
+predict(features: Dataset) -> results: Dataset
+```
+
+* Input
+  * `features`: The features of the dataset.
+* Output
+  * `trainedModel`: The dataset with predictions.
+
+---
+
+#### Class: RidgeRegression
+
+A ridge regression.
+
+---
+
+##### Training
+
+Train the model.
+
+```
+fit(features: Dataset, target: Dataset) -> trainedModel: RidgeRegressionModel
+```
+
+* Input
+  * `features`: The features of the training dataset.
+  * `target`: The labels of the training dataset.
+* Output
+  * `trainedModel`: The trained model.
+
+---
+
+#### Class: RidgeRegressionModel
+
+A trained ridge regression model.
+
+---
+
+##### Prediction
+
+Use the trained model for a prediction.
+
+```
+predict(features: Dataset) -> results: Dataset
+```
+
+* Input
+  * `features`: The features of the dataset.
+* Output
+  * `trainedModel`: The dataset with predictions.
 
 ---
 
