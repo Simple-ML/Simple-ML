@@ -9,7 +9,9 @@
 
 # Ignore in root
 .devcontainer/
+.idea/
 .vscode/
+de.unibonn.simpleml.vscode/
 gradle/
 .gitignore
 gradlew

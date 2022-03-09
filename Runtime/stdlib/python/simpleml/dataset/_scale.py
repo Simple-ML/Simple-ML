@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import pandas as pd
+import simpleml.util.jsonLabels_util as config
 from sklearn import preprocessing
 
 
@@ -12,10 +12,15 @@ class StandardScaler:
         copy = dataset.copy()
 
         scaler = preprocessing.StandardScaler()
-        scaled_features = scaler.fit_transform(copy.data)
 
-        copy.data = pd.DataFrame(
-            scaled_features, index=copy.data.index, columns=copy.data.columns
-        )
+        columns = []
+        for attribute in copy.attributes:
+            if attribute != copy.target_attribute:
+                if copy.simple_data_types[attribute] == config.type_numeric:
+                    columns.append(attribute)
+
+        scaled_features = scaler.fit_transform(copy.data[columns])
+
+        copy.data[columns] = scaled_features
 
         return copy
