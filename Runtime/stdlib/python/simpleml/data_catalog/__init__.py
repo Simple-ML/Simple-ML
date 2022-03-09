@@ -7,3 +7,4 @@ from ._data_catalog import (
     getDatasetsJson,
     getPythonType,
 )
+from ._rdf_profile_creator import exportStatisticsAsRDF
