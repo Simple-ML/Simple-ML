@@ -17,6 +17,8 @@ This page gives an overview of the classes and functions required to create a da
 
 A dataset with its data instances (e.g., rows and columns).
 
+---
+
 #### Sampling
 
 Create a sample of a dataset.
@@ -30,6 +32,7 @@ sample(nInstances: Int) -> dataset: Dataset
 * Output
   * `dataset`: The sampled dataset.
 
+---
 
 #### Keep Attributes 
 
@@ -44,6 +47,8 @@ keepAttributes(vararg attributes: String) -> dataset: Dataset
 * Output
   * `dataset`: The updated dataset.
 
+---
+
 #### Keep Attribute
 
 Retain a single attribute of a dataset.
@@ -56,6 +61,8 @@ keepAttribute(attribute: String) -> dataset: Dataset
   * `attribute`: The attribute to retain in the dataset.
 * Output
   * `dataset`: The updated dataset.
+
+---
 
 
 #### Drop Attributes 
@@ -70,6 +77,8 @@ dropAttributes(vararg attributes: String) -> dataset: Dataset
   * `attributes`: The list of attributes to drop from the dataset.
 * Output
   * `dataset`: The updated dataset.
+ 
+---
 
 #### Drop Attribute
 
@@ -84,6 +93,8 @@ dropAttribute(attribute: String) -> dataset: Dataset
 * Output
   * `dataset`: The updated dataset.
 
+---
+
 #### Set Target Attribute
 
 Set the specified attribute as prediction target.
@@ -96,6 +107,8 @@ setTargetAttribute(targetAttribute: String) -> dataset: Dataset
   * `targetAttribute`: The name of the attribute to be predicted later on.
 * Output
   * `dataset`: The updated dataset.
+
+---
 
 #### Split into Train and Test 
 
@@ -112,6 +125,7 @@ splitIntoTrainAndTest(trainRatio: Float, randomState: Int? = null) -> (train: Da
   * `train`: The training dataset.
   * `test`: The test dataset.
 
+---
 
 #### Split into Train, Test, Features and Labels
 
@@ -130,6 +144,8 @@ Split a dataset into four datasets: train/test and labels/features. Requires tha
   * `yTrain`: Labels of the training dataset.
   * `yTest`: Labels of the test dataset.
 
+---
+
 #### Filter Instances
 
 Remove instances in a dataset according to a filter function.
@@ -144,6 +160,8 @@ filterInstances(filterFunc: (instance: Instance) -> shouldKeep: Boolean) -> data
 * Output
   * `dataset`: The updated dataset.
 
+---
+
 #### Get Row
 
 Get a specific row of a dataset.
@@ -156,6 +174,8 @@ getRow(rowNumber: Int) -> instance: Instance
   * `rowNumber`: The number of the row to be retreived.
 * Output
   * `instance`: The specified row.
+
+---
 
 #### Add Attribute
 
@@ -174,6 +194,8 @@ addAttribute(columnName: String, transformFunc: (instance: Instance) -> value: A
 * Output
   * `dataset`: The updated dataset.
 
+---
+
 #### Date Transformation
 
 Convert date column values into timestamps.
@@ -187,6 +209,8 @@ transformDateToTimestamp(columnName: String) -> dataset: Dataset
 * Output
   * `dataset`: The updated dataset.
 
+---
+
 #### Datatype Transformations
 
 Convert all column values into numbers.
@@ -198,7 +222,7 @@ transformDatatypes() -> dataset: Dataset
 * Output
   * `dataset`: The updated dataset.
 
-
+---
 
 #### Add "is weekend" Attribute
 
@@ -213,7 +237,7 @@ addIsWeekendAttribute(columnName: String) -> dataset: Dataset
 * Output
   * `dataset`: The updated dataset.
 
-
+---
 
 #### Add "day of the year" Attribute
 
@@ -228,6 +252,7 @@ addDayOfTheYearAttribute(columnName: String) -> dataset: Dataset
 * Output
   * `dataset`: The updated dataset.
 
+---
 
 #### Add "week day" Attribute
 
@@ -243,6 +268,8 @@ addWeekDayAttribute(columnName: String) -> dataset: Dataset
   * `dataset`: The updated dataset.
 
 
+---
+
 #### Date to File Export
 
 Stores the dataset into a CSV file.
@@ -254,11 +281,15 @@ exportDataAsFile(filePath: String)
 * Input
   * `filePath`: The path and name of the file to be created.
 
+---
+
 <a name="class-instance"/>
-### 
-Instance
+
+### Instance
 
 A single instance (e.g., row) of a dataset.
+
+---
 
 #### Get Value
 
@@ -273,11 +304,15 @@ getValue(attribute: String) -> value: Any
 * Output
   * `value`: The specified value.
 
+---
+
 <a name="class-standardnormalizer"/>
 
 ### Class: StandardNormalizer
 
 A normalizer to normalize dataset values.
+
+---
 
 #### Normalize
 
@@ -292,13 +327,17 @@ normalize(dataset: Dataset) -> normalizedDataset: Dataset
 * Output
   * `normalizedDataset`: The normalized dataset.
 
+---
+
 <a name="class-standardscaler"/>
 
 ### Class: StandardScaler
 
 A normalizer to normalize dataset values.
 
-#### StandardScaler
+---
+
+#### Scaling
 
 Scale all numeric values in the dataset.
 
@@ -311,9 +350,13 @@ scale(dataset: Dataset) -> scaledDataset: Dataset
 * Output
   * `scaledDataset`: The scaled dataset.
 
+---
+
 <a name="global-functions"/>
 
 ### Global Functions
+
+---
 
 #### Load Dataset
 
@@ -328,6 +371,7 @@ loadDataset(datasetID: String) -> dataset: Dataset
 * Output
   * `scaledDataset`: The loaded dataset.
 
+---
 
 #### Load Dataset from CSV
 
@@ -348,6 +392,8 @@ readDataSetFromCSV(fileName: String, datasetId: String, separator: String, hasHe
 
 * Output
   * `scaledDataset`: The loaded dataset.
+
+---
 
 #### Join Datasets
 
