@@ -9,7 +9,7 @@ from simpleml.model.supervised.regression import LinearRegression
 dataset = loadDataset("SpeedAverages")
 print(dataset.dataset_json)
 
-dataset = dataset.dropAttributes(["osm_id"])
+dataset = dataset.dropAttributes(["osm_id", "geometry"])
 
 dataset = dataset.setTargetAttribute("average_speed")
 dataset = dataset.addWeekDayAttribute("start_time")

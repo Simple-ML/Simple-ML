@@ -431,6 +431,10 @@ def getStatistics(dataset):
     for attribute in dataset.simple_data_types:
         if dataset.simple_data_types[attribute] == config.type_geometry:
             sample.data = sample.data.drop(labels=attribute, axis=1)
+        elif dataset.simple_data_types[attribute] == config.type_numeric_list:
+            # for the JSON export of the sample, better have the list as a string
+            sample.data[attribute] = sample.data[attribute].apply(
+                lambda row: "<" + ", ".join([str(x) for x in row]) + ">")
 
     dataset.data_sample = sample.data
 

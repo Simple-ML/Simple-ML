@@ -376,7 +376,7 @@ class Dataset:
 
         dimensions = 64
         node2vec = Node2Vec(
-            my_graph, dimensions=dimensions, walk_length=2, num_walks=3, workers=1
+            my_graph, dimensions=dimensions, walk_length=15, num_walks=100, workers=1
         )
         model = node2vec.fit(window=10, min_count=1, batch_words=4)
 
