@@ -7,28 +7,32 @@ from sklearn.tree import DecisionTreeClassifier as SkDecisionTreeClassifier
 
 
 class DecisionTreeClassifierModel(Model):
-    def __init__(self, underlying: SkDecisionTreeClassifier):
+    def __init__(self, underlying: SkDecisionTreeClassifier, yTrain: DataType):
         self._underlying = underlying
+        self._yTrain = yTrain
 
-    def predict(self, data: DataType) -> ArrayLike:
-        return self._underlying.predict(data.toArray())
+    def predict(self, data: DataType) -> DataType:
+        yPred = self._yTrain.copy(basic_data_only=True)
+        yPred.data = DataFrame(self._underlying.predict(data.toArray()), columns=self._yTrain.data.columns)
+        yPred.title = self._yTrain.title.replace("(Train)", "(Predicton)")
+        return yPred.provide_statistics()
 
 
 class DecisionTreeClassifier(Estimator):
     def __init__(
-        self,
-        criterion: str = "gini",
-        splitter: str = "best",
-        maxDepth: Optional[int] = None,
-        minSamplesSplit: Union[int, float] = 2,
-        minSamplesLeaf: Union[int, float] = 1,
-        minWeightFractionLeaf: float = 0.0,
-        maxFeatures: Optional[Union[int, float, str]] = None,
-        randomState: Optional[int] = None,
-        maxLeafNodes: int = None,
-        minImpurityDecrease: float = 0.0,
-        classWeight: Union[str, Dict[int, int], List[Dict[int, int]]] = None,
-        ccpAlpha: float = 0.0,
+            self,
+            criterion: str = "gini",
+            splitter: str = "best",
+            maxDepth: Optional[int] = None,
+            minSamplesSplit: Union[int, float] = 2,
+            minSamplesLeaf: Union[int, float] = 1,
+            minWeightFractionLeaf: float = 0.0,
+            maxFeatures: Optional[Union[int, float, str]] = None,
+            randomState: Optional[int] = None,
+            maxLeafNodes: int = None,
+            minImpurityDecrease: float = 0.0,
+            classWeight: Union[str, Dict[int, int], List[Dict[int, int]]] = None,
+            ccpAlpha: float = 0.0,
     ):
         self._underlying = SkDecisionTreeClassifier(
             criterion=criterion,
@@ -63,23 +67,23 @@ class RandomForestClassifierModel(Model):
 
 class RandomForestClassifier(Estimator):
     def __init__(
-        self,
-        nEstimator: int = 100,
-        criterion: str = "gini",
-        maxDepth: Optional[int] = None,
-        minSamplesSplit: Union[int, float] = 2,
-        minSamplesLeaf: Union[int, float] = 1,
-        minWeightFractionLeaf: Optional[float] = 0.0,
-        maxFeatures: Union[int, str, float] = "auto",
-        maxLeafNodes: Optional[int] = None,
-        minImpurityDecrease: float = 0.0,
-        bootstrap: bool = True,
-        oobScore: bool = False,
-        warmStart: bool = False,
-        classWeight: Optional[Union[str, Dict, List[Dict]]] = None,
-        ccpAlpha: float = 0.0,
-        maxSamples: Optional[Union[int, float]] = None,
-        randomState: Optional[int] = None,
+            self,
+            nEstimator: int = 100,
+            criterion: str = "gini",
+            maxDepth: Optional[int] = None,
+            minSamplesSplit: Union[int, float] = 2,
+            minSamplesLeaf: Union[int, float] = 1,
+            minWeightFractionLeaf: Optional[float] = 0.0,
+            maxFeatures: Union[int, str, float] = "auto",
+            maxLeafNodes: Optional[int] = None,
+            minImpurityDecrease: float = 0.0,
+            bootstrap: bool = True,
+            oobScore: bool = False,
+            warmStart: bool = False,
+            classWeight: Optional[Union[str, Dict, List[Dict]]] = None,
+            ccpAlpha: float = 0.0,
+            maxSamples: Optional[Union[int, float]] = None,
+            randomState: Optional[int] = None,
     ):
         self._underlying = SkRandomForestClassifier(
             n_estimators=nEstimator,
@@ -104,5 +108,5 @@ class RandomForestClassifier(Estimator):
         return RandomForestClassifierModel(
             self._underlying.fit(
                 train_data.toArray(), labels.toArray().astype("int"), **kwargs
-            )
+            ), labels
         )
