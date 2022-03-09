@@ -45,6 +45,7 @@ class Dataset:
         self.null_value = null_value
         self.separator = separator
         self.domain_model = None
+        self.target_attribute: str = None
         self.attribute_graph: dict[
             str, dict
         ] = {}  # attribute identifier to dictionary of RDF relations
@@ -98,6 +99,10 @@ class Dataset:
 
         return copy
 
+    def setTargetAttribute(self, targetAttribute):
+        self.target_attribute = targetAttribute
+        return self
+
     def keepAttributes(self, attributeIDs: Any) -> Dataset:
 
         if not isinstance(attributeIDs, list):
@@ -119,23 +124,23 @@ class Dataset:
 
         return copy
 
-    def dropAttributes(self, attributeIDs: Any) -> Dataset:
+    def keepAttribute(self, attributeID: str) -> Dataset:
 
+        return self.keepAttributes([attributeID])
+
+    def dropAttributes(self, attributeIDs: Any) -> Dataset:
         copy = self.copy_and_read()
 
         copy.data = copy.data.drop(columns=attributeIDs)
 
-        # remove columns from statistics
-        for attribute in copy.attributes:
-            if attribute in attributeIDs:
-                if copy.stats:
-                    del copy.stats[attribute]
-                copy.attribute_labels.pop(attribute)
-        copy.attributes = [
-            value for value in copy.attributes if value not in attributeIDs
-        ]
+        # remove column descriptions
+        for attribute in attributeIDs:
+            copy.drop_column_description(attribute)
 
         return copy
+
+    def dropAttribute(self, attributeID: str) -> Dataset:
+        return self.dropAttributes([attributeID])
 
     def filterByAttribute(self, attribute: str, value) -> Dataset:
 
@@ -155,12 +160,17 @@ class Dataset:
 
         return copy
 
-    def addAttribute(self, columnName, transformFunc) -> Dataset:
+    def addAttribute(self, newColumnName, transformFunc, newColumnLabel: str = None) -> Dataset:
 
-        copy = self.copy_and_read()
+        copy = self.add_attribute_data(newColumnName, transformFunc)
 
-        for index, row in copy.data.iterrows():
-            copy.data.at[index, columnName] = transformFunc(Instance(row))
+        data_type = dataTypes(copy.data[newColumnName].dtype)
+
+        if not newColumnLabel:
+            newColumnLabel = newColumnName
+
+        copy.add_column_description(newColumnName, newColumnLabel, data_type)
+        copy.create_simple_type(newColumnName, data_type)
 
         return copy
 
@@ -168,7 +178,7 @@ class Dataset:
 
         copy = self.copy_and_read()
 
-        def transformIntoWeekend(instance: Instance):
+        def transformIntoWeekend(instance: Instance) -> bool:
             week_num = instance.getValue(columnName).weekday()
             if week_num < 5:
                 return False
@@ -176,9 +186,9 @@ class Dataset:
                 return True
             # return instance.getValue(columnName) is weekend
 
-        copy.data = self.addAttribute(
-            columnName + "_isWeekend", transformIntoWeekend
-        ).data
+        copy = self.addAttribute(
+            columnName + "_isWeekend", transformIntoWeekend, self.attribute_labels[columnName] + " (is weekend)"
+        )
 
         return copy
 
@@ -186,12 +196,13 @@ class Dataset:
 
         copy = self.copy_and_read()
 
-        def transformIntoWDayOfTheYear(instance: Instance):
+        def transformIntoDayOfTheYear(instance: Instance):
             return instance.getValue(columnName).timetuple().tm_yday
 
-        copy.data = self.addAttribute(
-            columnName + "_DayOfTheYear", transformIntoWDayOfTheYear
-        ).data
+        copy = self.addAttribute(
+            columnName + "_DayOfTheYear",
+            transformIntoDayOfTheYear, self.attribute_labels[columnName] + " (day of the year)"
+        )
 
         return copy
 
@@ -199,24 +210,35 @@ class Dataset:
 
         copy = self.copy_and_read()
 
-        def transformIntoWeekDay(instance: Instance):
+        def transformIntoWeekDay(instance: Instance) -> str:
             return instance.getValue(columnName).strftime("%A")
 
-        copy.data = self.addAttribute(
-            columnName + "_WeekDay", transformIntoWeekDay
-        ).data
+        copy = self.addAttribute(
+            columnName + "_weekDay", transformIntoWeekDay, self.attribute_labels[columnName] + " (week day)"
+        )
 
         return copy
 
-    def splitIntoTrainAndTestAndLabels(targetColumn: str, trainRatio: float, randomState=None) -> Tuple[
+    def dropMissingValues(self, attribute):
+        copy = self.copy_and_read()
+        copy.data.dropna(subset=[attribute], inplace=True)
+
+        return copy
+
+    def splitIntoTrainAndTestAndLabels(self, trainRatio: float, randomState=None) -> Tuple[
         Dataset, Dataset, Dataset, Dataset]:
 
-        train, test = self.splitIntoTrainAndTest(trainRatio, randomState)
+        if not self.target_attribute:
+            raise ValueError("No target attribute specified for this datatset (set it via setTargetAttribute).")
 
-        X_train = train.dropAttributes(targetColumn)
-        X_test = test.dropAttributes(targetColumn)
-        y_train = train.keepAttributes(targetColumn)
-        y_test = test.keepAttributes(targetColumn)
+        copy = self.copy_and_read()
+
+        train, test = copy.splitIntoTrainAndTest(trainRatio, randomState)
+
+        X_train = train.dropAttribute(self.target_attribute)
+        X_test = test.dropAttribute(self.target_attribute)
+        y_train = train.keepAttribute(self.target_attribute)
+        y_test = test.keepAttribute(self.target_attribute)
 
         return X_train, X_test, y_train, y_test
 
@@ -262,6 +284,19 @@ class Dataset:
             self.readFile()
         return self.data.columns.values.tolist()
 
+    def add_attribute_data(self, newColumnName, transformFunc) -> Dataset:
+        copy = self.copy_and_read()
+
+        # for index, row in copy.data.iterrows():
+        #    copy.data.at[index, newColumnName] = transformFunc(Instance(row))
+
+        copy.data[newColumnName] = copy.data.apply(lambda row: transformFunc(Instance(row)), axis=1)
+
+        # TODO: Enforce type information from transformFunc via transformFunc.__annotations__?
+        # copy.data[newColumnName] = copy.data[newColumnName].convert_dtypes()
+
+        return copy
+
     def copy(self, basic_data_only: bool = False) -> Dataset:
         copy = Dataset(
             id=self.id,
@@ -285,6 +320,7 @@ class Dataset:
         copy.lon_lat_pairs = self.lon_lat_pairs.copy()
         copy.coordinate_system = self.coordinate_system
         copy.parse_dates = self.parse_dates.copy()
+        copy.target_attribute = self.target_attribute
 
         if self.domain_model:
             copy.domain_model = self.domain_model.copy()
@@ -294,20 +330,24 @@ class Dataset:
                 copy.data = self.data.copy()
         return copy
 
-    def dateToTimestamp(self, columnName):
+    def drop_column_description(self, attribute):
+        self.attributes.remove(attribute)
+        self.attribute_labels.pop(attribute)
+        self.simple_data_types.pop(attribute)
+        self.data_types.pop(attribute)
+        if attribute in self.attribute_graph:
+            self.attribute_graph.pop(attribute)
+        if self.stats:
+            del self.stats[attribute]
 
-        copy = self.copy_and_read()
+    def add_column_description(self, attribute, label, data_type, simple_data_type=None):
+        self.attributes.append(attribute)
+        self.attribute_labels[attribute] = label
+        self.data_types[attribute] = data_type
+        if simple_data_type:
+            self.simple_data_types[attribute] = simple_data_type
 
-        def transformIntoTimestamp(instance: Instance):
-            return datetime.timestamp(instance.getValue(columnName))
-
-        copy.data = self.addAttribute(
-            columnName + "_Timestamp", transformIntoTimestamp
-        ).data
-
-        return copy
-
-    def addGeometryEmbeddings(self, columnName):
+    def transformGeometryToVector(self, columnName):
 
         copy = self.copy_and_read()
 
@@ -316,24 +356,28 @@ class Dataset:
 
         w = Kernel.from_dataframe(self.data, fixed=False, function="gaussian")
         # w = KNN.from_dataframe(self.data, k=5)
-        print(w.islands)
         nodes = w.weights.keys()
         edges = [(node, neighbour) for node in nodes for neighbour in w[node]]
         my_graph = nx.Graph(edges)
-        print(my_graph)
 
+        dimensions = 64
         node2vec = Node2Vec(
-            my_graph, dimensions=64, walk_length=30, num_walks=200, workers=4
+            my_graph, dimensions=dimensions, walk_length=15, num_walks=30, workers=1
         )
-        model = node2vec.fit(window=10, min_count=1, batch_words=4)
+        model = node2vec.fit(window=10, min_count=1, batch_words=4, vector_size=dimensions)
 
-        copy.data[columnName + "_embeddings"] = ""
+        copy.data[columnName + "_tmp"] = ""
         for index, row in copy.data.iterrows():
-            copy.data.at[index, columnName + "_embeddings"] = model.wv[index]
+            copy.data.at[index, columnName + "_tmp"] = model.wv[index]
+
+        copy = copy.dropAttribute(columnName)
+        copy.data = copy.data.rename(columns={columnName + "_tmp": columnName})
+        copy.add_column_description(columnName, self.attribute_labels[columnName], config.type_numeric_list,
+                                    config.type_numeric_list)
 
         return copy
 
-    def categoryToVector(self, columnName):
+    def transformCategoryToVector(self, columnName):
 
         copy = self.copy_and_read()
 
@@ -345,14 +389,33 @@ class Dataset:
             return_df=True,
             use_cat_names=True,
         )
+
         column_data = column_encoder.fit_transform(column_data)
-        copy.data[columnName + "_encoded"] = column_data.values.tolist()
-        copy.simple_data_types[columnName + "_encoded"] = config.type_numeric_list
-        copy.data_types[columnName + "_encoded"] = config.type_numeric_list
-        copy.attributes.append(columnName + "_encoded")
-        copy.attribute_labels[columnName + "_encoded"] = (
-                copy.attribute_labels[columnName] + " (Encoded)"
-        )
+
+        copy.data[columnName + "_tmp"] = column_data.values.tolist()
+
+        copy = copy.dropAttribute(columnName)
+        copy.data = copy.data.rename(columns={columnName + "_tmp": columnName})
+        copy.add_column_description(columnName, self.attribute_labels[columnName], config.type_numeric_list,
+                                    config.type_numeric_list)
+
+        return copy
+
+    def transformDateToTimestamp(self, columnName):
+
+        copy = self.copy_and_read()
+
+        def transformIntoTimestamp(instance: Instance):
+            return datetime.timestamp(instance.getValue(columnName))
+
+        copy.data = self.add_attribute_data(
+            columnName + "_tmp", transformIntoTimestamp
+        ).data
+
+        copy = copy.dropAttribute(columnName)
+        copy.data = copy.data.rename(columns={columnName + "_tmp": columnName})
+        copy.add_column_description(columnName, self.attribute_labels[columnName], np.float,
+                                    config.type_numeric)
 
         return copy
 
@@ -360,16 +423,17 @@ class Dataset:
 
         copy = self.copy_and_read()
 
-        for atribute in copy.attributes:
-            # print(atribute)
-            if copy.simple_data_types[atribute] == config.type_numeric_list:
-                # print(atribute)
+        for attribute in copy.attributes:
+            if copy.simple_data_types[attribute] == config.type_numeric_list:
                 attribute_column_names = [
-                    atribute + str(i) for i in range(len(copy.data[atribute].iloc[0]))
+                    attribute + str(i) for i in range(len(copy.data[attribute].iloc[0]))
                 ]
                 copy.data[attribute_column_names] = pd.DataFrame(
-                    copy.data[atribute].tolist(), index=copy.data.index
+                    copy.data[attribute].tolist(), index=copy.data.index
                 )
+
+                # TODO: not re-read all the time
+                copy = copy.dropAttribute(attribute)
 
         return copy
 
@@ -526,6 +590,9 @@ class Dataset:
 
         self.attribute_labels[attribute_identifier] = attribute_label
 
+        self.create_simple_type(attribute_identifier, value_type, is_geometry=is_geometry)
+
+    def create_simple_type(self, attribute_identifier, value_type, is_geometry: bool = False):
         # create simple types
         if value_type == np.datetime64:
             self.parse_dates.append(attribute_identifier)
@@ -583,14 +650,34 @@ class Dataset:
         self.data.to_csv(file_path, encoding="utf-8")
 
     def copy_and_read(self, number_of_lines: int = None):
+
         if self.data.empty:
             self.readFile(number_of_lines)
 
         copy = self.copy()
         return copy
 
+    def transformDatatypes(self):
+
+        copy = self.copy_and_read()
+
+        # transform non-numeric columns
+        for attribute in self.attributes:
+            if self.simple_data_types[attribute] == config.type_string:
+                copy = copy.transformCategoryToVector(attribute)
+            elif self.simple_data_types[attribute] == config.type_datetime:
+                copy = copy.transformDateToTimestamp(attribute)
+            elif self.simple_data_types[attribute] == config.type_geometry:
+                copy = copy.transformGeometryToVector(attribute)
+
+        return copy
+
     def toArray(self):
-        return self.data.to_numpy()
+        copy = self.copy_and_read()
+
+        copy = copy.flattenData()
+
+        return copy.data.to_numpy()
 
 
 def loadDataset(datasetID: str) -> Dataset:
