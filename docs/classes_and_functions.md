@@ -1,6 +1,6 @@
 # Classes and their Methods
 
-### Dataset
+### Class: Dataset
 
 A dataset with its data instances (e.g., rows and columns).
 
@@ -241,3 +241,112 @@ exportDataAsFile(filePath: String)
 * Input
   * `filePath`: The path and name of the file to be created.
 
+
+### Class: Instance
+
+A single instance (e.g., row) of a dataset.
+
+#### Get Value
+
+Return a specific value of the instance.
+
+```
+getValue(attribute: String) -> value: Any
+```
+
+* Input
+  * `nInstances`: Number of instances in the sample.
+* Output
+  * `value`: The specified value.
+
+
+### Class: StandardNormalizer
+
+A normalizer to normalize dataset values.
+
+#### Normalize
+
+Normalize all numeric values in the dataset.
+
+```
+normalize(dataset: Dataset) -> normalizedDataset: Dataset
+```
+
+* Input
+  * `dataset`: Dataset to be normalized.
+* Output
+  * `normalizedDataset`: The normalized dataset.
+
+### Class: StandardNormalizer
+
+A normalizer to normalize dataset values.
+
+#### StandardScaler
+
+Scale all numeric values in the dataset.
+
+```
+scale(dataset: Dataset) -> scaledDataset: Dataset
+```
+
+* Input
+  * `dataset`: Dataset to be scaled.
+* Output
+  * `scaledDataset`: The scaled dataset.
+
+
+### Global Functions
+
+#### Load Dataset
+
+Loads a dataset via its identifier.
+
+```
+loadDataset(datasetID: String) -> dataset: Dataset
+```
+
+* Input
+  * `datasetID`: Identifier of the dataset.
+* Output
+  * `scaledDataset`: The loaded dataset.
+
+
+#### Load Dataset from CSV
+
+Loads a dataset from a CSV file.
+
+```
+readDataSetFromCSV(fileName: String, datasetId: String, separator: String, hasHeader: String, nullValue: String, datasetName: String, coordinateSystem: Int = 3857) -> dataset: Dataset
+ ```
+
+* Input
+  * `fileName`: Path and name of the CSV file.
+  * `datasetId`: Identifier of the dataset.
+  * `separator`: Separator used in the file.
+  * `hasHeader`: `True`, if the file has a header row.
+  * `nullValue`: String that should be parsed as missing value.
+  * `datasetName`: Name of the dataset.
+  * `coordinateSystem` (optional): Coordinate system used in the geometry columns of the dataset.
+
+* Output
+  * `scaledDataset`: The loaded dataset.
+
+#### Join Datasets
+
+Join two datasets into one dataset.
+
+```
+fun joinTwoDatasets(firstData: Dataset, secondData: Dataset, joinColumnName1: String, joinColumnName2: String, firstSuffix: String, secondSuffix: String) -> dataset: Dataset
+```
+ 
+
+* Input
+  * `firstData`: The first dataset.
+  * `secondData`: The second dataset.
+  * `joinColumnName1`: The attribute of the first dataset to use for the join.
+  * `joinColumnName2`: The attribute of the second dataset to use for the join.
+  * `firstSuffix`: The suffix to be attached to the attribute names of the first dataset.
+  * `secondSuffix`: The suffix to be attached to the attribute names of the second dataset.
+
+* Output
+  * `scaledDataset`: The joined dataset.
