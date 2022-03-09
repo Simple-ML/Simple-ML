@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import json
 import os
 from datetime import datetime
 from typing import Any, Tuple
 
 import category_encoders as ce  # For one hot encoding
+import geopandas
 import networkx as nx
 import numpy as np  # For huge arrays and matrices
 import pandas as pd  # For data processing
@@ -45,7 +47,7 @@ class Dataset:
         self.null_value = null_value
         self.separator = separator
         self.domain_model = None
-        self.target_attribute: str = None
+        self.target_attribute = None
         self.attribute_graph: dict[
             str, dict
         ] = {}  # attribute identifier to dictionary of RDF relations
@@ -86,7 +88,7 @@ class Dataset:
             []
         )  # list of attribute identifiers of attributes that should be parsed as date
 
-    ### USER FUNCTIONS ###
+    # USER FUNCTIONS
 
     def sample(self, nInstances: int) -> Dataset:
 
@@ -246,8 +248,6 @@ class Dataset:
             self, trainRatio: float, randomState=None
     ) -> Tuple[Dataset, Dataset]:
 
-        copy = self.copy_and_read()
-
         train_data, test_data = train_test_split(
             self.data, train_size=trainRatio, random_state=randomState
         )
@@ -277,7 +277,7 @@ class Dataset:
             self.readFile()
         return Instance(self.data.iloc[[row_number]].squeeze())
 
-    ### NON-USER FUNCTIONS ###
+    # NON-USER FUNCTIONS
 
     def getColumnNames(self):
         if self.data.empty:
