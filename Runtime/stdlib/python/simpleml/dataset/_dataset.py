@@ -23,20 +23,20 @@ from sklearn.model_selection import train_test_split
 
 class Dataset:
     def __init__(
-            self,
-            id,
-            title: str,
-            description: str = None,
-            fileName: str = None,
-            hasHeader: bool = True,
-            null_value="",
-            separator=",",
-            number_of_instances: int = None,
-            titles: dict = {},
-            descriptions: dict = {},
-            subjects: dict = {},
-            coordinate_system: int = 4326,
-            lat_before_lon: bool = False,
+        self,
+        id,
+        title: str,
+        description: str = None,
+        fileName: str = None,
+        hasHeader: bool = True,
+        null_value="",
+        separator=",",
+        number_of_instances: int = None,
+        titles: dict = {},
+        descriptions: dict = {},
+        subjects: dict = {},
+        coordinate_system: int = 4326,
+        lat_before_lon: bool = False,
     ):
         self.id = id
         self.title = title
@@ -162,7 +162,9 @@ class Dataset:
 
         return copy
 
-    def addAttribute(self, newColumnName, transformFunc, newColumnLabel: str = None) -> Dataset:
+    def addAttribute(
+        self, newColumnName, transformFunc, newColumnLabel: str = None
+    ) -> Dataset:
 
         copy = self.add_attribute_data(newColumnName, transformFunc)
 
@@ -189,7 +191,9 @@ class Dataset:
             # return instance.getValue(columnName) is weekend
 
         copy = self.addAttribute(
-            columnName + "_isWeekend", transformIntoWeekend, self.attribute_labels[columnName] + " (is weekend)"
+            columnName + "_isWeekend",
+            transformIntoWeekend,
+            self.attribute_labels[columnName] + " (is weekend)",
         )
 
         return copy
@@ -203,7 +207,8 @@ class Dataset:
 
         copy = self.addAttribute(
             columnName + "_DayOfTheYear",
-            transformIntoDayOfTheYear, self.attribute_labels[columnName] + " (day of the year)"
+            transformIntoDayOfTheYear,
+            self.attribute_labels[columnName] + " (day of the year)",
         )
 
         return copy
@@ -216,7 +221,9 @@ class Dataset:
             return instance.getValue(columnName).strftime("%A")
 
         copy = self.addAttribute(
-            columnName + "_weekDay", transformIntoWeekDay, self.attribute_labels[columnName] + " (week day)"
+            columnName + "_weekDay",
+            transformIntoWeekDay,
+            self.attribute_labels[columnName] + " (week day)",
         )
 
         return copy
@@ -227,11 +234,14 @@ class Dataset:
 
         return copy
 
-    def splitIntoTrainAndTestAndLabels(self, trainRatio: float, randomState=None) -> Tuple[
-        Dataset, Dataset, Dataset, Dataset]:
+    def splitIntoTrainAndTestAndLabels(
+        self, trainRatio: float, randomState=None
+    ) -> Tuple[Dataset, Dataset, Dataset, Dataset]:
 
         if not self.target_attribute:
-            raise ValueError("No target attribute specified for this datatset (set it via setTargetAttribute).")
+            raise ValueError(
+                "No target attribute specified for this datatset (set it via setTargetAttribute)."
+            )
 
         copy = self.copy_and_read()
 
@@ -245,7 +255,7 @@ class Dataset:
         return X_train, X_test, y_train, y_test
 
     def splitIntoTrainAndTest(
-            self, trainRatio: float, randomState=None
+        self, trainRatio: float, randomState=None
     ) -> Tuple[Dataset, Dataset]:
 
         train_data, test_data = train_test_split(
@@ -290,7 +300,9 @@ class Dataset:
         # for index, row in copy.data.iterrows():
         #    copy.data.at[index, newColumnName] = transformFunc(Instance(row))
 
-        copy.data[newColumnName] = copy.data.apply(lambda row: transformFunc(Instance(row)), axis=1)
+        copy.data[newColumnName] = copy.data.apply(
+            lambda row: transformFunc(Instance(row)), axis=1
+        )
 
         # TODO: Enforce type information from transformFunc via transformFunc.__annotations__?
         # copy.data[newColumnName] = copy.data[newColumnName].convert_dtypes()
@@ -340,7 +352,9 @@ class Dataset:
         if self.stats:
             del self.stats[attribute]
 
-    def add_column_description(self, attribute, label, data_type, simple_data_type=None):
+    def add_column_description(
+        self, attribute, label, data_type, simple_data_type=None
+    ):
         self.attributes.append(attribute)
         self.attribute_labels[attribute] = label
         self.data_types[attribute] = data_type
@@ -364,7 +378,9 @@ class Dataset:
         node2vec = Node2Vec(
             my_graph, dimensions=dimensions, walk_length=15, num_walks=30, workers=1
         )
-        model = node2vec.fit(window=10, min_count=1, batch_words=4, vector_size=dimensions)
+        model = node2vec.fit(
+            window=10, min_count=1, batch_words=4, vector_size=dimensions
+        )
 
         copy.data[columnName + "_tmp"] = ""
         for index, row in copy.data.iterrows():
@@ -372,8 +388,12 @@ class Dataset:
 
         copy = copy.dropAttribute(columnName)
         copy.data = copy.data.rename(columns={columnName + "_tmp": columnName})
-        copy.add_column_description(columnName, self.attribute_labels[columnName], config.type_numeric_list,
-                                    config.type_numeric_list)
+        copy.add_column_description(
+            columnName,
+            self.attribute_labels[columnName],
+            config.type_numeric_list,
+            config.type_numeric_list,
+        )
 
         return copy
 
@@ -396,8 +416,12 @@ class Dataset:
 
         copy = copy.dropAttribute(columnName)
         copy.data = copy.data.rename(columns={columnName + "_tmp": columnName})
-        copy.add_column_description(columnName, self.attribute_labels[columnName], config.type_numeric_list,
-                                    config.type_numeric_list)
+        copy.add_column_description(
+            columnName,
+            self.attribute_labels[columnName],
+            config.type_numeric_list,
+            config.type_numeric_list,
+        )
 
         return copy
 
@@ -414,8 +438,9 @@ class Dataset:
 
         copy = copy.dropAttribute(columnName)
         copy.data = copy.data.rename(columns={columnName + "_tmp": columnName})
-        copy.add_column_description(columnName, self.attribute_labels[columnName], np.float,
-                                    config.type_numeric)
+        copy.add_column_description(
+            columnName, self.attribute_labels[columnName], np.float, config.type_numeric
+        )
 
         return copy
 
@@ -562,16 +587,16 @@ class Dataset:
             lon_lat_pair_number += 1
 
     def addColumnDescription(
-            self,
-            attribute_identifier,
-            resource_node,
-            domain_node,
-            property_node,
-            rdf_value_type,
-            value_type,
-            attribute_label,
-            is_geometry: bool,
-            resource_rank=None,
+        self,
+        attribute_identifier,
+        resource_node,
+        domain_node,
+        property_node,
+        rdf_value_type,
+        value_type,
+        attribute_label,
+        is_geometry: bool,
+        resource_rank=None,
     ):
         self.attributes.append(attribute_identifier)
 
@@ -590,18 +615,22 @@ class Dataset:
 
         self.attribute_labels[attribute_identifier] = attribute_label
 
-        self.create_simple_type(attribute_identifier, value_type, is_geometry=is_geometry)
+        self.create_simple_type(
+            attribute_identifier, value_type, is_geometry=is_geometry
+        )
 
-    def create_simple_type(self, attribute_identifier, value_type, is_geometry: bool = False):
+    def create_simple_type(
+        self, attribute_identifier, value_type, is_geometry: bool = False
+    ):
         # create simple types
         if value_type == np.datetime64:
             self.parse_dates.append(attribute_identifier)
             # self.data_types[attribute_identifier] = np.str
             self.simple_data_types[attribute_identifier] = config.type_datetime
         elif (
-                value_type == np.integer
-                or value_type == pd.Int32Dtype()
-                or value_type == pd.Int64Dtype()
+            value_type == np.integer
+            or value_type == pd.Int32Dtype()
+            or value_type == pd.Int64Dtype()
         ):
             self.simple_data_types[attribute_identifier] = config.type_numeric
         elif value_type == np.float64:
@@ -689,14 +718,14 @@ def loadDataset(datasetID: str) -> Dataset:
 
 
 def readDataSetFromCSV(
-        file_name: str,
-        dataset_id: str,
-        separator: str,
-        has_header: bool,
-        null_value: str,
-        dataset_name: str = None,
-        coordinate_system=3857,
-        lon_lat_pairs=[],
+    file_name: str,
+    dataset_id: str,
+    separator: str,
+    has_header: bool,
+    null_value: str,
+    dataset_name: str = None,
+    coordinate_system=3857,
+    lon_lat_pairs=[],
 ) -> Dataset:
     dir_name = os.path.dirname(__file__)
     data_file_path = os.path.join(dir_name, global_config.data_folder_name, file_name)
@@ -782,17 +811,17 @@ def dataTypes(type):
 
 
 def joinTwoDatasets(
-        first_data: Dataset,
-        second_data: Dataset,
-        join_column_name_1: str,
-        join_column_name_2: str,
-        first_suffix: str,
-        second_suffix: str,
+    first_data: Dataset,
+    second_data: Dataset,
+    join_column_name_1: str,
+    join_column_name_2: str,
+    first_suffix: str,
+    second_suffix: str,
 ) -> Dataset:
     # TODO: check that types are join_column_name_1 and join_column_name_2 are the same
     if (
-            first_data.data[join_column_name_1].dtypes
-            == second_data.data[join_column_name_2].dtypes
+        first_data.data[join_column_name_1].dtypes
+        == second_data.data[join_column_name_2].dtypes
     ):
         # print(second_data.data)
         joint_data = first_data.data.merge(
