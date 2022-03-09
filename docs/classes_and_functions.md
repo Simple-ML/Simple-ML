@@ -6,7 +6,7 @@ A dataset with its data instances (e.g., rows and columns).
 
 #### Sampling
 
-Creates a sample of a dataset.
+Create a sample of a dataset.
 
 ```
 sample(nInstances: Int) -> dataset: Dataset
@@ -20,7 +20,7 @@ sample(nInstances: Int) -> dataset: Dataset
 
 #### Keep Attributes 
 
-Retains attributes of a dataset.
+Retain attributes of a dataset.
 
 ```
 keepAttributes(vararg attributes: String) -> dataset: Dataset
@@ -33,7 +33,7 @@ keepAttributes(vararg attributes: String) -> dataset: Dataset
 
 #### Keep Attribute
 
-Retains a single attribute of a dataset.
+Retain a single attribute of a dataset.
 
 ```
 keepAttribute(attribute: String) -> dataset: Dataset
@@ -47,7 +47,7 @@ keepAttribute(attribute: String) -> dataset: Dataset
 
 #### Drop Attributes 
 
-Drops attributes of a dataset.
+Drop attributes of a dataset.
 
 ```
 dropAttributes(vararg attributes: String) -> dataset: Dataset
@@ -60,7 +60,7 @@ dropAttributes(vararg attributes: String) -> dataset: Dataset
 
 #### Drop Attribute
 
-Drops a single attribute of a dataset.
+Drop a single attribute of a dataset.
 
 ```
 dropAttribute(attribute: String) -> dataset: Dataset
@@ -71,28 +71,29 @@ dropAttribute(attribute: String) -> dataset: Dataset
 * Output
   * `dataset`: The updated dataset.
 
-#### Drop Attributes 
+#### Split into Train and Test 
 
-Splits a dataset in a train and a test dataset.
+Split a dataset in a train and a test dataset.
 
 ```
-splitIntoTrainAndTest(trainRatio: Float, randomState: Int? = null) -> (dataset1: Dataset, dataset2: Dataset)
+splitIntoTrainAndTest(trainRatio: Float, randomState: Int? = null) -> (train: Dataset, test: Dataset)
 ```
 
 * Input
   * `trainRatio`: The percentage of instances to keep in the training dataset.
   * `randomState` (optional): A random seed to use for splitting.
 * Output
-  * `dataset1`: The training dataset.
-  * `dataset2`: The test dataset.
+  * `train`: The training dataset.
+  * `test`: The test dataset.
 
 
-#### Drop Attributes 
+#### Split into Train, Test, Features and Labels
 
-Splits dataset into four datasets: train/test and labels/features. Requires that a target attribute has been set before via `setTargetAttribute()`.
+Split a dataset into four datasets: train/test and labels/features. Requires that a target attribute has been set before via `setTargetAttribute()`.
 
 ```
  splitIntoTrainAndTestAndLabels(trainRatio: Float, randomState: Int? = null) -> (xTrain: Dataset, xTest: Dataset, yTrain: Dataset, yTest: Dataset)```
+```
 
 * Input
   * `trainRatio`: The percentage of instances to keep in the training dataset.
@@ -102,3 +103,61 @@ Splits dataset into four datasets: train/test and labels/features. Requires that
   * `xTest`: Features of the test dataset.
   * `yTrain`: Labels of the training dataset.
   * `yTest`: Labels of the test dataset.
+
+#### Filter Instances
+
+Remove instances in a dataset according to a filter function.
+
+```
+filterInstances(filterFunc: (instance: Instance) -> shouldKeep: Boolean) -> dataset: Dataset
+
+```
+
+* Input
+  * `filterFunc`: The filter function that returns either `True` (keep) or `False` (remove) for each instance.
+* Output
+  * `dataset`: The updated dataset.
+
+#### Get Row
+
+Get a specific row of a dataset.
+
+```
+getRow(rowNumber: Int) -> instance: Instance
+```
+
+* Input
+  * `rowNumber`: The number of the row to be retreived.
+* Output
+  * `instance`: The specified row.
+
+#### Add Attribute
+
+Add a new attribute to the dataset with values according to a transformation function.
+
+```
+addAttribute(columnName: String, transformFunc: (instance: Instance) -> value: Any, newColumnLabel: String) -> dataset: Dataset
+
+```
+
+* Input
+  * `columnName`: The name of the attribute where the transformation function is applied on.
+  * `transformFunc`: The transformation function.
+  * `newColumnLabel` (optional): The name of the new attribute.
+
+* Output
+  * `dataset`: The updated dataset.
+
+
+
+#### Date to File Export
+
+Stores the dataset into a CSV file.
+
+```
+exportDataAsFile(filePath: String)
+```
+
+* Input
+  * `filePath`: The path and name of the file to be created.
+
