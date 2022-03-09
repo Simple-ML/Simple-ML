@@ -742,9 +742,6 @@ class Dataset:
 
         return copy.data.to_numpy()
 
-    def exportDataAsFile(self, file_path):
-        self.data.to_csv(file_path, encoding='utf-8')
-
 
 def loadDataset(datasetID: str) -> Dataset:
     from simpleml.data_catalog import getDataset
