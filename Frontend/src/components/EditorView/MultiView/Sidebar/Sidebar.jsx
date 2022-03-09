@@ -97,10 +97,11 @@ class Sidebar extends React.Component {
         }
     }
 
-    setDataset = (dataset) => {
+    setDataset = (selectedEntity, dataset) => {
+        console.log(selectedEntity);
         console.log(dataset);
         const editProcessParameterDTO =  {
-            entityPath: EmfModelHelper.getFullHierarchy(this.state.selectedEntity),
+            entityPath: EmfModelHelper.getFullHierarchy(selectedEntity),
             parameterType: "string",
             parameterIndex: 0,
             value: dataset
@@ -114,7 +115,7 @@ class Sidebar extends React.Component {
     }
 
     render() {
-        const { selectedEntityName, selectedEntityType, allAvailableDatasets, selectedEntityDataset } = this.state;
+        const { selectedEntityName, selectedEntityType, allAvailableDatasets, selectedEntityDataset, selectedEntity } = this.state;
             return(
                 <div style= {{backgroundColor: 'white'}}>
                     <header style= {{backgroundColor: 'white'}}>
@@ -179,7 +180,7 @@ class Sidebar extends React.Component {
                                                             <Button onClick={this.handleOpen}>
                                                                 <Icons icons="tableChart"/>
                                                             </Button>
-                                                            <Button onClick={() => {this.setDataset(dataset)}}>
+                                                            <Button onClick={() => {this.setDataset(selectedEntity, dataset)}}>
                                                                 <Icons icons="tableChart"/>
                                                             </Button>
                                                         </AccordionDetails>
