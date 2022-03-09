@@ -15,7 +15,7 @@ def exampleWorkflow():
     dataset = joinTwoDatasets(sample_dataset1, sample_dataset2, "id", "id", "_l", "_r")
     # dataset = joinTwoDatasets('SpeedAveragesMiniSampleWKT.csv', 'SpeedAveragesMiniSampleWKT.csv', ',', '_first', '_second')
     # print(dataset)
-    dataset.exportDataAsFile("/home/fakhar/Downloads/test123.csv")
+    # dataset.exportDataAsFile("/home/fakhar/Downloads/test123.csv")
 
     sample_dataset = dataset.sample(3)
 
