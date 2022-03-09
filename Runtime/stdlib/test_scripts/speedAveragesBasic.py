@@ -10,8 +10,7 @@ from simpleml.util import exportDictionaryAsJSON
 dataset = loadDataset("SpeedAverages")
 print(exportDictionaryAsJSON(dataset.getProfile()))
 
-dataset = dataset.dropAttributes(
-    ["osm_id", "geometry"])
+dataset = dataset.dropAttributes(["osm_id", "geometry"])
 
 dataset = dataset.setTargetAttribute("average_speed")
 dataset = dataset.addWeekDayAttribute("start_time")
