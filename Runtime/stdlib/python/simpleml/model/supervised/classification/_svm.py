@@ -1,16 +1,23 @@
 from typing import Dict, List, Optional, Union
 
 from numpy.typing import ArrayLike
+from pandas import DataFrame
 from simpleml.model.supervised._domain import DataType, Estimator, Model
 from sklearn.svm import LinearSVC as SkLinearSVC
 
 
 class SupportVectorMachineClassifierModel(Model):
-    def __init__(self, underlying: SkLinearSVC):
+    def __init__(self, underlying: SkLinearSVC, yTrain: DataType):
         self._underlying = underlying
+        self._yTrain = yTrain
 
     def predict(self, data: DataType) -> ArrayLike:
-        return self._underlying.predict(data.toArray())
+        yPred = self._yTrain.copy(basic_data_only=True)
+        yPred.data = DataFrame(
+            self._underlying.predict(data.toArray()), columns=self._yTrain.data.columns
+        )
+        yPred.title = self._yTrain.title.replace("(Train)", "(Predicton)")
+        return yPred.provide_statistics()
 
 
 class SupportVectorMachineClassifier(Estimator):
@@ -48,5 +55,6 @@ class SupportVectorMachineClassifier(Estimator):
         return SupportVectorMachineClassifierModel(
             self._underlying.fit(
                 train_data.toArray(), labels.toArray().astype("int"), **kwargs
-            )
+            ),
+            labels,
         )

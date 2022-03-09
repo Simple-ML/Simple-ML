@@ -14,9 +14,9 @@ def exampleWorkflow():
     # sample_dataset = dataset.sample(50)
     # train, test = sample_dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
 
-    # X_train = train.dropAttributes("season")
-    # X_test = test.dropAttributes("season")
-    # y_train = train.keepAttributes("season")
+    # X_train = train.dropAttribute("season")
+    # X_test = test.dropAttribute("season")
+    # y_train = train.keepAttribute("season")
 
     # compute statistics from the dataset
     # print(exportDictionaryAsJSON(X_train.getProfile()))

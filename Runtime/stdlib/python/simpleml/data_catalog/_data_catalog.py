@@ -10,6 +10,7 @@ from rdflib import URIRef
 from simpleml.data_catalog._domain_model import DomainModel, getPythonType
 from simpleml.dataset import Dataset
 from simpleml.rdf import load_query, run_query
+from simpleml.util import exportDictionaryAsJSON
 
 lang = "de"  # TODO: Configure in a global config
 
@@ -175,6 +176,8 @@ def getDataset(dataset_id: str) -> Dataset:
 
     addDomainModel(dataset)
     addStatistics(dataset)
+
+    dataset.dataset_json = exportDictionaryAsJSON(dataset.getProfile())
 
     return dataset
 

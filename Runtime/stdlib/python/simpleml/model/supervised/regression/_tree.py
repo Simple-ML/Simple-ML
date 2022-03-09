@@ -1,17 +1,23 @@
 from typing import Optional, Union
 
-from numpy.typing import ArrayLike
+from pandas import DataFrame
 from simpleml.model.supervised._domain import DataType, Estimator, Model
 from sklearn.ensemble import RandomForestRegressor as SkRandomForestRegressor
 from sklearn.tree import DecisionTreeRegressor as SkDecisionTreeRegressor
 
 
 class DecisionTreeRegressorModel(Model):
-    def __init__(self, underlying: SkDecisionTreeRegressor):
+    def __init__(self, underlying: SkDecisionTreeRegressor, yTrain: DataType):
         self._underlying = underlying
+        self._yTrain = yTrain
 
-    def predict(self, data: DataType) -> ArrayLike:
-        return self._underlying.predict(data.toArray())
+    def predict(self, data: DataType) -> DataType:
+        yPred = self._yTrain.copy(basic_data_only=True)
+        yPred.data = DataFrame(
+            self._underlying.predict(data.toArray()), columns=self._yTrain.data.columns
+        )
+        yPred.title = self._yTrain.title.replace("(Train)", "(Predicton)")
+        return yPred.provide_statistics()
 
 
 class DecisionTreeRegressor(Estimator):
@@ -47,16 +53,24 @@ class DecisionTreeRegressor(Estimator):
         return DecisionTreeRegressorModel(
             self._underlying.fit(
                 train_data.toArray(), labels.toArray().astype("float"), **kwargs
-            )
+            ),
+            labels,
         )
 
 
 class RandomForestRegressorModel(Model):
-    def __init__(self, underlying: SkRandomForestRegressor):
+    def __init__(self, underlying: SkRandomForestRegressor, yTrain: DataType):
         self._underlying = underlying
+        self._yTrain = yTrain
 
-    def predict(self, data: DataType) -> ArrayLike:
-        return self._underlying.predict(data.toArray())
+    def predict(self, data: DataType) -> DataType:
+        yPred = self._yTrain.copy(basic_data_only=True)
+        yPred.data = DataFrame(
+            self._underlying.predict(data.toArray().ravel()),
+            columns=self._yTrain.data.columns,
+        )
+        yPred.title = self._yTrain.title.replace("(Train)", "(Predicton)")
+        return yPred.provide_statistics()
 
 
 class RandomForestRegressor(Estimator):
@@ -99,6 +113,7 @@ class RandomForestRegressor(Estimator):
     def fit(self, train_data: DataType, labels: DataType, **kwargs) -> Model:
         return RandomForestRegressorModel(
             self._underlying.fit(
-                train_data.toArray(), labels.toArray().astype("float"), **kwargs
-            )
+                train_data.toArray(), labels.toArray().astype("float").ravel(), **kwargs
+            ),
+            labels,
         )

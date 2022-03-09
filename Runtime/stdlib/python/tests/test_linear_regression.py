@@ -13,14 +13,15 @@ def test_train_and_infer():
     dataset = loadDataset("WhiteWineQualityBinary")
 
     train, test = dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
-    X_train = train.dropAttributes("quality")
-    X_test = test.dropAttributes("quality")
-    y_train = train.keepAttributes("quality")
+    X_train = train.dropAttribute("quality")
+    X_test = test.dropAttribute("quality")
+    y_train = train.keepAttribute("quality")
 
     model = rf.fit(X_train, y_train)
 
     pred = model.predict(X_test)
 
-    meanAbsoluteError(test.keepAttributes("quality"), pred)
+    meanAbsoluteError(test.keepAttribute("quality"), pred)
 
-    assert len(pred) > 0  # nosec
+    print("YES")
+    assert len(pred.data["quality"]) > 0  # nosec
