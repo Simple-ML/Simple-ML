@@ -5,7 +5,9 @@ After you have started Simple-ML and created a new project, you will see the fol
 <!-- ![Simple-ML GUI](img/overview.png) -->
 
 <p align="center">
+<kbd>
 <img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/overview.png" width="700"/>
+</kbd>
 </p>
   
 The Simple-ML consists of three major views:
@@ -14,12 +16,16 @@ The Simple-ML consists of three major views:
 2. Textual Workflow: the DSL code describing your workflow 
 3. Sidebar: Dynamic information and input forms.
 
+---
+
 ## Visual Workflow
 
 <!-- ![Simple-ML Visual Workflow](img/visual_workflow.png) -->
 
 <p align="center">
-<img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/visual_workflow.png" width="700"/>
+<kbd>
+  <img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/visual_workflow.png" width="700"/>
+</kbd>
 </p>
 
 The visual workflow provides you an overview of your workflow in the form of a graph. From top to bottom, you can see the functions, methods and values in the current workflow.
@@ -32,15 +38,21 @@ To create, extend and execute your workflow, you have several options:
 
 Whenever you add a new node to the graph, you are asked to give it a name.
 
+---
+
 ## Textual Workflow
 
 <!-- ![Simple-ML Textual Workflow](img/textual_workflow.png) -->
 
 <p align="center">
-<img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/textual_workflow.png" width="700"/>
+<kbd>
+  <img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/textual_workflow.png" width="700"/>
+</kbd>
 </p>
   
 The textual workflow is the DSL code specifying the ML workflow. You can simply edit and extend the code. On the left side, warnings and errors are shown. Valid code also gets visible in the visual workflow.
+
+---
 
 ## Sidebar
 
@@ -65,5 +77,7 @@ Whenever you use the global function `loadDataset`, the sidebar will show an ove
 By clicking on a dataset node and then clicking on `View`, you can inspect a dataset in detail.
 
 <p align="center">
-<img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/table_view.PNG " width="800"/>
+<kbd>
+  <img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/table_view.PNG " width="900"/>
+</kbd>
 </p>
