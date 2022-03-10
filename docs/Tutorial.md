@@ -17,7 +17,3 @@ The Simple-ML tutorial consists of the following four steps:
 
 The installation is described on the [Simple-ML main GitHub page](https://github.com/Simple-ML/Simple-ML/blob/main/README.md).
 
-[tutorial_concepts]: ./Tutorial-Basic-Concepts.md
-[tutorial_interface]: ./Tutorial-The-Simple-ML-Interface.md
-[functions]: ./classes_and_functions.md
-[dsl-tutorial]: ./DSL/tutorial/README.md
