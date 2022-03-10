@@ -1,6 +1,8 @@
 After you have started Simple-ML and created a new project, you will see the following interface:
 
-![Simple-ML GUI](img/overview.png)
+<!-- ![Simple-ML GUI](img/overview.png) -->
+
+<img src="https://raw.githubusercontent.com/Simple-ML/Simple-ML/main/docs/img/overview.png" width="700"/>
 
 The Simple-ML consists of three major views:
 
@@ -10,7 +12,10 @@ The Simple-ML consists of three major views:
 
 # Visual Workflow
 
-![Simple-ML Visual Workflow](img/visual_workflow.png)
+<!-- ![Simple-ML Visual Workflow](img/visual_workflow.png) -->
+
+<img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/visual_workflow.png" width="700"/>
+
 
 The visual workflow provides you an overview of your workflow in the form of a graph. From top to bottom, you can see the functions, methods and values in the current workflow.
 
@@ -24,7 +29,9 @@ Whenever you add a new node to the graph, you are asked to give it a name.
 
 # Textual Workflow
 
-![Simple-ML Textual Workflow](img/textual_workflow.png)
+<!-- ![Simple-ML Textual Workflow](img/textual_workflow.png) -->
+
+<img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/textual_workflow.png" width="700"/>
 
 The textual workflow is the DSL code specifying the ML workflow. You can simply edit and extend the code. On the left side, warnings and errors are shown. Valid code also gets visible in the visual workflow.
 
