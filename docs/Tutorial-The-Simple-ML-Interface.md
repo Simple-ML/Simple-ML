@@ -2,7 +2,7 @@ After you have started Simple-ML and created a new project, you will see the fol
 
 <!-- ![Simple-ML GUI](img/overview.png) -->
 
-<img src="https://raw.githubusercontent.com/Simple-ML/Simple-ML/main/docs/img/overview.png" width="700"/>
+<img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/overview.png" width="700"/>
 
 The Simple-ML consists of three major views:
 
@@ -38,3 +38,15 @@ The textual workflow is the DSL code specifying the ML workflow. You can simply 
 # Sidebar
 
 The sidebar is shown on the right side whenever additional information is available or when your input is required. For example, you can use the sidebar to view a dataset or to get an overview of all available datasets.
+
+## Overview of Datasets
+
+Whenever you use the global function `loadDataset`, the sidebar will show an overview of all available datasets.
+
+<img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/load_datasets_sidebar.PNG" width="250"/>
+
+## Overview of Datasets
+
+By clicking on a dataset node and then clicking on `View`, you can inspect a dataset in detail.
+
+<img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/table_view.PNG " width="700"/>
