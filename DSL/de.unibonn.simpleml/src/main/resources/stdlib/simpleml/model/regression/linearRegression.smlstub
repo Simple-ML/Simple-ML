@@ -8,5 +8,5 @@ class LinearRegression() sub Estimator {
 }
 
 class LinearRegressionModel() sub Model {
-    fun predict(features: Dataset) -> results: Any
+    fun predict(features: Dataset) -> results: Dataset
 }

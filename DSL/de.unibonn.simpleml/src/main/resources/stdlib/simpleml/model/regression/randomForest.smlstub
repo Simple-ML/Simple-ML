@@ -18,5 +18,5 @@ class RandomForestRegressor(
 }
 
 class RandomForestRegressorModel() sub Model {
-    fun predict(features: Dataset) -> results: Any
+    fun predict(features: Dataset) -> results: Dataset
 }

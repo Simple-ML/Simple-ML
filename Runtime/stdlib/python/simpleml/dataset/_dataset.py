@@ -752,28 +752,28 @@ def loadDataset(datasetID: str) -> Dataset:
 
 
 def readDataSetFromCSV(
-    file_name: str,
-    dataset_id: str,
+    fileName: str,
+    datasetId: str,
     separator: str,
-    has_header: bool,
-    null_value: str,
-    dataset_name: str = None,
-    coordinate_system=3857,
+    hasHeader: bool,
+    nullValue: str,
+    datasetName: str = None,
+    coordinateSystem=3857,
     lon_lat_pairs=[],
 ) -> Dataset:
     dir_name = os.path.dirname(__file__)
-    data_file_path = os.path.join(dir_name, global_config.data_folder_name, file_name)
-    data = pd.read_csv(data_file_path, sep=separator, na_values=null_value)
+    data_file_path = os.path.join(dir_name, global_config.data_folder_name, fileName)
+    data = pd.read_csv(data_file_path, sep=separator, na_values=nullValue)
     data = data.convert_dtypes()
 
-    if not dataset_name:
-        dataset_name = dataset_id
+    if not datasetName:
+        datasetName = datasetId
 
     dataset = Dataset(
-        id=dataset_id,
-        title=dataset_name,
-        fileName=file_name,
-        hasHeader=has_header,
+        id=datasetId,
+        title=datasetName,
+        fileName=fileName,
+        hasHeader=hasHeader,
         separator=separator,
         null_value="",
         description="",
@@ -781,7 +781,7 @@ def readDataSetFromCSV(
         number_of_instances=None,
         titles={},
         descriptions={},
-        coordinate_system=coordinate_system,
+        coordinate_system=coordinateSystem,
     )
     dataset.data = data
     dataset.lon_lat_pairs = lon_lat_pairs
@@ -841,9 +841,9 @@ def dataTypes(type):
         return pd.Int32Dtype()
     elif type == "string" or type == np.str:
         return np.str
-    elif type == "datetime64[ns]" or type==np.datetime64:
+    elif type == "datetime64[ns]" or type == np.datetime64:
         return np.datetime64
-    elif type == "boolean" or type== np.bool:
+    elif type == "boolean" or type == np.bool:
         return np.bool
     elif type == "object":
         return np.str
