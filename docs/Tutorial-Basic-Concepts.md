@@ -5,7 +5,7 @@
 [tutorial_interface]: ./Tutorial-The-Simple-ML-Interface.md
 [functions]: ./classes_and_functions.md
 [dsl-tutorial]: ./DSL/tutorial/README.md
-[tutorial]: ./docs/Tutorial.md
+[tutorial]: ./Tutorial.md
 
 # Idea and Concepts
 
