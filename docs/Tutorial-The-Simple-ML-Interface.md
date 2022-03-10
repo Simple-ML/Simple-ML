@@ -37,7 +37,7 @@ The textual workflow is the DSL code specifying the ML workflow. You can simply 
 
 # Sidebar
 
-The sidebar is shown on the right side whenever additional information is available or when your input is required. For example, you can use the sidebar to view a dataset or to get an overview of all available datasets.
+The sidebar is shown on the right side whenever additional information is available or when your input is required. For example, you can use the sidebar to view a dataset or to get an overview of all available datasets as shown in the following.
 
 ## Overview of Datasets
 
@@ -45,7 +45,7 @@ Whenever you use the global function `loadDataset`, the sidebar will show an ove
 
 <img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/load_datasets_sidebar.PNG" width="250"/>
 
-## Overview of Datasets
+## Inspection of a Dataset
 
 By clicking on a dataset node and then clicking on `View`, you can inspect a dataset in detail.
 
