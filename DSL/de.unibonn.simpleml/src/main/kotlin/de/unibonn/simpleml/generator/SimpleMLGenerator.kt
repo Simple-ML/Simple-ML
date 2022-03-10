@@ -126,7 +126,7 @@ class SimpleMLGenerator : AbstractGenerator() {
                         |if __name__ == '__main__':
                         |$indent${it.correspondingPythonName()}()
                         |
-                    """.trimMargin()
+                """.trimMargin()
 
                 fsa.generateFile(fileName, content)
             }
