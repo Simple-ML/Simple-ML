@@ -10,5 +10,4 @@ COPY stdlib/ stdlib/
 RUN conda run -n runtime conda develop stdlib/python
 
 ENTRYPOINT conda run -n runtime python -m runtime
-WORKDIR runtime
 EXPOSE 6789
