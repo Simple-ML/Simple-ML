@@ -1,9 +1,6 @@
 ## Table of Contents
 
 * [Tutorial][tutorial]
-   * [Basic Concepts][tutorial_concepts]
-   * [The Interface][tutorial_interface]
-   * [DSL][dsl-tutorial]
 * For Developers: Components
    * [Frontend][frontend]
    * [Runtime][runtime]
