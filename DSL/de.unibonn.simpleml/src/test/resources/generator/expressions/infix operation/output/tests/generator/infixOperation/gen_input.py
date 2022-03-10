@@ -1,8 +1,6 @@
 # Imports ----------------------------------------------------------------------
 
-import simpleml.codegen.eager_and
-import simpleml.codegen.eager_elvis
-import simpleml.codegen.eager_or
+import simpleml.codegen
 
 # Workflows --------------------------------------------------------------------
 
