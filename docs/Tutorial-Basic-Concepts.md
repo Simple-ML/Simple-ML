@@ -1,3 +1,12 @@
+[Tutorial][tutorial] - Idea and basic concepts | [Interface][tutorial_interface] | [Functions][functions] | [DSL][dsl-tutorial]
+
+
+[tutorial_concepts]: ./Tutorial-Basic-Concepts.md
+[tutorial_interface]: ./Tutorial-The-Simple-ML-Interface.md
+[functions]: ./classes_and_functions.md
+[dsl-tutorial]: ./DSL/tutorial/README.md
+[tutorial]: ./docs/Tutorial.md
+
 # Idea and Concepts
 
 Machine learning (ML) is the task to learn criteria for providinng predictions on unseen data based on experience. Examples include traffic predictions based on historic traffic flow data and sales predictions based on the sales in previous days. However, the configuration of ML workflows is still a difficult task.
