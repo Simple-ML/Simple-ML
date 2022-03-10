@@ -65,14 +65,14 @@ class Instance {
 }
 
 @Description("Data normalizer")
-class StandardNormalizer {
+class StandardNormalizer() {
     @Description("Normalize whole dataset")
     fun normalize(dataset: Dataset) -> normalizedDataset: Dataset
 
 }
 
 @Description("Data scaler")
-class StandardScaler {
+class StandardScaler() {
     @Description("Scale whole dataset")
     fun scale(dataset: Dataset) -> scaledDataset: Dataset
 
