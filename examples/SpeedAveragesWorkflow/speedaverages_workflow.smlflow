@@ -27,7 +27,7 @@ workflow speedaveragesWorkflow {
 
 	// scale data
 	val scaler = StandardScaler();
-	val datasetScaled = scaler.scale(dataset;);
+	val datasetScaled = scaler.scale(datasetTransformed);
 
     // Splitting the data into test and training sets
     val xTrain, val xTest, val yTrain, val yTest = datasetScaled.splitIntoTrainAndTestAndLabels(trainRatio=0.8);
