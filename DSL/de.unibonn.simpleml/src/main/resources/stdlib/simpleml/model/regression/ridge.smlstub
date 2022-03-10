@@ -11,5 +11,5 @@ class RidgeRegression(regularizationStrength: Float = 0.5) sub Estimator {
 
 class RidgeRegressionModel() sub Model {
     
-    fun predict(features: Dataset) -> results: Any
+    fun predict(features: Dataset) -> results: Dataset
 }
