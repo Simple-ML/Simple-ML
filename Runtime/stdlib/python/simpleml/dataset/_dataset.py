@@ -766,8 +766,8 @@ def readDataSetFromCSV(
     data = pd.read_csv(data_file_path, sep=separator, na_values=nullValue)
     data = data.convert_dtypes()
 
-    if not dataset_name:
-        dataset_name = datasetId
+    if not datasetName:
+        datasetName = datasetId
 
     dataset = Dataset(
         id=datasetId,
