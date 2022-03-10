@@ -1,3 +1,5 @@
+# The Simple-ML Interface
+
 After you have started Simple-ML and created a new project, you will see the following interface:
 
 <!-- ![Simple-ML GUI](img/overview.png) -->
@@ -10,7 +12,7 @@ The Simple-ML consists of three major views:
 2. Textual Workflow: the DSL code describing your workflow 
 3. Sidebar: Dynamic information and input forms.
 
-# Visual Workflow
+## Visual Workflow
 
 <!-- ![Simple-ML Visual Workflow](img/visual_workflow.png) -->
 
@@ -27,7 +29,7 @@ To create, extend and execute your workflow, you have several options:
 
 Whenever you add a new node to the graph, you are asked to give it a name.
 
-# Textual Workflow
+## Textual Workflow
 
 <!-- ![Simple-ML Textual Workflow](img/textual_workflow.png) -->
 
@@ -35,17 +37,17 @@ Whenever you add a new node to the graph, you are asked to give it a name.
 
 The textual workflow is the DSL code specifying the ML workflow. You can simply edit and extend the code. On the left side, warnings and errors are shown. Valid code also gets visible in the visual workflow.
 
-# Sidebar
+## Sidebar
 
 The sidebar is shown on the right side whenever additional information is available or when your input is required. For example, you can use the sidebar to view a dataset or to get an overview of all available datasets as shown in the following.
 
-## Overview of Datasets
+### Overview of Datasets
 
 Whenever you use the global function `loadDataset`, the sidebar will show an overview of all available datasets.
 
 <img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/load_datasets_sidebar.PNG" width="250"/>
 
-## Inspection of a Dataset
+### Inspection of a Dataset
 
 By clicking on a dataset node and then clicking on `View`, you can inspect a dataset in detail.
 
