@@ -4,8 +4,10 @@ After you have started Simple-ML and created a new project, you will see the fol
 
 <!-- ![Simple-ML GUI](img/overview.png) -->
 
+<p align="center">
 <img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/overview.png" width="700"/>
-
+</p>
+  
 The Simple-ML consists of three major views:
 
 1. Visual Workflow: a visual overview of your workflow
@@ -16,8 +18,9 @@ The Simple-ML consists of three major views:
 
 <!-- ![Simple-ML Visual Workflow](img/visual_workflow.png) -->
 
+<p align="center">
 <img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/visual_workflow.png" width="700"/>
-
+</p>
 
 The visual workflow provides you an overview of your workflow in the form of a graph. From top to bottom, you can see the functions, methods and values in the current workflow.
 
@@ -33,22 +36,34 @@ Whenever you add a new node to the graph, you are asked to give it a name.
 
 <!-- ![Simple-ML Textual Workflow](img/textual_workflow.png) -->
 
+<p align="center">
 <img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/textual_workflow.png" width="700"/>
-
+</p>
+  
 The textual workflow is the DSL code specifying the ML workflow. You can simply edit and extend the code. On the left side, warnings and errors are shown. Valid code also gets visible in the visual workflow.
 
 ## Sidebar
 
 The sidebar is shown on the right side whenever additional information is available or when your input is required. For example, you can use the sidebar to view a dataset or to get an overview of all available datasets as shown in the following.
 
+---
+
 ### Overview of Datasets
 
 Whenever you use the global function `loadDataset`, the sidebar will show an overview of all available datasets.
 
+<p align="center">
+<kbd>
 <img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/load_datasets_sidebar.PNG" width="250"/>
+</kbd>
+</p>
+  
+---
 
 ### Inspection of a Dataset
 
 By clicking on a dataset node and then clicking on `View`, you can inspect a dataset in detail.
 
-<img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/table_view.PNG " width="700"/>
+<p align="center">
+<img src="https://github.com/Simple-ML/Simple-ML/raw/main/docs/img/table_view.PNG " width="800"/>
+</p>
