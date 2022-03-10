@@ -3,7 +3,7 @@ FROM continuumio/miniconda3:4.10.3-alpine
 COPY environment.yml ./
 RUN conda env create -f environment.yml
 
-COPY runtime runtime/runtime/
+COPY runtime/ runtime/
 RUN conda run -n runtime conda develop runtime
 
 COPY stdlib/ stdlib/
