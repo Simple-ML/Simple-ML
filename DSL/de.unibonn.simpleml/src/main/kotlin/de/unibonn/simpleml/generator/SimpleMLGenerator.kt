@@ -126,7 +126,7 @@ class SimpleMLGenerator : AbstractGenerator() {
                         |if __name__ == '__main__':
                         |$indent${it.correspondingPythonName()}()
                         |
-                    """.trimMargin()
+                """.trimMargin()
 
                 fsa.generateFile(fileName, content)
             }
@@ -313,7 +313,7 @@ class SimpleMLGenerator : AbstractGenerator() {
 
                     if (shouldSavePlaceholders) {
                         stmt.placeholdersOrEmpty().forEach {
-                            imports += ImportData("$runtimeBridgePackage")
+                            imports += ImportData(runtimeBridgePackage)
                             stringBuilder.append("\n$runtimeBridgePackage.save_placeholder('${it.name}', ${it.name})")
                         }
                     }
@@ -492,17 +492,17 @@ class SimpleMLGenerator : AbstractGenerator() {
                         callRecursive(CompileExpressionFrame(expr.rightOperand, imports, blockLambdaIdManager))
                     when (expr.operator()) {
                         Or -> {
-                            imports += ImportData("$codegenPackage.eager_or")
+                            imports += ImportData(codegenPackage)
                             "$codegenPackage.eager_or($leftOperand, $rightOperand)"
                         }
                         And -> {
-                            imports += ImportData("$codegenPackage.eager_and")
+                            imports += ImportData(codegenPackage)
                             "$codegenPackage.eager_and($leftOperand, $rightOperand)"
                         }
                         IdenticalTo -> "($leftOperand) is ($rightOperand)"
                         NotIdenticalTo -> "($leftOperand) is not ($rightOperand)"
                         Elvis -> {
-                            imports += ImportData("$codegenPackage.eager_elvis")
+                            imports += ImportData(codegenPackage)
                             "$codegenPackage.eager_elvis($leftOperand, $rightOperand)"
                         }
                         else -> "($leftOperand) ${expr.operator} ($rightOperand)"
@@ -539,7 +539,7 @@ class SimpleMLGenerator : AbstractGenerator() {
                                 callRecursive(CompileExpressionFrame(expr.member, imports, blockLambdaIdManager))
                             when {
                                 expr.isNullSafe -> {
-                                    imports += ImportData("$codegenPackage.safe_access")
+                                    imports += ImportData(codegenPackage)
                                     "$codegenPackage.safe_access($receiver, '$member')"
                                 }
                                 else -> "$receiver.$member"
