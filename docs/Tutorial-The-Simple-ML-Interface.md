@@ -9,7 +9,7 @@
 
 # The Simple-ML Interface
 
-After you have started Simple-ML and created a new project, you will see the following interface:
+After you have started Simple-ML, you will see an interface similar to the following
 
 <!-- ![Simple-ML GUI](img/overview.png) -->
 
