@@ -7,9 +7,9 @@
 [dsl-tutorial]: ./DSL/tutorial/README.md
 [tutorial]: ./Tutorial.md
 
-This page gives an overview of the classes and functions required to create a data processing and machine learning workflow.
+# Functions and Classes
 
-# Overview
+This page gives an overview of the classes and functions required to create a data processing and machine learning workflow.
 
 * [Class: Dataset](#class-dataset)  
 * [Class: Instance](#class-instance)  
