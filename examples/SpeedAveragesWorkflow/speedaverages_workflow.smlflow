@@ -11,7 +11,7 @@ workflow speedaveragesWorkflow {
     val dataset = loadDataset("SpeedAverages");
 
     // drop unused attributes
-    val datasetWithDroppedColumns = dataset.dropAttributes(["osm_id", "geometry"])
+    val datasetWithDroppedColumns = dataset.dropAttributes("osm_id", "geometry");
 
 	// set target attribute
     val datasetWithTarget = datasetWithDroppedColumns.setTargetAttribute("average_speed");
