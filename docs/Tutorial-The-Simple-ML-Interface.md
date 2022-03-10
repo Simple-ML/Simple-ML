@@ -1,3 +1,12 @@
+[Tutorial][tutorial] - [Idea and basic concepts][tutorial_concepts] | Interface | [Functions][functions] | [DSL][dsl-tutorial]
+
+
+[tutorial_concepts]: ./Tutorial-Basic-Concepts.md
+[tutorial_interface]: ./Tutorial-The-Simple-ML-Interface.md
+[functions]: ./classes_and_functions.md
+[dsl-tutorial]: ./DSL/tutorial/README.md
+[tutorial]: ./Tutorial.md
+
 # The Simple-ML Interface
 
 After you have started Simple-ML and created a new project, you will see the following interface:
