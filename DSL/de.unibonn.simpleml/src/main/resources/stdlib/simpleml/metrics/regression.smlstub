@@ -1,4 +1,4 @@
-package simpleml.metrics.classification
+package simpleml.metrics.regression
 
 import simpleml.dataset.Dataset
 
