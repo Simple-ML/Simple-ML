@@ -11,5 +11,5 @@ RUN conda run -n runtime conda develop runtime
 COPY stdlib/ /app/stdlib/
 RUN conda run -n runtime conda develop stdlib/python
 
-ENTRYPOINT conda run -n runtime python -m runtime
+ENTRYPOINT ["conda", "run", "-n", "runtime", "python", "-m", "runtime"]
 EXPOSE 6789
