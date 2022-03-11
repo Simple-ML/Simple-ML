@@ -133,7 +133,7 @@ async def requestHandler(websocket, path):
                 model = PlaceholderMap[data["prediciton"]["model_name"]]
                 data = PlaceholderMap[data["prediciton"]["data"]]
                 model.predict(data)
-                if MODEL == None:
+                if MODEL is None:
                     print("")
                 else:
                     PlaceholderMap[data["prediciton"]["model_name"]].fit(data["prediction"]["data_sample"])
@@ -185,7 +185,7 @@ async def requestHandler(websocket, path):
                         {"status": "Session not found"})
                     await notify_state()
             else:
-                logging.error("unsupported event: {}", data)
+                logging.error("Unsupported event: {}".format(data["action"]))
     except ValueError as exc:
         print("exception")
         log = open('runtime/error.log', 'w')
@@ -234,7 +234,7 @@ class CodeWorker(threading.Thread):
         # sys.stdout = log
         import subprocess
 
-        result = subprocess.check_output('python3 runtime/' + main_file, shell=True)
+        subprocess.check_output('python3 runtime/' + main_file, shell=True)
         print("Excuting file: " + main_file)
         # print(result)
 
