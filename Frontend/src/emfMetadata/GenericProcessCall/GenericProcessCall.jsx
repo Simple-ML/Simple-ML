@@ -169,8 +169,7 @@ export default class GenericProcessCall extends MxGraphVertexComponent {
                                     this.props.emfEntity.id, 
                                     this.state.metadata.emfPath + '/@resultList/@results.' + index
                                 )
-                                let associationTargetPath = '//' + EmfModelHelper.getFullHierarchy2(this.props.emfEntity)
-                                associationTargetPath = associationTargetPath.substring(0, associationTargetPath.length - 1)
+                                let associationTargetPath = EmfModelHelper.getFullHierarchy(this.props.emfEntity)
                                 this.openContextMenu({
                                     vertex: true,
                                     emfReference: this.props.emfEntity,
