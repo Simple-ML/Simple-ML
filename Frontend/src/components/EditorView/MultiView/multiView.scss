@@ -1,50 +1,49 @@
 .view-toggler {
-    background-color: white;
-    text-align: left;
-    padding-top: 32px;
-    padding-bottom: 32px;
-    width: 100%;
+    background-color: #ffffff;
     border: 0px;
-  
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-  
     font-family: DIN-regular;
     font-size: 16px;
-    letter-spacing: 0.23px;
+    letter-spacing: .23px;
     line-height: 22px;
+    padding-bottom: 32px;
+    padding-top: 32px;
+    text-align: left;
+    width: 100%;
 }
 
 .multi-view-container {
-    min-height: 830px;
-    height: 100%;
-    width: 100%;
     background-color: #2f1433;
-    display:grid;
+    display: flex;
+    height: 100vh;
+    min-height: 830px;
+    width: 80%;
   
     .textEditor {
-        position: relative;
-        min-width: 450px;
-        min-height: 400px;
         margin: 0px;
+        min-height: 400px;
+        min-width: 450px;
+        position: relative;
     }
   
     .graphicalEditor {
-        position: relative;
         height: 100%;
+        overflow: scroll;
         padding: 1em;
-        overflow:scroll;
+        position: relative;
     }
   
     .lm_goldenlayout{
-        height:100%;
-        border:0px;
         background: #290b2e;
+        border:0px;
+        height:100%;
+
         .lm_header{
             background-color:#2f1433;
-            min-width: 1.5em;
+            float: left;
             margin: 0px;
-            float:left;
+            min-width: 1.5em;
     
             .lm_tabs{
                 display:none;
@@ -56,10 +55,9 @@
         }
     
         .lm_items{
-            width:calc(100% - 24px) !important;
             height: 100%;
-            //margin-left:1.5em;
-            //padding-left:1.5em;
+            width:calc(100% - 24px) !important;
+
             .lm_item_container{
                 height:100%;
                 width:100% !important;
@@ -79,8 +77,8 @@
         }
         .lm_content{
             background-color:#461f4c;
-            width:100%!important;
             border:0px;
+            width:100%!important;
         }
         .lm_dragging{
             background-color:#2f1433;

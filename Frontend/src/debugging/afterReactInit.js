@@ -99,6 +99,16 @@ workflow winebasic {
     XtextServices.addSuccessListener((serviceType, result) => {
         console.log({serviceType, result})
     });
+
+    TextEditorWrapper.setText(
+        `package example
+
+        workflow exampleworkflow {
+            
+        }
+        `
+    );
 }
+
 
 export default afterReactInit;

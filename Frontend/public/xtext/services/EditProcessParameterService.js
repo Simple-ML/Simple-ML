@@ -1,17 +1,24 @@
+/*******************************************************************************
+ * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 
- define(['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery) {
+define(['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery) {
 
     /**
      * Service class for loading resources. The resulting text is passed to the editor context.
      */
-    function GetProcessMetadataService(serviceUrl, resourceId) {
-        this.initialize(serviceUrl, 'getProcessMetadata', resourceId);
+    function EditProcessParameterService(serviceUrl, resourceId) {
+        this.initialize(serviceUrl, 'editProcessParameter', resourceId);
         this._completionCallbacks = [];
     };
 
-    GetProcessMetadataService.prototype = new XtextService();
+    EditProcessParameterService.prototype = new XtextService();
 
-    GetProcessMetadataService.prototype.onComplete = function(xhr, textStatus) {
+    EditProcessParameterService.prototype.onComplete = function(xhr, textStatus) {
         var callbacks = this._completionCallbacks;
         this._completionCallbacks = [];
         for (var i = 0; i < callbacks.length; i++) {
@@ -24,11 +31,11 @@
     /**
      * Add a callback to be invoked when the service call has completed.
      */
-     GetProcessMetadataService.prototype.addCompletionCallback = function(callback, params) {
+     EditProcessParameterService.prototype.addCompletionCallback = function(callback, params) {
         this._completionCallbacks.push({callback: callback, params: params});
     }
 
-    GetProcessMetadataService.prototype.invoke = function(editorContext, params, deferred) {
+    EditProcessParameterService.prototype.invoke = function(editorContext, params, deferred) {
         if (deferred === undefined) {
             deferred = jQuery.Deferred();
         }
@@ -41,7 +48,7 @@
 
         var serverData = {
             contentType: params.contentType,
-            entityPathCollection: params.entityPathCollection
+            editProcessParameterDTO: params.editProcessParameterDTO
         };
 
         knownServerState.updateInProgress = true;
@@ -51,6 +58,8 @@
             data: serverData,
 
             success: function(result) {
+                editorContext.setText(result.fullText);
+                editorContext.setDirty();
                 var listeners = editorContext.updateServerState(result.fullText, result.stateId);
                 for (var i = 0; i < listeners.length; i++) {
                     listeners[i](params);
@@ -77,8 +86,9 @@
         });
     };
 
-    GetProcessMetadataService.prototype._getSuccessCallback = function(editorContext, params, deferred) {
+    EditProcessParameterService.prototype._getSuccessCallback = function(editorContext, params, deferred) {
         return function(result) {
+            editorContext.setText(result.fullText);
             var listeners = editorContext.updateServerState(result.fullText, result.stateId);
             for (var i = 0; i < listeners.length; i++) {
                 listeners[i](params);
@@ -87,5 +97,5 @@
         }
     }
 
-    return GetProcessMetadataService;
+    return EditProcessParameterService;
 });

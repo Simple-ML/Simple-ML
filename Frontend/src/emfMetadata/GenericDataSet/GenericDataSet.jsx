@@ -76,13 +76,13 @@ export default class GenericDataSet extends MxGraphVertexComponent {
             <div className={genericDataSetStyle.IconContainer}>
                 <img src={this.setIcon()} alt={this.props.emfEntity.data.name}
                 onClick={() => {
-                    let associationTargetPath = '//' + EmfModelHelper.getFullHierarchy2(this.props.emfEntity)
-                    associationTargetPath = associationTargetPath.substring(0, associationTargetPath.length - 1)
-
+                    let associationTargetPath = EmfModelHelper.getFullHierarchy(this.props.emfEntity)
                     XtextServices.getProcessProposals(
                         this.props.emfEntity.id, 
                         associationTargetPath
                     )
+
+                    this.entitySelect(this.props.emfEntity);
                     
                     this.openContextMenu({
                         vertex: true,
