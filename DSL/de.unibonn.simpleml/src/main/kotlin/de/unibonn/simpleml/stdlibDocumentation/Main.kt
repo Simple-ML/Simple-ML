@@ -21,10 +21,8 @@ class Main @Inject constructor(
 
     fun runStdlibDocumentationGenerator(outputDirectory: Path) {
 
-        // Load the resources
+        // Load the standard library
         val resourceSet = resourceSetProvider.get()
-
-        // Load the library
         resourceSet.loadStdlib()
 
         // Validate all resources
