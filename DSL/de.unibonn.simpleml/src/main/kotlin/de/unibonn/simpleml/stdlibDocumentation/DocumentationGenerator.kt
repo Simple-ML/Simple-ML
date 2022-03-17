@@ -3,7 +3,10 @@ package de.unibonn.simpleml.stdlibDocumentation
 import de.unibonn.simpleml.emf.containingCompilationUnitOrNull
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.scoping.allGlobalDeclarations
+import de.unibonn.simpleml.serializer.SerializationResult
+import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlAnnotation
+import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlFunction
@@ -11,6 +14,7 @@ import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.stdlibAccess.descriptionOrNull
 import de.unibonn.simpleml.stdlibAccess.validTargets
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.EcoreUtil2
 import java.nio.file.Path
 import kotlin.io.path.createDirectories
 import kotlin.io.path.writeText
@@ -119,7 +123,7 @@ private fun createPackageDocumentation(
         appendLine(createAnnotationDocumentation(it))
     }
 
-    appendLine("\n$autogenWarning")
+    appendLine(autogenWarning)
 }
 
 private fun createAnnotationDocumentation(annotation: SmlAnnotation) = buildString {
@@ -133,7 +137,9 @@ private fun createAnnotationDocumentation(annotation: SmlAnnotation) = buildStri
     }
 
     // Parameters
-    append(createParametersDocumentation(annotation.parametersOrEmpty()))
+    if (annotation.parametersOrEmpty().isNotEmpty()) {
+        append("\n" + createParametersDocumentation(annotation.parametersOrEmpty()))
+    }
 
     // Targets
     appendLine("\n**Valid targets:**")
@@ -143,7 +149,11 @@ private fun createAnnotationDocumentation(annotation: SmlAnnotation) = buildStri
         .joinToString(separator = "\n") {
             "* ${it.name}"
         }
-    append(validTargets)
+    appendLine(validTargets)
+}
+
+private fun createAttributeDocumentation(attribute: SmlAttribute): String {
+    return ""
 }
 
 private fun createClassDocumentation(`class`: SmlClass, nestingLevel: Int): String {
@@ -159,5 +169,31 @@ private fun createFunctionDocumentation(function: SmlFunction, nestingLevel: Int
 }
 
 private fun createParametersDocumentation(parameters: List<SmlParameter>) = buildString {
-    appendLine("\n**Parameters:**")
+    appendLine("**Parameters:**")
+    parameters.forEach { parameter ->
+
+        // Remember description before annotation calls are removed
+        val description = parameter.descriptionOrNull()
+
+        // Remove annotation calls, so they don't show up in the serialized code
+        parameter.annotationCalls
+            .toList()
+            .forEach { annotationCall ->
+                EcoreUtil2.remove(annotationCall)
+            }
+
+        // Try to serialize the parameter
+        val itemHeading = when (val serializationResult = parameter.serializeToFormattedString()) {
+            is SerializationResult.Success -> "`${serializationResult.code}`"
+            else -> parameter.name
+        }
+
+        append("* $itemHeading")
+
+        if (!description.isNullOrBlank()) {
+            append(": $description")
+        }
+
+        appendLine()
+    }
 }
