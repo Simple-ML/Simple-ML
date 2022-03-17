@@ -31,9 +31,6 @@ The definition of a domain-specific language (**DSL**) is a central contribution
 The following page provides a tutorial for users of Simple-ML:
 
 * [Tutorial][tutorial]
-<!--   * [Basic Concepts][tutorial_concepts]
-   * [The Interface][tutorial_interface]
-   * [DSL][dsl-tutorial] -->
 
 ## Additional Documentation for Developers
 
@@ -43,14 +40,13 @@ Developers get more information about the implementation of the specific compone
    * [Frontend][frontend]
    * [Runtime][runtime]
    * [Data API][data_api]
+   * [DSL][adding-new-language-feature]
 
 [tutorial]: ./docs/Tutorial.md
-[tutorial_concepts]: ./docs/Tutorial-Basic-Concepts.md
-[tutorial_interface]: ./docs/Tutorial-The-Simple-ML-Interface.md
-[dsl-tutorial]: ./docs/DSL/tutorial/README.md
 [data_api]: ./docs/Data-API.md
 [data_set_api]: ./docs/Data-Set-API.md
 [data_catalog_api]: ./docs/Data-Catalog-API.md
 [frontend]: ./docs/Front-End.md
 [ml_catalog_api]: ./docs/Machine-Learning-Catalog-API.md
 [runtime]: ./docs/Runtime-Server.md
+[adding-new-language-feature]: ./docs/DSL/development/how-to-add-a-new-language-concept.md
