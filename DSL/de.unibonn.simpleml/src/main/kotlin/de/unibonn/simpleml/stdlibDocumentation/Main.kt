@@ -1,73 +1,65 @@
-package de.unibonn.simpleml.generator
+package de.unibonn.simpleml.stdlibDocumentation
 
 import com.google.inject.Inject
 import com.google.inject.Provider
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
+import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.stdlibAccess.loadStdlib
-import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtext.diagnostics.Severity
-import org.eclipse.xtext.generator.GeneratorContext
-import org.eclipse.xtext.generator.GeneratorDelegate
-import org.eclipse.xtext.generator.JavaIoFileSystemAccess
 import org.eclipse.xtext.util.CancelIndicator
 import org.eclipse.xtext.validation.CheckMode
 import org.eclipse.xtext.validation.IResourceValidator
+import java.nio.file.Path
 import kotlin.system.exitProcess
 
 @Suppress("unused")
 class Main @Inject constructor(
-    private val fileAccess: JavaIoFileSystemAccess,
-    private val generator: GeneratorDelegate,
     private val resourceSetProvider: Provider<ResourceSet>,
     private val validator: IResourceValidator
 ) {
 
-    fun runCodeGenerator(files: List<String>) {
+    fun runStdlibDocumentationGenerator(outputDirectory: Path) {
 
         // Load the resources
         val resourceSet = resourceSetProvider.get()
-        files.forEach {
-            resourceSet.getResource(URI.createFileURI(it), true)
-                ?: throw IllegalArgumentException("Could not create resource for $it.")
-        }
 
         // Load the library
         resourceSet.loadStdlib()
 
-        // Configure the generator
-        fileAccess.setOutputPath("src-gen/")
-        val context = GeneratorContext().apply {
-            cancelIndicator = CancelIndicator.NullImpl
-        }
-
-        // Generate all resources
+        // Validate all resources
+        var hasErrors = false
         resourceSet.resources.forEach { resource ->
-
-            // Validate the resource
             val issues = validator.validate(resource, CheckMode.ALL, CancelIndicator.NullImpl)
             if (issues.any { it.severity == Severity.ERROR }) {
                 issues.forEach { println(it) }
-
-                System.err.println("Aborting: A resource has errors.")
-                exitProcess(20)
+                hasErrors = true
             }
-
-            // Start the generator
-            generator.generate(resource, fileAccess, context)
         }
 
-        println("Code generation finished.")
+        if (hasErrors) {
+            System.err.println("Aborting: A resource has errors.")
+            exitProcess(20)
+        } else {
+            val context = resourceSet.resources.getOrNull(0)?.compilationUnitOrNull()
+            if (context == null) {
+                System.err.println("Aborting: Resource set is empty.")
+                exitProcess(30)
+            }
+            context.generateDocumentation(outputDirectory)
+        }
+
+        println("Generation of stdlib documentation finished.")
     }
 }
 
 fun main(args: Array<String>) {
     if (args.isEmpty()) {
-        System.err.println("Aborting: No path to EMF resource provided.")
+        System.err.println("Aborting: No path to output directory provided.")
         exitProcess(10)
     }
 
     val injector = SimpleMLStandaloneSetup().createInjectorAndDoEMFRegistration()
     val main = injector.getInstance(Main::class.java)
-    main.runCodeGenerator(args.toList())
+    main.runStdlibDocumentationGenerator(Path.of(args[0]))
 }
