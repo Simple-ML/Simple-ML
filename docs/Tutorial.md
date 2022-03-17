@@ -9,10 +9,11 @@ The Simple-ML tutorial consists of the following four steps:
 * (optional) [Functions][functions]: A overview of the most relevant classes, functions and methods for creating workflows.
 * (optional) [DSL][dsl-tutorial]: A documentation of the Simple-ML workflow language (DSL) and stub languages.
 
-The installation is described on the [Simple-ML main GitHub page](https://github.com/Simple-ML/Simple-ML/blob/main/README.md).
+The installation is described on the [Simple-ML main GitHub page][main-readme].
 
+[main-readme]: ../README.md
 [tutorial_concepts]: ./Tutorial-Basic-Concepts.md
 [tutorial_interface]: ./Tutorial-The-Simple-ML-Interface.md
-[functions]: ./Stdlib/API/README.md.md
+[functions]: ./Stdlib/API/README.md
 [dsl-tutorial]: ./DSL/tutorial/README.md
 [tutorial]: ./Tutorial.md

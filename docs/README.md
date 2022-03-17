@@ -14,4 +14,4 @@
 [frontend]: ./Front-End.md
 [ml_catalog_api]: ./Machine-Learning-Catalog-API.md
 [runtime]: ./Runtime-Server.md
-[adding-new-language-feature]: ./docs/DSL/development/how-to-add-a-new-language-concept.md
+[adding-new-language-feature]: ./DSL/development/how-to-add-a-new-language-concept.md
