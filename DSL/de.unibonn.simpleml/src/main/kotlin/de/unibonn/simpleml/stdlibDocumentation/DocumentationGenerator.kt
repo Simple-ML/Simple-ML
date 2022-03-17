@@ -50,17 +50,17 @@ private fun createReadme(outputDirectory: Path, packagesToDeclarations: Map<Stri
 }
 
 private fun createPackageFiles(outputDirectory: Path, packagesToDeclarations: Map<String, List<EObject>>) {
-//    val packageDescriptions = packagesToDeclarations.keys.joinToString(separator = "\n") { packageName ->
-//        "* [$packageName](${packageName.replace(".", "_")}.md)"
-//    }
-//
-//    outputDirectory.resolve("README.md").writeText(
-//        """
-//            |# Simple-ML API Documentation
-//            |
-//            |$packageDescriptions
-//            |
-//            |$autogenWarning
-//        """.trimMargin()
-//    )
+    packagesToDeclarations.forEach { (packageName, globalDeclarations) ->
+        createPackageFile(outputDirectory, packageName, globalDeclarations)
+    }
+}
+
+private fun createPackageFile(outputDirectory: Path, packageName: String, globalDeclarations: List<EObject>) {
+    outputDirectory.resolve("${packageName.replace(".", "_")}.md").writeText(
+        """
+            |# Package `$packageName`
+            |
+            |$autogenWarning
+        """.trimMargin()
+    )
 }
