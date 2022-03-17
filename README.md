@@ -15,7 +15,7 @@ The definition of a domain-specific language (**DSL**) is a central contribution
 
 1. Install [Docker](https://www.docker.com/).
 1. **On Linux:** Install [Docker Compose v2](https://docs.docker.com/compose/cli-command/#install-on-linux).
-1. Clone this repository using the branch `feature/sidebar-master-merge` (e.g., via `git clone -b feature/sidebar-master-merge ...`).
+1. Clone this repository.
 1. Install and start Simple-ML by running the following command in the root directory of the cloned repository. This will take a few minutes **the first time** you do it:
     ```shell
     docker compose up
