@@ -1,16 +1,25 @@
+// The duplication gives us the flexibility to change parts of the generated Markdown individually
+@file:Suppress("DuplicatedCode")
+
 package de.unibonn.simpleml.stdlibDocumentation
 
+import de.unibonn.simpleml.emf.classMembersOrEmpty
 import de.unibonn.simpleml.emf.containingCompilationUnitOrNull
 import de.unibonn.simpleml.emf.parametersOrEmpty
+import de.unibonn.simpleml.emf.resultsOrEmpty
+import de.unibonn.simpleml.emf.variantsOrEmpty
 import de.unibonn.simpleml.scoping.allGlobalDeclarations
 import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
+import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlEnum
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlParameter
+import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.stdlibAccess.descriptionOrNull
 import de.unibonn.simpleml.stdlibAccess.validTargets
 import org.eclipse.emf.ecore.EObject
@@ -19,8 +28,10 @@ import java.nio.file.Path
 import kotlin.io.path.createDirectories
 import kotlin.io.path.writeText
 
+private val horizontalRule = "-".repeat(10)
+
 private val autogenWarning = """
-    |----------
+    |$horizontalRule
     |
     |**This file was created automatically. Do not change it manually!**
 """.trimMargin()
@@ -101,11 +112,16 @@ private fun createPackageDocumentation(
         annotations.forEach {
             appendLine("* [Annotation `${it.name}`](#annotation-${it.name})")
         }
+
+        appendLine("\n$horizontalRule\n")
     }
 
     // Classes
     classes.forEach {
         appendLine(createClassDocumentation(it, nestingLevel = 2))
+        if (it != classes.last()) {
+            appendLine("$horizontalRule\n")
+        }
     }
 
     // Global functions
@@ -127,14 +143,12 @@ private fun createPackageDocumentation(
 }
 
 private fun createAnnotationDocumentation(annotation: SmlAnnotation) = buildString {
+
+    // Heading
     appendLine("## Annotation `${annotation.name}`")
 
     // Description
-    if (annotation.descriptionOrNull() != null) {
-        appendLine(annotation.descriptionOrNull())
-    } else {
-        appendLine("_No description available._")
-    }
+    appendLine(annotation.descriptionOrAltText())
 
     // Parameters
     if (annotation.parametersOrEmpty().isNotEmpty()) {
@@ -152,48 +166,222 @@ private fun createAnnotationDocumentation(annotation: SmlAnnotation) = buildStri
     appendLine(validTargets)
 }
 
-private fun createAttributeDocumentation(attribute: SmlAttribute): String {
-    return ""
+private fun createAttributeDocumentation(attribute: SmlAttribute) = buildString {
+
+    // Remember description before annotation calls are removed
+    val description = attribute.descriptionOrAltText()
+
+    // Remove annotation calls, so they don't show up in the serialized code
+    attribute.annotationCalls
+        .toList()
+        .forEach { annotationCall ->
+            EcoreUtil2.remove(annotationCall)
+        }
+
+    // Try to serialize the attribute
+    val itemHeading = when (val serializationResult = attribute.serializeToFormattedString()) {
+        is SerializationResult.Success -> "`${serializationResult.code}`"
+        else -> attribute.name
+    }
+
+    // Heading
+    append("* $itemHeading")
+
+    // Description
+    appendLine(" - $description")
 }
 
-private fun createClassDocumentation(`class`: SmlClass, nestingLevel: Int): String {
-    return ""
+private fun createClassDocumentation(`class`: SmlClass, nestingLevel: Int): String = buildString {
+    val attributes = `class`.classMembersOrEmpty().filterIsInstance<SmlAttribute>().sortedBy { it.name }
+    val methods = `class`.classMembersOrEmpty().filterIsInstance<SmlFunction>().sortedBy { it.name }
+    val classes = `class`.classMembersOrEmpty().filterIsInstance<SmlClass>().sortedBy { it.name }
+    val enums = `class`.classMembersOrEmpty().filterIsInstance<SmlEnum>().sortedBy { it.name }
+
+    // Heading
+    if (isGlobal(nestingLevel)) {
+        appendLine("## Class `${`class`.name}`")
+    } else {
+        appendLine("${heading(nestingLevel)} Nested Class `${`class`.name}")
+    }
+
+    // Description
+    appendLine(`class`.descriptionOrAltText())
+
+    // Constructor
+    appendLine("\n" + createConstructorDocumentation(`class`))
+
+    // Attributes
+    if (attributes.isNotEmpty()) {
+        appendLine("**Attributes:**")
+        attributes.forEach {
+            append(createAttributeDocumentation(it))
+        }
+        appendLine()
+    }
+
+    // Methods
+    methods.forEach {
+        appendLine(createFunctionDocumentation(it, nestingLevel + 1))
+    }
+
+    // Classes
+    classes.forEach {
+        appendLine(createClassDocumentation(it, nestingLevel + 1))
+    }
+
+    // Enums
+    enums.forEach {
+        appendLine(createEnumDocumentation(it, nestingLevel + 1))
+    }
 }
 
-private fun createEnumDocumentation(enum: SmlEnum, nestingLevel: Int): String {
-    return ""
+private fun createConstructorDocumentation(`class`: SmlClass) = buildString {
+    if (`class`.parameterList == null) {
+        appendLine("**Constructor:** _Class has no constructor._")
+    } else if (`class`.parametersOrEmpty().isEmpty()) {
+        appendLine("**Constructor parameters:** _None expected._")
+    } else {
+        appendLine("**Constructor parameters:**")
+        `class`.parametersOrEmpty().forEach {
+            appendLine(createParameterDocumentation(it))
+        }
+    }
 }
 
-private fun createFunctionDocumentation(function: SmlFunction, nestingLevel: Int): String {
-    return ""
+private fun createEnumDocumentation(enum: SmlEnum, nestingLevel: Int) = buildString {
+    val variants = enum.variantsOrEmpty().sortedBy { it.name }
+
+    // Heading
+    if (isGlobal(nestingLevel)) {
+        appendLine("## Enum `${enum.name}`")
+    } else {
+        appendLine("${heading(nestingLevel)} Nested Enum `${enum.name}")
+    }
+
+    // Description
+    appendLine(enum.descriptionOrAltText())
+
+    // Variants
+    variants.forEach {
+        appendLine(createEnumVariantDocumentation(it, nestingLevel + 1))
+    }
+}
+
+private fun createEnumVariantDocumentation(enumVariant: SmlEnumVariant, nestingLevel: Int) = buildString {
+
+    // Heading
+    appendLine("${heading(nestingLevel)} Enum Variant `${enumVariant.name}`")
+
+    // Description
+    appendLine(enumVariant.descriptionOrAltText())
+
+    // Parameters
+    appendLine("\n" + createParametersDocumentation(enumVariant.parametersOrEmpty()))
+}
+
+private fun SmlAbstractDeclaration.descriptionOrAltText(): String {
+    return descriptionOrNull() ?: "_No description available._"
+}
+
+private fun createFunctionDocumentation(function: SmlFunction, nestingLevel: Int) = buildString {
+
+    // Heading
+    if (isGlobal(nestingLevel)) {
+        appendLine("## Global Function `${function.name}`")
+    } else if (function.isStatic) {
+        appendLine("${heading(nestingLevel)} Static Method `${function.name}`")
+    } else {
+        appendLine("${heading(nestingLevel)} Instance Method `${function.name}`")
+    }
+
+    // Description
+    appendLine(function.descriptionOrAltText())
+
+    // Parameters
+    appendLine("\n" + createParametersDocumentation(function.parametersOrEmpty()))
+
+    // Results
+    append(createResultsDocumentation(function.resultsOrEmpty()))
 }
 
 private fun createParametersDocumentation(parameters: List<SmlParameter>) = buildString {
-    appendLine("**Parameters:**")
-    parameters.forEach { parameter ->
-
-        // Remember description before annotation calls are removed
-        val description = parameter.descriptionOrNull()
-
-        // Remove annotation calls, so they don't show up in the serialized code
-        parameter.annotationCalls
-            .toList()
-            .forEach { annotationCall ->
-                EcoreUtil2.remove(annotationCall)
-            }
-
-        // Try to serialize the parameter
-        val itemHeading = when (val serializationResult = parameter.serializeToFormattedString()) {
-            is SerializationResult.Success -> "`${serializationResult.code}`"
-            else -> parameter.name
+    if (parameters.isEmpty()) {
+        appendLine("**Parameters:** _None expected._")
+    } else {
+        appendLine("**Parameters:**")
+        parameters.forEach {
+            appendLine(createParameterDocumentation(it))
         }
-
-        append("* $itemHeading")
-
-        if (!description.isNullOrBlank()) {
-            append(": $description")
-        }
-
-        appendLine()
     }
 }
+
+private fun createParameterDocumentation(parameter: SmlParameter) = buildString {
+
+    // Remember description before annotation calls are removed
+    val description = parameter.descriptionOrNull()
+
+    // Remove annotation calls, so they don't show up in the serialized code
+    parameter.annotationCalls
+        .toList()
+        .forEach { annotationCall ->
+            EcoreUtil2.remove(annotationCall)
+        }
+
+    // Try to serialize the parameter
+    val itemHeading = when (val serializationResult = parameter.serializeToFormattedString()) {
+        is SerializationResult.Success -> "`${serializationResult.code}`"
+        else -> parameter.name
+    }
+
+    // Heading
+    append("* $itemHeading")
+
+    // Description
+    append(" - ${parameter.descriptionOrAltText()}")
+}
+
+private fun createResultsDocumentation(result: List<SmlResult>) = buildString {
+    if (result.isEmpty()) {
+        appendLine("**Results:** _None returned._")
+    } else {
+        appendLine("**Results:**")
+        result.forEach {
+            appendLine(createResultDocumentation(it))
+        }
+    }
+}
+
+private fun createResultDocumentation(result: SmlResult) = buildString {
+
+    // Remember description before annotation calls are removed
+    val description = result.descriptionOrNull()
+
+    // Remove annotation calls, so they don't show up in the serialized code
+    result.annotationCalls
+        .toList()
+        .forEach { annotationCall ->
+            EcoreUtil2.remove(annotationCall)
+        }
+
+    // Try to serialize the result
+    val itemHeading = when (val serializationResult = result.serializeToFormattedString()) {
+        is SerializationResult.Success -> "`${serializationResult.code}`"
+        else -> result.name
+    }
+
+    // Heading
+    append("* $itemHeading")
+
+    // Description
+    append(" - ${result.descriptionOrAltText()}")
+}
+
+/**
+ * Creates the appropriate Markdown keyword for a heading with this [nestingLevel]. Markdown allows up to six levels of
+ * headings.
+ */
+private fun heading(nestingLevel: Int): String {
+    return "#".repeat(minOf(nestingLevel, 6))
+}
+
+private fun isGlobal(nestingLevel: Int) = nestingLevel == 2
