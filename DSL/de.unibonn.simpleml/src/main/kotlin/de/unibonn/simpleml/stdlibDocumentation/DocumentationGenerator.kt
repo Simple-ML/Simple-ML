@@ -377,7 +377,7 @@ private fun createParameterDocumentation(parameter: SmlParameter) = buildString 
     append("* $itemHeading")
 
     // Description
-    append(" - ${description}")
+    append(" - $description")
 }
 
 private fun createResultsDocumentation(result: List<SmlResult>) = buildString {
@@ -413,7 +413,7 @@ private fun createResultDocumentation(result: SmlResult) = buildString {
     append("* $itemHeading")
 
     // Description
-    append(" - ${description}")
+    append(" - $description")
 }
 
 /**
