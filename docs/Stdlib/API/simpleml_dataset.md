@@ -26,7 +26,7 @@
 <a name='class-Dataset'/>
 
 ## Class `Dataset`
-A dataset with its data instances (e.g., rows and columns).
+A dataset with its data instances (e.g., rows and columns)
 
 **Constructor:** _Class has no constructor._
 
@@ -34,66 +34,66 @@ A dataset with its data instances (e.g., rows and columns).
 Add a new attribute to the dataset with values according to a transformation function
 
 **Parameters:**
-* `columnName: String` - _No description available._
-* `transformFunc: (instance: Instance) -> value: Any` - _No description available._
+* `columnName: String` - The name of the new attribute
+* `transformFunc: (instance: Instance) -> value: Any` - The transformation function.
 * `newColumnLabel: String` - _No description available._
 
 **Results:**
-* `dataset: Dataset` - _No description available._
+* `dataset: Dataset` - The updated dataset
 
 ### `addDayOfTheYearAttribute` (Instance Method )
 Add a new attribute to the dataset specifying the day of the year of the specified column
 
 **Parameters:**
-* `columnName: String` - _No description available._
+* `columnName: String` - The attribute to be transformed
 
 **Results:**
-* `dataset: Dataset` - _No description available._
+* `dataset: Dataset` - The updated dataset
 
 ### `addIsWeekendAttribute` (Instance Method )
 Add a new attribute to the dataset specifying if the dates of the specified column are on the weekend or not
 
 **Parameters:**
-* `columnName: String` - _No description available._
+* `columnName: String` - The attribute to be transformed
 
 **Results:**
-* `dataset: Dataset` - _No description available._
+* `dataset: Dataset` - The updated dataset
 
 ### `addWeekDayAttribute` (Instance Method )
 Extract week day from given date attribute and add new attribute in dataset with weekday name
 
 **Parameters:**
-* `columnName: String` - _No description available._
+* `columnName: String` - The attribute to be transformed
 
 **Results:**
-* `dataset: Dataset` - _No description available._
+* `dataset: Dataset` - The updated dataset
 
 ### `dropAttribute` (Instance Method )
-Remove the provided attribute from the dataset
+Drop a single attribute from a dataset
 
 **Parameters:**
-* `attribute: String` - _No description available._
+* `attribute: String` - The attribute to drop from the dataset
 
 **Results:**
-* `dataset: Dataset` - _No description available._
+* `dataset: Dataset` - The updated dataset
 
 ### `dropAttributes` (Instance Method )
-Remove list of columns provided in argument from dataset
+Drop attributes from a dataset
 
 **Parameters:**
-* `vararg attributes: String` - _No description available._
+* `vararg attributes: String` - The list of attributes to drop from the dataset
 
 **Results:**
-* `dataset: Dataset` - _No description available._
+* `dataset: Dataset` - The updated dataset
 
 ### `dropMissingValues` (Instance Method )
 Drops instances with missing values in the specified attribute
 
 **Parameters:**
-* `attribute: String` - _No description available._
+* `attribute: String` - Attribute whose empty values are dropped
 
 **Results:**
-* `dataset: Dataset` - _No description available._
+* `dataset: Dataset` - The updated dataset
 
 ### `exportDataAsFile` (Instance Method )
 Export any dataset to CSV file
@@ -104,82 +104,82 @@ Export any dataset to CSV file
 **Results:** _None returned._
 
 ### `filterInstances` (Instance Method )
-Filter dataset based on any specific value from a column
+Remove instances in a dataset according to a filter function
 
 **Parameters:**
-* `filterFunc: (instance: Instance) -> shouldKeep: Boolean` - _No description available._
+* `filterFunc: (instance: Instance) -> shouldKeep: Boolean` - The filter function that returns either True (keep) or False (remove) for each instance
 
 **Results:**
-* `dataset: Dataset` - _No description available._
+* `dataset: Dataset` - The updated dataset
 
 ### `getRow` (Instance Method )
 Get a specific row of a dataset
 
 **Parameters:**
-* `rowNumber: Int` - _No description available._
+* `rowNumber: Int` - The number of the row to be retreived
 
 **Results:**
-* `instance: Instance` - _No description available._
+* `instance: Instance` - The specified row
 
 ### `keepAttribute` (Instance Method )
-Create a subset of a dataset with only the provided column
+Retain a single attribute of a dataset
 
 **Parameters:**
-* `attribute: String` - _No description available._
+* `attribute: String` - The attribute to retain in the dataset
 
 **Results:**
-* `dataset: Dataset` - _No description available._
+* `dataset: Dataset` - The updated dataset
 
 ### `keepAttributes` (Instance Method )
-Create a subset of a dataset with only list of columns provided in argument
+Retain attributes of a dataset
 
 **Parameters:**
-* `vararg attributes: String` - _No description available._
+* `vararg attributes: String` - The list of attributes to retain in the dataset
 
 **Results:**
-* `dataset: Dataset` - _No description available._
+* `dataset: Dataset` - The updated dataset
 
 ### `sample` (Instance Method )
 Create a sample of a dataset
 
 **Parameters:**
-* `nInstances: Int` - _No description available._
+* `nInstances: Int` - Number of instances in the sample
 
 **Results:**
-* `dataset: Dataset` - _No description available._
+* `sample: Dataset` - The sampled dataset
 
 ### `setTargetAttribute` (Instance Method )
 Set the specified attribute as prediction target
 
 **Parameters:**
-* `targetAttribute: String` - _No description available._
+* `targetAttribute: String` - The attribute to be predicted later on
 
 **Results:**
-* `dataset: Dataset` - _No description available._
+* `dataset: Dataset` - The updated dataset
 
 ### `splitIntoTrainAndTest` (Instance Method )
-Split dataset in train and test datasets
+Split a dataset in a train and a test dataset
 
 **Parameters:**
-* `trainRatio: Float` - _No description available._
-* `randomState: Int? = null` - _No description available._
+* `trainRatio: Float` - The percentage of instances to keep in the training dataset
+* `randomState: Int? = null` - A random seed to use for splitting
 
 **Results:**
-* `train: Dataset` - _No description available._
-* `test: Dataset` - _No description available._
+* `train: Dataset` - The training dataset
+* `test: Dataset` - The test dataset
 
 ### `splitIntoTrainAndTestAndLabels` (Instance Method )
-Splits dataset into four datasets: train/test and labels/features
+Split a dataset into four datasets: train/test and labels/features. Requires that a target attribute has been set before via setTargetAttribute()
 
 **Parameters:**
-* `trainRatio: Float` - _No description available._
-* `randomState: Int? = null` - _No description available._
+* `trainRatio: Float` - The percentage of instances to keep in the training dataset
+* `randomState: Int? = null` - A random seed to use for splitting
 
 **Results:**
-* `xTrain: Dataset` - _No description available._
-* `xTest: Dataset` - _No description available._
-* `yTrain: Dataset` - _No description available._
-* `yTest: Dataset` - _No description available._
+* `xTrain: Dataset` - Features of the training dataset
+* `xTest: Dataset` - Features of the test dataset
+* `yTrain: Dataset` - Labels of the training dataset
+* `yTest: Dataset` - Labels of the test dataset
 
 ### `transformDatatypes` (Instance Method )
 Convert all column values into numbers
@@ -187,16 +187,16 @@ Convert all column values into numbers
 **Parameters:** _None expected._
 
 **Results:**
-* `dataset: Dataset` - _No description available._
+* `dataset: Dataset` - The updated dataset
 
 ### `transformDateToTimestamp` (Instance Method )
 Convert date column values into timestamps
 
 **Parameters:**
-* `columnName: String` - _No description available._
+* `columnName: String` - The attribute to be transformed
 
 **Results:**
-* `dataset: Dataset` - _No description available._
+* `dataset: Dataset` - The updated dataset
 
 
 ----------
@@ -204,18 +204,18 @@ Convert date column values into timestamps
 <a name='class-Instance'/>
 
 ## Class `Instance`
-Individual instance in dataset
+A single instance (e.g., row) of a dataset
 
 **Constructor:** _Class has no constructor._
 
 ### `getValue` (Instance Method )
-To get value of instance
+Return a specific value of the instance
 
 **Parameters:**
-* `attribute: String` - _No description available._
+* `attribute: String` - The attribute whose value is returned
 
 **Results:**
-* `value: Any` - _No description available._
+* `value: Any` - The specified value
 
 
 ----------
@@ -223,18 +223,18 @@ To get value of instance
 <a name='class-StandardNormalizer'/>
 
 ## Class `StandardNormalizer`
-Data normalizer
+A normalizer to normalize dataset values
 
 **Constructor parameters:** _None expected._
 
 ### `normalize` (Instance Method )
-Normalize whole dataset
+Normalize all numeric values in the dataset
 
 **Parameters:**
-* `dataset: Dataset` - _No description available._
+* `dataset: Dataset` - Dataset to be normalized
 
 **Results:**
-* `normalizedDataset: Dataset` - _No description available._
+* `normalizedDataset: Dataset` - The normalized dataset
 
 
 ----------
@@ -242,18 +242,18 @@ Normalize whole dataset
 <a name='class-StandardScaler'/>
 
 ## Class `StandardScaler`
-Data scaler
+A scaler to scale dataset values
 
 **Constructor parameters:** _None expected._
 
 ### `scale` (Instance Method )
-Scale whole dataset
+Scale all numeric values in the dataset
 
 **Parameters:**
-* `dataset: Dataset` - _No description available._
+* `dataset: Dataset` - Dataset to be scaled
 
 **Results:**
-* `scaledDataset: Dataset` - _No description available._
+* `scaledDataset: Dataset` - The scaled dataset
 
 
 ## Global Functions
@@ -261,46 +261,46 @@ Scale whole dataset
 <a name='global-function-joinTwoDatasets'/>
 
 ## Global Function `joinTwoDatasets`
-Join two dataset and returns merged single dataset
+Join two datasets into one dataset
 
 **Parameters:**
-* `firstData: Dataset` - _No description available._
-* `secondData: Dataset` - _No description available._
-* `joinColumnName1: String` - _No description available._
-* `joinColumnName2: String` - _No description available._
-* `firstSuffix: String` - _No description available._
-* `secondSuffix: String` - _No description available._
+* `firstData: Dataset` - The first dataset
+* `secondData: Dataset` - The second dataset
+* `joinColumnName1: String` - The attribute of the first dataset to use for the join
+* `joinColumnName2: String` - The attribute of the second dataset to use for the join
+* `firstSuffix: String` - The suffix to be attached to the attribute names of the first dataset
+* `secondSuffix: String` - The suffix to be attached to the attribute names of the second dataset
 
 **Results:**
-* `dataset: Dataset` - _No description available._
+* `dataset: Dataset` - The joined dataset
 
 <a name='global-function-loadDataset'/>
 
 ## Global Function `loadDataset`
-Load dataset
+Load a dataset via its identifier
 
 **Parameters:**
-* `datasetID: String` - _No description available._
+* `datasetID: String` - Identifier of the dataset
 
 **Results:**
-* `dataset: Dataset` - _No description available._
+* `dataset: Dataset` - The loaded dataset
 
 <a name='global-function-readDataSetFromCSV'/>
 
 ## Global Function `readDataSetFromCSV`
-Read dataset directly from CSV file
+Load a dataset from a CSV file
 
 **Parameters:**
-* `fileName: String` - _No description available._
-* `datasetId: String` - _No description available._
-* `separator: String` - _No description available._
-* `hasHeader: String` - _No description available._
-* `nullValue: String` - _No description available._
-* `datasetName: String` - _No description available._
-* `coordinateSystem: Int = 3857` - _No description available._
+* `fileName: String` - Path and name of the CSV file
+* `datasetId: String` - Identifier of the dataset
+* `separator: String` - Separator used in the file
+* `hasHeader: String` - True, if the file has a header row
+* `nullValue: String` - String that should be parsed as missing value
+* `datasetName: String` - Name of the dataset
+* `coordinateSystem: Int = 3857` - Coordinate system used in the geometry columns of the dataset
 
 **Results:**
-* `dataset: Dataset` - _No description available._
+* `dataset: Dataset` - The loaded dataset
 
 ----------
 

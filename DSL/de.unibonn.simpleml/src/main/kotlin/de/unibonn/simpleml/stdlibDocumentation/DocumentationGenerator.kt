@@ -358,7 +358,7 @@ private fun createParametersDocumentation(parameters: List<SmlParameter>) = buil
 private fun createParameterDocumentation(parameter: SmlParameter) = buildString {
 
     // Remember description before annotation calls are removed
-    val description = parameter.descriptionOrNull()
+    val description = parameter.descriptionOrAltText()
 
     // Remove annotation calls, so they don't show up in the serialized code
     parameter.annotationCalls
@@ -377,7 +377,7 @@ private fun createParameterDocumentation(parameter: SmlParameter) = buildString 
     append("* $itemHeading")
 
     // Description
-    append(" - ${parameter.descriptionOrAltText()}")
+    append(" - ${description}")
 }
 
 private fun createResultsDocumentation(result: List<SmlResult>) = buildString {
@@ -394,7 +394,7 @@ private fun createResultsDocumentation(result: List<SmlResult>) = buildString {
 private fun createResultDocumentation(result: SmlResult) = buildString {
 
     // Remember description before annotation calls are removed
-    val description = result.descriptionOrNull()
+    val description = result.descriptionOrAltText()
 
     // Remove annotation calls, so they don't show up in the serialized code
     result.annotationCalls
@@ -413,7 +413,7 @@ private fun createResultDocumentation(result: SmlResult) = buildString {
     append("* $itemHeading")
 
     // Description
-    append(" - ${result.descriptionOrAltText()}")
+    append(" - ${description}")
 }
 
 /**
