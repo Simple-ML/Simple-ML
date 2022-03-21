@@ -257,7 +257,10 @@ Scale whole dataset
 
 
 ## Global Functions
-### `joinTwoDatasets` (Instance Method )
+
+<a name='global-function-joinTwoDatasets'/>
+
+## Global Function `joinTwoDatasets`
 Join two dataset and returns merged single dataset
 
 **Parameters:**
@@ -271,7 +274,9 @@ Join two dataset and returns merged single dataset
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-### `loadDataset` (Instance Method )
+<a name='global-function-loadDataset'/>
+
+## Global Function `loadDataset`
 Load dataset
 
 **Parameters:**
@@ -280,7 +285,9 @@ Load dataset
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-### `readDataSetFromCSV` (Instance Method )
+<a name='global-function-readDataSetFromCSV'/>
+
+## Global Function `readDataSetFromCSV`
 Read dataset directly from CSV file
 
 **Parameters:**

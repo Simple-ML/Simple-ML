@@ -21,7 +21,10 @@
 ----------
 
 ## Global Functions
-### `meanAbsoluteError` (Instance Method )
+
+<a name='global-function-meanAbsoluteError'/>
+
+## Global Function `meanAbsoluteError`
 _No description available._
 
 **Parameters:**
@@ -31,7 +34,9 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-### `meanSquaredError` (Instance Method )
+<a name='global-function-meanSquaredError'/>
+
+## Global Function `meanSquaredError`
 _No description available._
 
 **Parameters:**
@@ -41,7 +46,9 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-### `meanSquaredLogError` (Instance Method )
+<a name='global-function-meanSquaredLogError'/>
+
+## Global Function `meanSquaredLogError`
 _No description available._
 
 **Parameters:**
@@ -51,7 +58,9 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-### `medianAbsoluteError` (Instance Method )
+<a name='global-function-medianAbsoluteError'/>
+
+## Global Function `medianAbsoluteError`
 _No description available._
 
 **Parameters:**
@@ -61,7 +70,9 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-### `r2` (Instance Method )
+<a name='global-function-r2'/>
+
+## Global Function `r2`
 _No description available._
 
 **Parameters:**
