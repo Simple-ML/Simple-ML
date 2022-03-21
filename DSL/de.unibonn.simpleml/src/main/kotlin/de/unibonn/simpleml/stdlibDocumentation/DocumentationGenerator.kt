@@ -116,32 +116,32 @@ private fun createPackageDocumentation(
     if (annotations.isNotEmpty() || classes.isNotEmpty() || enums.isNotEmpty() || globalFunctions.isNotEmpty()) {
         appendLine("\n## Table of Contents\n")
 
-		if (classes.isNotEmpty()) {
-			appendLine("* Classes")
-			classes.forEach {
-				appendLine("  * [`${it.name}`](#class-${it.name})")
-			}
+        if (classes.isNotEmpty()) {
+            appendLine("* Classes")
+            classes.forEach {
+                appendLine("  * [`${it.name}`](#class-${it.name})")
+            }
         }
 
-		if (globalFunctions.isNotEmpty()) {
-			appendLine("* Global functions")
-			globalFunctions.forEach {
-				appendLine("  * [`${it.name}`](#global-function-${it.name})")
-			}
+        if (globalFunctions.isNotEmpty()) {
+            appendLine("* Global functions")
+            globalFunctions.forEach {
+                appendLine("  * [`${it.name}`](#global-function-${it.name})")
+            }
         }
 
-		if (enums.isNotEmpty()) {
-			appendLine("* Enums")
-			enums.forEach {
-				appendLine("  * [`${it.name}`](#enum-${it.name})")
-			}
+        if (enums.isNotEmpty()) {
+            appendLine("* Enums")
+            enums.forEach {
+                appendLine("  * [`${it.name}`](#enum-${it.name})")
+            }
         }
 
-		if (enums.isNotEmpty()) {
-			appendLine("* Annotations")
-			annotations.forEach {
-				appendLine("  * [`${it.name}`](#annotation-${it.name})")
-			}
+        if (enums.isNotEmpty()) {
+            appendLine("* Annotations")
+            annotations.forEach {
+                appendLine("  * [`${it.name}`](#annotation-${it.name})")
+            }
         }
 
         appendLine("\n$horizontalRule\n")
@@ -156,11 +156,11 @@ private fun createPackageDocumentation(
     }
 
     // Global functions
-	if (globalFunctions.isNotEmpty()) {
-		appendLine("## Global Functions")
-		globalFunctions.forEach {
-			appendLine(createFunctionDocumentation(it, nestingLevel = 3))
-		}
+    if (globalFunctions.isNotEmpty()) {
+        appendLine("## Global Functions")
+        globalFunctions.forEach {
+            appendLine(createFunctionDocumentation(it, nestingLevel = 3))
+        }
     }
 
     // Enums
@@ -178,8 +178,8 @@ private fun createPackageDocumentation(
 
 private fun createAnnotationDocumentation(annotation: SmlAnnotation) = buildString {
 
-	// Table of contents link
-	appendLine("<a name='annotation-${annotation.name}'/>\n")
+    // Table of contents link
+    appendLine("<a name='annotation-${annotation.name}'/>\n")
 
     // Heading
     appendLine("## Annotation `${annotation.name}`")

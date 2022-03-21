@@ -37,10 +37,10 @@ The following page provides a tutorial for users of Simple-ML:
 Developers get more information about the implementation of the specific components here:
 
 * Components
-   * [Frontend][frontend]
-   * [Runtime][runtime]
-   * [Data API][data_api]
-   * [DSL][adding-new-language-feature]
+  * [Frontend][frontend]
+  * [Runtime][runtime]
+  * [Data API][data_api]
+  * [DSL][adding-new-language-feature]
 
 [tutorial]: ./docs/Tutorial.md
 [data_api]: ./docs/Data-API.md
