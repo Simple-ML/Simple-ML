@@ -1,3 +1,4 @@
+# Package `simpleml.lang`
 
 [Tutorial][tutorial] - [Idea and basic concepts][tutorial_concepts] | [Interface][tutorial_interface] | [**API**][api] | [DSL][dsl-tutorial]
 
@@ -7,7 +8,6 @@
 [api]: ./README.md
 [dsl-tutorial]: ../../DSL/tutorial/README.md
 
-# Package `simpleml.lang`
 
 ## Table of Contents
 

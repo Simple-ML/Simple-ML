@@ -1,3 +1,4 @@
+# Package `simpleml.dataset`
 
 [Tutorial][tutorial] - [Idea and basic concepts][tutorial_concepts] | [Interface][tutorial_interface] | [**API**][api] | [DSL][dsl-tutorial]
 
@@ -7,7 +8,6 @@
 [api]: ./README.md
 [dsl-tutorial]: ../../DSL/tutorial/README.md
 
-# Package `simpleml.dataset`
 
 ## Table of Contents
 

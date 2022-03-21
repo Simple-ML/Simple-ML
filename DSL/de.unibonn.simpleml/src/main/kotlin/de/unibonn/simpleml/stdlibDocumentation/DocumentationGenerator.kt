@@ -73,9 +73,9 @@ private fun createReadme(outputDirectory: Path, packagesToDeclarations: Map<Stri
 
     outputDirectory.resolve("README.md").writeText(
         """
-            |$prefix
-            |
             |# Simple-ML API Documentation
+            |
+            |$prefix
             |
             |## Packages
             |
@@ -108,9 +108,9 @@ private fun createPackageDocumentation(
     val enums = globalDeclarations.filterIsInstance<SmlEnum>().sortedBy { it.name }
     val annotations = globalDeclarations.filterIsInstance<SmlAnnotation>().sortedBy { it.name }
 
-    appendLine("$prefix")
-
     appendLine("# Package `$packageName`")
+
+    appendLine("$prefix")
 
     // Table of contents
     if (annotations.isNotEmpty() || classes.isNotEmpty() || enums.isNotEmpty() || globalFunctions.isNotEmpty()) {
