@@ -2,10 +2,10 @@
 
 * [Tutorial][tutorial]
 * For Developers: Components
-   * [Frontend][frontend]
-   * [Runtime][runtime]
-   * [Data API][data_api]
-   * [DSL][adding-new-language-feature]
+  * [Frontend][frontend]
+  * [Runtime][runtime]
+  * [Data API][data_api]
+  * [DSL][adding-new-language-feature]
 
 [tutorial]: ./Tutorial.md
 [data_api]: ./Data-API.md
