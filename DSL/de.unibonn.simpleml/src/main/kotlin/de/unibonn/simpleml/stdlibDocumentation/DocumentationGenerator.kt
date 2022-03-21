@@ -33,11 +33,11 @@ private val horizontalRule = "-".repeat(10)
 private val prefix = """
 [Tutorial][tutorial] - [Idea and basic concepts][tutorial_concepts] | [Interface][tutorial_interface] | [**API**][api] | [DSL][dsl-tutorial]
 
-[tutorial]: ./Tutorial.md
-[tutorial_concepts]: ./Tutorial-Basic-Concepts.md
-[tutorial_interface]: ./Tutorial-The-Simple-ML-Interface.md
+[tutorial]: ../../Tutorial.md
+[tutorial_concepts]: ../../Tutorial-Basic-Concepts.md
+[tutorial_interface]: ../../Tutorial-The-Simple-ML-Interface.md
 [api]: ./README.md
-[dsl-tutorial]: ./DSL/tutorial/README.md
+[dsl-tutorial]: ../../DSL/tutorial/README.md
 """
 
 private val autogenWarning = """
