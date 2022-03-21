@@ -21,7 +21,7 @@
 ----------
 
 ## Global Functions
-### Instance Method `accuracy`
+### `accuracy` (Instance Method )
 _No description available._
 
 **Parameters:**
@@ -31,7 +31,7 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-### Instance Method `averagePrecision`
+### `averagePrecision` (Instance Method )
 _No description available._
 
 **Parameters:**
@@ -41,7 +41,7 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-### Instance Method `balancedAccuracy`
+### `balancedAccuracy` (Instance Method )
 _No description available._
 
 **Parameters:**
@@ -51,7 +51,7 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-### Instance Method `precision`
+### `precision` (Instance Method )
 _No description available._
 
 **Parameters:**
@@ -61,7 +61,7 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-### Instance Method `recall`
+### `recall` (Instance Method )
 _No description available._
 
 **Parameters:**

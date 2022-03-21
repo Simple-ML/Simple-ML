@@ -329,9 +329,9 @@ private fun createFunctionDocumentation(function: SmlFunction, nestingLevel: Int
         appendLine("<a name='global-function-${function.name}'/>\n")
         appendLine("## Global Function `${function.name}`")
     } else if (function.isStatic) {
-        appendLine("${heading(nestingLevel)} Static Method `${function.name}`")
+        appendLine("${heading(nestingLevel)} `${function.name}` (Static Method)")
     } else {
-        appendLine("${heading(nestingLevel)} Instance Method `${function.name}`")
+        appendLine("${heading(nestingLevel)} `${function.name}` (Instance Method )")
     }
 
     // Description

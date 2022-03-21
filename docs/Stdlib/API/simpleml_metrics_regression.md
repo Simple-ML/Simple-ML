@@ -21,7 +21,7 @@
 ----------
 
 ## Global Functions
-### Instance Method `meanAbsoluteError`
+### `meanAbsoluteError` (Instance Method )
 _No description available._
 
 **Parameters:**
@@ -31,7 +31,7 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-### Instance Method `meanSquaredError`
+### `meanSquaredError` (Instance Method )
 _No description available._
 
 **Parameters:**
@@ -41,7 +41,7 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-### Instance Method `meanSquaredLogError`
+### `meanSquaredLogError` (Instance Method )
 _No description available._
 
 **Parameters:**
@@ -51,7 +51,7 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-### Instance Method `medianAbsoluteError`
+### `medianAbsoluteError` (Instance Method )
 _No description available._
 
 **Parameters:**
@@ -61,7 +61,7 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-### Instance Method `r2`
+### `r2` (Instance Method )
 _No description available._
 
 **Parameters:**

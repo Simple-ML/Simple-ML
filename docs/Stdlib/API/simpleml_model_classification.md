@@ -32,7 +32,7 @@ _No description available._
 **Attributes:**
 * `attr maxDepth: Int?` - _No description available._
 
-### Instance Method `fit`
+### `fit` (Instance Method )
 _No description available._
 
 **Parameters:**
@@ -52,7 +52,7 @@ _No description available._
 
 **Constructor parameters:** _None expected._
 
-### Instance Method `predict`
+### `predict` (Instance Method )
 _No description available._
 
 **Parameters:**
@@ -81,7 +81,7 @@ _No description available._
 * `attr nEstimator: Int` - _No description available._
 * `attr randomState: Int?` - _No description available._
 
-### Instance Method `fit`
+### `fit` (Instance Method )
 _No description available._
 
 **Parameters:**
@@ -101,7 +101,7 @@ _No description available._
 
 **Constructor parameters:** _None expected._
 
-### Instance Method `predict`
+### `predict` (Instance Method )
 _No description available._
 
 **Parameters:**
@@ -134,7 +134,7 @@ _No description available._
 * `attr penalty: String` - _No description available._
 * `attr tol: Float` - _No description available._
 
-### Instance Method `fit`
+### `fit` (Instance Method )
 _No description available._
 
 **Parameters:**
@@ -154,7 +154,7 @@ _No description available._
 
 **Constructor parameters:** _None expected._
 
-### Instance Method `predict`
+### `predict` (Instance Method )
 _No description available._
 
 **Parameters:**

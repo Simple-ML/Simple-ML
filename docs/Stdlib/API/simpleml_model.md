@@ -24,7 +24,7 @@ _No description available._
 
 **Constructor:** _Class has no constructor._
 
-### Instance Method `fit`
+### `fit` (Instance Method )
 _No description available._
 
 **Parameters:**
@@ -44,7 +44,7 @@ _No description available._
 
 **Constructor:** _Class has no constructor._
 
-### Instance Method `predict`
+### `predict` (Instance Method )
 _No description available._
 
 **Parameters:**

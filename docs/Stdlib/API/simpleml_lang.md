@@ -107,7 +107,7 @@ _No description available._
 
 
 ## Global Functions
-### Instance Method `print`
+### `print` (Instance Method )
 _No description available._
 
 **Parameters:**
@@ -115,7 +115,7 @@ _No description available._
 
 **Results:** _None returned._
 
-### Instance Method `println`
+### `println` (Instance Method )
 _No description available._
 
 **Parameters:**

@@ -38,7 +38,7 @@ _No description available._
 
 
 ## Global Functions
-### Instance Method `listOf`
+### `listOf` (Instance Method )
 _No description available._
 
 **Parameters:**

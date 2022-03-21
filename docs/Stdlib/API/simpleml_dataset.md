@@ -30,7 +30,7 @@ A dataset with its data instances (e.g., rows and columns).
 
 **Constructor:** _Class has no constructor._
 
-### Instance Method `addAttribute`
+### `addAttribute` (Instance Method )
 Add a new attribute to the dataset with values according to a transformation function
 
 **Parameters:**
@@ -41,7 +41,7 @@ Add a new attribute to the dataset with values according to a transformation fun
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-### Instance Method `addDayOfTheYearAttribute`
+### `addDayOfTheYearAttribute` (Instance Method )
 Add a new attribute to the dataset specifying the day of the year of the specified column
 
 **Parameters:**
@@ -50,7 +50,7 @@ Add a new attribute to the dataset specifying the day of the year of the specifi
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-### Instance Method `addIsWeekendAttribute`
+### `addIsWeekendAttribute` (Instance Method )
 Add a new attribute to the dataset specifying if the dates of the specified column are on the weekend or not
 
 **Parameters:**
@@ -59,7 +59,7 @@ Add a new attribute to the dataset specifying if the dates of the specified colu
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-### Instance Method `addWeekDayAttribute`
+### `addWeekDayAttribute` (Instance Method )
 Extract week day from given date attribute and add new attribute in dataset with weekday name
 
 **Parameters:**
@@ -68,7 +68,7 @@ Extract week day from given date attribute and add new attribute in dataset with
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-### Instance Method `dropAttribute`
+### `dropAttribute` (Instance Method )
 Remove the provided attribute from the dataset
 
 **Parameters:**
@@ -77,7 +77,7 @@ Remove the provided attribute from the dataset
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-### Instance Method `dropAttributes`
+### `dropAttributes` (Instance Method )
 Remove list of columns provided in argument from dataset
 
 **Parameters:**
@@ -86,7 +86,7 @@ Remove list of columns provided in argument from dataset
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-### Instance Method `dropMissingValues`
+### `dropMissingValues` (Instance Method )
 Drops instances with missing values in the specified attribute
 
 **Parameters:**
@@ -95,7 +95,7 @@ Drops instances with missing values in the specified attribute
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-### Instance Method `exportDataAsFile`
+### `exportDataAsFile` (Instance Method )
 Export any dataset to CSV file
 
 **Parameters:**
@@ -103,7 +103,7 @@ Export any dataset to CSV file
 
 **Results:** _None returned._
 
-### Instance Method `filterInstances`
+### `filterInstances` (Instance Method )
 Filter dataset based on any specific value from a column
 
 **Parameters:**
@@ -112,7 +112,7 @@ Filter dataset based on any specific value from a column
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-### Instance Method `getRow`
+### `getRow` (Instance Method )
 Get a specific row of a dataset
 
 **Parameters:**
@@ -121,7 +121,7 @@ Get a specific row of a dataset
 **Results:**
 * `instance: Instance` - _No description available._
 
-### Instance Method `keepAttribute`
+### `keepAttribute` (Instance Method )
 Create a subset of a dataset with only the provided column
 
 **Parameters:**
@@ -130,7 +130,7 @@ Create a subset of a dataset with only the provided column
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-### Instance Method `keepAttributes`
+### `keepAttributes` (Instance Method )
 Create a subset of a dataset with only list of columns provided in argument
 
 **Parameters:**
@@ -139,7 +139,7 @@ Create a subset of a dataset with only list of columns provided in argument
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-### Instance Method `sample`
+### `sample` (Instance Method )
 Create a sample of a dataset
 
 **Parameters:**
@@ -148,7 +148,7 @@ Create a sample of a dataset
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-### Instance Method `setTargetAttribute`
+### `setTargetAttribute` (Instance Method )
 Set the specified attribute as prediction target
 
 **Parameters:**
@@ -157,7 +157,7 @@ Set the specified attribute as prediction target
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-### Instance Method `splitIntoTrainAndTest`
+### `splitIntoTrainAndTest` (Instance Method )
 Split dataset in train and test datasets
 
 **Parameters:**
@@ -168,7 +168,7 @@ Split dataset in train and test datasets
 * `train: Dataset` - _No description available._
 * `test: Dataset` - _No description available._
 
-### Instance Method `splitIntoTrainAndTestAndLabels`
+### `splitIntoTrainAndTestAndLabels` (Instance Method )
 Splits dataset into four datasets: train/test and labels/features
 
 **Parameters:**
@@ -181,7 +181,7 @@ Splits dataset into four datasets: train/test and labels/features
 * `yTrain: Dataset` - _No description available._
 * `yTest: Dataset` - _No description available._
 
-### Instance Method `transformDatatypes`
+### `transformDatatypes` (Instance Method )
 Convert all column values into numbers
 
 **Parameters:** _None expected._
@@ -189,7 +189,7 @@ Convert all column values into numbers
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-### Instance Method `transformDateToTimestamp`
+### `transformDateToTimestamp` (Instance Method )
 Convert date column values into timestamps
 
 **Parameters:**
@@ -208,7 +208,7 @@ Individual instance in dataset
 
 **Constructor:** _Class has no constructor._
 
-### Instance Method `getValue`
+### `getValue` (Instance Method )
 To get value of instance
 
 **Parameters:**
@@ -227,7 +227,7 @@ Data normalizer
 
 **Constructor parameters:** _None expected._
 
-### Instance Method `normalize`
+### `normalize` (Instance Method )
 Normalize whole dataset
 
 **Parameters:**
@@ -246,7 +246,7 @@ Data scaler
 
 **Constructor parameters:** _None expected._
 
-### Instance Method `scale`
+### `scale` (Instance Method )
 Scale whole dataset
 
 **Parameters:**
@@ -257,7 +257,7 @@ Scale whole dataset
 
 
 ## Global Functions
-### Instance Method `joinTwoDatasets`
+### `joinTwoDatasets` (Instance Method )
 Join two dataset and returns merged single dataset
 
 **Parameters:**
@@ -271,7 +271,7 @@ Join two dataset and returns merged single dataset
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-### Instance Method `loadDataset`
+### `loadDataset` (Instance Method )
 Load dataset
 
 **Parameters:**
@@ -280,7 +280,7 @@ Load dataset
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-### Instance Method `readDataSetFromCSV`
+### `readDataSetFromCSV` (Instance Method )
 Read dataset directly from CSV file
 
 **Parameters:**
