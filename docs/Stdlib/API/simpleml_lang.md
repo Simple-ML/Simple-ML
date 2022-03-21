@@ -219,10 +219,10 @@ Values assigned to this parameter must be constant.
 The declaration should no longer be used.
 
 **Parameters:**
-* `alternative: String? = null` - _No description available._
-* `reason: String? = null` - _No description available._
-* `sinceVersion: String? = null` - _No description available._
-* `removalVersion: String? = null` - _No description available._
+* `alternative: String? = null` - What to use instead.
+* `reason: String? = null` - Why the declaration was deprecated.
+* `sinceVersion: String? = null` - When the declaration was deprecated.
+* `removalVersion: String? = null` - When the declaration will be removed.
 
 **Valid targets:**
 * Annotation
