@@ -114,3 +114,15 @@ tasks {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
 }
+
+tasks.register<JavaExec>("generateStdlibDocumentation") {
+    group = "documentation"
+    description = "Generate documentation for the standard library."
+
+    dependsOn(sourceSets.main.get().runtimeClasspath)
+    classpath = sourceSets.main.get().runtimeClasspath.filter { it.exists() }
+    mainClass.set("de.unibonn.simpleml.stdlibDocumentation.MainKt")
+
+    val outputDirectory = rootProject.file("../docs/Stdlib/API").absolutePath
+    args = listOf(outputDirectory)
+}
