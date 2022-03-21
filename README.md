@@ -9,7 +9,7 @@
 
 The efficient application of current Machine Learning (**ML**) procedures requires a very high level of expert knowledge, which stands in the way of a widespread use of ML approaches, especially by small and medium-sized enterprises. The goal of the Simple-ML project is to significantly improve the usability of ML processes in order to make them more accessible to a broad user group.
 
-The definition of a domain-specific language (**DSL**) is a central contribution of the project: The DSL provides an integrated description of the ML workflows and their components, and can be specified by textual and graphical editors. Furthermore, the project contributes towards the robustness of created ML workflows, explainability and transparency of the learned models, efficiency and scalability of the created applications, as well as towards the reusability of the created solutions. This is done by applying semantic technologies, extending symbolic ML procedures and by setting up scalable ML frameworks. The results of the Simple-ML project will be validated in the application scenarios "Mobility in the city" and "Logistics" together with users from industry.
+The definition of a domain-specific language (**DSL**) is a central contribution of the project: The DSL provides an integrated description of the ML workflows and their components, and can be specified by textual and graphical editors. Furthermore, the project contributes towards the robustness of created ML workflows, explainability and transparency of the learned models, efficiency and scalability of the created applications, as well as towards the reusability of the created solutions. This is done by applying semantic technologies, extending symbolic ML procedures and by setting up scalable ML frameworks.
 
 ## Installation for Users
 
@@ -26,24 +26,27 @@ The definition of a domain-specific language (**DSL**) is a central contribution
     docker compose build
     ```
 
-## Additional Documentation
+## Tutorial
+
+The following page provides a tutorial for users of Simple-ML:
 
 * [Tutorial][tutorial]
-   * [Basic Concepts][tutorial_concepts]
-   * [The Interface][tutorial_interface]
-   * [DSL][dsl-tutorial]
+
+## Additional Documentation for Developers
+
+Developers get more information about the implementation of the specific components here:
+
 * Components
-   * [Frontend][frontend]
-   * [Runtime][runtime]
-   * [Data API][data_api]
+  * [Frontend][frontend]
+  * [Runtime][runtime]
+  * [Data API][data_api]
+  * [DSL][adding-new-language-feature]
 
 [tutorial]: ./docs/Tutorial.md
-[tutorial_concepts]: ./docs/Tutorial-Basic-Concepts.md
-[tutorial_interface]: ./docs/Tutorial-The-Simple-ML-Interface.md
-[dsl-tutorial]: ./docs/DSL/tutorial/README.md
 [data_api]: ./docs/Data-API.md
 [data_set_api]: ./docs/Data-Set-API.md
 [data_catalog_api]: ./docs/Data-Catalog-API.md
 [frontend]: ./docs/Front-End.md
 [ml_catalog_api]: ./docs/Machine-Learning-Catalog-API.md
 [runtime]: ./docs/Runtime-Server.md
+[adding-new-language-feature]: ./docs/DSL/development/how-to-add-a-new-language-concept.md

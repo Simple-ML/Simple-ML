@@ -1,0 +1,46 @@
+package example
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.regression.RidgeRegression
+import simpleml.metrics.regression.meanAbsoluteError
+
+workflow speedaveragesWorkflow {
+
+    // load data
+    val dataset = loadDataset("SpeedAverages");
+
+    // drop unused attributes
+    val datasetWithDroppedColumns = dataset.dropAttributes("osm_id", "geometry");
+
+	// set target attribute
+    val datasetWithTarget = datasetWithDroppedColumns.setTargetAttribute("average_speed");
+
+    // add a new attribute which has the weekday
+    val datasetWithWeekday = datasetWithTarget.addWeekDayAttribute("start_time");
+
+	// drop missing values in the target
+	val datasetWithoutMissingValues = datasetWithWeekday.dropMissingValues("average_speed");
+
+	// transform datatypes into numeric
+	val datasetTransformed = datasetWithoutMissingValues.transformDatatypes();
+
+	// scale data
+	val scaler = StandardScaler();
+	val datasetScaled = scaler.scale(datasetTransformed);
+
+    // Splitting the data into test and training sets
+    val xTrain, val xTest, val yTrain, val yTest = datasetScaled.splitIntoTrainAndTestAndLabels(trainRatio=0.8);
+
+	// Train the model
+	val estimator = RidgeRegression();
+
+    // Train estimator
+    val model = estimator.fit(xTrain, yTrain);
+
+    // Predict something with the model
+    val yPred = model.predict(xTest);
+
+    // Evaluate the model with the MAE metric
+    val mae = meanAbsoluteError(yTest, yPred);
+}

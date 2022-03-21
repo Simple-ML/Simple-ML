@@ -7,7 +7,6 @@ from simpleml.model.supervised.regression import LinearRegression
 # Workflow steps ---------------------------------------------------------------
 
 dataset = loadDataset("SpeedAverages")
-print(dataset.dataset_json)
 
 dataset = dataset.dropAttributes(["osm_id", "geometry"])
 
@@ -19,13 +18,11 @@ dataset = dataset.transformDatatypes()
 dataset = StandardScaler().scale(dataset)
 # dataset = StandardNormalizer().normalize(dataset)
 
-X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.75)
+X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
 
-print(X_test.dataset_json)
 
 lr = LinearRegression().fit(X_train, y_train)
 y_pred = lr.predict(X_test)
-print(y_pred.dataset_json)
-print("MAE:", meanAbsoluteError(y_test, y_pred))
 
-print(y_train.dataset_json)
+print(y_pred.data)
+print("MAE:", meanAbsoluteError(y_test, y_pred))

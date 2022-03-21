@@ -51,6 +51,10 @@
             data: serverData,
 
             success: function(result) {
+                var listeners = editorContext.updateServerState(result.fullText, result.stateId);
+                for (var i = 0; i < listeners.length; i++) {
+                    listeners[i](params);
+                }
                 deferred.resolve(result);
             },
 
@@ -75,6 +79,10 @@
 
     GetProcessMetadataService.prototype._getSuccessCallback = function(editorContext, params, deferred) {
         return function(result) {
+            var listeners = editorContext.updateServerState(result.fullText, result.stateId);
+            for (var i = 0; i < listeners.length; i++) {
+                listeners[i](params);
+            }
             deferred.resolve(result);
         }
     }

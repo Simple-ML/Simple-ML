@@ -36,6 +36,7 @@ export default class RuntimeService {
                 break;
             case '[placeholder]:READY':
                 RuntimeService.getPlaceholder(data.sessionId, data.name);
+                RuntimeService.getAvailableDatasets(data.sessionId);
                 break;
             case '[placeholder]:VALUE':
                 store.dispatch(savePlaceholder(data.name, data.value));
@@ -82,6 +83,20 @@ export default class RuntimeService {
             }));
         }).catch((err) => {
             console.log('WS:getPlaceholder', err);
+        });
+    }
+
+    /**
+     * Get all datasets
+     */
+    static getAvailableDatasets(sessionId) {
+        RuntimeService.websocket.then((websocket) => {
+            websocket.send(JSON.stringify({
+                action: 'get_available_dataset',
+                placeholder: {sessionId},
+            }));
+        }).catch((err) => {
+            console.log('WS:getAvailableDataset', err);
         });
     }
 }

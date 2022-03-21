@@ -1,0 +1,29 @@
+package example
+
+import simpleml.dataset.loadDataset
+import simpleml.model.regression.LinearRegression
+import simpleml.metrics.regression.meanAbsoluteError
+
+workflow wineworkflow {
+
+    // load data
+    val dataset = loadDataset("WhiteWineQuality");
+
+	// set target attribute
+    val datasetWithTarget = dataset.setTargetAttribute("quality");
+
+    // Splitting the data into test and training sets
+    val xTrain, val xTest, val yTrain, val yTest = datasetWithTarget.splitIntoTrainAndTestAndLabels(trainRatio=0.8);
+
+	// Train the model
+	val estimator = LinearRegression();
+
+    // Train estimator
+    val model = estimator.fit(xTrain, yTrain);
+
+    // Predict something with the model
+    val yPred = model.predict(xTest);
+
+    // Evaluate the model with the MAE metric
+    val mae = meanAbsoluteError(yTest, yPred);
+}

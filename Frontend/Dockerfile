@@ -2,8 +2,8 @@ FROM node:14-alpine as builder
 
 WORKDIR /tmp/
 
-COPY package.json /tmp/
-RUN npm install
+COPY package.json package-lock.json /tmp/
+RUN npm ci --no-audit
 
 COPY . /tmp/
 RUN npm run build

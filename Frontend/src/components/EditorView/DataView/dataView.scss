@@ -1,0 +1,30 @@
+.data-view {
+  height: 100%;
+  width: 100%;
+}
+.MuiTabPanel-root {
+  height: 100%;
+  overflow: scroll;
+}
+.MuiTable-root {
+  background-color: #ffffff;
+}
+.MuiTabs-flexContainer {
+  display: flex;
+  justify-content: right;
+}
+
+.table-view {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.chart-view {
+  margin-bottom: 100px;
+}
+
+.chart-filter {
+  background-color: #ffffff;
+  color: #000000;
+}

@@ -2,8 +2,8 @@
 // node_modules
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import $ from "jquery";
+
 
 // React.Components
 import GoldenLayoutComponent from './../../../helper/goldenLayoutServices/goldenLayoutComponent';
@@ -18,7 +18,8 @@ import MultiViewConfig from './MultiViewConfig';
 class MultiView extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+        };
     }
 
     wrapComponent = Component => {
@@ -43,7 +44,7 @@ class MultiView extends React.Component {
             <div className={'multi-view-container'}>
                 <Toolbar componentConfigs={MultiViewConfig.getPureConfigList()} layout={this.state.myLayout} />
                 <GoldenLayoutComponent
-                    htmlAttrs={{ style: { minHeight: "780px", width: "100%" } }}
+                    htmlAttrs={{ style: { heigth: "780px", width: "100%" } }}
                     config={{
                         dimensions:{
                             headerHeight: "100%"

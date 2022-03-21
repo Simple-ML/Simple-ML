@@ -22,6 +22,8 @@ const defaultListeners = () => {
             case 'deleteEntity':
             case 'deleteAssociation':
             case 'createAssociation':
+                // TODO: update text-editor XtextServices.validate does not work
+                //XtextServices.validate();
                 XtextServices.update();
                 break;
             case 'getProcessMetadata':
