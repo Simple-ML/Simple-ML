@@ -1,16 +1,27 @@
+
+[Tutorial][tutorial] - [Idea and basic concepts][tutorial_concepts] | [Interface][tutorial_interface] | [**API**][api] | [DSL][dsl-tutorial]
+
+[tutorial]: ./Tutorial.md
+[tutorial_concepts]: ./Tutorial-Basic-Concepts.md
+[tutorial_interface]: ./Tutorial-The-Simple-ML-Interface.md
+[api]: ./README.md
+[dsl-tutorial]: ./DSL/tutorial/README.md
+
 # Package `simpleml.metrics.regression`
 
 ## Table of Contents
 
-* [Global function `meanAbsoluteError`](#global-function-meanAbsoluteError)
-* [Global function `meanSquaredError`](#global-function-meanSquaredError)
-* [Global function `meanSquaredLogError`](#global-function-meanSquaredLogError)
-* [Global function `medianAbsoluteError`](#global-function-medianAbsoluteError)
-* [Global function `r2`](#global-function-r2)
+* Global functions
+  * [`meanAbsoluteError`](#global-function-meanAbsoluteError)
+  * [`meanSquaredError`](#global-function-meanSquaredError)
+  * [`meanSquaredLogError`](#global-function-meanSquaredLogError)
+  * [`medianAbsoluteError`](#global-function-medianAbsoluteError)
+  * [`r2`](#global-function-r2)
 
 ----------
 
-## Global Function `meanAbsoluteError`
+## Global Functions
+### Instance Method `meanAbsoluteError`
 _No description available._
 
 **Parameters:**
@@ -20,7 +31,7 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-## Global Function `meanSquaredError`
+### Instance Method `meanSquaredError`
 _No description available._
 
 **Parameters:**
@@ -30,7 +41,7 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-## Global Function `meanSquaredLogError`
+### Instance Method `meanSquaredLogError`
 _No description available._
 
 **Parameters:**
@@ -40,7 +51,7 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-## Global Function `medianAbsoluteError`
+### Instance Method `medianAbsoluteError`
 _No description available._
 
 **Parameters:**
@@ -50,7 +61,7 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-## Global Function `r2`
+### Instance Method `r2`
 _No description available._
 
 **Parameters:**

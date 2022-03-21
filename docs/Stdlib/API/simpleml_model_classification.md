@@ -1,15 +1,27 @@
+
+[Tutorial][tutorial] - [Idea and basic concepts][tutorial_concepts] | [Interface][tutorial_interface] | [**API**][api] | [DSL][dsl-tutorial]
+
+[tutorial]: ./Tutorial.md
+[tutorial_concepts]: ./Tutorial-Basic-Concepts.md
+[tutorial_interface]: ./Tutorial-The-Simple-ML-Interface.md
+[api]: ./README.md
+[dsl-tutorial]: ./DSL/tutorial/README.md
+
 # Package `simpleml.model.classification`
 
 ## Table of Contents
 
-* [Class `DecisionTreeClassifier`](#class-DecisionTreeClassifier)
-* [Class `DecisionTreeClassifierModel`](#class-DecisionTreeClassifierModel)
-* [Class `RandomForestClassifier`](#class-RandomForestClassifier)
-* [Class `RandomForestClassifierModel`](#class-RandomForestClassifierModel)
-* [Class `SupportVectorMachineClassifier`](#class-SupportVectorMachineClassifier)
-* [Class `SupportVectorMachineClassifierModel`](#class-SupportVectorMachineClassifierModel)
+* Classes
+  * [`DecisionTreeClassifier`](#class-DecisionTreeClassifier)
+  * [`DecisionTreeClassifierModel`](#class-DecisionTreeClassifierModel)
+  * [`RandomForestClassifier`](#class-RandomForestClassifier)
+  * [`RandomForestClassifierModel`](#class-RandomForestClassifierModel)
+  * [`SupportVectorMachineClassifier`](#class-SupportVectorMachineClassifier)
+  * [`SupportVectorMachineClassifierModel`](#class-SupportVectorMachineClassifierModel)
 
 ----------
+
+<a name='class-DecisionTreeClassifier'/>
 
 ## Class `DecisionTreeClassifier`
 _No description available._
@@ -33,6 +45,8 @@ _No description available._
 
 ----------
 
+<a name='class-DecisionTreeClassifierModel'/>
+
 ## Class `DecisionTreeClassifierModel`
 _No description available._
 
@@ -49,6 +63,8 @@ _No description available._
 
 
 ----------
+
+<a name='class-RandomForestClassifier'/>
 
 ## Class `RandomForestClassifier`
 _No description available._
@@ -78,6 +94,8 @@ _No description available._
 
 ----------
 
+<a name='class-RandomForestClassifierModel'/>
+
 ## Class `RandomForestClassifierModel`
 _No description available._
 
@@ -94,6 +112,8 @@ _No description available._
 
 
 ----------
+
+<a name='class-SupportVectorMachineClassifier'/>
 
 ## Class `SupportVectorMachineClassifier`
 _No description available._
@@ -126,6 +146,8 @@ _No description available._
 
 
 ----------
+
+<a name='class-SupportVectorMachineClassifierModel'/>
 
 ## Class `SupportVectorMachineClassifierModel`
 _No description available._

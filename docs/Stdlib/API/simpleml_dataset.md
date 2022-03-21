@@ -1,16 +1,29 @@
+
+[Tutorial][tutorial] - [Idea and basic concepts][tutorial_concepts] | [Interface][tutorial_interface] | [**API**][api] | [DSL][dsl-tutorial]
+
+[tutorial]: ./Tutorial.md
+[tutorial_concepts]: ./Tutorial-Basic-Concepts.md
+[tutorial_interface]: ./Tutorial-The-Simple-ML-Interface.md
+[api]: ./README.md
+[dsl-tutorial]: ./DSL/tutorial/README.md
+
 # Package `simpleml.dataset`
 
 ## Table of Contents
 
-* [Class `Dataset`](#class-Dataset)
-* [Class `Instance`](#class-Instance)
-* [Class `StandardNormalizer`](#class-StandardNormalizer)
-* [Class `StandardScaler`](#class-StandardScaler)
-* [Global function `joinTwoDatasets`](#global-function-joinTwoDatasets)
-* [Global function `loadDataset`](#global-function-loadDataset)
-* [Global function `readDataSetFromCSV`](#global-function-readDataSetFromCSV)
+* Classes
+  * [`Dataset`](#class-Dataset)
+  * [`Instance`](#class-Instance)
+  * [`StandardNormalizer`](#class-StandardNormalizer)
+  * [`StandardScaler`](#class-StandardScaler)
+* Global functions
+  * [`joinTwoDatasets`](#global-function-joinTwoDatasets)
+  * [`loadDataset`](#global-function-loadDataset)
+  * [`readDataSetFromCSV`](#global-function-readDataSetFromCSV)
 
 ----------
+
+<a name='class-Dataset'/>
 
 ## Class `Dataset`
 A dataset with its data instances (e.g., rows and columns).
@@ -188,6 +201,8 @@ Convert date column values into timestamps
 
 ----------
 
+<a name='class-Instance'/>
+
 ## Class `Instance`
 Individual instance in dataset
 
@@ -204,6 +219,8 @@ To get value of instance
 
 
 ----------
+
+<a name='class-StandardNormalizer'/>
 
 ## Class `StandardNormalizer`
 Data normalizer
@@ -222,6 +239,8 @@ Normalize whole dataset
 
 ----------
 
+<a name='class-StandardScaler'/>
+
 ## Class `StandardScaler`
 Data scaler
 
@@ -237,7 +256,8 @@ Scale whole dataset
 * `scaledDataset: Dataset` - _No description available._
 
 
-## Global Function `joinTwoDatasets`
+## Global Functions
+### Instance Method `joinTwoDatasets`
 Join two dataset and returns merged single dataset
 
 **Parameters:**
@@ -251,7 +271,7 @@ Join two dataset and returns merged single dataset
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-## Global Function `loadDataset`
+### Instance Method `loadDataset`
 Load dataset
 
 **Parameters:**
@@ -260,7 +280,7 @@ Load dataset
 **Results:**
 * `dataset: Dataset` - _No description available._
 
-## Global Function `readDataSetFromCSV`
+### Instance Method `readDataSetFromCSV`
 Read dataset directly from CSV file
 
 **Parameters:**

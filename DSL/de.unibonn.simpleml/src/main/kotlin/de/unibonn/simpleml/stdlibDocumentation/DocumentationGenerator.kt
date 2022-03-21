@@ -30,6 +30,16 @@ import kotlin.io.path.writeText
 
 private val horizontalRule = "-".repeat(10)
 
+private val prefix = """
+[Tutorial][tutorial] - [Idea and basic concepts][tutorial_concepts] | [Interface][tutorial_interface] | [**API**][api] | [DSL][dsl-tutorial]
+
+[tutorial]: ./Tutorial.md
+[tutorial_concepts]: ./Tutorial-Basic-Concepts.md
+[tutorial_interface]: ./Tutorial-The-Simple-ML-Interface.md
+[api]: ./README.md
+[dsl-tutorial]: ./DSL/tutorial/README.md
+"""
+
 private val autogenWarning = """
     |$horizontalRule
     |
@@ -63,7 +73,11 @@ private fun createReadme(outputDirectory: Path, packagesToDeclarations: Map<Stri
 
     outputDirectory.resolve("README.md").writeText(
         """
+            |$prefix
+            |
             |# Simple-ML API Documentation
+            |
+            |## Packages
             |
             |$packagesDocumentation
             |
@@ -94,23 +108,40 @@ private fun createPackageDocumentation(
     val enums = globalDeclarations.filterIsInstance<SmlEnum>().sortedBy { it.name }
     val annotations = globalDeclarations.filterIsInstance<SmlAnnotation>().sortedBy { it.name }
 
+    appendLine("$prefix")
+
     appendLine("# Package `$packageName`")
 
     // Table of contents
     if (annotations.isNotEmpty() || classes.isNotEmpty() || enums.isNotEmpty() || globalFunctions.isNotEmpty()) {
         appendLine("\n## Table of Contents\n")
 
-        classes.forEach {
-            appendLine("* [Class `${it.name}`](#class-${it.name})")
+		if (classes.isNotEmpty()) {
+			appendLine("* Classes")
+			classes.forEach {
+				appendLine("  * [`${it.name}`](#class-${it.name})")
+			}
         }
-        globalFunctions.forEach {
-            appendLine("* [Global function `${it.name}`](#global-function-${it.name})")
+
+		if (globalFunctions.isNotEmpty()) {
+			appendLine("* Global functions")
+			globalFunctions.forEach {
+				appendLine("  * [`${it.name}`](#global-function-${it.name})")
+			}
         }
-        enums.forEach {
-            appendLine("* [Enum `${it.name}`](#enum-${it.name})")
+
+		if (enums.isNotEmpty()) {
+			appendLine("* Enums")
+			enums.forEach {
+				appendLine("  * [`${it.name}`](#enum-${it.name})")
+			}
         }
-        annotations.forEach {
-            appendLine("* [Annotation `${it.name}`](#annotation-${it.name})")
+
+		if (enums.isNotEmpty()) {
+			appendLine("* Annotations")
+			annotations.forEach {
+				appendLine("  * [`${it.name}`](#annotation-${it.name})")
+			}
         }
 
         appendLine("\n$horizontalRule\n")
@@ -125,8 +156,11 @@ private fun createPackageDocumentation(
     }
 
     // Global functions
-    globalFunctions.forEach {
-        appendLine(createFunctionDocumentation(it, nestingLevel = 2))
+	if (globalFunctions.isNotEmpty()) {
+		appendLine("## Global Functions")
+		globalFunctions.forEach {
+			appendLine(createFunctionDocumentation(it, nestingLevel = 3))
+		}
     }
 
     // Enums
@@ -143,6 +177,9 @@ private fun createPackageDocumentation(
 }
 
 private fun createAnnotationDocumentation(annotation: SmlAnnotation) = buildString {
+
+	// Table of contents link
+	appendLine("<a name='annotation-${annotation.name}'/>\n")
 
     // Heading
     appendLine("## Annotation `${annotation.name}`")
@@ -199,6 +236,7 @@ private fun createClassDocumentation(`class`: SmlClass, nestingLevel: Int): Stri
 
     // Heading
     if (isGlobal(nestingLevel)) {
+        appendLine("<a name='class-${`class`.name}'/>\n")
         appendLine("## Class `${`class`.name}`")
     } else {
         appendLine("${heading(nestingLevel)} Nested Class `${`class`.name}")
@@ -253,6 +291,7 @@ private fun createEnumDocumentation(enum: SmlEnum, nestingLevel: Int) = buildStr
 
     // Heading
     if (isGlobal(nestingLevel)) {
+        appendLine("<a name='enum-${enum.name}'/>\n")
         appendLine("## Enum `${enum.name}`")
     } else {
         appendLine("${heading(nestingLevel)} Nested Enum `${enum.name}")
@@ -287,6 +326,7 @@ private fun createFunctionDocumentation(function: SmlFunction, nestingLevel: Int
 
     // Heading
     if (isGlobal(nestingLevel)) {
+        appendLine("<a name='global-function-${function.name}'/>\n")
         appendLine("## Global Function `${function.name}`")
     } else if (function.isStatic) {
         appendLine("${heading(nestingLevel)} Static Method `${function.name}`")

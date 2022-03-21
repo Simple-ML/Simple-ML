@@ -1,16 +1,27 @@
+
+[Tutorial][tutorial] - [Idea and basic concepts][tutorial_concepts] | [Interface][tutorial_interface] | [**API**][api] | [DSL][dsl-tutorial]
+
+[tutorial]: ./Tutorial.md
+[tutorial_concepts]: ./Tutorial-Basic-Concepts.md
+[tutorial_interface]: ./Tutorial-The-Simple-ML-Interface.md
+[api]: ./README.md
+[dsl-tutorial]: ./DSL/tutorial/README.md
+
 # Package `simpleml.metrics.classification`
 
 ## Table of Contents
 
-* [Global function `accuracy`](#global-function-accuracy)
-* [Global function `averagePrecision`](#global-function-averagePrecision)
-* [Global function `balancedAccuracy`](#global-function-balancedAccuracy)
-* [Global function `precision`](#global-function-precision)
-* [Global function `recall`](#global-function-recall)
+* Global functions
+  * [`accuracy`](#global-function-accuracy)
+  * [`averagePrecision`](#global-function-averagePrecision)
+  * [`balancedAccuracy`](#global-function-balancedAccuracy)
+  * [`precision`](#global-function-precision)
+  * [`recall`](#global-function-recall)
 
 ----------
 
-## Global Function `accuracy`
+## Global Functions
+### Instance Method `accuracy`
 _No description available._
 
 **Parameters:**
@@ -20,7 +31,7 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-## Global Function `averagePrecision`
+### Instance Method `averagePrecision`
 _No description available._
 
 **Parameters:**
@@ -30,7 +41,7 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-## Global Function `balancedAccuracy`
+### Instance Method `balancedAccuracy`
 _No description available._
 
 **Parameters:**
@@ -40,7 +51,7 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-## Global Function `precision`
+### Instance Method `precision`
 _No description available._
 
 **Parameters:**
@@ -50,7 +61,7 @@ _No description available._
 **Results:**
 * `score: Float` - _No description available._
 
-## Global Function `recall`
+### Instance Method `recall`
 _No description available._
 
 **Parameters:**

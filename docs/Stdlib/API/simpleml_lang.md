@@ -1,29 +1,44 @@
+
+[Tutorial][tutorial] - [Idea and basic concepts][tutorial_concepts] | [Interface][tutorial_interface] | [**API**][api] | [DSL][dsl-tutorial]
+
+[tutorial]: ./Tutorial.md
+[tutorial_concepts]: ./Tutorial-Basic-Concepts.md
+[tutorial_interface]: ./Tutorial-The-Simple-ML-Interface.md
+[api]: ./README.md
+[dsl-tutorial]: ./DSL/tutorial/README.md
+
 # Package `simpleml.lang`
 
 ## Table of Contents
 
-* [Class `Any`](#class-Any)
-* [Class `Boolean`](#class-Boolean)
-* [Class `Float`](#class-Float)
-* [Class `Int`](#class-Int)
-* [Class `Nothing`](#class-Nothing)
-* [Class `Number`](#class-Number)
-* [Class `String`](#class-String)
-* [Global function `print`](#global-function-print)
-* [Global function `println`](#global-function-println)
-* [Enum `AnnotationTarget`](#enum-AnnotationTarget)
-* [Annotation `Constant`](#annotation-Constant)
-* [Annotation `Deprecated`](#annotation-Deprecated)
-* [Annotation `Description`](#annotation-Description)
-* [Annotation `NoSideEffects`](#annotation-NoSideEffects)
-* [Annotation `Pure`](#annotation-Pure)
-* [Annotation `PythonModule`](#annotation-PythonModule)
-* [Annotation `PythonName`](#annotation-PythonName)
-* [Annotation `Repeatable`](#annotation-Repeatable)
-* [Annotation `Since`](#annotation-Since)
-* [Annotation `Target`](#annotation-Target)
+* Classes
+  * [`Any`](#class-Any)
+  * [`Boolean`](#class-Boolean)
+  * [`Float`](#class-Float)
+  * [`Int`](#class-Int)
+  * [`Nothing`](#class-Nothing)
+  * [`Number`](#class-Number)
+  * [`String`](#class-String)
+* Global functions
+  * [`print`](#global-function-print)
+  * [`println`](#global-function-println)
+* Enums
+  * [`AnnotationTarget`](#enum-AnnotationTarget)
+* Annotations
+  * [`Constant`](#annotation-Constant)
+  * [`Deprecated`](#annotation-Deprecated)
+  * [`Description`](#annotation-Description)
+  * [`NoSideEffects`](#annotation-NoSideEffects)
+  * [`Pure`](#annotation-Pure)
+  * [`PythonModule`](#annotation-PythonModule)
+  * [`PythonName`](#annotation-PythonName)
+  * [`Repeatable`](#annotation-Repeatable)
+  * [`Since`](#annotation-Since)
+  * [`Target`](#annotation-Target)
 
 ----------
+
+<a name='class-Any'/>
 
 ## Class `Any`
 Common superclass of all classes.
@@ -33,6 +48,8 @@ Common superclass of all classes.
 
 ----------
 
+<a name='class-Boolean'/>
+
 ## Class `Boolean`
 _No description available._
 
@@ -40,6 +57,8 @@ _No description available._
 
 
 ----------
+
+<a name='class-Float'/>
 
 ## Class `Float`
 _No description available._
@@ -49,6 +68,8 @@ _No description available._
 
 ----------
 
+<a name='class-Int'/>
+
 ## Class `Int`
 _No description available._
 
@@ -56,6 +77,8 @@ _No description available._
 
 
 ----------
+
+<a name='class-Nothing'/>
 
 ## Class `Nothing`
 Common subclass of all classes.
@@ -65,6 +88,8 @@ Common subclass of all classes.
 
 ----------
 
+<a name='class-Number'/>
+
 ## Class `Number`
 _No description available._
 
@@ -73,13 +98,16 @@ _No description available._
 
 ----------
 
+<a name='class-String'/>
+
 ## Class `String`
 _No description available._
 
 **Constructor:** _Class has no constructor._
 
 
-## Global Function `print`
+## Global Functions
+### Instance Method `print`
 _No description available._
 
 **Parameters:**
@@ -87,13 +115,15 @@ _No description available._
 
 **Results:** _None returned._
 
-## Global Function `println`
+### Instance Method `println`
 _No description available._
 
 **Parameters:**
 * `obj: Any` - _No description available._
 
 **Results:** _None returned._
+
+<a name='enum-AnnotationTarget'/>
 
 ## Enum `AnnotationTarget`
 Declaration types that can be targeted by annotations.
@@ -170,11 +200,15 @@ _No description available._
 
 
 
+<a name='annotation-Constant'/>
+
 ## Annotation `Constant`
 Values assigned to this parameter must be constant.
 
 **Valid targets:**
 * Parameter
+
+<a name='annotation-Deprecated'/>
 
 ## Annotation `Deprecated`
 The declaration should no longer be used.
@@ -197,6 +231,8 @@ The declaration should no longer be used.
 * Step
 * TypeParameter
 
+<a name='annotation-Description'/>
+
 ## Annotation `Description`
 Purpose of a declaration.
 
@@ -217,17 +253,23 @@ Purpose of a declaration.
 * TypeParameter
 * Workflow
 
+<a name='annotation-NoSideEffects'/>
+
 ## Annotation `NoSideEffects`
 The function has no side effects.
 
 **Valid targets:**
 * Function
 
+<a name='annotation-Pure'/>
+
 ## Annotation `Pure`
 The function has no side effects and returns the same results for the same arguments.
 
 **Valid targets:**
 * Function
+
+<a name='annotation-PythonModule'/>
 
 ## Annotation `PythonModule`
 Qualified name of the corresponding module in Python (default is the qualified name of the package).
@@ -237,6 +279,8 @@ Qualified name of the corresponding module in Python (default is the qualified n
 
 **Valid targets:**
 * CompilationUnit
+
+<a name='annotation-PythonName'/>
 
 ## Annotation `PythonName`
 Name of the corresponding API element in Python (default is the name of the declaration in the stubs).
@@ -254,11 +298,15 @@ Name of the corresponding API element in Python (default is the name of the decl
 * Step
 * Workflow
 
+<a name='annotation-Repeatable'/>
+
 ## Annotation `Repeatable`
 The annotation can be called multiple times for the same declaration.
 
 **Valid targets:**
 * Annotation
+
+<a name='annotation-Since'/>
 
 ## Annotation `Since`
 Version in which a declaration was added.
@@ -279,6 +327,8 @@ Version in which a declaration was added.
 * Step
 * TypeParameter
 * Workflow
+
+<a name='annotation-Target'/>
 
 ## Annotation `Target`
 The annotation can target these declaration types. If the @Target annotation is not used any declaration type can be targeted.

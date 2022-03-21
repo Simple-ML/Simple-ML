@@ -1,12 +1,25 @@
+
+[Tutorial][tutorial] - [Idea and basic concepts][tutorial_concepts] | [Interface][tutorial_interface] | [**API**][api] | [DSL][dsl-tutorial]
+
+[tutorial]: ./Tutorial.md
+[tutorial_concepts]: ./Tutorial-Basic-Concepts.md
+[tutorial_interface]: ./Tutorial-The-Simple-ML-Interface.md
+[api]: ./README.md
+[dsl-tutorial]: ./DSL/tutorial/README.md
+
 # Package `simpleml.collections`
 
 ## Table of Contents
 
-* [Class `List`](#class-List)
-* [Class `Map`](#class-Map)
-* [Global function `listOf`](#global-function-listOf)
+* Classes
+  * [`List`](#class-List)
+  * [`Map`](#class-Map)
+* Global functions
+  * [`listOf`](#global-function-listOf)
 
 ----------
+
+<a name='class-List'/>
 
 ## Class `List`
 _No description available._
@@ -16,13 +29,16 @@ _No description available._
 
 ----------
 
+<a name='class-Map'/>
+
 ## Class `Map`
 _No description available._
 
 **Constructor:** _Class has no constructor._
 
 
-## Global Function `listOf`
+## Global Functions
+### Instance Method `listOf`
 _No description available._
 
 **Parameters:**
