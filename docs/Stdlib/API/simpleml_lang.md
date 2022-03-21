@@ -107,7 +107,10 @@ _No description available._
 
 
 ## Global Functions
-### `print` (Instance Method )
+
+<a name='global-function-print'/>
+
+## Global Function `print`
 _No description available._
 
 **Parameters:**
@@ -115,7 +118,9 @@ _No description available._
 
 **Results:** _None returned._
 
-### `println` (Instance Method )
+<a name='global-function-println'/>
+
+## Global Function `println`
 _No description available._
 
 **Parameters:**

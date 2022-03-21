@@ -157,9 +157,9 @@ private fun createPackageDocumentation(
 
     // Global functions
     if (globalFunctions.isNotEmpty()) {
-        appendLine("## Global Functions")
+        appendLine("## Global Functions\n")
         globalFunctions.forEach {
-            appendLine(createFunctionDocumentation(it, nestingLevel = 3))
+            appendLine(createFunctionDocumentation(it, nestingLevel = 3, isGlobalFunction = true))
         }
     }
 
@@ -259,7 +259,7 @@ private fun createClassDocumentation(`class`: SmlClass, nestingLevel: Int): Stri
 
     // Methods
     methods.forEach {
-        appendLine(createFunctionDocumentation(it, nestingLevel + 1))
+        appendLine(createFunctionDocumentation(it, nestingLevel + 1, isGlobalFunction = false))
     }
 
     // Classes
@@ -322,10 +322,10 @@ private fun SmlAbstractDeclaration.descriptionOrAltText(): String {
     return descriptionOrNull() ?: "_No description available._"
 }
 
-private fun createFunctionDocumentation(function: SmlFunction, nestingLevel: Int) = buildString {
+private fun createFunctionDocumentation(function: SmlFunction, nestingLevel: Int, isGlobalFunction: Boolean) = buildString {
 
     // Heading
-    if (isGlobal(nestingLevel)) {
+    if (isGlobalFunction) {
         appendLine("<a name='global-function-${function.name}'/>\n")
         appendLine("## Global Function `${function.name}`")
     } else if (function.isStatic) {
