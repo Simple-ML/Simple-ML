@@ -38,7 +38,10 @@ _No description available._
 
 
 ## Global Functions
-### `listOf` (Instance Method )
+
+<a name='global-function-listOf'/>
+
+## Global Function `listOf`
 _No description available._
 
 **Parameters:**
