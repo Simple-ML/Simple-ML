@@ -13,6 +13,7 @@ import org.eclipse.xtext.generator.JavaIoFileSystemAccess
 import org.eclipse.xtext.util.CancelIndicator
 import org.eclipse.xtext.validation.CheckMode
 import org.eclipse.xtext.validation.IResourceValidator
+import kotlin.system.exitProcess
 
 @Suppress("unused")
 class Main @Inject constructor(
@@ -22,17 +23,17 @@ class Main @Inject constructor(
     private val validator: IResourceValidator
 ) {
 
-    fun runGenerator(files: List<String>) {
+    fun runCodeGenerator(files: List<String>) {
 
         // Load the resources
-        val set = resourceSetProvider.get()
+        val resourceSet = resourceSetProvider.get()
         files.forEach {
-            set.getResource(URI.createFileURI(it), true)
+            resourceSet.getResource(URI.createFileURI(it), true)
                 ?: throw IllegalArgumentException("Could not create resource for $it.")
         }
 
         // Load the library
-        set.loadStdlib()
+        resourceSet.loadStdlib()
 
         // Configure the generator
         fileAccess.setOutputPath("src-gen/")
@@ -41,13 +42,15 @@ class Main @Inject constructor(
         }
 
         // Generate all resources
-        set.resources.forEach { resource ->
+        resourceSet.resources.forEach { resource ->
 
             // Validate the resource
             val issues = validator.validate(resource, CheckMode.ALL, CancelIndicator.NullImpl)
             if (issues.any { it.severity == Severity.ERROR }) {
                 issues.forEach { println(it) }
-                return
+
+                System.err.println("Aborting: A resource has errors.")
+                exitProcess(20)
             }
 
             // Start the generator
@@ -60,10 +63,11 @@ class Main @Inject constructor(
 
 fun main(args: Array<String>) {
     if (args.isEmpty()) {
-        System.err.println("Aborting: no path to EMF resource provided!")
-        return
+        System.err.println("Aborting: No path to EMF resource provided.")
+        exitProcess(10)
     }
+
     val injector = SimpleMLStandaloneSetup().createInjectorAndDoEMFRegistration()
     val main = injector.getInstance(Main::class.java)
-    main.runGenerator(args.toList())
+    main.runCodeGenerator(args.toList())
 }

@@ -15,7 +15,7 @@ The definition of a domain-specific language (**DSL**) is a central contribution
 
 1. Install [Docker](https://www.docker.com/).
 1. **On Linux:** Install [Docker Compose v2](https://docs.docker.com/compose/cli-command/#install-on-linux).
-1. Clone this repository using the branch `feature/sidebar-master-merge` (e.g., via `git clone -b feature/sidebar-master-merge ...`).
+1. Clone this repository.
 1. Install and start Simple-ML by running the following command in the root directory of the cloned repository. This will take a few minutes **the first time** you do it:
     ```shell
     docker compose up
@@ -31,26 +31,22 @@ The definition of a domain-specific language (**DSL**) is a central contribution
 The following page provides a tutorial for users of Simple-ML:
 
 * [Tutorial][tutorial]
-<!--   * [Basic Concepts][tutorial_concepts]
-   * [The Interface][tutorial_interface]
-   * [DSL][dsl-tutorial] -->
 
 ## Additional Documentation for Developers
 
 Developers get more information about the implementation of the specific components here:
 
 * Components
-   * [Frontend][frontend]
-   * [Runtime][runtime]
-   * [Data API][data_api]
+  * [Frontend][frontend]
+  * [Runtime][runtime]
+  * [Data API][data_api]
+  * [DSL][adding-new-language-feature]
 
 [tutorial]: ./docs/Tutorial.md
-[tutorial_concepts]: ./docs/Tutorial-Basic-Concepts.md
-[tutorial_interface]: ./docs/Tutorial-The-Simple-ML-Interface.md
-[dsl-tutorial]: ./docs/DSL/tutorial/README.md
 [data_api]: ./docs/Data-API.md
 [data_set_api]: ./docs/Data-Set-API.md
 [data_catalog_api]: ./docs/Data-Catalog-API.md
 [frontend]: ./docs/Front-End.md
 [ml_catalog_api]: ./docs/Machine-Learning-Catalog-API.md
 [runtime]: ./docs/Runtime-Server.md
+[adding-new-language-feature]: ./docs/DSL/development/how-to-add-a-new-language-concept.md
