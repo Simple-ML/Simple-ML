@@ -69,7 +69,7 @@ class StandardNormalizer() {
     fun normalize(@Description("Dataset to be normalized") dataset: Dataset) -> @Description("The normalized dataset") normalizedDataset: Dataset
 }
 
-@Description("A normalizer to normalize dataset values")
+@Description("A scaler to scale dataset values")
 class StandardScaler() {
     @Description("Scale all numeric values in the dataset")
     fun scale(@Description("Dataset to be scaled")dataset: Dataset) -> @Description("The scaled dataset") scaledDataset: Dataset
