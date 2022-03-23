@@ -1,3 +1,0 @@
-package simpleml.collections
-
-class Map<K, V>

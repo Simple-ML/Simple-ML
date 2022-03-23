@@ -2,21 +2,47 @@ package simpleml.lang
 
 @Description("The annotation can target these declaration types. If the @Target annotation is not used any declaration type can be targeted.")
 @Target(AnnotationTarget.Annotation)
-annotation Target(vararg targets: AnnotationTarget)
+annotation Target(
+    @Description("The valid targets.")
+    vararg targets: AnnotationTarget
+)
 
-@Description("Declaration types that can be targeted by annotations.")
+@Description("The declaration types that can be targeted by annotations.")
 enum AnnotationTarget {
+    @Description("The annotation can be called on annotations.")
     Annotation
+
+    @Description("The annotation can be called on attributes.")
     Attribute
+
+    @Description("The annotation can be called on classes.")
     Class
+
+    @Description("The annotation can be called on compilation units (i.e. files).")
     CompilationUnit
+
+    @Description("The annotation can be called on enums.")
     Enum
+
+    @Description("The annotation can be called on enum variants.")
     EnumVariant
+
+    @Description("The annotation can be called on functions.")
     Function
+
+    @Description("The annotation can be called on parameters.")
     Parameter
+
+    @Description("The annotation can be called on results.")
     Result
+
+    @Description("The annotation can be called on steps.")
     Step
+
+    @Description("The annotation can be called on type parameters.")
     TypeParameter
+
+    @Description("The annotation can be called on workflows.")
     Workflow
 }
 

@@ -1,15 +1,15 @@
 package tests.unresolvedNamespace
 
-// semantic_error "No declaration with qualified name 'simpleml.collection.List' exists."
-import »simpleml.collection.List«
-// no_semantic_error "No declaration with qualified name 'simpleml.collections.List' exists."
-import »simpleml.collections.List«
+// semantic_error "No declaration with qualified name 'simpleml.models.Model' exists."
+import »simpleml.models.Model«
+// no_semantic_error "No declaration with qualified name 'simpleml.model.Model' exists."
+import »simpleml.model.Model«
 // no_semantic_error "No declaration with qualified name 'tests.unresolvedNamespace.C' exists."
 import »tests.unresolvedNamespace.C«
 
-// semantic_error "No package with qualified name 'simpleml.collection' exists."
-import »simpleml.collection.*«
-// no_semantic_error "No package with qualified name 'simpleml.collections' exists."
-import »simpleml.collections.*«
+// semantic_error "No package with qualified name 'simpleml.models' exists."
+import »simpleml.models.*«
+// no_semantic_error "No package with qualified name 'simpleml.model' exists."
+import »simpleml.model.*«
 
 class C
