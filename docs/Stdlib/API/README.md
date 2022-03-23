@@ -12,7 +12,6 @@
 
 ## Packages
 
-* [simpleml.collections](./simpleml_collections.md)
 * [simpleml.dataset](./simpleml_dataset.md)
 * [simpleml.lang](./simpleml_lang.md)
 * [simpleml.metrics.classification](./simpleml_metrics_classification.md)
