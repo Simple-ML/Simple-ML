@@ -1,10 +1,13 @@
 package simpleml.lang
 
-@Description("Qualified name of the corresponding module in Python (default is the qualified name of the package).")
+@Description("The qualified name of the corresponding Python module (default is the qualified name of the package).")
 @Target(AnnotationTarget.CompilationUnit)
-annotation PythonModule(qualifiedName: String)
+annotation PythonModule(
+    @Description("The qualified name of the corresponding Python module.")
+    qualifiedName: String
+)
 
-@Description("Name of the corresponding API element in Python (default is the name of the declaration in the stubs).")
+@Description("The name of the corresponding API element in Python (default is the name of the declaration in the stubs).")
 @Target(
     AnnotationTarget.Attribute,
     AnnotationTarget.Class,
@@ -15,4 +18,7 @@ annotation PythonModule(qualifiedName: String)
     AnnotationTarget.Step,
     AnnotationTarget.Workflow
 )
-annotation PythonName(name: String)
+annotation PythonName(
+    @Description("The name of the corresponding API element in Python.")
+    name: String
+)
