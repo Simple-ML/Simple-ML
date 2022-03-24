@@ -1,0 +1,66 @@
+package tests.validation.typeChecking.arguments
+
+step myStep(vararg variadicParam: Int) {
+
+    // no_semantic_error "An argument of type '(Int) -> (Int)' cannot be assigned to a parameter of type '(Int) -> (Int)'."
+    f1(»intToInt«);
+    // semantic_error "An argument of type '(C) -> ()' cannot be assigned to a parameter of type '(Int) -> (Int)'."
+    f1(»f2«);
+    // semantic_error "An argument of type 'B' cannot be assigned to a parameter of type '(Int) -> (Int)'."
+    f1(»B()«);
+    // semantic_error "An argument of type 'C' cannot be assigned to a parameter of type '(Int) -> (Int)'."
+    f1(callableType = »C()«);
+    // semantic_error "An argument of type 'D' cannot be assigned to a parameter of type '(Int) -> (Int)'."
+    f1(»D()«);
+    // semantic_error "An argument of type 'C?' cannot be assigned to a parameter of type '(Int) -> (Int)'."
+    f1(»maybeC()«);
+    // semantic_error "An argument of type 'MyEnum1' cannot be assigned to a parameter of type '(Int) -> (Int)'."
+    f1(»someVariantOfMyEnum1()«);
+    // semantic_error "An argument of type 'MyEnum2' cannot be assigned to a parameter of type '(Int) -> (Int)'."
+    f1(»someVariantOfMyEnum2()«);
+    // semantic_error "An argument of type 'Variant1' cannot be assigned to a parameter of type '(Int) -> (Int)'."
+    f1(»MyEnum1.Variant1«);
+    // semantic_error "An argument of type 'Variant2' cannot be assigned to a parameter of type '(Int) -> (Int)'."
+    f1(»MyEnum1.Variant2«);
+    // semantic_error "An argument of type 'Variant1' cannot be assigned to a parameter of type '(Int) -> (Int)'."
+    f1(»MyEnum2.Variant1«);
+    // semantic_error "An argument of type 'union<A, C>' cannot be assigned to a parameter of type '(Int) -> (Int)'."
+    f1(»aOrC()«);
+    // semantic_error "An argument of type 'union<B, C>' cannot be assigned to a parameter of type '(Int) -> (Int)'."
+    f1(»bOrC()«);
+    // semantic_error "An argument of type 'variadic<Int>' cannot be assigned to a parameter of type '(Int) -> (Int)'."
+    f1(»variadicParam«);
+    // no_semantic_error "An argument of type '$Unresolved' cannot be assigned to a parameter of type '(Int) -> (Int)'."
+    f1(»unresolved«);
+    // no_semantic_error r"An argument of type '[^']*' cannot be assigned to a parameter of type '[^']*'."
+    f1(unresolved = »1«);
+}
+
+fun f1(callableType: (a: Int) -> (r: Int))
+fun f2(classType: C)
+fun f3(enumType: MyEnum)
+fun f4(enumVariantType: MyEnum.Variant1)
+fun f5(unionType: union<B, C>)
+fun f6(unresolvedType: Unresolved)
+fun f7(vararg variadicType: C)
+
+class A()
+class B()
+class C()
+class D() sub C
+
+enum MyEnum1 {
+    Variant1
+    Variant2
+}
+enum MyEnum2 {
+    Variant1
+    Variant2
+}
+
+fun maybeC() -> instanceOrNull: C?
+fun aOrC() -> instance: union<A, C>
+fun bOrC() -> instance: union<B, C>
+fun someVariantOfMyEnum1() -> variant: MyEnum1
+fun someVariantOfMyEnum2() -> variant: MyEnum2
+fun intToInt(a: Int) -> (r: Int)

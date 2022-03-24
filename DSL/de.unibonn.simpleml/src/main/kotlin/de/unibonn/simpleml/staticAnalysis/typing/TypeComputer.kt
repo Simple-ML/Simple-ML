@@ -5,11 +5,13 @@ package de.unibonn.simpleml.staticAnalysis.typing
 import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
+import de.unibonn.simpleml.emf.typeArgumentsOrEmpty
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlAbstractType
+import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
@@ -36,6 +38,9 @@ import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlString
+import de.unibonn.simpleml.simpleML.SmlTypeArgument
+import de.unibonn.simpleml.simpleML.SmlTypeProjection
+import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.staticAnalysis.assignedOrNull
 import de.unibonn.simpleml.staticAnalysis.callableOrNull
@@ -69,6 +74,8 @@ private fun EObject.inferType(context: EObject): Type {
         this is SmlAbstractDeclaration -> this.inferType(context)
         this is SmlAbstractExpression -> this.inferType(context)
         this is SmlAbstractType -> this.inferType(context)
+        this is SmlTypeArgument -> this.value.inferType(context)
+        this is SmlTypeProjection -> this.type.inferType(context)
         this is SmlYield -> {
             val assigned = assignedOrNull() ?: return Any(context)
             assigned.inferType(context)
@@ -123,6 +130,7 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
         this is SmlInt -> Int(context)
         this is SmlString -> String(context)
 
+        this is SmlArgument -> this.value.inferType(context)
         this is SmlCall -> when (val callable = callableOrNull()) {
             is SmlClass -> ClassType(callable, isNullable = false)
             is SmlCallableType -> {
@@ -226,6 +234,9 @@ private fun SmlAbstractType.inferType(context: EObject): Type {
         }
         this is SmlParenthesizedType -> {
             this.type.inferType(context)
+        }
+        this is SmlUnionType -> {
+            UnionType(this.typeArgumentsOrEmpty().map { it.value.inferType(context) }.toSet())
         }
         else -> Any(context)
     }
