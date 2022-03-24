@@ -8,8 +8,8 @@ def testStep():
     g()
     a, _, c = g()
     x, _, _ = g()
-    f(a)
-    f(x)
+    f1(a)
+    f1(x)
     return c
 
 # Workflows --------------------------------------------------------------------
@@ -20,13 +20,13 @@ def testFlow():
     runtimeBridge.save_placeholder('a', a)
     x, _, _ = g()
     runtimeBridge.save_placeholder('x', x)
-    f(a)
-    f(x)
+    f1(a)
+    f1(x)
     def __block_lambda_0():
         g()
         a, _, c = g()
         x, _, _ = g()
-        f(a)
-        f(x)
+        f1(a)
+        f1(x)
         return c
-    f(__block_lambda_0)
+    f2(__block_lambda_0)

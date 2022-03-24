@@ -1,5 +1,6 @@
 package de.unibonn.simpleml.staticAnalysis.typing
 
+import de.unibonn.simpleml.emf.containingEnumOrNull
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlClass
@@ -8,7 +9,7 @@ import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import org.eclipse.xtext.naming.QualifiedName
 
 sealed class Type {
-    open fun toSimpleString() = toString()
+    abstract fun toSimpleString(): String
 }
 
 class RecordType(resultToType: List<Pair<String, Type>>) : Type() {
@@ -84,8 +85,33 @@ data class EnumVariantType(
 ) : NamedType(smlEnumVariant) {
 
     override fun toString() = super.toString()
+    override fun toSimpleString() = buildString {
+        smlEnumVariant.containingEnumOrNull()?.let { append("${it.name}.") }
+        append(smlEnumVariant.name)
+    }
+}
+
+data class UnionType(val possibleTypes: Set<Type>) : Type() {
+    override fun toString(): String {
+        return "union<${possibleTypes.joinToString()}>"
+    }
+
+    override fun toSimpleString(): String {
+        return "union<${possibleTypes.joinToString { it.toSimpleString() }}>"
+    }
+}
+
+data class VariadicType(val elementType: Type) : Type() {
+    override fun toString(): String {
+        return "vararg<$elementType>"
+    }
+
+    override fun toSimpleString(): String {
+        return "vararg<${elementType.toSimpleString()}>"
+    }
 }
 
 object UnresolvedType : Type() {
-    override fun toString() = "Unresolved"
+    override fun toString() = "\$Unresolved"
+    override fun toSimpleString() = toString()
 }

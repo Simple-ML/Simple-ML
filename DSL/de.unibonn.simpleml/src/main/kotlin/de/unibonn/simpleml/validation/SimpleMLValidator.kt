@@ -30,6 +30,10 @@ import de.unibonn.simpleml.validation.other.ProtocolChecker
 import de.unibonn.simpleml.validation.other.TypeArgumentListChecker
 import de.unibonn.simpleml.validation.statements.AssignmentChecker
 import de.unibonn.simpleml.validation.statements.ExpressionsStatementChecker
+import de.unibonn.simpleml.validation.typeChecking.ArgumentTypeChecker
+import de.unibonn.simpleml.validation.typeChecking.IndexedAccessTypeChecker
+import de.unibonn.simpleml.validation.typeChecking.InfixOperationTypeChecker
+import de.unibonn.simpleml.validation.typeChecking.PrefixOperationTypeChecker
 import de.unibonn.simpleml.validation.types.CallableTypeChecker
 import de.unibonn.simpleml.validation.types.NamedTypeChecker
 import de.unibonn.simpleml.validation.types.UnionTypeChecker
@@ -74,6 +78,12 @@ import org.eclipse.xtext.validation.ComposedChecks
         // Statements
         AssignmentChecker::class,
         ExpressionsStatementChecker::class,
+
+        // Type Checking
+        ArgumentTypeChecker::class,
+        IndexedAccessTypeChecker::class,
+        InfixOperationTypeChecker::class,
+        PrefixOperationTypeChecker::class,
 
         // Types
         CallableTypeChecker::class,

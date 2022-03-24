@@ -47,4 +47,6 @@ annotation MyAnnotation(
     nullableUnresolvedParam: »Unresolved?«,    
     // semantic_error "Parameters of annotations must have type Boolean, Float, Int, String, or a constant enum."
     callableParam: »() -> ()«,
+    // no_semantic_error "Parameters of annotations must have type Boolean, Float, Int, String, or a constant enum."
+    vararg variadicParameter: »Int«,
 )
