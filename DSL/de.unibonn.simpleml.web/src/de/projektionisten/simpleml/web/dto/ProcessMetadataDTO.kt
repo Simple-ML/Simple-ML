@@ -2,7 +2,8 @@ package de.projektionisten.simpleml.web.dto
 
 data class ProcessMetadataDTO(
     val name: String,
-    val emfPath: String, 
+    val emfPath: String,
+    val containingClassName: String,
     val error: String,
     val input: List<ParameterDTO?>,
     val output: List<ParameterDTO?>,

@@ -51,7 +51,8 @@ class ContextMenu extends React.Component {
                 result.push({
                     metaData: {
                         icon: editIcon,
-                        text: item.name
+                        text: item.name,
+                        classReference: item.containingClassName
                     },
                     func: (placeholderName) => {
                         XtextServices.createEntity({
@@ -103,33 +104,36 @@ class ContextMenu extends React.Component {
 
         return(
             <div style={{visibility: visible}}>
-                <div className={ContextMenuStyle.toolbar}
+                <div className={ContextMenuStyle["toolbar"]}
                      style={{top: posY, left: posX}}
                      ref={this.myself}>
-                    {
-                        buttonMetaData.map((item, i) => {
-                            return(
-                                <button className={ContextMenuStyle["toolbar-button"]}
-                                    key={i}
-                                    disabled={item.metaData.disabled()}
-                                    onClick={() => {
-                                        if(i < inferedStatic.length) {
-                                            item.func();
-                                            this.props.closeContextMenu();
-                                        } else {
-                                            this.setState({
-                                                contextButtonFunc: item.func,
-                                                isBackdropActive: i < inferedStatic.length ? false : true
-                                            })
+                    <div className={ContextMenuStyle["toolbar-button-container"]}>
+                        {
+                            buttonMetaData.map((item, i) => {
+                                return(
+                                    <button className={ContextMenuStyle["toolbar-button"]}
+                                        key={i}
+                                        disabled={item.metaData.disabled()}
+                                        onClick={() => {
+                                            if(i < inferedStatic.length) {
+                                                item.func();
+                                                this.props.closeContextMenu();
+                                            } else {
+                                                this.setState({
+                                                    contextButtonFunc: item.func,
+                                                    isBackdropActive: i < inferedStatic.length ? false : true
+                                                })
+                                            }
                                         }
-                                    }
-                                }>
-                                    <img className={ContextMenuStyle.icon} src={item.metaData.icon}/>
-                                    <div>{item.metaData.text}</div>
-                                </button>
-                            )
-                        })
-                    }
+                                    }>
+                                        <img className={ContextMenuStyle["button-icon"]} src={item.metaData.icon}/>
+                                        <div className={ContextMenuStyle["button-name"]}>{item.metaData.text}</div>
+                                        <div className={ContextMenuStyle["button-className"]}>{item.metaData.classReference}</div>
+                                    </button>
+                                )
+                            })
+                        }
+                    </div>
                 </div>
                 <div className={ContextMenuStyle["toolbar-outside"]}
                      onClick={this.props.closeContextMenu}>

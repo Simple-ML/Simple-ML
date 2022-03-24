@@ -21,6 +21,7 @@ import de.unibonn.simpleml.emf.createSmlArgument
 import de.unibonn.simpleml.emf.isClassMember
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
+import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.stdlibAccess.descriptionOrNull
 import de.unibonn.simpleml.ide.editor.contentassist.listCallablesWithMatchingParameters
 import de.unibonn.simpleml.ide.editor.contentassist.listCallablesWithOnlyPrimitiveParameters
@@ -92,13 +93,6 @@ class EmfServiceDispatcher @Inject constructor(
                 createEntity(context)
             "editProcessParameter" ->
                 editProcessParameter(context)
-
-// 			"deleteEntity" ->
-// 				deleteEntity(context)
-// 			"createAssociation" ->
-// 				createAssociation(context)
-// 			"deleteAssociation" ->
-// 				deleteAssociation(context)
             else ->
                 super.createServiceDescriptor(serviceType, context)
         }
@@ -230,46 +224,6 @@ class EmfServiceDispatcher @Inject constructor(
         return context.createDefaultPostServiceResult("")
     }
 
-    private fun getProcessMetadataFromURI(uri: String, serviceContext: IServiceContext): ProcessMetadataDTO {
-        val resourceDocument = getResourceDocument(super.getResourceID(serviceContext), serviceContext)
-        var entityName = ""
-        var description: String? = ""
-        var error: String
-        var entity = resourceDocument.resource.getEObject(uri)
-        val parameterMetadata = ArrayList<ParameterDTO>()
-        val resultMetadata = ArrayList<ParameterDTO>()
-
-        if (entity === null) {
-            val resourceSet = stdLibResourceSetProvider.get(uri, serviceContext)
-            entity = resourceSet.getEObject(URI.createURI(uri), true)
-        }
-
-        if (entity !== null) {
-            when (entity) {
-                is SmlFunction -> {
-                    (entity as SmlFunction?).parametersOrEmpty().forEach {
-                        parameterMetadata.add(ParameterDTO(it.name, it.type.qualifiedNameOrNull()))
-                    }
-                    (entity as SmlFunction?).resultsOrEmpty().forEach {
-                        resultMetadata.add(ParameterDTO(it.name, it.type.qualifiedNameOrNull()))
-                    }
-                    entityName = entity.name
-                }
-                is SmlParameter -> {
-                    entityName = entity.name
-                }
-                is SmlClass -> {
-                    entityName = entity.name
-                }
-            }
-            description = (entity as? SmlAbstractDeclaration)?.descriptionOrNull() 
-            error = ""
-        } else {
-            error = "Entity not found!"
-        }
-        return ProcessMetadataDTO(entityName, uri, error, parameterMetadata, resultMetadata, description)
-    }
-
     private fun editProcessParameter(context: IServiceContext): ServiceDescriptor {
 		val resourceDocument = getResourceDocument(super.getResourceID(context), context)
 		val type = object: TypeToken<EditProcessParameterDTO>(){}.getType()
@@ -298,6 +252,51 @@ class EmfServiceDispatcher @Inject constructor(
 		return context.createDefaultPostServiceResult("")
 	}
 
+    private fun getProcessMetadataFromURI(uri: String, serviceContext: IServiceContext): ProcessMetadataDTO {
+        val resourceDocument = getResourceDocument(super.getResourceID(serviceContext), serviceContext)
+        var entityName = ""
+        var description: String? = ""
+        var containingClassName: String = ""
+        var error: String
+        var entity = resourceDocument.resource.getEObject(uri)
+        val parameterMetadata = ArrayList<ParameterDTO>()
+        val resultMetadata = ArrayList<ParameterDTO>()
+
+        if (entity === null) {
+            val resourceSet = stdLibResourceSetProvider.get(uri, serviceContext)
+            entity = resourceSet.getEObject(URI.createURI(uri), true)
+        }
+
+        if (entity !== null) {
+            when (entity) {
+                is SmlFunction -> {
+                    (entity as SmlFunction?).parametersOrEmpty().forEach {
+                        parameterMetadata.add(ParameterDTO(it.name, it.type.qualifiedNameOrNull()))
+                    }
+                    (entity as SmlFunction?).resultsOrEmpty().forEach {
+                        resultMetadata.add(ParameterDTO(it.name, it.type.qualifiedNameOrNull()))
+                    }
+                    entityName = entity.name
+                }
+                is SmlParameter -> {
+                    entityName = entity.name
+                }
+                is SmlClass -> {
+                    entityName = entity.name
+                }
+            }
+            val containingClass = entity.containingClassOrNull()
+            if(containingClass !== null) {
+                containingClassName = containingClass.name
+            }
+            
+            description = (entity as? SmlAbstractDeclaration)?.descriptionOrNull() 
+            error = ""
+        } else {
+            error = "Entity not found!"
+        }
+        return ProcessMetadataDTO(entityName, uri, containingClassName, error, parameterMetadata, resultMetadata, description)
+    }
 
     private fun SmlAbstractType.qualifiedNameOrNull(): String? {
         return (this as? SmlNamedType)?.declaration?.qualifiedNameOrNull()?.toString()
