@@ -86,6 +86,12 @@ data class EnumVariantType(
     override fun toString() = super.toString()
 }
 
+data class VariadicType(val elementType: Type): Type() {
+    override fun toString(): String {
+        return "Variadic<$elementType>"
+    }
+}
+
 object UnresolvedType : Type() {
     override fun toString() = "Unresolved"
 }

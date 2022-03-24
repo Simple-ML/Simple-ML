@@ -86,5 +86,7 @@ enum class ErrorCode {
     VariadicParametersMustNotHaveDefaultValue,
     VariadicParameterMustNotBeAssignedByName,
 
-    BlockLambdaPrefix
+    BlockLambdaPrefix,
+
+    WrongType
 }

@@ -95,7 +95,13 @@ private fun SmlAbstractDeclaration.inferType(context: EObject): Type {
             val assigned = assignedOrNull() ?: return Any(context)
             assigned.inferType(context)
         }
-        this is SmlParameter -> type?.inferType(context) ?: Any(context)
+        this is SmlParameter -> {
+            val type = type?.inferType(context) ?: Any(context)
+            when {
+                this.isVariadic -> VariadicType(type)
+                else -> type
+            }
+        }
         this is SmlPlaceholder -> {
             val assigned = assignedOrNull() ?: return Any(context)
             assigned.inferType(context)
