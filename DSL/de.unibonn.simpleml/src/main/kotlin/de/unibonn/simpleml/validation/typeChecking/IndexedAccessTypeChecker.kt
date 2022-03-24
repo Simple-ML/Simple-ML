@@ -13,7 +13,7 @@ import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.validation.Check
 
-class IndexedAccessTypeChecker: AbstractSimpleMLChecker() {
+class IndexedAccessTypeChecker : AbstractSimpleMLChecker() {
 
     @Check
     fun receiverMustBeVariadic(smlIndexedAccess: SmlIndexedAccess) {
@@ -40,10 +40,10 @@ class IndexedAccessTypeChecker: AbstractSimpleMLChecker() {
             return
         }
 
-        val hasWrongType = when (val indexType = index.type()) {
-            is ClassType -> indexType.isNullable || indexType.smlClass.qualifiedNameOrNull() != StdlibClasses.Int
-            else -> true
-        }
+        val indexType = index.type()
+        val hasWrongType = indexType !is ClassType ||
+                indexType.isNullable ||
+                indexType.smlClass.qualifiedNameOrNull() != StdlibClasses.Int
 
         if (hasWrongType) {
             error(

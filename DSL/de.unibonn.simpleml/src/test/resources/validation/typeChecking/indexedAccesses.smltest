@@ -1,4 +1,4 @@
-package tests.validation.typeChecking.indexedAccess
+package tests.validation.typeChecking.indexedAccesses
 
 step f(a: Int, vararg b: Int) {
     // semantic_error "The receiver of an indexed access must refer to a variadic parameter."
