@@ -87,6 +87,9 @@ tasks {
     test {
         useJUnitPlatform()
 
+        minHeapSize = "512m"
+        maxHeapSize = "1024m"
+
         extensions.configure(kotlinx.kover.api.KoverTaskExtension::class) {
             excludes = koverExcludes
         }
