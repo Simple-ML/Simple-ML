@@ -1,5 +1,6 @@
 package de.unibonn.simpleml.staticAnalysis.typing
 
+import de.unibonn.simpleml.emf.containingEnumOrNull
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlClass
@@ -84,9 +85,13 @@ data class EnumVariantType(
 ) : NamedType(smlEnumVariant) {
 
     override fun toString() = super.toString()
+    override fun toSimpleString() = buildString {
+        smlEnumVariant.containingEnumOrNull()?.let { append("${it.name}.") }
+        append(smlEnumVariant.name)
+    }
 }
 
-data class UnionType(val possibleTypes: Set<Type>): Type() {
+data class UnionType(val possibleTypes: Set<Type>) : Type() {
     override fun toString(): String {
         return "union<${possibleTypes.joinToString()}>"
     }
@@ -96,13 +101,13 @@ data class UnionType(val possibleTypes: Set<Type>): Type() {
     }
 }
 
-data class VariadicType(val elementType: Type): Type() {
+data class VariadicType(val elementType: Type) : Type() {
     override fun toString(): String {
-        return "variadic<$elementType>"
+        return "vararg<$elementType>"
     }
 
     override fun toSimpleString(): String {
-        return "variadic<${elementType.toSimpleString()}>"
+        return "vararg<${elementType.toSimpleString()}>"
     }
 }
 

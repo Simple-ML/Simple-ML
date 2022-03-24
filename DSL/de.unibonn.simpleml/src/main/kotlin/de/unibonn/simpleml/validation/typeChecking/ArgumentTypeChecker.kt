@@ -3,6 +3,7 @@ package de.unibonn.simpleml.validation.typeChecking
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.staticAnalysis.linking.parameterOrNull
+import de.unibonn.simpleml.staticAnalysis.typing.UnresolvedType
 import de.unibonn.simpleml.staticAnalysis.typing.isSubstitutableFor
 import de.unibonn.simpleml.staticAnalysis.typing.type
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
@@ -14,6 +15,10 @@ class ArgumentTypeChecker : AbstractSimpleMLChecker() {
     @Check
     fun value(smlArgument: SmlArgument) {
         val argumentType = smlArgument.type()
+        if (argumentType is UnresolvedType) {
+            return // Scoping error already shown
+        }
+
         val parameterType = (smlArgument.parameterOrNull() ?: return).type()
 
         if (!argumentType.isSubstitutableFor(parameterType)) {

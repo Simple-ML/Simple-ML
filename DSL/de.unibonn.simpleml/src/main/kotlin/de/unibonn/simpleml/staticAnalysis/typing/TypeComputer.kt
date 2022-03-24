@@ -86,7 +86,7 @@ private fun EObject.inferType(context: EObject): Type {
 
 private fun SmlAbstractDeclaration.inferType(context: EObject): Type {
     return when {
-        this.eIsProxy() -> Any(context)
+        this.eIsProxy() -> UnresolvedType
         this is SmlAttribute -> type.inferType(context)
         this is SmlClass -> ClassType(this, isNullable = false)
         this is SmlEnum -> EnumType(this, isNullable = false)
@@ -124,7 +124,7 @@ private fun SmlAbstractDeclaration.inferType(context: EObject): Type {
 
 private fun SmlAbstractExpression.inferType(context: EObject): Type {
     return when {
-        this.eIsProxy() -> Any(context)
+        this.eIsProxy() -> UnresolvedType
         this is SmlBoolean -> Boolean(context)
         this is SmlFloat -> Float(context)
         this is SmlInt -> Int(context)
@@ -210,7 +210,7 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
 
 private fun SmlAbstractType.inferType(context: EObject): Type {
     return when {
-        this.eIsProxy() -> Any(context)
+        this.eIsProxy() -> UnresolvedType
         this is SmlCallableType -> CallableType(
             parametersOrEmpty().map { it.inferType(context) },
             resultsOrEmpty().map { it.inferType(context) }
