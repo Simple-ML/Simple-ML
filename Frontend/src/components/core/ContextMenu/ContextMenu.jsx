@@ -89,9 +89,11 @@ class ContextMenu extends React.Component {
          *     func: () => { returns void }             // function to be executed (div->onClick())
          * @type {Array}
          */
-        let buttonMetaData = [];
-        buttonMetaData = buttonMetaData.concat(InferenceCreator.inferFromContext(this.props.context));
-        buttonMetaData = buttonMetaData.concat(this.inferFromContextDynamically(this.props.context, this.props.proposals));
+
+        const inferedStatic = InferenceCreator.inferFromContext(this.props.context);
+        const inferedDynamic = this.inferFromContextDynamically(this.props.context, this.props.proposals);
+
+        const buttonMetaData = [...inferedStatic, ...inferedDynamic];
         this.prepareMetaData(buttonMetaData);
 
         let { posX, posY, visible } = this.props;
@@ -111,10 +113,15 @@ class ContextMenu extends React.Component {
                                     key={i}
                                     disabled={item.metaData.disabled()}
                                     onClick={() => {
-                                        this.setState({
-                                            contextButtonFunc: item.func,
-                                            isBackdropActive: true
-                                        })
+                                        if(i < inferedStatic.length) {
+                                            item.func();
+                                            this.props.closeContextMenu();
+                                        } else {
+                                            this.setState({
+                                                contextButtonFunc: item.func,
+                                                isBackdropActive: i < inferedStatic.length ? false : true
+                                            })
+                                        }
                                     }
                                 }>
                                     <img className={ContextMenuStyle.icon} src={item.metaData.icon}/>
