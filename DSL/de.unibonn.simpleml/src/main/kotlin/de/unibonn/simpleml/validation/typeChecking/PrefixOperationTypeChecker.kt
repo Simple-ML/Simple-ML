@@ -13,10 +13,11 @@ import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.validation.Check
+import org.eclipse.xtext.validation.CheckType
 
 class PrefixOperationTypeChecker : AbstractSimpleMLChecker() {
 
-    @Check
+    @Check(CheckType.NORMAL)
     fun operand(smlPrefixOperation: SmlPrefixOperation) {
         val operand = smlPrefixOperation.operand
 

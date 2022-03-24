@@ -12,10 +12,11 @@ import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.validation.Check
+import org.eclipse.xtext.validation.CheckType
 
 class IndexedAccessTypeChecker : AbstractSimpleMLChecker() {
 
-    @Check
+    @Check(CheckType.NORMAL)
     fun receiverMustBeVariadic(smlIndexedAccess: SmlIndexedAccess) {
         val receiver = smlIndexedAccess.receiver
 

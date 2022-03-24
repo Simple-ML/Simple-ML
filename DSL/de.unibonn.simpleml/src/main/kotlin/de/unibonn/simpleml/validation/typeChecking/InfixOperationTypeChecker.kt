@@ -15,15 +15,16 @@ import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.validation.Check
+import org.eclipse.xtext.validation.CheckType
 
 class InfixOperationTypeChecker : AbstractSimpleMLChecker() {
 
-    @Check
+    @Check(CheckType.NORMAL)
     fun leftOperand(smlInfixOperation: SmlInfixOperation) {
         checkOperand(smlInfixOperation, Literals.SML_INFIX_OPERATION__LEFT_OPERAND)
     }
 
-    @Check
+    @Check(CheckType.NORMAL)
     fun rightOperand(smlInfixOperation: SmlInfixOperation) {
         checkOperand(smlInfixOperation, Literals.SML_INFIX_OPERATION__RIGHT_OPERAND)
     }
