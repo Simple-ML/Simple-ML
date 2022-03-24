@@ -1,6 +1,6 @@
 package tests.generator.statementWithoutEffect
 
-fun f(param: Any?)
+fun f(param: () -> ())
 
 workflow testFlow {
     1;

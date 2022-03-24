@@ -14,8 +14,8 @@ fun Type.isSubstitutableFor(other: Type, resultIfUnresolved: Boolean = false): B
         is EnumType -> this.isSubstitutableFor(other)
         is EnumVariantType -> this.isSubstitutableFor(other)
         is UnionType -> this.isSubstitutableFor(other)
+        is VariadicType -> this.isSubstitutableFor(other)
         is RecordType -> false
-        is VariadicType -> false
         UnresolvedType -> resultIfUnresolved
     }
 }
@@ -25,8 +25,8 @@ private fun CallableType.isSubstitutableFor(other: Type): Boolean {
         is CallableType -> {
             // TODO: We need to compare names of parameters & results and can allow additional optional parameters
 
-            // Sized must match (too strict requirement -> should be loosened later)
-            if (this.parameters.size != unwrappedOther.parameters.size || this.results.size == this.parameters.size) {
+            // Sizes must match (too strict requirement -> should be loosened later)
+            if (this.parameters.size != unwrappedOther.parameters.size || this.results.size != this.results.size) {
                 return false
             }
 
@@ -96,6 +96,10 @@ private fun EnumVariantType.isSubstitutableFor(other: Type): Boolean {
  */
 private fun UnionType.isSubstitutableFor(other: Type): Boolean {
     return this.possibleTypes.all { it.isSubstitutableFor(other) }
+}
+
+private fun VariadicType.isSubstitutableFor(other: Type): Boolean {
+    return other is VariadicType && this.elementType.isSubstitutableFor(other)
 }
 
 /**

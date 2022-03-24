@@ -232,6 +232,9 @@ step myStep(vararg variadicParam: Int) {
     f7(»unresolved«);
     // no_semantic_error r"An argument of type '[^']*' cannot be assigned to a parameter of type '[^']*'."
     f7(unresolved = »1«);
+
+    // no_semantic_error r"An argument of type '[^']*' cannot be assigned to a parameter of type '[^']*'."
+    f8(»(vararg a: Int) {}«);
 }
 
 fun f1(callableType: (a: Int) -> (r: Int))
@@ -241,6 +244,7 @@ fun f4(enumVariantType: MyEnum1.Variant1)
 fun f5(unionType: union<B, C>)
 fun f6(unresolvedType: Unresolved)
 fun f7(vararg variadicType: C)
+fun f8(callableType: (vararg a: Int) -> ())
 
 class A()
 class B()

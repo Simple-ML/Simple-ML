@@ -21,6 +21,7 @@ import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
+import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
@@ -154,6 +155,9 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
                     else -> RecordType(results.map { it.name to it.inferType(context) })
                 }
             }
+            is SmlExpressionLambda -> {
+                callable.result.inferType(context)
+            }
             is SmlStep -> {
                 val results = callable.resultsOrEmpty()
                 when (results.size) {
@@ -179,6 +183,10 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
         this is SmlBlockLambda -> CallableType(
             parametersOrEmpty().map { it.inferType(context) },
             lambdaResultsOrEmpty().map { it.inferType(context) }
+        )
+        this is SmlExpressionLambda -> CallableType(
+            parametersOrEmpty().map { it.inferType(context) },
+            listOf(result.inferType(context))
         )
         this is SmlMemberAccess -> {
 //            if (this.isNullable) {

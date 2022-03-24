@@ -1,6 +1,6 @@
 package tests.generator.expressionStatement
 
-fun f(param: Any?)
+fun f(param: () -> ())
 
 fun g() -> result: Int
 
