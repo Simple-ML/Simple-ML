@@ -17,7 +17,7 @@ import org.eclipse.xtext.validation.Check
 class PrefixOperationTypeChecker : AbstractSimpleMLChecker() {
 
     @Check
-    fun operands(smlPrefixOperation: SmlPrefixOperation) {
+    fun operand(smlPrefixOperation: SmlPrefixOperation) {
         val operand = smlPrefixOperation.operand
 
         if (operand is SmlReference && !operand.declaration.isResolved()) {
