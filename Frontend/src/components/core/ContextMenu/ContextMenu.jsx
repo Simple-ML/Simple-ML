@@ -25,7 +25,8 @@ class ContextMenu extends React.Component {
         this.state = {
             contextButtonFunc: () => {},
             isBackdropActive: false,
-            placeholderName: ''
+            placeholderName: '',
+            validInput: [true]
         };
     }
 
@@ -33,7 +34,8 @@ class ContextMenu extends React.Component {
         this.setState({
             contextButtonFunc: () => {},
             isBackdropActive: false,
-            placeholderName: ''
+            placeholderName: '',
+            validInput: [true]
         });
     }
 
@@ -139,7 +141,6 @@ class ContextMenu extends React.Component {
                      onClick={this.props.closeContextMenu}>
                 </div>
                 <Backdrop
-                    // style= {{backgroundColor:'white', opacity: '0.3'}}
                     sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                     open={this.state.isBackdropActive}
                 >
@@ -151,26 +152,31 @@ class ContextMenu extends React.Component {
                             id="outlined-basic" label="Name" variant="outlined" value={this.state.placeholderName}
                             onChange={(e) => {
                                 e.persist();
-                                // this.state.placeholderName = e.target.value;
-                                this.setState({placeholderName: e.target.value})
-                            }}
-                            onKeyDown={(e) => {
-                                if(e.keyCode === 13)
-                                    this.createEntity();
-                            }}>
+                                this.setState({placeholderName: e.target.value});
+
+                                if(e.target.value.match('[a-z]')) {
+                                    this.setState({validInput: [true]})
+                                } else {
+                                    this.setState({validInput: [false]})
+                                }
+                            }
+                        }>
                         </TextField>
                         <div className={ContextMenuStyle["assign-placeholder-modal-button-container"]}>
                             <button className={ContextMenuStyle["assign-placeholder-modal-cancel-button"]}
                                 onClick={() => {
                                     this.clearState();
                                     this.props.closeContextMenu();
-                                }}>
+                                }
+                            }>
                                 Cancel
                             </button>
                             <button className={ContextMenuStyle["assign-placeholder-modal-create-button"]}
+                                disabled={!this.state.validInput[0]}
                                 onClick={() => {
                                     this.createEntity();
-                                }}>
+                                }
+                            }>
                                 Create
                             </button>
                         </div>
