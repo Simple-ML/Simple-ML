@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Backdrop, TextField } from '@mui/material';
+import { Backdrop, TextField, Tooltip } from '@mui/material';
 //redux
 import InferenceCreator from './InferenceCreator';
 import { closeContextMenu } from '../../../reducers/contextMenu';
@@ -54,7 +54,8 @@ class ContextMenu extends React.Component {
                     metaData: {
                         icon: editIcon,
                         text: item.name,
-                        classReference: item.containingClassName
+                        classReference: item.containingClassName,
+                        toolTip: item.description
                     },
                     func: (placeholderName) => {
                         XtextServices.createEntity({
@@ -113,25 +114,27 @@ class ContextMenu extends React.Component {
                         {
                             buttonMetaData.map((item, i) => {
                                 return(
-                                    <button className={ContextMenuStyle["toolbar-button"]}
-                                        key={i}
-                                        disabled={item.metaData.disabled()}
-                                        onClick={() => {
-                                            if(i < inferedStatic.length) {
-                                                item.func();
-                                                this.props.closeContextMenu();
-                                            } else {
-                                                this.setState({
-                                                    contextButtonFunc: item.func,
-                                                    isBackdropActive: i < inferedStatic.length ? false : true
-                                                })
+                                    <Tooltip key={i}
+                                        title={item.metaData.toolTip ? item.metaData.toolTip : ""}>
+                                        <button className={ContextMenuStyle["toolbar-button"]}
+                                            disabled={item.metaData.disabled()}
+                                            onClick={() => {
+                                                if(i < inferedStatic.length) {
+                                                    item.func();
+                                                    this.props.closeContextMenu();
+                                                } else {
+                                                    this.setState({
+                                                        contextButtonFunc: item.func,
+                                                        isBackdropActive: i < inferedStatic.length ? false : true
+                                                    })
+                                                }
                                             }
-                                        }
-                                    }>
-                                        <img className={ContextMenuStyle["button-icon"]} src={item.metaData.icon}/>
-                                        <div className={ContextMenuStyle["button-name"]}>{item.metaData.text}</div>
-                                        <div className={ContextMenuStyle["button-className"]}>{item.metaData.classReference}</div>
-                                    </button>
+                                        }>
+                                            <img className={ContextMenuStyle["button-icon"]} src={item.metaData.icon}/>
+                                            <div className={ContextMenuStyle["button-name"]}>{item.metaData.text}</div>
+                                            <div className={ContextMenuStyle["button-className"]}>{item.metaData.classReference}</div>
+                                        </button>
+                                    </Tooltip>
                                 )
                             })
                         }
