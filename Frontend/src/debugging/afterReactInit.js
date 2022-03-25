@@ -100,14 +100,14 @@ workflow winebasic {
         console.log({serviceType, result})
     });
 
-    // TextEditorWrapper.setText(
-    //     `package example
+    TextEditorWrapper.setText(
+`package example
 
-    //     workflow exampleworkflow {
-            
-    //     }
-    //     `
-    // );
+workflow exampleworkflow {
+    
+}
+`
+    );
 }
 
 
