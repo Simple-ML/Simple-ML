@@ -1,5 +1,5 @@
 # Workflows --------------------------------------------------------------------
 
 def test():
-    f(lambda a, b=2: 1)
-    f(lambda a, *c: 1)
+    f1(lambda a, b=2: 1)
+    f2(lambda a, *c: 1)
