@@ -18,7 +18,7 @@ Continue with the explanation of [imports][imports] to understand how to access 
 
 **Note:** This section is only relevant if you are interested in the [stub language][stub-language].
 
-In order for code generation to work properly, the Simple-ML package of a Simple-ML declaration in the [stub language][stub-language] must correspond to a [Python module][python-modules] that exports its matching Python declaration. These [Python modules][python-modules] can either directly contain the implementation or globally import the declaration. The latter is possible since all declarations that are globally imported in a [Python module][python-module] are also automatically exported again in Python.
+In order for code generation to work properly, the Simple-ML package of a Simple-ML declaration in the [stub language][stub-language] must correspond to a [Python module][python-modules] that exports its matching Python declaration. These [Python modules][python-modules] can either directly contain the implementation or globally import the declaration. The latter is possible since all declarations that are globally imported in a [Python module][python-modules] are also automatically exported again in Python.
 
 ### File Contains Implementation
 
