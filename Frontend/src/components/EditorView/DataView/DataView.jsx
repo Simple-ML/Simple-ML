@@ -48,7 +48,7 @@ class DataView extends React.Component {
                     loadedBarCharts.push({label: attributes[attributesKey].label , statistic: attributes[attributesKey]["statistics"][statisticsKey]["bars"]});
                 }
                 if(statisticsKey === 'histogram' && attributes[attributesKey]["statistics"][statisticsKey]["type"] === 'histogram') {
-                    loadedHistogramCharts.push({label: attributes[attributesKey].label , statistic: attributes[attributesKey]["statistics"][statisticsKey]["buckets"]});
+                    loadedHistogramCharts.push({label: attributes[attributesKey].label , statistic: attributes[attributesKey]["statistics"][statisticsKey]});
                 }
             })
         })
