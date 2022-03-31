@@ -2,8 +2,11 @@ package de.unibonn.simpleml.staticAnalysis.typing
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.constant.SmlFileExtension
+import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
+import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.staticAnalysis.assignedOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
@@ -16,6 +19,8 @@ import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -87,95 +92,137 @@ class TypeComputerTest {
         }
     }
 
+    // Arguments -------------------------------------------------------------------------------------------------------
+
+    @Nested
+    inner class Arguments {
+
+        @Test
+        fun `arguments should have type of value`() {
+            withCompilationUnitFromFile("expressions/arguments") {
+                descendants<SmlArgument>().forEach {
+                    it shouldHaveType it.value
+                }
+            }
+        }
+    }
+
+    // Parenthesized Expressions ---------------------------------------------------------------------------------------
+
+    @Nested
+    inner class ParenthesizedExpressions {
+
+        @Test
+        fun `parenthesized expressions should have type of expressions`() {
+            withCompilationUnitFromFile("expressions/parenthesizedExpressions") {
+                descendants<SmlParenthesizedExpression>().forEach {
+                    it shouldHaveType it.expression
+                }
+            }
+        }
+    }
+
     // Operations ------------------------------------------------------------------------------------------------------
 
     @Nested
     inner class Operations {
 
-        @Test
-        fun `arithmetic operations with only Int operands should have type Int`() {
+        @ParameterizedTest
+        @ValueSource(
+            strings = [
+                "additionIntInt",
+                "subtractionIntInt",
+                "multiplicationIntInt",
+                "divisionIntInt",
+                "negationInt"
+            ],
+        )
+        fun `arithmetic operations with only Int operands should have type Int`(placeholderName: String) {
             withCompilationUnitFromFile("expressions/operations/arithmetic") {
-                listOf(
-                    "additionIntInt",
-                    "subtractionIntInt",
-                    "multiplicationIntInt",
-                    "divisionIntInt",
-                    "negationInt"
-                ).forEach {
-                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Int
-                }
+                placeholderWithName(placeholderName).assignedValueOrFail() shouldHaveType Int
             }
         }
 
-        @Test
-        fun `arithmetic operations without only Int operands should have type Float`() {
+        @ParameterizedTest
+        @ValueSource(
+            strings = [
+                "additionIntFloat",
+                "subtractionIntFloat",
+                "multiplicationIntFloat",
+                "divisionIntFloat",
+                "negationFloat",
+                "additionInvalid",
+                "subtractionInvalid",
+                "multiplicationInvalid",
+                "divisionInvalid",
+                "negationInvalid"
+            ],
+        )
+        fun `arithmetic operations with non-Int operands should have type Float`(placeholderName: String) {
             withCompilationUnitFromFile("expressions/operations/arithmetic") {
-                listOf(
-                    "additionIntFloat",
-                    "subtractionIntFloat",
-                    "multiplicationIntFloat",
-                    "divisionIntFloat",
-                    "negationFloat",
-                    "additionInvalid",
-                    "subtractionInvalid",
-                    "multiplicationInvalid",
-                    "divisionInvalid",
-                    "negationInvalid"
-                ).forEach {
-                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Float
-                }
+                placeholderWithName(placeholderName).assignedValueOrFail() shouldHaveType Float
             }
         }
 
-        @Test
-        fun `comparison operations should have type Boolean`() {
+        @ParameterizedTest
+        @ValueSource(
+            strings = [
+                "lessThan",
+                "lessThanOrEquals",
+                "greaterThanOrEquals",
+                "greaterThan",
+                "lessThanInvalid",
+                "lessThanOrEqualsInvalid",
+                "greaterThanOrEqualsInvalid",
+                "greaterThanInvalid"
+            ],
+        )
+        fun `comparison operations should have type Boolean`(placeholderName: String) {
             withCompilationUnitFromFile("expressions/operations/comparison") {
-                listOf(
-                    "lessThan",
-                    "lessThanOrEquals",
-                    "greaterThanOrEquals",
-                    "greaterThan",
-                    "lessThanInvalid",
-                    "lessThanOrEqualsInvalid",
-                    "greaterThanOrEqualsInvalid",
-                    "greaterThanInvalid"
-                ).forEach {
-                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Boolean
-                }
+                placeholderWithName(placeholderName).assignedValueOrFail() shouldHaveType Boolean
             }
         }
 
-        @Test
-        fun `equality operations should have type Boolean`() {
+        @ParameterizedTest
+        @ValueSource(
+            strings = [
+                "equals",
+                "notEquals"
+            ],
+        )
+        fun `equality operations should have type Boolean`(placeholderName: String) {
             withCompilationUnitFromFile("expressions/operations/equality") {
-                listOf("equals", "notEquals").forEach {
-                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Boolean
-                }
+                placeholderWithName(placeholderName).assignedValueOrFail() shouldHaveType Boolean
             }
         }
 
-        @Test
-        fun `strict equality operations should have type Boolean`() {
+        @ParameterizedTest
+        @ValueSource(
+            strings = [
+                "strictlyEquals",
+                "notStrictlyEquals"
+            ],
+        )
+        fun `strict equality operations should have type Boolean`(placeholderName: String) {
             withCompilationUnitFromFile("expressions/operations/strictEquality") {
-                listOf("strictlyEquals", "notStrictlyEquals").forEach {
-                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Boolean
-                }
+                placeholderWithName(placeholderName).assignedValueOrFail() shouldHaveType Boolean
             }
         }
 
-        @Test
-        fun `logical operations should have type Boolean`() {
+        @ParameterizedTest
+        @ValueSource(
+            strings = [
+                "conjunction",
+                "disjunction",
+                "negation",
+                "conjunctionInvalid",
+                "disjunctionInvalid",
+                "negationInvalid"
+            ],
+        )
+        fun `logical operations should have type Boolean`(placeholderName: String) {
             withCompilationUnitFromFile("expressions/operations/logical") {
-                listOf(
-                    "conjunction",
-                    "disjunction",
-                    "negation",
-                    "conjunctionInvalid",
-                    "disjunctionInvalid",
-                    "negationInvalid"
-                ).forEach {
-                    placeholderWithName(it).assignedValueOrFail() shouldHaveType Boolean
-                }
+                placeholderWithName(placeholderName).assignedValueOrFail() shouldHaveType Boolean
             }
         }
     }
@@ -186,6 +233,10 @@ class TypeComputerTest {
 
     infix fun SmlAbstractObject.shouldHaveType(expectedType: Type) {
         this.type().shouldBe(expectedType)
+    }
+
+    infix fun SmlAbstractObject.shouldHaveType(expected: SmlAbstractObject) {
+        this.type().shouldBe(expected.type())
     }
 
     private fun SmlPlaceholder.assignedValueOrFail(): SmlAbstractObject {
