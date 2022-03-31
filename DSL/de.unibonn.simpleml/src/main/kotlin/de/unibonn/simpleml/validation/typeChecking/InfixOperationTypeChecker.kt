@@ -2,13 +2,12 @@ package de.unibonn.simpleml.validation.typeChecking
 
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator
 import de.unibonn.simpleml.constant.operator
-import de.unibonn.simpleml.emf.isResolved
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
-import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.staticAnalysis.typing.ClassType
+import de.unibonn.simpleml.staticAnalysis.typing.UnresolvedType
 import de.unibonn.simpleml.staticAnalysis.typing.type
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
@@ -30,13 +29,10 @@ class InfixOperationTypeChecker : AbstractSimpleMLChecker() {
     }
 
     private fun checkOperand(smlInfixOperation: SmlInfixOperation, feature: EReference) {
-        val operand = operand(smlInfixOperation, feature)
-
-        if (operand is SmlReference && !operand.declaration.isResolved()) {
-            return
+        val operandType = operand(smlInfixOperation, feature).type()
+        if (operandType is UnresolvedType) {
+            return // Scoping error already shown
         }
-
-        val operandType = operand.type()
 
         when (smlInfixOperation.operator()) {
             SmlInfixOperationOperator.Or,

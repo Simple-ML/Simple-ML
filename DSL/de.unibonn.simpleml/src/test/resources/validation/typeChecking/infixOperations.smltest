@@ -20,6 +20,9 @@ step f(vararg a: Int) {
     // no_semantic_error "The left operand of a logical infix operation must be an instance of the class 'Boolean'."
     // no_semantic_error "The right operand of a logical infix operation must be an instance of the class 'Boolean'."
     »unresolved« or »unresolved«;
+    // no_semantic_error "The left operand of a logical infix operation must be an instance of the class 'Boolean'."
+    // no_semantic_error "The right operand of a logical infix operation must be an instance of the class 'Boolean'."
+    »C.unresolved« or »C.unresolved«;
 
     // no_semantic_error "The left operand of a logical infix operation must be an instance of the class 'Boolean'."
     // no_semantic_error "The right operand of a logical infix operation must be an instance of the class 'Boolean'."
@@ -39,6 +42,9 @@ step f(vararg a: Int) {
     // no_semantic_error "The left operand of a logical infix operation must be an instance of the class 'Boolean'."
     // no_semantic_error "The right operand of a logical infix operation must be an instance of the class 'Boolean'."
     »unresolved« and »unresolved«;
+    // no_semantic_error "The left operand of a logical infix operation must be an instance of the class 'Boolean'."
+    // no_semantic_error "The right operand of a logical infix operation must be an instance of the class 'Boolean'."
+    »C.unresolved« and »C.unresolved«;
 
 
     // no_semantic_error "The left operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
@@ -58,7 +64,10 @@ step f(vararg a: Int) {
     »a« + »a«;
     // no_semantic_error "The left operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
     // no_semantic_error "The right operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
-    »unresolved« + »unresolved«;    
+    »unresolved« + »unresolved«;
+    // no_semantic_error "The left operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
+    // no_semantic_error "The right operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
+    »C.unresolved« + »C.unresolved«;
     
     // no_semantic_error "The left operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
     // no_semantic_error "The right operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
@@ -77,7 +86,10 @@ step f(vararg a: Int) {
     »a« - »a«;
     // no_semantic_error "The left operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
     // no_semantic_error "The right operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
-    »unresolved« - »unresolved«;    
+    »unresolved« - »unresolved«;
+    // no_semantic_error "The left operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
+    // no_semantic_error "The right operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
+    »C.unresolved« - »C.unresolved«;
     
     // no_semantic_error "The left operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
     // no_semantic_error "The right operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
@@ -96,7 +108,10 @@ step f(vararg a: Int) {
     »a« * »a«;
     // no_semantic_error "The left operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
     // no_semantic_error "The right operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
-    »unresolved« * »unresolved«;    
+    »unresolved« * »unresolved«;
+    // no_semantic_error "The left operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
+    // no_semantic_error "The right operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
+    »C.unresolved« * »C.unresolved«;
     
     // no_semantic_error "The left operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
     // no_semantic_error "The right operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
@@ -115,7 +130,10 @@ step f(vararg a: Int) {
     »a« / »a«;
     // no_semantic_error "The left operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
     // no_semantic_error "The right operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
-    »unresolved« / »unresolved«;    
+    »unresolved« / »unresolved«;
+    // no_semantic_error "The left operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
+    // no_semantic_error "The right operand of an arithmetic infix operation must be an instance of the class 'Float' or the class 'Int'."
+    »C.unresolved« / »C.unresolved«;
     
     
     // no_semantic_error "The left operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
@@ -135,7 +153,10 @@ step f(vararg a: Int) {
     »a« < »a«;
     // no_semantic_error "The left operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
     // no_semantic_error "The right operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
-    »unresolved« < »unresolved«;    
+    »unresolved« < »unresolved«;
+    // no_semantic_error "The left operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
+    // no_semantic_error "The right operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
+    »C.unresolved« < »C.unresolved«;
     
     // no_semantic_error "The left operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
     // no_semantic_error "The right operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
@@ -154,7 +175,10 @@ step f(vararg a: Int) {
     »a« <= »a«;
     // no_semantic_error "The left operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
     // no_semantic_error "The right operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
-    »unresolved« <= »unresolved«;    
+    »unresolved« <= »unresolved«;
+    // no_semantic_error "The left operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
+    // no_semantic_error "The right operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
+    »C.unresolved« <= »C.unresolved«;
     
     // no_semantic_error "The left operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
     // no_semantic_error "The right operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
@@ -173,7 +197,10 @@ step f(vararg a: Int) {
     »a« >= »a«;
     // no_semantic_error "The left operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
     // no_semantic_error "The right operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
-    »unresolved« >= »unresolved«;    
+    »unresolved« >= »unresolved«;
+    // no_semantic_error "The left operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
+    // no_semantic_error "The right operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
+    »C.unresolved« >= »C.unresolved«;
     
     // no_semantic_error "The left operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
     // no_semantic_error "The right operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
@@ -193,6 +220,9 @@ step f(vararg a: Int) {
     // no_semantic_error "The left operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
     // no_semantic_error "The right operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
     »unresolved« > »unresolved«;
+    // no_semantic_error "The left operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
+    // no_semantic_error "The right operand of a comparison must be an instance of the class 'Float' or the class 'Int'."
+    »C.unresolved« > »C.unresolved«;
 }
 
 fun g()

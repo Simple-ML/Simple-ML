@@ -126,6 +126,8 @@ private fun SmlAbstractDeclaration.inferType(context: EObject): Type {
 
 private fun SmlAbstractExpression.inferType(context: EObject): Type {
     return when {
+
+        // Basic terminal cases
         this.eIsProxy() -> UnresolvedType
         this is SmlBoolean -> Boolean(context)
         this is SmlFloat -> Float(context)
@@ -134,7 +136,33 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
         this is SmlString -> String(context)
         this is SmlTemplateString -> String(context)
 
+        // Basic recursive cases
         this is SmlArgument -> this.value.inferType(context)
+        this is SmlInfixOperation -> when (operator) {
+            "<", "<=", ">=", ">" -> Boolean(context)
+            "==", "!=" -> Boolean(context)
+            "===", "!==" -> Boolean(context)
+            "or", "and" -> Boolean(context)
+            "+", "-", "*", "/" -> when {
+                this.leftOperand.inferType(context) == Int(context) &&
+                        this.rightOperand.inferType(context) == Int(context) -> Int(context)
+                else -> Float(context)
+            }
+            "?:" -> Any(context) // TODO
+            else -> Nothing(context)
+        }
+        this is SmlParenthesizedExpression -> this.expression.inferType(context)
+        this is SmlPrefixOperation -> when (operator) {
+            "not" -> Boolean(context)
+            "-" -> when (this.operand.inferType(context)) {
+                Int(context) -> Int(context)
+                else -> Float(context)
+            }
+            else -> Nothing(context)
+        }
+        this is SmlReference -> this.declaration.inferType(context)
+
+        // Complex recursive cases
         this is SmlCall -> when (val callable = callableOrNull()) {
             is SmlClass -> ClassType(callable, isNullable = false)
             is SmlCallableType -> {
@@ -170,19 +198,6 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
             }
             else -> Any(context)
         }
-        this is SmlInfixOperation -> when (operator) {
-            "<", "<=", ">=", ">" -> Boolean(context)
-            "==", "!=" -> Boolean(context)
-            "===", "!==" -> Boolean(context)
-            "or", "and" -> Boolean(context)
-            "+", "-", "*", "/" -> when {
-                this.leftOperand.inferType(context) == Int(context) &&
-                    this.rightOperand.inferType(context) == Int(context) -> Int(context)
-                else -> Float(context)
-            }
-            "?:" -> Any(context) // TODO
-            else -> Nothing(context)
-        }
         this is SmlBlockLambda -> CallableType(
             parametersOrEmpty().map { it.inferType(context) },
             lambdaResultsOrEmpty().map { it.inferType(context) }
@@ -198,22 +213,6 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
             val member = this.member ?: return Any(context)
             member.inferType(context)
         }
-        this is SmlParenthesizedExpression -> {
-            this.expression.inferType(context)
-        }
-        this is SmlPrefixOperation -> when (operator) {
-            "not" -> Boolean(context)
-            "-" -> when (this.operand.inferType(context)) {
-                Int(context) -> Int(context)
-                else -> Float(context)
-            }
-            else -> Nothing(context)
-        }
-        this is SmlReference -> { // TODO
-            val declaration = this.declaration ?: return Any(context)
-            declaration.inferType(context)
-        }
-
         else -> Any(context)
     }
 }
