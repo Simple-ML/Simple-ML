@@ -5,7 +5,9 @@ import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlArgument
+import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlReference
@@ -104,6 +106,40 @@ class TypeComputerTest {
                 descendants<SmlArgument>().forEach {
                     it shouldHaveType it.value
                 }
+            }
+        }
+    }
+
+    // Member Accesses -------------------------------------------------------------------------------------------------
+
+    @Nested
+    inner class MemberAccesses {
+
+        @Test
+        fun `non-null-safe member accesses should have type of referenced member`() {
+            withCompilationUnitFromFile("expressions/memberAccesses") {
+                descendants<SmlMemberAccess>()
+                    .filter { !it.isNullSafe }
+                    .forEach {
+                        it shouldHaveType it.member
+                    }
+            }
+        }
+
+        @Test
+        fun `null-safe member accesses should have type of referenced member but nullable`() {
+            withCompilationUnitFromFile("expressions/memberAccesses") {
+                descendants<SmlMemberAccess>()
+                    .filter { it.isNullSafe }
+                    .forEach {
+                        val expectedType = when (val memberType = it.member.type()) {
+                            is ClassType -> memberType.copy(isNullable = true)
+                            is EnumType -> memberType.copy(isNullable = true)
+                            is EnumVariantType -> memberType.copy(isNullable = true)
+                            else -> memberType
+                        }
+                        it shouldHaveType expectedType
+                    }
             }
         }
     }

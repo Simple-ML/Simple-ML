@@ -151,6 +151,20 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
             "?:" -> Any(context) // TODO
             else -> Nothing(context)
         }
+        this is SmlMemberAccess -> {
+            when (val memberType = this.member.inferType(context)) {
+                is ClassType -> memberType.copy(
+                    isNullable = this.isNullSafe || memberType.isNullable
+                )
+                is EnumType -> memberType.copy(
+                    isNullable = this.isNullSafe || memberType.isNullable
+                )
+                is EnumVariantType -> memberType.copy(
+                    isNullable = this.isNullSafe || memberType.isNullable
+                )
+                else -> memberType
+            }
+        }
         this is SmlParenthesizedExpression -> this.expression.inferType(context)
         this is SmlPrefixOperation -> when (operator) {
             "not" -> Boolean(context)
@@ -206,13 +220,6 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
             parametersOrEmpty().map { it.inferType(context) },
             listOf(result.inferType(context))
         )
-        this is SmlMemberAccess -> {
-//            if (this.isNullable) {
-//                // TODO
-//            }
-            val member = this.member ?: return Any(context)
-            member.inferType(context)
-        }
         else -> Any(context)
     }
 }
