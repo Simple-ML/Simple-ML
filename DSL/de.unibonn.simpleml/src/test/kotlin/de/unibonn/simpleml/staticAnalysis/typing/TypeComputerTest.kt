@@ -8,11 +8,13 @@ import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlIndexedAccess
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlReference
+import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.staticAnalysis.assignedOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
@@ -110,6 +112,56 @@ class TypeComputerTest {
                 descendants<SmlArgument>().forEach {
                     it shouldHaveType it.value
                 }
+            }
+        }
+    }
+
+    // Indexed Accesses ------------------------------------------------------------------------------------------------
+
+    @Nested
+    inner class IndexedAccesses {
+
+        @Test
+        fun `indexed accesses should return element type if receiver is variadic (myStep1)`() {
+            withCompilationUnitFromFile("expressions/indexedAccesses") {
+                findUniqueDeclarationOrFail<SmlStep>("myStep1")
+                    .descendants<SmlIndexedAccess>()
+                    .forEach {
+                        it shouldHaveType Int
+                    }
+            }
+        }
+
+        @Test
+        fun `indexed accesses should return element type if receiver is variadic (myStep2)`() {
+            withCompilationUnitFromFile("expressions/indexedAccesses") {
+                findUniqueDeclarationOrFail<SmlStep>("myStep2")
+                    .descendants<SmlIndexedAccess>()
+                    .forEach {
+                        it shouldHaveType String
+                    }
+            }
+        }
+
+        @Test
+        fun `indexed accesses should return Nothing type if receiver is not variadic`() {
+            withCompilationUnitFromFile("expressions/indexedAccesses") {
+                findUniqueDeclarationOrFail<SmlStep>("myStep3")
+                    .descendants<SmlIndexedAccess>()
+                    .forEach {
+                        it shouldHaveType Nothing
+                    }
+            }
+        }
+
+        @Test
+        fun `indexed accesses should return Unresolved type if receiver is unresolved`() {
+            withCompilationUnitFromFile("expressions/indexedAccesses") {
+                findUniqueDeclarationOrFail<SmlStep>("myStep4")
+                    .descendants<SmlIndexedAccess>()
+                    .forEach {
+                        it shouldHaveType UnresolvedType
+                    }
             }
         }
     }
@@ -372,6 +424,7 @@ class TypeComputerTest {
     private val SmlCompilationUnit.Float get() = stdlibType(this, StdlibClasses.Float)
     private val SmlCompilationUnit.Int get() = stdlibType(this, StdlibClasses.Int)
     private val SmlCompilationUnit.IntOrNull get() = stdlibType(this, StdlibClasses.Int, isNullable = true)
+    private val SmlCompilationUnit.Nothing get() = stdlibType(this, StdlibClasses.Nothing)
     private val SmlCompilationUnit.NothingOrNull get() = stdlibType(this, StdlibClasses.Nothing, isNullable = true)
     private val SmlCompilationUnit.String get() = stdlibType(this, StdlibClasses.String)
 }

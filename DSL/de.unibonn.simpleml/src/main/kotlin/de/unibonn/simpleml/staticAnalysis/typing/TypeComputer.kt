@@ -25,6 +25,7 @@ import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.simpleML.SmlIndexedAccess
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
@@ -94,10 +95,7 @@ private fun SmlAbstractDeclaration.inferType(context: EObject): Type {
         this is SmlAttribute -> type.inferType(context)
         this is SmlClass -> ClassType(this, isNullable = false)
         this is SmlEnum -> EnumType(this, isNullable = false)
-        this is SmlEnumVariant -> EnumVariantType(
-            this,
-            isNullable = false
-        ) // TODO: should be enum type if it has no parameters
+        this is SmlEnumVariant -> EnumVariantType(this, isNullable = false)
         this is SmlFunction -> CallableType(
             parametersOrEmpty().map { it.inferType(context) },
             resultsOrEmpty().map { it.inferType(context) }
@@ -129,7 +127,7 @@ private fun SmlAbstractDeclaration.inferType(context: EObject): Type {
 private fun SmlAbstractExpression.inferType(context: EObject): Type {
     return when {
 
-        // Basic terminal cases
+        // Terminal cases
         this.eIsProxy() -> UnresolvedType
         this is SmlBoolean -> Boolean(context)
         this is SmlFloat -> Float(context)
@@ -138,8 +136,15 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
         this is SmlString -> String(context)
         this is SmlTemplateString -> String(context)
 
-        // Basic recursive cases
+        // Recursive cases
         this is SmlArgument -> this.value.inferType(context)
+        this is SmlIndexedAccess -> {
+            when (val receiverType = this.receiver.inferType(context)) {
+                is UnresolvedType -> UnresolvedType
+                is VariadicType -> receiverType.elementType
+                else -> Nothing(context)
+            }
+        }
         this is SmlInfixOperation -> when (operator) {
             "<", "<=", ">=", ">" -> Boolean(context)
             "==", "!=" -> Boolean(context)
@@ -181,7 +186,7 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
         }
         this is SmlReference -> this.declaration.inferType(context)
 
-        // Complex recursive cases
+        // TODO: add tests
         this is SmlCall -> when (val callable = callableOrNull()) {
             is SmlClass -> ClassType(callable, isNullable = false)
             is SmlCallableType -> {
