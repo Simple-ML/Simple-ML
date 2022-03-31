@@ -74,6 +74,19 @@ class TypeComputerTest {
         }
     }
 
+    // Template Strings ------------------------------------------------------------------------------------------------
+
+    @Nested
+    inner class TemplateStrings {
+
+        @Test
+        fun `template strings should have type String`() {
+            withCompilationUnitFromFile("expressions/templateStrings") {
+                placeholderWithName("templateString").assignedValueOrFail() shouldHaveType String
+            }
+        }
+    }
+
     // Operations ------------------------------------------------------------------------------------------------------
 
     @Nested

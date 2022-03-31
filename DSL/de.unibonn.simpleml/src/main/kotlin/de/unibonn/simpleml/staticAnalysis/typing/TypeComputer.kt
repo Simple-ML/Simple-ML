@@ -39,6 +39,7 @@ import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlString
+import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTypeArgument
 import de.unibonn.simpleml.simpleML.SmlTypeProjection
 import de.unibonn.simpleml.simpleML.SmlUnionType
@@ -131,6 +132,7 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
         this is SmlInt -> Int(context)
         this is SmlNull -> NullableNothing(context)
         this is SmlString -> String(context)
+        this is SmlTemplateString -> String(context)
 
         this is SmlArgument -> this.value.inferType(context)
         this is SmlCall -> when (val callable = callableOrNull()) {
