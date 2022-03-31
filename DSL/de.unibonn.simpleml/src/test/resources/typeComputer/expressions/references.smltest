@@ -1,12 +1,10 @@
 package tests.typeComputer.expressions.references
 
-class C()
-
 workflow myWorkflow {
     val a = 1;
     val b = "";
 
-    val intReference = a;
-    val stringReference = b;
-    val unresolvedReference = unresolved;
+    a;
+    b;
+    unresolved;
 }

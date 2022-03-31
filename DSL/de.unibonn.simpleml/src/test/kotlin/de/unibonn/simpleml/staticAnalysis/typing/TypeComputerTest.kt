@@ -8,6 +8,7 @@ import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
+import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.staticAnalysis.assignedOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.testing.ParseHelper
@@ -117,6 +118,21 @@ class TypeComputerTest {
             withCompilationUnitFromFile("expressions/parenthesizedExpressions") {
                 descendants<SmlParenthesizedExpression>().forEach {
                     it shouldHaveType it.expression
+                }
+            }
+        }
+    }
+
+    // References ------------------------------------------------------------------------------------------------------
+
+    @Nested
+    inner class References {
+
+        @Test
+        fun `references should have type of referenced declaration`() {
+            withCompilationUnitFromFile("expressions/references") {
+                descendants<SmlReference>().forEach {
+                    it shouldHaveType it.declaration
                 }
             }
         }
