@@ -235,6 +235,72 @@ step myStep(vararg variadicParam: Int) {
 
     // no_semantic_error r"An argument of type '[^']*' cannot be assigned to a parameter of type '[^']*'."
     f8(»(vararg a: Int) {}«);
+
+    // no_semantic_error "An argument of type '(Int) -> (Int)' cannot be assigned to a parameter of type 'Any'."
+    f9(»intToInt«);
+    // no_semantic_error "An argument of type '(C) -> ()' cannot be assigned to a parameter of type 'Any'."
+    f9(»f2«);
+    // no_semantic_error "An argument of type 'B' cannot be assigned to a parameter of type 'Any'."
+    f9(»B()«);
+    // no_semantic_error "An argument of type 'C' cannot be assigned to a parameter of type 'Any'."
+    f9(callableType = »C()«);
+    // no_semantic_error "An argument of type 'D' cannot be assigned to a parameter of type 'Any'."
+    f9(»D()«);
+    // semantic_error "An argument of type 'C?' cannot be assigned to a parameter of type 'Any'."
+    f9(»maybeC()«);
+    // no_semantic_error "An argument of type 'MyEnum1' cannot be assigned to a parameter of type 'Any'."
+    f9(»someVariantOfMyEnum1()«);
+    // no_semantic_error "An argument of type 'MyEnum2' cannot be assigned to a parameter of type 'Any'."
+    f9(»someVariantOfMyEnum2()«);
+    // no_semantic_error "An argument of type 'MyEnum1.Variant1' cannot be assigned to a parameter of type 'Any'."
+    f9(»MyEnum1.Variant1«);
+    // no_semantic_error "An argument of type 'MyEnum1.Variant2' cannot be assigned to a parameter of type 'Any'."
+    f9(»MyEnum1.Variant2«);
+    // no_semantic_error "An argument of type 'MyEnum2.Variant1' cannot be assigned to a parameter of type 'Any'."
+    f9(»MyEnum2.Variant1«);
+    // no_semantic_error "An argument of type 'union<A, C>' cannot be assigned to a parameter of type 'Any'."
+    f9(»aOrC()«);
+    // no_semantic_error "An argument of type 'union<B, C>' cannot be assigned to a parameter of type 'Any'."
+    f9(»bOrC()«);
+    // no_semantic_error "An argument of type 'vararg<Int>' cannot be assigned to a parameter of type 'Any'."
+    f9(»variadicParam«);
+    // no_semantic_error "An argument of type '$Unresolved' cannot be assigned to a parameter of type 'Any'."
+    f9(»unresolved«);
+    // no_semantic_error r"An argument of type '[^']*' cannot be assigned to a parameter of type '[^']*'."
+    f9(unresolved = »1«);
+
+    // no_semantic_error "An argument of type '(Int) -> (Int)' cannot be assigned to a parameter of type 'Any?'."
+    f10(»intToInt«);
+    // no_semantic_error "An argument of type '(C) -> ()' cannot be assigned to a parameter of type 'Any?'."
+    f10(»f2«);
+    // no_semantic_error "An argument of type 'B' cannot be assigned to a parameter of type 'Any?'."
+    f10(»B()«);
+    // no_semantic_error "An argument of type 'C' cannot be assigned to a parameter of type 'Any?'."
+    f10(callableType = »C()«);
+    // no_semantic_error "An argument of type 'D' cannot be assigned to a parameter of type 'Any?'."
+    f10(»D()«);
+    // no_semantic_error "An argument of type 'C?' cannot be assigned to a parameter of type 'Any?'."
+    f10(»maybeC()«);
+    // no_semantic_error "An argument of type 'MyEnum1' cannot be assigned to a parameter of type 'Any?'."
+    f10(»someVariantOfMyEnum1()«);
+    // no_semantic_error "An argument of type 'MyEnum2' cannot be assigned to a parameter of type 'Any?'."
+    f10(»someVariantOfMyEnum2()«);
+    // no_semantic_error "An argument of type 'MyEnum1.Variant1' cannot be assigned to a parameter of type 'Any?'."
+    f10(»MyEnum1.Variant1«);
+    // no_semantic_error "An argument of type 'MyEnum1.Variant2' cannot be assigned to a parameter of type 'Any?'."
+    f10(»MyEnum1.Variant2«);
+    // no_semantic_error "An argument of type 'MyEnum2.Variant1' cannot be assigned to a parameter of type 'Any?'."
+    f10(»MyEnum2.Variant1«);
+    // no_semantic_error "An argument of type 'union<A, C>' cannot be assigned to a parameter of type 'Any?'."
+    f10(»aOrC()«);
+    // no_semantic_error "An argument of type 'union<B, C>' cannot be assigned to a parameter of type 'Any?'."
+    f10(»bOrC()«);
+    // no_semantic_error "An argument of type 'vararg<Int>' cannot be assigned to a parameter of type 'Any?'."
+    f10(»variadicParam«);
+    // no_semantic_error "An argument of type '$Unresolved' cannot be assigned to a parameter of type 'Any?'."
+    f10(»unresolved«);
+    // no_semantic_error r"An argument of type '[^']*' cannot be assigned to a parameter of type '[^']*'."
+    f10(unresolved = »1«);
 }
 
 fun f1(callableType: (a: Int) -> (r: Int))
@@ -245,6 +311,8 @@ fun f5(unionType: union<B, C>)
 fun f6(unresolvedType: Unresolved)
 fun f7(vararg variadicType: C)
 fun f8(callableType: (vararg a: Int) -> ())
+fun f9(any: Any)
+fun f10(anyOrNull: Any?)
 
 class A()
 class B()
