@@ -129,6 +129,7 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
         this is SmlBoolean -> Boolean(context)
         this is SmlFloat -> Float(context)
         this is SmlInt -> Int(context)
+        this is SmlNull -> NullableNothing(context)
         this is SmlString -> String(context)
 
         this is SmlArgument -> this.value.inferType(context)
@@ -195,7 +196,6 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
             val member = this.member ?: return Any(context)
             member.inferType(context)
         }
-        this is SmlNull -> stdlibType(context, StdlibClasses.Any, isNullable = true)
         this is SmlParenthesizedExpression -> {
             this.expression.inferType(context)
         }
@@ -256,6 +256,7 @@ private fun Boolean(context: EObject) = stdlibType(context, StdlibClasses.Boolea
 private fun Float(context: EObject) = stdlibType(context, StdlibClasses.Float)
 private fun Int(context: EObject) = stdlibType(context, StdlibClasses.Int)
 private fun Nothing(context: EObject) = stdlibType(context, StdlibClasses.Nothing)
+private fun NullableNothing(context: EObject) = stdlibType(context, StdlibClasses.Nothing, isNullable = true)
 private fun String(context: EObject) = stdlibType(context, StdlibClasses.String)
 
 internal fun stdlibType(context: EObject, qualifiedName: QualifiedName, isNullable: Boolean = false): Type {
