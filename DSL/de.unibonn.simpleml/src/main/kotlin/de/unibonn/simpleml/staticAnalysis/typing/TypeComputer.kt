@@ -2,6 +2,7 @@
 
 package de.unibonn.simpleml.staticAnalysis.typing
 
+import de.unibonn.simpleml.emf.containingEnumOrNull
 import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
@@ -46,6 +47,7 @@ import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.staticAnalysis.assignedOrNull
 import de.unibonn.simpleml.staticAnalysis.callableOrNull
+import de.unibonn.simpleml.staticAnalysis.classHierarchy.superClasses
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.stdlibAccess.getStdlibClassOrNull
 import org.eclipse.emf.ecore.EObject
@@ -132,7 +134,7 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
         this is SmlBoolean -> Boolean(context)
         this is SmlFloat -> Float(context)
         this is SmlInt -> Int(context)
-        this is SmlNull -> NullableNothing(context)
+        this is SmlNull -> Nothing(context, isNullable = true)
         this is SmlString -> String(context)
         this is SmlTemplateString -> String(context)
 
@@ -148,22 +150,25 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
                         this.rightOperand.inferType(context) == Int(context) -> Int(context)
                 else -> Float(context)
             }
-            "?:" -> Any(context) // TODO
+            "?:" -> {
+                val leftOperandType = this.leftOperand.inferType(context)
+                if (leftOperandType.isNullable) {
+                    lowestCommonSupertype(
+                        context,
+                        listOf(
+                            leftOperandType.setIsNullableOnCopy(isNullable = false),
+                            this.rightOperand.inferType(context)
+                        )
+                    )
+                } else {
+                    leftOperandType
+                }
+            }
             else -> Nothing(context)
         }
         this is SmlMemberAccess -> {
-            when (val memberType = this.member.inferType(context)) {
-                is ClassType -> memberType.copy(
-                    isNullable = this.isNullSafe || memberType.isNullable
-                )
-                is EnumType -> memberType.copy(
-                    isNullable = this.isNullSafe || memberType.isNullable
-                )
-                is EnumVariantType -> memberType.copy(
-                    isNullable = this.isNullSafe || memberType.isNullable
-                )
-                else -> memberType
-            }
+            val memberType = this.member.inferType(context)
+            memberType.setIsNullableOnCopy(this.isNullSafe || memberType.isNullable)
         }
         this is SmlParenthesizedExpression -> this.expression.inferType(context)
         this is SmlPrefixOperation -> when (operator) {
@@ -236,14 +241,14 @@ private fun SmlAbstractType.inferType(context: EObject): Type {
             member.inferType(context)
         }
         this is SmlNamedType -> {
-            val declaration = this.declaration ?: return NullableAny(context)
+            val declaration = this.declaration ?: return Any(context, isNullable = false)
             val declarationType = declaration.inferType(context)
             when {
                 this.isNullable -> when (declarationType) {
                     is ClassType -> declarationType.copy(isNullable = true)
                     is EnumType -> declarationType.copy(isNullable = true)
                     is EnumVariantType -> declarationType.copy(isNullable = true)
-                    else -> NullableAny(context)
+                    else -> Any(context, isNullable = false)
                 }
                 else -> declarationType
             }
@@ -258,13 +263,71 @@ private fun SmlAbstractType.inferType(context: EObject): Type {
     }
 }
 
-private fun NullableAny(context: EObject) = stdlibType(context, StdlibClasses.Any, isNullable = true)
-private fun Any(context: EObject) = stdlibType(context, StdlibClasses.Any)
+private fun lowestCommonSupertype(context: EObject, types: List<Type>): Type {
+    if (types.isEmpty()) {
+        return Nothing(context)
+    }
+
+    val unwrappedTypes = unwrapUnionTypes(types)
+    val isNullable = unwrappedTypes.any { it.isNullable }
+    var candidate = unwrappedTypes.first().setIsNullableOnCopy(isNullable)
+
+    while (!isLowestCommonSupertype(candidate, unwrappedTypes)) {
+        candidate = when (candidate) {
+            is CallableType -> Any(context, candidate.isNullable)
+            is ClassType -> {
+                val superClass = candidate.smlClass.superClasses().firstOrNull()
+                    ?: return Any(context, candidate.isNullable)
+                ClassType(superClass, candidate.isNullable)
+            }
+            is EnumType -> Any(context, candidate.isNullable)
+            is EnumVariantType -> {
+                val containingEnum = candidate.smlEnumVariant.containingEnumOrNull()
+                    ?: return Any(context, candidate.isNullable)
+                EnumType(containingEnum, candidate.isNullable)
+            }
+            is RecordType -> Any(context, candidate.isNullable)
+            is UnionType -> throw AssertionError("Union types should have been unwrapped.")
+            UnresolvedType -> Any(context, candidate.isNullable)
+            is VariadicType -> Any(context, candidate.isNullable)
+        }
+    }
+
+    return candidate
+}
+
+private fun unwrapUnionTypes(types: List<Type>): List<Type> {
+    return types.flatMap {
+        when (it) {
+            is UnionType -> it.possibleTypes
+            else -> listOf(it)
+        }
+    }
+}
+
+private fun isLowestCommonSupertype(candidate: Type, otherTypes: List<Type>): Boolean {
+    if (candidate is ClassType && candidate.smlClass.qualifiedNameOrNull() == StdlibClasses.Any) {
+        return true
+    }
+
+    return otherTypes.all { it.isSubstitutableFor(candidate) }
+}
+
+private fun Any(context: EObject, isNullable: Boolean = false) = stdlibType(
+    context,
+    StdlibClasses.Any,
+    isNullable
+)
+
 private fun Boolean(context: EObject) = stdlibType(context, StdlibClasses.Boolean)
 private fun Float(context: EObject) = stdlibType(context, StdlibClasses.Float)
 private fun Int(context: EObject) = stdlibType(context, StdlibClasses.Int)
-private fun Nothing(context: EObject) = stdlibType(context, StdlibClasses.Nothing)
-private fun NullableNothing(context: EObject) = stdlibType(context, StdlibClasses.Nothing, isNullable = true)
+private fun Nothing(context: EObject, isNullable: Boolean = false) = stdlibType(
+    context,
+    StdlibClasses.Nothing,
+    isNullable
+)
+
 private fun String(context: EObject) = stdlibType(context, StdlibClasses.String)
 
 internal fun stdlibType(context: EObject, qualifiedName: QualifiedName, isNullable: Boolean = false): Type {

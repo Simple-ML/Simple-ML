@@ -2,19 +2,23 @@ package de.unibonn.simpleml.staticAnalysis.typing
 
 import com.google.inject.Inject
 import de.unibonn.simpleml.constant.SmlFileExtension
+import de.unibonn.simpleml.constant.SmlInfixOperationOperator
+import de.unibonn.simpleml.constant.operator
 import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlArgument
-import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlReference
+import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.staticAnalysis.assignedOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
+import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
 import de.unibonn.simpleml.testing.getResourcePath
 import io.kotest.matchers.shouldBe
 import org.eclipse.xtext.testing.InjectWith
@@ -70,7 +74,7 @@ class TypeComputerTest {
         @Test
         fun `null literals should have type nullable Nothing`() {
             withCompilationUnitFromFile("expressions/literals") {
-                placeholderWithName("nullLiteral").assignedValueOrFail() shouldHaveType NullableNothing
+                placeholderWithName("nullLiteral").assignedValueOrFail() shouldHaveType NothingOrNull
             }
         }
 
@@ -132,13 +136,7 @@ class TypeComputerTest {
                 descendants<SmlMemberAccess>()
                     .filter { it.isNullSafe }
                     .forEach {
-                        val expectedType = when (val memberType = it.member.type()) {
-                            is ClassType -> memberType.copy(isNullable = true)
-                            is EnumType -> memberType.copy(isNullable = true)
-                            is EnumVariantType -> memberType.copy(isNullable = true)
-                            else -> memberType
-                        }
-                        it shouldHaveType expectedType
+                        it shouldHaveType it.member.type().setIsNullableOnCopy(isNullable = true)
                     }
             }
         }
@@ -277,6 +275,58 @@ class TypeComputerTest {
                 placeholderWithName(placeholderName).assignedValueOrFail() shouldHaveType Boolean
             }
         }
+
+        @Test
+        fun `elvis operator with non-nullable left operand should have type of left operand`() {
+            withCompilationUnitFromFile("expressions/operations/elvis") {
+                findUniqueDeclarationOrFail<SmlWorkflow>("elvisWithNonNullableLeftOperand")
+                    .descendants<SmlInfixOperation>()
+                    .filter { it.operator() == SmlInfixOperationOperator.Elvis }
+                    .forEach { it shouldHaveType it.leftOperand }
+            }
+        }
+
+        @Test
+        fun `elvis operator with nullable left operand should have lowest common supertype of non-nullable left operand and right operand (intOrNullElseIntOrNull)`() {
+            withCompilationUnitFromFile("expressions/operations/elvis") {
+                placeholderWithName("intOrNullElseIntOrNull") shouldHaveType IntOrNull
+            }
+        }
+
+        @Test
+        fun `elvis operator with nullable left operand should have lowest common supertype of non-nullable left operand and right operand (intOrNullElseNull)`() {
+            withCompilationUnitFromFile("expressions/operations/elvis") {
+                placeholderWithName("intOrNullElseNull") shouldHaveType IntOrNull
+            }
+        }
+
+        @Test
+        fun `elvis operator with nullable left operand should have lowest common supertype of non-nullable left operand and right operand (intOrNullElseInt)`() {
+            withCompilationUnitFromFile("expressions/operations/elvis") {
+                placeholderWithName("intOrNullElseInt") shouldHaveType Int
+            }
+        }
+
+        @Test
+        fun `elvis operator with nullable left operand should have lowest common supertype of non-nullable left operand and right operand (intOrNullElseFloat)`() {
+            withCompilationUnitFromFile("expressions/operations/elvis") {
+                placeholderWithName("intOrNullElseFloat") shouldHaveType Number
+            }
+        }
+
+        @Test
+        fun `elvis operator with nullable left operand should have lowest common supertype of non-nullable left operand and right operand (intOrNullElseString)`() {
+            withCompilationUnitFromFile("expressions/operations/elvis") {
+                placeholderWithName("intOrNullElseString") shouldHaveType Any
+            }
+        }
+
+        @Test
+        fun `elvis operator with nullable left operand should have lowest common supertype of non-nullable left operand and right operand (intOrNullElseStringOrNull)`() {
+            withCompilationUnitFromFile("expressions/operations/elvis") {
+                placeholderWithName("intOrNullElseStringOrNull") shouldHaveType AnyOrNull
+            }
+        }
     }
 
     // *****************************************************************************************************************
@@ -316,9 +366,12 @@ class TypeComputerTest {
     }
 
     private val SmlCompilationUnit.Any get() = stdlibType(this, StdlibClasses.Any)
+    private val SmlCompilationUnit.AnyOrNull get() = stdlibType(this, StdlibClasses.Any, isNullable = true)
     private val SmlCompilationUnit.Boolean get() = stdlibType(this, StdlibClasses.Boolean)
+    private val SmlCompilationUnit.Number get() = stdlibType(this, StdlibClasses.Number)
     private val SmlCompilationUnit.Float get() = stdlibType(this, StdlibClasses.Float)
     private val SmlCompilationUnit.Int get() = stdlibType(this, StdlibClasses.Int)
-    private val SmlCompilationUnit.NullableNothing get() = stdlibType(this, StdlibClasses.Nothing, isNullable = true)
+    private val SmlCompilationUnit.IntOrNull get() = stdlibType(this, StdlibClasses.Int, isNullable = true)
+    private val SmlCompilationUnit.NothingOrNull get() = stdlibType(this, StdlibClasses.Nothing, isNullable = true)
     private val SmlCompilationUnit.String get() = stdlibType(this, StdlibClasses.String)
 }

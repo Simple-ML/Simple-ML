@@ -9,11 +9,16 @@ import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import org.eclipse.xtext.naming.QualifiedName
 
 sealed class Type {
+    abstract val isNullable: Boolean
+    abstract fun setIsNullableOnCopy(isNullable: Boolean): Type
     abstract fun toSimpleString(): String
 }
 
 class RecordType(resultToType: List<Pair<String, Type>>) : Type() {
     private val resultToType = resultToType.toMap()
+
+    override val isNullable = false
+    override fun setIsNullableOnCopy(isNullable: Boolean) = this
 
     override fun toString(): String {
         val types = resultToType.entries.joinToString { (name, type) -> "$name: $type" }
@@ -27,6 +32,9 @@ class RecordType(resultToType: List<Pair<String, Type>>) : Type() {
 }
 
 class CallableType(val parameters: List<Type>, val results: List<Type>) : Type() {
+    override val isNullable = false
+    override fun setIsNullableOnCopy(isNullable: Boolean) = this
+
     override fun toString(): String {
         val parameters = parameters.joinToString()
         val results = results.joinToString()
@@ -45,8 +53,6 @@ class CallableType(val parameters: List<Type>, val results: List<Type>) : Type()
 sealed class NamedType(smlDeclaration: SmlAbstractDeclaration) : Type() {
     val simpleName: String = smlDeclaration.name
     val qualifiedName: QualifiedName = smlDeclaration.qualifiedNameOrNull()!!
-
-    abstract val isNullable: Boolean
 
     override fun toString() = buildString {
         append(qualifiedName)
@@ -67,6 +73,7 @@ data class ClassType(
     val smlClass: SmlClass,
     override val isNullable: Boolean
 ) : NamedType(smlClass) {
+    override fun setIsNullableOnCopy(isNullable: Boolean) = this.copy(isNullable = isNullable)
 
     override fun toString() = super.toString()
 }
@@ -75,6 +82,7 @@ data class EnumType(
     val smlEnum: SmlEnum,
     override val isNullable: Boolean
 ) : NamedType(smlEnum) {
+    override fun setIsNullableOnCopy(isNullable: Boolean) = this.copy(isNullable = isNullable)
 
     override fun toString() = super.toString()
 }
@@ -83,8 +91,10 @@ data class EnumVariantType(
     val smlEnumVariant: SmlEnumVariant,
     override val isNullable: Boolean
 ) : NamedType(smlEnumVariant) {
+    override fun setIsNullableOnCopy(isNullable: Boolean) = this.copy(isNullable = isNullable)
 
     override fun toString() = super.toString()
+
     override fun toSimpleString() = buildString {
         smlEnumVariant.containingEnumOrNull()?.let { append("${it.name}.") }
         append(smlEnumVariant.name)
@@ -92,6 +102,9 @@ data class EnumVariantType(
 }
 
 data class UnionType(val possibleTypes: Set<Type>) : Type() {
+    override val isNullable = false
+    override fun setIsNullableOnCopy(isNullable: Boolean) = this
+
     override fun toString(): String {
         return "union<${possibleTypes.joinToString()}>"
     }
@@ -102,6 +115,9 @@ data class UnionType(val possibleTypes: Set<Type>) : Type() {
 }
 
 data class VariadicType(val elementType: Type) : Type() {
+    override val isNullable = false
+    override fun setIsNullableOnCopy(isNullable: Boolean) = this
+
     override fun toString(): String {
         return "vararg<$elementType>"
     }
@@ -112,6 +128,10 @@ data class VariadicType(val elementType: Type) : Type() {
 }
 
 object UnresolvedType : Type() {
+    override val isNullable = false
+    override fun setIsNullableOnCopy(isNullable: Boolean) = this
+
     override fun toString() = "\$Unresolved"
+
     override fun toSimpleString() = toString()
 }
