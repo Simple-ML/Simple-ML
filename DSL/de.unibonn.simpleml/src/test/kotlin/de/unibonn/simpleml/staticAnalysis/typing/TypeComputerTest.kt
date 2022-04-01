@@ -12,6 +12,7 @@ import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlCallableType
+import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlIndexedAccess
@@ -67,6 +68,19 @@ class TypeComputerTest {
             withCompilationUnitFromFile("declarations/attributes") {
                 descendants<SmlAttribute>().forEach {
                     it shouldHaveType it.type
+                }
+            }
+        }
+    }
+
+    @Nested
+    inner class Class {
+
+        @Test
+        fun `classes should have non-nullable class type`() {
+            withCompilationUnitFromFile("declarations/classes") {
+                descendants<SmlClass>().forEach {
+                    it shouldHaveType ClassType(it, isNullable = false)
                 }
             }
         }
