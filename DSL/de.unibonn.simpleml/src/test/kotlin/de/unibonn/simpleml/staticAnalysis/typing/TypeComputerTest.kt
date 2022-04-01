@@ -1,6 +1,5 @@
 package de.unibonn.simpleml.staticAnalysis.typing
 
-import com.google.errorprone.annotations.Var
 import com.google.inject.Inject
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator
@@ -116,6 +115,22 @@ class TypeComputerTest {
     }
 
     @Nested
+    inner class Functions {
+
+        @Test
+        fun `functions should have callable type with respective parameters and results`() {
+            withCompilationUnitFromFile("declarations/functions") {
+                descendants<SmlFunction>().forEach { function ->
+                    function shouldHaveType CallableType(
+                        function.parametersOrEmpty().map { it.type() },
+                        function.resultsOrEmpty().map { it.type() }
+                    )
+                }
+            }
+        }
+    }
+
+    @Nested
     inner class Parameter {
 
         @Test
@@ -147,6 +162,22 @@ class TypeComputerTest {
             withCompilationUnitFromFile("declarations/results") {
                 descendants<SmlResult>().forEach {
                     it shouldHaveType it.type
+                }
+            }
+        }
+    }
+
+    @Nested
+    inner class Steps {
+
+        @Test
+        fun `steps should have callable type with respective parameters and results`() {
+            withCompilationUnitFromFile("declarations/steps") {
+                descendants<SmlStep>().forEach { step ->
+                    step shouldHaveType CallableType(
+                        step.parametersOrEmpty().map { it.type() },
+                        step.resultsOrEmpty().map { it.type() }
+                    )
                 }
             }
         }
