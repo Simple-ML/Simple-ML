@@ -12,6 +12,7 @@ import de.unibonn.simpleml.simpleML.SmlIndexedAccess
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
+import de.unibonn.simpleml.simpleML.SmlParenthesizedType
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlStep
@@ -377,6 +378,23 @@ class TypeComputerTest {
         fun `elvis operator with nullable left operand should have lowest common supertype of non-nullable left operand and right operand (intOrNullElseStringOrNull)`() {
             withCompilationUnitFromFile("expressions/operations/elvis") {
                 placeholderWithName("intOrNullElseStringOrNull") shouldHaveType AnyOrNull
+            }
+        }
+    }
+
+    // *****************************************************************************************************************
+    // Types
+    // ****************************************************************************************************************/
+
+    @Nested
+    inner class ParenthesizedType {
+
+        @Test
+        fun `parenthesized type should have type of type`() {
+            withCompilationUnitFromFile("types/parenthesizedTypes") {
+                descendants<SmlParenthesizedType>().forEach {
+                    it shouldHaveType it.type
+                }
             }
         }
     }
