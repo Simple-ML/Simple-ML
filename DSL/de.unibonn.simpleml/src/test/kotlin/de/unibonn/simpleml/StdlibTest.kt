@@ -6,6 +6,7 @@ import de.unibonn.simpleml.stdlibAccess.listStdlibFiles
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.shouldHaveNoErrorsOrWarnings
+import io.kotest.assertions.all
 import io.kotest.matchers.nulls.shouldNotBeNull
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
@@ -29,14 +30,15 @@ class StdlibTest {
 
     @TestFactory
     fun `should not have syntax or semantic errors`(): Stream<out DynamicNode> {
-        val stdlibFiles = listStdlibFiles().map { it.first.toString() }.toList()
+        val allStdlibFiles = listStdlibFiles().map { it.first.toString() }.toList()
 
         return listStdlibFiles()
             .map { (filePath, _) ->
 
                 // We must do this here and not in the callback of the dynamicTest so the JAR file system is still open
+                val otherStdlibFiles = allStdlibFiles - filePath.toString()
                 val program = Files.readString(filePath)
-                val parsingResult = parseHelper.parseProgramText(program, context = stdlibFiles, loadStdlib = false)
+                val parsingResult = parseHelper.parseProgramText(program, context = otherStdlibFiles, loadStdlib = false)
 
                 DynamicTest.dynamicTest(filePath.toString(), filePath.toUri()) {
                     parsingResult.shouldNotBeNull()
