@@ -8,13 +8,11 @@ import org.eclipse.xtext.util.CancelIndicator
 class SimpleMLProjectManager : ProjectManager() {
 
     override fun doInitialBuild(cancelIndicator: CancelIndicator): IncrementalBuilder.Result {
-        val uris = projectConfig.sourceFolders
-            .flatMap { srcFolder -> srcFolder.getAllResources(fileSystemScanner) }
-            .toMutableList()
 
-        listStdlibFiles().forEach { (_, uri) ->
-            uris += uri
-        }
+        // Load Stdlib first to prevent errors when it is edited in VS Code (`simple.lang` would be overridden)
+        val uris = listStdlibFiles().map { it.second }.toMutableList()
+        uris += projectConfig.sourceFolders
+            .flatMap { srcFolder -> srcFolder.getAllResources(fileSystemScanner) }
 
         return doBuild(uris, emptyList(), emptyList(), cancelIndicator)
     }
