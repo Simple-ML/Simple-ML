@@ -93,6 +93,10 @@ private fun SmlAbstractDeclaration.inferType(context: EObject): Type {
     return when {
         this.eIsProxy() -> UnresolvedType
         this is SmlAttribute -> type.inferType(context)
+        this is SmlBlockLambdaResult -> {
+            val assigned = assignedOrNull() ?: return Any(context)
+            assigned.inferType(context)
+        }
         this is SmlClass -> ClassType(this, isNullable = false)
         this is SmlEnum -> EnumType(this, isNullable = false)
         this is SmlEnumVariant -> EnumVariantType(this, isNullable = false)
@@ -100,10 +104,6 @@ private fun SmlAbstractDeclaration.inferType(context: EObject): Type {
             parametersOrEmpty().map { it.inferType(context) },
             resultsOrEmpty().map { it.inferType(context) }
         )
-        this is SmlBlockLambdaResult -> {
-            val assigned = assignedOrNull() ?: return Any(context)
-            assigned.inferType(context)
-        }
         this is SmlParameter -> {
             val type = type?.inferType(context) ?: Any(context)
             when {
