@@ -6,7 +6,6 @@ import de.unibonn.simpleml.stdlibAccess.listStdlibFiles
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.shouldHaveNoErrorsOrWarnings
-import io.kotest.assertions.all
 import io.kotest.matchers.nulls.shouldNotBeNull
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
