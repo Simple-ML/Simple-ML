@@ -5,6 +5,7 @@ import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator
 import de.unibonn.simpleml.constant.operator
 import de.unibonn.simpleml.emf.descendants
+import de.unibonn.simpleml.emf.typeArgumentsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
@@ -16,6 +17,7 @@ import de.unibonn.simpleml.simpleML.SmlParenthesizedType
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlReference
 import de.unibonn.simpleml.simpleML.SmlStep
+import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWorkflow
 import de.unibonn.simpleml.staticAnalysis.assignedOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
@@ -394,6 +396,19 @@ class TypeComputerTest {
             withCompilationUnitFromFile("types/parenthesizedTypes") {
                 descendants<SmlParenthesizedType>().forEach {
                     it shouldHaveType it.type
+                }
+            }
+        }
+    }
+
+    @Nested
+    inner class UnionTypes {
+
+        @Test
+        fun `union type should have union type over its type arguments`() {
+            withCompilationUnitFromFile("types/unionTypes") {
+                descendants<SmlUnionType>().forEach { unionType ->
+                    unionType shouldHaveType UnionType(unionType.typeArgumentsOrEmpty().map { it.type() }.toSet())
                 }
             }
         }
