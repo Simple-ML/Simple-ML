@@ -10,6 +10,7 @@ import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.typeArgumentsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlArgument
+import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlFunction
@@ -53,10 +54,25 @@ class TypeComputerTest {
     private val testRoot = javaClass.classLoader.getResourcePath("typeComputer").toString()
 
     // *****************************************************************************************************************
-    // Expressions
+    // Declarations
     // ****************************************************************************************************************/
 
-    // Literals --------------------------------------------------------------------------------------------------------
+    @Nested
+    inner class Attributes {
+
+        @Test
+        fun `attributes should have declared type`() {
+            withCompilationUnitFromFile("declarations/attributes") {
+                descendants<SmlAttribute>().forEach {
+                    it shouldHaveType it.type
+                }
+            }
+        }
+    }
+
+    // *****************************************************************************************************************
+    // Expressions
+    // ****************************************************************************************************************/
 
     @Nested
     inner class Literals {
@@ -97,8 +113,6 @@ class TypeComputerTest {
         }
     }
 
-    // Template Strings ------------------------------------------------------------------------------------------------
-
     @Nested
     inner class TemplateStrings {
 
@@ -109,8 +123,6 @@ class TypeComputerTest {
             }
         }
     }
-
-    // Arguments -------------------------------------------------------------------------------------------------------
 
     @Nested
     inner class Arguments {
@@ -124,8 +136,6 @@ class TypeComputerTest {
             }
         }
     }
-
-    // Indexed Accesses ------------------------------------------------------------------------------------------------
 
     @Nested
     inner class IndexedAccesses {
@@ -175,8 +185,6 @@ class TypeComputerTest {
         }
     }
 
-    // Member Accesses -------------------------------------------------------------------------------------------------
-
     @Nested
     inner class MemberAccesses {
 
@@ -203,8 +211,6 @@ class TypeComputerTest {
         }
     }
 
-    // Parenthesized Expressions ---------------------------------------------------------------------------------------
-
     @Nested
     inner class ParenthesizedExpressions {
 
@@ -218,8 +224,6 @@ class TypeComputerTest {
         }
     }
 
-    // References ------------------------------------------------------------------------------------------------------
-
     @Nested
     inner class References {
 
@@ -232,8 +236,6 @@ class TypeComputerTest {
             }
         }
     }
-
-    // Operations ------------------------------------------------------------------------------------------------------
 
     @Nested
     inner class Operations {
