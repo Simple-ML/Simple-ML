@@ -1,3 +1,4 @@
 package tests.typeComputer.declarations.parameters
 
-step myStep(a: Int, b: Int) {}
+step myStepWithNormalParameter(a: Int, b: String) {}
+step myStepWithVariadicParameter(vararg param: Int) {}

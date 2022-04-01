@@ -8,6 +8,7 @@ import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.typeArgumentsOrEmpty
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
+import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
@@ -75,56 +76,56 @@ fun SmlAbstractObject.hasPrimitiveType(): Boolean {
 
 private fun EObject.inferType(context: EObject): Type {
     return when {
-        this.eIsProxy() -> Any(context)
-        this is SmlAbstractDeclaration -> this.inferType(context)
-        this is SmlAbstractExpression -> this.inferType(context)
-        this is SmlAbstractType -> this.inferType(context)
+        this.eIsProxy() -> UnresolvedType
+        this is SmlAbstractAssignee -> this.inferTypeForAssignee(context)
+        this is SmlAbstractDeclaration -> this.inferTypeForDeclaration(context)
+        this is SmlAbstractExpression -> this.inferTypeExpression(context)
+        this is SmlAbstractType -> this.inferTypeForType(context)
         this is SmlTypeArgument -> this.value.inferType(context)
-        this is SmlTypeProjection -> this.type.inferType(context)
-        this is SmlYield -> {
-            val assigned = assignedOrNull() ?: return Any(context)
+        this is SmlTypeProjection -> this.type.inferTypeForType(context)
+        else -> Any(context)
+    }
+}
+
+private fun SmlAbstractAssignee.inferTypeForAssignee(context: EObject): Type {
+    return when {
+        this.eIsProxy() -> UnresolvedType
+        this is SmlBlockLambdaResult || this is SmlPlaceholder || this is SmlYield -> {
+            val assigned = assignedOrNull() ?: return Nothing(context)
             assigned.inferType(context)
         }
         else -> Any(context)
     }
 }
 
-private fun SmlAbstractDeclaration.inferType(context: EObject): Type {
+private fun SmlAbstractDeclaration.inferTypeForDeclaration(context: EObject): Type {
     return when {
         this.eIsProxy() -> UnresolvedType
-        this is SmlAttribute -> type.inferType(context)
-        this is SmlBlockLambdaResult -> {
-            val assigned = assignedOrNull() ?: return Any(context)
-            assigned.inferType(context)
-        }
+        this is SmlAttribute -> type.inferTypeForType(context)
         this is SmlClass -> ClassType(this, isNullable = false)
         this is SmlEnum -> EnumType(this, isNullable = false)
         this is SmlEnumVariant -> EnumVariantType(this, isNullable = false)
         this is SmlFunction -> CallableType(
-            parametersOrEmpty().map { it.inferType(context) },
-            resultsOrEmpty().map { it.inferType(context) }
+            parametersOrEmpty().map { it.inferTypeForDeclaration(context) },
+            resultsOrEmpty().map { it.inferTypeForDeclaration(context) }
         )
         this is SmlParameter -> {
-            val type = type?.inferType(context) ?: Any(context)
+            val type = type?.inferTypeForType(context) ?: Any(context)
             when {
                 this.isVariadic -> VariadicType(type)
                 else -> type
             }
         }
-        this is SmlPlaceholder -> {
-            val assigned = assignedOrNull() ?: return Any(context)
-            assigned.inferType(context)
-        }
-        this is SmlResult -> type.inferType(context)
+        this is SmlResult -> type.inferTypeForType(context)
         this is SmlStep -> CallableType(
-            parametersOrEmpty().map { it.inferType(context) },
-            resultsOrEmpty().map { it.inferType(context) }
+            parametersOrEmpty().map { it.inferTypeForDeclaration(context) },
+            resultsOrEmpty().map { it.inferTypeForDeclaration(context) }
         )
         else -> Any(context)
     }
 }
 
-private fun SmlAbstractExpression.inferType(context: EObject): Type {
+private fun SmlAbstractExpression.inferTypeExpression(context: EObject): Type {
     return when {
 
         // Terminal cases
@@ -137,9 +138,9 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
         this is SmlTemplateString -> String(context)
 
         // Recursive cases
-        this is SmlArgument -> this.value.inferType(context)
+        this is SmlArgument -> this.value.inferTypeExpression(context)
         this is SmlIndexedAccess -> {
-            when (val receiverType = this.receiver.inferType(context)) {
+            when (val receiverType = this.receiver.inferTypeExpression(context)) {
                 is UnresolvedType -> UnresolvedType
                 is VariadicType -> receiverType.elementType
                 else -> Nothing(context)
@@ -151,18 +152,18 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
             "===", "!==" -> Boolean(context)
             "or", "and" -> Boolean(context)
             "+", "-", "*", "/" -> when {
-                this.leftOperand.inferType(context) == Int(context) &&
-                        this.rightOperand.inferType(context) == Int(context) -> Int(context)
+                this.leftOperand.inferTypeExpression(context) == Int(context) &&
+                        this.rightOperand.inferTypeExpression(context) == Int(context) -> Int(context)
                 else -> Float(context)
             }
             "?:" -> {
-                val leftOperandType = this.leftOperand.inferType(context)
+                val leftOperandType = this.leftOperand.inferTypeExpression(context)
                 if (leftOperandType.isNullable) {
                     lowestCommonSupertype(
                         context,
                         listOf(
                             leftOperandType.setIsNullableOnCopy(isNullable = false),
-                            this.rightOperand.inferType(context)
+                            this.rightOperand.inferTypeExpression(context)
                         )
                     )
                 } else {
@@ -172,13 +173,13 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
             else -> Nothing(context)
         }
         this is SmlMemberAccess -> {
-            val memberType = this.member.inferType(context)
+            val memberType = this.member.inferTypeExpression(context)
             memberType.setIsNullableOnCopy(this.isNullSafe || memberType.isNullable)
         }
-        this is SmlParenthesizedExpression -> this.expression.inferType(context)
+        this is SmlParenthesizedExpression -> this.expression.inferTypeExpression(context)
         this is SmlPrefixOperation -> when (operator) {
             "not" -> Boolean(context)
-            "-" -> when (this.operand.inferType(context)) {
+            "-" -> when (this.operand.inferTypeExpression(context)) {
                 Int(context) -> Int(context)
                 else -> Float(context)
             }
@@ -192,63 +193,63 @@ private fun SmlAbstractExpression.inferType(context: EObject): Type {
             is SmlCallableType -> {
                 val results = callable.resultsOrEmpty()
                 when (results.size) {
-                    1 -> results.first().inferType(context)
-                    else -> RecordType(results.map { it.name to it.inferType(context) })
+                    1 -> results.first().inferTypeForDeclaration(context)
+                    else -> RecordType(results.map { it.name to it.inferTypeForDeclaration(context) })
                 }
             }
             is SmlFunction -> {
                 val results = callable.resultsOrEmpty()
                 when (results.size) {
-                    1 -> results.first().inferType(context)
-                    else -> RecordType(results.map { it.name to it.inferType(context) })
+                    1 -> results.first().inferTypeForDeclaration(context)
+                    else -> RecordType(results.map { it.name to it.inferTypeForDeclaration(context) })
                 }
             }
             is SmlBlockLambda -> {
                 val results = callable.lambdaResultsOrEmpty()
                 when (results.size) {
-                    1 -> results.first().inferType(context)
-                    else -> RecordType(results.map { it.name to it.inferType(context) })
+                    1 -> results.first().inferTypeForAssignee(context)
+                    else -> RecordType(results.map { it.name to it.inferTypeForAssignee(context) })
                 }
             }
             is SmlExpressionLambda -> {
-                callable.result.inferType(context)
+                callable.result.inferTypeExpression(context)
             }
             is SmlStep -> {
                 val results = callable.resultsOrEmpty()
                 when (results.size) {
-                    1 -> results.first().inferType(context)
-                    else -> RecordType(results.map { it.name to it.inferType(context) })
+                    1 -> results.first().inferTypeForDeclaration(context)
+                    else -> RecordType(results.map { it.name to it.inferTypeForDeclaration(context) })
                 }
             }
             else -> Any(context)
         }
         this is SmlBlockLambda -> CallableType(
-            parametersOrEmpty().map { it.inferType(context) },
-            lambdaResultsOrEmpty().map { it.inferType(context) }
+            parametersOrEmpty().map { it.inferTypeForDeclaration(context) },
+            lambdaResultsOrEmpty().map { it.inferTypeForAssignee(context) }
         )
         this is SmlExpressionLambda -> CallableType(
-            parametersOrEmpty().map { it.inferType(context) },
-            listOf(result.inferType(context))
+            parametersOrEmpty().map { it.inferTypeForDeclaration(context) },
+            listOf(result.inferTypeExpression(context))
         )
         else -> Any(context)
     }
 }
 
-private fun SmlAbstractType.inferType(context: EObject): Type {
+private fun SmlAbstractType.inferTypeForType(context: EObject): Type {
     return when {
         this.eIsProxy() -> UnresolvedType
         this is SmlCallableType -> CallableType(
-            this.parametersOrEmpty().map { it.inferType(context) },
-            this.resultsOrEmpty().map { it.inferType(context) }
+            this.parametersOrEmpty().map { it.inferTypeForDeclaration(context) },
+            this.resultsOrEmpty().map { it.inferTypeForDeclaration(context) }
         )
         this is SmlMemberType -> {
-            this.member.inferType(context)
+            this.member.inferTypeForType(context)
         }
         this is SmlNamedType -> {
-            this.declaration.inferType(context).setIsNullableOnCopy(this.isNullable)
+            this.declaration.inferTypeForDeclaration(context).setIsNullableOnCopy(this.isNullable)
         }
         this is SmlParenthesizedType -> {
-            this.type.inferType(context)
+            this.type.inferTypeForType(context)
         }
         this is SmlUnionType -> {
             UnionType(this.typeArgumentsOrEmpty().map { it.value.inferType(context) }.toSet())

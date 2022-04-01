@@ -1,5 +1,6 @@
 package de.unibonn.simpleml.staticAnalysis.typing
 
+import com.google.errorprone.annotations.Var
 import com.google.inject.Inject
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator
@@ -120,9 +121,20 @@ class TypeComputerTest {
         @Test
         fun `parameters should have declared type`() {
             withCompilationUnitFromFile("declarations/parameters") {
-                descendants<SmlParameter>().forEach {
-                    it shouldHaveType it.type
-                }
+                findUniqueDeclarationOrFail<SmlStep>("myStepWithNormalParameter")
+                    .descendants<SmlParameter>().forEach {
+                        it shouldHaveType it.type
+                    }
+            }
+        }
+
+        @Test
+        fun `variadic parameters should have variadic type with declared element type`() {
+            withCompilationUnitFromFile("declarations/parameters") {
+                findUniqueDeclarationOrFail<SmlStep>("myStepWithVariadicParameter")
+                    .descendants<SmlParameter>().forEach {
+                        it shouldHaveType VariadicType(it.type.type())
+                    }
             }
         }
     }
