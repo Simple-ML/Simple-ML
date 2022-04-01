@@ -15,6 +15,7 @@ import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlEnum
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlIndexedAccess
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
@@ -95,6 +96,19 @@ class TypeComputerTest {
             withCompilationUnitFromFile("declarations/enums") {
                 descendants<SmlEnum>().forEach {
                     it shouldHaveType EnumType(it, isNullable = false)
+                }
+            }
+        }
+    }
+
+    @Nested
+    inner class EnumVariants {
+
+        @Test
+        fun `enum variants should have non-nullable enum variant type`() {
+            withCompilationUnitFromFile("declarations/enumVariants") {
+                descendants<SmlEnumVariant>().forEach {
+                    it shouldHaveType EnumVariantType(it, isNullable = false)
                 }
             }
         }
