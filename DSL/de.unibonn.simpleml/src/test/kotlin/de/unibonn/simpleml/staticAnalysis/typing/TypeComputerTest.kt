@@ -11,6 +11,7 @@ import de.unibonn.simpleml.emf.typeArgumentsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlAttribute
+import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
@@ -31,12 +32,14 @@ import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWorkflow
+import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.staticAnalysis.assignedOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
 import de.unibonn.simpleml.testing.getResourcePath
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
@@ -59,11 +62,60 @@ class TypeComputerTest {
     private val testRoot = javaClass.classLoader.getResourcePath("typeComputer").toString()
 
     // *****************************************************************************************************************
+    // Assignees
+    // ****************************************************************************************************************/
+
+    @Nested
+    inner class BlockLambdaResults {
+
+        @Test
+        fun `attributes should have declared type`() {
+            withCompilationUnitFromFile("assignees/blockLambdaResults") {
+                descendants<SmlBlockLambdaResult>().forEach {
+                    val assigned = it.assignedOrNull()
+                    assigned.shouldNotBeNull()
+                    it shouldHaveType assigned
+                }
+            }
+        }
+    }
+
+    @Nested
+    inner class Placeholders {
+
+        @Test
+        fun `classes should have non-nullable class type`() {
+            withCompilationUnitFromFile("assignees/placeholders") {
+                descendants<SmlPlaceholder>().forEach {
+                    val assigned = it.assignedOrNull()
+                    assigned.shouldNotBeNull()
+                    it shouldHaveType assigned
+                }
+            }
+        }
+    }
+
+    @Nested
+    inner class Yields {
+
+        @Test
+        fun `enums should have non-nullable enum type`() {
+            withCompilationUnitFromFile("assignees/yields") {
+                descendants<SmlYield>().forEach {
+                    val assigned = it.assignedOrNull()
+                    assigned.shouldNotBeNull()
+                    it shouldHaveType assigned
+                }
+            }
+        }
+    }
+
+    // *****************************************************************************************************************
     // Declarations
     // ****************************************************************************************************************/
 
     @Nested
-    inner class Attribute {
+    inner class Attributes {
 
         @Test
         fun `attributes should have declared type`() {
@@ -76,7 +128,7 @@ class TypeComputerTest {
     }
 
     @Nested
-    inner class Class {
+    inner class Classes {
 
         @Test
         fun `classes should have non-nullable class type`() {
@@ -89,7 +141,7 @@ class TypeComputerTest {
     }
 
     @Nested
-    inner class Enum {
+    inner class Enums {
 
         @Test
         fun `enums should have non-nullable enum type`() {
@@ -131,7 +183,7 @@ class TypeComputerTest {
     }
 
     @Nested
-    inner class Parameter {
+    inner class Parameters {
 
         @Test
         fun `parameters should have declared type`() {
@@ -155,7 +207,7 @@ class TypeComputerTest {
     }
 
     @Nested
-    inner class Result {
+    inner class Results {
 
         @Test
         fun `results should have declared type`() {
