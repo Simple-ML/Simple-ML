@@ -1,0 +1,5 @@
+.BoxPlotChartBackground {
+    background-color: white;
+    height: fit-content;
+    border-bottom: 1px grey solid;
+  }

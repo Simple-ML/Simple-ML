@@ -133,7 +133,6 @@ export default class SimpleHistogramChart extends React.Component {
 
 		return (
 			<div>
-				<h1 style={{ color: 'black' }}> {this.props.title}</h1>
 				<div className="HistogramChartBackground">
 					<div style={{ width: this.props.width, height: this.props.height }}>
 						<ResponsiveMarimekko
@@ -147,12 +146,6 @@ export default class SimpleHistogramChart extends React.Component {
 								}
 							]}
 							tooltip={Tooltip} 
-							onClick={(data) => {
-								console.log(
-									`all the people that ${data["id"]} for ${data["key"]} = ${data["value"]}`
-								);
-
-							}}
 							innerPadding={0}
 							margin={{ top: 50, right: 130, bottom: 100, left: 60 }}
 							padding={0.3}
