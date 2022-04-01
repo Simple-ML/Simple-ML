@@ -31,7 +31,7 @@ class RecordType(resultToType: List<Pair<String, Type>>) : Type() {
     }
 }
 
-class CallableType(val parameters: List<Type>, val results: List<Type>) : Type() {
+data class CallableType(val parameters: List<Type>, val results: List<Type>) : Type() {
     override val isNullable = false
     override fun setIsNullableOnCopy(isNullable: Boolean) = this
 

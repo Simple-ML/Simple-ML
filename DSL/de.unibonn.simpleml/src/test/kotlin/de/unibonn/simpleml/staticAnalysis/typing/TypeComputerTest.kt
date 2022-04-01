@@ -5,9 +5,12 @@ import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator
 import de.unibonn.simpleml.constant.operator
 import de.unibonn.simpleml.emf.descendants
+import de.unibonn.simpleml.emf.parametersOrEmpty
+import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.typeArgumentsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlArgument
+import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlIndexedAccess
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
@@ -389,6 +392,22 @@ class TypeComputerTest {
     // ****************************************************************************************************************/
 
     @Nested
+    inner class CallableType {
+
+        @Test
+        fun `callable type should have callable type with respective parameters and results`() {
+            withCompilationUnitFromFile("types/callableTypes") {
+                descendants<SmlCallableType>().forEach { callableType ->
+                    callableType shouldHaveType CallableType(
+                        callableType.parametersOrEmpty().map { it.type() },
+                        callableType.resultsOrEmpty().map { it.type() }
+                    )
+                }
+            }
+        }
+    }
+
+    @Nested
     inner class ParenthesizedType {
 
         @Test
@@ -408,7 +427,9 @@ class TypeComputerTest {
         fun `union type should have union type over its type arguments`() {
             withCompilationUnitFromFile("types/unionTypes") {
                 descendants<SmlUnionType>().forEach { unionType ->
-                    unionType shouldHaveType UnionType(unionType.typeArgumentsOrEmpty().map { it.type() }.toSet())
+                    unionType shouldHaveType UnionType(
+                        unionType.typeArgumentsOrEmpty().map { it.type() }.toSet()
+                    )
                 }
             }
         }
