@@ -16,6 +16,7 @@ import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlIndexedAccess
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
+import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlParenthesizedType
@@ -405,6 +406,30 @@ class TypeComputerTest {
                         callableType.resultsOrEmpty().map { it.type() }
                     )
                 }
+            }
+        }
+    }
+
+    @Nested
+    inner class MemberType {
+
+        @Test
+        fun `non-nullable member type should have type of referenced member`() {
+            withCompilationUnitFromFile("types/memberTypes") {
+                findUniqueDeclarationOrFail<SmlFunction>("nonNullableMemberTypes")
+                    .descendants<SmlMemberType>().forEach {
+                        it shouldHaveType it.member
+                    }
+            }
+        }
+
+        @Test
+        fun `nullable member type should have nullable type of referenced member`() {
+            withCompilationUnitFromFile("types/memberTypes") {
+                findUniqueDeclarationOrFail<SmlFunction>("nullableMemberTypes")
+                    .descendants<SmlMemberType>().forEach {
+                        it shouldHaveType it.member.type().setIsNullableOnCopy(isNullable = true)
+                    }
             }
         }
     }
