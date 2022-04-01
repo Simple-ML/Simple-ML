@@ -12,9 +12,11 @@ import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlIndexedAccess
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
+import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlParenthesizedType
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
@@ -403,6 +405,30 @@ class TypeComputerTest {
                         callableType.resultsOrEmpty().map { it.type() }
                     )
                 }
+            }
+        }
+    }
+
+    @Nested
+    inner class NamedType {
+
+        @Test
+        fun `non-nullable named type should have type of referenced declaration`() {
+            withCompilationUnitFromFile("types/namedTypes") {
+                findUniqueDeclarationOrFail<SmlFunction>("nonNullableNamedTypes")
+                    .descendants<SmlNamedType>().forEach {
+                        it shouldHaveType it.declaration
+                    }
+            }
+        }
+
+        @Test
+        fun `nullable named type should have nullable type of referenced declaration`() {
+            withCompilationUnitFromFile("types/namedTypes") {
+                findUniqueDeclarationOrFail<SmlFunction>("nullableNamedTypes")
+                    .descendants<SmlNamedType>().forEach {
+                        it shouldHaveType it.declaration.type().setIsNullableOnCopy(isNullable = true)
+                    }
             }
         }
     }

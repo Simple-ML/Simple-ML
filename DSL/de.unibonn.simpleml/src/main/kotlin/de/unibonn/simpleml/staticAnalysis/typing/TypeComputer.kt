@@ -238,25 +238,14 @@ private fun SmlAbstractType.inferType(context: EObject): Type {
     return when {
         this.eIsProxy() -> UnresolvedType
         this is SmlCallableType -> CallableType(
-            parametersOrEmpty().map { it.inferType(context) },
-            resultsOrEmpty().map { it.inferType(context) }
+            this.parametersOrEmpty().map { it.inferType(context) },
+            this.resultsOrEmpty().map { it.inferType(context) }
         )
         this is SmlMemberType -> {
-            val member = this.member ?: return Any(context)
-            member.inferType(context)
+            this.member.inferType(context)
         }
         this is SmlNamedType -> {
-            val declaration = this.declaration ?: return Any(context, isNullable = false)
-            val declarationType = declaration.inferType(context)
-            when {
-                this.isNullable -> when (declarationType) {
-                    is ClassType -> declarationType.copy(isNullable = true)
-                    is EnumType -> declarationType.copy(isNullable = true)
-                    is EnumVariantType -> declarationType.copy(isNullable = true)
-                    else -> Any(context, isNullable = false)
-                }
-                else -> declarationType
-            }
+            this.declaration.inferType(context).setIsNullableOnCopy(this.isNullable)
         }
         this is SmlParenthesizedType -> {
             this.type.inferType(context)
