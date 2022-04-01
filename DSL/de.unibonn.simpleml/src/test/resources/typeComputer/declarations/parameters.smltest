@@ -1,0 +1,3 @@
+package tests.typeComputer.declarations.parameters
+
+step myStep(a: Int, b: Int) {}

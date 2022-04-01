@@ -19,10 +19,12 @@ import de.unibonn.simpleml.simpleML.SmlInfixOperation
 import de.unibonn.simpleml.simpleML.SmlMemberAccess
 import de.unibonn.simpleml.simpleML.SmlMemberType
 import de.unibonn.simpleml.simpleML.SmlNamedType
+import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlParenthesizedExpression
 import de.unibonn.simpleml.simpleML.SmlParenthesizedType
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlReference
+import de.unibonn.simpleml.simpleML.SmlResult
 import de.unibonn.simpleml.simpleML.SmlStep
 import de.unibonn.simpleml.simpleML.SmlUnionType
 import de.unibonn.simpleml.simpleML.SmlWorkflow
@@ -58,12 +60,38 @@ class TypeComputerTest {
     // ****************************************************************************************************************/
 
     @Nested
-    inner class Attributes {
+    inner class Attribute {
 
         @Test
         fun `attributes should have declared type`() {
             withCompilationUnitFromFile("declarations/attributes") {
                 descendants<SmlAttribute>().forEach {
+                    it shouldHaveType it.type
+                }
+            }
+        }
+    }
+
+    @Nested
+    inner class Parameter {
+
+        @Test
+        fun `parameters should have declared type`() {
+            withCompilationUnitFromFile("declarations/parameters") {
+                descendants<SmlParameter>().forEach {
+                    it shouldHaveType it.type
+                }
+            }
+        }
+    }
+
+    @Nested
+    inner class Result {
+
+        @Test
+        fun `results should have declared type`() {
+            withCompilationUnitFromFile("declarations/results") {
+                descendants<SmlResult>().forEach {
                     it shouldHaveType it.type
                 }
             }
