@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v3
@@ -52,7 +52,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node ${{ matrix.python-version }}
         uses: actions/setup-node@v3
@@ -81,7 +81,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Cache conda
         uses: actions/cache@v2
@@ -116,7 +116,7 @@ jobs:
 
   #     steps:
   #       - name: Checkout repository
-  #         uses: actions/checkout@v2
+  #         uses: actions/checkout@v3
 
   #       - name: Build the stack
   #         run: docker-compose up -d
