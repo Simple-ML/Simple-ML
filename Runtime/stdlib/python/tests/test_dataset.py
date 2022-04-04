@@ -1,4 +1,3 @@
-import pandas as pd
 import numpy as np
 
 from simpleml.dataset import loadDataset, Instance, StandardNormalizer, StandardScaler, readDataSetFromCSV, \
@@ -41,7 +40,6 @@ def test_transform_text():
     dataset = dataset.transformTextToVector("tweetext")
 
     assert type(dataset.data["tweetext"][0]) == list
-    assert isinstance(dataset.data["tweetext"][0][0], float)
 
 
 def test_transform_column():
@@ -62,9 +60,7 @@ def test_geometry_to_vector():
 
     dataset = dataset.transformGeometryToVector("geometry")
 
-    #print(type(dataset.data["geometry"][0]))
     assert type(dataset.data["geometry"][0]) == np.ndarray
-    # assert isinstance(dataset.data["tweetext"][0][0], float)
 
 
 def test_read_local_dataset():
@@ -90,7 +86,6 @@ def test_flatten_vector():
     dataset = dataset.transformCategoryToVector("season")
     dataset = dataset.flattenData()
 
-    print(dataset.data.columns.values.tolist())
     assert type(dataset.data['season0'][0]) == np.float64
 
 
