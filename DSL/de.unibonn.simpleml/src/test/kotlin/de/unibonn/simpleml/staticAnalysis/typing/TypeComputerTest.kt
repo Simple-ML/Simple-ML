@@ -43,6 +43,7 @@ import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
 import de.unibonn.simpleml.testing.getResourcePath
+import io.kotest.assertions.forEachAsClue
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.sequences.shouldHaveSize
@@ -208,6 +209,18 @@ class TypeComputerTest {
                 findUniqueDeclarationOrFail<SmlStep>("myStepWithVariadicParameter")
                     .descendants<SmlParameter>().forEach {
                         it shouldHaveType VariadicType(it.type.type())
+                    }
+            }
+        }
+
+        @Test
+        fun `lambda parameters should have type inferred from context`() {
+            withCompilationUnitFromFile("declarations/parameters") {
+                findUniqueDeclarationOrFail<SmlStep>("myStepWithLambdas")
+                    .descendants<SmlParameter>()
+                    .toList()
+                    .forEachAsClue {
+                        it shouldHaveType String
                     }
             }
         }

@@ -3,6 +3,7 @@
 package de.unibonn.simpleml.staticAnalysis.typing
 
 import de.unibonn.simpleml.emf.blockLambdaResultsOrEmpty
+import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.containingEnumOrNull
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
@@ -10,6 +11,7 @@ import de.unibonn.simpleml.emf.typeArgumentsOrEmpty
 import de.unibonn.simpleml.emf.yieldsOrEmpty
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
+import de.unibonn.simpleml.simpleML.SmlAbstractCallable
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractLambda
@@ -56,7 +58,6 @@ import de.unibonn.simpleml.staticAnalysis.classHierarchy.superClasses
 import de.unibonn.simpleml.staticAnalysis.linking.parameterOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.stdlibAccess.getStdlibClassOrNull
-import de.unibonn.simpleml.utils.outerZipBy
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.naming.QualifiedName
 
@@ -115,11 +116,38 @@ private fun SmlAbstractDeclaration.inferTypeForDeclaration(context: EObject): Ty
             resultsOrEmpty().map { it.inferTypeForDeclaration(context) }
         )
         this is SmlParameter -> {
-            val type = type?.inferTypeForType(context) ?: Any(context)
-            when {
-                this.isVariadic -> VariadicType(type)
-                else -> type
+
+            // Declared parameter type
+            if (this.type != null) {
+                val declaredParameterType = this.type.inferTypeForType(context)
+                return when {
+                    this.isVariadic -> VariadicType(declaredParameterType)
+                    else -> declaredParameterType
+                }
             }
+
+            // Inferred lambda parameter type
+            val callable = this.closestAncestorOrNull<SmlAbstractCallable>()
+            val thisIndex = callable.parametersOrEmpty().indexOf(this)
+            if (callable is SmlAbstractLambda) {
+                val containerType = when (val container = callable.eContainer()) {
+                    is SmlArgument -> container.parameterOrNull()?.inferType(context)
+                    is SmlAssignment -> container
+                        .yieldsOrEmpty()
+                        .find { it.assignedOrNull() == callable }
+                        ?.result
+                        ?.inferType(context)
+                    else -> null
+                }
+
+                return when (containerType) {
+                    is CallableType -> containerType.parameters.getOrElse(thisIndex) { Any(context) }
+                    else -> Any(context)
+                }
+            }
+
+            // We don't know better
+            return Any(context)
         }
         this is SmlResult -> type.inferTypeForType(context)
         this is SmlStep -> CallableType(
@@ -145,7 +173,7 @@ private fun SmlAbstractExpression.inferTypeExpression(context: EObject): Type {
         // Recursive cases
         this is SmlArgument -> this.value.inferTypeExpression(context)
         this is SmlBlockLambda -> CallableType(
-            this.inferTypeForLambdaParameters(context),
+            this.parametersOrEmpty().map { it.inferTypeForDeclaration(context) },
             blockLambdaResultsOrEmpty().map { it.inferTypeForAssignee(context) }
         )
         this is SmlCall -> when (val callable = callableOrNull()) {
@@ -187,7 +215,7 @@ private fun SmlAbstractExpression.inferTypeExpression(context: EObject): Type {
             else -> Any(context)
         }
         this is SmlExpressionLambda -> CallableType(
-            this.inferTypeForLambdaParameters(context),
+            this.parametersOrEmpty().map { it.inferTypeForDeclaration(context) },
             listOf(result.inferTypeExpression(context))
         )
         this is SmlIndexedAccess -> {
@@ -238,32 +266,6 @@ private fun SmlAbstractExpression.inferTypeExpression(context: EObject): Type {
         }
         this is SmlReference -> this.declaration.inferType(context)
         else -> Any(context)
-    }
-}
-
-private fun SmlAbstractLambda.inferTypeForLambdaParameters(context: EObject): List<Type> {
-    val declaredParameterTypes = this.parametersOrEmpty().map {
-        val type = it.type?.inferType(context)
-        when {
-            type == null -> null
-            it.isVariadic -> VariadicType(type)
-            else -> type
-        }
-    }
-
-    val containerType = when (val container = this.eContainer()) {
-        is SmlArgument -> container.parameterOrNull()?.inferType(context)
-        is SmlAssignment -> container.yieldsOrEmpty().find { it.assignedOrNull() == this }?.result?.inferType(context)
-        else -> null
-    }
-
-    val inferredParameterTypes = when (containerType) {
-        is CallableType -> containerType.parameters.take(declaredParameterTypes.size)
-        else -> emptyList()
-    }
-
-    return outerZipBy(declaredParameterTypes, inferredParameterTypes) { explicitType, inferredType ->
-        explicitType ?: inferredType ?: Any(context)
     }
 }
 
