@@ -2,18 +2,21 @@
 
 package de.unibonn.simpleml.staticAnalysis.typing
 
+import de.unibonn.simpleml.emf.blockLambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.containingEnumOrNull
-import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.typeArgumentsOrEmpty
+import de.unibonn.simpleml.emf.yieldsOrEmpty
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
+import de.unibonn.simpleml.simpleML.SmlAbstractLambda
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlArgument
+import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
@@ -50,8 +53,10 @@ import de.unibonn.simpleml.simpleML.SmlYield
 import de.unibonn.simpleml.staticAnalysis.assignedOrNull
 import de.unibonn.simpleml.staticAnalysis.callableOrNull
 import de.unibonn.simpleml.staticAnalysis.classHierarchy.superClasses
+import de.unibonn.simpleml.staticAnalysis.linking.parameterOrNull
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.stdlibAccess.getStdlibClassOrNull
+import de.unibonn.simpleml.utils.outerZipBy
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.naming.QualifiedName
 
@@ -139,6 +144,14 @@ private fun SmlAbstractExpression.inferTypeExpression(context: EObject): Type {
 
         // Recursive cases
         this is SmlArgument -> this.value.inferTypeExpression(context)
+        this is SmlBlockLambda -> CallableType(
+            this.inferTypeForLambdaParameters(context),
+            blockLambdaResultsOrEmpty().map { it.inferTypeForAssignee(context) }
+        )
+        this is SmlExpressionLambda -> CallableType(
+            this.inferTypeForLambdaParameters(context),
+            listOf(result.inferTypeExpression(context))
+        )
         this is SmlIndexedAccess -> {
             when (val receiverType = this.receiver.inferTypeExpression(context)) {
                 is UnresolvedType -> UnresolvedType
@@ -205,7 +218,7 @@ private fun SmlAbstractExpression.inferTypeExpression(context: EObject): Type {
                 }
             }
             is SmlBlockLambda -> {
-                val results = callable.lambdaResultsOrEmpty()
+                val results = callable.blockLambdaResultsOrEmpty()
                 when (results.size) {
                     1 -> results.first().inferTypeForAssignee(context)
                     else -> RecordType(results.map { it.name to it.inferTypeForAssignee(context) })
@@ -223,15 +236,26 @@ private fun SmlAbstractExpression.inferTypeExpression(context: EObject): Type {
             }
             else -> Any(context)
         }
-        this is SmlBlockLambda -> CallableType(
-            parametersOrEmpty().map { it.inferTypeForDeclaration(context) },
-            lambdaResultsOrEmpty().map { it.inferTypeForAssignee(context) }
-        )
-        this is SmlExpressionLambda -> CallableType(
-            parametersOrEmpty().map { it.inferTypeForDeclaration(context) },
-            listOf(result.inferTypeExpression(context))
-        )
         else -> Any(context)
+    }
+}
+
+private fun SmlAbstractLambda.inferTypeForLambdaParameters(context: EObject): List<Type> {
+    val declaredParameterTypes = this.parametersOrEmpty().map { it.type?.inferType(context) }
+
+    val containerType = when (val container = this.eContainer()) {
+        is SmlArgument -> container.parameterOrNull()?.inferType(context)
+        is SmlAssignment -> container.yieldsOrEmpty().find { it.assignedOrNull() == this }?.result?.inferType(context)
+        else -> null
+    }
+
+    val inferredParameterTypes = when (containerType) {
+        is CallableType -> containerType.parameters.take(declaredParameterTypes.size)
+        else -> emptyList()
+    }
+
+    return outerZipBy(declaredParameterTypes, inferredParameterTypes) { explicitType, inferredType ->
+        explicitType ?: inferredType ?: Any(context)
     }
 }
 

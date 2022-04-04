@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.constant.SmlInfixOperationOperator
 import de.unibonn.simpleml.constant.operator
+import de.unibonn.simpleml.emf.blockLambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
@@ -11,12 +12,14 @@ import de.unibonn.simpleml.emf.typeArgumentsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractObject
 import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlAttribute
+import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlEnumVariant
+import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlIndexedAccess
 import de.unibonn.simpleml.simpleML.SmlInfixOperation
@@ -40,7 +43,9 @@ import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
 import de.unibonn.simpleml.testing.getResourcePath
 import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.sequences.shouldHaveSize
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.junit.jupiter.api.Nested
@@ -303,6 +308,114 @@ class TypeComputerTest {
     }
 
     @Nested
+    inner class BlockLambdas {
+
+        @Test
+        fun `block lambdas should have callable type (explicit parameter types)`() {
+            withCompilationUnitFromFile("expressions/blockLambdas") {
+                findUniqueDeclarationOrFail<SmlStep>("lambdasWithExplicitParameterTypes")
+                    .descendants<SmlBlockLambda>().forEach { lambda ->
+                        lambda shouldHaveType CallableType(
+                            lambda.parametersOrEmpty().map { it.type() },
+                            lambda.blockLambdaResultsOrEmpty().map { it.type() }
+                        )
+                    }
+            }
+        }
+
+        @Test
+        fun `block lambdas should have callable type (yielded)`() {
+            withCompilationUnitFromFile("expressions/blockLambdas") {
+                val step = findUniqueDeclarationOrFail<SmlStep>("yieldedLambda")
+
+                val result = step.findUniqueDeclarationOrFail<SmlResult>("result")
+                val resultType = result.type.shouldBeInstanceOf<SmlCallableType>()
+
+                val lambdas = step.descendants<SmlBlockLambda>()
+                lambdas.shouldHaveSize(1)
+                val lambda = lambdas.first()
+
+                lambda shouldHaveType CallableType(
+                    resultType.parametersOrEmpty().map { it.type() },
+                    lambda.blockLambdaResultsOrEmpty().map { it.type() }
+                )
+            }
+        }
+
+        @Test
+        fun `block lambdas should have callable type (argument)`() {
+            withCompilationUnitFromFile("expressions/blockLambdas") {
+                val parameter = findUniqueDeclarationOrFail<SmlParameter>("parameter")
+                val parameterType = parameter.type.shouldBeInstanceOf<SmlCallableType>()
+
+                val step = findUniqueDeclarationOrFail<SmlStep>("argumentLambda")
+                val lambdas = step.descendants<SmlBlockLambda>()
+                lambdas.shouldHaveSize(1)
+                val lambda = lambdas.first()
+
+                lambda shouldHaveType CallableType(
+                    parameterType.parametersOrEmpty().map { it.type() },
+                    lambda.blockLambdaResultsOrEmpty().map { it.type() }
+                )
+            }
+        }
+    }
+
+    @Nested
+    inner class ExpressionLambdas {
+
+        @Test
+        fun `expression lambdas should have callable type (explicit parameter types)`() {
+            withCompilationUnitFromFile("expressions/expressionLambdas") {
+                findUniqueDeclarationOrFail<SmlStep>("lambdasWithExplicitParameterTypes")
+                    .descendants<SmlExpressionLambda>().forEach { lambda ->
+                        lambda shouldHaveType CallableType(
+                            lambda.parametersOrEmpty().map { it.type() },
+                            listOf(lambda.result.type())
+                        )
+                    }
+            }
+        }
+
+        @Test
+        fun `expression lambdas should have callable type (yielded)`() {
+            withCompilationUnitFromFile("expressions/expressionLambdas") {
+                val step = findUniqueDeclarationOrFail<SmlStep>("yieldedLambda")
+
+                val result = step.findUniqueDeclarationOrFail<SmlResult>("result")
+                val resultType = result.type.shouldBeInstanceOf<SmlCallableType>()
+
+                val lambdas = step.descendants<SmlExpressionLambda>()
+                lambdas.shouldHaveSize(1)
+                val lambda = lambdas.first()
+
+                lambda shouldHaveType CallableType(
+                    resultType.parametersOrEmpty().map { it.type() },
+                    listOf(lambda.result.type())
+                )
+            }
+        }
+
+        @Test
+        fun `expression lambdas should have callable type (argument)`() {
+            withCompilationUnitFromFile("expressions/expressionLambdas") {
+                val parameter = findUniqueDeclarationOrFail<SmlParameter>("parameter")
+                val parameterType = parameter.type.shouldBeInstanceOf<SmlCallableType>()
+
+                val step = findUniqueDeclarationOrFail<SmlStep>("argumentLambda")
+                val lambdas = step.descendants<SmlExpressionLambda>()
+                lambdas.shouldHaveSize(1)
+                val lambda = lambdas.first()
+
+                lambda shouldHaveType CallableType(
+                    parameterType.parametersOrEmpty().map { it.type() },
+                    listOf(lambda.result.type())
+                )
+            }
+        }
+    }
+
+    @Nested
     inner class IndexedAccesses {
 
         @Test
@@ -557,12 +670,12 @@ class TypeComputerTest {
         }
     }
 
-    // *****************************************************************************************************************
-    // Types
-    // ****************************************************************************************************************/
+// *****************************************************************************************************************
+// Types
+// ****************************************************************************************************************/
 
     @Nested
-    inner class CallableType {
+    inner class CallableTypes {
 
         @Test
         fun `callable type should have callable type with respective parameters and results`() {
@@ -578,7 +691,7 @@ class TypeComputerTest {
     }
 
     @Nested
-    inner class MemberType {
+    inner class MemberTypes {
 
         @Test
         fun `non-nullable member type should have type of referenced member`() {
@@ -602,7 +715,7 @@ class TypeComputerTest {
     }
 
     @Nested
-    inner class NamedType {
+    inner class NamedTypes {
 
         @Test
         fun `non-nullable named type should have type of referenced declaration`() {
@@ -626,7 +739,7 @@ class TypeComputerTest {
     }
 
     @Nested
-    inner class ParenthesizedType {
+    inner class ParenthesizedTypes {
 
         @Test
         fun `parenthesized type should have type of type`() {
@@ -653,9 +766,9 @@ class TypeComputerTest {
         }
     }
 
-    // *****************************************************************************************************************
-    // Helpers
-    // ****************************************************************************************************************/
+// *****************************************************************************************************************
+// Helpers
+// ****************************************************************************************************************/
 
     infix fun SmlAbstractObject.shouldHaveType(expectedType: Type) {
         this.type().shouldBe(expectedType)

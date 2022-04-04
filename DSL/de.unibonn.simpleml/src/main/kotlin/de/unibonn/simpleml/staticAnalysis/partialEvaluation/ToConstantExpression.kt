@@ -19,7 +19,7 @@ import de.unibonn.simpleml.constant.operator
 import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.isOptional
-import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
+import de.unibonn.simpleml.emf.blockLambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
@@ -108,7 +108,7 @@ private fun SmlBlockLambda.simplifyBlockLambda(substitutions: ParameterSubstitut
     return when {
         callableHasNoSideEffects(resultIfUnknown = true) -> SmlIntermediateBlockLambda(
             parameters = parametersOrEmpty(),
-            results = lambdaResultsOrEmpty(),
+            results = blockLambdaResultsOrEmpty(),
             substitutionsOnCreation = substitutions
         )
         else -> null

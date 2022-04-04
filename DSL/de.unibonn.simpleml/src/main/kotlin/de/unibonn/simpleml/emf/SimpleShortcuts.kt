@@ -117,7 +117,7 @@ fun SmlAssignment?.assigneesOrEmpty(): List<SmlAbstractAssignee> {
         .orEmpty()
 }
 
-fun SmlAssignment?.lambdaResultsOrEmpty(): List<SmlBlockLambdaResult> {
+fun SmlAssignment?.blockLambdaResultsOrEmpty(): List<SmlBlockLambdaResult> {
     return this.assigneesOrEmpty().filterIsInstance<SmlBlockLambdaResult>()
 }
 
@@ -131,10 +131,10 @@ fun SmlAssignment?.yieldsOrEmpty(): List<SmlYield> {
 
 // SmlBlockLambda ----------------------------------------------------------------------------------
 
-fun SmlBlockLambda?.lambdaResultsOrEmpty(): List<SmlBlockLambdaResult> {
+fun SmlBlockLambda?.blockLambdaResultsOrEmpty(): List<SmlBlockLambdaResult> {
     return this.statementsOrEmpty()
         .filterIsInstance<SmlAssignment>()
-        .flatMap { it.lambdaResultsOrEmpty() }
+        .flatMap { it.blockLambdaResultsOrEmpty() }
 }
 
 fun SmlBlockLambda?.localVariablesOrEmpty(): List<SmlAbstractLocalVariable> {
