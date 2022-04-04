@@ -25,9 +25,15 @@ import de.unibonn.simpleml.stdlibAccess.hasNoSideEffects
  */
 fun SmlAbstractStatement.statementHasNoSideEffects(resultIfUnknown: Boolean = false): Boolean {
     return when (this) {
-        is SmlAssignment -> assigneesOrEmpty().all { it is SmlWildcard } && expression.expressionHasNoSideEffects()
-        is SmlExpressionStatement -> expression.expressionHasNoSideEffects()
-        else -> throw IllegalArgumentException("Missing case to handle statement $this.")
+        is SmlAssignment -> {
+            assigneesOrEmpty().all { it is SmlWildcard } && expression.expressionHasNoSideEffects(resultIfUnknown)
+        }
+        is SmlExpressionStatement -> {
+            expression.expressionHasNoSideEffects(resultIfUnknown)
+        }
+        else -> {
+            throw IllegalArgumentException("Missing case to handle statement $this.")
+        }
     }
 }
 

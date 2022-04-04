@@ -1,6 +1,6 @@
 package de.unibonn.simpleml.staticAnalysis
 
-import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
+import de.unibonn.simpleml.emf.blockLambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
@@ -94,7 +94,7 @@ fun SmlCall.parametersOrNull(): List<SmlParameter>? {
  */
 fun SmlCall.resultsOrNull(): List<SmlAbstractObject>? {
     return when (val callable = this.callableOrNull()) {
-        is SmlBlockLambda -> callable.lambdaResultsOrEmpty()
+        is SmlBlockLambda -> callable.blockLambdaResultsOrEmpty()
         is SmlCallableType -> callable.resultsOrEmpty()
         is SmlClass -> listOf(callable)
         is SmlEnumVariant -> listOf(callable)
