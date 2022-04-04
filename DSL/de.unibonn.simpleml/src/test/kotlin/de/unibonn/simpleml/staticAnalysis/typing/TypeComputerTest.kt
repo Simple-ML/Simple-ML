@@ -326,6 +326,19 @@ class TypeComputerTest {
         }
 
         @Test
+        fun `block lambdas should have callable type (explicit variadic parameter type)`() {
+            withCompilationUnitFromFile("expressions/blockLambdas") {
+                findUniqueDeclarationOrFail<SmlStep>("lambdasWithExplicitVariadicType")
+                    .descendants<SmlBlockLambda>().forEach { lambda ->
+                        lambda shouldHaveType CallableType(
+                            lambda.parametersOrEmpty().map { it.type() },
+                            lambda.blockLambdaResultsOrEmpty().map { it.type() }
+                        )
+                    }
+            }
+        }
+
+        @Test
         fun `block lambdas should have callable type (yielded)`() {
             withCompilationUnitFromFile("expressions/blockLambdas") {
                 val step = findUniqueDeclarationOrFail<SmlStep>("yieldedLambda")
@@ -506,6 +519,19 @@ class TypeComputerTest {
         fun `expression lambdas should have callable type (explicit parameter types)`() {
             withCompilationUnitFromFile("expressions/expressionLambdas") {
                 findUniqueDeclarationOrFail<SmlStep>("lambdasWithExplicitParameterTypes")
+                    .descendants<SmlExpressionLambda>().forEach { lambda ->
+                        lambda shouldHaveType CallableType(
+                            lambda.parametersOrEmpty().map { it.type() },
+                            listOf(lambda.result.type())
+                        )
+                    }
+            }
+        }
+
+        @Test
+        fun `expression lambdas should have callable type (explicit variadic parameter type)`() {
+            withCompilationUnitFromFile("expressions/expressionLambdas") {
+                findUniqueDeclarationOrFail<SmlStep>("lambdasWithExplicitVariadicType")
                     .descendants<SmlExpressionLambda>().forEach { lambda ->
                         lambda shouldHaveType CallableType(
                             lambda.parametersOrEmpty().map { it.type() },

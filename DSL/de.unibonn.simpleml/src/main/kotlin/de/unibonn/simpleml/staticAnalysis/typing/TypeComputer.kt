@@ -242,7 +242,14 @@ private fun SmlAbstractExpression.inferTypeExpression(context: EObject): Type {
 }
 
 private fun SmlAbstractLambda.inferTypeForLambdaParameters(context: EObject): List<Type> {
-    val declaredParameterTypes = this.parametersOrEmpty().map { it.type?.inferType(context) }
+    val declaredParameterTypes = this.parametersOrEmpty().map {
+        val type = it.type?.inferType(context)
+        when {
+            type == null -> null
+            it.isVariadic -> VariadicType(type)
+            else -> type
+        }
+    }
 
     val containerType = when (val container = this.eContainer()) {
         is SmlArgument -> container.parameterOrNull()?.inferType(context)

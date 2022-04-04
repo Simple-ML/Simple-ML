@@ -23,6 +23,13 @@ step lambdasWithExplicitParameterTypes() -> (
     );
 }
 
+step lambdasWithExplicitVariadicType() {
+    val myLambda = (a: Int, vararg b: String) {
+        yield r = 1;
+        yield s = "";
+    };
+}
+
 step yieldedLambda() -> (
     result: (a: String, b: Int) -> (r: String, s: Int)
 ) {
