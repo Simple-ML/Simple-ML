@@ -20,6 +20,7 @@ from simpleml.dataset._instance import Instance
 from simpleml.dataset._stats import getStatistics
 from simpleml.util import exportDictionaryAsJSON
 from sklearn.model_selection import train_test_split
+from sentence_transformers import SentenceTransformer
 
 
 class Dataset:
@@ -464,6 +465,28 @@ class Dataset:
         )
 
         return copy
+
+    def transformTextToVector(self, columnName):
+
+        copy = self.copy_and_read()
+
+        column_to_list = copy.data[columnName].tolist()
+
+        model = SentenceTransformer('all-MiniLM-L6-v2')
+        sentence_embeddings = model.encode(column_to_list)
+
+        copy.data[columnName + "_tmp"] = sentence_embeddings.tolist()
+
+        copy = copy.dropAttribute(columnName, recompute_statistics=False)
+        copy.data = copy.data.rename(columns={columnName + "_tmp": columnName})
+        copy.add_column_description(
+            columnName,
+            self.attribute_labels[columnName],
+            config.type_numeric_list,
+            config.type_numeric_list,
+        )
+
+        return copy.provide_statistics()
 
     def flattenData(self):
 
