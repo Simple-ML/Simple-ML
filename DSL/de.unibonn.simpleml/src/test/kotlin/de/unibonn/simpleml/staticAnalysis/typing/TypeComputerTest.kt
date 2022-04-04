@@ -399,7 +399,7 @@ class TypeComputerTest {
 
                 val calls = descendants<SmlCall>().toList()
                 calls.shouldHaveSize(11)
-                calls[0] shouldHaveType ClassType (`class`, isNullable = false)
+                calls[0] shouldHaveType ClassType(`class`, isNullable = false)
             }
         }
 

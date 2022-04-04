@@ -38,8 +38,8 @@ class InfixOperationTypeChecker : AbstractSimpleMLChecker() {
             SmlInfixOperationOperator.Or,
             SmlInfixOperationOperator.And -> {
                 val hasWrongType = operandType !is ClassType ||
-                        operandType.isNullable ||
-                        operandType.smlClass.qualifiedNameOrNull() != StdlibClasses.Boolean
+                    operandType.isNullable ||
+                    operandType.smlClass.qualifiedNameOrNull() != StdlibClasses.Boolean
 
                 if (hasWrongType) {
                     error(
@@ -55,8 +55,8 @@ class InfixOperationTypeChecker : AbstractSimpleMLChecker() {
             SmlInfixOperationOperator.Times,
             SmlInfixOperationOperator.By -> {
                 val hasWrongType = operandType !is ClassType ||
-                        operandType.isNullable ||
-                        operandType.smlClass.qualifiedNameOrNull() !in setOf(StdlibClasses.Float, StdlibClasses.Int)
+                    operandType.isNullable ||
+                    operandType.smlClass.qualifiedNameOrNull() !in setOf(StdlibClasses.Float, StdlibClasses.Int)
 
                 if (hasWrongType) {
                     error(
@@ -72,8 +72,8 @@ class InfixOperationTypeChecker : AbstractSimpleMLChecker() {
             SmlInfixOperationOperator.GreaterThanOrEquals,
             SmlInfixOperationOperator.GreaterThan -> {
                 val hasWrongType = operandType !is ClassType ||
-                        operandType.isNullable ||
-                        operandType.smlClass.qualifiedNameOrNull() !in setOf(StdlibClasses.Float, StdlibClasses.Int)
+                    operandType.isNullable ||
+                    operandType.smlClass.qualifiedNameOrNull() !in setOf(StdlibClasses.Float, StdlibClasses.Int)
 
                 if (hasWrongType) {
                     error(

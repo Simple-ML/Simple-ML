@@ -17,9 +17,9 @@ import de.unibonn.simpleml.constant.SmlInfixOperationOperator.Times
 import de.unibonn.simpleml.constant.SmlPrefixOperationOperator.Not
 import de.unibonn.simpleml.constant.operator
 import de.unibonn.simpleml.emf.argumentsOrEmpty
+import de.unibonn.simpleml.emf.blockLambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.isOptional
-import de.unibonn.simpleml.emf.blockLambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractAssignee
@@ -48,8 +48,8 @@ import de.unibonn.simpleml.simpleML.SmlTemplateString
 import de.unibonn.simpleml.simpleML.SmlTemplateStringEnd
 import de.unibonn.simpleml.simpleML.SmlTemplateStringInner
 import de.unibonn.simpleml.simpleML.SmlTemplateStringStart
-import de.unibonn.simpleml.staticAnalysis.indexOrNull
 import de.unibonn.simpleml.staticAnalysis.callableHasNoSideEffects
+import de.unibonn.simpleml.staticAnalysis.indexOrNull
 import de.unibonn.simpleml.staticAnalysis.linking.parameterOrNull
 import de.unibonn.simpleml.staticAnalysis.linking.uniqueYieldOrNull
 import de.unibonn.simpleml.utils.uniqueOrNull

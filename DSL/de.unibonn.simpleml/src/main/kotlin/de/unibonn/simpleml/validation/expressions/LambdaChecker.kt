@@ -1,8 +1,8 @@
 package de.unibonn.simpleml.validation.expressions
 
 import de.unibonn.simpleml.emf.assigneesOrEmpty
-import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.blockLambdaResultsOrEmpty
+import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAbstractLambda

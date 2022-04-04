@@ -26,8 +26,8 @@ class PrefixOperationTypeChecker : AbstractSimpleMLChecker() {
         when (smlPrefixOperation.operator()) {
             SmlPrefixOperationOperator.Not -> {
                 val hasWrongType = operandType !is ClassType ||
-                        operandType.isNullable ||
-                        operandType.smlClass.qualifiedNameOrNull() != StdlibClasses.Boolean
+                    operandType.isNullable ||
+                    operandType.smlClass.qualifiedNameOrNull() != StdlibClasses.Boolean
 
                 if (hasWrongType) {
                     error(
@@ -39,8 +39,8 @@ class PrefixOperationTypeChecker : AbstractSimpleMLChecker() {
             }
             SmlPrefixOperationOperator.Minus -> {
                 val hasWrongType = operandType !is ClassType ||
-                        operandType.isNullable ||
-                        operandType.smlClass.qualifiedNameOrNull() !in setOf(StdlibClasses.Float, StdlibClasses.Int)
+                    operandType.isNullable ||
+                    operandType.smlClass.qualifiedNameOrNull() !in setOf(StdlibClasses.Float, StdlibClasses.Int)
 
                 if (hasWrongType) {
                     error(

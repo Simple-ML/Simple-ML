@@ -132,11 +132,12 @@ private fun SmlAbstractDeclaration.inferTypeForDeclaration(context: EObject): Ty
             if (callable is SmlAbstractLambda) {
                 val containerType = when (val container = callable.eContainer()) {
                     is SmlArgument -> container.parameterOrNull()?.inferType(context)
-                    is SmlAssignment -> container
-                        .yieldsOrEmpty()
-                        .find { it.assignedOrNull() == callable }
-                        ?.result
-                        ?.inferType(context)
+                    is SmlAssignment ->
+                        container
+                            .yieldsOrEmpty()
+                            .find { it.assignedOrNull() == callable }
+                            ?.result
+                            ?.inferType(context)
                     else -> null
                 }
 
@@ -232,7 +233,7 @@ private fun SmlAbstractExpression.inferTypeExpression(context: EObject): Type {
             "or", "and" -> Boolean(context)
             "+", "-", "*", "/" -> when {
                 this.leftOperand.inferTypeExpression(context) == Int(context) &&
-                        this.rightOperand.inferTypeExpression(context) == Int(context) -> Int(context)
+                    this.rightOperand.inferTypeExpression(context) == Int(context) -> Int(context)
                 else -> Float(context)
             }
             "?:" -> {

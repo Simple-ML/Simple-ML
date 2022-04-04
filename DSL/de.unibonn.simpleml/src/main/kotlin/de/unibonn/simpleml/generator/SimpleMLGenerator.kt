@@ -12,6 +12,7 @@ import de.unibonn.simpleml.constant.isInTestFile
 import de.unibonn.simpleml.constant.isTestFile
 import de.unibonn.simpleml.constant.operator
 import de.unibonn.simpleml.emf.assigneesOrEmpty
+import de.unibonn.simpleml.emf.blockLambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingBlockLambdaOrNull
@@ -20,7 +21,6 @@ import de.unibonn.simpleml.emf.createSmlWildcard
 import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.isGlobal
 import de.unibonn.simpleml.emf.isOptional
-import de.unibonn.simpleml.emf.blockLambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty

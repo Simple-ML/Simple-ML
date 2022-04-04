@@ -39,8 +39,8 @@ class IndexedAccessTypeChecker : AbstractSimpleMLChecker() {
         }
 
         val hasWrongType = indexType !is ClassType ||
-                indexType.isNullable ||
-                indexType.smlClass.qualifiedNameOrNull() != StdlibClasses.Int
+            indexType.isNullable ||
+            indexType.smlClass.qualifiedNameOrNull() != StdlibClasses.Int
 
         if (hasWrongType) {
             error(
