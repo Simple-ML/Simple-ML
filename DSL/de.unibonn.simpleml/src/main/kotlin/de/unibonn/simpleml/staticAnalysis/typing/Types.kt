@@ -29,6 +29,24 @@ class RecordType(resultToType: List<Pair<String, Type>>) : Type() {
         val types = resultToType.entries.joinToString { (name, type) -> "$name: ${type.toSimpleString()}" }
         return "($types)"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as RecordType
+
+        if (resultToType != other.resultToType) return false
+        if (isNullable != other.isNullable) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = resultToType.hashCode()
+        result = 31 * result + isNullable.hashCode()
+        return result
+    }
 }
 
 data class CallableType(val parameters: List<Type>, val results: List<Type>) : Type() {

@@ -148,6 +148,44 @@ private fun SmlAbstractExpression.inferTypeExpression(context: EObject): Type {
             this.inferTypeForLambdaParameters(context),
             blockLambdaResultsOrEmpty().map { it.inferTypeForAssignee(context) }
         )
+        this is SmlCall -> when (val callable = callableOrNull()) {
+            is SmlClass -> ClassType(callable, isNullable = false)
+            is SmlCallableType -> {
+                val results = callable.resultsOrEmpty()
+                when (results.size) {
+                    1 -> results.first().inferTypeForDeclaration(context)
+                    else -> RecordType(results.map { it.name to it.inferTypeForDeclaration(context) })
+                }
+            }
+            is SmlFunction -> {
+                val results = callable.resultsOrEmpty()
+                when (results.size) {
+                    1 -> results.first().inferTypeForDeclaration(context)
+                    else -> RecordType(results.map { it.name to it.inferTypeForDeclaration(context) })
+                }
+            }
+            is SmlBlockLambda -> {
+                val results = callable.blockLambdaResultsOrEmpty()
+                when (results.size) {
+                    1 -> results.first().inferTypeForAssignee(context)
+                    else -> RecordType(results.map { it.name to it.inferTypeForAssignee(context) })
+                }
+            }
+            is SmlEnumVariant -> {
+                EnumVariantType(callable, isNullable = false)
+            }
+            is SmlExpressionLambda -> {
+                callable.result.inferTypeExpression(context)
+            }
+            is SmlStep -> {
+                val results = callable.resultsOrEmpty()
+                when (results.size) {
+                    1 -> results.first().inferTypeForDeclaration(context)
+                    else -> RecordType(results.map { it.name to it.inferTypeForDeclaration(context) })
+                }
+            }
+            else -> Any(context)
+        }
         this is SmlExpressionLambda -> CallableType(
             this.inferTypeForLambdaParameters(context),
             listOf(result.inferTypeExpression(context))
@@ -199,43 +237,6 @@ private fun SmlAbstractExpression.inferTypeExpression(context: EObject): Type {
             else -> Nothing(context)
         }
         this is SmlReference -> this.declaration.inferType(context)
-
-        // TODO: add tests
-        this is SmlCall -> when (val callable = callableOrNull()) {
-            is SmlClass -> ClassType(callable, isNullable = false)
-            is SmlCallableType -> {
-                val results = callable.resultsOrEmpty()
-                when (results.size) {
-                    1 -> results.first().inferTypeForDeclaration(context)
-                    else -> RecordType(results.map { it.name to it.inferTypeForDeclaration(context) })
-                }
-            }
-            is SmlFunction -> {
-                val results = callable.resultsOrEmpty()
-                when (results.size) {
-                    1 -> results.first().inferTypeForDeclaration(context)
-                    else -> RecordType(results.map { it.name to it.inferTypeForDeclaration(context) })
-                }
-            }
-            is SmlBlockLambda -> {
-                val results = callable.blockLambdaResultsOrEmpty()
-                when (results.size) {
-                    1 -> results.first().inferTypeForAssignee(context)
-                    else -> RecordType(results.map { it.name to it.inferTypeForAssignee(context) })
-                }
-            }
-            is SmlExpressionLambda -> {
-                callable.result.inferTypeExpression(context)
-            }
-            is SmlStep -> {
-                val results = callable.resultsOrEmpty()
-                when (results.size) {
-                    1 -> results.first().inferTypeForDeclaration(context)
-                    else -> RecordType(results.map { it.name to it.inferTypeForDeclaration(context) })
-                }
-            }
-            else -> Any(context)
-        }
         else -> Any(context)
     }
 }

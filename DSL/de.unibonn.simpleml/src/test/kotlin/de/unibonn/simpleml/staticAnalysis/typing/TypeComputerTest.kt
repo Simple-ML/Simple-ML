@@ -14,6 +14,7 @@ import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
+import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCallableType
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
@@ -42,6 +43,7 @@ import de.unibonn.simpleml.testing.ParseHelper
 import de.unibonn.simpleml.testing.SimpleMLInjectorProvider
 import de.unibonn.simpleml.testing.assertions.findUniqueDeclarationOrFail
 import de.unibonn.simpleml.testing.getResourcePath
+import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.sequences.shouldHaveSize
 import io.kotest.matchers.shouldBe
@@ -357,6 +359,142 @@ class TypeComputerTest {
                     parameterType.parametersOrEmpty().map { it.type() },
                     lambda.blockLambdaResultsOrEmpty().map { it.type() }
                 )
+            }
+        }
+    }
+
+    @Nested
+    inner class Calls {
+
+        @Test
+        fun `class call should have class type of called class`() {
+            withCompilationUnitFromFile("expressions/calls") {
+                val `class` = findUniqueDeclarationOrFail<SmlClass>("C")
+
+                val calls = descendants<SmlCall>().toList()
+                calls.shouldHaveSize(11)
+                calls[0] shouldHaveType ClassType (`class`, isNullable = false)
+            }
+        }
+
+        @Test
+        fun `callable type call should have type of result (one result)`() {
+            withCompilationUnitFromFile("expressions/calls") {
+                val parameter = findUniqueDeclarationOrFail<SmlParameter>("p1")
+                val parameterType = parameter.type.shouldBeInstanceOf<SmlCallableType>()
+                parameterType.resultsOrEmpty().shouldHaveSize(1)
+
+                val calls = descendants<SmlCall>().toList()
+                calls.shouldHaveSize(11)
+                calls[1] shouldHaveType parameterType.resultsOrEmpty()[0]
+            }
+        }
+
+        @Test
+        fun `callable type call should have record type (multiple result)`() {
+            withCompilationUnitFromFile("expressions/calls") {
+                val parameter = findUniqueDeclarationOrFail<SmlParameter>("p2")
+                val parameterType = parameter.type.shouldBeInstanceOf<SmlCallableType>()
+
+                val calls = descendants<SmlCall>().toList()
+                calls.shouldHaveSize(11)
+                calls[2] shouldHaveType RecordType(parameterType.resultsOrEmpty().map { it.name to it.type() })
+            }
+        }
+
+        @Test
+        fun `enum variant call should have enum variant type of called enum variant`() {
+            withCompilationUnitFromFile("expressions/calls") {
+                val enumVariant = findUniqueDeclarationOrFail<SmlEnumVariant>("V")
+
+                val calls = descendants<SmlCall>().toList()
+                calls.shouldHaveSize(11)
+                calls[3] shouldHaveType EnumVariantType(enumVariant, isNullable = false)
+            }
+        }
+
+        @Test
+        fun `function call should have type of result (one result)`() {
+            withCompilationUnitFromFile("expressions/calls") {
+                val function = findUniqueDeclarationOrFail<SmlFunction>("f1")
+                function.resultsOrEmpty().shouldHaveSize(1)
+
+                val calls = descendants<SmlCall>().toList()
+                calls.shouldHaveSize(11)
+                calls[4] shouldHaveType function.resultsOrEmpty()[0]
+            }
+        }
+
+        @Test
+        fun `function call should have record type (multiple result)`() {
+            withCompilationUnitFromFile("expressions/calls") {
+                val function = findUniqueDeclarationOrFail<SmlFunction>("f2")
+
+                val calls = descendants<SmlCall>().toList()
+                calls.shouldHaveSize(11)
+                calls[5] shouldHaveType RecordType(function.resultsOrEmpty().map { it.name to it.type() })
+            }
+        }
+
+        @Test
+        fun `block lambda call should have type of result (one result)`() {
+            withCompilationUnitFromFile("expressions/calls") {
+                val blockLambdas = descendants<SmlBlockLambda>().toList()
+                blockLambdas.shouldHaveSize(2)
+                val blockLambda = blockLambdas[0]
+
+                val calls = descendants<SmlCall>().toList()
+                calls.shouldHaveSize(11)
+                calls[6] shouldHaveType blockLambda.blockLambdaResultsOrEmpty()[0]
+            }
+        }
+
+        @Test
+        fun `block lambda call should have record type (multiple result)`() {
+            withCompilationUnitFromFile("expressions/calls") {
+                val blockLambdas = descendants<SmlBlockLambda>().toList()
+                blockLambdas.shouldHaveSize(2)
+                val blockLambda = blockLambdas[1]
+
+                val calls = descendants<SmlCall>().toList()
+                calls.shouldHaveSize(11)
+                calls[7] shouldHaveType RecordType(blockLambda.blockLambdaResultsOrEmpty().map { it.name to it.type() })
+            }
+        }
+
+        @Test
+        fun `expression lambda call should have type of result`() {
+            withCompilationUnitFromFile("expressions/calls") {
+                val expressionLambdas = descendants<SmlExpressionLambda>().toList()
+                expressionLambdas.shouldHaveSize(1)
+                val expressionLambda = expressionLambdas[0]
+
+                val calls = descendants<SmlCall>().toList()
+                calls.shouldHaveSize(11)
+                calls[8] shouldHaveType expressionLambda.result
+            }
+        }
+
+        @Test
+        fun `step call should have type of result (one result)`() {
+            withCompilationUnitFromFile("expressions/calls") {
+                val step = findUniqueDeclarationOrFail<SmlStep>("s1")
+                step.resultsOrEmpty().shouldHaveSize(1)
+
+                val calls = descendants<SmlCall>().toList()
+                calls.shouldHaveSize(11)
+                calls[9] shouldHaveType step.resultsOrEmpty()[0]
+            }
+        }
+
+        @Test
+        fun `step call should have record type (multiple result)`() {
+            withCompilationUnitFromFile("expressions/calls") {
+                val step = findUniqueDeclarationOrFail<SmlStep>("s2")
+
+                val calls = descendants<SmlCall>().toList()
+                calls.shouldHaveSize(11)
+                calls[10] shouldHaveType RecordType(step.resultsOrEmpty().map { it.name to it.type() })
             }
         }
     }
