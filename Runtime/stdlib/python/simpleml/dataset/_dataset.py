@@ -14,13 +14,13 @@ import simpleml.util.global_configurations as global_config
 import simpleml.util.jsonLabels_util as config
 from libpysal.weights import Kernel
 from node2vec import Node2Vec
+from sentence_transformers import SentenceTransformer
 from shapely import geometry, wkb, wkt
 from shapely.errors import WKBReadingError, WKTReadingError
 from simpleml.dataset._instance import Instance
 from simpleml.dataset._stats import getStatistics
 from simpleml.util import exportDictionaryAsJSON
 from sklearn.model_selection import train_test_split
-from sentence_transformers import SentenceTransformer
 
 
 class Dataset:
@@ -472,7 +472,7 @@ class Dataset:
 
         column_to_list = copy.data[columnName].tolist()
 
-        model = SentenceTransformer('all-MiniLM-L6-v2')
+        model = SentenceTransformer("all-MiniLM-L6-v2")
         sentence_embeddings = model.encode(column_to_list)
 
         copy.data[columnName + "_tmp"] = sentence_embeddings.tolist()
