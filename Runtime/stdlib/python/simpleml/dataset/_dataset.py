@@ -14,6 +14,7 @@ import simpleml.util.global_configurations as global_config
 import simpleml.util.jsonLabels_util as config
 from libpysal.weights import Kernel
 from node2vec import Node2Vec
+from sentence_transformers import SentenceTransformer
 from shapely import geometry, wkb, wkt
 from shapely.errors import WKBReadingError, WKTReadingError
 from simpleml.dataset._instance import Instance
@@ -464,6 +465,28 @@ class Dataset:
         )
 
         return copy
+
+    def transformTextToVector(self, columnName):
+
+        copy = self.copy_and_read()
+
+        column_to_list = copy.data[columnName].tolist()
+
+        model = SentenceTransformer("all-MiniLM-L6-v2")
+        sentence_embeddings = model.encode(column_to_list)
+
+        copy.data[columnName + "_tmp"] = sentence_embeddings.tolist()
+
+        copy = copy.dropAttribute(columnName, recompute_statistics=False)
+        copy.data = copy.data.rename(columns={columnName + "_tmp": columnName})
+        copy.add_column_description(
+            columnName,
+            self.attribute_labels[columnName],
+            config.type_numeric_list,
+            config.type_numeric_list,
+        )
+
+        return copy.provide_statistics()
 
     def flattenData(self):
 

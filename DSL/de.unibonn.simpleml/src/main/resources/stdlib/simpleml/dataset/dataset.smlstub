@@ -1,86 +1,71 @@
 package simpleml.dataset
 
-@Description("A dataset with its data instances (e.g., rows and columns)")
+@Description("A dataset with its data instances")
 class Dataset {
-    @Description("Create a sample of a dataset")
-    fun sample(@Description("Number of instances in the sample") nInstances: Int) -> @Description("The sampled dataset") sample: Dataset
+    @Description("Create a sample of the dataset")
+    fun sample(@Description("Number of instances in the sample") nInstances: Int) -> dataset: Dataset
 
-    @Description("Retain attributes of a dataset")
-    fun keepAttributes(@Description("The list of attributes to retain in the dataset") vararg attributes: String) -> @Description("The updated dataset") dataset: Dataset
+    @Description("Returns subset of dataset with only list of columns provided in argument")
+    fun keepAttributes(vararg attributes: String) -> dataset: Dataset
 
-    @Description("Retain a single attribute of a dataset")
-    fun keepAttribute(@Description("The attribute to retain in the dataset") attribute: String) -> @Description("The updated dataset") dataset: Dataset
+    @Description("Remove list of columns provided in argument from dataset")
+    fun dropAttributes(vararg attributes: String) -> dataset: Dataset
 
-    @Description("Drop attributes from a dataset")
-    fun dropAttributes(@Description("The list of attributes to drop from the dataset") vararg attributes: String) -> @Description("The updated dataset") dataset: Dataset
-
-    @Description("Drop a single attribute from a dataset")
-    fun dropAttribute(@Description("The attribute to drop from the dataset") attribute: String) -> @Description("The updated dataset") dataset: Dataset
-
-    @Description("Set the specified attribute as prediction target")
-    fun setTargetAttribute(@Description("The attribute to be predicted later on") targetAttribute: String) -> @Description("The updated dataset") dataset: Dataset
-
-    @Description("Split a dataset in a train and a test dataset")
-    fun splitIntoTrainAndTest(@Description("The percentage of instances to keep in the training dataset") trainRatio: Float, @Description("A random seed to use for splitting") randomState: Int? = null) -> (@Description("The training dataset") train: Dataset, @Description("The test dataset") test: Dataset)
-
-    @Description("Split a dataset into four datasets: train/test and labels/features. Requires that a target attribute has been set before via setTargetAttribute()")
-    fun splitIntoTrainAndTestAndLabels(@Description("The percentage of instances to keep in the training dataset") trainRatio: Float, @Description("A random seed to use for splitting") randomState: Int? = null) -> (@Description("Features of the training dataset") xTrain: Dataset, @Description("Features of the test dataset") xTest: Dataset, @Description("Labels of the training dataset") yTrain: Dataset, @Description("Labels of the test dataset") yTest: Dataset)
-
-    @Description("Remove instances in a dataset according to a filter function")
-    fun filterInstances(@Description("The filter function that returns either True (keep) or False (remove) for each instance") filterFunc: (instance: Instance) -> shouldKeep: Boolean) -> @Description("The updated dataset") dataset: Dataset
-
-    @Description("Get a specific row of a dataset")
-    fun getRow(@Description("The number of the row to be retreived") rowNumber: Int) -> @Description("The specified row") instance: Instance
-
-    @Description("Add a new attribute to the dataset with values according to a transformation function")
-    fun addAttribute(@Description("The name of the new attribute") columnName: String, @Description("The transformation function.") transformFunc: (instance: Instance) -> value: Any, newColumnLabel: String) -> @Description("The updated dataset") dataset: Dataset
-
-    @Description("Drops instances with missing values in the specified attribute")
-    fun dropMissingValues(@Description("Attribute whose empty values are dropped") attribute: String) -> @Description("The updated dataset") dataset: Dataset
-
-    @Description("Convert date column values into timestamps")
-    fun transformDateToTimestamp(@Description("The attribute to be transformed") columnName: String) -> @Description("The updated dataset") dataset: Dataset
-
-    @Description("Convert all column values into numbers")
-    fun transformDatatypes() -> @Description("The updated dataset") dataset: Dataset
-
-    @Description("Add a new attribute to the dataset specifying if the dates of the specified column are on the weekend or not")
-    fun addIsWeekendAttribute(@Description("The attribute to be transformed") columnName: String) -> @Description("The updated dataset") dataset: Dataset
-
-    @Description("Add a new attribute to the dataset specifying the day of the year of the specified column")
-    fun addDayOfTheYearAttribute(@Description("The attribute to be transformed") columnName: String) -> @Description("The updated dataset") dataset: Dataset
-
-    @Description("Extract week day from given date attribute and add new attribute in dataset with weekday name")
-    fun addWeekDayAttribute(@Description("The attribute to be transformed") columnName: String) -> @Description("The updated dataset") dataset: Dataset
+    @Description("Split dataset in train and test datasets")
+    fun splitIntoTrainAndTest(trainRatio: Float, randomState: Int? = null) -> (@Description("dataset1 is training data") dataset1: Dataset, @Description("dataset2 is testing data") dataset2: Dataset)
 
     @Description("Export any dataset to CSV file")
     fun exportDataAsFile(filePath: String)
+
+    @Description("Filter dataset based on any specific value from a column")
+    fun filterInstances(filterFunc: (instance: Instance) -> shouldKeep: Boolean) -> dataset: Dataset
+
+    @Description("Get row of dataset")
+    fun getRow(rowNumber: Int) -> instance: Instance
+
+    @Description("Add a new attribute in dataset with a transformed value")
+    fun addAttribute(columnName: String, transformFunc: (instance: Instance) -> value: Any?, newColumnLabel: String? = null) -> dataset: Dataset
+
+    @Description("Converts date into timestamp")
+    fun transformDateToTimestamp(columnName: String) -> dataset: Dataset
+
+    @Description("Extract IsWeekend from given date attribute and add new attribute in dataset with boolean value")
+    fun addIsWeekendAttribute(columnName: String) -> dataset: Dataset
+
+    @Description("Extract day of the year from given date attribute and add new attribute in dataset with numeric value")
+    fun addDayOfTheYearAttribute(columnName: String) -> dataset: Dataset
+
+    @Description("Extract week day from given date attribute and add new attribute in dataset with weekday name")
+    fun addWeekDayAttribute(columnName: String) -> dataset: Dataset
 }
 
-@Description("A single instance (e.g., row) of a dataset")
+@Description("Individual instance in dataset")
 class Instance {
-    @Description("Return a specific value of the instance")
-    fun getValue(@Description("The attribute whose value is returned") attribute: String) -> @Description("The specified value") value: Any
+    @Description("To get value of instance")
+    fun getValue(attribute: String)
+
 }
 
-@Description("A normalizer to normalize dataset values")
-class StandardNormalizer() {
-    @Description("Normalize all numeric values in the dataset")
-    fun normalize(@Description("Dataset to be normalized") dataset: Dataset) -> @Description("The normalized dataset") normalizedDataset: Dataset
+@Description("Data normalizer")
+class StandardNormalizer {
+    @Description("Normalize whole dataset")
+    fun normalize(dataset: Dataset)
+
 }
 
-@Description("A scaler to scale dataset values")
-class StandardScaler() {
-    @Description("Scale all numeric values in the dataset")
-    fun scale(@Description("Dataset to be scaled")dataset: Dataset) -> @Description("The scaled dataset") scaledDataset: Dataset
+@Description("Data scaler")
+class StandardScaler {
+    @Description("Scale whole dataset")
+    fun scale(dataset: Dataset)
+
 }
 
-@Description("Load a dataset via its identifier")
-fun loadDataset(@Description("Identifier of the dataset") datasetID: String) -> @Description("The loaded dataset") dataset: Dataset
+@Description("Load dataset")
+fun loadDataset(datasetID: String) -> dataset: Dataset
 
-@Description("Load a dataset from a CSV file")
-fun readDataSetFromCSV(@Description("Path and name of the CSV file") fileName: String, @Description("Identifier of the dataset") datasetId: String, @Description("Separator used in the file") separator: String, @Description("True, if the file has a header row") hasHeader: String, @Description("String that should be parsed as missing value") nullValue: String, @Description("Name of the dataset") datasetName: String, @Description("Coordinate system used in the geometry columns of the dataset") coordinateSystem: Int = 3857) -> @Description("The loaded dataset") dataset: Dataset
+@Description("Read dataset directly from CSV file")
+fun readDataSetFromCSV(fileName: String, datasetId: String, separator: String, hasHeader: String, datasetName: String, coordinateSystem: Int, vararg lonLatPairs: Float) -> dataset: Dataset
 
-@Description("Join two datasets into one dataset")
-fun joinTwoDatasets(@Description("The first dataset") firstData: Dataset, @Description("The second dataset") secondData: Dataset, @Description("The attribute of the first dataset to use for the join") joinColumnName1: String, @Description("The attribute of the second dataset to use for the join") joinColumnName2: String, @Description("The suffix to be attached to the attribute names of the first dataset") firstSuffix: String, @Description("The suffix to be attached to the attribute names of the second dataset") secondSuffix: String) -> @Description("The joined dataset") dataset: Dataset
+@Description("Join two dataset and returns merged single dataset")
+fun joinTwoDatasets(firstData: Dataset, secondData: Dataset, joinColumnName1: String, joinColumnName2: String, firstSuffix: String, secondSuffix: String) -> dataset: Dataset
 
