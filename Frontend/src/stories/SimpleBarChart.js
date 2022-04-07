@@ -88,8 +88,8 @@ export default class SimpleBarChart extends React.Component {
 }
 
 SimpleBarChart.defaultProps = {
-	width: '60vw',
-	height: '60vh'
+	width: '100vw',
+	height: '100vh'
 };
 SimpleBarChart.propTypes = {
 	/**

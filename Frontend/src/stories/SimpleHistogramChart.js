@@ -147,7 +147,7 @@ export default class SimpleHistogramChart extends React.Component {
 							]}
 							tooltip={Tooltip} 
 							innerPadding={0}
-							margin={{ top: 50, right: 130, bottom: 100, left: 60 }}
+							margin={{ top: 10, right: 10, bottom: 100, left: 10 }}
 							padding={0.3}
 							colors={{ scheme: 'purple_orange' }}
 							borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}

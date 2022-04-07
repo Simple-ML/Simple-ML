@@ -19,7 +19,7 @@ export default class SimpleBoxPlotChart extends React.Component {
 		const list_data_type = this.props.boxPlotChart.list_data_type;
 
 		switch (list_data_type) {
-			case 'datetime':
+			case 'datetime': 
 				return moment(this.props.boxPlotChart.values[0], this.dataTimePattern).toDate().getTime();
 
 			default:
@@ -40,9 +40,20 @@ export default class SimpleBoxPlotChart extends React.Component {
 
 	data = () => {
 		const list_data_type = this.props.boxPlotChart.list_data_type;
-		const values = this.props.boxPlotChart.values;
+		let values = this.props.boxPlotChart.values;
 
 		const min = this.valuesMinimumMillis();
+
+		if (values.length === 2) {
+			values = [values[0], values[0], values[1], values[1], values[1]]; // [returnBuckets[0], ...returnBuckets];
+		}
+
+		if (values.length === 3) {
+			values = [values[0], values[0], values[1], values[2], values[2]]; // [returnBuckets[0], ...returnBuckets, returnBuckets[returnBuckets.length-1]];
+		}
+		if (values.length === 4) {
+			values = [values[0], values[1], values[2], values[3], values[3]]; // [returnBuckets[0], ...returnBuckets, returnBuckets[returnBuckets.length-1]];
+		}
 
 		let returnBuckets = [];
 		let lastValue = 0;
@@ -81,14 +92,6 @@ export default class SimpleBoxPlotChart extends React.Component {
 			bucket.bucketValue = bucket.bucketMaximum - bucket.bucketMinimum;
 		}
 
-		if (returnBuckets.length === 2) {
-			returnBuckets = [returnBuckets[0], ...returnBuckets];
-		}
-
-		if (returnBuckets.length === 3) {
-			returnBuckets = [returnBuckets[0], ...returnBuckets, returnBuckets[returnBuckets.length-1]];
-		}
-
 		return returnBuckets;
 	}
 
@@ -118,7 +121,7 @@ export default class SimpleBoxPlotChart extends React.Component {
 		return valueNumber.toLocaleString(navigator.language, { minimumFractionDigits: 0 });
 	}
 	render() {
-
+				
 		const Tooltip = (props) => {
 			console.log('props: ' + props);
 
@@ -213,8 +216,8 @@ export default class SimpleBoxPlotChart extends React.Component {
 			return (
 				<Fragment>
 					{Rect(filteredBars)}
-					{filteredBars.map(bar => VerticalLine(bar))}
 					{horizontalBars.map(bar => HorizontalLine(bar))}
+					{filteredBars.map(bar => VerticalLine(bar))}
 					{circleBars.map(bar => (
 						<circle
 							key={bar.key}
@@ -255,7 +258,7 @@ export default class SimpleBoxPlotChart extends React.Component {
 							]}
 							tooltip={Tooltip}
 							innerPadding={0}
-							margin={{ top: 50, right: 130, bottom: 100, left: 60 }}
+							margin={{ top: 10, right: 10, bottom: 100, left: 10 }}
 							padding={0.3}
 							colors={{ scheme: 'purple_orange' }}
 							borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
@@ -285,13 +288,14 @@ export default class SimpleBoxPlotChart extends React.Component {
 						/>
 					</div>
 				</div>
+
 			</div>
 		);
 	}
 }
 //<div>{JSON.stringify(items)}</div>
 SimpleBoxPlotChart.defaultProps = {
-	width: '60vw',
+	width: '100vw',
 	height: '30vh' 
 };
 SimpleBoxPlotChart.propTypes = {
@@ -311,4 +315,4 @@ SimpleBoxPlotChart.propTypes = {
 	 * How wide the chart is supposed to be can't be 0 else wont render (Logo string for the project name
 	 */
 	width: PropTypes.string,
-};
+}; 
