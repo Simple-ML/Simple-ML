@@ -65,7 +65,7 @@ Here is a breakdown of the syntax:
 * An `@`.
 * The name of the called annotation (here `OnlyForExperts`).
 
-The code `class VerySpecificMLModel` is **not** part of the annotation call but simply the [class declaration][classes], which is targeted by the annotation call. Since the annotation `OnlyForExperts` does not specify parameters, we also need not pass arguments and can omit the entire argument list.
+The code `class VerySpecificMLModel` is **not** part of the annotation call but simply the [class declaration][classes] that is targeted by the annotation call. Since the annotation `OnlyForExperts` does not specify parameters, we also need not pass arguments and can omit the entire argument list.
 
 For an annotation with parameters, such as the `Category` annotation that we defined above, we must pass arguments. The same syntax is used for arguments of annotation calls as for normal [calls][calls]. We can use positional arguments:
 
