@@ -96,11 +96,7 @@ class EditorView extends React.Component {
                             'textEditor'
                         ]}
                     />
-                    {
-                        Object.keys(placeholders).length !== 0 && Object.keys(selectedEntity).length !== 0?
-                            <Sidebar></Sidebar>
-                            : <div></div>
-                    }
+                    <Sidebar></Sidebar>
                     <Backdrop
                         style= {{backgroundColor:'white', overflow: 'hidden'}}
                         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}

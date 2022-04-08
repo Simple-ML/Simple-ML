@@ -10,6 +10,7 @@ import de.projektionisten.simpleml.web.dto.CreateEntityDTO
 import de.projektionisten.simpleml.web.dto.ParameterDTO
 import de.projektionisten.simpleml.web.dto.ProcessMetadataDTO
 import de.projektionisten.simpleml.web.dto.ProcessProposalsDTO
+import de.projektionisten.simpleml.web.dto.EditProcessParameterDTO
 import de.unibonn.simpleml.emf.createSmlImport
 import de.unibonn.simpleml.emf.createSmlAssignment
 import de.unibonn.simpleml.emf.createSmlPlaceholder
@@ -20,6 +21,7 @@ import de.unibonn.simpleml.emf.createSmlArgument
 import de.unibonn.simpleml.emf.isClassMember
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
+import de.unibonn.simpleml.emf.containingClassOrNull
 import de.unibonn.simpleml.stdlibAccess.descriptionOrNull
 import de.unibonn.simpleml.ide.editor.contentassist.listCallablesWithMatchingParameters
 import de.unibonn.simpleml.ide.editor.contentassist.listCallablesWithOnlyPrimitiveParameters
@@ -35,6 +37,8 @@ import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlPlaceholder
 import de.unibonn.simpleml.simpleML.SmlWorkflow
+import de.unibonn.simpleml.simpleML.SmlCall
+import de.unibonn.simpleml.simpleML.SmlArgument
 import de.unibonn.simpleml.web.SimpleMLResourceSetProvider
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
@@ -87,12 +91,8 @@ class EmfServiceDispatcher @Inject constructor(
                 getProcessProposals(context)
             "createEntity" ->
                 createEntity(context)
-// 			"deleteEntity" ->
-// 				deleteEntity(context)
-// 			"createAssociation" ->
-// 				createAssociation(context)
-// 			"deleteAssociation" ->
-// 				deleteAssociation(context)
+            "editProcessParameter" ->
+                editProcessParameter(context)
             else ->
                 super.createServiceDescriptor(serviceType, context)
         }
@@ -224,10 +224,39 @@ class EmfServiceDispatcher @Inject constructor(
         return context.createDefaultPostServiceResult("")
     }
 
+    private fun editProcessParameter(context: IServiceContext): ServiceDescriptor {
+		val resourceDocument = getResourceDocument(super.getResourceID(context), context)
+		val type = object: TypeToken<EditProcessParameterDTO>(){}.getType()
+		val editProcessParameterDTO = jsonConverter.fromJson(context.getParameter("editProcessParameterDTO"), type) as EditProcessParameterDTO		
+		val target = getEmfEntityByPath(resourceDocument, editProcessParameterDTO.entityPath) as SmlCall?
+
+		if(target != null) {
+			val argumentList = target.argumentList
+			var argument: SmlArgument
+			var valueContainer = SimpleMLFactory.eINSTANCE.createSmlString()
+			val indexAndSizeDiff = editProcessParameterDTO.parameterIndex.toInt() - target.argumentList.arguments.size
+
+			if(indexAndSizeDiff >= 0) {
+				for(i in 0..indexAndSizeDiff) {
+					argument = SimpleMLFactory.eINSTANCE.createSmlArgument()
+					argument.value = SimpleMLFactory.eINSTANCE.createSmlNull()
+					argumentList.arguments.add(argument)
+				}
+			}
+			
+			valueContainer.value = editProcessParameterDTO.value
+			argument = SimpleMLFactory.eINSTANCE.createSmlArgument()
+			argument.value = valueContainer
+			argumentList.arguments.set(editProcessParameterDTO.parameterIndex.toInt(), argument);
+		}
+		return context.createDefaultPostServiceResult("")
+	}
+
     private fun getProcessMetadataFromURI(uri: String, serviceContext: IServiceContext): ProcessMetadataDTO {
         val resourceDocument = getResourceDocument(super.getResourceID(serviceContext), serviceContext)
         var entityName = ""
         var description: String? = ""
+        var containingClassName: String = ""
         var error: String
         var entity = resourceDocument.resource.getEObject(uri)
         val parameterMetadata = ArrayList<ParameterDTO>()
@@ -256,12 +285,17 @@ class EmfServiceDispatcher @Inject constructor(
                     entityName = entity.name
                 }
             }
+            val containingClass = entity.containingClassOrNull()
+            if(containingClass !== null) {
+                containingClassName = containingClass.name
+            }
+            
             description = (entity as? SmlAbstractDeclaration)?.descriptionOrNull() 
             error = ""
         } else {
             error = "Entity not found!"
         }
-        return ProcessMetadataDTO(entityName, uri, error, parameterMetadata, resultMetadata, description)
+        return ProcessMetadataDTO(entityName, uri, containingClassName, error, parameterMetadata, resultMetadata, description)
     }
 
     private fun SmlAbstractType.qualifiedNameOrNull(): String? {
