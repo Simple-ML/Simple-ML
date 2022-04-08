@@ -13,7 +13,9 @@ step f(vararg a: Int) {
     // semantic_error "The operand of a logical negation must be an instance of the class 'Boolean'."
     not »a«;
     // no_semantic_error "The operand of a logical negation must be an instance of the class 'Boolean'."
-    not »unresolved«;
+    not »unresolved«;    
+    // no_semantic_error "The operand of a logical negation must be an instance of the class 'Boolean'."
+    not »C.unresolved«;
 
     // no_semantic_error "The operand of an arithmetic negation must be an instance of the class 'Float' or the class 'Int'."
     -»0.0«;
@@ -26,7 +28,9 @@ step f(vararg a: Int) {
     // semantic_error "The operand of an arithmetic negation must be an instance of the class 'Float' or the class 'Int'."
     -»a«;
     // no_semantic_error "The operand of an arithmetic negation must be an instance of the class 'Float' or the class 'Int'."
-    -»unresolved«;
+    -»unresolved«;    
+    // no_semantic_error "The operand of an arithmetic negation must be an instance of the class 'Float' or the class 'Int'."
+    -»C.unresolved«;
 }
 
 fun g()

@@ -36,7 +36,6 @@ export default class RuntimeService {
                 break;
             case '[placeholder]:READY':
                 RuntimeService.getPlaceholder(data.sessionId, data.name);
-                RuntimeService.getAvailableDatasets(data.sessionId);
                 break;
             case '[placeholder]:VALUE':
                 store.dispatch(savePlaceholder(data.name, data.value));

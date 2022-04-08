@@ -103,19 +103,12 @@ workflow winebasic {
     // val test = loadDataset("WhiteWineQualityBinary");
 
     TextEditorWrapper.setText(
-        `package example
+`package example
 
-        import simpleml.dataset.loadDataset
-        
-        workflow exampleworkflow {
-                    
-            val test1 = loadDataset("HannoverEvents");
-            val test2 = loadDataset("WhiteWineQualityBinary");
-            // val test3 = loadDataset("FloatingCarData");
-            val test4 = loadDataset("SpeedAverages");
-        }
-        
-        `
+workflow exampleworkflow {
+    
+}
+`
     );
 }
 

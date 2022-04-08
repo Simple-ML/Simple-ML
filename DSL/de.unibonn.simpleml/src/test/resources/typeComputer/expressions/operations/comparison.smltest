@@ -1,3 +1,5 @@
+package tests.typeComputer.operations.comparison
+
 workflow myWorkflow {
     val lessThan = (1 < 1);
     val lessThanOrEquals = (1 <= 1);
