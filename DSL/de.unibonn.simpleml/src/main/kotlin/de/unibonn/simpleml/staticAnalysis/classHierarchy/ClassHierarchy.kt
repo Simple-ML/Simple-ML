@@ -17,7 +17,7 @@ fun SmlClass.isSubtypeOf(other: SmlClass) =
     this == this.getStdlibClassOrNull(StdlibClasses.Nothing) ||
         this == other || other in superClasses()
 
-private fun SmlClass.superClasses() = sequence<SmlClass> {
+fun SmlClass.superClasses() = sequence<SmlClass> {
     val visited = mutableSetOf<SmlClass>()
 
     // TODO: multiple parent classes

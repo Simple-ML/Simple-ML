@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes, { string } from 'prop-types';
-import { Backdrop, TextField } from '@mui/material';
+import { Backdrop, TextField, Tooltip } from '@mui/material';
 //redux
 import InferenceCreator from './InferenceCreator';
 import { closeContextMenu } from '../../../reducers/contextMenu';
@@ -38,7 +38,8 @@ class ContextMenu extends React.Component {
         this.state = {
             contextButtonFunc: () => {},
             isBackdropActive: false,
-            placeholderName: ''
+            placeholderName: '',
+            validInput: [true]
         };
     }
 
@@ -46,7 +47,8 @@ class ContextMenu extends React.Component {
         this.setState({
             contextButtonFunc: () => {},
             isBackdropActive: false,
-            placeholderName: ''
+            placeholderName: '',
+            validInput: [true]
         });
     }
 
@@ -67,10 +69,11 @@ class ContextMenu extends React.Component {
 
                 result.push({
                     metaData: {
-                        icon: icon,
+                        icon: editIcon,
                         text: item.name,
-                        description: item.description,
-                        needInputData: true
+                        classReference: item.containingClassName,
+                        toolTip: item.description,
+						needInputData: true
                     },
                     func: (placeholderName) => {
                         XtextServices.createEntity({
@@ -108,9 +111,11 @@ class ContextMenu extends React.Component {
          *     func: () => { returns void }             // function to be executed (div->onClick())
          * @type {Array}
          */
-        let buttonMetaData = [];
-        buttonMetaData = buttonMetaData.concat(InferenceCreator.inferFromContext(this.props.context));
-        buttonMetaData = buttonMetaData.concat(this.inferFromContextDynamically(this.props.context, this.props.proposals));
+
+        const inferedStatic = InferenceCreator.inferFromContext(this.props.context);
+        const inferedDynamic = this.inferFromContextDynamically(this.props.context, this.props.proposals);
+
+        const buttonMetaData = [...inferedStatic, ...inferedDynamic];
         this.prepareMetaData(buttonMetaData);
 
         let { posX, posY, visible } = this.props;
@@ -120,38 +125,42 @@ class ContextMenu extends React.Component {
 
         return(
             <div style={{visibility: visible}}>
-                <div className={ContextMenuStyle.toolbar}
+                <div className={ContextMenuStyle["toolbar"]}
                      style={{top: posY, left: posX}}
                      ref={this.myself}>
-                    {
-                        buttonMetaData.map((item, i) => {
-                            return(
-                                <button className={ContextMenuStyle["toolbar-button"]}
-                                    key={i}
-                                    title={item.metaData.description}
-                                    disabled={item.metaData.disabled()}
-                                    onClick={() => {
-                                        this.setState({
-                                            contextButtonFunc: item.func,
-                                            isBackdropActive: item.metaData.needInputData === true
-                                        })
-                                        if (item.metaData.needInputData === false) {
-                                            item.func();
-                                        }  
-                                    }
-                                }>
-                                    <img className={ContextMenuStyle.icon} src={item.metaData.icon}/>
-                                    <div>{item.metaData.text}</div>
-                                </button>
-                            )
-                        })
-                    }
+                    <div className={ContextMenuStyle["toolbar-button-container"]}>
+                        {
+                            buttonMetaData.map((item, i) => {
+                                return(
+                                    <Tooltip key={i}
+                                        title={item.metaData.toolTip ? item.metaData.toolTip : ""}>
+                                        <button className={ContextMenuStyle["toolbar-button"]}
+                                            disabled={item.metaData.disabled()}
+                                            onClick={() => {
+                                                this.setState({
+                                                    contextButtonFunc: item.func,
+                                                    isBackdropActive: item.metaData.needInputData === true
+                                                })
+                                                if (item.metaData.needInputData === false) {
+                                                    item.func();
+                                                    this.props.closeContextMenu();
+                                                }
+                                            }
+                                        }>
+                                            <img className={ContextMenuStyle["button-icon"]} src={item.metaData.icon}/>
+                                            <div className={ContextMenuStyle["button-name"]}>{item.metaData.text}</div>
+                                            <div className={ContextMenuStyle["button-className"]}>{item.metaData.classReference}</div>
+                                        </button>
+                                    </Tooltip>
+                                )
+                            })
+                        }
+                    </div>
                 </div>
                 <div className={ContextMenuStyle["toolbar-outside"]}
                      onClick={this.props.closeContextMenu}>
                 </div>
                 <Backdrop
-                    // style= {{backgroundColor:'white', opacity: '0.3'}}
                     sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                     open={this.state.isBackdropActive}
                 >
@@ -163,26 +172,31 @@ class ContextMenu extends React.Component {
                             id="outlined-basic" label="Name" variant="outlined" value={this.state.placeholderName}
                             onChange={(e) => {
                                 e.persist();
-                                // this.state.placeholderName = e.target.value;
-                                this.setState({placeholderName: e.target.value})
-                            }}
-                            onKeyDown={(e) => {
-                                if(e.keyCode === 13)
-                                    this.createEntity();
-                            }}>
+                                this.setState({placeholderName: e.target.value});
+
+                                if(e.target.value.match('[a-z]')) {
+                                    this.setState({validInput: [true]})
+                                } else {
+                                    this.setState({validInput: [false]})
+                                }
+                            }
+                        }>
                         </TextField>
                         <div className={ContextMenuStyle["assign-placeholder-modal-button-container"]}>
                             <button className={ContextMenuStyle["assign-placeholder-modal-cancel-button"]}
                                 onClick={() => {
                                     this.clearState();
                                     this.props.closeContextMenu();
-                                }}>
+                                }
+                            }>
                                 Cancel
                             </button>
                             <button className={ContextMenuStyle["assign-placeholder-modal-create-button"]}
+                                disabled={!this.state.validInput[0]}
                                 onClick={() => {
                                     this.createEntity();
-                                }}>
+                                }
+                            }>
                                 Create
                             </button>
                         </div>

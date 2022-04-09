@@ -12,6 +12,7 @@ import de.unibonn.simpleml.constant.isInTestFile
 import de.unibonn.simpleml.constant.isTestFile
 import de.unibonn.simpleml.constant.operator
 import de.unibonn.simpleml.emf.assigneesOrEmpty
+import de.unibonn.simpleml.emf.blockLambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingBlockLambdaOrNull
@@ -20,7 +21,6 @@ import de.unibonn.simpleml.emf.createSmlWildcard
 import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.isGlobal
 import de.unibonn.simpleml.emf.isOptional
-import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
@@ -386,10 +386,10 @@ class SimpleMLGenerator : AbstractGenerator() {
                     )
                 }
 
-                if (lambda.lambdaResultsOrEmpty().isNotEmpty()) {
+                if (lambda.blockLambdaResultsOrEmpty().isNotEmpty()) {
                     stringBuilder.appendLine(
                         "${indent}return ${
-                        lambda.lambdaResultsOrEmpty().joinToString { it.name }
+                        lambda.blockLambdaResultsOrEmpty().joinToString { it.name }
                         }"
                     )
                 }
@@ -517,7 +517,7 @@ class SimpleMLGenerator : AbstractGenerator() {
                     val receiver = callRecursive(CompileExpressionFrame(expr.receiver, imports, blockLambdaIdManager))
                     when (val memberDeclaration = expr.member.declaration) {
                         is SmlBlockLambdaResult -> {
-                            val allResults = memberDeclaration.containingBlockLambdaOrNull()!!.lambdaResultsOrEmpty()
+                            val allResults = memberDeclaration.containingBlockLambdaOrNull()!!.blockLambdaResultsOrEmpty()
                             if (allResults.size == 1) {
                                 receiver
                             } else {

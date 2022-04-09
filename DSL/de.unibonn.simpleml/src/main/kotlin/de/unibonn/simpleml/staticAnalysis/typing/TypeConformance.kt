@@ -1,7 +1,9 @@
 package de.unibonn.simpleml.staticAnalysis.typing
 
 import de.unibonn.simpleml.emf.variantsOrEmpty
+import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.staticAnalysis.classHierarchy.isSubtypeOf
+import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 
 fun Type.isSubstitutableFor(other: Type, resultIfUnresolved: Boolean = false): Boolean {
     if (other == UnresolvedType) {
@@ -46,6 +48,9 @@ private fun CallableType.isSubstitutableFor(other: Type): Boolean {
 
             true
         }
+        is ClassType -> {
+            unwrappedOther.smlClass.qualifiedNameOrNull() == StdlibClasses.Any
+        }
         is UnionType -> {
             unwrappedOther.possibleTypes.any { this.isSubstitutableFor(it) }
         }
@@ -67,6 +72,10 @@ private fun ClassType.isSubstitutableFor(other: Type): Boolean {
 
 private fun EnumType.isSubstitutableFor(other: Type): Boolean {
     return when (val unwrappedOther = unwrapVariadicType(other)) {
+        is ClassType -> {
+            (!this.isNullable || unwrappedOther.isNullable) &&
+                    unwrappedOther.smlClass.qualifiedNameOrNull() == StdlibClasses.Any
+        }
         is EnumType -> {
             (!this.isNullable || unwrappedOther.isNullable) && this.smlEnum == unwrappedOther.smlEnum
         }
@@ -79,6 +88,10 @@ private fun EnumType.isSubstitutableFor(other: Type): Boolean {
 
 private fun EnumVariantType.isSubstitutableFor(other: Type): Boolean {
     return when (val unwrappedOther = unwrapVariadicType(other)) {
+        is ClassType -> {
+            (!this.isNullable || unwrappedOther.isNullable) &&
+                    unwrappedOther.smlClass.qualifiedNameOrNull() == StdlibClasses.Any
+        }
         is EnumType -> {
             (!this.isNullable || unwrappedOther.isNullable) &&
                     this.smlEnumVariant in unwrappedOther.smlEnum.variantsOrEmpty()
@@ -99,7 +112,11 @@ private fun UnionType.isSubstitutableFor(other: Type): Boolean {
 }
 
 private fun VariadicType.isSubstitutableFor(other: Type): Boolean {
-    return other is VariadicType && this.elementType.isSubstitutableFor(other)
+    return when (other) {
+        is ClassType -> other.smlClass.qualifiedNameOrNull() == StdlibClasses.Any
+        is VariadicType -> this.elementType.isSubstitutableFor(other)
+        else -> false
+    }
 }
 
 /**

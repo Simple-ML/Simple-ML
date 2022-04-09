@@ -1,3 +1,5 @@
+package tests.typeComputer.operations.logical
+
 workflow myWorkflow {
     val conjunction = (true and true);
     val disjunction = (true or true);
