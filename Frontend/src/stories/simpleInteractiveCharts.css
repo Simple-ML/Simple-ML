@@ -1,0 +1,60 @@
+.simple-interactive-charts {
+    background-color: white; 
+    height: fit-content;
+    /*border-bottom: 1px grey solid;*/
+    border-style: none !important;
+    border-radius: 5px !important;
+    position: relative;
+}
+
+.InteractiveChartsBackground {
+    background-color: white !important; 
+    height: fit-content;
+    /*border-bottom: 1px grey solid;*/
+    border-style: none !important;
+    border-radius: 5px !important;
+    position: relative;
+  }
+
+  .InteractiveChartsBackground .MuiTabPanel-root {
+    background-color: white !important; 
+    height: fit-content;
+    /*border-bottom: 1px grey solid;*/
+    border-style: none !important;
+    border-radius: 5px !important;
+  }
+
+  .InteractiveChartsBackground .MuiTableCell-head {
+    border-style: none !important;
+    border-radius: 5px !important;
+  }
+
+  .tab-container {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+  }
+
+  .map-container {
+      width: 100%;
+      height: 100%;
+  }
+
+  .tab-img {
+      border: 1px #ED714A solid !important;
+  }
+
+  .plot-icon {
+    transform: rotate(90deg);
+  }
+
+  .InteractiveChartsBackground .MuiTableCell-head img {
+      position: absolute !important;
+      top: 0px !important;
+      right: 0px !important;
+  }
+
+  .InteractiveChartsBackground .MuiButtonBase-root {
+    width: 26px !important;
+    min-height: 25px !important;
+  }

@@ -69,7 +69,7 @@ class ContextMenu extends React.Component {
 
                 result.push({
                     metaData: {
-                        icon: editIcon,
+                        icon: icon,
                         text: item.name,
                         classReference: item.containingClassName,
                         toolTip: item.description,

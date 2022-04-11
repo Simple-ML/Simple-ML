@@ -96,6 +96,14 @@ class DataView extends React.Component {
                     barChart={chart.statistic}
                 />;
 
+                case 'spatial_value_distribution':
+                    return <SimpleMapChart
+                        title={chart.label}
+                        width={width}
+                        height={height}
+                        mapChart={chart.statistic}
+                    />;
+
             default:
                 return <div></div>;
         }
@@ -157,13 +165,14 @@ class DataView extends React.Component {
                             <div className={'table-view'}>
                                 <Table style={{ outline: '2px solid' }}
                                     tableHeads={items.sample_instances.header_labels}
+                                    tableDataTypes={items.sample_instances.data_types}
                                     tableBodies={items.sample_instances.lines}
+                                    charts={charts}
                                 />
                                 <div className={'dataset-table-sub-group'}>
                                     <div className={'dataset-count'}>{items.sample_instances.lines.length} / {this.props.dataset.number_of_instances} rows, {items.sample_instances.header_labels.length} columns</div>
                                 </div>
                             </div>
-
                         </TabPanel>
                         <TabPanel value="2">
                             <div className={'chart-view'}>
@@ -197,12 +206,12 @@ class DataView extends React.Component {
                                                 chart.label === selected.label ? <Grid item xs={2} sm={2} md={2}><GridLabel label={selected.label}/><Item> {this.renderChart(chart)} </Item></Grid> : <></>
                                             ))}
 
-                                            <Grid item xs={2} sm={2} md={2}>
+                                            {/* <Grid item xs={2} sm={2} md={2}>
                                                 <GridLabel label={selected.label}/>
                                                 <Item>
                                                     <SimpleMapChart/>
                                                 </Item>
-                                            </Grid>
+                                            </Grid> */}
 
                                         </Grid>
                                         
