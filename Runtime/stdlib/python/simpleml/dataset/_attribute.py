@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional
+from typing import Dict, Any, Optional
 
 
 class Attribute:
@@ -14,7 +14,7 @@ class Attribute:
         self.python_data_type: Optional[type] = python_data_type
         self.data_type: Optional[str] = data_type
         self.simple_data_type: Optional[str] = simple_data_type
-        self.graph: Optional[dict] = graph
+        self.graph: Optional[Dict[str, Any]] = graph
         self.is_virtual: bool = is_virtual
 
     def copy(self) -> Attribute:
