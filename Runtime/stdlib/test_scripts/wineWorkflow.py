@@ -7,7 +7,6 @@ from simpleml.model.supervised.regression import LinearRegression
 
 def exampleWorkflow():
     dataset = loadDataset("WhiteWineQuality")
-    print("sample")
     dataset = dataset.sample(1000000)
     print(dataset.dataset_json)
 

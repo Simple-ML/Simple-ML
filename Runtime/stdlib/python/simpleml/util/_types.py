@@ -34,9 +34,8 @@ _sml_types_to_rdf_types = {
 
 _type_to_simple_type = {type_numeric_list: simple_type_numeric_list, type_long: simple_type_numeric,
                         type_float: simple_type_numeric, type_integer: simple_type_numeric,
-                        type_string: simple_type_string, type_datetime: simple_type_numeric,
-                        type_datetime: simple_type_datetime, type_bool: simple_type_boolean,
-                        type_geometry: simple_type_geometry}
+                        type_string: simple_type_string, type_datetime: simple_type_datetime,
+                        type_bool: simple_type_boolean, type_geometry: simple_type_geometry}
 
 # Python types
 _python_types_to_sml_types = {datetime64: type_datetime, int: type_integer, float: type_float, bool: type_bool,
@@ -92,11 +91,11 @@ def promote_rdf_type(rdf_type):
     try:
         if type_promotion(rdf_type, XSD.integer) == XSD.integer:
             return XSD.integer
-    except:
+    except TypeError:
         try:
             if type_promotion(rdf_type, XSD.double) == XSD.double:
                 return XSD.double
-        except:
+        except TypeError:
             pass
     finally:
         return rdf_type

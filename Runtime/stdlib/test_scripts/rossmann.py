@@ -9,7 +9,7 @@ from simpleml.util import exportDictionaryAsJSON
 def exampleWorkflow():
     dataset = loadDataset("RossmannSales")
     print(exportDictionaryAsJSON(dataset.getProfile()))
-    sample = dataset.sample(100)
+    # sample = dataset.sample(100)
 
     train, test = dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
     X_train = train.dropAttribute("Sales")

@@ -361,7 +361,7 @@ def getStatistics(dataset):
         # quartiles
         if simple_type in [simple_type_numeric, simple_type_datetime]:
             quartiles, quartiles_data_type = addQuantiles(
-                column_data, colName, 4, transform_timestamp=transform_timestamp
+                column_data, 4, transform_timestamp=transform_timestamp
             )
             stats[colName][config.quartiles] = {
                 config.type: config.type_box_plot,
