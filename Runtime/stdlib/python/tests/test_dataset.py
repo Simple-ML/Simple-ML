@@ -1,7 +1,12 @@
 import numpy as np
-
-from simpleml.dataset import loadDataset, Instance, StandardNormalizer, StandardScaler, readDataSetFromCSV, \
-    joinTwoDatasets
+from simpleml.dataset import (
+    Instance,
+    StandardNormalizer,
+    StandardScaler,
+    joinTwoDatasets,
+    loadDataset,
+    readDataSetFromCSV,
+)
 
 
 def test_filter_column():
@@ -14,7 +19,7 @@ def test_filter_column():
 
     print("Example quality value:", dataset_filtered.getRow(3).getValue("quality"))
 
-    assert isinstance(dataset_filtered.getRow(3).getValue("quality"), float) # nosec
+    assert isinstance(dataset_filtered.getRow(3).getValue("quality"), float)  # nosec
 
 
 def test_normalize_dataset():
@@ -22,7 +27,7 @@ def test_normalize_dataset():
 
     dataset = StandardNormalizer().normalize(dataset)
 
-    assert isinstance(dataset.data['quality'][0], float) # nosec
+    assert isinstance(dataset.data["quality"][0], float)  # nosec
 
 
 def test_scale_dataset():
@@ -30,7 +35,7 @@ def test_scale_dataset():
 
     dataset = StandardScaler().scale(dataset)
 
-    assert isinstance(dataset.data['quality'][0], float) # nosec
+    assert isinstance(dataset.data["quality"][0], float)  # nosec
 
 
 def test_transform_text():
@@ -39,7 +44,7 @@ def test_transform_text():
 
     dataset = dataset.transformTextToVector("tweetext")
 
-    assert type(dataset.data["tweetext"][0]) == list # nosec
+    assert type(dataset.data["tweetext"][0]) == list  # nosec
 
 
 def test_transform_column():
@@ -52,7 +57,7 @@ def test_transform_column():
         "goodquality", transformFunc=transformIntoBinaryQuality
     )
 
-    assert isinstance(dataset.getRow(3).getValue("goodquality"), float) # nosec
+    assert isinstance(dataset.getRow(3).getValue("goodquality"), float)  # nosec
 
 
 def test_geometry_to_vector():
@@ -60,15 +65,20 @@ def test_geometry_to_vector():
 
     dataset = dataset.transformGeometryToVector("geometry")
 
-    assert type(dataset.data["geometry"][0]) == np.ndarray # nosec
+    assert type(dataset.data["geometry"][0]) == np.ndarray  # nosec
 
 
 def test_read_local_dataset():
     dataset = readDataSetFromCSV(
-        "WhiteWineQuality2.csv", "WhiteWineQuality", ";", True, "", coordinateSystem=3857
+        "WhiteWineQuality2.csv",
+        "WhiteWineQuality",
+        ";",
+        True,
+        "",
+        coordinateSystem=3857,
     )
 
-    assert type(dataset.data['quality'][0]) == np.int64 # nosec
+    assert type(dataset.data["quality"][0]) == np.int64  # nosec
 
 
 def test_join_datasets():
@@ -77,7 +87,7 @@ def test_join_datasets():
 
     dataset = joinTwoDatasets(dataset1, dataset2, "osm_id", "osm_id", "_l", "_r")
 
-    assert type(dataset.data['street_type_l'][0]) == str # nosec
+    assert type(dataset.data["street_type_l"][0]) == str  # nosec
 
 
 def test_flatten_vector():
@@ -86,7 +96,7 @@ def test_flatten_vector():
     dataset = dataset.transformCategoryToVector("season")
     dataset = dataset.flattenData()
 
-    assert type(dataset.data['season0'][0]) == np.float64 # nosec
+    assert type(dataset.data["season_0"][0]) == np.float64  # nosec
 
 
 def test_add_is_weekend():
@@ -94,7 +104,7 @@ def test_add_is_weekend():
 
     dataset = dataset.addIsWeekendAttribute("start_time")
 
-    assert type(dataset.data['start_time_isWeekend'][0]) == np.bool_ # nosec
+    assert type(dataset.data["start_time_isWeekend"][0]) == np.bool_  # nosec
 
 
 def test_add_day_of_year():
@@ -102,7 +112,7 @@ def test_add_day_of_year():
 
     dataset = dataset.addDayOfTheYearAttribute("start_time")
 
-    assert type(dataset.data['start_time_DayOfTheYear'][0]) == np.int64 # nosec
+    assert type(dataset.data["start_time_DayOfTheYear"][0]) == np.int64  # nosec
 
 
 def test_add_week_day():
@@ -110,7 +120,7 @@ def test_add_week_day():
 
     dataset = dataset.addWeekDayAttribute("start_time")
 
-    assert type(dataset.data['start_time_weekDay'][0]) == str # nosec
+    assert type(dataset.data["start_time_weekDay"][0]) == str  # nosec
 
 
 def test_date_to_timestamp():
@@ -118,6 +128,4 @@ def test_date_to_timestamp():
 
     dataset = dataset.transformDateToTimestamp("start_time")
 
-    assert type(dataset.data['start_time'][0]) == np.float64 # nosec
-
-
+    assert type(dataset.data["start_time"][0]) == np.float64  # nosec

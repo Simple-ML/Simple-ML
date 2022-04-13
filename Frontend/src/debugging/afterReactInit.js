@@ -101,12 +101,12 @@ workflow winebasic {
     });
 
     TextEditorWrapper.setText(
-        `package example
+`package example
 
-        workflow exampleworkflow {
-            
-        }
-        `
+workflow exampleworkflow {
+    
+}
+`
     );
 }
 

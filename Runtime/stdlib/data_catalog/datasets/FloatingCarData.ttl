@@ -1,6 +1,6 @@
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix dc: <http://purl.org/dc/terms/> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix dct: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix schema: <http://schema.org/> .
 @prefix seas: <https://w3id.org/seas/> .
@@ -12,16 +12,17 @@
 sml:simple-ml dcat:dataset sml:FloatingCarData .
 
 sml:FloatingCarData a dcat:Dataset ;
-    dct:description "Floating Car Data aus Niedersachsen."@de,
+    dc:description "Floating Car Data aus Niedersachsen."@de,
         "Floating car data recorded in Lower Saxony, Germany."@en ;
-    dct:identifier "FloatingCarData" ;
-    dct:subject "Verkehr"@de,
+    dc:identifier "FloatingCarData" ;
+    dc:subject "Verkehr"@de,
         "Traffic"@en ;
-    dct:title "Floating Car Data aus Niedersachsen"@de,
+    dc:title "Floating Car Data aus Niedersachsen"@de,
         "Floating car data recorded in Lower Saxony, Germany"@en ;
-    sml:coordinateSystem "3857"^^xsd:nonNegativeInteger ;
+    sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
     sml:creatorId "0"^^xsd:nonNegativeInteger ;
-    sml:hasAttribute sml:FloatingCarDataAttributeId,
+    sml:hasAttribute sml:FloatingCarDataAttributeGeometry,
+        sml:FloatingCarDataAttributeId,
         sml:FloatingCarDataAttributeLatitude,
         sml:FloatingCarDataAttributeLongitude,
         sml:FloatingCarDataAttributeMaximumSpeed,
@@ -35,9 +36,301 @@ sml:FloatingCarData a dcat:Dataset ;
     sml:hasSample sml:FloatingCarDataSample ;
     sml:numberOfInstances "10000"^^xsd:nonNegativeInteger .
 
+sml:FloatingCarDataAttributeGeometry a sml:Attribute ;
+    dc:identifier "geometry" ;
+    sml:columnIndex "10"^^xsd:nonNegativeInteger ;
+    sml:hasSpatialDistribution sml:FloatingCarDataAttributeGeometrySpatialDistribution ;
+    sml:isVirtual true ;
+    sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/StreetSegment> ;
+    sml:mapsToProperty sml:asWKT ;
+    sml:valueType sml:wellKnownText ;
+    seas:evaluation sml:FloatingCarDataAttributeGeometryNumberOfInvalidValues,
+        sml:FloatingCarDataAttributeGeometryNumberOfNullValues,
+        sml:FloatingCarDataAttributeGeometryNumberOfValidNonNullValues,
+        sml:FloatingCarDataAttributeGeometryNumberOfValidValues,
+        sml:FloatingCarDataAttributeGeometryNumberOfValues .
+
+sml:FloatingCarDataAttributeGeometryNumberOfInvalidValues a sml:DistributionNumberOfInvalidValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:FloatingCarDataAttributeGeometryNumberOfNullValues a sml:DistributionNumberOfNullValuesEvaluation ;
+    seas:evaluatedValue 0 .
+
+sml:FloatingCarDataAttributeGeometryNumberOfValidNonNullValues a sml:DistributionNumberOfValidNonNullValuesEvaluation ;
+    seas:evaluatedValue 10000 .
+
+sml:FloatingCarDataAttributeGeometryNumberOfValidValues a sml:DistributionNumberOfValidValuesEvaluation ;
+    seas:evaluatedValue 10000 .
+
+sml:FloatingCarDataAttributeGeometryNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
+    seas:evaluatedValue 10000 .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistribution a sml:SpatialDistribution ;
+    sml:spatialDistributionValue sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi1,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi12,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi14,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi15,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi17,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi19,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi20,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi21,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi22,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi23,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi24,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi25,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi26,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi27,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi28,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi29,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi3,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi30,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi31,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi32,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi33,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi34,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi35,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi37,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi38,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi40,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi41,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi42,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi43,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi44,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi45,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi46,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi48,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi50,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi53,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi54,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi55,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi56,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi57,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi58,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi59,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi6,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi60,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi61,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi62,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi63,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi66,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi67,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi68,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi7,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi8,
+        sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi9 .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi1 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_1" ;
+    sml:numberOfInstancesInRegion "199"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi12 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_12" ;
+    sml:numberOfInstancesInRegion "455"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi14 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_14" ;
+    sml:numberOfInstancesInRegion "519"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi15 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_15" ;
+    sml:numberOfInstancesInRegion "120"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi17 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_17" ;
+    sml:numberOfInstancesInRegion "1"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi19 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_19" ;
+    sml:numberOfInstancesInRegion "1"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi20 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_20" ;
+    sml:numberOfInstancesInRegion "95"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi21 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_21" ;
+    sml:numberOfInstancesInRegion "100"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi22 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_22" ;
+    sml:numberOfInstancesInRegion "274"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi23 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_23" ;
+    sml:numberOfInstancesInRegion "286"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi24 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_24" ;
+    sml:numberOfInstancesInRegion "321"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi25 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_25" ;
+    sml:numberOfInstancesInRegion "345"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi26 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_26" ;
+    sml:numberOfInstancesInRegion "1"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi27 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_27" ;
+    sml:numberOfInstancesInRegion "85"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi28 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_28" ;
+    sml:numberOfInstancesInRegion "221"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi29 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_29" ;
+    sml:numberOfInstancesInRegion "441"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi3 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_3" ;
+    sml:numberOfInstancesInRegion "423"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi30 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_30" ;
+    sml:numberOfInstancesInRegion "128"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi31 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_31" ;
+    sml:numberOfInstancesInRegion "69"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi32 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_32" ;
+    sml:numberOfInstancesInRegion "242"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi33 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_33" ;
+    sml:numberOfInstancesInRegion "328"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi34 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_34" ;
+    sml:numberOfInstancesInRegion "50"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi35 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_35" ;
+    sml:numberOfInstancesInRegion "1"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi37 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_37" ;
+    sml:numberOfInstancesInRegion "108"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi38 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_38" ;
+    sml:numberOfInstancesInRegion "111"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi40 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_40" ;
+    sml:numberOfInstancesInRegion "207"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi41 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_41" ;
+    sml:numberOfInstancesInRegion "275"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi42 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_42" ;
+    sml:numberOfInstancesInRegion "380"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi43 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_43" ;
+    sml:numberOfInstancesInRegion "73"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi44 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_44" ;
+    sml:numberOfInstancesInRegion "180"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi45 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_45" ;
+    sml:numberOfInstancesInRegion "254"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi46 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_46" ;
+    sml:numberOfInstancesInRegion "292"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi48 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_48" ;
+    sml:numberOfInstancesInRegion "264"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi50 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_50" ;
+    sml:numberOfInstancesInRegion "100"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi53 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_53" ;
+    sml:numberOfInstancesInRegion "29"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi54 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_54" ;
+    sml:numberOfInstancesInRegion "29"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi55 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_55" ;
+    sml:numberOfInstancesInRegion "85"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi56 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_56" ;
+    sml:numberOfInstancesInRegion "40"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi57 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_57" ;
+    sml:numberOfInstancesInRegion "114"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi58 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_58" ;
+    sml:numberOfInstancesInRegion "100"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi59 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_59" ;
+    sml:numberOfInstancesInRegion "147"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi6 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_6" ;
+    sml:numberOfInstancesInRegion "3"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi60 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_60" ;
+    sml:numberOfInstancesInRegion "1328"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi61 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_61" ;
+    sml:numberOfInstancesInRegion "344"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi62 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_62" ;
+    sml:numberOfInstancesInRegion "76"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi63 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_63" ;
+    sml:numberOfInstancesInRegion "313"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi66 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_66" ;
+    sml:numberOfInstancesInRegion "106"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi67 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_67" ;
+    sml:numberOfInstancesInRegion "24"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi68 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_68" ;
+    sml:numberOfInstancesInRegion "68"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi7 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_7" ;
+    sml:numberOfInstancesInRegion "55"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi8 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_8" ;
+    sml:numberOfInstancesInRegion "28"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi9 a sml:SpatialDistributionValue ;
+    sml:instancesOfRegion "area_de_ni_9" ;
+    sml:numberOfInstancesInRegion "160"^^xsd:nonNegativeInteger .
+
 sml:FloatingCarDataAttributeId a sml:Attribute ;
-    dct:identifier "id" ;
+    dc:identifier "id" ;
     sml:columnIndex "0"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/FloatingCarDataPoint> ;
     sml:mapsToProperty sml-mob:carId ;
     sml:valueType xsd:string ;
@@ -109,36 +402,37 @@ sml:FloatingCarDataAttributeIdValueDistributionValue2 a sml:ValueDistributionVal
     sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
 
 sml:FloatingCarDataAttributeIdValueDistributionValue3 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "3DBBCB82" ;
-    sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
-
-sml:FloatingCarDataAttributeIdValueDistributionValue4 a sml:ValueDistributionValue ;
     sml:instancesOfValue "D86F549A" ;
     sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
 
-sml:FloatingCarDataAttributeIdValueDistributionValue5 a sml:ValueDistributionValue ;
+sml:FloatingCarDataAttributeIdValueDistributionValue4 a sml:ValueDistributionValue ;
     sml:instancesOfValue "318BCB4E" ;
     sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
 
-sml:FloatingCarDataAttributeIdValueDistributionValue6 a sml:ValueDistributionValue ;
+sml:FloatingCarDataAttributeIdValueDistributionValue5 a sml:ValueDistributionValue ;
     sml:instancesOfValue "C4F819DC" ;
     sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
 
-sml:FloatingCarDataAttributeIdValueDistributionValue7 a sml:ValueDistributionValue ;
+sml:FloatingCarDataAttributeIdValueDistributionValue6 a sml:ValueDistributionValue ;
     sml:instancesOfValue "9FC5751F" ;
     sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
 
-sml:FloatingCarDataAttributeIdValueDistributionValue8 a sml:ValueDistributionValue ;
+sml:FloatingCarDataAttributeIdValueDistributionValue7 a sml:ValueDistributionValue ;
     sml:instancesOfValue "57DCFBE9" ;
     sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
 
-sml:FloatingCarDataAttributeIdValueDistributionValue9 a sml:ValueDistributionValue ;
+sml:FloatingCarDataAttributeIdValueDistributionValue8 a sml:ValueDistributionValue ;
     sml:instancesOfValue "B7D19A15" ;
     sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
 
+sml:FloatingCarDataAttributeIdValueDistributionValue9 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "7C237F66" ;
+    sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
+
 sml:FloatingCarDataAttributeLatitude a sml:Attribute ;
-    dct:identifier "latitude" ;
+    dc:identifier "latitude" ;
     sml:columnIndex "5"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/StreetSegment> ;
     sml:mapsToProperty schema:latitude ;
     sml:valueType xsd:double ;
@@ -332,8 +626,9 @@ sml:FloatingCarDataAttributeLatitudeStandardDeviation a seas:DistributionStandar
     seas:evaluatedValue "0.5432745189943567"^^xsd:float .
 
 sml:FloatingCarDataAttributeLongitude a sml:Attribute ;
-    dct:identifier "longitude" ;
+    dc:identifier "longitude" ;
     sml:columnIndex "4"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/StreetSegment> ;
     sml:mapsToProperty schema:longitude ;
     sml:valueType xsd:double ;
@@ -527,8 +822,9 @@ sml:FloatingCarDataAttributeLongitudeStandardDeviation a seas:DistributionStanda
     seas:evaluatedValue "0.9602829403981782"^^xsd:float .
 
 sml:FloatingCarDataAttributeMaximumSpeed a sml:Attribute ;
-    dct:identifier "maximum_speed" ;
+    dc:identifier "maximum_speed" ;
     sml:columnIndex "9"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/SpeedLimit> ;
     sml:mapsToProperty sml-mob:speed ;
     sml:valueType xsd:string ;
@@ -628,8 +924,9 @@ sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue9 a sml:ValueDistr
     sml:numberOfInstancesOfValue "62"^^xsd:nonNegativeInteger .
 
 sml:FloatingCarDataAttributeOsmId a sml:Attribute ;
-    dct:identifier "osm_id" ;
+    dc:identifier "osm_id" ;
     sml:columnIndex "6"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/StreetSegment> ;
     sml:mapsToProperty sml-mob:osmId ;
     sml:valueType xsd:string ;
@@ -729,8 +1026,9 @@ sml:FloatingCarDataAttributeOsmIdValueDistributionValue9 a sml:ValueDistribution
     sml:numberOfInstancesOfValue "13"^^xsd:nonNegativeInteger .
 
 sml:FloatingCarDataAttributeSpeed a sml:Attribute ;
-    dct:identifier "speed" ;
+    dc:identifier "speed" ;
     sml:columnIndex "3"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/FloatingCarDataPoint> ;
     sml:mapsToProperty sml-mob:speed ;
     sml:valueType xsd:string ;
@@ -830,8 +1128,9 @@ sml:FloatingCarDataAttributeSpeedValueDistributionValue9 a sml:ValueDistribution
     sml:numberOfInstancesOfValue "150"^^xsd:nonNegativeInteger .
 
 sml:FloatingCarDataAttributeStreetName a sml:Attribute ;
-    dct:identifier "street_name" ;
+    dc:identifier "street_name" ;
     sml:columnIndex "8"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/StreetSegment> ;
     sml:mapsToProperty rdfs:label ;
     sml:valueType rdfs:Literal ;
@@ -931,8 +1230,9 @@ sml:FloatingCarDataAttributeStreetNameValueDistributionValue9 a sml:ValueDistrib
     sml:numberOfInstancesOfValue "17"^^xsd:nonNegativeInteger .
 
 sml:FloatingCarDataAttributeStreetType a sml:Attribute ;
-    dct:identifier "street_type" ;
+    dc:identifier "street_type" ;
     sml:columnIndex "7"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/LocationType> ;
     sml:mapsToProperty sml:textualIdentifier ;
     sml:valueType xsd:string ;
@@ -1032,8 +1332,9 @@ sml:FloatingCarDataAttributeStreetTypeValueDistributionValue9 a sml:ValueDistrib
     sml:numberOfInstancesOfValue "53"^^xsd:nonNegativeInteger .
 
 sml:FloatingCarDataAttributeTime a sml:Attribute ;
-    dct:identifier "time" ;
+    dc:identifier "time" ;
     sml:columnIndex "1"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain sml:FloatingCarData_time_DateTimeDescription ;
     sml:mapsToProperty time:inXSDDateTime ;
     sml:valueType xsd:dateTime ;
@@ -1219,8 +1520,9 @@ sml:FloatingCarDataAttributeTimeQuartile4 a seas:DistributionQuartileEvaluation 
     seas:rank 4 .
 
 sml:FloatingCarDataAttributeVehicleType a sml:Attribute ;
-    dct:identifier "vehicle_type" ;
+    dc:identifier "vehicle_type" ;
     sml:columnIndex "2"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/VehicleType> ;
     sml:mapsToProperty sml:numericIdentifier ;
     sml:valueType xsd:nonNegativeInteger ;
@@ -1328,7 +1630,7 @@ sml:FloatingCarDataAttributeVehicleTypeStandardDeviation a seas:DistributionStan
     seas:evaluatedValue "0.5400619563454447"^^xsd:float .
 
 sml:FloatingCarDataFile a sml:TextFile ;
-    dct:format "text/comma-separated-values" ;
+    dc:format "text/comma-separated-values" ;
     csvw:header false ;
     csvw:null "" ;
     csvw:separator "," ;
@@ -1349,7 +1651,7 @@ sml:FloatingCarDataSample a sml:DatasetSample ;
         sml:FloatingCarDataSampleLine9 .
 
 sml:FloatingCarDataSampleHeader a sml:DatasetSampleLine ;
-    sml:hasContent "Floating Car Data point (Car ID)	Date-Time description (in XSD Date-Time)	Vehicle type (identifier)	Floating Car Data point (has speed)	Street segment (longitude)	Street segment (latitude)	Street segment (OpenStreetMap ID)	Location type (identifier)	Street segment (label)	Speed limit (has speed)"^^xsd:string .
+    sml:hasContent "Floating Car Data point (Car ID)	Date-Time description (in XSD Date-Time)	Vehicle type (identifier)	Floating Car Data point (has speed)	Street segment (longitude)	Street segment (latitude)	Street segment (OpenStreetMap ID)	Location type (identifier)	Street segment (label)	Speed limit (has speed)	geometry"^^xsd:string .
 
 sml:FloatingCarDataSampleLine0 a sml:DatasetSampleLine ;
     sml:hasContent "71CF0144	2017-08-10 08:35:20+02:00	0	128	10.84447	52.30517	270374647	motorway		130.0"^^xsd:string ;

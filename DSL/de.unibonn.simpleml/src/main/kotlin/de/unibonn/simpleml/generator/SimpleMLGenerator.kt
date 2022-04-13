@@ -37,6 +37,7 @@ import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlIndexedAccess
@@ -523,6 +524,23 @@ class SimpleMLGenerator : AbstractGenerator() {
                             } else {
                                 val thisIndex = allResults.indexOf(memberDeclaration)
                                 "$receiver[$thisIndex]"
+                            }
+                        }
+                        is SmlEnumVariant -> {
+                            val member =
+                                callRecursive(CompileExpressionFrame(expr.member, imports, blockLambdaIdManager))
+
+                            val suffix = when (expr.eContainer()) {
+                                is SmlCall -> ""
+                                else -> "()"
+                            }
+
+                            when {
+                                expr.isNullSafe -> {
+                                    imports += ImportData(codegenPackage)
+                                    "$codegenPackage.safe_access($receiver, '$member')$suffix"
+                                }
+                                else -> "$receiver.$member$suffix"
                             }
                         }
                         is SmlResult -> {
