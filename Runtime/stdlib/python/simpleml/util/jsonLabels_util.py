@@ -1,21 +1,7 @@
-import numpy as np
-from pandas import Int32Dtype, Int64Dtype, StringDtype, Timestamp
-from shapely import geometry
-
 lang = "de"
 type = "type"
 simple_type = "simple_type"
 i18n_id = "id"
-
-type_numeric = "numeric"
-type_numeric_list = "numeric_list"
-type_integer = "integer"
-type_long = "long"
-type_float = "float"
-type_string = "string"
-type_datetime = "datetime"
-type_bool = "boolean"
-type_geometry = "geometry"
 
 type_dataset = "dataset"
 
@@ -26,30 +12,6 @@ type_table_header_labels = "header_labels"
 
 type_histogram = "histogram"
 type_histogram_buckets = "buckets"
-data_type_labels = {
-    np.int32: type_integer,
-    Int32Dtype(): type_integer,
-    Int64Dtype(): type_long,
-    np.bool_: type_bool,
-    np.datetime64: type_datetime,
-    str: type_string,
-    int: type_integer,
-    float: type_float,
-    np.int64: type_integer,
-    np.float64: type_float,
-    np.floating: type_float,
-    np.integer: type_integer,
-    np.dtype("float64"): type_float,
-    np.dtype("int64"): type_integer,
-    np.dtype("bool"): type_bool,
-    "str": type_string,
-    bool: type_bool,
-    object: "ERROR",
-    geometry: type_geometry,
-    Timestamp: type_datetime,
-    StringDtype: type_string,
-    type_numeric_list: type_numeric_list,
-}
 
 type_bar_chart = "bar_chart"
 type_bar_chart_bars = "bars"

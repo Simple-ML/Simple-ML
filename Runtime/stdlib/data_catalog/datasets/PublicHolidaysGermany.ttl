@@ -1,6 +1,6 @@
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix dc: <http://purl.org/dc/terms/> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix dct: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix seas: <https://w3id.org/seas/> .
 @prefix sml: <https://simple-ml.de/resource/> .
@@ -11,12 +11,12 @@
 sml:simple-ml dcat:dataset sml:PublicHolidaysGermany .
 
 sml:PublicHolidaysGermany a dcat:Dataset ;
-    dct:description "Gesetzliche in Deutschland."@de,
+    dc:description "Gesetzliche in Deutschland."@de,
         "Public holidays in Germany."@en ;
-    dct:identifier "PublicHolidaysGermany" ;
-    dct:subject "Ereignisse"@de,
+    dc:identifier "PublicHolidaysGermany" ;
+    dc:subject "Ereignisse"@de,
         "Events"@en ;
-    dct:title "Gesetzliche Feiertage in Deutschland"@de,
+    dc:title "Gesetzliche Feiertage in Deutschland"@de,
         "Public holidays in Germany"@en ;
     sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
     sml:creatorId "0"^^xsd:nonNegativeInteger ;
@@ -28,8 +28,9 @@ sml:PublicHolidaysGermany a dcat:Dataset ;
     sml:numberOfInstances "186"^^xsd:nonNegativeInteger .
 
 sml:PublicHolidaysGermanyAttributeEndTime a sml:Attribute ;
-    dct:identifier "end_time" ;
+    dc:identifier "end_time" ;
     sml:columnIndex "2"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain sml:PublicHolidaysGermany_time_2 ;
     sml:mapsToProperty time:inXSDDateTime ;
     sml:valueType xsd:dateTime ;
@@ -215,8 +216,9 @@ sml:PublicHolidaysGermanyAttributeEndTimeQuartile4 a seas:DistributionQuartileEv
     seas:rank 4 .
 
 sml:PublicHolidaysGermanyAttributeName a sml:Attribute ;
-    dct:identifier "name" ;
+    dc:identifier "name" ;
     sml:columnIndex "0"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/PublicHolidaysGermany_sml_mobility/Holiday> ;
     sml:mapsToProperty rdfs:label ;
     sml:valueType rdfs:Literal ;
@@ -280,44 +282,45 @@ sml:PublicHolidaysGermanyAttributeNameValueDistributionValue0 a sml:ValueDistrib
     sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
 
 sml:PublicHolidaysGermanyAttributeNameValueDistributionValue1 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "Fronleichnam" ;
-    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
-
-sml:PublicHolidaysGermanyAttributeNameValueDistributionValue2 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "2. Weihnachtstag" ;
-    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
-
-sml:PublicHolidaysGermanyAttributeNameValueDistributionValue3 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "1. Weihnachtstag" ;
-    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
-
-sml:PublicHolidaysGermanyAttributeNameValueDistributionValue4 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "Buß- und Bettag" ;
-    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
-
-sml:PublicHolidaysGermanyAttributeNameValueDistributionValue5 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "Allerheiligen" ;
-    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
-
-sml:PublicHolidaysGermanyAttributeNameValueDistributionValue6 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "Tag der Deutschen Einheit" ;
-    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
-
-sml:PublicHolidaysGermanyAttributeNameValueDistributionValue7 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "Heilige Drei Könige" ;
-    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
-
-sml:PublicHolidaysGermanyAttributeNameValueDistributionValue8 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "Mariä Himmelfahrt" ;
-    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
-
-sml:PublicHolidaysGermanyAttributeNameValueDistributionValue9 a sml:ValueDistributionValue ;
     sml:instancesOfValue "Pfingstmontag" ;
     sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
 
+sml:PublicHolidaysGermanyAttributeNameValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Karfreitag" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeNameValueDistributionValue3 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Ostersonntag" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeNameValueDistributionValue4 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Ostermontag" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeNameValueDistributionValue5 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Tag der Arbeit" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeNameValueDistributionValue6 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Christi Himmelfahrt" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeNameValueDistributionValue7 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Fronleichnam" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeNameValueDistributionValue8 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Pfingstsonntag" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
+sml:PublicHolidaysGermanyAttributeNameValueDistributionValue9 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "Mariä Himmelfahrt" ;
+    sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
+
 sml:PublicHolidaysGermanyAttributeStartTime a sml:Attribute ;
-    dct:identifier "start_time" ;
+    dc:identifier "start_time" ;
     sml:columnIndex "1"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain sml:PublicHolidaysGermany_time_1 ;
     sml:mapsToProperty time:inXSDDateTime ;
     sml:valueType xsd:dateTime ;
@@ -503,7 +506,7 @@ sml:PublicHolidaysGermanyAttributeStartTimeQuartile4 a seas:DistributionQuartile
     seas:rank 4 .
 
 sml:PublicHolidaysGermanyFile a sml:TextFile ;
-    dct:format "text/comma-separated-values" ;
+    dc:format "text/comma-separated-values" ;
     csvw:header false ;
     csvw:null "" ;
     csvw:separator "," ;
