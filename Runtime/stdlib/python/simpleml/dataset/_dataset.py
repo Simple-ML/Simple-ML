@@ -708,16 +708,15 @@ class Dataset:
         self.attributes[attribute_identifier] = attribute
 
         if resource_node:
-            self.attributes[attribute_identifier].graph = {
+            attribute_graph: Dict[str, Any] = {
                 "value_type": rdf_value_type,
                 "resource": resource_node,
                 "property": property_node,
                 "class": domain_node,
             }
             if resource_rank:
-                self.attributes[attribute_identifier].graph[
-                    "resource_rank"
-                ] = resource_rank
+                attribute_graph["resource_rank"] = resource_rank
+            self.attributes[attribute_identifier].graph = attribute_graph
 
         self.create_simple_type(
             attribute, value_type, is_geometry=is_geometry
