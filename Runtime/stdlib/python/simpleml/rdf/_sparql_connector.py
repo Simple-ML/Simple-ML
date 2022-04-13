@@ -18,6 +18,8 @@ def endpoint_is_running():
         return bool(r)
     except requests.exceptions.Timeout:
         return False
+    except requests.exceptions.ConnectionError:
+        return False
 
 
 def run_query(query_string):

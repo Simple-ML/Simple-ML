@@ -1,6 +1,6 @@
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix dc: <http://purl.org/dc/terms/> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix dct: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix seas: <https://w3id.org/seas/> .
 @prefix sml: <https://simple-ml.de/resource/> .
@@ -10,12 +10,12 @@
 sml:simple-ml dcat:dataset sml:RossmannStores .
 
 sml:RossmannStores a dcat:Dataset ;
-    dct:description "1115 Rossmann-Geschäfte (Quelle: Kaggle)"@de,
+    dc:description "1115 Rossmann-Geschäfte (Quelle: Kaggle)"@de,
         "1,115 Rossmann stores (Source: Kaggle)"@en ;
-    dct:identifier "RossmannStores" ;
-    dct:subject "Logistik"@de,
+    dc:identifier "RossmannStores" ;
+    dc:subject "Logistik"@de,
         "Logistics"@en ;
-    dct:title "1115 Rossmann-Geschäfte"@de,
+    dc:title "1115 Rossmann-Geschäfte"@de,
         "1,115 Rossmann stores"@en ;
     sml:coordinateSystem "3857"^^xsd:nonNegativeInteger ;
     sml:creatorId "0"^^xsd:nonNegativeInteger ;
@@ -29,8 +29,9 @@ sml:RossmannStores a dcat:Dataset ;
     sml:numberOfInstances "1115"^^xsd:nonNegativeInteger .
 
 sml:RossmannStoresAttributeAssortment a sml:Attribute ;
-    dct:identifier "Assortment" ;
+    dc:identifier "Assortment" ;
     sml:columnIndex "2"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannStores_sml_logistics/Assortment> ;
     sml:mapsToProperty rdfs:label ;
     sml:valueType rdfs:Literal ;
@@ -245,8 +246,9 @@ sml:RossmannStoresAttributeCompetitionDistanceStandardDeviation a seas:Distribut
     seas:evaluatedValue "7663.174720367944"^^xsd:float .
 
 sml:RossmannStoresAttributeCompetitiondistance a sml:Attribute ;
-    dct:identifier "CompetitionDistance" ;
+    dc:identifier "CompetitionDistance" ;
     sml:columnIndex "3"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannStores_sml_logistics/Store> ;
     sml:mapsToProperty sml-log:competitionDistance ;
     sml:valueType xsd:nonNegativeInteger ;
@@ -290,8 +292,9 @@ sml:RossmannStoresAttributeCompetitiondistance a sml:Attribute ;
         sml:RossmannStoresAttributeCompetitionDistanceStandardDeviation .
 
 sml:RossmannStoresAttributeStore a sml:Attribute ;
-    dct:identifier "Store" ;
+    dc:identifier "Store" ;
     sml:columnIndex "0"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannStores_sml_logistics/Store> ;
     sml:mapsToProperty sml-log:storeId ;
     sml:valueType xsd:nonNegativeInteger ;
@@ -534,8 +537,9 @@ sml:RossmannStoresAttributeStoreTypeValueDistributionValue3 a sml:ValueDistribut
     sml:numberOfInstancesOfValue "17"^^xsd:nonNegativeInteger .
 
 sml:RossmannStoresAttributeStoretype a sml:Attribute ;
-    dct:identifier "StoreType" ;
+    dc:identifier "StoreType" ;
     sml:columnIndex "1"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannStores_sml_logistics/StoreType> ;
     sml:mapsToProperty rdfs:label ;
     sml:valueType rdfs:Literal ;
@@ -556,7 +560,7 @@ sml:RossmannStoresAttributeStoretype a sml:Attribute ;
         sml:RossmannStoresAttributeStoreTypeValueDistributionValue3 .
 
 sml:RossmannStoresFile a sml:TextFile ;
-    dct:format "text/comma-separated-values" ;
+    dc:format "text/comma-separated-values" ;
     csvw:header false ;
     csvw:null "" ;
     csvw:separator "," ;

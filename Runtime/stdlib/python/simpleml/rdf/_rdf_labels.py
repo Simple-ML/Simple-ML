@@ -1,6 +1,3 @@
-import simpleml.util.jsonLabels_util as config
-from rdflib.namespace import XSD
-
 lang = "de"
 
 statistics = "statistics"
@@ -56,12 +53,3 @@ sample_lines = "lines"
 value_distribution = "value_distribution"
 value_distribution_number_of_instances = "number_of_instances"
 value_distribution_value = "value"
-
-xsd_data_types = {
-    config.type_long: XSD.long,
-    config.type_float: XSD.float,
-    config.type_integer: XSD.integer,
-    config.type_datetime: XSD.dateTime,
-    config.type_bool: XSD.boolean,
-    config.type_string: XSD.string,
-}

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import simpleml.util.jsonLabels_util as config
+from simpleml.util import simple_type_numeric
 from sklearn import preprocessing
 
 
@@ -13,10 +13,10 @@ class StandardNormalizer:
         normalizer = preprocessing.Normalizer()
 
         columns = []
-        for attribute in copy.attributes:
+        for attribute in copy.attributes.values():
             if attribute != copy.target_attribute:
-                if copy.simple_data_types[attribute] == config.type_numeric:
-                    columns.append(attribute)
+                if attribute.simple_data_type == simple_type_numeric:
+                    columns.append(attribute.id)
 
         normalized_features = normalizer.fit_transform(copy.data[columns])
 
