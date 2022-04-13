@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import os
 from datetime import datetime
-from typing import Tuple
+from typing import Dict, Tuple, List, Any
 
 import category_encoders as ce  # For one hot encoding
 import geopandas
@@ -50,7 +50,7 @@ class Dataset:
         self.title = title
         self.description = description
         self.domain_model = None
-        self.target_attribute = None
+        self.target_attribute: Attribute = None
         self.data_sample = pd.DataFrame()
         self.titles = titles
         if not titles:
@@ -58,31 +58,31 @@ class Dataset:
         self.descriptions = descriptions
         self.subjects = subjects
         self.dataset_json = None
-        self.stats: dict[
-            str, dict
+        self.stats: Dict[
+            str, Dict
         ] = {}  # attribute identifier to statistics dictionary
         self.data = pd.DataFrame()
-        self.attributes: dict[str, Attribute] = {}  # list of attributes
+        self.attributes: Dict[str, Attribute] = {}  # list of attributes
 
         self.fileName = fileName
         self.hasHeader = hasHeader
         self.null_value = null_value
         self.separator = separator
         self._sample_info = None
-        self.lon_lat_pairs: list[
-            dict
+        self.lon_lat_pairs: List[
+            Dict
         ] = []  # list of attribute pairs which are latitude-longitude pairs
-        self.wkt_columns: list[
+        self.wkt_columns: List[
             str
         ] = []  # list of attribute identifiers for attributes with Well-Known-Text data
-        self.wkb_columns: list[str] = ([])  # list of attribute identifiers for attributes with Well-Known-Binary data
+        self.wkb_columns: List[str] = ([])  # list of attribute identifiers for attributes with Well-Known-Binary data
         # self._attributes_dict: dict[str, dict] = {}  # dictionary of attribute IDs to their attributes
 
         self._sample_for_profile = None
         self.number_of_instances = number_of_instances
         self.coordinate_system = coordinate_system
         self.lat_before_lon = lat_before_lon
-        self._parse_dates: list[
+        self._parse_dates: List[
             str
         ] = (
             []
@@ -185,10 +185,11 @@ class Dataset:
         # TODO
         # data_type = copy.data[newColumnName].dtype
 
-        if not newAttributeLabel:
-            newAttributeLabel = newAttributeId
+        newAttributeLabelOrId = newAttributeId
+        if newAttributeLabel:
+            newAttributeLabelOrId = newAttributeLabel
 
-        attribute = copy.add_column_description(newAttributeId, newAttributeLabel, data_type)
+        attribute = copy.add_column_description(newAttributeId, newAttributeLabelOrId, data_type)
         copy.create_simple_type(attribute, data_type)
 
         return copy.provide_statistics()
@@ -589,7 +590,7 @@ class Dataset:
 
     def getProfile(self, remove_lat_lon: bool = True):
 
-        profile = {"type": config.type_dataset}
+        profile: Dict[str, Any] = {"type": config.type_dataset}
 
         if not self.stats:
             self.getStatistics()
@@ -609,7 +610,7 @@ class Dataset:
         profile[config.number_of_instances] = self.number_of_instances
 
         # attributes
-        profile_attributes = {}
+        profile_attributes: Dict[str, Dict] = {}
         profile[config.attributes] = profile_attributes
 
         for attribute in self.attributes.values():
