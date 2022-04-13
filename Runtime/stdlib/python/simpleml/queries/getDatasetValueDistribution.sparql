@@ -11,10 +11,8 @@ WHERE {
 
     ?attribute dcterms:identifier ?identifier .
 
-    ?attribute sml:hasValueDistribution [
-        sml:valueDistributionValue [
-            sml:instancesOfValue ?value ;
-            sml:numberOfInstancesOfValue ?instances ;
-        ]
+    ?attribute seas:valueDistributionValue [
+		sml:instancesOfValue ?value ;
+		sml:numberOfInstancesOfValue ?instances ;
     ] .
 } ORDER BY ?attribute

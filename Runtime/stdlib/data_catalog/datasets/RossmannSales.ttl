@@ -1,6 +1,6 @@
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix dc: <http://purl.org/dc/terms/> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix dct: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix seas: <https://w3id.org/seas/> .
 @prefix sml: <https://simple-ml.de/resource/> .
@@ -11,12 +11,12 @@
 sml:simple-ml dcat:dataset sml:RossmannSales .
 
 sml:RossmannSales a dcat:Dataset ;
-    dct:description "Historische Verkaufsdaten von 1115 Rossmann-Geschäften. Jede Zeile repräsentiert den Umsatz eines Tages eines Geschäftes."@de,
+    dc:description "Historische Verkaufsdaten von 1115 Rossmann-Geschäften. Jede Zeile repräsentiert den Umsatz eines Tages eines Geschäftes."@de,
         "Historical sales data for 1,115 Rossmann stores. Each row represents the turnover for a given day in a store."@en ;
-    dct:identifier "RossmannSales" ;
-    dct:subject "Logistik"@de,
+    dc:identifier "RossmannSales" ;
+    dc:subject "Logistik"@de,
         "Logistics"@en ;
-    dct:title "Historische Verkaufsdaten von 1115 Rossmann-Geschäften"@de,
+    dc:title "Historische Verkaufsdaten von 1115 Rossmann-Geschäften"@de,
         "Historical sales data for 1,115 Rossmann stores"@en ;
     sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
     sml:creatorId "0"^^xsd:nonNegativeInteger ;
@@ -35,8 +35,9 @@ sml:RossmannSales a dcat:Dataset ;
     sml:numberOfInstances "1017209"^^xsd:nonNegativeInteger .
 
 sml:RossmannSalesAttributeCustomers a sml:Attribute ;
-    dct:identifier "Customers" ;
+    dc:identifier "Customers" ;
     sml:columnIndex "4"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannSales_sml_logistics/Turnover> ;
     sml:mapsToProperty sml-log:customers ;
     sml:valueType xsd:nonNegativeInteger ;
@@ -225,8 +226,9 @@ sml:RossmannSalesAttributeCustomersStandardDeviation a seas:DistributionStandard
     seas:evaluatedValue "464.4117338866325"^^xsd:float .
 
 sml:RossmannSalesAttributeDate a sml:Attribute ;
-    dct:identifier "Date" ;
+    dc:identifier "Date" ;
     sml:columnIndex "2"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain sml:RossmannSales_time_DateTimeDescription ;
     sml:mapsToProperty time:inXSDDate ;
     sml:valueType xsd:date ;
@@ -473,8 +475,9 @@ sml:RossmannSalesAttributeDayOfWeekValueDistributionValue6 a sml:ValueDistributi
     sml:numberOfInstancesOfValue "144730"^^xsd:nonNegativeInteger .
 
 sml:RossmannSalesAttributeDayofweek a sml:Attribute ;
-    dct:identifier "DayOfWeek" ;
+    dc:identifier "DayOfWeek" ;
     sml:columnIndex "1"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain sml:RossmannSales_time_DayOfWeek ;
     sml:mapsToProperty rdfs:label ;
     sml:valueType rdfs:Literal ;
@@ -498,8 +501,9 @@ sml:RossmannSalesAttributeDayofweek a sml:Attribute ;
         sml:RossmannSalesAttributeDayOfWeekValueDistributionValue6 .
 
 sml:RossmannSalesAttributeOpen a sml:Attribute ;
-    dct:identifier "Open" ;
+    dc:identifier "Open" ;
     sml:columnIndex "5"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannSales_sml_logistics/Turnover> ;
     sml:mapsToProperty sml-log:isOpen ;
     sml:valueType xsd:boolean ;
@@ -535,8 +539,9 @@ sml:RossmannSalesAttributeOpenValueDistributionValue1 a sml:ValueDistributionVal
     sml:numberOfInstancesOfValue "172817"^^xsd:nonNegativeInteger .
 
 sml:RossmannSalesAttributePromo a sml:Attribute ;
-    dct:identifier "Promo" ;
+    dc:identifier "Promo" ;
     sml:columnIndex "6"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannSales_sml_logistics/Turnover> ;
     sml:mapsToProperty sml-log:hasPromo ;
     sml:valueType xsd:boolean ;
@@ -572,8 +577,9 @@ sml:RossmannSalesAttributePromoValueDistributionValue1 a sml:ValueDistributionVa
     sml:numberOfInstancesOfValue "388080"^^xsd:nonNegativeInteger .
 
 sml:RossmannSalesAttributeSales a sml:Attribute ;
-    dct:identifier "Sales" ;
+    dc:identifier "Sales" ;
     sml:columnIndex "3"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannSales_sml_logistics/Turnover> ;
     sml:mapsToProperty sml-log:sales ;
     sml:valueType xsd:nonNegativeInteger ;
@@ -712,7 +718,7 @@ sml:RossmannSalesAttributeSalesMaximum a seas:DistributionMaximumEvaluation ;
     seas:evaluatedValue 41551 .
 
 sml:RossmannSalesAttributeSalesMean a seas:DistributionMeanEvaluation ;
-    seas:evaluatedValue "1551.5133340345985"^^xsd:float .
+    seas:evaluatedValue "5773.818972305593"^^xsd:float .
 
 sml:RossmannSalesAttributeSalesMedian a seas:DistributionMedianEvaluation ;
     seas:evaluatedValue "5744.0"^^xsd:float .
@@ -785,8 +791,9 @@ sml:RossmannSalesAttributeSchoolHolidayValueDistributionValue1 a sml:ValueDistri
     sml:numberOfInstancesOfValue "181721"^^xsd:nonNegativeInteger .
 
 sml:RossmannSalesAttributeSchoolholiday a sml:Attribute ;
-    dct:identifier "SchoolHoliday" ;
+    dc:identifier "SchoolHoliday" ;
     sml:columnIndex "8"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannSales_sml_logistics/Turnover> ;
     sml:mapsToProperty sml-log:isSchoolHoliday ;
     sml:valueType xsd:boolean ;
@@ -848,8 +855,9 @@ sml:RossmannSalesAttributeStateHolidayValueDistributionValue3 a sml:ValueDistrib
     sml:numberOfInstancesOfValue "4100"^^xsd:nonNegativeInteger .
 
 sml:RossmannSalesAttributeStateholiday a sml:Attribute ;
-    dct:identifier "StateHoliday" ;
+    dc:identifier "StateHoliday" ;
     sml:columnIndex "7"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannSales_sml_logistics/StateHoliday> ;
     sml:mapsToProperty rdfs:label ;
     sml:valueType rdfs:Literal ;
@@ -870,8 +878,9 @@ sml:RossmannSalesAttributeStateholiday a sml:Attribute ;
         sml:RossmannSalesAttributeStateHolidayValueDistributionValue3 .
 
 sml:RossmannSalesAttributeStore a sml:Attribute ;
-    dct:identifier "Store" ;
+    dc:identifier "Store" ;
     sml:columnIndex "0"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannSales_sml_logistics/Store> ;
     sml:mapsToProperty sml-log:storeId ;
     sml:valueType xsd:nonNegativeInteger ;
@@ -1065,7 +1074,7 @@ sml:RossmannSalesAttributeStoreStandardDeviation a seas:DistributionStandardDevi
     seas:evaluatedValue "321.9086511434535"^^xsd:float .
 
 sml:RossmannSalesFile a sml:TextFile ;
-    dct:format "text/comma-separated-values" ;
+    dc:format "text/comma-separated-values" ;
     csvw:header false ;
     csvw:null "" ;
     csvw:separator "," ;

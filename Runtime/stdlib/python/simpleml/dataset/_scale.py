@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import simpleml.util.jsonLabels_util as config
+from simpleml.util import simple_type_numeric
 from sklearn import preprocessing
 
 
@@ -14,10 +14,10 @@ class StandardScaler:
         scaler = preprocessing.StandardScaler()
 
         columns = []
-        for attribute in copy.attributes:
+        for attribute in copy.attributes.values():
             if attribute != copy.target_attribute:
-                if copy.simple_data_types[attribute] == config.type_numeric:
-                    columns.append(attribute)
+                if attribute.simple_data_type == simple_type_numeric:
+                    columns.append(attribute.id)
 
         scaled_features = scaler.fit_transform(copy.data[columns])
 
