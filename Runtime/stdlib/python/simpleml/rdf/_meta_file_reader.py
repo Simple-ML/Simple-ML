@@ -1,8 +1,9 @@
 import os
 
 import pandas as pd
-import simpleml.util.global_configurations as global_config
 from rdflib import RDFS, Namespace, URIRef
+
+import simpleml.util.global_configurations as global_config
 from simpleml.data_catalog._domain_model import DomainModel, getPythonType
 from simpleml.dataset import Dataset
 from simpleml.rdf._sparql_connector_local import get_graph
@@ -21,12 +22,12 @@ def get_label(graph, node_uri):
     label_lang = graph.preferredLabel(node, global_config.language)
 
     if global_config.language != "en":
-        return graph.preferredLabel(node, "en")[0][1]
+        return graph.preferredLabel(node, "en")[0][1].value
 
     if not label_lang:
-        return graph.preferredLabel(node[0][1])
+        return graph.preferredLabel(node[0][1]).value
 
-    return label_lang[0][1]
+    return label_lang[0][1].value
 
 
 def read_meta_file(file_path):
@@ -154,14 +155,14 @@ def read_meta_file(file_path):
             value_type = get_uri(namespace_dict, range_str)
         else:
             # if no value type is given, use the property's range
-            for s, p, o in g.triples((URIRef(propertyURI), RDFS.range, None)):
+            for _, _, o in g.triples((URIRef(propertyURI), RDFS.range, None)):
                 value_type = o
 
         domain_node_uri = get_uri(namespace_dict, domain_str)
 
         resource_parts = domain_str.split(":", 1)
         subjectResource = (
-            SML[dataset.id] + "_" + resource_parts[0] + "_" + resource_parts[1]
+                SML[dataset.id] + "_" + resource_parts[0] + "_" + resource_parts[1]
         )
 
         resource_instance_number = None
@@ -170,11 +171,11 @@ def read_meta_file(file_path):
             domain_node_uri = domain_node_uri_tmp.split("@")[0]
             resource_instance_number = int(domain_node_uri_tmp.split("@")[1])
             subjectResource = (
-                SML[dataset.id]
-                + "_"
-                + resource_parts[0]
-                + "_"
-                + str(resource_instance_number)
+                    SML[dataset.id]
+                    + "_"
+                    + resource_parts[0]
+                    + "_"
+                    + str(resource_instance_number)
             )
 
         domain_node_label = get_label(g, domain_node_uri)
@@ -220,7 +221,7 @@ def read_meta_file(file_path):
     for lon_lat_pair in lon_lat_pairs.values():
         dataset.lon_lat_pairs.append(lon_lat_pair)
 
-    dataset.readFile(sep=dataset.separator)
+    dataset.readFile()
 
     for graph_line in graph:
         parts = graph_line.split(",")
@@ -235,7 +236,6 @@ def read_meta_file(file_path):
         )
 
     return dataset
-
 
 # dataset = read_meta_file("../../../data_catalog/meta_files/SpeedAverages.tsv")
 

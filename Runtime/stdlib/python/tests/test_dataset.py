@@ -1,4 +1,5 @@
 import numpy as np
+
 from simpleml.dataset import (
     Instance,
     StandardNormalizer,
@@ -96,7 +97,7 @@ def test_flatten_vector():
     dataset = dataset.transformCategoryToVector("season")
     dataset = dataset.flattenData()
 
-    assert type(dataset.data["season0"][0]) == np.float64  # nosec
+    assert type(dataset.data["season_0"][0]) == np.float64  # nosec
 
 
 def test_add_is_weekend():

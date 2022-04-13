@@ -2,15 +2,14 @@
 from simpleml.dataset import loadDataset
 from simpleml.util import exportDictionaryAsJSON
 
+
 # Workflow steps ---------------------------------------------------------------
 
 
 def exampleWorkflow():
     dataset = loadDataset("RossmannSales")
     print(exportDictionaryAsJSON(dataset.getProfile()))
-    print(dataset.data_types)
     sample = dataset.sample(100)
-    print(sample.data_types)
 
     train, test = dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
     X_train = train.dropAttribute("Sales")

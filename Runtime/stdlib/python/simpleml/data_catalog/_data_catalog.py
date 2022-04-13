@@ -4,15 +4,16 @@ import json
 from io import StringIO
 
 import pandas as pd
-import simpleml.util.jsonLabels_util as config
-from numpy import datetime64
 from rdflib import URIRef
+
+import simpleml.util.jsonLabels_util as config
 from simpleml.data_catalog._domain_model import DomainModel, getPythonType
 from simpleml.dataset import Dataset
 from simpleml.rdf import load_query, run_query
 from simpleml.util import exportDictionaryAsJSON
+from simpleml.util import get_sml_type_from_rdf_type, get_python_type_from_rdf_type, simple_type_numeric
 
-lang = "de"  # TODO: Configure in a global config
+lang = "en"  # TODO: Configure in a global config
 
 
 def getDatasets(domain=None, topic=None):
@@ -34,6 +35,7 @@ def getDatasets(domain=None, topic=None):
         identifier = result["identifier"]["value"]
         topics = result["subjects"]["value"].split(";")
         number_of_instances = int(result["numberOfInstances"]["value"])
+
         dataset = Dataset(
             id=identifier,
             title=title,
@@ -81,6 +83,7 @@ def addDomainModel(dataset):
         propertyLabel = result["propertyLabel"]["value"]
         domain_node_uri = result["subjectClass"]["value"]
         domain_node_label = result["subjectClassLabel"]["value"]
+        is_virtual = result["isVirtual"]["value"] == "true"
         domain_node = domain_model.createClass(domain_node_uri, domain_node_label)
         resource_node = domain_model.createNode(subjectResource, domain_node)
         property_node = domain_model.createProperty(propertyURI, propertyLabel)
@@ -101,17 +104,18 @@ def addDomainModel(dataset):
                 lon_lat_pairs[subjectResource] = {}
             lon_lat_pairs[subjectResource]["longitude"] = identifier
 
-        value_type = result["valueType"]["value"]
+        rdf_value_type = result["valueType"]["value"]
 
         dataset.addColumnDescription(
             attribute_identifier=identifier,
             resource_node=resource_node,
             domain_node=domain_node,
             property_node=property_node,
-            rdf_value_type=value_type,
-            value_type=getPythonType(value_type),
+            rdf_value_type=rdf_value_type,
+            value_type=getPythonType(rdf_value_type),
             attribute_label=domain_node_label + " (" + propertyLabel + ")",
             is_geometry=is_geometry,
+            is_virtual=is_virtual
         )
 
     for lon_lat_pair in lon_lat_pairs.values():
@@ -204,12 +208,12 @@ def addStatistics(dataset: Dataset):
 
             # Special case: quartiles are shown as box plots, not lists
 
-            type = config.type_list
+            attr_type = config.type_list
             if evaluation_type == "quartile":
-                type = config.type_box_plot
+                attr_type = config.type_box_plot
 
             dataset.stats[attribute_identifier][evaluation_type] = {
-                config.type: type,
+                config.type: attr_type,
                 config.id: evaluation_type,
                 config.list_data_type: list_data_type,
                 config.type_list_values: current_list,
@@ -218,7 +222,6 @@ def addStatistics(dataset: Dataset):
         stats_datatype, value = getValue(result["value"])
 
         if "rank" not in result:
-            # todo
             addNumericValue(
                 dataset.stats[attribute_identifier],
                 evaluation_type,
@@ -226,7 +229,7 @@ def addStatistics(dataset: Dataset):
                 data_type=stats_datatype,
             )
 
-            # dataset.stats[attribute_identifier][evaluation_type] = value
+            # dataset._stats[attribute_identifier][evaluation_type] = value
         else:
             current_list.append(value)
 
@@ -242,36 +245,27 @@ def addStatistics(dataset: Dataset):
     # add spatial value distribution
     addSpatialDistribution(dataset)
 
+    # Ignore longitude/latitude columns. They should be covered by geometry columns.
+    for lon_lat_pair in dataset.lon_lat_pairs:
+        del dataset.stats[lon_lat_pair['longitude']]
+        del dataset.stats[lon_lat_pair['latitude']]
+
 
 def getValue(result):
     value = result["value"]
 
-    stats_datatype = None
+    sml_type = None
     if "datatype" in result:
         datatype = result["datatype"]
-        stats_datatype = None
-        if (
-            datatype == "http://www.w3.org/2001/XMLSchema#double"
-            or datatype == "http://www.w3.org/2001/XMLSchema#float"
-            or datatype == "http://www.w3.org/2001/XMLSchema#decimal"
-        ):
-            value = float(value)
-            stats_datatype = config.type_float
-        elif (
-            datatype == "http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
-            or datatype == "http://www.w3.org/2001/XMLSchema#integer"
-        ):
-            value = int(value)
-            stats_datatype = config.type_integer
-        elif datatype == "http://www.w3.org/2001/XMLSchema#long":
-            value = int(value)
-            stats_datatype = config.type_integer
-        elif datatype == "http://www.w3.org/2001/XMLSchema#dateTime":
-            value = datetime64(value)
-            stats_datatype = config.type_datetime
-        else:
+        # stats_datatype = None
+
+        python_type = get_python_type_from_rdf_type(URIRef(datatype))
+        sml_type = get_sml_type_from_rdf_type(URIRef(datatype))
+
+        if not python_type:
             print("Missing data type:", datatype)
-    return stats_datatype, value
+
+    return sml_type, python_type(value)
 
 
 def addHistograms(dataset: Dataset):
@@ -304,13 +298,19 @@ def addValueDistribution(dataset: Dataset):
     parameters = {"datasetId": dataset.id}
     query = load_query("getDatasetValueDistribution", parameters)
     results = run_query(query)
+
     for result in results["results"]["bindings"]:
+
         attribute_identifier = result["identifier"]["value"]
 
         if config.valueDistribution not in dataset.stats[attribute_identifier]:
-            dataset.stats[attribute_identifier][config.valueDistribution] = []
+            dataset.stats[attribute_identifier][config.valueDistribution] = {
+                config.type: config.type_bar_chart,
+                config.id: config.value,
+                config.type_bar_chart_bars: []
+            }
 
-        dataset.stats[attribute_identifier][config.valueDistribution].append(
+        dataset.stats[attribute_identifier][config.valueDistribution][config.type_bar_chart_bars].append(
             {
                 config.value_distribution_value: result["value"]["value"],
                 config.value_distribution_number_of_instances: result["instances"][
@@ -328,6 +328,7 @@ def addSpatialDistribution(dataset: Dataset):
     areas: dict[str, dict] = {}  # attribute identifier to count (instances in area)
 
     for result in results["results"]["bindings"]:
+
         attribute_identifier = result["identifier"]["value"]
 
         if attribute_identifier not in areas:
@@ -337,7 +338,7 @@ def addSpatialDistribution(dataset: Dataset):
             "value"
         ]
 
-    for attribute_identifier in areas:
+    for attribute_identifier in areas.keys():
         dataset.stats[attribute_identifier][config.spatialValueDistribution] = {}
         dataset.stats[attribute_identifier][config.spatialValueDistribution][
             config.type
@@ -362,14 +363,12 @@ def addSample(dataset: Dataset):
 
 
 def addNumericValue(column_stats, name, value, data_type=None):
-    # simple_type = config.type_numeric
-
-    column_stats[name] = createNumericValue(name, value, config.type_numeric, data_type)
+    column_stats[name] = createNumericValue(name, value, simple_type_numeric, data_type)
 
 
 def createNumericValue(name, value, simple_type, data_type=None):
     if not data_type:
-        data_type = config.data_type_labels[type(value)]
+        data_type = type(value)
     return {
         config.type: simple_type,
         config.type_numeric_data_type: data_type,
@@ -383,20 +382,7 @@ def get_pd_timestamp(datetime):
 
 
 def get_datatype_from_rdf(datatype):
-    if (
-        datatype == "http://www.w3.org/2001/XMLSchema#double"
-        or datatype == "http://www.w3.org/2001/XMLSchema#float"
-        or datatype == "http://www.w3.org/2001/XMLSchema#decimal"
-    ):
-        return config.type_float
-    elif (
-        datatype == "http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
-        or datatype == "http://www.w3.org/2001/XMLSchema#integer"
-    ):
-        return config.type_integer
-    elif datatype == "http://www.w3.org/2001/XMLSchema#long":
-        return config.type_integer
-    elif datatype == "http://www.w3.org/2001/XMLSchema#dateTime":
-        return config.type_datetime
-    else:
+    data_type = get_sml_type_from_rdf_type(URIRef(datatype))
+    if not data_type:
         print("Missing data type:", datatype)
+    return data_type
