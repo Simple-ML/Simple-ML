@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import os
 from datetime import datetime
-from typing import Dict, Tuple, List, Any
+from typing import Dict, Tuple, List, Any, Optional
 
 import category_encoders as ce  # For one hot encoding
 import geopandas
@@ -50,7 +50,7 @@ class Dataset:
         self.title = title
         self.description = description
         self.domain_model = None
-        self.target_attribute: Attribute = None
+        self.target_attribute: Optional[Attribute] = None
         self.data_sample = pd.DataFrame()
         self.titles = titles
         if not titles:
@@ -698,7 +698,7 @@ class Dataset:
             value_type,
             attribute_label,
             is_geometry: bool,
-            resource_rank=None,
+            resource_rank: int = None,
             is_virtual: bool = False
     ):
 
