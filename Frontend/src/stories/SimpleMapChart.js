@@ -33,6 +33,14 @@ export default class SimpleMapChart extends React.Component {
             antialias: true
         });
 
+        var center = function (arr) {
+            var x = arr.map (xy => xy[0]);
+            var y = arr.map (xy => xy[1]);
+            var cx = (Math.min (...x) + Math.max (...x)) / 2;
+            var cy = (Math.min (...y) + Math.max (...y)) / 2;
+            return [cx, cy];
+        }    
+
         map.on('load', () => {
             const data = this.data();
             const maxValue = this.maxValue();
@@ -48,6 +56,7 @@ export default class SimpleMapChart extends React.Component {
                 
                 const coordinates = data[areaId].coordinates;
                 const value = data[areaId].value;
+                const name_en = data[areaId].name_en;
 
                 const geoJson = {
                     'type': 'geojson',
@@ -57,7 +66,7 @@ export default class SimpleMapChart extends React.Component {
                             'height': value * 100,
                             'base_height': 0,
                             'color': '#461f4c',
-                            'description': areaId + ': ' + value
+                            'description': name_en + ': ' + value
                         },
                         'geometry': {
                             'type': 'Polygon',
@@ -90,22 +99,11 @@ export default class SimpleMapChart extends React.Component {
                 });
 
                 map.on('mouseenter', areaId, (e) => {
-                    // Change the cursor style as a UI indicator.
                     map.getCanvas().style.cursor = 'pointer';
                     
-                    // Copy coordinates array.
-                    const coordinates = e.features[0].geometry.coordinates[0][0];
+                    const coordinates = center(e.features[0].geometry.coordinates[0]);
                     const description = e.features[0].properties.description;
-                    
-                    // Ensure that if the map is zoomed out such that multiple
-                    // copies of the feature are visible, the popup appears
-                    // over the copy being pointed to.
-                    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-                    }
-                    
-                    // Populate the popup and set its coordinates
-                    // based on the feature found.
+                                        
                     popup.setLngLat(coordinates).setHTML(description).addTo(map);
                 });
                 

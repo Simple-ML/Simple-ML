@@ -47,7 +47,7 @@
 .chart-filter {
   float: left;
   width: 400px;
-  background-color: #ffffff;
+  // background-color: #ffffff;
   color: #000000;
 }
 
@@ -82,4 +82,9 @@
   font-size: 0.8em;
   font-weight: 500;
   padding-top: 5px;
+}
+
+.MuiCheckbox-colorPrimary {
+  margin-right: 5px !important;
+  color: #E84E1A !important;
 }

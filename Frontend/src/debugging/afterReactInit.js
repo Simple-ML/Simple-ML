@@ -111,7 +111,7 @@ workflow winebasic {
                     
             // val test1 = loadDataset("HannoverEvents");
             // val test2 = loadDataset("WhiteWineQualityBinary");
-            // val test3 = loadDataset("WhiteWineQuality");
+            val test3 = loadDataset("WhiteWineQuality");
             // val test4 = loadDataset("RedWineQualityBinary");
             // val test5 = loadDataset("RedWineQuality");
             // val test6 = loadDataset("FloatingCarData");

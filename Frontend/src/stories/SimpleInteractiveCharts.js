@@ -12,8 +12,11 @@ import PropTypes from 'prop-types';
 import './simpleInteractiveCharts.css';
 
 import MapIcon from '../images/dataset/Map.svg';
+import SelectedMapIcon from '../images/dataset/Map_selected.svg';
 import PlotIcon from '../images/dataset/Plot.svg';
+import SelectedPlotIcon from '../images/dataset/Plot_selected.svg';
 import BarChartIcon from '../images/dataset/Bar_Chart.svg';
+import SelectedBarChartIcon from '../images/dataset/Bar_Chart_selected.svg';
 import MultiLineChartIcon from '../images/dataset/Multiline_Chart.svg';
 
 export default class SimpleInteractiveCharts extends React.Component {
@@ -42,7 +45,7 @@ export default class SimpleInteractiveCharts extends React.Component {
     }
 
     componentWillReceiveProps(props) {
-        const { charts } = this.props;
+        const { charts, refresh } = this.props;
 
         let count = 0;
         charts.map((chart) => {
@@ -53,7 +56,7 @@ export default class SimpleInteractiveCharts extends React.Component {
         });
 
         const chart = charts[0];
-        this.setState({ value: chart?.label + '_' + chart?.index, refresh: !this.state.refresh, charts: charts });
+        this.setState({ value: chart?.label + '_' + chart?.index, refresh: refresh, charts: charts });
     }
     
     renderChart(chart, width='unset', height='800px') {
@@ -98,16 +101,16 @@ export default class SimpleInteractiveCharts extends React.Component {
     renderIcon(chart) {
         switch (chart.type) {
             case 'histogram':
-                return <img className={'tab-img'} src={BarChartIcon} alt=""/>;
+                return <img className={'tab-img'} src={chart.value === this.state.value ? SelectedBarChartIcon : BarChartIcon} alt=""/>;
 
             case 'box_plot':
-                return <img className={'tab-img plot-icon'} src={PlotIcon} alt=""/>;
+                return <img className={'tab-img plot-icon'} src={chart.value === this.state.value ? SelectedPlotIcon : PlotIcon} alt=""/>;
 
             case 'bar_chart':
-                return <img className={'tab-img'} src={BarChartIcon} alt=""/>;
+                return <img className={'tab-img'} src={chart.value === this.state.value ? SelectedBarChartIcon : BarChartIcon} alt=""/>;
 
             case 'spatial_value_distribution':
-                return <img className={'tab-img'} src={MapIcon} alt=""/>;
+                return <img className={'tab-img'} src={chart.value === this.state.value ? SelectedMapIcon : MapIcon} alt=""/>;
 
             default:
                 return <div></div>;

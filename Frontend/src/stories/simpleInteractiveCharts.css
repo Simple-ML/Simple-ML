@@ -33,6 +33,10 @@
       position: absolute;
       top: 0px;
       right: 0px;
+      border-top: 1px #ED714A solid !important;
+      border-bottom: 1px #ED714A solid !important;
+      border-radius: 4px;
+      z-index: 100;
   }
 
   .map-container {
@@ -48,13 +52,13 @@
     transform: rotate(90deg);
   }
 
-  .InteractiveChartsBackground .MuiTableCell-head img {
+  .simple-interactive-charts img {
       position: absolute !important;
       top: 0px !important;
       right: 0px !important;
   }
 
-  .InteractiveChartsBackground .MuiButtonBase-root {
-    width: 26px !important;
+  .simple-interactive-charts .MuiButtonBase-root {
+    min-width: 26px !important;
     min-height: 25px !important;
   }

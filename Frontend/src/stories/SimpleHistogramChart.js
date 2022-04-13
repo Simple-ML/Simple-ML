@@ -149,7 +149,8 @@ export default class SimpleHistogramChart extends React.Component {
 							innerPadding={0}
 							margin={{ top: 10, right: 10, bottom: 100, left: 70 }}
 							padding={0.3}
-							colors={{ scheme: 'purple_orange' }}
+							colors={['#461f4c']}
+							colorBy="index"
 							borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
 							axisTop={null}
 							axisRight={null}

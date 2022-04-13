@@ -6,6 +6,8 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import TabContext from '@material-ui/lab/TabContext';
 import TabPanel from '@material-ui/lab/TabPanel';
 import TabList from '@material-ui/lab/TabList';
@@ -41,13 +43,36 @@ class DataView extends React.Component {
         this.setState({ selectedFilter: selectedItems })
     };
 
+    handleOnChange = (event) => {
+        const selectedItems = [...this.state.selectedFilter];
+        const filterOption = JSON.parse(event.target.value);
+        const findIndex = selectedItems.findIndex((item) => item.label === filterOption.label && item.value === filterOption.value );
+        if (findIndex === -1 && event.target.checked) {
+            selectedItems.push(filterOption);            
+        }
+        if (findIndex !== -1 && !event.target.checked) {
+            selectedItems.splice(findIndex, 1);            
+        }
+        this.setState({ selectedFilter: selectedItems.sort((a, b) => a.index > b.index ? 1 : a.index < b.index ? -1 : 0) })
+        console.log(event.target.checked);
+    };
+
+    handleSelectAllOnChange = (event) => {
+        if (event.target.checked) {
+            this.setState({ selectedFilter: [...this.state.filterOptions] })
+        } else {
+            this.setState({ selectedFilter: [] })
+        }
+    };
+
     componentDidMount() {
         const selectedDataset = JSON.parse(this.props.dataset.dataset_json);
         var attributes = selectedDataset.attributes;
         var loadedCharts = [];
         var loadedFilterOptions = [];
+        var index = 0;
         Object.keys(attributes).map(attributesKey => {
-            loadedFilterOptions.push({ label: attributes[attributesKey].label, value: attributesKey });
+            loadedFilterOptions.push({ index: index++, label: attributes[attributesKey].label, value: attributesKey });
             Object.keys(attributes[attributesKey]["statistics"]).map(statisticsKey => {
                 const loadedChart = {
                     key: statisticsKey,
@@ -176,49 +201,81 @@ class DataView extends React.Component {
                         </TabPanel>
                         <TabPanel value="2">
                             <div className={'chart-view'}>
-                                <div className={'chart-filter'}>
-                                    <MultiSelect
-                                        options={filterOptions}
-                                        value={selectedFilter}
-                                        onChange={this.handleSelection}
-                                        labelledBy="Select"
-                                    />
-                                </div>
-                                <div className={'chart-summary'}>
-                                {selectedFilter.map((selected) => (
-                                    <div style={{ color: 'black', textAlign: 'left' }}>
 
-                                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                                            <Grid item xs={2} sm={2} md={2}>
-                                                <GridLabel label={selected.label}/>
-                                                <Item>
-                                                {charts.filter(chart => chart.type === 'numeric').map((chart) => (
-                                                    chart.label === selected.label ? <div><b>{this.translate(chart.key)}</b>: {chart.statistic.value}</div> : <></>
-                                                ))}
-                                                </Item>
-                                            </Grid>
+                                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                                    <Grid item xs={2} sm={2} md={2}>
+                                        <div className={'chart-filter'}>
+                                            {/* <MultiSelect
+                                                options={filterOptions}
+                                                value={selectedFilter}
+                                                onChange={this.handleSelection}
+                                                labelledBy="Select"
+                                            /> */}
+                                            <div style={{'text-align': 'left'}}>
+                                                <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
+                                                <FormControlLabel
+                                                        label={'select all'}
+                                                        control={<Checkbox 
+                                                            checked={this.state.selectedFilter?.length > 0 && this.state.selectedFilter?.length === this.state.filterOptions?.length}
+                                                            indeterminate={this.state.selectedFilter?.length > 0 && this.state.selectedFilter?.length !== this.state.filterOptions?.length}
+                                                            value={{'label': 'select all', 'value': false}} 
+                                                            onChange={this.handleSelectAllOnChange}/>}
+                                                    />
 
-                                            {charts.filter(chart => chart.type === 'list').map((chart) => (
-                                                chart.label === selected.label ? <Grid item xs={2} sm={2} md={2}><GridLabel label={selected.label}/><Item><div><b>{chart.key}</b>: {chart.statistic.values.map((value) => (<div>{value}</div> ))}</div></Item></Grid> : <></>
-                                            ))}
+                                                    {filterOptions.map((filterOption) => (
+                                                        <FormControlLabel
+                                                            label={filterOption.label}
+                                                            control={<Checkbox 
+                                                                checked={this.state.selectedFilter?.findIndex((item) => item.label === filterOption.label) !== -1}
+                                                                value={JSON.stringify(filterOption)} 
+                                                                onChange={this.handleOnChange}/>}
+                                                        />
+                                                    ))}
+                                                </Box>
+                                            </div>
+                                        </div>                                    
+                                    </Grid>
+                                    <Grid item xs={8} sm={6} md={10}>
+                                        <div className={'chart-summary'}>
+                                        {selectedFilter.map((selected) => (
+                                            <div style={{ color: 'black', textAlign: 'left' }}>
 
-                                            {charts.filter(chart => chart.type !== 'numeric' && chart.type !== 'list').map((chart) => (
-                                                chart.label === selected.label ? <Grid item xs={2} sm={2} md={2}><GridLabel label={selected.label}/><Item> {this.renderChart(chart)} </Item></Grid> : <></>
-                                            ))}
+                                                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                                                    <Grid item xs={2} sm={2} md={2}>
+                                                        <GridLabel label={selected.label}/>
+                                                        <Item>
+                                                        {charts.filter(chart => chart.type === 'numeric').map((chart) => (
+                                                            chart.label === selected.label ? <div><b>{this.translate(chart.key)}</b>: {chart.statistic.value}</div> : <></>
+                                                        ))}
+                                                        </Item>
+                                                    </Grid>
 
-                                            {/* <Grid item xs={2} sm={2} md={2}>
-                                                <GridLabel label={selected.label}/>
-                                                <Item>
-                                                    <SimpleMapChart/>
-                                                </Item>
-                                            </Grid> */}
+                                                    {charts.filter(chart => chart.type === 'list').map((chart) => (
+                                                        chart.label === selected.label ? <Grid item xs={2} sm={2} md={2}><GridLabel label={selected.label}/><Item><div><b>{chart.key}</b>: {chart.statistic.values.map((value) => (<div>{value}</div> ))}</div></Item></Grid> : <></>
+                                                    ))}
 
-                                        </Grid>
-                                        
-                                    </div>
-                                ))}
-                                </div>
+                                                    {charts.filter(chart => chart.type !== 'numeric' && chart.type !== 'list').map((chart) => (
+                                                        chart.label === selected.label ? <Grid item xs={2} sm={2} md={2}><GridLabel label={selected.label}/><Item> {this.renderChart(chart)} </Item></Grid> : <></>
+                                                    ))}
+
+                                                    {/* <Grid item xs={2} sm={2} md={2}>
+                                                        <GridLabel label={selected.label}/>
+                                                        <Item>
+                                                            <SimpleMapChart/>
+                                                        </Item>
+                                                    </Grid> */}
+
+                                                </Grid>
+                                                
+                                            </div>
+                                        ))}
+                                        </div>
+                                    </Grid>
+
+                                </Grid>
+
                             </div>
+
                         </TabPanel>
                     </TabContext>
                 </div>
