@@ -8,14 +8,23 @@ from datetime import datetime as datet
 import numpy as np
 import pandas as pd
 import pyproj
-from shapely import geometry, ops, wkt
-from shapely.geometry import LineString, Point, Polygon
-
 import simpleml.util.global_configurations as global_config
 import simpleml.util.jsonLabels_util as config
-from simpleml.util import simple_type_string, simple_type_geometry, simple_type_datetime, simple_type_numeric, \
-    get_sml_type_from_python_type, type_integer, simple_type_boolean, type_numeric_list, simple_type_numeric_list, \
-    type_datetime, type_float
+from shapely import geometry, ops, wkt
+from shapely.geometry import LineString, Point, Polygon
+from simpleml.util import (
+    get_sml_type_from_python_type,
+    simple_type_boolean,
+    simple_type_datetime,
+    simple_type_geometry,
+    simple_type_numeric,
+    simple_type_numeric_list,
+    simple_type_string,
+    type_datetime,
+    type_float,
+    type_integer,
+    type_numeric_list,
+)
 
 
 def addSpatialValueDistribution(geometry_object, polygon_count, areas, proj=None):
@@ -55,7 +64,7 @@ def addValueDistribution(column):
 
 
 def addHistograms(
-        stats, column, name, number_of_unique_values, transform_timestamp=False
+    stats, column, name, number_of_unique_values, transform_timestamp=False
 ):
     count = []
     division = []
@@ -103,7 +112,7 @@ def addQuantiles(column, bins, transform_timestamp=False):
 
 
 def addNumericValue(
-        column_stats, name, value, data_type=None, transform_timestamp=False
+    column_stats, name, value, data_type=None, transform_timestamp=False
 ):
     simple_type = simple_type_numeric
 
@@ -163,34 +172,34 @@ def addGenericStatistics(column, column_stats, column_type):
             column_stats,
             config.averageNumberOfSpecialCharacters,
             totalSpecialCharacters / totalCountOfValidValues,
-            type_float
+            type_float,
         )
     if column_type == simple_type_string:
         addNumericValue(
             column_stats,
             config.averageNumberOfTokens,
             totalNumberOfTokens / totalCountOfValidValues,
-            type_float
+            type_float,
         )
     if column_type == simple_type_string:
         addNumericValue(
             column_stats,
             config.averageNumberOfCapitalisedValues,
             totalNumberOfCapitalisedValues / totalCountOfValidValues,
-            type_float
+            type_float,
         )
     if column_type == simple_type_string:
         addNumericValue(
             column_stats,
             config.averageNumberOfCharacters,
             totalNumberOfCharacters / totalCountOfValidValues,
-            type_float
+            type_float,
         )
     addNumericValue(
         column_stats,
         config.averageNumberOfDigits,
         totalNumberOfDigits / totalCountOfValidValues,
-        type_float
+        type_float,
     )
 
 
@@ -366,16 +375,16 @@ def getStatistics(dataset):
             stats[colName][config.quartiles] = {
                 config.type: config.type_box_plot,
                 config.id: config.quartiles,
-                config.list_data_type: get_sml_type_from_python_type(quartiles_data_type),
+                config.list_data_type: get_sml_type_from_python_type(
+                    quartiles_data_type
+                ),
                 config.type_box_plot_values: quartiles,
             }
 
         # number of distinct values
         if simple_type == simple_type_geometry:
             number_of_distinct_values = column_data.nunique(dropna=True)
-        elif (
-                simple_type != simple_type_boolean and simple_type != type_numeric_list
-        ):
+        elif simple_type != simple_type_boolean and simple_type != type_numeric_list:
             number_of_distinct_values = data[colName].nunique(dropna=True)
             addNumericValue(
                 stats[colName], config.numberOfDistinctValues, number_of_distinct_values
@@ -422,7 +431,9 @@ def getStatistics(dataset):
             )
 
         if simple_type in [simple_type_numeric]:
-            addNumericValue(stats[colName], config.standardDeviation, column_data.std(), type_float)
+            addNumericValue(
+                stats[colName], config.standardDeviation, column_data.std(), type_float
+            )
 
         if simple_type in [simple_type_numeric, simple_type_datetime]:
             buckets, buckets_data_type = addHistograms(
@@ -434,7 +445,9 @@ def getStatistics(dataset):
             )
             stats[colName][config.histogram] = {
                 config.type: config.type_histogram,
-                config.bucket_data_type: get_sml_type_from_python_type(buckets_data_type),
+                config.bucket_data_type: get_sml_type_from_python_type(
+                    buckets_data_type
+                ),
                 config.type_histogram_buckets: buckets,
             }
 

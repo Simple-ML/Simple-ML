@@ -1,9 +1,8 @@
 import os
 
 import pandas as pd
-from rdflib import RDFS, Namespace, URIRef
-
 import simpleml.util.global_configurations as global_config
+from rdflib import RDFS, Namespace, URIRef
 from simpleml.data_catalog._domain_model import DomainModel, getPythonType
 from simpleml.dataset import Dataset
 from simpleml.rdf._sparql_connector_local import get_graph
@@ -162,7 +161,7 @@ def read_meta_file(file_path):
 
         resource_parts = domain_str.split(":", 1)
         subjectResource = (
-                SML[dataset.id] + "_" + resource_parts[0] + "_" + resource_parts[1]
+            SML[dataset.id] + "_" + resource_parts[0] + "_" + resource_parts[1]
         )
 
         resource_instance_number = None
@@ -171,11 +170,11 @@ def read_meta_file(file_path):
             domain_node_uri = domain_node_uri_tmp.split("@")[0]
             resource_instance_number = int(domain_node_uri_tmp.split("@")[1])
             subjectResource = (
-                    SML[dataset.id]
-                    + "_"
-                    + resource_parts[0]
-                    + "_"
-                    + str(resource_instance_number)
+                SML[dataset.id]
+                + "_"
+                + resource_parts[0]
+                + "_"
+                + str(resource_instance_number)
             )
 
         domain_node_label = get_label(g, domain_node_uri)
@@ -236,6 +235,7 @@ def read_meta_file(file_path):
         )
 
     return dataset
+
 
 # dataset = read_meta_file("../../../data_catalog/meta_files/SpeedAverages.tsv")
 

@@ -1,5 +1,6 @@
 # Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
+
 # Workflow steps ---------------------------------------------------------------
 from simpleml.metrics import meanAbsoluteError
 from simpleml.model.supervised.regression import LinearRegression

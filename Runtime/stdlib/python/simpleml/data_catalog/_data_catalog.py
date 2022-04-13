@@ -4,14 +4,17 @@ import json
 from io import StringIO
 
 import pandas as pd
-from rdflib import URIRef
-
 import simpleml.util.jsonLabels_util as config
+from rdflib import URIRef
 from simpleml.data_catalog._domain_model import DomainModel, getPythonType
 from simpleml.dataset import Dataset
 from simpleml.rdf import load_query, run_query
-from simpleml.util import exportDictionaryAsJSON
-from simpleml.util import get_sml_type_from_rdf_type, get_python_type_from_rdf_type, simple_type_numeric
+from simpleml.util import (
+    exportDictionaryAsJSON,
+    get_python_type_from_rdf_type,
+    get_sml_type_from_rdf_type,
+    simple_type_numeric,
+)
 
 lang = "en"  # TODO: Configure in a global config
 
@@ -115,7 +118,7 @@ def addDomainModel(dataset):
             value_type=getPythonType(rdf_value_type),
             attribute_label=domain_node_label + " (" + propertyLabel + ")",
             is_geometry=is_geometry,
-            is_virtual=is_virtual
+            is_virtual=is_virtual,
         )
 
     for lon_lat_pair in lon_lat_pairs.values():
@@ -247,8 +250,8 @@ def addStatistics(dataset: Dataset):
 
     # Ignore longitude/latitude columns. They should be covered by geometry columns.
     for lon_lat_pair in dataset.lon_lat_pairs:
-        del dataset.stats[lon_lat_pair['longitude']]
-        del dataset.stats[lon_lat_pair['latitude']]
+        del dataset.stats[lon_lat_pair["longitude"]]
+        del dataset.stats[lon_lat_pair["latitude"]]
 
 
 def getValue(result):
@@ -307,10 +310,12 @@ def addValueDistribution(dataset: Dataset):
             dataset.stats[attribute_identifier][config.valueDistribution] = {
                 config.type: config.type_bar_chart,
                 config.id: config.value,
-                config.type_bar_chart_bars: []
+                config.type_bar_chart_bars: [],
             }
 
-        dataset.stats[attribute_identifier][config.valueDistribution][config.type_bar_chart_bars].append(
+        dataset.stats[attribute_identifier][config.valueDistribution][
+            config.type_bar_chart_bars
+        ].append(
             {
                 config.value_distribution_value: result["value"]["value"],
                 config.value_distribution_number_of_instances: result["instances"][

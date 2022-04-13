@@ -1,5 +1,5 @@
 # Imports ----------------------------------------------------------------------
-from simpleml.dataset import loadDataset, StandardNormalizer
+from simpleml.dataset import StandardNormalizer, loadDataset
 from simpleml.metrics import meanAbsoluteError
 from simpleml.model.supervised.regression import LinearRegression
 

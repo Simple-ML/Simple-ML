@@ -3,48 +3,64 @@ from __future__ import annotations
 import json
 import os
 from datetime import datetime
-from typing import Dict, Tuple, List, Any, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import category_encoders as ce  # For one hot encoding
 import geopandas
 import networkx as nx
 import pandas as pd  # For data processing
+import simpleml.util.global_configurations as global_config
+import simpleml.util.jsonLabels_util as config
 from libpysal.weights import Kernel
 from node2vec import Node2Vec
 from rdflib import Namespace
 from sentence_transformers import SentenceTransformer
 from shapely import geometry, wkb, wkt
 from shapely.errors import WKBReadingError, WKTReadingError
-from sklearn.model_selection import train_test_split
-
-import simpleml.util.global_configurations as global_config
-import simpleml.util.jsonLabels_util as config
 from simpleml.dataset._instance import Instance
 from simpleml.dataset._stats import getStatistics
-from simpleml.util import exportDictionaryAsJSON
-from simpleml.util import get_simple_type_from_sml_type, get_simple_type_from_python_type, \
-    get_sml_type_from_python_type, type_geometry, simple_type_datetime, simple_type_numeric_list, simple_type_geometry, \
-    type_datetime, type_float, simple_type_string, type_numeric_list, get_python_type_from_pandas_type, type_string, \
-    type_integer, simple_type_numeric, type_bool, simple_type_boolean, get_pandas_type_from_python_type
+from simpleml.util import (
+    exportDictionaryAsJSON,
+    get_pandas_type_from_python_type,
+    get_python_type_from_pandas_type,
+    get_simple_type_from_python_type,
+    get_simple_type_from_sml_type,
+    get_sml_type_from_python_type,
+    simple_type_boolean,
+    simple_type_datetime,
+    simple_type_geometry,
+    simple_type_numeric,
+    simple_type_numeric_list,
+    simple_type_string,
+    type_bool,
+    type_datetime,
+    type_float,
+    type_geometry,
+    type_integer,
+    type_numeric_list,
+    type_string,
+)
+from sklearn.model_selection import train_test_split
+
 from ._attribute import Attribute
 
 
 class Dataset:
     def __init__(
-            self,
-            id,
-            title: str,
-            description: str = None,
-            fileName: str = None,
-            hasHeader: bool = True,
-            null_value="",
-            separator=",",
-            number_of_instances: int = None,
-            titles: dict = {},
-            descriptions: dict = {},
-            subjects: dict = {},
-            coordinate_system: int = 4326,
-            lat_before_lon: bool = False,
+        self,
+        id,
+        title: str,
+        description: str = None,
+        fileName: str = None,
+        hasHeader: bool = True,
+        null_value="",
+        separator=",",
+        number_of_instances: int = None,
+        titles: dict = {},
+        descriptions: dict = {},
+        subjects: dict = {},
+        coordinate_system: int = 4326,
+        lat_before_lon: bool = False,
     ):
         self.id = id
         self.title = title
@@ -75,7 +91,11 @@ class Dataset:
         self.wkt_columns: List[
             str
         ] = []  # list of attribute identifiers for attributes with Well-Known-Text data
-        self.wkb_columns: List[str] = ([])  # list of attribute identifiers for attributes with Well-Known-Binary data
+        self.wkb_columns: List[
+            str
+        ] = (
+            []
+        )  # list of attribute identifiers for attributes with Well-Known-Binary data
         # self._attributes_dict: dict[str, dict] = {}  # dictionary of attribute IDs to their attributes
 
         self._sample_for_profile = None
@@ -108,7 +128,7 @@ class Dataset:
         return self
 
     def keepAttributes(
-            self, attributeIDs: list[str], recompute_statistics: bool = True
+        self, attributeIDs: list[str], recompute_statistics: bool = True
     ) -> Dataset:
 
         if not isinstance(attributeIDs, list):
@@ -132,13 +152,13 @@ class Dataset:
         return copy.provide_statistics(recompute_statistics)
 
     def keepAttribute(
-            self, attributeID: str, recompute_statistics: bool = True
+        self, attributeID: str, recompute_statistics: bool = True
     ) -> Dataset:
 
         return self.keepAttributes([attributeID], recompute_statistics)
 
     def dropAttributes(
-            self, attributeIDs: list[str], recompute_statistics: bool = True
+        self, attributeIDs: list[str], recompute_statistics: bool = True
     ) -> Dataset:
         copy = self.copy_and_read()
 
@@ -151,7 +171,7 @@ class Dataset:
         return copy.provide_statistics(recompute_statistics)
 
     def dropAttribute(
-            self, attributeID: str, recompute_statistics: bool = True
+        self, attributeID: str, recompute_statistics: bool = True
     ) -> Dataset:
         return self.dropAttributes([attributeID], recompute_statistics)
 
@@ -174,13 +194,15 @@ class Dataset:
         return copy.provide_statistics()
 
     def addAttribute(
-            self, newAttributeId, transformFunc, newAttributeLabel: str = None
+        self, newAttributeId, transformFunc, newAttributeLabel: str = None
     ) -> Dataset:
 
         copy = self.add_attribute_data(newAttributeId, transformFunc)
         # copy.data[newColumnName] = copy.data[newColumnName].convert_dtypes()
 
-        data_type = get_python_type_from_pandas_type(copy.data[newAttributeId].convert_dtypes().dtype)
+        data_type = get_python_type_from_pandas_type(
+            copy.data[newAttributeId].convert_dtypes().dtype
+        )
 
         # TODO
         # data_type = copy.data[newColumnName].dtype
@@ -189,7 +211,9 @@ class Dataset:
         if newAttributeLabel:
             newAttributeLabelOrId = newAttributeLabel
 
-        attribute = copy.add_column_description(newAttributeId, newAttributeLabelOrId, data_type)
+        attribute = copy.add_column_description(
+            newAttributeId, newAttributeLabelOrId, data_type
+        )
         copy.create_simple_type(attribute, data_type)
 
         return copy.provide_statistics()
@@ -214,7 +238,9 @@ class Dataset:
         )
 
         copy.attributes[attributeId + "_isWeekend"].python_data_type = bool
-        copy.attributes[attributeId + "_isWeekend"].simple_data_type = simple_type_boolean
+        copy.attributes[
+            attributeId + "_isWeekend"
+        ].simple_data_type = simple_type_boolean
         copy.attributes[attributeId + "_isWeekend"].data_type = type_bool
 
         return copy.provide_statistics()
@@ -234,7 +260,9 @@ class Dataset:
         )
 
         copy.attributes[attributeId + "_DayOfTheYear"].python_data_type = int
-        copy.attributes[attributeId + "_DayOfTheYear"].simple_data_type = simple_type_numeric
+        copy.attributes[
+            attributeId + "_DayOfTheYear"
+        ].simple_data_type = simple_type_numeric
         copy.attributes[attributeId + "_DayOfTheYear"].data_type = type_integer
 
         return copy.provide_statistics()
@@ -266,7 +294,7 @@ class Dataset:
         return copy.provide_statistics()
 
     def splitIntoTrainAndTestAndLabels(
-            self, trainRatio: float, randomState=None
+        self, trainRatio: float, randomState=None
     ) -> Tuple[Dataset, Dataset, Dataset, Dataset]:
 
         if not self.target_attribute:
@@ -291,7 +319,7 @@ class Dataset:
         )
 
     def splitIntoTrainAndTest(
-            self, trainRatio: float, randomState=None
+        self, trainRatio: float, randomState=None
     ) -> Tuple[Dataset, Dataset]:
 
         copy = self.copy_and_read()
@@ -389,14 +417,23 @@ class Dataset:
             del self.stats[attribute.id]
 
     def add_column_description(
-            self, attribute_id: str, label: str, python_data_type: type, sml_data_type: str = None
+        self,
+        attribute_id: str,
+        label: str,
+        python_data_type: type,
+        sml_data_type: str = None,
     ):
 
         if not sml_data_type:
             sml_data_type = get_simple_type_from_python_type(python_data_type)
 
-        attribute = Attribute(id=attribute_id, label=label, python_data_type=python_data_type,
-                              data_type=sml_data_type, simple_data_type=get_simple_type_from_sml_type(sml_data_type))
+        attribute = Attribute(
+            id=attribute_id,
+            label=label,
+            python_data_type=python_data_type,
+            data_type=sml_data_type,
+            simple_data_type=get_simple_type_from_sml_type(sml_data_type),
+        )
 
         self.attributes[attribute_id] = attribute
 
@@ -511,12 +548,7 @@ class Dataset:
         copy.data = self.add_attribute_data(attributeId, transformIntoTimestamp).data
         self.drop_column_description(attribute)
 
-        copy.add_column_description(
-            attributeId,
-            attribute.label,
-            float,
-            type_float
-        )
+        copy.add_column_description(attributeId, attribute.label, float, type_float)
 
         return copy.provide_statistics()
 
@@ -527,7 +559,8 @@ class Dataset:
         for attribute in self.attributes.values():
             if attribute.simple_data_type == simple_type_numeric_list:
                 attribute_column_names = [
-                    attribute.id + "_" + str(i) for i in range(len(self.data[attribute.id].iloc[0]))
+                    attribute.id + "_" + str(i)
+                    for i in range(len(self.data[attribute.id].iloc[0]))
                 ]
                 self.data[attribute_column_names] = pd.DataFrame(
                     self.data[attribute.id].tolist(), index=self.data.index
@@ -570,7 +603,9 @@ class Dataset:
         for attribute in self.attributes.values():
             if not attribute.is_virtual:
                 usecols.append(attribute.id)
-                parse_data_types[attribute.id] = get_pandas_type_from_python_type(attribute.python_data_type)
+                parse_data_types[attribute.id] = get_pandas_type_from_python_type(
+                    attribute.python_data_type
+                )
                 if attribute.data_type == type_datetime:
                     parse_data_types[attribute.id] = str
                 elif attribute.data_type == type_geometry:
@@ -626,17 +661,19 @@ class Dataset:
                     continue
 
             profile_attributes[attribute.id] = {}
-            profile_attributes[attribute.id][
-                config.attribute_label
-            ] = attribute.label
+            profile_attributes[attribute.id][config.attribute_label] = attribute.label
 
             profile_attributes[attribute.id][config.type] = attribute.data_type
-            profile_attributes[attribute.id][config.simple_type] = attribute.simple_data_type
+            profile_attributes[attribute.id][
+                config.simple_type
+            ] = attribute.simple_data_type
 
             profile_attributes[attribute.id][config.id] = attribute.id
 
             if attribute.id in self.stats:
-                profile_attributes[attribute.id][config.statistics] = self.stats[attribute.id]
+                profile_attributes[attribute.id][config.statistics] = self.stats[
+                    attribute.id
+                ]
 
         profile[config.sample] = self.get_sample_info_for_profile()
 
@@ -676,35 +713,47 @@ class Dataset:
                 self.data[lon_lat_pair["latitude"]],
             )
 
-            attribute = self.add_column_description(column_name, column_name, python_data_type=geometry,
-                                                    sml_data_type=type_geometry)
+            attribute = self.add_column_description(
+                column_name,
+                column_name,
+                python_data_type=geometry,
+                sml_data_type=type_geometry,
+            )
             SML = Namespace("https://simple-ml.de/resource/")
             attribute.graph = {}
             attribute.graph["value_type"] = SML.wellKnownText
             attribute.graph["property"] = SML.asWKT
-            attribute.graph["resource"] = self.attributes[lon_lat_pair["longitude"]].graph["resource"]
-            attribute.graph["class"] = self.attributes[lon_lat_pair["longitude"]].graph["class"]
+            attribute.graph["resource"] = self.attributes[
+                lon_lat_pair["longitude"]
+            ].graph["resource"]
+            attribute.graph["class"] = self.attributes[lon_lat_pair["longitude"]].graph[
+                "class"
+            ]
             attribute.is_virtual = True
 
             lon_lat_pair_number += 1
 
     def addColumnDescription(
-            self,
-            attribute_identifier,
-            resource_node,
-            domain_node,
-            property_node,
-            rdf_value_type,
-            value_type,
-            attribute_label,
-            is_geometry: bool,
-            resource_rank: int = None,
-            is_virtual: bool = False
+        self,
+        attribute_identifier,
+        resource_node,
+        domain_node,
+        property_node,
+        rdf_value_type,
+        value_type,
+        attribute_label,
+        is_geometry: bool,
+        resource_rank: int = None,
+        is_virtual: bool = False,
     ):
 
-        attribute = Attribute(id=attribute_identifier, label=attribute_label,
-                              python_data_type=value_type, data_type=get_sml_type_from_python_type(value_type),
-                              is_virtual=is_virtual)
+        attribute = Attribute(
+            id=attribute_identifier,
+            label=attribute_label,
+            python_data_type=value_type,
+            data_type=get_sml_type_from_python_type(value_type),
+            is_virtual=is_virtual,
+        )
         self.attributes[attribute_identifier] = attribute
 
         if resource_node:
@@ -718,12 +767,10 @@ class Dataset:
                 attribute_graph["resource_rank"] = resource_rank
             self.attributes[attribute_identifier].graph = attribute_graph
 
-        self.create_simple_type(
-            attribute, value_type, is_geometry=is_geometry
-        )
+        self.create_simple_type(attribute, value_type, is_geometry=is_geometry)
 
     def create_simple_type(
-            self, attribute, value_type: type, is_geometry: bool = False
+        self, attribute, value_type: type, is_geometry: bool = False
     ):
 
         if is_geometry:
@@ -822,14 +869,14 @@ def loadDataset(datasetID: str) -> Dataset:
 
 
 def readDataSetFromCSV(
-        fileName: str,
-        datasetId: str,
-        separator: str,
-        hasHeader: bool,
-        nullValue: str,
-        datasetName: str = None,
-        coordinateSystem=3857,
-        lon_lat_pairs=[],
+    fileName: str,
+    datasetId: str,
+    separator: str,
+    hasHeader: bool,
+    nullValue: str,
+    datasetName: str = None,
+    coordinateSystem=3857,
+    lon_lat_pairs=[],
 ) -> Dataset:
     dir_name = os.path.dirname(__file__)
     data_file_path = os.path.join(dir_name, global_config.data_folder_name, fileName)
@@ -902,18 +949,15 @@ def readDataSetFromCSV(
 
 
 def joinTwoDatasets(
-        dataset1: Dataset,
-        dataset2: Dataset,
-        attributeId1: str,
-        attributeId2: str,
-        suffix1: str,
-        suffix2: str,
+    dataset1: Dataset,
+    dataset2: Dataset,
+    attributeId1: str,
+    attributeId2: str,
+    suffix1: str,
+    suffix2: str,
 ) -> Dataset:
     # TODO: check that types are join_column_name_1 and join_column_name_2 are the same
-    if (
-            dataset1.data[attributeId1].dtypes
-            == dataset2.data[attributeId2].dtypes
-    ):
+    if dataset1.data[attributeId1].dtypes == dataset2.data[attributeId2].dtypes:
         joint_data = dataset1.data.merge(
             dataset2.data,
             left_on=attributeId1,

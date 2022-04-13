@@ -2,10 +2,9 @@ from __future__ import annotations
 
 from re import sub
 
+import simpleml.util.jsonLabels_util as config
 from rdflib import RDF, Graph, Literal, Namespace, URIRef
 from rdflib.namespace import CSVW, DCAT, DCTERMS, XSD
-
-import simpleml.util.jsonLabels_util as config
 from simpleml.dataset import Dataset
 from simpleml.rdf._sparql_connector_local import get_graph
 from simpleml.util import get_rdf_type_from_sml_type
@@ -19,7 +18,7 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
 
     for x in g.namespaces():
         if not x[0].startswith(
-                "default"
+            "default"
         ):  # in external vocabularies, namespaces are sometimes the default
             g.bind(x[0], x[1])
 
@@ -93,7 +92,9 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
             rdf_sample_header,
             SML.hasContent,
             Literal(
-                "\t".join([attribute.label for attribute in dataset.attributes.values()]),
+                "\t".join(
+                    [attribute.label for attribute in dataset.attributes.values()]
+                ),
                 datatype=XSD.string,
             ),
         )
@@ -102,8 +103,8 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
     for line_number in range(0, len(dataset.data_sample)):
         sample_line_content = (
             dataset.data_sample.loc[[line_number]]
-                .to_csv(header=None, index=False, sep="\t", na_rep="")
-                .strip()
+            .to_csv(header=None, index=False, sep="\t", na_rep="")
+            .strip()
         )
         # fillna(dataset.null_value)
 
@@ -120,7 +121,9 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
         g.add((rdf_sample_line, SML.rank, Literal(line_number, datatype=XSD.integer)))
 
     # attributes
-    for column_index, (attribute_id, attribute) in enumerate(dataset.attributes.items()):
+    for column_index, (attribute_id, attribute) in enumerate(
+        dataset.attributes.items()
+    ):
 
         attribute_val = profile[config.attributes][attribute.id]
         rdf_attribute = SML[
@@ -128,12 +131,18 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
             + "Attribute"
             + urify(attribute.id)[0].upper()
             + urify(attribute.id)[1:]
-            ]
+        ]
 
         g.add((rdf_dataset, SML.hasAttribute, rdf_attribute))
         g.add((rdf_attribute, RDF.type, SML.Attribute))
         g.add((rdf_attribute, DCTERMS.identifier, Literal(attribute.id)))
-        g.add((rdf_attribute, SML.isVirtual, Literal(attribute.is_virtual, datatype=XSD.boolean)))
+        g.add(
+            (
+                rdf_attribute,
+                SML.isVirtual,
+                Literal(attribute.is_virtual, datatype=XSD.boolean),
+            )
+        )
 
         g.add(
             (
@@ -205,10 +214,10 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
                         + urifyCapitalised(attribute.id)
                         + capitalise(value[config.id])
                         + str(rank)
-                        ]
+                    ]
 
                     evaluation_type = (
-                            "Distribution" + capitalise(value[config.id]) + "Evaluation"
+                        "Distribution" + capitalise(value[config.id]) + "Evaluation"
                     )
 
                     # some evaluation types are defined in SEAS, others in SML
@@ -224,7 +233,9 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
                             SEAS.evaluatedValue,
                             Literal(
                                 sub_value,
-                                datatype=get_rdf_type_from_sml_type(value[config.list_data_type])
+                                datatype=get_rdf_type_from_sml_type(
+                                    value[config.list_data_type]
+                                ),
                             ),
                         )
                     )
@@ -241,7 +252,7 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
                         + urifyCapitalised(attribute.id)
                         + "Histogram"
                         + str(bucket_rank)
-                        ]
+                    ]
                     g.add((rdf_attribute, SEAS.evaluation, rdf_attribute_stat))
                     g.add(
                         (
@@ -290,7 +301,7 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
                         + urifyCapitalised(attribute.id)
                         + "ValueDistributionValue"
                         + str(value_rank)
-                        ]
+                    ]
                     g.add(
                         (rdf_attribute, SEAS.valueDistributionValue, rdf_attribute_stat)
                     )
@@ -319,7 +330,7 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
                     + "Attribute"
                     + urifyCapitalised(attribute.id)
                     + "SpatialDistribution"
-                    ]
+                ]
                 g.add((rdf_attribute, SML.hasSpatialDistribution, rdf_attribute_stat))
                 g.add((rdf_attribute_stat, RDF.type, SML.SpatialDistribution))
 
@@ -332,7 +343,7 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
                         + urifyCapitalised(attribute.id)
                         + "SpatialDistributionLocation"
                         + urifyCapitalised(area)
-                        ]
+                    ]
                     g.add(
                         (
                             rdf_attribute_stat,
@@ -360,7 +371,7 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
                     + "Attribute"
                     + urifyCapitalised(attribute.id)
                     + capitalise(value[config.id])
-                    ]
+                ]
                 g.add((rdf_attribute, SEAS.evaluation, rdf_attribute_stat))
 
                 g.add(
@@ -376,7 +387,7 @@ def exportStatisticsAsRDF(dataset: Dataset, filename=None):
 
                 # some evaluation types are defined in SEAS, others in SML
                 evaluation_type = (
-                        "Distribution" + capitalise(value[config.id]) + "Evaluation"
+                    "Distribution" + capitalise(value[config.id]) + "Evaluation"
                 )
                 if capitalise(value[config.id]) in [
                     "Median",

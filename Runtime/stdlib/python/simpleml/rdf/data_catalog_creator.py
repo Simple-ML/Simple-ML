@@ -6,11 +6,13 @@ from simpleml.util import exportDictionaryAsJSON, global_configurations
 
 dirName = os.path.dirname(__file__)
 metadataFolderPath = os.getenv(
-    "SML_DATA_CATALOG_PATH", os.path.join(dirName, global_configurations.meta_data_folder_name)
+    "SML_DATA_CATALOG_PATH",
+    os.path.join(dirName, global_configurations.meta_data_folder_name),
 )
 
 dataCatalogFolderPath = os.getenv(
-    "SML_DATASET_PATH", os.path.join(dirName, global_configurations.data_catalog_folder_name)
+    "SML_DATASET_PATH",
+    os.path.join(dirName, global_configurations.data_catalog_folder_name),
 )
 
 for filename in os.listdir(metadataFolderPath):
@@ -23,7 +25,9 @@ for filename in os.listdir(metadataFolderPath):
 
     print(filename)
 
-    output_filepath = os.path.join(dataCatalogFolderPath, filename.replace(".tsv", ".ttl"))
+    output_filepath = os.path.join(
+        dataCatalogFolderPath, filename.replace(".tsv", ".ttl")
+    )
 
     filepath = os.path.join(metadataFolderPath, filename)
     dataset = read_meta_file(filepath)

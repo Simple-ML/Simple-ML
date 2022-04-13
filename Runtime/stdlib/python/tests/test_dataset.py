@@ -1,5 +1,4 @@
 import numpy as np
-
 from simpleml.dataset import (
     Instance,
     StandardNormalizer,
