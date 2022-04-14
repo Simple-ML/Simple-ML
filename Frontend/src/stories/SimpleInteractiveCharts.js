@@ -57,6 +57,8 @@ export default class SimpleInteractiveCharts extends React.Component {
 
         const chart = charts[0];
         this.setState({ value: chart?.label + '_' + chart?.index, refresh: refresh, charts: charts });
+
+        this.forceUpdate();
     }
     
     renderChart(chart, width='unset', height='800px') {

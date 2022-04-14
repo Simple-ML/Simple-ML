@@ -29,16 +29,18 @@ export default class DataTable extends React.Component {
   }
 
   selectColumn(value, index) {
-    const charts = this.props.charts.filter(chart => chart.type !== 'numeric' && chart.type !== 'list' && chart.label === value);
     this.setState({
       showDataTable: false, 
       selectedLabel: value, 
       selectColumn: index, 
       refreshSimpleInteractiveCharts: !this.state.refreshSimpleInteractiveCharts, 
+    });
+    const charts = this.props.charts.filter(chart => chart.type !== 'numeric' && chart.type !== 'list' && chart.label === value);
+    this.setState({
       charts: charts
     });
+
     console.log(value);
-    this.render();
   }
 
   closeDataVisualisation(e) {
@@ -112,8 +114,7 @@ export default class DataTable extends React.Component {
                         <Grid item xs={8} sm={6} md={10}>
                           <div className={'MuiTableCell-head simple-interactive-charts'}>
                             <SimpleInteractiveCharts
-                              refresh={this.state.refreshSimpleInteractiveCharts}
-                              charts={[...this.state.charts]}
+                              charts={this.state.charts}
                               />
                           </div>
                         </Grid>

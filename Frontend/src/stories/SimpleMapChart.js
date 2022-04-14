@@ -2,9 +2,6 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './simpleMapChart.css';
-import DeckGL from '@deck.gl/react';
-import {MapView, FirstPersonView} from '@deck.gl/core';
-import {LineLayer} from '@deck.gl/layers';
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import mapboxgl from '!mapbox-gl';
 
