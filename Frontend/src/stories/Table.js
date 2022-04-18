@@ -28,16 +28,19 @@ export default class DataTable extends React.Component {
     };
   }
 
-  selectColumn(value, index) {
+  selectColumn(e, value, index) {
+    e.stopPropagation();
+
+    const charts = this.props.charts.filter(chart => chart.type !== 'numeric' && chart.type !== 'list' && chart.label === value);
+    this.setState({
+      charts: charts
+    });
+
     this.setState({
       showDataTable: false, 
       selectedLabel: value, 
       selectColumn: index, 
       refreshSimpleInteractiveCharts: !this.state.refreshSimpleInteractiveCharts, 
-    });
-    const charts = this.props.charts.filter(chart => chart.type !== 'numeric' && chart.type !== 'list' && chart.label === value);
-    this.setState({
-      charts: charts
     });
 
     console.log(value);
@@ -76,7 +79,7 @@ export default class DataTable extends React.Component {
                 <TableCell 
                   style={this.state.selectColumn === index ? {'backgroundColor': '#F2F2F2'} : {}}
                   align="left"
-                  onClick={() => this.selectColumn(tableHead, index)}>
+                  onClick={(e) => this.selectColumn(e, tableHead, index)}>
                     <div>{tableHead}</div>
                     <div style={{'fontSize': '0.8em' }}>{this.props.tableDataTypes[index]}</div>
                     {!this.state.showDataTable && this.state.selectColumn === index ?
@@ -113,9 +116,9 @@ export default class DataTable extends React.Component {
                         </Grid>
                         <Grid item xs={8} sm={6} md={10}>
                           <div className={'MuiTableCell-head simple-interactive-charts'}>
-                            <SimpleInteractiveCharts
-                              charts={this.state.charts}
-                              />
+                              <SimpleInteractiveCharts
+                                charts={this.state.charts}
+                              />                                                    
                           </div>
                         </Grid>
 

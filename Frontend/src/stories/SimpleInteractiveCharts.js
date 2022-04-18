@@ -41,11 +41,11 @@ export default class SimpleInteractiveCharts extends React.Component {
 	}
 
     componentDidMount() {
-        this.setState({ value: this.props.charts[0]?.value, charts: this.props.charts });
+        // this.setState({ value: this.props.charts[0]?.value, charts: this.props.charts });
     }
 
     componentWillReceiveProps(props) {
-        const { charts, refresh } = this.props;
+        const { charts, refresh } = props;
 
         let count = 0;
         charts.map((chart) => {
