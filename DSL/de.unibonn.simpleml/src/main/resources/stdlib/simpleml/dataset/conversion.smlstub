@@ -1,3 +1,5 @@
+package simpleml.dataset
+
 import simpleml.dataset.Instance
 
 @Description("The transform function that returns timestamp for each instance in date attribute")

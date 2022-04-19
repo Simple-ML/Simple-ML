@@ -26,19 +26,14 @@ from simpleml.util import (
     get_simple_type_from_python_type,
     get_simple_type_from_sml_type,
     get_sml_type_from_python_type,
-    simple_type_boolean,
     simple_type_datetime,
     simple_type_geometry,
-    simple_type_numeric,
     simple_type_numeric_list,
     simple_type_string,
-    type_bool,
     type_datetime,
     type_float,
     type_geometry,
-    type_integer,
     type_numeric_list,
-    type_string,
 )
 from sklearn.model_selection import train_test_split
 
