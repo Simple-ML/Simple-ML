@@ -150,8 +150,6 @@ def test_date_to_timestamp():
     def transformIntoTimestamp(instance: Instance):
         return datetime.timestamp(instance.getValue("start_time"))
 
-    dataset = dataset.transform(
-        "start_time", transformFunc=transformIntoTimestamp
-    )
+    dataset = dataset.transform("start_time", transformFunc=transformIntoTimestamp)
 
     assert type(dataset.data["start_time"][0]) == np.float64  # nosec
