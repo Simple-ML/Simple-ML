@@ -30,7 +30,7 @@ class Dataset {
     fun filterInstances(@Description("The filter function that returns either True (keep) or False (remove) for each instance") filterFunc: (instance: Instance) -> shouldKeep: Boolean) -> @Description("The updated dataset") dataset: Dataset
 
     @Description("Get a specific row of a dataset")
-    fun getRow(@Description("The number of the row to be retreived") rowNumber: Int) -> @Description("The specified row") instance: Instance
+    fun getRow(@Description("The number of the row to be retrieved") rowNumber: Int) -> @Description("The specified row") instance: Instance
 
     @Description("Add a new attribute to the dataset with values according to a transformation function")
     fun addAttribute(@Description("The ID of the new attribute") newAttributeId: String, @Description("The transformation function.") transformFunc: (instance: Instance) -> value: Any, @Description("The name of the new attribute.") newAttributeLabel: String) -> @Description("The updated dataset") dataset: Dataset
@@ -38,20 +38,11 @@ class Dataset {
     @Description("Drops instances with missing values in the specified attribute")
     fun dropMissingValues(@Description("Attribute whose empty values are dropped") attribute: String) -> @Description("The updated dataset") dataset: Dataset
 
-    @Description("Convert date column values into timestamps")
-    fun transformDateToTimestamp(@Description("The attribute to be transformed") attributeId: String) -> @Description("The updated dataset") dataset: Dataset
+    @Description("Update existing attribute with values according to a transformation function")
+    fun transform(@Description("The ID of the attribute") attributeId: String, @Description("The transformation function.") transformFunc: (instance: Instance) -> value: Any) -> @Description("The updated dataset") dataset: Dataset
 
     @Description("Convert all column values into numbers")
     fun transformDatatypes() -> @Description("The updated dataset") dataset: Dataset
-
-    @Description("Add a new attribute to the dataset specifying if the dates of the specified column are on the weekend or not")
-    fun addIsWeekendAttribute(@Description("The attribute to be transformed") attributeId: String) -> @Description("The updated dataset") dataset: Dataset
-
-    @Description("Add a new attribute to the dataset specifying the day of the year of the specified column")
-    fun addDayOfTheYearAttribute(@Description("The attribute to be transformed") attributeId: String) -> @Description("The updated dataset") dataset: Dataset
-
-    @Description("Extract week day from given date attribute and add new attribute in dataset with weekday name")
-    fun addWeekDayAttribute(@Description("The attribute to be transformed") attributeId: String) -> @Description("The updated dataset") dataset: Dataset
 
     @Description("Export any dataset to CSV file")
     fun exportDataAsFile(filePath: String)

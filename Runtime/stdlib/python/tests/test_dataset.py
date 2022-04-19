@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import numpy as np
 from simpleml.dataset import (
     Instance,
@@ -102,7 +104,16 @@ def test_flatten_vector():
 def test_add_is_weekend():
     dataset = loadDataset("SpeedAverages")
 
-    dataset = dataset.addIsWeekendAttribute("start_time")
+    def transformIntoIsWeekend(instance: Instance) -> bool:
+        week_num = instance.getValue("start_time").weekday()
+        if week_num < 5:
+            return False
+        else:
+            return True
+
+    dataset = dataset.addAttribute(
+        "start_time_isWeekend", transformFunc=transformIntoIsWeekend
+    )
 
     assert type(dataset.data["start_time_isWeekend"][0]) == np.bool_  # nosec
 
@@ -110,7 +121,12 @@ def test_add_is_weekend():
 def test_add_day_of_year():
     dataset = loadDataset("SpeedAverages")
 
-    dataset = dataset.addDayOfTheYearAttribute("start_time")
+    def transformIntoDayOfTheYear(instance: Instance):
+        return instance.getValue("start_time").timetuple().tm_yday
+
+    dataset = dataset.addAttribute(
+        "start_time_DayOfTheYear", transformFunc=transformIntoDayOfTheYear
+    )
 
     assert type(dataset.data["start_time_DayOfTheYear"][0]) == np.int64  # nosec
 
@@ -118,7 +134,12 @@ def test_add_day_of_year():
 def test_add_week_day():
     dataset = loadDataset("SpeedAverages")
 
-    dataset = dataset.addWeekDayAttribute("start_time")
+    def transformIntoWeekDay(instance: Instance) -> str:
+        return instance.getValue("start_time").strftime("%A")
+
+    dataset = dataset.addAttribute(
+        "start_time_weekDay", transformFunc=transformIntoWeekDay
+    )
 
     assert type(dataset.data["start_time_weekDay"][0]) == str  # nosec
 
@@ -126,6 +147,11 @@ def test_add_week_day():
 def test_date_to_timestamp():
     dataset = loadDataset("SpeedAverages")
 
-    dataset = dataset.transformDateToTimestamp("start_time")
+    def transformIntoTimestamp(instance: Instance):
+        return datetime.timestamp(instance.getValue("start_time"))
+
+    dataset = dataset.transform(
+        "start_time", transformFunc=transformIntoTimestamp
+    )
 
     assert type(dataset.data["start_time"][0]) == np.float64  # nosec

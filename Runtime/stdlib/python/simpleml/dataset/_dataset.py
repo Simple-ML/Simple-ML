@@ -218,75 +218,6 @@ class Dataset:
 
         return copy.provide_statistics()
 
-    def addIsWeekendAttribute(self, attributeId):
-
-        copy = self.copy_and_read()
-        attribute = self.attributes[attributeId]
-
-        def transformIntoWeekend(instance: Instance) -> bool:
-            week_num = instance.getValue(attributeId).weekday()
-            if week_num < 5:
-                return False
-            else:
-                return True
-            # return instance.getValue(columnName) is weekend
-
-        copy = self.addAttribute(
-            attributeId + "_isWeekend",
-            transformIntoWeekend,
-            attribute.label + " (is weekend)",
-        )
-
-        copy.attributes[attributeId + "_isWeekend"].python_data_type = bool
-        copy.attributes[
-            attributeId + "_isWeekend"
-        ].simple_data_type = simple_type_boolean
-        copy.attributes[attributeId + "_isWeekend"].data_type = type_bool
-
-        return copy.provide_statistics()
-
-    def addDayOfTheYearAttribute(self, attributeId):
-
-        copy = self.copy_and_read()
-        attribute = self.attributes[attributeId]
-
-        def transformIntoDayOfTheYear(instance: Instance):
-            return instance.getValue(attributeId).timetuple().tm_yday
-
-        copy = self.addAttribute(
-            attributeId + "_DayOfTheYear",
-            transformIntoDayOfTheYear,
-            attribute.label + " (day of the year)",
-        )
-
-        copy.attributes[attributeId + "_DayOfTheYear"].python_data_type = int
-        copy.attributes[
-            attributeId + "_DayOfTheYear"
-        ].simple_data_type = simple_type_numeric
-        copy.attributes[attributeId + "_DayOfTheYear"].data_type = type_integer
-
-        return copy.provide_statistics()
-
-    def addWeekDayAttribute(self, attributeId):
-
-        copy = self.copy_and_read()
-        attribute = self.attributes[attributeId]
-
-        def transformIntoWeekDay(instance: Instance) -> str:
-            return instance.getValue(attributeId).strftime("%A")
-
-        copy = self.addAttribute(
-            attributeId + "_weekDay",
-            transformIntoWeekDay,
-            attribute.label + " (week day)",
-        )
-
-        copy.attributes[attributeId + "_weekDay"].python_data_type = str
-        copy.attributes[attributeId + "_weekDay"].simple_data_type = simple_type_string
-        copy.attributes[attributeId + "_weekDay"].data_type = type_string
-
-        return copy.provide_statistics()
-
     def dropMissingValues(self, attribute):
         copy = self.copy_and_read()
         copy.data.dropna(subset=[attribute], inplace=True)
@@ -438,6 +369,23 @@ class Dataset:
         self.attributes[attribute_id] = attribute
 
         return attribute
+
+    def transform(self, attributeId, transformFunc):
+
+        attribute = self.attributes[attributeId]
+
+        copy = self.copy_and_read()
+
+        copy.data = self.add_attribute_data(attributeId, transformFunc).data
+        self.drop_column_description(attribute)
+
+        data_type = get_python_type_from_pandas_type(
+            copy.data[attributeId].convert_dtypes().dtype
+        )
+
+        copy.add_column_description(attributeId, attribute.label, data_type, type_float)
+
+        return copy.provide_statistics()
 
     def transformGeometryToVector(self, attributeId):
 
