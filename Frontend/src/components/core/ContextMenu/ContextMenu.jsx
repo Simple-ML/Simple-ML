@@ -1,7 +1,7 @@
 //node_module
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import PropTypes, { string } from 'prop-types';
 import { Backdrop, TextField, Tooltip } from '@mui/material';
 //redux
 import InferenceCreator from './InferenceCreator';
@@ -12,8 +12,21 @@ import XtextServices from '../../../serverConnection/XtextServices';
 import ContextMenuStyle from './contextMenu.module.scss';
 //icons
 import editIcon from '../../../images/contextToolbar/Edit.svg';
+import linearRegressionIcon from '../../../images/contextToolbar/Linear.svg';
+import decisionTreeClassifierIcon from '../../../images/contextToolbar/DecisionTree.svg';
+import supportVectorMachineClassifierIcon from '../../../images/contextToolbar/Neuro.svg';
 
 class ContextMenu extends React.Component {
+
+    mapNameIcon = {
+        'LinearRegression': linearRegressionIcon,
+        'LinearRegressionModel': linearRegressionIcon,
+        'DecisionTreeClassifier': decisionTreeClassifierIcon,
+        'DecisionTreeClassifierModel': decisionTreeClassifierIcon,
+        'SupportVectorMachineClassifier': supportVectorMachineClassifierIcon,
+        'SupportVectorMachineClassifierModel': supportVectorMachineClassifierIcon,
+    }
+
     constructor(props) {
         super(props);
 
@@ -50,12 +63,17 @@ class ContextMenu extends React.Component {
 
         if(context?.emfReference?.id + '' === context2?.frontendId) {
             context2.proposals?.forEach((item) => {
+                console.log('ML test item: ' + context2?.frontendId + ' -> ' + JSON.stringify(item));
+
+                const icon = this.mapNameIcon[item.name] ?? editIcon;
+
                 result.push({
                     metaData: {
-                        icon: editIcon,
+                        icon: icon,
                         text: item.name,
                         classReference: item.containingClassName,
-                        toolTip: item.description
+                        toolTip: item.description,
+						needInputData: true
                     },
                     func: (placeholderName) => {
                         XtextServices.createEntity({
@@ -119,14 +137,13 @@ class ContextMenu extends React.Component {
                                         <button className={ContextMenuStyle["toolbar-button"]}
                                             disabled={item.metaData.disabled()}
                                             onClick={() => {
-                                                if(i < inferedStatic.length) {
+                                                this.setState({
+                                                    contextButtonFunc: item.func,
+                                                    isBackdropActive: item.metaData.needInputData === true
+                                                })
+                                                if (item.metaData.needInputData === false) {
                                                     item.func();
                                                     this.props.closeContextMenu();
-                                                } else {
-                                                    this.setState({
-                                                        contextButtonFunc: item.func,
-                                                        isBackdropActive: i < inferedStatic.length ? false : true
-                                                    })
                                                 }
                                             }
                                         }>

@@ -1,8 +1,14 @@
+.MuiBackdrop-root {
+  margin-left: 60px;
+  margin-top: 60px;
+}
 .data-view {
+  padding-top: 30px;
   height: 100%;
   width: 100%;
 }
 .MuiTabPanel-root {
+  background-color: #F2F2F2;
   height: 100%;
   overflow: scroll;
 }
@@ -14,17 +20,71 @@
   justify-content: right;
 }
 
+.MuiIconButton-root {
+  padding-top: 40px;
+}
+
+.MuiButtonBase-root {
+  min-height: 30px !important;
+}
 .table-view {
-  display: flex;
+  display: block;
   height: 100%;
   width: 100%;
 }
 
 .chart-view {
-  margin-bottom: 100px;
+  width: 100%;
+}
+
+.chart-summary {
+  float: left;
+  width: 80vw;
+  padding-left: 20px;
+  padding-bottom: 200px;
 }
 
 .chart-filter {
+  float: left;
+  width: 400px;
+  // background-color: #ffffff;
+  color: #000000;
+}
+
+.dataset-title-group {
+  padding-left: 30px;
+  float: left;
+  display: flex;
   background-color: #ffffff;
   color: #000000;
+  display: block;
+}
+.dataset-title {
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+.dataset-count {
+  font-size: 0.8em;
+  font-weight: 500;
+  float: left;
+  justify-content: left;
+  padding-top: 5px;
+}
+
+.dataset-table-sub-group {
+  float: right;
+  display: flex;
+  color: #000000;
+  display: block;
+}
+.dataset-table-sub-group.dataset-count {
+  font-size: 0.8em;
+  font-weight: 500;
+  padding-top: 5px;
+}
+
+.MuiCheckbox-colorPrimary {
+  margin-right: 5px !important;
+  color: #E84E1A !important;
 }

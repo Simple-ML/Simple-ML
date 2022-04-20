@@ -64,6 +64,7 @@ const deletionMxCellVertex = (context) => {
 const deletionMxCellVertexMetaData = {
     text: 'Generate',
     icon: deleteIcon,
+    needInputData: false,
     disabled: disabledBecauseEditingNotAllowed
 };
 
