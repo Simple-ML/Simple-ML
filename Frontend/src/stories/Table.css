@@ -1,0 +1,31 @@
+.MuiTableCell-head {
+    position: relative;
+    vertical-align: top;
+    border-color: #BDBDBD;
+    border-style: solid;
+    border-width: 2px;
+    cursor: pointer;
+}
+
+.MuiTableCell-head:hover {
+    background-color: #F2F2F2;
+}
+
+.MuiTableCell-head img {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.MuiTableCell-head img:hover {
+    /*background-color: #ED714A;*/
+    border-radius: 4px;
+    filter:grayscale(100%);
+}
+
+.MuiTableRow-root {
+    border-color: #BDBDBD;
+    border-style: solid;
+    border-width: 2px;
+
+}
