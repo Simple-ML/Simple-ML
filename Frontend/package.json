@@ -29,7 +29,7 @@
     "mxgraph-js": "^1.0.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
-    "react-bootstrap-table-next": "^3.2.1",
+    "react-bootstrap-table-next": "^4.0.3",
     "react-bootstrap-table2-filter": "^1.2.0",
     "react-dom": "^16.8.6",
     "react-golden-layout": "^1.0.6",
