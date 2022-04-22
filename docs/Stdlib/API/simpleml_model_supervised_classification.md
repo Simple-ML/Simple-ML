@@ -48,7 +48,7 @@ Train the model given a dataset of features and a dataset of labels
 <a name='class-DecisionTreeClassifierModel'/>
 
 ## Class `DecisionTreeClassifierModel`
-_No description available._
+A trained decision tree classification model.
 
 **Constructor parameters:** _None expected._
 
@@ -97,7 +97,7 @@ Train the model given a dataset of features and a dataset of labels
 <a name='class-RandomForestClassifierModel'/>
 
 ## Class `RandomForestClassifierModel`
-_No description available._
+A trained random forest classification model.
 
 **Constructor parameters:** _None expected._
 
@@ -150,7 +150,7 @@ Train the model given a dataset of features and a dataset of labels
 <a name='class-SupportVectorMachineClassifierModel'/>
 
 ## Class `SupportVectorMachineClassifierModel`
-_No description available._
+A trained SVM classification model.
 
 **Constructor parameters:** _None expected._
 

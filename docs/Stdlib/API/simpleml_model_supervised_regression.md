@@ -50,7 +50,7 @@ Train the model given a dataset of features and a dataset of labels
 <a name='class-DecisionTreeRegressorModel'/>
 
 ## Class `DecisionTreeRegressorModel`
-_No description available._
+A trained decision tree regression model.
 
 **Constructor parameters:** _None expected._
 
@@ -138,7 +138,7 @@ Train the model given a dataset of features and a dataset of labels
 <a name='class-RandomForestRegressorModel'/>
 
 ## Class `RandomForestRegressorModel`
-_No description available._
+A trained random forest regression model.
 
 **Constructor parameters:** _None expected._
 
@@ -181,7 +181,7 @@ Train the model given a dataset of features and a dataset of labels
 <a name='class-RidgeRegressionModel'/>
 
 ## Class `RidgeRegressionModel`
-_No description available._
+A trained ridge regression model.
 
 **Constructor parameters:** _None expected._
 
