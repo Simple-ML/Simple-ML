@@ -14,11 +14,10 @@
 
 * [simpleml.dataset](./simpleml_dataset.md)
 * [simpleml.lang](./simpleml_lang.md)
-* [simpleml.metrics.classification](./simpleml_metrics_classification.md)
-* [simpleml.metrics.regression](./simpleml_metrics_regression.md)
+* [simpleml.metrics](./simpleml_metrics.md)
 * [simpleml.model](./simpleml_model.md)
-* [simpleml.model.classification](./simpleml_model_classification.md)
-* [simpleml.model.regression](./simpleml_model_regression.md)
+* [simpleml.model.supervised.classification](./simpleml_model_supervised_classification.md)
+* [simpleml.model.supervised.regression](./simpleml_model_supervised_regression.md)
 
 ----------
 

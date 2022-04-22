@@ -24,16 +24,6 @@ _No description available._
 
 **Constructor:** _Class has no constructor._
 
-### `fit` (Instance Method )
-_No description available._
-
-**Parameters:**
-* `features: Dataset` - _No description available._
-* `target: Dataset` - _No description available._
-
-**Results:**
-* `trainedModel: Model` - _No description available._
-
 
 ----------
 
@@ -43,15 +33,6 @@ _No description available._
 _No description available._
 
 **Constructor:** _Class has no constructor._
-
-### `predict` (Instance Method )
-_No description available._
-
-**Parameters:**
-* `features: Dataset` - _No description available._
-
-**Results:**
-* `results: Dataset` - _No description available._
 
 
 ----------
