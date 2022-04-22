@@ -58,3 +58,9 @@ Note: This solution requires that Git itself can clone this private repository f
     docker run --name simpleml-dsl -d --rm -p 8080:8080 simpleml-dsl
     ```
 1. Visit [localhost:8080/simpleml](http://localhost:8080/simpleml) in your Browser to check that everything worked.
+
+### Generating the Stdlib documentation
+
+```shell
+./gradlew generateStdlibDocumentation
+```
