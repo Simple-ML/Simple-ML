@@ -15,6 +15,12 @@ import editIcon from '../../../images/contextToolbar/Edit.svg';
 import linearRegressionIcon from '../../../images/contextToolbar/Linear.svg';
 import decisionTreeClassifierIcon from '../../../images/contextToolbar/DecisionTree.svg';
 import supportVectorMachineClassifierIcon from '../../../images/contextToolbar/Neuro.svg';
+import loadDatasetIcon from '../../../images/contextToolbar/LoadDataset.svg';
+import joinIcon from '../../../images/contextToolbar/Join.svg';
+import splitIcon from '../../../images/contextToolbar/Split.svg';
+import predictIcon from '../../../images/contextToolbar/Prediction.svg';
+import exportIcon from '../../../images/contextToolbar/Export.svg';
+import regressionIcon from '../../../images/contextToolbar/Regression.svg';
 
 class ContextMenu extends React.Component {
 
@@ -25,7 +31,14 @@ class ContextMenu extends React.Component {
         'DecisionTreeClassifierModel': decisionTreeClassifierIcon,
         'SupportVectorMachineClassifier': supportVectorMachineClassifierIcon,
         'SupportVectorMachineClassifierModel': supportVectorMachineClassifierIcon,
-        'loadDataset': supportVectorMachineClassifierIcon,
+				'loadDataset': loadDatasetIcon,
+				'joinTwoDatasets': joinIcon,
+				'splitIntoTrainAndTest': splitIcon,
+				'splitIntoTrainAndTestAndLabels': splitIcon,
+				'predict': predictIcon,
+				'exportDataAsFile': exportIcon,
+				'RidgeRegression': regressionIcon,
+				'RidgeRegressionModel': regressionIcon,
     }
 
     constructor(props) {
