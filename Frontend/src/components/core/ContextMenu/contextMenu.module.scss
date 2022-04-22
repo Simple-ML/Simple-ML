@@ -3,6 +3,7 @@ $orange: rgb(232, 78, 26);
 $white: rgb(255, 255, 255);
 $gray: rgb(189, 189, 189);
 $black: rgb(0, 0, 0);
+$grayBckground: #cfcfcf;
 
 .toolbar {
   background-color: $white;
@@ -102,4 +103,12 @@ $black: rgb(0, 0, 0);
   justify-content: center;
   line-height: 36px;
   width: 115px;
+}
+
+.text-filter {
+	background-color: $grayBckground;
+	padding: 14px;
+	font-weight: 400;
+	font-size: 16px;
+	border: none;
 }

@@ -21,12 +21,18 @@ class ContextMenu extends React.Component {
 
         this.inferFromContextDynamically = this.inferFromContextDynamically.bind(this);
         this.prepareMetaData = this.prepareMetaData.bind(this);
+        this.filterList = this.filterList.bind(this);
 
         this.state = {
             contextButtonFunc: () => {},
             isBackdropActive: false,
-            placeholderName: ''
+            placeholderName: '',
+            searchTerm: ''
         };
+    }
+  
+    filterList(event) {
+      this.setState({searchTerm: event.target.value});
     }
 
     clearState = () => {
@@ -100,12 +106,12 @@ class ContextMenu extends React.Component {
         visible = visible ? 'visible' : 'hidden';
 
         return(
-            <div style={{visibility: visible}}>
+          <div style={{ visibility: visible }}>
                 <div className={ContextMenuStyle.toolbar}
-                     style={{top: posY, left: posX}}
-                     ref={this.myself}>
+                    style={{top: posY, left: posX}} ref={this.myself}>
+                    <input type={'text'} value={this.state.searchTerm} onChange={this.filterList} placeholder={'Search Action'} className={ContextMenuStyle["text-filter"]}></input>
                     {
-                        buttonMetaData.map((item, i) => {
+                        buttonMetaData.sort((a, b) => a.metaData.text.localeCompare(b.metaData.text)).filter(item => item.metaData.text.toLowerCase().includes(this.state.searchTerm.toLowerCase())).map((item, i) => {
                             return(
                                 <button className={ContextMenuStyle["toolbar-button"]}
                                     key={i}
