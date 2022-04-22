@@ -33,13 +33,16 @@ class Dataset {
     fun getRow(@Description("The number of the row to be retrieved") rowNumber: Int) -> @Description("The specified row") instance: Instance
 
     @Description("Add a new attribute to the dataset with values according to a transformation function")
-    fun addAttribute(@Description("The ID of the new attribute") newAttributeId: String, @Description("The transformation function.") transformFunc: (instance: Instance) -> value: Any, @Description("The name of the new attribute.") newAttributeLabel: String) -> @Description("The updated dataset") dataset: Dataset
+    fun addAttribute(@Description("The ID of the new attribute") newAttributeId: String, @Description("The attribute transformer to be used.") transformer: AttributeTransformer, @Description("The name of the new attribute.") newAttributeLabel: String? = null) -> @Description("The updated dataset") dataset: Dataset
 
     @Description("Drops instances with missing values in the specified attribute")
     fun dropMissingValues(@Description("Attribute whose empty values are dropped") attribute: String) -> @Description("The updated dataset") dataset: Dataset
 
+    @Description("Drops instances with missing values")
+    fun dropAllMissingValues() -> @Description("The updated dataset") dataset: Dataset
+
     @Description("Update existing attribute with values according to a transformation function")
-    fun transform(@Description("The ID of the attribute") attributeId: String, @Description("The transformation function.") transformFunc: (instance: Instance) -> value: Any) -> @Description("The updated dataset") dataset: Dataset
+    fun transform(@Description("The ID of the attribute to be replaced") attributeId: String, @Description("The attribute transformer to be used") transformer: AttributeTransformer) -> @Description("The updated dataset") dataset: Dataset
 
     @Description("Convert all column values into numbers")
     fun transformDatatypes() -> @Description("The updated dataset") dataset: Dataset

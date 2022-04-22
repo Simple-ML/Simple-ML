@@ -1,9 +1,14 @@
-package simpleml.metrics.classification
+package simpleml.metrics
 
 import simpleml.dataset.Dataset
 
+@Description("Compute the accuracy between two datasets")
 fun accuracy(yTrue: Dataset, yPred: Dataset) -> score: Float
+@Description("Compute the balanced accuracy between two datasets")
 fun balancedAccuracy(yTrue: Dataset, yPred: Dataset) -> score: Float
+@Description("Compute the average precision between two datasets")
 fun averagePrecision(yTrue: Dataset, yPred: Dataset) -> score: Float
+@Description("Compute the precision between two datasets")
 fun precision(yTrue: Dataset, yPred: Dataset) -> score: Float
+@Description("Compute the recall between two datasets")
 fun recall(yTrue: Dataset, yPred: Dataset) -> score: Float
