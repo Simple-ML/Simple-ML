@@ -2,14 +2,26 @@ package simpleml.dataset
 
 import simpleml.dataset.Instance
 
-@Description("The transform function that returns timestamp for each instance in date attribute")
-fun transformIntoTimestamp(@Description("The specified row") instance: Instance) -> @Description("The converted value from date to timestamp") timestamp: Float
 
-@Description("The transform function that extract and returns weekday from each instance in date attribute")
-fun transformIntoWeekDay(@Description("The specified row") instance: Instance) -> @Description("The extracted value for day of the week") weekDay: String
+class AttributeTransformer {
+}
 
-@Description("The transform function that extract and returns day of the year from each instance in date attribute")
-fun transformIntoDayOfTheYear(@Description("The specified row") instance: Instance) -> @Description("The extracted value for day of the year") dayOfTheYear: Int
+@Description("An attribute transformer to convert a date attribute to whether the date is on the weekend or not.")
+class WeekendTransformer (
+	@Description("The ID of the date attribute.") attributeId: String
+) sub AttributeTransformer {}
 
-@Description("The transform function that returns either True (is weekend) or False (not weekend) for each instance in date attribute")
-fun transformIntoIsWeekend(@Description("The specified row") instance: Instance) -> @Description("True of False value for isWeekend") isWeekend: Boolean
+@Description("An attribute transformer to convert a date attribute to its day in the year.")
+class DayOfTheYearTransformer (
+	@Description("The ID of the date attribute.") attributeId: String)
+sub AttributeTransformer {}
+
+@Description("An attribute transformer to convert a date attribute to its weekday (as a string).")
+class WeekDayTransformer(
+	@Description("The ID of the date attribute.") attributeId: String)
+sub AttributeTransformer {}
+
+@Description("An attribute transformer to convert a date attribute to its timestamp.")
+class TimestampTransformer (
+	@Description("The ID of the date attribute.") attributeId: String)
+sub AttributeTransformer {}

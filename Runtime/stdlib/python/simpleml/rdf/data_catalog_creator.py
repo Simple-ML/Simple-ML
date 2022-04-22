@@ -20,8 +20,8 @@ for filename in os.listdir(metadataFolderPath):
     if "TrafficWarnings.tsv" in filename:
         continue
 
-    # if "SpeedAverages.tsv" not in filename:
-    #    continue
+    if "FloatingCarData.tsv" not in filename and "SpeedAverages.tsv" not in filename:
+        continue
 
     print(filename)
 

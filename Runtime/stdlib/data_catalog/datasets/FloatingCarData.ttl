@@ -1,23 +1,23 @@
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
-@prefix dc: <http://purl.org/dc/terms/> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix schema: <http://schema.org/> .
 @prefix seas: <https://w3id.org/seas/> .
 @prefix sml: <https://simple-ml.de/resource/> .
-@prefix sml-mob: <https://simple-ml.de/resource/mobility/> .
+@prefix smlMobility: <https://simple-ml.de/resource/mobility/> .
+@prefix so: <http://schema.org/> .
 @prefix time: <http://www.w3.org/2006/time#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 sml:simple-ml dcat:dataset sml:FloatingCarData .
 
 sml:FloatingCarData a dcat:Dataset ;
-    dc:description "Floating Car Data aus Niedersachsen."@de,
+    dct:description "Floating Car Data aus Niedersachsen."@de,
         "Floating car data recorded in Lower Saxony, Germany."@en ;
-    dc:identifier "FloatingCarData" ;
-    dc:subject "Verkehr"@de,
+    dct:identifier "FloatingCarData" ;
+    dct:subject "Verkehr"@de,
         "Traffic"@en ;
-    dc:title "Floating Car Data aus Niedersachsen"@de,
+    dct:title "Floating Car Data aus Niedersachsen"@de,
         "Floating car data recorded in Lower Saxony, Germany"@en ;
     sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
     sml:creatorId "0"^^xsd:nonNegativeInteger ;
@@ -37,7 +37,7 @@ sml:FloatingCarData a dcat:Dataset ;
     sml:numberOfInstances "10000"^^xsd:nonNegativeInteger .
 
 sml:FloatingCarDataAttributeGeometry a sml:Attribute ;
-    dc:identifier "geometry" ;
+    dct:identifier "geometry" ;
     sml:columnIndex "10"^^xsd:nonNegativeInteger ;
     sml:hasSpatialDistribution sml:FloatingCarDataAttributeGeometrySpatialDistribution ;
     sml:isVirtual true ;
@@ -328,11 +328,11 @@ sml:FloatingCarDataAttributeGeometrySpatialDistributionLocationAreaDeNi9 a sml:S
     sml:numberOfInstancesInRegion "160"^^xsd:nonNegativeInteger .
 
 sml:FloatingCarDataAttributeId a sml:Attribute ;
-    dc:identifier "id" ;
+    dct:identifier "id" ;
     sml:columnIndex "0"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/FloatingCarDataPoint> ;
-    sml:mapsToProperty sml-mob:carId ;
+    sml:mapsToProperty smlMobility:carId ;
     sml:valueType xsd:string ;
     seas:evaluation sml:FloatingCarDataAttributeIdAverageNumberOfCapitalisedValues,
         sml:FloatingCarDataAttributeIdAverageNumberOfCharacters,
@@ -430,11 +430,11 @@ sml:FloatingCarDataAttributeIdValueDistributionValue9 a sml:ValueDistributionVal
     sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
 
 sml:FloatingCarDataAttributeLatitude a sml:Attribute ;
-    dc:identifier "latitude" ;
+    dct:identifier "latitude" ;
     sml:columnIndex "5"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/StreetSegment> ;
-    sml:mapsToProperty schema:latitude ;
+    sml:mapsToProperty so:latitude ;
     sml:valueType xsd:double ;
     seas:evaluation sml:FloatingCarDataAttributeLatitudeAverageNumberOfDigits,
         sml:FloatingCarDataAttributeLatitudeDecile0,
@@ -626,11 +626,11 @@ sml:FloatingCarDataAttributeLatitudeStandardDeviation a seas:DistributionStandar
     seas:evaluatedValue "0.5432745189943567"^^xsd:float .
 
 sml:FloatingCarDataAttributeLongitude a sml:Attribute ;
-    dc:identifier "longitude" ;
+    dct:identifier "longitude" ;
     sml:columnIndex "4"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/StreetSegment> ;
-    sml:mapsToProperty schema:longitude ;
+    sml:mapsToProperty so:longitude ;
     sml:valueType xsd:double ;
     seas:evaluation sml:FloatingCarDataAttributeLongitudeAverageNumberOfDigits,
         sml:FloatingCarDataAttributeLongitudeDecile0,
@@ -822,48 +822,128 @@ sml:FloatingCarDataAttributeLongitudeStandardDeviation a seas:DistributionStanda
     seas:evaluatedValue "0.9602829403981782"^^xsd:float .
 
 sml:FloatingCarDataAttributeMaximumSpeed a sml:Attribute ;
-    dc:identifier "maximum_speed" ;
+    dct:identifier "maximum_speed" ;
     sml:columnIndex "9"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/SpeedLimit> ;
-    sml:mapsToProperty sml-mob:speed ;
-    sml:valueType xsd:string ;
-    seas:evaluation sml:FloatingCarDataAttributeMaximumSpeedAverageNumberOfCapitalisedValues,
-        sml:FloatingCarDataAttributeMaximumSpeedAverageNumberOfCharacters,
-        sml:FloatingCarDataAttributeMaximumSpeedAverageNumberOfDigits,
-        sml:FloatingCarDataAttributeMaximumSpeedAverageNumberOfSpecialCharacters,
-        sml:FloatingCarDataAttributeMaximumSpeedAverageNumberOfTokens,
+    sml:mapsToProperty smlMobility:speed ;
+    sml:valueType xsd:double ;
+    seas:evaluation sml:FloatingCarDataAttributeMaximumSpeedAverageNumberOfDigits,
+        sml:FloatingCarDataAttributeMaximumSpeedDecile0,
+        sml:FloatingCarDataAttributeMaximumSpeedDecile1,
+        sml:FloatingCarDataAttributeMaximumSpeedDecile2,
+        sml:FloatingCarDataAttributeMaximumSpeedDecile3,
+        sml:FloatingCarDataAttributeMaximumSpeedDecile4,
+        sml:FloatingCarDataAttributeMaximumSpeedHistogram0,
+        sml:FloatingCarDataAttributeMaximumSpeedHistogram1,
+        sml:FloatingCarDataAttributeMaximumSpeedHistogram2,
+        sml:FloatingCarDataAttributeMaximumSpeedHistogram3,
+        sml:FloatingCarDataAttributeMaximumSpeedHistogram4,
+        sml:FloatingCarDataAttributeMaximumSpeedHistogram5,
+        sml:FloatingCarDataAttributeMaximumSpeedHistogram6,
+        sml:FloatingCarDataAttributeMaximumSpeedHistogram7,
+        sml:FloatingCarDataAttributeMaximumSpeedHistogram8,
+        sml:FloatingCarDataAttributeMaximumSpeedHistogram9,
+        sml:FloatingCarDataAttributeMaximumSpeedMaximum,
+        sml:FloatingCarDataAttributeMaximumSpeedMean,
+        sml:FloatingCarDataAttributeMaximumSpeedMedian,
+        sml:FloatingCarDataAttributeMaximumSpeedMinimum,
         sml:FloatingCarDataAttributeMaximumSpeedNumberOfDistinctValues,
         sml:FloatingCarDataAttributeMaximumSpeedNumberOfInvalidValues,
         sml:FloatingCarDataAttributeMaximumSpeedNumberOfNullValues,
         sml:FloatingCarDataAttributeMaximumSpeedNumberOfValidNonNullValues,
         sml:FloatingCarDataAttributeMaximumSpeedNumberOfValidValues,
-        sml:FloatingCarDataAttributeMaximumSpeedNumberOfValues ;
-    seas:valueDistributionValue sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue0,
-        sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue1,
-        sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue2,
-        sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue3,
-        sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue4,
-        sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue5,
-        sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue6,
-        sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue7,
-        sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue8,
-        sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue9 .
-
-sml:FloatingCarDataAttributeMaximumSpeedAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
-    seas:evaluatedValue "0.0"^^xsd:float .
-
-sml:FloatingCarDataAttributeMaximumSpeedAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
-    seas:evaluatedValue "4.5083"^^xsd:float .
+        sml:FloatingCarDataAttributeMaximumSpeedNumberOfValues,
+        sml:FloatingCarDataAttributeMaximumSpeedQuartile0,
+        sml:FloatingCarDataAttributeMaximumSpeedQuartile1,
+        sml:FloatingCarDataAttributeMaximumSpeedQuartile2,
+        sml:FloatingCarDataAttributeMaximumSpeedQuartile3,
+        sml:FloatingCarDataAttributeMaximumSpeedStandardDeviation .
 
 sml:FloatingCarDataAttributeMaximumSpeedAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
     seas:evaluatedValue "3.5083"^^xsd:float .
 
-sml:FloatingCarDataAttributeMaximumSpeedAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
-    seas:evaluatedValue "1.0"^^xsd:float .
+sml:FloatingCarDataAttributeMaximumSpeedDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "6.0"^^xsd:float ;
+    seas:rank 0 .
 
-sml:FloatingCarDataAttributeMaximumSpeedAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
-    seas:evaluatedValue "2.0"^^xsd:float .
+sml:FloatingCarDataAttributeMaximumSpeedDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "50.0"^^xsd:float ;
+    seas:rank 1 .
+
+sml:FloatingCarDataAttributeMaximumSpeedDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "70.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:FloatingCarDataAttributeMaximumSpeedDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "100.0"^^xsd:float ;
+    seas:rank 3 .
+
+sml:FloatingCarDataAttributeMaximumSpeedDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "130.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:FloatingCarDataAttributeMaximumSpeedHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "18.4"^^xsd:float ;
+    sml:bucketMinimum "6.0"^^xsd:float ;
+    sml:instancesInBucket "14"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeMaximumSpeedHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "30.8"^^xsd:float ;
+    sml:bucketMinimum "18.4"^^xsd:float ;
+    sml:instancesInBucket "473"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeMaximumSpeedHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "43.2"^^xsd:float ;
+    sml:bucketMinimum "30.8"^^xsd:float ;
+    sml:instancesInBucket "42"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeMaximumSpeedHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "55.6"^^xsd:float ;
+    sml:bucketMinimum "43.2"^^xsd:float ;
+    sml:instancesInBucket "2684"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeMaximumSpeedHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "68.0"^^xsd:float ;
+    sml:bucketMinimum "55.6"^^xsd:float ;
+    sml:instancesInBucket "356"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeMaximumSpeedHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "80.4"^^xsd:float ;
+    sml:bucketMinimum "68.0"^^xsd:float ;
+    sml:instancesInBucket "1343"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeMaximumSpeedHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "92.8"^^xsd:float ;
+    sml:bucketMinimum "80.4"^^xsd:float ;
+    sml:instancesInBucket "1"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeMaximumSpeedHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "105.2"^^xsd:float ;
+    sml:bucketMinimum "92.8"^^xsd:float ;
+    sml:instancesInBucket "1168"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeMaximumSpeedHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "117.60000000000001"^^xsd:float ;
+    sml:bucketMinimum "105.2"^^xsd:float ;
+    sml:instancesInBucket "98"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeMaximumSpeedHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "130.0"^^xsd:float ;
+    sml:bucketMinimum "117.60000000000001"^^xsd:float ;
+    sml:instancesInBucket "3821"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeMaximumSpeedMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "130.0"^^xsd:float .
+
+sml:FloatingCarDataAttributeMaximumSpeedMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "88.9521"^^xsd:float .
+
+sml:FloatingCarDataAttributeMaximumSpeedMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "100.0"^^xsd:float .
+
+sml:FloatingCarDataAttributeMaximumSpeedMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue "6.0"^^xsd:float .
 
 sml:FloatingCarDataAttributeMaximumSpeedNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
     seas:evaluatedValue 17 .
@@ -883,52 +963,31 @@ sml:FloatingCarDataAttributeMaximumSpeedNumberOfValidValues a sml:DistributionNu
 sml:FloatingCarDataAttributeMaximumSpeedNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
     seas:evaluatedValue 10000 .
 
-sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue0 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "130.0" ;
-    sml:numberOfInstancesOfValue "3197"^^xsd:nonNegativeInteger .
+sml:FloatingCarDataAttributeMaximumSpeedQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "6.0"^^xsd:float ;
+    seas:rank 0 .
 
-sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue1 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "50.0" ;
-    sml:numberOfInstancesOfValue "2684"^^xsd:nonNegativeInteger .
+sml:FloatingCarDataAttributeMaximumSpeedQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "50.0"^^xsd:float ;
+    seas:rank 1 .
 
-sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue2 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "100.0" ;
-    sml:numberOfInstancesOfValue "1168"^^xsd:nonNegativeInteger .
+sml:FloatingCarDataAttributeMaximumSpeedQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "100.0"^^xsd:float ;
+    seas:rank 2 .
 
-sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue3 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "70.0" ;
-    sml:numberOfInstancesOfValue "704"^^xsd:nonNegativeInteger .
+sml:FloatingCarDataAttributeMaximumSpeedQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "130.0"^^xsd:float ;
+    seas:rank 3 .
 
-sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue4 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "80.0" ;
-    sml:numberOfInstancesOfValue "639"^^xsd:nonNegativeInteger .
-
-sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue5 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "120.0" ;
-    sml:numberOfInstancesOfValue "624"^^xsd:nonNegativeInteger .
-
-sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue6 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "30.0" ;
-    sml:numberOfInstancesOfValue "411"^^xsd:nonNegativeInteger .
-
-sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue7 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "60.0" ;
-    sml:numberOfInstancesOfValue "355"^^xsd:nonNegativeInteger .
-
-sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue8 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "110.0" ;
-    sml:numberOfInstancesOfValue "98"^^xsd:nonNegativeInteger .
-
-sml:FloatingCarDataAttributeMaximumSpeedValueDistributionValue9 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "20.0" ;
-    sml:numberOfInstancesOfValue "62"^^xsd:nonNegativeInteger .
+sml:FloatingCarDataAttributeMaximumSpeedStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "35.7215762346914"^^xsd:float .
 
 sml:FloatingCarDataAttributeOsmId a sml:Attribute ;
-    dc:identifier "osm_id" ;
+    dct:identifier "osm_id" ;
     sml:columnIndex "6"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/StreetSegment> ;
-    sml:mapsToProperty sml-mob:osmId ;
+    sml:mapsToProperty smlMobility:osmId ;
     sml:valueType xsd:string ;
     seas:evaluation sml:FloatingCarDataAttributeOsmIdAverageNumberOfCapitalisedValues,
         sml:FloatingCarDataAttributeOsmIdAverageNumberOfCharacters,
@@ -1026,48 +1085,154 @@ sml:FloatingCarDataAttributeOsmIdValueDistributionValue9 a sml:ValueDistribution
     sml:numberOfInstancesOfValue "13"^^xsd:nonNegativeInteger .
 
 sml:FloatingCarDataAttributeSpeed a sml:Attribute ;
-    dc:identifier "speed" ;
+    dct:identifier "speed" ;
     sml:columnIndex "3"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/FloatingCarDataPoint> ;
-    sml:mapsToProperty sml-mob:speed ;
-    sml:valueType xsd:string ;
-    seas:evaluation sml:FloatingCarDataAttributeSpeedAverageNumberOfCapitalisedValues,
-        sml:FloatingCarDataAttributeSpeedAverageNumberOfCharacters,
-        sml:FloatingCarDataAttributeSpeedAverageNumberOfDigits,
-        sml:FloatingCarDataAttributeSpeedAverageNumberOfSpecialCharacters,
-        sml:FloatingCarDataAttributeSpeedAverageNumberOfTokens,
+    sml:mapsToProperty smlMobility:speed ;
+    sml:valueType xsd:double ;
+    seas:evaluation sml:FloatingCarDataAttributeSpeedAverageNumberOfDigits,
+        sml:FloatingCarDataAttributeSpeedDecile0,
+        sml:FloatingCarDataAttributeSpeedDecile1,
+        sml:FloatingCarDataAttributeSpeedDecile2,
+        sml:FloatingCarDataAttributeSpeedDecile3,
+        sml:FloatingCarDataAttributeSpeedDecile4,
+        sml:FloatingCarDataAttributeSpeedDecile5,
+        sml:FloatingCarDataAttributeSpeedDecile6,
+        sml:FloatingCarDataAttributeSpeedDecile7,
+        sml:FloatingCarDataAttributeSpeedDecile8,
+        sml:FloatingCarDataAttributeSpeedDecile9,
+        sml:FloatingCarDataAttributeSpeedHistogram0,
+        sml:FloatingCarDataAttributeSpeedHistogram1,
+        sml:FloatingCarDataAttributeSpeedHistogram2,
+        sml:FloatingCarDataAttributeSpeedHistogram3,
+        sml:FloatingCarDataAttributeSpeedHistogram4,
+        sml:FloatingCarDataAttributeSpeedHistogram5,
+        sml:FloatingCarDataAttributeSpeedHistogram6,
+        sml:FloatingCarDataAttributeSpeedHistogram7,
+        sml:FloatingCarDataAttributeSpeedHistogram8,
+        sml:FloatingCarDataAttributeSpeedHistogram9,
+        sml:FloatingCarDataAttributeSpeedMaximum,
+        sml:FloatingCarDataAttributeSpeedMean,
+        sml:FloatingCarDataAttributeSpeedMedian,
+        sml:FloatingCarDataAttributeSpeedMinimum,
         sml:FloatingCarDataAttributeSpeedNumberOfDistinctValues,
         sml:FloatingCarDataAttributeSpeedNumberOfInvalidValues,
         sml:FloatingCarDataAttributeSpeedNumberOfNullValues,
         sml:FloatingCarDataAttributeSpeedNumberOfValidNonNullValues,
         sml:FloatingCarDataAttributeSpeedNumberOfValidValues,
-        sml:FloatingCarDataAttributeSpeedNumberOfValues ;
-    seas:valueDistributionValue sml:FloatingCarDataAttributeSpeedValueDistributionValue0,
-        sml:FloatingCarDataAttributeSpeedValueDistributionValue1,
-        sml:FloatingCarDataAttributeSpeedValueDistributionValue2,
-        sml:FloatingCarDataAttributeSpeedValueDistributionValue3,
-        sml:FloatingCarDataAttributeSpeedValueDistributionValue4,
-        sml:FloatingCarDataAttributeSpeedValueDistributionValue5,
-        sml:FloatingCarDataAttributeSpeedValueDistributionValue6,
-        sml:FloatingCarDataAttributeSpeedValueDistributionValue7,
-        sml:FloatingCarDataAttributeSpeedValueDistributionValue8,
-        sml:FloatingCarDataAttributeSpeedValueDistributionValue9 .
-
-sml:FloatingCarDataAttributeSpeedAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
-    seas:evaluatedValue "0.0"^^xsd:float .
-
-sml:FloatingCarDataAttributeSpeedAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
-    seas:evaluatedValue "1.946"^^xsd:float .
+        sml:FloatingCarDataAttributeSpeedNumberOfValues,
+        sml:FloatingCarDataAttributeSpeedQuartile0,
+        sml:FloatingCarDataAttributeSpeedQuartile1,
+        sml:FloatingCarDataAttributeSpeedQuartile2,
+        sml:FloatingCarDataAttributeSpeedQuartile3,
+        sml:FloatingCarDataAttributeSpeedQuartile4,
+        sml:FloatingCarDataAttributeSpeedStandardDeviation .
 
 sml:FloatingCarDataAttributeSpeedAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
-    seas:evaluatedValue "1.946"^^xsd:float .
+    seas:evaluatedValue "3.0533348179490036"^^xsd:float .
 
-sml:FloatingCarDataAttributeSpeedAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
+sml:FloatingCarDataAttributeSpeedDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:FloatingCarDataAttributeSpeedDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "12.0"^^xsd:float ;
+    seas:rank 1 .
+
+sml:FloatingCarDataAttributeSpeedDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "34.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:FloatingCarDataAttributeSpeedDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "52.0"^^xsd:float ;
+    seas:rank 3 .
+
+sml:FloatingCarDataAttributeSpeedDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "66.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:FloatingCarDataAttributeSpeedDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "78.0"^^xsd:float ;
+    seas:rank 5 .
+
+sml:FloatingCarDataAttributeSpeedDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "84.0"^^xsd:float ;
+    seas:rank 6 .
+
+sml:FloatingCarDataAttributeSpeedDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "88.0"^^xsd:float ;
+    seas:rank 7 .
+
+sml:FloatingCarDataAttributeSpeedDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "106.0"^^xsd:float ;
+    seas:rank 8 .
+
+sml:FloatingCarDataAttributeSpeedDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "192.0"^^xsd:float ;
+    seas:rank 9 .
+
+sml:FloatingCarDataAttributeSpeedHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "19.2"^^xsd:float ;
+    sml:bucketMinimum "0.0"^^xsd:float ;
+    sml:instancesInBucket "2365"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeSpeedHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "38.4"^^xsd:float ;
+    sml:bucketMinimum "19.2"^^xsd:float ;
+    sml:instancesInBucket "876"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeSpeedHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "57.599999999999994"^^xsd:float ;
+    sml:bucketMinimum "38.4"^^xsd:float ;
+    sml:instancesInBucket "1118"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeSpeedHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "76.8"^^xsd:float ;
+    sml:bucketMinimum "57.599999999999994"^^xsd:float ;
+    sml:instancesInBucket "1568"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeSpeedHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "96.0"^^xsd:float ;
+    sml:bucketMinimum "76.8"^^xsd:float ;
+    sml:instancesInBucket "2756"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeSpeedHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "115.19999999999999"^^xsd:float ;
+    sml:bucketMinimum "96.0"^^xsd:float ;
+    sml:instancesInBucket "557"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeSpeedHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "134.4"^^xsd:float ;
+    sml:bucketMinimum "115.19999999999999"^^xsd:float ;
+    sml:instancesInBucket "491"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeSpeedHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "153.6"^^xsd:float ;
+    sml:bucketMinimum "134.4"^^xsd:float ;
+    sml:instancesInBucket "185"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeSpeedHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "172.79999999999998"^^xsd:float ;
+    sml:bucketMinimum "153.6"^^xsd:float ;
+    sml:instancesInBucket "68"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeSpeedHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "192.0"^^xsd:float ;
+    sml:bucketMinimum "172.79999999999998"^^xsd:float ;
+    sml:instancesInBucket "16"^^xsd:nonNegativeInteger .
+
+sml:FloatingCarDataAttributeSpeedMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue "192.0"^^xsd:float .
+
+sml:FloatingCarDataAttributeSpeedMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "59.1223"^^xsd:float .
+
+sml:FloatingCarDataAttributeSpeedMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "66.0"^^xsd:float .
+
+sml:FloatingCarDataAttributeSpeedMinimum a seas:DistributionMinimumEvaluation ;
     seas:evaluatedValue "0.0"^^xsd:float .
-
-sml:FloatingCarDataAttributeSpeedAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
-    seas:evaluatedValue "1.0"^^xsd:float .
 
 sml:FloatingCarDataAttributeSpeedNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
     seas:evaluatedValue 184 .
@@ -1087,48 +1252,31 @@ sml:FloatingCarDataAttributeSpeedNumberOfValidValues a sml:DistributionNumberOfV
 sml:FloatingCarDataAttributeSpeedNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
     seas:evaluatedValue 10000 .
 
-sml:FloatingCarDataAttributeSpeedValueDistributionValue0 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "0" ;
-    sml:numberOfInstancesOfValue "1019"^^xsd:nonNegativeInteger .
+sml:FloatingCarDataAttributeSpeedQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "0.0"^^xsd:float ;
+    seas:rank 0 .
 
-sml:FloatingCarDataAttributeSpeedValueDistributionValue1 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "87" ;
-    sml:numberOfInstancesOfValue "362"^^xsd:nonNegativeInteger .
+sml:FloatingCarDataAttributeSpeedQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "22.0"^^xsd:float ;
+    seas:rank 1 .
 
-sml:FloatingCarDataAttributeSpeedValueDistributionValue2 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "83" ;
-    sml:numberOfInstancesOfValue "326"^^xsd:nonNegativeInteger .
+sml:FloatingCarDataAttributeSpeedQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "66.0"^^xsd:float ;
+    seas:rank 2 .
 
-sml:FloatingCarDataAttributeSpeedValueDistributionValue3 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "84" ;
-    sml:numberOfInstancesOfValue "287"^^xsd:nonNegativeInteger .
+sml:FloatingCarDataAttributeSpeedQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "86.0"^^xsd:float ;
+    seas:rank 3 .
 
-sml:FloatingCarDataAttributeSpeedValueDistributionValue4 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "88" ;
-    sml:numberOfInstancesOfValue "251"^^xsd:nonNegativeInteger .
+sml:FloatingCarDataAttributeSpeedQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "192.0"^^xsd:float ;
+    seas:rank 4 .
 
-sml:FloatingCarDataAttributeSpeedValueDistributionValue5 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "86" ;
-    sml:numberOfInstancesOfValue "203"^^xsd:nonNegativeInteger .
-
-sml:FloatingCarDataAttributeSpeedValueDistributionValue6 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "85" ;
-    sml:numberOfInstancesOfValue "193"^^xsd:nonNegativeInteger .
-
-sml:FloatingCarDataAttributeSpeedValueDistributionValue7 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "89" ;
-    sml:numberOfInstancesOfValue "177"^^xsd:nonNegativeInteger .
-
-sml:FloatingCarDataAttributeSpeedValueDistributionValue8 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "1" ;
-    sml:numberOfInstancesOfValue "152"^^xsd:nonNegativeInteger .
-
-sml:FloatingCarDataAttributeSpeedValueDistributionValue9 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "81" ;
-    sml:numberOfInstancesOfValue "150"^^xsd:nonNegativeInteger .
+sml:FloatingCarDataAttributeSpeedStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "39.4431834311319"^^xsd:float .
 
 sml:FloatingCarDataAttributeStreetName a sml:Attribute ;
-    dc:identifier "street_name" ;
+    dct:identifier "street_name" ;
     sml:columnIndex "8"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/StreetSegment> ;
@@ -1230,7 +1378,7 @@ sml:FloatingCarDataAttributeStreetNameValueDistributionValue9 a sml:ValueDistrib
     sml:numberOfInstancesOfValue "17"^^xsd:nonNegativeInteger .
 
 sml:FloatingCarDataAttributeStreetType a sml:Attribute ;
-    dc:identifier "street_type" ;
+    dct:identifier "street_type" ;
     sml:columnIndex "7"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/LocationType> ;
@@ -1332,7 +1480,7 @@ sml:FloatingCarDataAttributeStreetTypeValueDistributionValue9 a sml:ValueDistrib
     sml:numberOfInstancesOfValue "53"^^xsd:nonNegativeInteger .
 
 sml:FloatingCarDataAttributeTime a sml:Attribute ;
-    dc:identifier "time" ;
+    dct:identifier "time" ;
     sml:columnIndex "1"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:FloatingCarData_time_DateTimeDescription ;
@@ -1520,7 +1668,7 @@ sml:FloatingCarDataAttributeTimeQuartile4 a seas:DistributionQuartileEvaluation 
     seas:rank 4 .
 
 sml:FloatingCarDataAttributeVehicleType a sml:Attribute ;
-    dc:identifier "vehicle_type" ;
+    dct:identifier "vehicle_type" ;
     sml:columnIndex "2"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/FloatingCarData_sml_mobility/VehicleType> ;
@@ -1630,7 +1778,7 @@ sml:FloatingCarDataAttributeVehicleTypeStandardDeviation a seas:DistributionStan
     seas:evaluatedValue "0.5400619563454447"^^xsd:float .
 
 sml:FloatingCarDataFile a sml:TextFile ;
-    dc:format "text/comma-separated-values" ;
+    dct:format "text/comma-separated-values" ;
     csvw:header false ;
     csvw:null "" ;
     csvw:separator "," ;
@@ -1654,64 +1802,64 @@ sml:FloatingCarDataSampleHeader a sml:DatasetSampleLine ;
     sml:hasContent "Floating Car Data point (Car ID)	Date-Time description (in XSD Date-Time)	Vehicle type (identifier)	Floating Car Data point (has speed)	Street segment (longitude)	Street segment (latitude)	Street segment (OpenStreetMap ID)	Location type (identifier)	Street segment (label)	Speed limit (has speed)	geometry"^^xsd:string .
 
 sml:FloatingCarDataSampleLine0 a sml:DatasetSampleLine ;
-    sml:hasContent "71CF0144	2017-08-10 08:35:20+02:00	0	128	10.84447	52.30517	270374647	motorway		130.0"^^xsd:string ;
+    sml:hasContent "71CF0144	2017-08-10 08:35:20+02:00	0	128.0	10.84447	52.30517	270374647	motorway		130.0"^^xsd:string ;
     sml:rank 0 .
 
 sml:FloatingCarDataSampleLine1 a sml:DatasetSampleLine ;
-    sml:hasContent "042AB935	2017-08-07 11:53:02+02:00	1	2	8.139537	53.57256	504897055	service		50.0"^^xsd:string ;
+    sml:hasContent "042AB935	2017-08-07 11:53:02+02:00	1	2.0	8.139537	53.57256	504897055	service		50.0"^^xsd:string ;
     sml:rank 1 .
 
 sml:FloatingCarDataSampleLine2 a sml:DatasetSampleLine ;
-    sml:hasContent "EF6D4100	2017-08-31 01:00:49+02:00	1	34	9.577288	52.42384	4961217	motorway_link		80.0"^^xsd:string ;
+    sml:hasContent "EF6D4100	2017-08-31 01:00:49+02:00	1	34.0	9.577288	52.42384	4961217	motorway_link		80.0"^^xsd:string ;
     sml:rank 2 .
 
 sml:FloatingCarDataSampleLine3 a sml:DatasetSampleLine ;
-    sml:hasContent "218AFA04	2017-08-03 10:45:56+02:00	0	12	10.13851	51.94716	307544890	service		50.0"^^xsd:string ;
+    sml:hasContent "218AFA04	2017-08-03 10:45:56+02:00	0	12.0	10.13851	51.94716	307544890	service		50.0"^^xsd:string ;
     sml:rank 3 .
 
 sml:FloatingCarDataSampleLine4 a sml:DatasetSampleLine ;
-    sml:hasContent "9C778162	2017-08-21 07:06:53+02:00	0	51	9.769247	52.427048	270482242	motorway		130.0"^^xsd:string ;
+    sml:hasContent "9C778162	2017-08-21 07:06:53+02:00	0	51.0	9.769247	52.427048	270482242	motorway		130.0"^^xsd:string ;
     sml:rank 4 .
 
 sml:FloatingCarDataSampleLine5 a sml:DatasetSampleLine ;
-    sml:hasContent "0CAB6805	2017-08-24 11:12:02+02:00	1	39	7.89929	53.697006	553692857	service	Küstenstraße	50.0"^^xsd:string ;
+    sml:hasContent "0CAB6805	2017-08-24 11:12:02+02:00	1	39.0	7.89929	53.697006	553692857	service	Küstenstraße	50.0"^^xsd:string ;
     sml:rank 5 .
 
 sml:FloatingCarDataSampleLine6 a sml:DatasetSampleLine ;
-    sml:hasContent "C2C89D41	2017-08-21 07:29:19+02:00	2	4	11.101004	53.10233	18116318	service		50.0"^^xsd:string ;
+    sml:hasContent "C2C89D41	2017-08-21 07:29:19+02:00	2	4.0	11.101004	53.10233	18116318	service		50.0"^^xsd:string ;
     sml:rank 6 .
 
 sml:FloatingCarDataSampleLine7 a sml:DatasetSampleLine ;
-    sml:hasContent "70EFBF32	2017-08-01 10:25:16+02:00	1	0	7.45414	53.236794	180401822	service		50.0"^^xsd:string ;
+    sml:hasContent "70EFBF32	2017-08-01 10:25:16+02:00	1	0.0	7.45414	53.236794	180401822	service		50.0"^^xsd:string ;
     sml:rank 7 .
 
 sml:FloatingCarDataSampleLine8 a sml:DatasetSampleLine ;
-    sml:hasContent "E095B30D	2017-08-03 00:51:19+02:00	1	82	9.892138	52.293823	25339633	motorway		130.0"^^xsd:string ;
+    sml:hasContent "E095B30D	2017-08-03 00:51:19+02:00	1	82.0	9.892138	52.293823	25339633	motorway		130.0"^^xsd:string ;
     sml:rank 8 .
 
 sml:FloatingCarDataSampleLine9 a sml:DatasetSampleLine ;
-    sml:hasContent "83F76EFE	2017-08-11 11:05:21+02:00	0	49	10.563658	52.385315	10043550	tertiary		100.0"^^xsd:string ;
+    sml:hasContent "83F76EFE	2017-08-11 11:05:21+02:00	0	49.0	10.563658	52.385315	10043550	tertiary		100.0"^^xsd:string ;
     sml:rank 9 .
 
 <https://simple-ml.de/resource/FloatingCarData_sml_mobility/FloatingCarDataPoint> a sml:ClassInstance ;
     time:hasTime sml:FloatingCarData_time_DateTimeDescription ;
-    sml:mapsTo sml-mob:FloatingCarDataPoint ;
-    sml-mob:hasVehicleType <https://simple-ml.de/resource/FloatingCarData_sml_mobility/VehicleType> .
+    sml:mapsTo smlMobility:FloatingCarDataPoint ;
+    smlMobility:hasVehicleType <https://simple-ml.de/resource/FloatingCarData_sml_mobility/VehicleType> .
 
 <https://simple-ml.de/resource/FloatingCarData_sml_mobility/LocationType> a sml:ClassInstance ;
-    sml:mapsTo sml-mob:LocationType .
+    sml:mapsTo smlMobility:LocationType .
 
 <https://simple-ml.de/resource/FloatingCarData_sml_mobility/SpeedLimit> a sml:ClassInstance ;
-    sml:mapsTo sml-mob:SpeedLimit .
+    sml:mapsTo smlMobility:SpeedLimit .
 
 <https://simple-ml.de/resource/FloatingCarData_sml_mobility/VehicleType> a sml:ClassInstance ;
-    sml:mapsTo sml-mob:VehicleType .
+    sml:mapsTo smlMobility:VehicleType .
 
 sml:FloatingCarData_time_DateTimeDescription a sml:ClassInstance ;
     sml:mapsTo time:DateTimeDescription .
 
 <https://simple-ml.de/resource/FloatingCarData_sml_mobility/StreetSegment> a sml:ClassInstance ;
-    sml:mapsTo sml-mob:StreetSegment ;
-    sml-mob:hasLocationType <https://simple-ml.de/resource/FloatingCarData_sml_mobility/LocationType> ;
-    sml-mob:maxSpeed <https://simple-ml.de/resource/FloatingCarData_sml_mobility/SpeedLimit> .
+    sml:mapsTo smlMobility:StreetSegment ;
+    smlMobility:hasLocationType <https://simple-ml.de/resource/FloatingCarData_sml_mobility/LocationType> ;
+    smlMobility:maxSpeed <https://simple-ml.de/resource/FloatingCarData_sml_mobility/SpeedLimit> .
 

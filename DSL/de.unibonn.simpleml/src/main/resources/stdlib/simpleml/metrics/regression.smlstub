@@ -1,9 +1,14 @@
-package simpleml.metrics.regression
+package simpleml.metrics
 
 import simpleml.dataset.Dataset
 
+@Description("Compute the mean absolute error between two datasets")
 fun meanAbsoluteError(yTrue: Dataset, yPred: Dataset) -> score: Float
+@Description("Compute the mean squared error between two datasets")
 fun meanSquaredError(yTrue: Dataset, yPred: Dataset) -> score: Float
+@Description("Compute the mean squared log error between two datasets")
 fun meanSquaredLogError(yTrue: Dataset, yPred: Dataset) -> score: Float
+@Description("Compute the median absolute error between two datasets")
 fun medianAbsoluteError(yTrue: Dataset, yPred: Dataset) -> score: Float
+@Description("Compute the coefficient of determination (R2 score) between two datasets")
 fun r2(yTrue: Dataset, yPred: Dataset) -> score: Float

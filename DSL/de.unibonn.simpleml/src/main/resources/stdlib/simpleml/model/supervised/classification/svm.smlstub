@@ -1,8 +1,9 @@
-package simpleml.model.classification
+package simpleml.model.supervised.classification
 
 import simpleml.model.*
 import simpleml.dataset.Dataset
 
+@Description("Functionalities to train an SVM classification model.")
 class SupportVectorMachineClassifier(
     penalty: String = "l2",
     loss: String = "squared_hinge",
@@ -18,9 +19,11 @@ class SupportVectorMachineClassifier(
     attr c: Float
     attr multiClass: String
 
+    @Description("Train the model given a dataset of features and a dataset of labels")
     fun fit(features: Dataset, target: Dataset) -> trainedModel: SupportVectorMachineClassifierModel
 }
 
 class SupportVectorMachineClassifierModel() sub Model {
-    fun predict(features: Dataset) -> results: Dataset
+    @Description("Predict values given a dataset of features")
+    fun predict(@Description("A dataset consisting of features for prediction.") features: Dataset) -> @Description("A dataset consisting of the predicted values.") results: Dataset
 }
