@@ -12,14 +12,29 @@
 ## Table of Contents
 
 * Classes
+  * [`AttributeTransformer`](#class-AttributeTransformer)
   * [`Dataset`](#class-Dataset)
+  * [`DayOfTheYearTransformer`](#class-DayOfTheYearTransformer)
   * [`Instance`](#class-Instance)
   * [`StandardNormalizer`](#class-StandardNormalizer)
   * [`StandardScaler`](#class-StandardScaler)
+  * [`TimestampTransformer`](#class-TimestampTransformer)
+  * [`WeekDayTransformer`](#class-WeekDayTransformer)
+  * [`WeekendTransformer`](#class-WeekendTransformer)
 * Global functions
   * [`joinTwoDatasets`](#global-function-joinTwoDatasets)
   * [`loadDataset`](#global-function-loadDataset)
   * [`readDataSetFromCSV`](#global-function-readDataSetFromCSV)
+
+----------
+
+<a name='class-AttributeTransformer'/>
+
+## Class `AttributeTransformer`
+_No description available._
+
+**Constructor:** _Class has no constructor._
+
 
 ----------
 
@@ -34,36 +49,17 @@ A dataset with its data instances (e.g., rows and columns)
 Add a new attribute to the dataset with values according to a transformation function
 
 **Parameters:**
-* `columnName: String` - The name of the new attribute
-* `transformFunc: (instance: Instance) -> value: Any` - The transformation function.
-* `newColumnLabel: String` - _No description available._
+* `newAttributeId: String` - The ID of the new attribute
+* `transformer: AttributeTransformer` - The attribute transformer to be used.
+* `newAttributeLabel: String? = null` - The name of the new attribute.
 
 **Results:**
 * `dataset: Dataset` - The updated dataset
 
-### `addDayOfTheYearAttribute` (Instance Method )
-Add a new attribute to the dataset specifying the day of the year of the specified column
+### `dropAllMissingValues` (Instance Method )
+Drops instances with missing values
 
-**Parameters:**
-* `columnName: String` - The attribute to be transformed
-
-**Results:**
-* `dataset: Dataset` - The updated dataset
-
-### `addIsWeekendAttribute` (Instance Method )
-Add a new attribute to the dataset specifying if the dates of the specified column are on the weekend or not
-
-**Parameters:**
-* `columnName: String` - The attribute to be transformed
-
-**Results:**
-* `dataset: Dataset` - The updated dataset
-
-### `addWeekDayAttribute` (Instance Method )
-Extract week day from given date attribute and add new attribute in dataset with weekday name
-
-**Parameters:**
-* `columnName: String` - The attribute to be transformed
+**Parameters:** _None expected._
 
 **Results:**
 * `dataset: Dataset` - The updated dataset
@@ -116,7 +112,7 @@ Remove instances in a dataset according to a filter function
 Get a specific row of a dataset
 
 **Parameters:**
-* `rowNumber: Int` - The number of the row to be retreived
+* `rowNumber: Int` - The number of the row to be retrieved
 
 **Results:**
 * `instance: Instance` - The specified row
@@ -181,6 +177,16 @@ Split a dataset into four datasets: train/test and labels/features. Requires tha
 * `yTrain: Dataset` - Labels of the training dataset
 * `yTest: Dataset` - Labels of the test dataset
 
+### `transform` (Instance Method )
+Update existing attribute with values according to a transformation function
+
+**Parameters:**
+* `attributeId: String` - The ID of the attribute to be replaced
+* `transformer: AttributeTransformer` - The attribute transformer to be used
+
+**Results:**
+* `dataset: Dataset` - The updated dataset
+
 ### `transformDatatypes` (Instance Method )
 Convert all column values into numbers
 
@@ -189,14 +195,16 @@ Convert all column values into numbers
 **Results:**
 * `dataset: Dataset` - The updated dataset
 
-### `transformDateToTimestamp` (Instance Method )
-Convert date column values into timestamps
 
-**Parameters:**
-* `columnName: String` - The attribute to be transformed
+----------
 
-**Results:**
-* `dataset: Dataset` - The updated dataset
+<a name='class-DayOfTheYearTransformer'/>
+
+## Class `DayOfTheYearTransformer`
+An attribute transformer to convert a date attribute to its day in the year.
+
+**Constructor parameters:**
+* `attributeId: String` - The ID of the date attribute.
 
 
 ----------
@@ -256,6 +264,39 @@ Scale all numeric values in the dataset
 * `scaledDataset: Dataset` - The scaled dataset
 
 
+----------
+
+<a name='class-TimestampTransformer'/>
+
+## Class `TimestampTransformer`
+An attribute transformer to convert a date attribute to its timestamp.
+
+**Constructor parameters:**
+* `attributeId: String` - The ID of the date attribute.
+
+
+----------
+
+<a name='class-WeekDayTransformer'/>
+
+## Class `WeekDayTransformer`
+An attribute transformer to convert a date attribute to its weekday (as a string).
+
+**Constructor parameters:**
+* `attributeId: String` - The ID of the date attribute.
+
+
+----------
+
+<a name='class-WeekendTransformer'/>
+
+## Class `WeekendTransformer`
+An attribute transformer to convert a date attribute to whether the date is on the weekend or not.
+
+**Constructor parameters:**
+* `attributeId: String` - The ID of the date attribute.
+
+
 ## Global Functions
 
 <a name='global-function-joinTwoDatasets'/>
@@ -264,12 +305,12 @@ Scale all numeric values in the dataset
 Join two datasets into one dataset
 
 **Parameters:**
-* `firstData: Dataset` - The first dataset
-* `secondData: Dataset` - The second dataset
-* `joinColumnName1: String` - The attribute of the first dataset to use for the join
-* `joinColumnName2: String` - The attribute of the second dataset to use for the join
-* `firstSuffix: String` - The suffix to be attached to the attribute names of the first dataset
-* `secondSuffix: String` - The suffix to be attached to the attribute names of the second dataset
+* `dataset1: Dataset` - The first dataset
+* `dataset2: Dataset` - The second dataset
+* `attributeId1: String` - The attribute of the first dataset to use for the join
+* `attributeId2: String` - The attribute of the second dataset to use for the join
+* `suffix1: String` - The suffix to be attached to the attribute names of the first dataset
+* `suffix2: String` - The suffix to be attached to the attribute names of the second dataset
 
 **Results:**
 * `dataset: Dataset` - The joined dataset
