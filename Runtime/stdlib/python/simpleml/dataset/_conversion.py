@@ -3,13 +3,12 @@ from datetime import datetime
 from simpleml.dataset._instance import Instance
 
 
-class AttributeTransformer():
+class AttributeTransformer:
     def transform(self, instance: Instance):
         ...
 
 
 class WeekendTransformer(AttributeTransformer):
-
     def __init__(self, attributeId: str):
         self._attribute_id = attributeId
 
@@ -22,7 +21,6 @@ class WeekendTransformer(AttributeTransformer):
 
 
 class DayOfTheYearTransformer(AttributeTransformer):
-
     def __init__(self, attributeId: str):
         self._attribute_id = attributeId
 
@@ -31,7 +29,6 @@ class DayOfTheYearTransformer(AttributeTransformer):
 
 
 class WeekDayTransformer(AttributeTransformer):
-
     def __init__(self, attributeId: str):
         self._attribute_id = attributeId
 
@@ -40,7 +37,6 @@ class WeekDayTransformer(AttributeTransformer):
 
 
 class TimestampTransformer(AttributeTransformer):
-
     def __init__(self, attributeId: str):
         self._attribute_id = attributeId
 

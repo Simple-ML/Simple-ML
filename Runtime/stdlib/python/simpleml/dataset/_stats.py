@@ -8,11 +8,10 @@ from datetime import datetime as datet
 import numpy as np
 import pandas as pd
 import pyproj
-from shapely import geometry, ops, wkt
-from shapely.geometry import LineString, Point, Polygon
-
 import simpleml.util.global_configurations as global_config
 import simpleml.util.jsonLabels_util as config
+from shapely import geometry, ops, wkt
+from shapely.geometry import LineString, Point, Polygon
 from simpleml.util import (
     get_sml_type_from_python_type,
     simple_type_boolean,
@@ -65,7 +64,7 @@ def addValueDistribution(column):
 
 
 def addHistograms(
-        stats, column, name, number_of_unique_values, transform_timestamp=False
+    stats, column, name, number_of_unique_values, transform_timestamp=False
 ):
     count = []
     division = []
@@ -113,7 +112,7 @@ def addQuantiles(column, bins, transform_timestamp=False):
 
 
 def addNumericValue(
-        column_stats, name, value, data_type=None, transform_timestamp=False
+    column_stats, name, value, data_type=None, transform_timestamp=False
 ):
     simple_type = simple_type_numeric
 

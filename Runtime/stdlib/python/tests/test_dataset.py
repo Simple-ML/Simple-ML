@@ -1,16 +1,19 @@
 import numpy as np
-
 from simpleml.dataset import (
     Instance,
     StandardNormalizer,
     StandardScaler,
     joinTwoDatasets,
     loadDataset,
-    readDataSetFromCSV
-
+    readDataSetFromCSV,
 )
-from simpleml.dataset._conversion import WeekDayTransformer, DayOfTheYearTransformer, WeekendTransformer, \
-    TimestampTransformer, AttributeTransformer
+from simpleml.dataset._conversion import (
+    AttributeTransformer,
+    DayOfTheYearTransformer,
+    TimestampTransformer,
+    WeekDayTransformer,
+    WeekendTransformer,
+)
 
 
 def test_filter_column():
@@ -58,9 +61,7 @@ def test_transform_column():
         def transform(self, instance: Instance):
             return 1 if instance.getValue("quality") >= 7 else 0
 
-    dataset = dataset.addAttribute(
-        "goodquality", BinaryQualityTransformer(), "quality"
-    )
+    dataset = dataset.addAttribute("goodquality", BinaryQualityTransformer(), "quality")
 
     assert isinstance(dataset.getRow(3).getValue("goodquality"), float)  # nosec
 
@@ -107,9 +108,7 @@ def test_flatten_vector():
 def test_add_is_weekend():
     dataset = loadDataset("SpeedAverages")
 
-    dataset = dataset.transform(
-        "start_time", WeekendTransformer("start_time")
-    )
+    dataset = dataset.transform("start_time", WeekendTransformer("start_time"))
 
     assert type(dataset.data["start_time"][0]) == np.bool_  # nosec
 
@@ -117,9 +116,7 @@ def test_add_is_weekend():
 def test_add_day_of_year():
     dataset = loadDataset("SpeedAverages")
 
-    dataset = dataset.transform(
-        "start_time", DayOfTheYearTransformer("start_time")
-    )
+    dataset = dataset.transform("start_time", DayOfTheYearTransformer("start_time"))
 
     assert type(dataset.data["start_time"][0]) == np.int64  # nosec
 
@@ -127,9 +124,7 @@ def test_add_day_of_year():
 def test_add_week_day():
     dataset = loadDataset("SpeedAverages")
 
-    dataset = dataset.transform(
-        "start_time", WeekDayTransformer("start_time")
-    )
+    dataset = dataset.transform("start_time", WeekDayTransformer("start_time"))
 
     assert type(dataset.data["start_time"][0]) == str  # nosec
 

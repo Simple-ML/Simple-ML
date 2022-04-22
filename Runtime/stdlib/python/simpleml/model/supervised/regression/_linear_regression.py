@@ -1,7 +1,6 @@
 from pandas import DataFrame
-from sklearn.linear_model import LinearRegression as SkLinearRegression
-
 from simpleml.model.supervised._domain import DataType, Estimator, Model
+from sklearn.linear_model import LinearRegression as SkLinearRegression
 
 
 class LinearRegressionModel(Model):
