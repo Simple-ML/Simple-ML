@@ -19,6 +19,7 @@ class RandomForestRegressor(
     fun fit(features: Dataset, target: Dataset) -> trainedModel: RandomForestRegressorModel
 }
 
+@Description("A trained random forest regression model.")
 class RandomForestRegressorModel() sub Model {
     @Description("Predict values given a dataset of features")
     fun predict(@Description("A dataset consisting of features for prediction.") features: Dataset) -> @Description("A dataset consisting of the predicted values.") results: Dataset
