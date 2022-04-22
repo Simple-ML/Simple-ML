@@ -1,5 +1,6 @@
 package de.unibonn.simpleml.staticAnalysis.typing
 
+import de.unibonn.simpleml.emf.containingEnumOrNull
 import de.unibonn.simpleml.naming.qualifiedNameOrNull
 import de.unibonn.simpleml.simpleML.SmlAbstractDeclaration
 import de.unibonn.simpleml.simpleML.SmlClass
@@ -8,11 +9,16 @@ import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import org.eclipse.xtext.naming.QualifiedName
 
 sealed class Type {
-    open fun toSimpleString() = toString()
+    abstract val isNullable: Boolean
+    abstract fun setIsNullableOnCopy(isNullable: Boolean): Type
+    abstract fun toSimpleString(): String
 }
 
 class RecordType(resultToType: List<Pair<String, Type>>) : Type() {
     private val resultToType = resultToType.toMap()
+
+    override val isNullable = false
+    override fun setIsNullableOnCopy(isNullable: Boolean) = this
 
     override fun toString(): String {
         val types = resultToType.entries.joinToString { (name, type) -> "$name: $type" }
@@ -23,9 +29,30 @@ class RecordType(resultToType: List<Pair<String, Type>>) : Type() {
         val types = resultToType.entries.joinToString { (name, type) -> "$name: ${type.toSimpleString()}" }
         return "($types)"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as RecordType
+
+        if (resultToType != other.resultToType) return false
+        if (isNullable != other.isNullable) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = resultToType.hashCode()
+        result = 31 * result + isNullable.hashCode()
+        return result
+    }
 }
 
-class CallableType(val parameters: List<Type>, val results: List<Type>) : Type() {
+data class CallableType(val parameters: List<Type>, val results: List<Type>) : Type() {
+    override val isNullable = false
+    override fun setIsNullableOnCopy(isNullable: Boolean) = this
+
     override fun toString(): String {
         val parameters = parameters.joinToString()
         val results = results.joinToString()
@@ -44,8 +71,6 @@ class CallableType(val parameters: List<Type>, val results: List<Type>) : Type()
 sealed class NamedType(smlDeclaration: SmlAbstractDeclaration) : Type() {
     val simpleName: String = smlDeclaration.name
     val qualifiedName: QualifiedName = smlDeclaration.qualifiedNameOrNull()!!
-
-    abstract val isNullable: Boolean
 
     override fun toString() = buildString {
         append(qualifiedName)
@@ -66,6 +91,7 @@ data class ClassType(
     val smlClass: SmlClass,
     override val isNullable: Boolean
 ) : NamedType(smlClass) {
+    override fun setIsNullableOnCopy(isNullable: Boolean) = this.copy(isNullable = isNullable)
 
     override fun toString() = super.toString()
 }
@@ -74,6 +100,7 @@ data class EnumType(
     val smlEnum: SmlEnum,
     override val isNullable: Boolean
 ) : NamedType(smlEnum) {
+    override fun setIsNullableOnCopy(isNullable: Boolean) = this.copy(isNullable = isNullable)
 
     override fun toString() = super.toString()
 }
@@ -82,10 +109,47 @@ data class EnumVariantType(
     val smlEnumVariant: SmlEnumVariant,
     override val isNullable: Boolean
 ) : NamedType(smlEnumVariant) {
+    override fun setIsNullableOnCopy(isNullable: Boolean) = this.copy(isNullable = isNullable)
 
     override fun toString() = super.toString()
+
+    override fun toSimpleString() = buildString {
+        smlEnumVariant.containingEnumOrNull()?.let { append("${it.name}.") }
+        append(smlEnumVariant.name)
+    }
+}
+
+data class UnionType(val possibleTypes: Set<Type>) : Type() {
+    override val isNullable = false
+    override fun setIsNullableOnCopy(isNullable: Boolean) = this
+
+    override fun toString(): String {
+        return "union<${possibleTypes.joinToString()}>"
+    }
+
+    override fun toSimpleString(): String {
+        return "union<${possibleTypes.joinToString { it.toSimpleString() }}>"
+    }
+}
+
+data class VariadicType(val elementType: Type) : Type() {
+    override val isNullable = false
+    override fun setIsNullableOnCopy(isNullable: Boolean) = this
+
+    override fun toString(): String {
+        return "vararg<$elementType>"
+    }
+
+    override fun toSimpleString(): String {
+        return "vararg<${elementType.toSimpleString()}>"
+    }
 }
 
 object UnresolvedType : Type() {
-    override fun toString() = "Unresolved"
+    override val isNullable = false
+    override fun setIsNullableOnCopy(isNullable: Boolean) = this
+
+    override fun toString() = "\$Unresolved"
+
+    override fun toSimpleString() = toString()
 }

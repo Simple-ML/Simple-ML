@@ -12,6 +12,7 @@ import de.unibonn.simpleml.constant.isInTestFile
 import de.unibonn.simpleml.constant.isTestFile
 import de.unibonn.simpleml.constant.operator
 import de.unibonn.simpleml.emf.assigneesOrEmpty
+import de.unibonn.simpleml.emf.blockLambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.compilationUnitOrNull
 import de.unibonn.simpleml.emf.containingBlockLambdaOrNull
@@ -20,7 +21,6 @@ import de.unibonn.simpleml.emf.createSmlWildcard
 import de.unibonn.simpleml.emf.descendants
 import de.unibonn.simpleml.emf.isGlobal
 import de.unibonn.simpleml.emf.isOptional
-import de.unibonn.simpleml.emf.lambdaResultsOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.placeholdersOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
@@ -37,6 +37,7 @@ import de.unibonn.simpleml.simpleML.SmlBlockLambda
 import de.unibonn.simpleml.simpleML.SmlBlockLambdaResult
 import de.unibonn.simpleml.simpleML.SmlCall
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
+import de.unibonn.simpleml.simpleML.SmlEnumVariant
 import de.unibonn.simpleml.simpleML.SmlExpressionLambda
 import de.unibonn.simpleml.simpleML.SmlExpressionStatement
 import de.unibonn.simpleml.simpleML.SmlIndexedAccess
@@ -386,10 +387,10 @@ class SimpleMLGenerator : AbstractGenerator() {
                     )
                 }
 
-                if (lambda.lambdaResultsOrEmpty().isNotEmpty()) {
+                if (lambda.blockLambdaResultsOrEmpty().isNotEmpty()) {
                     stringBuilder.appendLine(
                         "${indent}return ${
-                        lambda.lambdaResultsOrEmpty().joinToString { it.name }
+                        lambda.blockLambdaResultsOrEmpty().joinToString { it.name }
                         }"
                     )
                 }
@@ -517,12 +518,29 @@ class SimpleMLGenerator : AbstractGenerator() {
                     val receiver = callRecursive(CompileExpressionFrame(expr.receiver, imports, blockLambdaIdManager))
                     when (val memberDeclaration = expr.member.declaration) {
                         is SmlBlockLambdaResult -> {
-                            val allResults = memberDeclaration.containingBlockLambdaOrNull()!!.lambdaResultsOrEmpty()
+                            val allResults = memberDeclaration.containingBlockLambdaOrNull()!!.blockLambdaResultsOrEmpty()
                             if (allResults.size == 1) {
                                 receiver
                             } else {
                                 val thisIndex = allResults.indexOf(memberDeclaration)
                                 "$receiver[$thisIndex]"
+                            }
+                        }
+                        is SmlEnumVariant -> {
+                            val member =
+                                callRecursive(CompileExpressionFrame(expr.member, imports, blockLambdaIdManager))
+
+                            val suffix = when (expr.eContainer()) {
+                                is SmlCall -> ""
+                                else -> "()"
+                            }
+
+                            when {
+                                expr.isNullSafe -> {
+                                    imports += ImportData(codegenPackage)
+                                    "$codegenPackage.safe_access($receiver, '$member')$suffix"
+                                }
+                                else -> "$receiver.$member$suffix"
                             }
                         }
                         is SmlResult -> {

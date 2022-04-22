@@ -1,5 +1,0 @@
-package simpleml.lang
-
-fun print(obj: Any)
-
-fun println(obj: Any)

@@ -1,0 +1,15 @@
+package simpleml.dataset
+
+import simpleml.dataset.Instance
+
+@Description("The transform function that returns timestamp for each instance in date attribute")
+fun transformIntoTimestamp(@Description("The specified row") instance: Instance) -> @Description("The converted value from date to timestamp") timestamp: Float
+
+@Description("The transform function that extract and returns weekday from each instance in date attribute")
+fun transformIntoWeekDay(@Description("The specified row") instance: Instance) -> @Description("The extracted value for day of the week") weekDay: String
+
+@Description("The transform function that extract and returns day of the year from each instance in date attribute")
+fun transformIntoDayOfTheYear(@Description("The specified row") instance: Instance) -> @Description("The extracted value for day of the year") dayOfTheYear: Int
+
+@Description("The transform function that returns either True (is weekend) or False (not weekend) for each instance in date attribute")
+fun transformIntoIsWeekend(@Description("The specified row") instance: Instance) -> @Description("True of False value for isWeekend") isWeekend: Boolean

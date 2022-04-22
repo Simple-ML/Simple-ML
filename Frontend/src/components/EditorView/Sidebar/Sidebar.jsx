@@ -16,6 +16,7 @@ import Button from '@mui/material/Button';
 import { showDataViewBackdrop } from '../../../reducers/graphicalEditor';
 import Icons from '../../../stories/Icons';
 import { event } from 'jquery';
+import RuntimeService from '../../../serverConnection/RuntimeService'
 
 class Sidebar extends React.Component {
     constructor(props) {
@@ -42,6 +43,10 @@ class Sidebar extends React.Component {
       };
     }    
     
+    componentDidMount() {
+        RuntimeService.getAvailableDatasets("sessionId");
+    }
+
     componentWillUnmount() {
         this.unsubscribe();
     }
@@ -189,11 +194,11 @@ class Sidebar extends React.Component {
                                                     dataset && (searchValue !== undefined ? dataset.toLowerCase().includes(searchValue.toLowerCase()) : true) ? (
                                                         <AccordionDetails>
                                                             <Typography style= {{cursor: 'pointer'}} /*onClick={this.handleOpen}*/>{dataset}</Typography>
-                                                            {/*<Button 
+                                                            {<Button 
                                                                 style= {{marginLeft: 'auto', marginRight: '0'}}
                                                                 onClick={() => {this.setDataset(selectedEntity, dataset)}}>
                                                                 <Icons icons="checkCircle"/>
-                                                            </Button>*/}
+                                                            </Button>}
                                                         </AccordionDetails>
                                                     ): <div></div>
                                                 )

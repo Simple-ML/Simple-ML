@@ -30,28 +30,19 @@ class Dataset {
     fun filterInstances(@Description("The filter function that returns either True (keep) or False (remove) for each instance") filterFunc: (instance: Instance) -> shouldKeep: Boolean) -> @Description("The updated dataset") dataset: Dataset
 
     @Description("Get a specific row of a dataset")
-    fun getRow(@Description("The number of the row to be retreived") rowNumber: Int) -> @Description("The specified row") instance: Instance
+    fun getRow(@Description("The number of the row to be retrieved") rowNumber: Int) -> @Description("The specified row") instance: Instance
 
     @Description("Add a new attribute to the dataset with values according to a transformation function")
-    fun addAttribute(@Description("The name of the new attribute") columnName: String, @Description("The transformation function.") transformFunc: (instance: Instance) -> value: Any, newColumnLabel: String) -> @Description("The updated dataset") dataset: Dataset
+    fun addAttribute(@Description("The ID of the new attribute") newAttributeId: String, @Description("The transformation function.") transformFunc: (instance: Instance) -> value: Any, @Description("The name of the new attribute.") newAttributeLabel: String) -> @Description("The updated dataset") dataset: Dataset
 
     @Description("Drops instances with missing values in the specified attribute")
     fun dropMissingValues(@Description("Attribute whose empty values are dropped") attribute: String) -> @Description("The updated dataset") dataset: Dataset
 
-    @Description("Convert date column values into timestamps")
-    fun transformDateToTimestamp(@Description("The attribute to be transformed") columnName: String) -> @Description("The updated dataset") dataset: Dataset
+    @Description("Update existing attribute with values according to a transformation function")
+    fun transform(@Description("The ID of the attribute") attributeId: String, @Description("The transformation function.") transformFunc: (instance: Instance) -> value: Any) -> @Description("The updated dataset") dataset: Dataset
 
     @Description("Convert all column values into numbers")
     fun transformDatatypes() -> @Description("The updated dataset") dataset: Dataset
-
-    @Description("Add a new attribute to the dataset specifying if the dates of the specified column are on the weekend or not")
-    fun addIsWeekendAttribute(@Description("The attribute to be transformed") columnName: String) -> @Description("The updated dataset") dataset: Dataset
-
-    @Description("Add a new attribute to the dataset specifying the day of the year of the specified column")
-    fun addDayOfTheYearAttribute(@Description("The attribute to be transformed") columnName: String) -> @Description("The updated dataset") dataset: Dataset
-
-    @Description("Extract week day from given date attribute and add new attribute in dataset with weekday name")
-    fun addWeekDayAttribute(@Description("The attribute to be transformed") columnName: String) -> @Description("The updated dataset") dataset: Dataset
 
     @Description("Export any dataset to CSV file")
     fun exportDataAsFile(filePath: String)
@@ -82,5 +73,4 @@ fun loadDataset(@Description("Identifier of the dataset") datasetID: String) -> 
 fun readDataSetFromCSV(@Description("Path and name of the CSV file") fileName: String, @Description("Identifier of the dataset") datasetId: String, @Description("Separator used in the file") separator: String, @Description("True, if the file has a header row") hasHeader: String, @Description("String that should be parsed as missing value") nullValue: String, @Description("Name of the dataset") datasetName: String, @Description("Coordinate system used in the geometry columns of the dataset") coordinateSystem: Int = 3857) -> @Description("The loaded dataset") dataset: Dataset
 
 @Description("Join two datasets into one dataset")
-fun joinTwoDatasets(@Description("The first dataset") firstData: Dataset, @Description("The second dataset") secondData: Dataset, @Description("The attribute of the first dataset to use for the join") joinColumnName1: String, @Description("The attribute of the second dataset to use for the join") joinColumnName2: String, @Description("The suffix to be attached to the attribute names of the first dataset") firstSuffix: String, @Description("The suffix to be attached to the attribute names of the second dataset") secondSuffix: String) -> @Description("The joined dataset") dataset: Dataset
-
+fun joinTwoDatasets(@Description("The first dataset") dataset1: Dataset, @Description("The second dataset") dataset2: Dataset, @Description("The attribute of the first dataset to use for the join") attributeId1: String, @Description("The attribute of the second dataset to use for the join") attributeId2: String, @Description("The suffix to be attached to the attribute names of the first dataset") suffix1: String, @Description("The suffix to be attached to the attribute names of the second dataset") suffix2: String) -> @Description("The joined dataset") dataset: Dataset

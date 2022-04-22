@@ -1,6 +1,6 @@
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix dc: <http://purl.org/dc/terms/> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix dct: <http://purl.org/dc/terms/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix seas: <https://w3id.org/seas/> .
@@ -12,12 +12,12 @@
 sml:simple-ml dcat:dataset sml:TrafficTweets .
 
 sml:TrafficTweets a dcat:Dataset ;
-    dct:description "Deutsche Tweets von Accounts mit Verkehrsbezug."@de,
+    dc:description "Deutsche Tweets von Accounts mit Verkehrsbezug."@de,
         "German Tweets from traffic-related accounts."@en ;
-    dct:identifier "TrafficTweets" ;
-    dct:subject "Verkehr"@de,
+    dc:identifier "TrafficTweets" ;
+    dc:subject "Verkehr"@de,
         "Traffic"@en ;
-    dct:title "Verkehrsbezoegene deutsche Tweets"@de,
+    dc:title "Verkehrsbezoegene deutsche Tweets"@de,
         "Traffic-related German tweets"@en ;
     sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
     sml:creatorId "0"^^xsd:nonNegativeInteger ;
@@ -32,8 +32,9 @@ sml:TrafficTweets a dcat:Dataset ;
     sml:numberOfInstances "13388"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeName a sml:Attribute ;
-    dct:identifier "name" ;
+    dc:identifier "name" ;
     sml:columnIndex "0"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain sml:TrafficTweets_sioc_UserAccount ;
     sml:mapsToProperty foaf:name ;
     sml:valueType rdfs:Literal ;
@@ -133,8 +134,9 @@ sml:TrafficTweetsAttributeNameValueDistributionValue9 a sml:ValueDistributionVal
     sml:numberOfInstancesOfValue "250"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetdatetime a sml:Attribute ;
-    dct:identifier "tweetdatetime" ;
+    dc:identifier "tweetdatetime" ;
     sml:columnIndex "2"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain sml:TrafficTweets_time_DateTimeDescription ;
     sml:mapsToProperty time:inXSDDate ;
     sml:valueType xsd:date ;
@@ -320,8 +322,9 @@ sml:TrafficTweetsAttributeTweetdatetimeQuartile4 a seas:DistributionQuartileEval
     seas:rank 4 .
 
 sml:TrafficTweetsAttributeTweetext a sml:Attribute ;
-    dct:identifier "tweetext" ;
+    dc:identifier "tweetext" ;
     sml:columnIndex "4"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain sml:TrafficTweets_sioc_Post ;
     sml:mapsToProperty sioc:content ;
     sml:valueType rdfs:Literal ;
@@ -385,46 +388,47 @@ sml:TrafficTweetsAttributeTweetextValueDistributionValue0 a sml:ValueDistributio
     sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetextValueDistributionValue1 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "#Blitzer, B173, Zwickau, Reichenbacher Str., stadteinwärts, am Flugplatz. /jf" ;
-    sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
-
-sml:TrafficTweetsAttributeTweetextValueDistributionValue2 a sml:ValueDistributionValue ;
     sml:instancesOfValue "#Behinderung, A72, Hof Ri. Chemnitz, zw. Treuen und Reichenbach, defektes Fahrzeug, Person im Fahrzeug. /jf" ;
     sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
 
+sml:TrafficTweetsAttributeTweetextValueDistributionValue2 a sml:ValueDistributionValue ;
+    sml:instancesOfValue "#Blitzer, B173, Zwickau, Reichenbacher Str., stadteinwärts, am Flugplatz. /jf" ;
+    sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
+
 sml:TrafficTweetsAttributeTweetextValueDistributionValue3 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "Der Straßenzug Kronprinzessinnenweg/Havelchaussee ( #Grunewald) ist wegen den Munitionssprengungen bereits #GESPERRT. Diese Vollsperrung betrifft auch #Radfahrer und #Fußgänger." ;
+    sml:instancesOfValue "Aufgrund einer @CrossFitGames 2018 im #Velodrom in #PrenzlauerBerg kann es den gesamten Tag im Bereich Landsberger Allee, Storkower Straße und Conrad-Blenkle-Straße zu #Verkehrsbehinderungen kommen." ;
     sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetextValueDistributionValue4 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "#Achtung, A72, Hof Ri. Chemnitz, ist der Parkplatz Großzöbern überfüllt, Lkw's stehen schon auf der Autobahn. Danke Jens /jf" ;
+    sml:instancesOfValue "#Behinderung, A72, Hof Ri. Chemnitz, zw. Treuen und Reichenbach, defektes Fahrzeug. /jf" ;
     sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetextValueDistributionValue5 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "Von 18:00 - 05:00 werden auf der #A100 #Straßenschäden beseitigt. Richtung Neukölln werden die Ausfahrt Gradestraße und die Einfahrt Oberlandstraße #gesperrt. Umleitung über Tempelhofer Damm und Ullsteinstraße." ;
+    sml:instancesOfValue "#Blitzer, A72, Hof Ri. Chemnitz, zw. Dreieck Hochfranken und Pirk, in der Behelfsein-und Ausfahrt, mit Livetec Kamera. /jf" ;
     sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetextValueDistributionValue6 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "#msverkehr Die #Westfalenstraße ist wieder freigegeben! Gute Fahrt!" ;
+    sml:instancesOfValue "Bis ca. 05:00 Uhr #Sperrung der #A100 (Stadtring) Richtung #Neukölln zwischen Heckerdamm ( #A111) und Hohenzollerndamm. #Wartungsarbeiten" ;
     sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetextValueDistributionValue7 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "Um ca. 14:00 Uhr startet die @criticalmassbln am Brandenburger Tor in #Mitte. Die Strecke wird von den Teilnehmern spontan beschlossen. Mit kurzzeitigen #Verkehrsbehinderungen ist zu rechnen. #criticalmass #Radverkehr" ;
+    sml:instancesOfValue "#Nachtbaustelle auf der Seestraße ( #Wedding) Richtung Osloer Straße. An der Kreuzung Amrumer Straße ist bis ca. 04:00 Uhr nur 1 Spur frei." ;
     sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetextValueDistributionValue8 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "#Behinderung, A72, Hof Ri. Chemnitz, zw. Hof Töpen und Dreieck Hochfranken, defekter Lkw. /jf" ;
+    sml:instancesOfValue "Die #Oberbaumbrücke ( #Friedrichshain/ #Kreuzberg) ist bis ca. 23:30 Uhr voll #gesperrt. Hier findet die 16. Open-Air-Gallery von 10:00 Uhr bis 20:00 Uhr statt. Alternativ kann auf Elsenbrücke oder Schillingbrücke ausgewichen werden." ;
     sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetextValueDistributionValue9 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "#Behinderung, A72, Chemnitz Ri. Hof, zw. Dreieck Hochfranken und Hof Töpen, defektes Fahrzeug. /jf" ;
+    sml:instancesOfValue "Aufgrund von #Wartungsarbeiten ist die #A100 Richtung Neukölln zwischen den Anschlussstellen Jakob-Kaiser-Platz bzw. Heckerdamm ( #A111) und Schmargendorf/Mecklenburgische Straße in der Zeit von 22:00 Uhr bis 05:00 Uhr #GESPERRT." ;
     sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetid a sml:Attribute ;
-    dct:identifier "tweetid" ;
+    dc:identifier "tweetid" ;
     sml:columnIndex "3"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain sml:TrafficTweets_sioc_Post ;
-    sml:mapsToProperty dct:identifier ;
+    sml:mapsToProperty dc:identifier ;
     sml:valueType rdfs:Literal ;
     seas:evaluation sml:TrafficTweetsAttributeTweetidAverageNumberOfCapitalisedValues,
         sml:TrafficTweetsAttributeTweetidAverageNumberOfCharacters,
@@ -486,44 +490,45 @@ sml:TrafficTweetsAttributeTweetidValueDistributionValue0 a sml:ValueDistribution
     sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetidValueDistributionValue1 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "978491871684067329" ;
+    sml:instancesOfValue "1075429763584544768" ;
     sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetidValueDistributionValue2 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "976706298942238722" ;
+    sml:instancesOfValue "1082999832103567361" ;
     sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetidValueDistributionValue3 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "976693718169382912" ;
+    sml:instancesOfValue "1083283182370410496" ;
     sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetidValueDistributionValue4 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "976541553723346945" ;
+    sml:instancesOfValue "1083694898547691521" ;
     sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetidValueDistributionValue5 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "976535100753104896" ;
+    sml:instancesOfValue "1083721488396701696" ;
     sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetidValueDistributionValue6 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "976514928701067269" ;
+    sml:instancesOfValue "1083717734280638464" ;
     sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetidValueDistributionValue7 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "976504603826163713" ;
+    sml:instancesOfValue "1083497704309907456" ;
     sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetidValueDistributionValue8 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "976481589009047558" ;
+    sml:instancesOfValue "1083696604484435970" ;
     sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetidValueDistributionValue9 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "976475541439242242" ;
+    sml:instancesOfValue "1083255727966310400" ;
     sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeUserid a sml:Attribute ;
-    dct:identifier "userid" ;
+    dc:identifier "userid" ;
     sml:columnIndex "1"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain sml:TrafficTweets_sioc_UserAccount ;
     sml:mapsToProperty foaf:accountName ;
     sml:valueType rdfs:Literal ;
@@ -623,7 +628,7 @@ sml:TrafficTweetsAttributeUseridValueDistributionValue9 a sml:ValueDistributionV
     sml:numberOfInstancesOfValue "250"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsFile a sml:TextFile ;
-    dct:format "text/comma-separated-values" ;
+    dc:format "text/comma-separated-values" ;
     csvw:header false ;
     csvw:null "" ;
     csvw:separator "	" ;

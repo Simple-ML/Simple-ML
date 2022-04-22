@@ -1,11 +1,13 @@
 package de.unibonn.simpleml.validation.declarations
 
+import com.google.errorprone.annotations.Var
 import de.unibonn.simpleml.emf.isConstant
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAnnotation
 import de.unibonn.simpleml.staticAnalysis.typing.ClassType
 import de.unibonn.simpleml.staticAnalysis.typing.EnumType
+import de.unibonn.simpleml.staticAnalysis.typing.VariadicType
 import de.unibonn.simpleml.staticAnalysis.typing.type
 import de.unibonn.simpleml.stdlibAccess.StdlibClasses
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
@@ -43,9 +45,14 @@ class AnnotationChecker : AbstractSimpleMLChecker() {
     @Check
     fun parameterTypes(smlAnnotation: SmlAnnotation) {
         smlAnnotation.parametersOrEmpty().forEach {
-            val isValid = when (val parameterType = it.type()) {
-                is ClassType -> parameterType.qualifiedName in validParameterTypes
-                is EnumType -> parameterType.smlEnum.isConstant()
+            val unwrappedParameterType = when (val parameterType = it.type()) {
+                is VariadicType -> parameterType.elementType
+                else -> parameterType
+            }
+
+            val isValid = when (unwrappedParameterType) {
+                is ClassType -> unwrappedParameterType.qualifiedName in validParameterTypes
+                is EnumType -> unwrappedParameterType.smlEnum.isConstant()
                 else -> false
             }
 

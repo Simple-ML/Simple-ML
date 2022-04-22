@@ -1,3 +1,4 @@
+from ._attribute import Attribute
 from ._dataset import Dataset, joinTwoDatasets, loadDataset, readDataSetFromCSV
 from ._instance import Instance
 from ._normalize import StandardNormalizer

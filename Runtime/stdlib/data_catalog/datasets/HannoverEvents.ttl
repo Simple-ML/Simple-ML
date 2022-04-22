@@ -1,6 +1,6 @@
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix dc: <http://purl.org/dc/terms/> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix dct: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix schema: <http://schema.org/> .
 @prefix seas: <https://w3id.org/seas/> .
@@ -12,12 +12,12 @@
 sml:simple-ml dcat:dataset sml:HannoverEvents .
 
 sml:HannoverEvents a dcat:Dataset ;
-    dct:description "Ereignisse in Hannover."@de,
+    dc:description "Ereignisse in Hannover."@de,
         "Events in Hannover, Germany."@en ;
-    dct:identifier "HannoverEvents" ;
-    dct:subject "Ereignisse"@de,
+    dc:identifier "HannoverEvents" ;
+    dc:subject "Ereignisse"@de,
         "Events"@en ;
-    dct:title "Events in Hannover"@de,
+    dc:title "Events in Hannover"@de,
         "Events in Hannover (Germany)"@en ;
     sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
     sml:creatorId "0"^^xsd:nonNegativeInteger ;
@@ -31,8 +31,9 @@ sml:HannoverEvents a dcat:Dataset ;
     sml:numberOfInstances "161"^^xsd:nonNegativeInteger .
 
 sml:HannoverEventsAttributeCategory a sml:Attribute ;
-    dct:identifier "Category" ;
+    dc:identifier "Category" ;
     sml:columnIndex "2"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain sml:HannoverEvents_so_Event ;
     sml:mapsToProperty sml-mob:eventCategory ;
     sml:valueType xsd:string ;
@@ -117,8 +118,9 @@ sml:HannoverEventsAttributeCategoryValueDistributionValue6 a sml:ValueDistributi
     sml:numberOfInstancesOfValue "6"^^xsd:nonNegativeInteger .
 
 sml:HannoverEventsAttributeName a sml:Attribute ;
-    dct:identifier "Name" ;
+    dc:identifier "Name" ;
     sml:columnIndex "0"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain sml:HannoverEvents_so_Event ;
     sml:mapsToProperty rdfs:label ;
     sml:valueType rdfs:Literal ;
@@ -190,11 +192,11 @@ sml:HannoverEventsAttributeNameValueDistributionValue2 a sml:ValueDistributionVa
     sml:numberOfInstancesOfValue "6"^^xsd:nonNegativeInteger .
 
 sml:HannoverEventsAttributeNameValueDistributionValue3 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "Holiday on Ice: Atlantis" ;
+    sml:instancesOfValue "Domotex" ;
     sml:numberOfInstancesOfValue "4"^^xsd:nonNegativeInteger .
 
 sml:HannoverEventsAttributeNameValueDistributionValue4 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "Domotex" ;
+    sml:instancesOfValue "Holiday on Ice: Atlantis" ;
     sml:numberOfInstancesOfValue "4"^^xsd:nonNegativeInteger .
 
 sml:HannoverEventsAttributeNameValueDistributionValue5 a sml:ValueDistributionValue ;
@@ -202,24 +204,25 @@ sml:HannoverEventsAttributeNameValueDistributionValue5 a sml:ValueDistributionVa
     sml:numberOfInstancesOfValue "3"^^xsd:nonNegativeInteger .
 
 sml:HannoverEventsAttributeNameValueDistributionValue6 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "Drei Haselnüsse für Aschenbrödel" ;
+    sml:instancesOfValue "STRICK! Hannover" ;
     sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
 
 sml:HannoverEventsAttributeNameValueDistributionValue7 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "Ralf Schmitz: Schmitzenklasse" ;
+    sml:instancesOfValue "Feuerwerk der Turnkunst: Aura" ;
     sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
 
 sml:HannoverEventsAttributeNameValueDistributionValue8 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "Schwanensee – Bolschoi Staatsballett Belarus" ;
+    sml:instancesOfValue "Maybebop & Friends" ;
     sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
 
 sml:HannoverEventsAttributeNameValueDistributionValue9 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "Völkerball" ;
+    sml:instancesOfValue "Ideen Expo" ;
     sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
 
 sml:HannoverEventsAttributeNoParticipants a sml:Attribute ;
-    dct:identifier "No Participants" ;
+    dc:identifier "No Participants" ;
     sml:columnIndex "4"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain sml:HannoverEvents_so_Event ;
     sml:mapsToProperty sml-mob:numberOfParticipants ;
     sml:valueType xsd:nonNegativeInteger ;
@@ -413,8 +416,9 @@ sml:HannoverEventsAttributeNoParticipantsStandardDeviation a seas:DistributionSt
     seas:evaluatedValue "29595.132529115916"^^xsd:float .
 
 sml:HannoverEventsAttributeStartTime a sml:Attribute ;
-    dct:identifier "Start Time" ;
+    dc:identifier "Start Time" ;
     sml:columnIndex "3"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain sml:HannoverEvents_time_DateTimeDescription ;
     sml:mapsToProperty time:inXSDDateTime ;
     sml:valueType xsd:dateTime ;
@@ -600,8 +604,9 @@ sml:HannoverEventsAttributeStartTimeQuartile4 a seas:DistributionQuartileEvaluat
     seas:rank 4 .
 
 sml:HannoverEventsAttributeVenue a sml:Attribute ;
-    dct:identifier "Venue" ;
+    dc:identifier "Venue" ;
     sml:columnIndex "1"^^xsd:nonNegativeInteger ;
+    sml:isVirtual false ;
     sml:mapsToDomain sml:HannoverEvents_dcterms_Location ;
     sml:mapsToProperty rdfs:label ;
     sml:valueType rdfs:Literal ;
@@ -686,7 +691,7 @@ sml:HannoverEventsAttributeVenueValueDistributionValue6 a sml:ValueDistributionV
     sml:numberOfInstancesOfValue "6"^^xsd:nonNegativeInteger .
 
 sml:HannoverEventsFile a sml:TextFile ;
-    dct:format "text/comma-separated-values" ;
+    dc:format "text/comma-separated-values" ;
     csvw:header false ;
     csvw:null "" ;
     csvw:separator "	" ;
@@ -750,13 +755,13 @@ sml:HannoverEventsSampleLine9 a sml:DatasetSampleLine ;
     sml:rank 9 .
 
 sml:HannoverEvents_dcterms_Location a sml:ClassInstance ;
-    sml:mapsTo dct:Location .
+    sml:mapsTo dc:Location .
 
 sml:HannoverEvents_time_DateTimeDescription a sml:ClassInstance ;
     sml:mapsTo time:DateTimeDescription .
 
 sml:HannoverEvents_so_Event a sml:ClassInstance ;
-    dct:spatial sml:HannoverEvents_dcterms_Location ;
+    dc:spatial sml:HannoverEvents_dcterms_Location ;
     time:hasTime sml:HannoverEvents_time_DateTimeDescription ;
     sml:mapsTo schema:Event .
 

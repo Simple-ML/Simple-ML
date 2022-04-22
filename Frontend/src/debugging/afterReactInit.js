@@ -100,12 +100,30 @@ workflow winebasic {
         console.log({serviceType, result})
     });
 
+    // val test = loadDataset("WhiteWineQualityBinary");
+
     TextEditorWrapper.setText(
         `package example
 
+        import simpleml.dataset.loadDataset
+        
         workflow exampleworkflow {
-            
+                    
+            // val test1 = loadDataset("HannoverEvents");
+            // val test2 = loadDataset("WhiteWineQualityBinary");
+            val test3 = loadDataset("WhiteWineQuality");
+            // val test4 = loadDataset("RedWineQualityBinary");
+            // val test5 = loadDataset("RedWineQuality");
+            // val test6 = loadDataset("FloatingCarData");
+            // val test7 = loadDataset("PublicHolidaysGermany");
+            // val test8 = loadDataset("RossmannStores");
+            // val test9 = loadDataset("SchoolHolidaysNiedersachsen");
+            // val test10 = loadDataset("PostOffices");
+            val test11 = loadDataset("TrafficTweets");
+            val speedAverages = loadDataset("SpeedAverages");
+
         }
+        
         `
     );
 }

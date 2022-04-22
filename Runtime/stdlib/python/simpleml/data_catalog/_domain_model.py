@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 import numpy as np
-import pandas as pd
 import rdflib
-from rdflib import Literal
+from rdflib import Literal, URIRef
 from rdflib.namespace import OWL, RDF, RDFS, XSD
-from rdflib.plugins.sparql.datatypes import type_promotion
+from simpleml.util import get_python_type_from_rdf_type
 
 SML = rdflib.Namespace("https://simple-ml.de/resource/")
 
@@ -57,30 +56,9 @@ class DomainModel:
 
 def getPythonType(data_type):
     data_type = rdflib.URIRef(data_type)
-    # temporal?
-    if data_type == XSD.date or data_type == XSD.dateTime or data_type == XSD.time:
-        return np.datetime64
-    # spatial?
+
+    # TODO: Add to types?
     if data_type == SML.wellKnownBinary or data_type == SML.wellKnownText:
         return np.object
-    if data_type == XSD.long:
-        return pd.Int64Dtype()
-    try:
-        # boolean?
-        if data_type == XSD.boolean:
-            return np.bool
-    except TypeError:
-        pass
-    try:
-        # integer?
-        if type_promotion(data_type, XSD.integer) == XSD.integer:
-            return pd.Int32Dtype()
-    except TypeError:
-        pass
-    try:
-        # decimal?
-        if type_promotion(data_type, XSD.double) == XSD.double:
-            return np.double
-    except TypeError:
-        pass
-    return np.str
+
+    return get_python_type_from_rdf_type(URIRef(data_type))

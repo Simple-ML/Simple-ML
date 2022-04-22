@@ -19,9 +19,6 @@
   * [`Nothing`](#class-Nothing)
   * [`Number`](#class-Number)
   * [`String`](#class-String)
-* Global functions
-  * [`print`](#global-function-print)
-  * [`println`](#global-function-println)
 * Enums
   * [`AnnotationTarget`](#enum-AnnotationTarget)
 * Annotations
@@ -41,7 +38,7 @@
 <a name='class-Any'/>
 
 ## Class `Any`
-Common superclass of all classes.
+The common superclass of all classes.
 
 **Constructor:** _Class has no constructor._
 
@@ -51,7 +48,7 @@ Common superclass of all classes.
 <a name='class-Boolean'/>
 
 ## Class `Boolean`
-_No description available._
+A truth value.
 
 **Constructor:** _Class has no constructor._
 
@@ -61,7 +58,7 @@ _No description available._
 <a name='class-Float'/>
 
 ## Class `Float`
-_No description available._
+A floating-point number.
 
 **Constructor:** _Class has no constructor._
 
@@ -71,7 +68,7 @@ _No description available._
 <a name='class-Int'/>
 
 ## Class `Int`
-_No description available._
+An integer.
 
 **Constructor:** _Class has no constructor._
 
@@ -81,7 +78,7 @@ _No description available._
 <a name='class-Nothing'/>
 
 ## Class `Nothing`
-Common subclass of all classes.
+The common subclass of all classes.
 
 **Constructor:** _Class has no constructor._
 
@@ -91,7 +88,7 @@ Common subclass of all classes.
 <a name='class-Number'/>
 
 ## Class `Number`
-_No description available._
+A number.
 
 **Constructor:** _Class has no constructor._
 
@@ -101,105 +98,83 @@ _No description available._
 <a name='class-String'/>
 
 ## Class `String`
-_No description available._
+Some text.
 
 **Constructor:** _Class has no constructor._
 
 
-## Global Functions
-
-<a name='global-function-print'/>
-
-## Global Function `print`
-_No description available._
-
-**Parameters:**
-* `obj: Any` - _No description available._
-
-**Results:** _None returned._
-
-<a name='global-function-println'/>
-
-## Global Function `println`
-_No description available._
-
-**Parameters:**
-* `obj: Any` - _No description available._
-
-**Results:** _None returned._
-
 <a name='enum-AnnotationTarget'/>
 
 ## Enum `AnnotationTarget`
-Declaration types that can be targeted by annotations.
+The declaration types that can be targeted by annotations.
 ### Enum Variant `Annotation`
-_No description available._
+The annotation can be called on annotations.
 
 **Parameters:** _None expected._
 
 
 ### Enum Variant `Attribute`
-_No description available._
+The annotation can be called on attributes.
 
 **Parameters:** _None expected._
 
 
 ### Enum Variant `Class`
-_No description available._
+The annotation can be called on classes.
 
 **Parameters:** _None expected._
 
 
 ### Enum Variant `CompilationUnit`
-_No description available._
+The annotation can be called on compilation units (i.e. files).
 
 **Parameters:** _None expected._
 
 
 ### Enum Variant `Enum`
-_No description available._
+The annotation can be called on enums.
 
 **Parameters:** _None expected._
 
 
 ### Enum Variant `EnumVariant`
-_No description available._
+The annotation can be called on enum variants.
 
 **Parameters:** _None expected._
 
 
 ### Enum Variant `Function`
-_No description available._
+The annotation can be called on functions.
 
 **Parameters:** _None expected._
 
 
 ### Enum Variant `Parameter`
-_No description available._
+The annotation can be called on parameters.
 
 **Parameters:** _None expected._
 
 
 ### Enum Variant `Result`
-_No description available._
+The annotation can be called on results.
 
 **Parameters:** _None expected._
 
 
 ### Enum Variant `Step`
-_No description available._
+The annotation can be called on steps.
 
 **Parameters:** _None expected._
 
 
 ### Enum Variant `TypeParameter`
-_No description available._
+The annotation can be called on type parameters.
 
 **Parameters:** _None expected._
 
 
 ### Enum Variant `Workflow`
-_No description available._
+The annotation can be called on workflows.
 
 **Parameters:** _None expected._
 
@@ -239,10 +214,10 @@ The declaration should no longer be used.
 <a name='annotation-Description'/>
 
 ## Annotation `Description`
-Purpose of a declaration.
+The purpose of a declaration.
 
 **Parameters:**
-* `description: String` - _No description available._
+* `description: String` - The purpose of a declaration.
 
 **Valid targets:**
 * Annotation
@@ -277,10 +252,10 @@ The function has no side effects and returns the same results for the same argum
 <a name='annotation-PythonModule'/>
 
 ## Annotation `PythonModule`
-Qualified name of the corresponding module in Python (default is the qualified name of the package).
+The qualified name of the corresponding Python module (default is the qualified name of the package).
 
 **Parameters:**
-* `qualifiedName: String` - _No description available._
+* `qualifiedName: String` - The qualified name of the corresponding Python module.
 
 **Valid targets:**
 * CompilationUnit
@@ -288,10 +263,10 @@ Qualified name of the corresponding module in Python (default is the qualified n
 <a name='annotation-PythonName'/>
 
 ## Annotation `PythonName`
-Name of the corresponding API element in Python (default is the name of the declaration in the stubs).
+The name of the corresponding API element in Python (default is the name of the declaration in the stubs).
 
 **Parameters:**
-* `name: String` - _No description available._
+* `name: String` - The name of the corresponding API element in Python.
 
 **Valid targets:**
 * Attribute
@@ -314,10 +289,10 @@ The annotation can be called multiple times for the same declaration.
 <a name='annotation-Since'/>
 
 ## Annotation `Since`
-Version in which a declaration was added.
+The version in which a declaration was added.
 
 **Parameters:**
-* `version: String` - _No description available._
+* `version: String` - The version in which a declaration was added.
 
 **Valid targets:**
 * Annotation
@@ -339,7 +314,7 @@ Version in which a declaration was added.
 The annotation can target these declaration types. If the @Target annotation is not used any declaration type can be targeted.
 
 **Parameters:**
-* `vararg targets: AnnotationTarget` - _No description available._
+* `vararg targets: AnnotationTarget` - The valid targets.
 
 **Valid targets:**
 * Annotation
