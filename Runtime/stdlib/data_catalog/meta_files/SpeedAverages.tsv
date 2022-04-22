@@ -16,7 +16,7 @@ COORDINATE_SYSTEM	3857
 PROPERTIES
 sml:mobility/StreetSegment,sml:mobility/osmId
 sml:mobility/LocationType,rdfs:label
-sml:mobility/SpeedLimit,sml:mobility/speed
+sml:mobility/SpeedLimit,sml:mobility/maxSpeed
 time:DateTimeDescription@1,time:inXSDDateTime
 time:DateTimeDescription@2,time:inXSDDateTime
 sml:mobility/TrafficFlow,sml:mobility/numberOfRecords
@@ -29,7 +29,7 @@ time:DayOfWeek,rdfs:label
 sml:mobility/StreetSegment,sml:asWKB
 GRAPH
 sml:mobility/StreetSegment,sml:mobility/hasLocationType,sml:mobility/LocationType
-sml:mobility/StreetSegment,sml:mobility/maxSpeed,sml:mobility/SpeedLimit
+sml:mobility/StreetSegment,sml:mobility/hasSpeedLimit,sml:mobility/SpeedLimit
 sml:mobility/TrafficFlow,time:hasBeginning,time:DateTimeDescription@1
 sml:mobility/TrafficFlow,time:hasEnd,time:DateTimeDescription@2
 sml:mobility/TrafficFlow,dcterms:spatial,sml:mobility/StreetSegment

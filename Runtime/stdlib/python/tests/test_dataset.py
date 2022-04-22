@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import numpy as np
 from simpleml.dataset import (
     Instance,
@@ -8,6 +6,13 @@ from simpleml.dataset import (
     joinTwoDatasets,
     loadDataset,
     readDataSetFromCSV,
+)
+from simpleml.dataset._conversion import (
+    AttributeTransformer,
+    DayOfTheYearTransformer,
+    TimestampTransformer,
+    WeekDayTransformer,
+    WeekendTransformer,
 )
 
 
@@ -52,12 +57,11 @@ def test_transform_text():
 def test_transform_column():
     dataset = loadDataset("WhiteWineQuality")
 
-    def transformIntoBinaryQuality(instance: Instance):
-        return 1 if instance.getValue("quality") >= 7 else 0
+    class BinaryQualityTransformer(AttributeTransformer):
+        def transform(self, instance: Instance):
+            return 1 if instance.getValue("quality") >= 7 else 0
 
-    dataset = dataset.addAttribute(
-        "goodquality", transformFunc=transformIntoBinaryQuality
-    )
+    dataset = dataset.addAttribute("goodquality", BinaryQualityTransformer(), "quality")
 
     assert isinstance(dataset.getRow(3).getValue("goodquality"), float)  # nosec
 
@@ -104,52 +108,30 @@ def test_flatten_vector():
 def test_add_is_weekend():
     dataset = loadDataset("SpeedAverages")
 
-    def transformIntoIsWeekend(instance: Instance) -> bool:
-        week_num = instance.getValue("start_time").weekday()
-        if week_num < 5:
-            return False
-        else:
-            return True
+    dataset = dataset.transform("start_time", WeekendTransformer("start_time"))
 
-    dataset = dataset.addAttribute(
-        "start_time_isWeekend", transformFunc=transformIntoIsWeekend
-    )
-
-    assert type(dataset.data["start_time_isWeekend"][0]) == np.bool_  # nosec
+    assert type(dataset.data["start_time"][0]) == np.bool_  # nosec
 
 
 def test_add_day_of_year():
     dataset = loadDataset("SpeedAverages")
 
-    def transformIntoDayOfTheYear(instance: Instance):
-        return instance.getValue("start_time").timetuple().tm_yday
+    dataset = dataset.transform("start_time", DayOfTheYearTransformer("start_time"))
 
-    dataset = dataset.addAttribute(
-        "start_time_DayOfTheYear", transformFunc=transformIntoDayOfTheYear
-    )
-
-    assert type(dataset.data["start_time_DayOfTheYear"][0]) == np.int64  # nosec
+    assert type(dataset.data["start_time"][0]) == np.int64  # nosec
 
 
 def test_add_week_day():
     dataset = loadDataset("SpeedAverages")
 
-    def transformIntoWeekDay(instance: Instance) -> str:
-        return instance.getValue("start_time").strftime("%A")
+    dataset = dataset.transform("start_time", WeekDayTransformer("start_time"))
 
-    dataset = dataset.addAttribute(
-        "start_time_weekDay", transformFunc=transformIntoWeekDay
-    )
-
-    assert type(dataset.data["start_time_weekDay"][0]) == str  # nosec
+    assert type(dataset.data["start_time"][0]) == str  # nosec
 
 
 def test_date_to_timestamp():
     dataset = loadDataset("SpeedAverages")
 
-    def transformIntoTimestamp(instance: Instance):
-        return datetime.timestamp(instance.getValue("start_time"))
-
-    dataset = dataset.transform("start_time", transformFunc=transformIntoTimestamp)
+    dataset = dataset.transform("start_time", TimestampTransformer("start_time"))
 
     assert type(dataset.data["start_time"][0]) == np.float64  # nosec

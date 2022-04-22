@@ -298,7 +298,6 @@ def getStatistics(dataset):
                     polygonObject = geometry.Polygon(polygonWKT)
                     areas[area["id"]] = polygonObject
 
-            print("addSpatialValueDistribution")
             for geometry_object in data[colName]:
                 if type(geometry_object) == Polygon:
                     geo_type = Polygon

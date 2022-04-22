@@ -38,6 +38,7 @@ from simpleml.util import (
 from sklearn.model_selection import train_test_split
 
 from ._attribute import Attribute
+from ._conversion import AttributeTransformer
 
 
 class Dataset:
@@ -189,10 +190,13 @@ class Dataset:
         return copy.provide_statistics()
 
     def addAttribute(
-        self, newAttributeId, transformFunc, newAttributeLabel: str = None
+        self,
+        newAttributeId,
+        transformer: AttributeTransformer,
+        newAttributeLabel: str = None,
     ) -> Dataset:
 
-        copy = self.add_attribute_data(newAttributeId, transformFunc)
+        copy = self.add_attribute_data(newAttributeId, transformer.transform)
         # copy.data[newColumnName] = copy.data[newColumnName].convert_dtypes()
 
         data_type = get_python_type_from_pandas_type(
@@ -210,6 +214,12 @@ class Dataset:
             newAttributeId, newAttributeLabelOrId, data_type
         )
         copy.create_simple_type(attribute, data_type)
+
+        return copy.provide_statistics()
+
+    def dropAllMissingValues(self):
+        copy = self.copy_and_read()
+        copy.data.dropna(inplace=True)
 
         return copy.provide_statistics()
 
@@ -365,20 +375,21 @@ class Dataset:
 
         return attribute
 
-    def transform(self, attributeId, transformFunc):
+    def transform(self, attributeId: str, transformer: AttributeTransformer):
 
         attribute = self.attributes[attributeId]
 
         copy = self.copy_and_read()
 
-        copy.data = self.add_attribute_data(attributeId, transformFunc).data
+        copy.data = self.add_attribute_data(attributeId, transformer.transform).data
         self.drop_column_description(attribute)
 
         data_type = get_python_type_from_pandas_type(
             copy.data[attributeId].convert_dtypes().dtype
         )
 
-        copy.add_column_description(attributeId, attribute.label, data_type, type_float)
+        attribute = copy.add_column_description(attributeId, attribute.label, data_type)
+        copy.create_simple_type(attribute, data_type)
 
         return copy.provide_statistics()
 

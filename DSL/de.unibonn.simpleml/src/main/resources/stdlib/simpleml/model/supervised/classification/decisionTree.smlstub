@@ -1,0 +1,19 @@
+package simpleml.model.supervised.classification
+
+import simpleml.model.*
+import simpleml.dataset.Dataset
+
+@Description("Functionalities to train a decision tree classification model.")
+class DecisionTreeClassifier(
+    maxDepth: Int? = null
+) sub Estimator {
+    attr maxDepth: Int?
+
+    @Description("Train the model given a dataset of features and a dataset of labels")
+    fun fit(features: Dataset, target: Dataset) -> trainedModel: DecisionTreeClassifierModel
+}
+
+class DecisionTreeClassifierModel() sub Model {
+    @Description("Predict values given a dataset of features")
+    fun predict(@Description("A dataset consisting of features for prediction.") features: Dataset) -> @Description("A dataset consisting of the predicted values.") results: Dataset
+}
