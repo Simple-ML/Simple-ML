@@ -15,5 +15,5 @@ workflow exampleworkflow {
 	val lr_model = lr.fit(X_train,y_train );
 	val y_pred = lr_model.predict(X_test);
 
-	val err = meanAbsoluteError(y_test, y_pred);
+	// val err = meanAbsoluteError(y_test, y_pred);
 }
