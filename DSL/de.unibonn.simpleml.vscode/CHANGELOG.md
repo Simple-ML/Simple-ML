@@ -8,6 +8,10 @@
 ### Fixed
 ### Security
 
+## [0.0.14] - 2022-04-25
+### Changed
+- Require Java version 17+
+
 ## [0.0.13] - 2022-04-20
 ### Added
 - [Custom outline and breadcrumbs](https://github.com/Simple-ML/Simple-ML/pull/114)
