@@ -40,7 +40,7 @@ jobs:
 
       - name: Upload test report
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Test report
           # upload-artifact does not use working-directory
@@ -50,7 +50,7 @@ jobs:
 
       - name: Upload test coverage
         if: ${{ github.actor != 'dependabot[bot]' }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: DSL test coverage
           # upload-artifact does not use working-directory
@@ -129,7 +129,7 @@ jobs:
 
       - name: Upload test coverage
         if: ${{ github.actor != 'dependabot[bot]' }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Runtime test coverage
           path: Runtime/htmlcov
