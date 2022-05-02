@@ -3,7 +3,7 @@
 _Parameters_ define the expected inputs of some declaration that can be [called][calls]. We refer to such declarations as _callables_. We distinguish between 
 * [required parameters](#required-parameters), which must always be passed,
 * [optional parameters](#optional-parameters), which use a default value if no value is passed explicitly, and
-* [variadic paraemters](#variadic-parameters), which can accept zero or more values.
+* [variadic parameters](#variadic-parameters), which can accept zero or more values.
 
 ## Required Parameters
 
@@ -84,7 +84,7 @@ Let's look at these elements in turn.
 
 ### Matching Name
 
-By default, parameter names in Simple-ML must be identical to their names in Python. If this is not desired, for example due to clashing name conventions in Simple-ML and Python, the `@PythonName` annotation can be used to link a Simple-ML parameter to a Python parameter. Here is an example:
+By default, parameter names in Simple-ML must be identical to their names in Python. If this is not desired, for example due to clashing name conventions in Simple-ML and Python, the `@PythonName` annotation can be used to link a Simple-ML parameter to a Python parameter with a different name. Here is an example:
 
 ```py
 # Python code
@@ -171,13 +171,13 @@ fun variadic(vararg a: Int)
 
 ### Matching Default Value
 
-Most commonly, default values in Python will be literals, since default values are only evaluated once in Python rather than every time the function is called. The following table shows how Simple-ML literals and Python literals correspond:
+Most commonly, default values in Python are literals, since default values are only evaluated once in Python rather than every time the function is called. The following table shows how Simple-ML literals and Python literals correspond:
 
 |Simple-ML Literal | Python Literal|
 |-|-|
 |`1` ([int][int-literals])|`1`|
 |`1.0` ([float][float-literals])|`1.0`|
-|`"hello"` ([string][string-literals])|`"hello"`|
+|`"hello"` ([string][string-literals])|`"hello"` or `'hello'`|
 |`false` ([boolean][boolean-literals])|`False`|
 |`true` ([boolean][boolean-literals]) |`True`|
 |`null` ([null][null-literals])|`None`|
