@@ -1,34 +1,10 @@
 # DSL
+
 ## Installation for Developers
 
-### Option 1: VS Code Devcontainer
-
-1. Install [Docker](https://docs.docker.com/get-docker/).
 1. Install [VS Code](https://code.visualstudio.com/).
-1. Install the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) VS Code Extension.
-1. Clone this repository.
-1. Open the repository in VS Code.
-1. Press F1 and type "Remote-Containers: Reopen in Container".
-
-### Option 1a: VS Code Devcontainer (advanced)
-
-Note: This solution requires that Git itself can clone this private repository from GitHub. **If you only used GUIs for Git before it's likely this solution will not work right away.** You need to either [configure SSH](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh), use a credentials manager like the [Git Credentials Manager](https://github.com/microsoft/Git-Credential-Manager-Core) or revert to _Option 1_.
-
-1. Install [Docker](https://docs.docker.com/get-docker/).
-1. Install [VS Code](https://code.visualstudio.com/).
-1. Install the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) VS Code Extension.
-1. Open VS Code.
-1. Press F1 and type "Remote-Containers: Remote-Containers: Clone Repository in Container Volume...".
-1. Select "GitHub".
-1. Type "Simple-ML/DSL".
-
-### Option 2: Custom Installation
-
-1. Install [Node.js](https://nodejs.org/en/).
-1. Install [VS Code](https://code.visualstudio.com/).
-1. Clone this repository.
-1. Open the repository in VS Code.
-1. Build everything:
+2. Clone this repository.
+3. Build everything:
     ```shell
     ./gradlew build
     ```
@@ -37,9 +13,11 @@ Note: This solution requires that Git itself can clone this private repository f
 
 ### Running the VS Code Extension
 
-```shell
-./gradlew launchVSCode
-```
+1. Ensure VS Code is closed.
+2. Install the extension and launch VS Code:
+    ```shell
+    ./gradlew launchVSCode
+    ```
 
 ### Running the Xtext Web Backend
 
