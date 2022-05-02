@@ -53,7 +53,18 @@ step doSomething2() {}
 
 The notable exception are [callable types][callable-types], where the result list must always be specified even when it is empty.
 
+## Corresponding Python Code
+
+**Note:** This section is only relevant if you are interested in the [stub language][stub-language].
+
+Results must be ordered the same way in Python as they are in Simple-ML. Moreover, the Simple-ML type of a result should capture the possible values of this result accurately. Ideally, the Python result should also have a matching [type hint][types-python]. 
+
+Since Python results do not have a name, the names of Simple-ML results can be arbitrary. Naturally, a name should be chosen that captures the purpose of the result.
+
+
+[stub-language]: ../stub-language/README.md
 [types]: ./types.md
+[types-python]: ./types.md#corresponding-python-code
 [callable-types]: ./types.md#callable-type
 [steps]: ../workflow-language/steps.md
 [calls]: ../workflow-language/expressions.md#calls

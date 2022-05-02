@@ -74,7 +74,7 @@ Several restrictions apply to the order of parameters and to combinations of the
 
 **Note:** This section is only relevant if you are interested in the [stub language][stub-language].
 
-Generally, parameters must be ordered the same way in Python as they are in Simple-ML. Moreover, for each parameter the following elements must match:
+Parameters must be ordered the same way in Python as they are in Simple-ML. Moreover, for each parameter the following elements must match:
 * Name
 * Type
 * Kind (required vs. optional vs. variadic)
