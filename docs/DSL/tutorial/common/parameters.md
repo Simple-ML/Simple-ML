@@ -1,6 +1,6 @@
 # Parameters
 
-_Parameters_ define the expected inputs of some declaration that can be [called][calls]. We refer to such declarations as _callables_. We distinguish between 
+_Parameters_ define the expected inputs of some declaration that can be [called][calls]. We refer to such declarations as _callables_. We distinguish between
 * [required parameters](#required-parameters), which must always be passed,
 * [optional parameters](#optional-parameters), which use a default value if no value is passed explicitly, and
 * [variadic parameters](#variadic-parameters), which can accept zero or more values.
@@ -173,14 +173,14 @@ fun variadic(vararg a: Int)
 
 Most commonly, default values in Python are literals, since default values are only evaluated once in Python rather than every time the function is called. The following table shows how Simple-ML literals and Python literals correspond:
 
-|Simple-ML Literal | Python Literal|
-|-|-|
-|`1` ([int][int-literals])|`1`|
-|`1.0` ([float][float-literals])|`1.0`|
-|`"hello"` ([string][string-literals])|`"hello"` or `'hello'`|
-|`false` ([boolean][boolean-literals])|`False`|
-|`true` ([boolean][boolean-literals]) |`True`|
-|`null` ([null][null-literals])|`None`|
+| Simple-ML Literal                     | Python Literal         |
+|---------------------------------------|------------------------|
+| `1` ([int][int-literals])             | `1`                    |
+| `1.0` ([float][float-literals])       | `1.0`                  |
+| `"hello"` ([string][string-literals]) | `"hello"` or `'hello'` |
+| `false` ([boolean][boolean-literals]) | `False`                |
+| `true` ([boolean][boolean-literals])  | `True`                 |
+| `null` ([null][null-literals])        | `None`                 |
 
 [types]: ./types.md
 [types-python]: ./types.md#corresponding-python-code

@@ -52,7 +52,7 @@ To attach metainformation to a declaration, the annotation must be called on tha
 * [Type parameters][type-parameters]
 * [Workflows][workflows]
 
-The valid targets of an annotation can be restricted with the [`Target`][simpleml-lang-target] annotation. By default all targets are allowed. Likewise, an annotation can only be called once on the same declaration by default, unless the annotation is marked as[ `Repeatable`][simpleml-lang-repeatable].
+The valid targets of an annotation can be restricted with the [`Target`][simpleml-lang-target] annotation. By default all targets are allowed. Likewise, an annotation can only be called once on the same declaration by default, unless the annotation is marked as[Repeatable][simpleml-lang-repeatable].
 
 Annotation calls are always located right in front of their target. Exception: In the case of compilations units they are located at the very top of the file. Here is an example that demonstrates how to call the annotation `OnlyForExperts` that we defined above on a [class][classes]:
 
