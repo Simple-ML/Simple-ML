@@ -9,7 +9,7 @@ _Parameters_ define the expected inputs of some declaration that can be [called]
 
 _Required parameters_ must always be passed when the declaration is [called][calls]. Let us look at an example:
 
-```
+```txt
 requiredParameter: Int
 ```
 
@@ -22,7 +22,7 @@ Here are the pieces of syntax:
 
 _Optional parameters_ have a default value and, thus, need not be passed as an [argument][calls] unless the default value does not fit. Here is an example:
 
-```
+```txt
 optionalParameter: Int = 1
 ```
 
@@ -37,7 +37,7 @@ These are the syntactic elements:
 
 _Variadic parameters_ can consume arbitrarily many [arguments][calls]. Here is an example:
 
-```
+```txt
 vararg variadicParameter: Int
 ```
 
@@ -51,7 +51,7 @@ Let us break down the syntax:
 
 Let us now look at a full example of a [step][steps] called `doSomething` with one [required parameter](#required-parameters) and one [optional parameter](#optional-parameters):
 
-```
+```txt
 step doSomething(requiredParameter: Int, optionalParameter: Boolean = false) {
     // ...
 }

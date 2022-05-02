@@ -2,7 +2,7 @@
 
 _Results_ define the outputs of some declaration when it is [called][calls]. Here is an example:
 
-```
+```txt
 result: Int
 ```
 
@@ -15,7 +15,7 @@ Here is a breakdown of the syntax:
 
 Let us now look at a full example of a [step][steps] called `doSomething` with two results:
 
-```
+```txt
 step doSomething() -> (result1: Int, result2: Boolean) {
     // ...
 }
@@ -31,11 +31,11 @@ The interesting part is the list of results, which uses the following syntactic 
 
 In case that the callable produces only a single result, we can omit the parentheses. The following two declarations are, hence, equivalent:
 
-```
+```txt
 step doSomething1() -> (result: Int) {}
 ```
 
-```
+```txt
 step doSomething2() -> result: Int {}
 ```
 
@@ -43,11 +43,11 @@ step doSomething2() -> result: Int {}
 
 In case that the callable produces no results, we can usually omit the entire results list. The following two declarations are, hence equivalent:
 
-```
+```txt
 step doSomething1() -> () {}
 ```
 
-```
+```txt
 step doSomething2() {}
 ```
 
