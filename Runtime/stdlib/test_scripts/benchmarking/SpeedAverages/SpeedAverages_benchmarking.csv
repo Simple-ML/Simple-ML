@@ -1,0 +1,2717 @@
+model,parameters,meanAbsoluteError,accuracy,balancedAccuracy,r2,source_code
+LinearRegression,{},668522096919.9193,0.017142857142857144,0.016908212560386472,-5.645572897700913e+21,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import LinearRegression
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = LinearRegression(**{})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RidgeRegression,{},13.331599920925411,0.03428571428571429,0.01535541752933057,0.3804548056452447,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RidgeRegression
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RidgeRegression(**{})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+DecisionTreeRegressor,{'maxDepth': 1},14.630776246662696,0.017142857142857144,0.014492753623188406,0.15976702749041605,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression._tree import DecisionTreeRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = DecisionTreeRegressor(**{'maxDepth': 1})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+DecisionTreeRegressor,{'maxDepth': 3},13.327855821856247,0.045714285714285714,0.019668737060041408,0.27528848190791766,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression._tree import DecisionTreeRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = DecisionTreeRegressor(**{'maxDepth': 3})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+DecisionTreeRegressor,{'maxDepth': 5},12.325306464716544,0.03428571428571429,0.019323671497584544,0.349797036854528,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression._tree import DecisionTreeRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = DecisionTreeRegressor(**{'maxDepth': 5})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+DecisionTreeRegressor,{'maxDepth': 7},12.58980755787655,0.045714285714285714,0.03174603174603175,0.3429765273791987,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression._tree import DecisionTreeRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = DecisionTreeRegressor(**{'maxDepth': 7})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+DecisionTreeRegressor,{'maxDepth': 9},13.214339218124302,0.02857142857142857,0.01859903381642512,0.23017954271690244,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression._tree import DecisionTreeRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = DecisionTreeRegressor(**{'maxDepth': 9})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'squared_error', 'maxDepth': 1, 'randomState': 2022}",14.269082987472403,0.04,0.016563146997929604,0.18355720358562,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 5, 'criterion': 'squared_error', 'maxDepth': 1, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'squared_error', 'maxDepth': 3, 'randomState': 2022}",13.005215048741505,0.022857142857142857,0.00966183574879227,0.3056893293267676,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 5, 'criterion': 'squared_error', 'maxDepth': 3, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'squared_error', 'maxDepth': 5, 'randomState': 2022}",12.499141333065172,0.04,0.016390614216701172,0.3488833683299907,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 5, 'criterion': 'squared_error', 'maxDepth': 5, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'squared_error', 'maxDepth': 7, 'randomState': 2022}",12.277432253027863,0.02857142857142857,0.011042097998619738,0.3641138492835896,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 5, 'criterion': 'squared_error', 'maxDepth': 7, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'squared_error', 'maxDepth': 9, 'randomState': 2022}",12.341409379924748,0.05142857142857143,0.03191856452726018,0.3550429701521054,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 5, 'criterion': 'squared_error', 'maxDepth': 9, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'absolute_error', 'maxDepth': 1, 'randomState': 2022}",14.125622819843848,0.045714285714285714,0.017943409247757076,0.16247997781015144,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 5, 'criterion': 'absolute_error', 'maxDepth': 1, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'absolute_error', 'maxDepth': 3, 'randomState': 2022}",12.714772065720055,0.02857142857142857,0.03671497584541063,0.3220771892777554,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 5, 'criterion': 'absolute_error', 'maxDepth': 3, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'absolute_error', 'maxDepth': 5, 'randomState': 2022}",12.889259390889498,0.05142857142857143,0.0340752242926156,0.3000432107864731,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 5, 'criterion': 'absolute_error', 'maxDepth': 5, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'absolute_error', 'maxDepth': 7, 'randomState': 2022}",13.059210889909815,0.017142857142857144,0.005089717046238785,0.33069966801220285,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 5, 'criterion': 'absolute_error', 'maxDepth': 7, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'absolute_error', 'maxDepth': 9, 'randomState': 2022}",13.178830123307272,0.03428571428571429,0.01984126984126984,0.3087102865320934,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 5, 'criterion': 'absolute_error', 'maxDepth': 9, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'poisson', 'maxDepth': 1, 'randomState': 2022}",15.761050379888259,0.022857142857142857,0.014492753623188406,-0.012675770833228572,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 5, 'criterion': 'poisson', 'maxDepth': 1, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'poisson', 'maxDepth': 3, 'randomState': 2022}",15.753534500253933,0.022857142857142857,0.014492753623188406,-0.016087138584446548,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 5, 'criterion': 'poisson', 'maxDepth': 3, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'poisson', 'maxDepth': 5, 'randomState': 2022}",15.750902695560315,0.04,0.014492753623188406,-0.018265344648273896,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 5, 'criterion': 'poisson', 'maxDepth': 5, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'poisson', 'maxDepth': 7, 'randomState': 2022}",15.61922615447122,0.04,0.014492753623188406,-0.008959925064766061,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 5, 'criterion': 'poisson', 'maxDepth': 7, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'poisson', 'maxDepth': 9, 'randomState': 2022}",15.64897636261126,0.04,0.014492753623188406,-0.011860454057600167,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 5, 'criterion': 'poisson', 'maxDepth': 9, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'squared_error', 'maxDepth': 1, 'randomState': 2022}",14.382392957600027,0.03428571428571429,0.014492753623188406,0.1705648091566282,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 15, 'criterion': 'squared_error', 'maxDepth': 1, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'squared_error', 'maxDepth': 3, 'randomState': 2022}",13.107707982439162,0.02857142857142857,0.012560386473429951,0.2904544337703796,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 15, 'criterion': 'squared_error', 'maxDepth': 3, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'squared_error', 'maxDepth': 5, 'randomState': 2022}",12.819409788274642,0.05714285714285714,0.025638371290545203,0.3222149438341556,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 15, 'criterion': 'squared_error', 'maxDepth': 5, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'squared_error', 'maxDepth': 7, 'randomState': 2022}",12.48695230589175,0.03428571428571429,0.014975845410628021,0.3540607120882009,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 15, 'criterion': 'squared_error', 'maxDepth': 7, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'squared_error', 'maxDepth': 9, 'randomState': 2022}",12.33809944389259,0.04,0.027570738440303656,0.3618487988462815,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 15, 'criterion': 'squared_error', 'maxDepth': 9, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'absolute_error', 'maxDepth': 1, 'randomState': 2022}",14.246061402489515,0.045714285714285714,0.017943409247757076,0.15986162160787032,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 15, 'criterion': 'absolute_error', 'maxDepth': 1, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'absolute_error', 'maxDepth': 3, 'randomState': 2022}",12.691216106762633,0.017142857142857144,0.007039337474120083,0.31424621968900035,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 15, 'criterion': 'absolute_error', 'maxDepth': 3, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'absolute_error', 'maxDepth': 5, 'randomState': 2022}",12.45034285890305,0.05142857142857143,0.017391304347826087,0.32698539544197847,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 15, 'criterion': 'absolute_error', 'maxDepth': 5, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'absolute_error', 'maxDepth': 7, 'randomState': 2022}",12.414512788133424,0.022857142857142857,0.03743961352657004,0.3604803662450291,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 15, 'criterion': 'absolute_error', 'maxDepth': 7, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'absolute_error', 'maxDepth': 9, 'randomState': 2022}",12.40457713207556,0.022857142857142857,0.011352657004830917,0.3640104937085239,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 15, 'criterion': 'absolute_error', 'maxDepth': 9, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'poisson', 'maxDepth': 1, 'randomState': 2022}",15.751720041816291,0.04,0.014492753623188406,-0.01724382136713465,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 15, 'criterion': 'poisson', 'maxDepth': 1, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'poisson', 'maxDepth': 3, 'randomState': 2022}",15.749622219257846,0.04,0.014492753623188406,-0.020919403798632663,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 15, 'criterion': 'poisson', 'maxDepth': 3, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'poisson', 'maxDepth': 5, 'randomState': 2022}",15.73730439869331,0.04,0.014492753623188406,-0.022672677497890925,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 15, 'criterion': 'poisson', 'maxDepth': 5, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'poisson', 'maxDepth': 7, 'randomState': 2022}",15.656908663680333,0.04,0.014492753623188406,-0.019652226015538954,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 15, 'criterion': 'poisson', 'maxDepth': 7, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'poisson', 'maxDepth': 9, 'randomState': 2022}",15.697631355850957,0.03428571428571429,0.014492753623188406,-0.023301832641093867,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 15, 'criterion': 'poisson', 'maxDepth': 9, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'squared_error', 'maxDepth': 1, 'randomState': 2022}",14.440208203181522,0.045714285714285714,0.033816425120772944,0.1680023435249366,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 25, 'criterion': 'squared_error', 'maxDepth': 1, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'squared_error', 'maxDepth': 3, 'randomState': 2022}",12.982728996529362,0.05142857142857143,0.02087646652864044,0.2999628288482685,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 25, 'criterion': 'squared_error', 'maxDepth': 3, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'squared_error', 'maxDepth': 5, 'randomState': 2022}",12.726687148591884,0.06285714285714286,0.026501035196687374,0.3311682560398874,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 25, 'criterion': 'squared_error', 'maxDepth': 5, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'squared_error', 'maxDepth': 7, 'randomState': 2022}",12.411182589087657,0.02857142857142857,0.014492753623188406,0.36223089913167617,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 25, 'criterion': 'squared_error', 'maxDepth': 7, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'squared_error', 'maxDepth': 9, 'randomState': 2022}",12.35107344223103,0.03428571428571429,0.012939958592132504,0.3722431611271454,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 25, 'criterion': 'squared_error', 'maxDepth': 9, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'absolute_error', 'maxDepth': 1, 'randomState': 2022}",14.316152737373642,0.03428571428571429,0.012422360248447204,0.15390683909655956,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 25, 'criterion': 'absolute_error', 'maxDepth': 1, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'absolute_error', 'maxDepth': 3, 'randomState': 2022}",12.727179322031,0.045714285714285714,0.01673567977915804,0.3074800363474067,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 25, 'criterion': 'absolute_error', 'maxDepth': 3, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'absolute_error', 'maxDepth': 5, 'randomState': 2022}",12.612777762451172,0.03428571428571429,0.010869565217391302,0.32391551547636965,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 25, 'criterion': 'absolute_error', 'maxDepth': 5, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'absolute_error', 'maxDepth': 7, 'randomState': 2022}",12.494143699433677,0.05714285714285714,0.024930986887508624,0.34952335061252904,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 25, 'criterion': 'absolute_error', 'maxDepth': 7, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'absolute_error', 'maxDepth': 9, 'randomState': 2022}",12.347069216092361,0.045714285714285714,0.03398895790200138,0.36722446494822114,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 25, 'criterion': 'absolute_error', 'maxDepth': 9, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'poisson', 'maxDepth': 1, 'randomState': 2022}",15.750644972736907,0.04,0.014492753623188406,-0.01878506376889333,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 25, 'criterion': 'poisson', 'maxDepth': 1, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'poisson', 'maxDepth': 3, 'randomState': 2022}",15.75150788077596,0.04,0.014492753623188406,-0.02260499991102738,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 25, 'criterion': 'poisson', 'maxDepth': 3, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'poisson', 'maxDepth': 5, 'randomState': 2022}",15.780477700327028,0.03428571428571429,0.012422360248447204,-0.02538571185485239,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 25, 'criterion': 'poisson', 'maxDepth': 5, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'poisson', 'maxDepth': 7, 'randomState': 2022}",15.73744941441135,0.03428571428571429,0.012422360248447204,-0.024827181116061414,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 25, 'criterion': 'poisson', 'maxDepth': 7, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'poisson', 'maxDepth': 9, 'randomState': 2022}",15.737853896240216,0.02857142857142857,0.012077294685990338,-0.027559856242286074,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 25, 'criterion': 'poisson', 'maxDepth': 9, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'squared_error', 'maxDepth': 1, 'randomState': 2022}",14.432347372104882,0.04,0.028985507246376812,0.16885654445516662,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 35, 'criterion': 'squared_error', 'maxDepth': 1, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'squared_error', 'maxDepth': 3, 'randomState': 2022}",12.946667326609838,0.03428571428571429,0.014492753623188406,0.30297184428936685,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 35, 'criterion': 'squared_error', 'maxDepth': 3, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'squared_error', 'maxDepth': 5, 'randomState': 2022}",12.7389411377385,0.03428571428571429,0.013457556935817806,0.33357938877538806,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 35, 'criterion': 'squared_error', 'maxDepth': 5, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'squared_error', 'maxDepth': 7, 'randomState': 2022}",12.420514436033612,0.022857142857142857,0.011387163561076604,0.35806619242596693,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 35, 'criterion': 'squared_error', 'maxDepth': 7, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'squared_error', 'maxDepth': 9, 'randomState': 2022}",12.34664708150479,0.045714285714285714,0.024672187715665976,0.3704847420517319,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 35, 'criterion': 'squared_error', 'maxDepth': 9, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'absolute_error', 'maxDepth': 1, 'randomState': 2022}",14.269280718667973,0.04,0.014492753623188406,0.15813029744985296,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 35, 'criterion': 'absolute_error', 'maxDepth': 1, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'absolute_error', 'maxDepth': 3, 'randomState': 2022}",12.744269210077626,0.03428571428571429,0.013457556935817804,0.31116546726277816,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 35, 'criterion': 'absolute_error', 'maxDepth': 3, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'absolute_error', 'maxDepth': 5, 'randomState': 2022}",12.661285177769956,0.045714285714285714,0.018115942028985508,0.3200255656110055,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 35, 'criterion': 'absolute_error', 'maxDepth': 5, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'absolute_error', 'maxDepth': 7, 'randomState': 2022}",12.475311974475481,0.045714285714285714,0.017425810904071772,0.349998411939202,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 35, 'criterion': 'absolute_error', 'maxDepth': 7, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'absolute_error', 'maxDepth': 9, 'randomState': 2022}",12.291728436310638,0.05142857142857143,0.04554865424430642,0.3676439299857962,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 35, 'criterion': 'absolute_error', 'maxDepth': 9, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'poisson', 'maxDepth': 1, 'randomState': 2022}",15.750854224344916,0.04,0.014492753623188406,-0.018362534161945776,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 35, 'criterion': 'poisson', 'maxDepth': 1, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'poisson', 'maxDepth': 3, 'randomState': 2022}",15.750911339495188,0.04,0.014492753623188406,-0.022164207928177637,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 35, 'criterion': 'poisson', 'maxDepth': 3, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'poisson', 'maxDepth': 5, 'randomState': 2022}",15.766304907539372,0.03428571428571429,0.012422360248447204,-0.024566123684547803,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 35, 'criterion': 'poisson', 'maxDepth': 5, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'poisson', 'maxDepth': 7, 'randomState': 2022}",15.730762539068435,0.03428571428571429,0.012422360248447204,-0.024540515602605728,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 35, 'criterion': 'poisson', 'maxDepth': 7, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'poisson', 'maxDepth': 9, 'randomState': 2022}",15.740796427119458,0.02857142857142857,0.012077294685990338,-0.02858536130834377,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 35, 'criterion': 'poisson', 'maxDepth': 9, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'squared_error', 'maxDepth': 1, 'randomState': 2022}",14.36874975752191,0.03428571428571429,0.014492753623188406,0.17161259121018668,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 45, 'criterion': 'squared_error', 'maxDepth': 1, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'squared_error', 'maxDepth': 3, 'randomState': 2022}",12.89364294316221,0.03428571428571429,0.014492753623188406,0.3086209107409239,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 45, 'criterion': 'squared_error', 'maxDepth': 3, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'squared_error', 'maxDepth': 5, 'randomState': 2022}",12.724175362811591,0.03428571428571429,0.013457556935817806,0.33505623695446196,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 45, 'criterion': 'squared_error', 'maxDepth': 5, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'squared_error', 'maxDepth': 7, 'randomState': 2022}",12.464256610568997,0.04,0.02432712215320911,0.356321953175307,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 45, 'criterion': 'squared_error', 'maxDepth': 7, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'squared_error', 'maxDepth': 9, 'randomState': 2022}",12.302265434586367,0.04,0.01440648723257419,0.3700284933648482,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 45, 'criterion': 'squared_error', 'maxDepth': 9, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'absolute_error', 'maxDepth': 1, 'randomState': 2022}",14.261748545988747,0.05142857142857143,0.020013802622498276,0.15815966753775468,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 45, 'criterion': 'absolute_error', 'maxDepth': 1, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'absolute_error', 'maxDepth': 3, 'randomState': 2022}",12.789085670436336,0.045714285714285714,0.018426501035196687,0.3050260066012864,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 45, 'criterion': 'absolute_error', 'maxDepth': 3, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'absolute_error', 'maxDepth': 5, 'randomState': 2022}",12.598252650798521,0.045714285714285714,0.018115942028985508,0.324158128402938,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 45, 'criterion': 'absolute_error', 'maxDepth': 5, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'absolute_error', 'maxDepth': 7, 'randomState': 2022}",12.39775637199622,0.045714285714285714,0.013802622498274672,0.35216767444912156,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 45, 'criterion': 'absolute_error', 'maxDepth': 7, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'absolute_error', 'maxDepth': 9, 'randomState': 2022}",12.2408888109611,0.05142857142857143,0.03999309868875086,0.37121548146659433,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 45, 'criterion': 'absolute_error', 'maxDepth': 9, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'poisson', 'maxDepth': 1, 'randomState': 2022}",15.75077092146651,0.04,0.014492753623188406,-0.018530167005305742,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 45, 'criterion': 'poisson', 'maxDepth': 1, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'poisson', 'maxDepth': 3, 'randomState': 2022}",15.75113850313613,0.04,0.014492753623188406,-0.02233155036997081,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 45, 'criterion': 'poisson', 'maxDepth': 3, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'poisson', 'maxDepth': 5, 'randomState': 2022}",15.764227225307899,0.03428571428571429,0.012422360248447204,-0.024782283297875463,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 45, 'criterion': 'poisson', 'maxDepth': 5, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'poisson', 'maxDepth': 7, 'randomState': 2022}",15.707796053974533,0.03428571428571429,0.012422360248447204,-0.02395059265982491,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 45, 'criterion': 'poisson', 'maxDepth': 7, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'poisson', 'maxDepth': 9, 'randomState': 2022}",15.727599427961126,0.03428571428571429,0.01414768806073154,-0.028454385670021454,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 45, 'criterion': 'poisson', 'maxDepth': 9, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'squared_error', 'maxDepth': 1, 'randomState': 2022}",14.385156021936753,0.03428571428571429,0.014492753623188406,0.17111509776442813,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 55, 'criterion': 'squared_error', 'maxDepth': 1, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'squared_error', 'maxDepth': 3, 'randomState': 2022}",12.872557727436968,0.03428571428571429,0.014492753623188406,0.30984665331421957,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 55, 'criterion': 'squared_error', 'maxDepth': 3, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'squared_error', 'maxDepth': 5, 'randomState': 2022}",12.761477955923121,0.045714285714285714,0.03519668737060041,0.333299081441098,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 55, 'criterion': 'squared_error', 'maxDepth': 5, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'squared_error', 'maxDepth': 7, 'randomState': 2022}",12.537694222872856,0.02857142857142857,0.01069703243616287,0.352580728816385,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 55, 'criterion': 'squared_error', 'maxDepth': 7, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'squared_error', 'maxDepth': 9, 'randomState': 2022}",12.385313968718323,0.05142857142857143,0.01828847481021394,0.3685633719348983,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 55, 'criterion': 'squared_error', 'maxDepth': 9, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'absolute_error', 'maxDepth': 1, 'randomState': 2022}",14.300976679261185,0.05142857142857143,0.020013802622498276,0.15649724215202843,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 55, 'criterion': 'absolute_error', 'maxDepth': 1, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'absolute_error', 'maxDepth': 3, 'randomState': 2022}",12.832395394530167,0.045714285714285714,0.018426501035196687,0.30164458509180825,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 55, 'criterion': 'absolute_error', 'maxDepth': 3, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'absolute_error', 'maxDepth': 5, 'randomState': 2022}",12.626397122745564,0.04,0.01328502415458937,0.3206109841168808,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 55, 'criterion': 'absolute_error', 'maxDepth': 5, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'absolute_error', 'maxDepth': 7, 'randomState': 2022}",12.374166660130125,0.07428571428571429,0.02662180814354727,0.3527855584729006,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 55, 'criterion': 'absolute_error', 'maxDepth': 7, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'absolute_error', 'maxDepth': 9, 'randomState': 2022}",12.191166012103025,0.05142857142857143,0.029158040027605244,0.36849774885878706,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 55, 'criterion': 'absolute_error', 'maxDepth': 9, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'poisson', 'maxDepth': 1, 'randomState': 2022}",15.751329115131554,0.04,0.014492753623188406,-0.017498287056090023,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 55, 'criterion': 'poisson', 'maxDepth': 1, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'poisson', 'maxDepth': 3, 'randomState': 2022}",15.750004735951487,0.04,0.014492753623188406,-0.021502617063181573,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 55, 'criterion': 'poisson', 'maxDepth': 3, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'poisson', 'maxDepth': 5, 'randomState': 2022}",15.775558091669607,0.03428571428571429,0.012422360248447204,-0.024103190809601882,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 55, 'criterion': 'poisson', 'maxDepth': 5, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'poisson', 'maxDepth': 7, 'randomState': 2022}",15.72565475720215,0.03428571428571429,0.012422360248447204,-0.02357868045680278,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 55, 'criterion': 'poisson', 'maxDepth': 7, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"
+RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'poisson', 'maxDepth': 9, 'randomState': 2022}",15.731249478258606,0.02857142857142857,0.012077294685990338,-0.0271604226519373,"# Imports ----------------------------------------------------------------------
+from simpleml.dataset import loadDataset
+from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
+from simpleml.dataset import StandardScaler
+from simpleml.model.supervised.regression import RandomForestRegressor
+import numpy as np
+
+
+# Workflow steps ---------------------------------------------------------------
+def exampleWorkflow():
+    dataset = loadDataset('SpeedAverages')
+    dataset = dataset.dropAllMissingValues()
+    dataset = dataset.transformDatatypes()
+    dataset = dataset.setTargetAttribute('average_speed')
+    dataset = StandardScaler().scale(dataset)
+    X_train, X_test, y_train, y_test = dataset.splitIntoTrainAndTestAndLabels(0.8)
+    model = RandomForestRegressor(**{'nEstimator': 55, 'criterion': 'poisson', 'maxDepth': 9, 'randomState': 2022})
+    lr = model.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print('meanAbsoluteError:', meanAbsoluteError(y_test, y_pred))
+    print('accuracy:', accuracy(y_test, y_pred))
+    print('balancedAccuracy:', balancedAccuracy(y_test, y_pred))
+    print('r2:', r2(y_test, y_pred))
+
+if __name__ == '__main__':
+    np.random.seed(2022)
+    exampleWorkflow()
+"

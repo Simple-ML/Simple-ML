@@ -8,6 +8,9 @@ from simpleml.dataset import StandardNormalizer, StandardScaler
 from simpleml.model.supervised.regression import LinearRegression, RidgeRegression
 from simpleml.model.supervised.regression._tree import DecisionTreeRegressor, RandomForestRegressor
 
+from simpleml.model.supervised.classification import SupportVectorMachineClassifier
+from simpleml.model.supervised.classification._tree import DecisionTreeClassifier, RandomForestClassifier
+
 from typing import Iterable, Any
 from itertools import product
 import pandas as pd
@@ -15,19 +18,20 @@ import numpy as np
 
 from code_generation import code_generation
 
+
 def grid_parameters(parameters: dict[str, Iterable[Any]]) -> Iterable[dict[str, Any]]:
     for params in product(*parameters.values()):
         yield dict(zip(parameters.keys(), params))
 
 def exampleWorkflow():
 
-    DATASET_NAME = "FloatingCarData"
-    TARGET_VAR = "speed"
+    DATASET_NAME = "RedWineQualityBinary"
+    TARGET_VAR = "quality"
+
     #### LOADING DATASET ####
     dataset = loadDataset(DATASET_NAME)
-    dataset = dataset.sample(1000)
 
-    #### PREPROCESSING DATASET #### # does it affect target var?
+    #### PREPROCESSING DATASET ####
     dataset = dataset.dropAllMissingValues()
     dataset = dataset.transformDatatypes()
 
@@ -51,9 +55,27 @@ def exampleWorkflow():
                                             'param': {
                                                 'nEstimator': [nE for nE in range(5,65,10)],
                                                 'criterion': ['squared_error', 'absolute_error', 'poisson'],
-                                                'maxDepth': [d for d in range(1,6, 2)],
+                                                'maxDepth': [d for d in range(1,10, 2)],
                                                 'randomState': [2022]
                                             }},
+                  'DecisionTreeClassifier': {'model': DecisionTreeClassifier,
+                                            'param': {'maxDepth': [d for d in range(1,10, 2)]} },
+                  'RandomForestClassifier': {'model': RandomForestClassifier,
+                                            'param': {
+                                                'nEstimator': [nE for nE in range(5, 65, 10)],
+                                                # 'criterion': ['squared_error', 'absolute_error', 'poisson'],
+                                                'maxDepth': [d for d in range(1, 10, 2)],
+                                                'randomState': [2022]
+                                            }},
+                  'SupportVectorMachineClassifier': {'model': SupportVectorMachineClassifier,
+                                             'param': {
+                                                 'penalty': ['l1', 'l2'],
+                                                 'loss': ['hinge', 'squared_hinge'],
+                                                 'dual': [True],
+                                                 'tol': [1e-4],
+                                                 'c': [1.0],
+                                                 'multiClass': ['ovr']  # or 'crammer_singer'
+                                             }},
                   }
 
     #### DEFINE METRICS TO CHECK ####
@@ -95,7 +117,6 @@ def exampleWorkflow():
                 results = pd.concat([results, cur_results])
 
     results.to_csv(DATASET_NAME+'_benchmarking.csv', index=False)
-
 
 if __name__ == "__main__":
     np.random.seed(2022)
