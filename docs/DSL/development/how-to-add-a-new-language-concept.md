@@ -4,10 +4,6 @@
    1. [Update the Ecore file][SimpleML.ecore]. Ensure that `SmlAbstractObject` is either a direct of transitive supertype.
    1. [Update the Genmodel file][SimpleML.genmodel].
 
-1. Update the [creators][creators], which simplify the creation of instances of model classes. There should be at least one function for each class.
-
-1. Update the [access shortcuts][shortcuts], which simplify the traversal of the EMF model. This is not always required and the file should only contain functions that are simple enough to not require tests.
-
 1. Update the grammar (_concrete syntax_).
    1. Create [grammar tests][grammar-tests]:
       1. Positive tests (with comment `// no_syntax_error`)
@@ -17,6 +13,10 @@
    1. Run the tests again (`./gradlew test`). Tests should now pass.
 
 1. Update the [constants][constants] if the concrete syntax of your concept has terminals that need to be accessed programmatically (e.g. operators or modifiers).
+
+1. Update the [creators][creators], which simplify the creation of instances of model classes. There should be at least one function for each class.
+
+1. Update the [access shortcuts][shortcuts], which simplify the traversal of the EMF model. This is not always required and the file should only contain functions that are simple enough to not require tests.
 
 1. Update the converters if your concept includes terminals where the value they represent differs from their textual representation.
    1. Create [converter tests][converter-tests]
