@@ -38,6 +38,9 @@ def save_placeholder(name, contents):
     p = jsonpickle.pickler.Pickler()
     content = p.flatten(content)
 
+    if type(content) != dict:
+        content = {"py/object":type(contents).__module__  + '.' + type(contents).__qualname__, name: content}
+
     # elif type(content).__name__ == "Dataset":
     #     content = p.flatten(content)
     # elif type(content).__bases__[0].__name__ == "Estimator":
