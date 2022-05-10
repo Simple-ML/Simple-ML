@@ -1,6 +1,6 @@
 # Imports ----------------------------------------------------------------------
-from typing import Iterable, Any
 from itertools import product
+from typing import Iterable, Any
 
 
 # Code generation workflow -----------------------------------------------------
@@ -8,12 +8,13 @@ def grid_parameters(parameters: dict[str, Iterable[Any]]) -> Iterable[dict[str, 
     for params in product(*parameters.values()):
         yield dict(zip(parameters.keys(), params))
 
+
 def code_generation(metric_names, model_name, dataset_name, target_var, parameters, random_seed):
     import_path = 'classification' if 'Classifier' in model_name else 'regression'
     import_path += '._tree' if "Tree" in model_name else ''
     metric_import_string = ','.join(metric_names)
     metric_print_strings = '\n'.join(["    print('{0}:', {0}(y_test, y_pred))".format(metric_name)
-                        for metric_name in metric_names])
+                                      for metric_name in metric_names])
 
     code = "# Imports ----------------------------------------------------------------------\n" \
            "from simpleml.dataset import loadDataset\n" \
@@ -39,14 +40,15 @@ def code_generation(metric_names, model_name, dataset_name, target_var, paramete
            "if __name__ == '__main__':\n" \
            "    np.random.seed({7})\n" \
            "    exampleWorkflow()\n".format(metric_import_string,
-                                      import_path,
-                                      model_name,
-                                      dataset_name,
-                                      target_var,
-                                      parameters,
-                                      metric_print_strings,
-                                      random_seed)
+                                            import_path,
+                                            model_name,
+                                            dataset_name,
+                                            target_var,
+                                            parameters,
+                                            metric_print_strings,
+                                            random_seed)
     return code
+
 
 if __name__ == "__main__":
     # Simple case ------------------------------------------------------------------
@@ -62,23 +64,22 @@ if __name__ == "__main__":
         f.write(code)
     # Execute generated code
     try:
-        exec(code)
+        pass  # exec(code) # uncomment to test
     except Exception as error_type:
         print('The created code generate an error: ', error_type)
 
-
     # Benchmark-style case ---------------------------------------------------------
     models_zoo = {
-                  'SupportVectorMachineClassifier': {'model': None, # SupportVectorMachineClassifier
-                                                     'param': {
-                                                         'penalty': ['l2'],
-                                                         'loss': ['squared_hinge'],
-                                                         'dual': [True],
-                                                         'tol': [1e-4],
-                                                         'c': [1.0],
-                                                         'multiClass': ['ovr']  # or 'crammer_singer'
-                                                     }},
-                  }
+        'SupportVectorMachineClassifier': {'model': None,  # SupportVectorMachineClassifier
+                                           'param': {
+                                               'penalty': ['l2'],
+                                               'loss': ['squared_hinge'],
+                                               'dual': [True],
+                                               'tol': [1e-4],
+                                               'c': [1.0],
+                                               'multiClass': ['ovr']  # or 'crammer_singer'
+                                           }},
+    }
     metrics_zoo = {'metric_names': ['meanAbsoluteError', 'accuracy', 'balancedAccuracy', 'r2'],
                    'metric': [None, None, None, None]}
 
@@ -96,7 +97,6 @@ if __name__ == "__main__":
         f.write(code)
     # Execute generated code
     try:
-        exec(code)
+        pass  # exec(code) # uncomment to test
     except Exception as error_type:
         print('The created code generate an error: ', error_type)
-
