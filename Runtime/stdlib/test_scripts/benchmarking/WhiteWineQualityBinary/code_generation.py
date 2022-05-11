@@ -1,10 +1,9 @@
 # Imports ----------------------------------------------------------------------
 from itertools import product
-from typing import Iterable, Any, List, Dict, Optional
 
 
 # Code generation workflow -----------------------------------------------------
-def grid_parameters(parameters: Optional[Dict[str, object]]) -> Iterable[dict[str, Any]]:
+def grid_parameters(parameters):
     for params in product(*parameters.values()):
         yield dict(zip(parameters.keys(), params))
 
@@ -13,7 +12,7 @@ def code_generation(metric_names,
                     model_name: str,
                     dataset_name: str,
                     target_var: str,
-                    parameters: str,
+                    parameters,
                     random_seed: str) -> str:
     import_path = 'classification' if 'Classifier' in model_name else 'regression'
     import_path += '._tree' if "Tree" in model_name else ''
