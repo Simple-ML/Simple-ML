@@ -268,7 +268,7 @@ class GraphicalEditor extends React.Component {
     render() {
         return (
             <div className={graphicalEditorStyle.graphicalEditorContainer} >
-                <div className={`graphicalEditor`} style={{height:"365px"}} ref={this.graphRef}></div>
+                <div className={`graphicalEditor`} ref={this.graphRef}></div>
                 <button
                     ref={this.createButtonRef}
                     className={graphicalEditorStyle["graphical-editor-create-button"]}
