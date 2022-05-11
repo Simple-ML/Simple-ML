@@ -15,6 +15,12 @@ import editIcon from '../../../images/contextToolbar/Edit.svg';
 import linearRegressionIcon from '../../../images/contextToolbar/Linear.svg';
 import decisionTreeClassifierIcon from '../../../images/contextToolbar/DecisionTree.svg';
 import supportVectorMachineClassifierIcon from '../../../images/contextToolbar/Neuro.svg';
+import loadDatasetIcon from '../../../images/contextToolbar/LoadDataset.svg';
+import joinIcon from '../../../images/contextToolbar/Join.svg';
+import splitIcon from '../../../images/contextToolbar/Split.svg';
+import predictIcon from '../../../images/contextToolbar/Prediction.svg';
+import exportIcon from '../../../images/contextToolbar/Export.svg';
+import regressionIcon from '../../../images/contextToolbar/Regression.svg';
 
 class ContextMenu extends React.Component {
 
@@ -25,6 +31,14 @@ class ContextMenu extends React.Component {
         'DecisionTreeClassifierModel': decisionTreeClassifierIcon,
         'SupportVectorMachineClassifier': supportVectorMachineClassifierIcon,
         'SupportVectorMachineClassifierModel': supportVectorMachineClassifierIcon,
+				'loadDataset': loadDatasetIcon,
+				'joinTwoDatasets': joinIcon,
+				'splitIntoTrainAndTest': splitIcon,
+				'splitIntoTrainAndTestAndLabels': splitIcon,
+				'predict': predictIcon,
+				'exportDataAsFile': exportIcon,
+				'RidgeRegression': regressionIcon,
+				'RidgeRegressionModel': regressionIcon,
     }
 
     constructor(props) {
@@ -34,13 +48,19 @@ class ContextMenu extends React.Component {
 
         this.inferFromContextDynamically = this.inferFromContextDynamically.bind(this);
         this.prepareMetaData = this.prepareMetaData.bind(this);
+        this.filterList = this.filterList.bind(this);
 
         this.state = {
             contextButtonFunc: () => {},
             isBackdropActive: false,
             placeholderName: '',
+            searchTerm: '',
             validInput: [true]
         };
+    }
+  
+    filterList(event) {
+      this.setState({searchTerm: event.target.value});
     }
 
     clearState = () => {
@@ -126,11 +146,13 @@ class ContextMenu extends React.Component {
         return(
             <div style={{visibility: visible}}>
                 <div className={ContextMenuStyle["toolbar"]}
-                     style={{top: posY, left: posX}}
-                     ref={this.myself}>
+                    style={{top: posY, left: posX}} ref={this.myself}>
+                    <input type={'text'} value={this.state.searchTerm} onChange={this.filterList}
+                      placeholder={'Search Action'} className={ContextMenuStyle["toolbar-text-filter"]}></input>
                     <div className={ContextMenuStyle["toolbar-button-container"]}>
                         {
-                            buttonMetaData.map((item, i) => {
+                          buttonMetaData.sort((a, b) => a.metaData.text.localeCompare(b.metaData.text)).filter(item => item.metaData.text.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
+                            .map((item, i) => {
                                 return(
                                     <Tooltip key={i}
                                         title={item.metaData.toolTip ? item.metaData.toolTip : ""}>
