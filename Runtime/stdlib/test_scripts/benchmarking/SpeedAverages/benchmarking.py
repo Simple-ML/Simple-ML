@@ -1,6 +1,6 @@
 # Imports ----------------------------------------------------------------------
 from itertools import product
-from typing import Iterable, Any
+from typing import Iterable, Any, Optional, Dict
 
 import numpy as np
 import pandas as pd
@@ -14,7 +14,7 @@ from simpleml.model.supervised.regression import LinearRegression, RidgeRegressi
 from simpleml.model.supervised.regression._tree import DecisionTreeRegressor, RandomForestRegressor
 
 
-def grid_parameters(parameters: dict[str, Iterable[Any]]) -> Iterable[dict[str, Any]]:
+def grid_parameters(parameters: Optional[Dict[str, object]]) -> Iterable[dict[str, Any]]:
     for params in product(*parameters.values()):
         yield dict(zip(parameters.keys(), params))
 
