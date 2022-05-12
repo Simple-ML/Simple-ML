@@ -9,9 +9,12 @@ step myFunction() {
     // no_semantic_warning "This placeholder is unused."
     val »used« = 1;
     call(used);
+
+    // no_semantic_warning "This placeholder is unused."
+    val »last« = 1;
 }
 
-workflow myWorkflow {
+workflow myWorkflow1 {
     call(unused);
 
     // semantic_warning "This placeholder is unused."
@@ -20,4 +23,23 @@ workflow myWorkflow {
     // no_semantic_warning "This placeholder is unused."
     val »used« = 1;
     call(used);
+
+    // no_semantic_warning "This placeholder is unused."
+    val »last« = 1;
+}
+
+workflow myWorkflow2 {
+    () {
+        call(unused);
+
+        // semantic_warning "This placeholder is unused."
+        val »unused« = 1;
+
+        // no_semantic_warning "This placeholder is unused."
+        val »used« = 1;
+        call(used);
+
+        // no_semantic_warning "This placeholder is unused."
+        val »last« = 1;
+    };
 }
