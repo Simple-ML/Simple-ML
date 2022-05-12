@@ -2,6 +2,7 @@ package de.unibonn.simpleml.validation.declarations
 
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
+import de.unibonn.simpleml.simpleML.SmlAssignment
 import de.unibonn.simpleml.simpleML.SmlBlock
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlEnum
@@ -34,7 +35,8 @@ class PlaceholderChecker : AbstractSimpleMLChecker() {
     @Check
     fun unused(smlPlaceholder: SmlPlaceholder) {
         val block = smlPlaceholder.closestAncestorOrNull<SmlBlock>() ?: return
-        if (smlPlaceholder.usesIn(block).none()) {
+        val assignment = smlPlaceholder.closestAncestorOrNull<SmlAssignment>() ?: return
+        if (assignment != block.statements.lastOrNull() && smlPlaceholder.usesIn(block).none()) {
             warning(
                 "This placeholder is unused.",
                 Literals.SML_ABSTRACT_DECLARATION__NAME,
