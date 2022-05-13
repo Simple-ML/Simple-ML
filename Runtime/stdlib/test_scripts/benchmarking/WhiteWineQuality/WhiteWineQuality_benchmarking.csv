@@ -1,4 +1,4 @@
-model,parameters,meanAbsoluteError,accuracy,balancedAccuracy,r2,source_code
+model,parameters,meanAbsoluteError,accuracy,balancedAccuracy,r2,source_code,dsl_code
 LinearRegression,{},0.5721671259004727,0.45510204081632655,0.25045100701561523,0.29052841713275257,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -26,7 +26,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.LinearRegression
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = LinearRegression();
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RidgeRegression,{},0.5721856074602565,0.45510204081632655,0.25045100701561523,0.2904620885694944,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -54,7 +77,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RidgeRegression
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RidgeRegression();
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 DecisionTreeRegressor,{'maxDepth': 1},0.6581772629683766,0.4357142857142857,0.21100543051762566,0.16261988875124223,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -82,7 +128,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.DecisionTreeRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = DecisionTreeRegressor(maxDepth=1);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 DecisionTreeRegressor,{'maxDepth': 3},0.5795785792551932,0.42857142857142855,0.2089938370426175,0.27426240959110804,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -110,7 +179,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.DecisionTreeRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = DecisionTreeRegressor(maxDepth=3);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 DecisionTreeRegressor,{'maxDepth': 5},0.5761197170492053,0.45510204081632655,0.23404092245555663,0.29785594061235376,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -138,7 +230,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.DecisionTreeRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = DecisionTreeRegressor(maxDepth=5);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 DecisionTreeRegressor,{'maxDepth': 7},0.5673636688776534,0.46530612244897956,0.2662581534013812,0.3013218847278599,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -166,7 +281,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.DecisionTreeRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = DecisionTreeRegressor(maxDepth=7);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 DecisionTreeRegressor,{'maxDepth': 9},0.5485882463449867,0.46938775510204084,0.2584099690171304,0.2808509526557478,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -194,7 +332,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.DecisionTreeRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = DecisionTreeRegressor(maxDepth=9);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'squared_error', 'maxDepth': 1, 'randomState': 2022}",0.6543103207285005,0.4357142857142857,0.21100543051762566,0.16653995442295477,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -222,7 +383,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=5, criterion=""squared_error"", maxDepth=1, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'squared_error', 'maxDepth': 3, 'randomState': 2022}",0.5762741982619611,0.4459183673469388,0.21332177124860052,0.2905172599374408,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -250,7 +434,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=5, criterion=""squared_error"", maxDepth=3, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'squared_error', 'maxDepth': 5, 'randomState': 2022}",0.5474303706984809,0.4489795918367347,0.2352489360143745,0.3616402116568497,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -278,7 +485,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=5, criterion=""squared_error"", maxDepth=5, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'squared_error', 'maxDepth': 7, 'randomState': 2022}",0.5339072939218985,0.46122448979591835,0.26434229470036424,0.3821568341378677,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -306,7 +536,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=5, criterion=""squared_error"", maxDepth=7, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'squared_error', 'maxDepth': 9, 'randomState': 2022}",0.511925728710858,0.48775510204081635,0.27616839725039,0.40304619211671255,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -334,7 +587,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=5, criterion=""squared_error"", maxDepth=9, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'absolute_error', 'maxDepth': 1, 'randomState': 2022}",0.586938775510204,0.47653061224489796,0.20959286812945352,0.0263147893285115,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -362,7 +638,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=5, criterion=""absolute_error"", maxDepth=1, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'absolute_error', 'maxDepth': 3, 'randomState': 2022}",0.5279591836734694,0.5204081632653061,0.2415582756008288,0.197812955274417,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -390,7 +689,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=5, criterion=""absolute_error"", maxDepth=3, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'absolute_error', 'maxDepth': 5, 'randomState': 2022}",0.5247959183673468,0.5122448979591837,0.23549280060696773,0.2105525771771113,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -418,7 +740,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=5, criterion=""absolute_error"", maxDepth=5, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'absolute_error', 'maxDepth': 7, 'randomState': 2022}",0.5122448979591837,0.5306122448979592,0.25572784586796005,0.23229317225136614,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -446,7 +791,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=5, criterion=""absolute_error"", maxDepth=7, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'absolute_error', 'maxDepth': 9, 'randomState': 2022}",0.5151020408163265,0.523469387755102,0.25656933343752236,0.2387264696906004,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -474,7 +842,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=5, criterion=""absolute_error"", maxDepth=9, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'poisson', 'maxDepth': 1, 'randomState': 2022}",0.6548165767310138,0.29489795918367345,0.16741741741741742,-0.00010776375128718207,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -502,7 +893,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=5, criterion=""poisson"", maxDepth=1, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'poisson', 'maxDepth': 3, 'randomState': 2022}",0.656054351360981,0.3,0.1692942942942943,-0.0031455835057074832,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -530,7 +944,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=5, criterion=""poisson"", maxDepth=3, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'poisson', 'maxDepth': 5, 'randomState': 2022}",0.6574014381822875,0.3,0.1692942942942943,-0.00916214752014577,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -558,7 +995,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=5, criterion=""poisson"", maxDepth=5, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'poisson', 'maxDepth': 7, 'randomState': 2022}",0.6585057720425637,0.29897959183673467,0.16871357420137909,-0.011161306824189143,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -586,7 +1046,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=5, criterion=""poisson"", maxDepth=7, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 5, 'criterion': 'poisson', 'maxDepth': 9, 'randomState': 2022}",0.655270105330926,0.31326530612244896,0.17447997890395398,0.0056460322657591044,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -614,7 +1097,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=5, criterion=""poisson"", maxDepth=9, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'squared_error', 'maxDepth': 1, 'randomState': 2022}",0.65360127583072,0.4357142857142857,0.21100543051762566,0.16742543672707721,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -642,7 +1148,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=15, criterion=""squared_error"", maxDepth=1, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'squared_error', 'maxDepth': 3, 'randomState': 2022}",0.5764877037798095,0.4448979591836735,0.2145891536135439,0.29858886521105765,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -670,7 +1199,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=15, criterion=""squared_error"", maxDepth=3, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'squared_error', 'maxDepth': 5, 'randomState': 2022}",0.5486135586793321,0.45816326530612245,0.24311872848458216,0.3648904384120232,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -698,7 +1250,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=15, criterion=""squared_error"", maxDepth=5, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'squared_error', 'maxDepth': 7, 'randomState': 2022}",0.5254233777383365,0.4642857142857143,0.2555726031465523,0.40499790103768196,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -726,7 +1301,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=15, criterion=""squared_error"", maxDepth=7, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'squared_error', 'maxDepth': 9, 'randomState': 2022}",0.49624430196679614,0.47244897959183674,0.27429536623880163,0.44649886654174464,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -754,7 +1352,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=15, criterion=""squared_error"", maxDepth=9, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'absolute_error', 'maxDepth': 1, 'randomState': 2022}",0.5875510204081632,0.46530612244897956,0.2093652886335813,0.0672659253671466,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -782,7 +1403,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=15, criterion=""absolute_error"", maxDepth=1, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'absolute_error', 'maxDepth': 3, 'randomState': 2022}",0.5295918367346939,0.5051020408163265,0.22921283652990967,0.23114571276659035,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -810,7 +1454,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=15, criterion=""absolute_error"", maxDepth=3, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'absolute_error', 'maxDepth': 5, 'randomState': 2022}",0.5208503401360545,0.5,0.2430512950492193,0.24642792931997637,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -838,7 +1505,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=15, criterion=""absolute_error"", maxDepth=5, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'absolute_error', 'maxDepth': 7, 'randomState': 2022}",0.5118027210884354,0.5122448979591837,0.2517414089157732,0.26385614592070905,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -866,7 +1556,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=15, criterion=""absolute_error"", maxDepth=7, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'absolute_error', 'maxDepth': 9, 'randomState': 2022}",0.5118707482993197,0.503061224489796,0.25366697411326367,0.26994457848747,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -894,7 +1607,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=15, criterion=""absolute_error"", maxDepth=9, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'poisson', 'maxDepth': 1, 'randomState': 2022}",0.653581562806653,0.29489795918367345,0.16741741741741742,-0.0001667456267115952,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -922,7 +1658,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=15, criterion=""poisson"", maxDepth=1, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'poisson', 'maxDepth': 3, 'randomState': 2022}",0.6550427652418731,0.3,0.1692942942942943,-0.0026195718898598397,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -950,7 +1709,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=15, criterion=""poisson"", maxDepth=3, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'poisson', 'maxDepth': 5, 'randomState': 2022}",0.6558801119595612,0.3,0.1692942942942943,-0.0043233330815981574,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -978,7 +1760,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=15, criterion=""poisson"", maxDepth=5, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'poisson', 'maxDepth': 7, 'randomState': 2022}",0.6571205605594728,0.2979591836734694,0.16813285410846388,-0.008105920541424005,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1006,7 +1811,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=15, criterion=""poisson"", maxDepth=7, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 15, 'criterion': 'poisson', 'maxDepth': 9, 'randomState': 2022}",0.6553972979473046,0.3020408163265306,0.170145505057285,0.0013184177983192047,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1034,7 +1862,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=15, criterion=""poisson"", maxDepth=9, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'squared_error', 'maxDepth': 1, 'randomState': 2022}",0.6549920970153902,0.4357142857142857,0.21100543051762566,0.16697458442641466,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1062,7 +1913,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=25, criterion=""squared_error"", maxDepth=1, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'squared_error', 'maxDepth': 3, 'randomState': 2022}",0.5778235470854503,0.45816326530612245,0.217826275753105,0.30260218947072304,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1090,7 +1964,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=25, criterion=""squared_error"", maxDepth=3, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'squared_error', 'maxDepth': 5, 'randomState': 2022}",0.5483998053207287,0.4561224489795918,0.24175194358121188,0.3668430141919732,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1118,7 +2015,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=25, criterion=""squared_error"", maxDepth=5, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'squared_error', 'maxDepth': 7, 'randomState': 2022}",0.5251319373904484,0.4602040816326531,0.2592745852086797,0.4085233594053236,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1146,7 +2066,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=25, criterion=""squared_error"", maxDepth=7, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'squared_error', 'maxDepth': 9, 'randomState': 2022}",0.4963596068494472,0.4704081632653061,0.2739553049231305,0.45020548867300014,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1174,7 +2117,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=25, criterion=""squared_error"", maxDepth=9, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'absolute_error', 'maxDepth': 1, 'randomState': 2022}",0.5867755102040816,0.46530612244897956,0.2093652886335813,0.05175453043032607,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1202,7 +2168,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=25, criterion=""absolute_error"", maxDepth=1, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'absolute_error', 'maxDepth': 3, 'randomState': 2022}",0.5287755102040816,0.5061224489795918,0.2299989013403648,0.22080578605197532,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1230,7 +2219,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=25, criterion=""absolute_error"", maxDepth=3, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'absolute_error', 'maxDepth': 5, 'randomState': 2022}",0.5189387755102041,0.5,0.23856430565044992,0.24554125038149466,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1258,7 +2270,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=25, criterion=""absolute_error"", maxDepth=5, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'absolute_error', 'maxDepth': 7, 'randomState': 2022}",0.5118979591836734,0.5040816326530613,0.25333028001683944,0.26160699992514047,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1286,7 +2321,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=25, criterion=""absolute_error"", maxDepth=7, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'absolute_error', 'maxDepth': 9, 'randomState': 2022}",0.5106122448979592,0.5,0.2532617668450569,0.27098663472667683,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1314,7 +2372,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=25, criterion=""absolute_error"", maxDepth=9, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'poisson', 'maxDepth': 1, 'randomState': 2022}",0.6524120079232903,0.29489795918367345,0.16741741741741742,-0.00029502414626070284,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1342,7 +2423,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=25, criterion=""poisson"", maxDepth=1, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'poisson', 'maxDepth': 3, 'randomState': 2022}",0.65372748318952,0.29897959183673467,0.16891891891891894,-0.004053369273806506,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1370,7 +2474,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=25, criterion=""poisson"", maxDepth=3, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'poisson', 'maxDepth': 5, 'randomState': 2022}",0.654662476284957,0.2979591836734694,0.16833819882600373,-0.007624527947511783,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1398,7 +2525,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=25, criterion=""poisson"", maxDepth=5, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'poisson', 'maxDepth': 7, 'randomState': 2022}",0.6544244172302529,0.2979591836734694,0.16833819882600373,-0.005920267404216251,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1426,7 +2576,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=25, criterion=""poisson"", maxDepth=7, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 25, 'criterion': 'poisson', 'maxDepth': 9, 'randomState': 2022}",0.6528084215687602,0.3122448979591837,0.17389925881103876,0.005090131345468318,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1454,7 +2627,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=25, criterion=""poisson"", maxDepth=9, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'squared_error', 'maxDepth': 1, 'randomState': 2022}",0.6544779730963126,0.4357142857142857,0.21100543051762566,0.1678225132706208,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1482,7 +2678,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=35, criterion=""squared_error"", maxDepth=1, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'squared_error', 'maxDepth': 3, 'randomState': 2022}",0.5772446539924558,0.4530612244897959,0.2167707777463875,0.3030663737263408,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1510,7 +2729,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=35, criterion=""squared_error"", maxDepth=3, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'squared_error', 'maxDepth': 5, 'randomState': 2022}",0.54792630331867,0.4561224489795918,0.24134125414613217,0.3686633764361359,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1538,7 +2780,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=35, criterion=""squared_error"", maxDepth=5, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'squared_error', 'maxDepth': 7, 'randomState': 2022}",0.5252216130865321,0.4642857142857143,0.2591377536629223,0.4086914651342801,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1566,7 +2831,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=35, criterion=""squared_error"", maxDepth=7, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'squared_error', 'maxDepth': 9, 'randomState': 2022}",0.49782726976420216,0.4714285714285714,0.2738151061581264,0.4510417733508444,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1594,7 +2882,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=35, criterion=""squared_error"", maxDepth=9, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'absolute_error', 'maxDepth': 1, 'randomState': 2022}",0.5860641399416909,0.46530612244897956,0.2093652886335813,0.04329980018311719,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1622,7 +2933,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=35, criterion=""absolute_error"", maxDepth=1, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'absolute_error', 'maxDepth': 3, 'randomState': 2022}",0.5275218658892129,0.5051020408163265,0.22982887068252922,0.21555922814250883,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1650,7 +2984,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=35, criterion=""absolute_error"", maxDepth=3, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'absolute_error', 'maxDepth': 5, 'randomState': 2022}",0.5186005830903789,0.5,0.2383589609329101,0.2374838044673756,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1678,7 +3035,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=35, criterion=""absolute_error"", maxDepth=5, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'absolute_error', 'maxDepth': 7, 'randomState': 2022}",0.5121428571428571,0.5010204081632653,0.24802296922172376,0.2548439758377048,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1706,7 +3086,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=35, criterion=""absolute_error"", maxDepth=7, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'absolute_error', 'maxDepth': 9, 'randomState': 2022}",0.5106122448979592,0.5010204081632653,0.24915015282166295,0.26496927887411514,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1734,7 +3137,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=35, criterion=""absolute_error"", maxDepth=9, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'poisson', 'maxDepth': 1, 'randomState': 2022}",0.6520256883691468,0.29489795918367345,0.16741741741741742,-0.0005550876981119668,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1762,7 +3188,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=35, criterion=""poisson"", maxDepth=1, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'poisson', 'maxDepth': 3, 'randomState': 2022}",0.6533115716788799,0.2979591836734694,0.16854354354354353,-0.005376099424435399,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1790,7 +3239,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=35, criterion=""poisson"", maxDepth=3, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'poisson', 'maxDepth': 5, 'randomState': 2022}",0.6540363627568047,0.2969387755102041,0.16796282345062832,-0.008281837831079608,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1818,7 +3290,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=35, criterion=""poisson"", maxDepth=5, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'poisson', 'maxDepth': 7, 'randomState': 2022}",0.653839822797452,0.29897959183673467,0.16871357420137909,-0.0067687329985652855,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1846,7 +3341,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=35, criterion=""poisson"", maxDepth=7, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 35, 'criterion': 'poisson', 'maxDepth': 9, 'randomState': 2022}",0.6515028125034996,0.3040816326530612,0.1703851063607161,0.0053059331523233055,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1874,7 +3392,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=35, criterion=""poisson"", maxDepth=9, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'squared_error', 'maxDepth': 1, 'randomState': 2022}",0.6541290676424241,0.4357142857142857,0.21100543051762566,0.16821099507296555,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1902,7 +3443,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=45, criterion=""squared_error"", maxDepth=1, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'squared_error', 'maxDepth': 3, 'randomState': 2022}",0.5762900619649631,0.4530612244897959,0.21636008831130782,0.3034509591347475,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1930,7 +3494,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=45, criterion=""squared_error"", maxDepth=3, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'squared_error', 'maxDepth': 5, 'randomState': 2022}",0.5475823853836814,0.463265306122449,0.24437957120883955,0.36859963602039547,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1958,7 +3545,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=45, criterion=""squared_error"", maxDepth=5, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'squared_error', 'maxDepth': 7, 'randomState': 2022}",0.5231500763171963,0.46938775510204084,0.2622422741519783,0.41068854003858535,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -1986,7 +3596,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=45, criterion=""squared_error"", maxDepth=7, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'squared_error', 'maxDepth': 9, 'randomState': 2022}",0.4943328566388238,0.47551020408163264,0.27552195237716776,0.4562016980639565,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2014,7 +3647,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=45, criterion=""squared_error"", maxDepth=9, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'absolute_error', 'maxDepth': 1, 'randomState': 2022}",0.586485260770975,0.46530612244897956,0.2093652886335813,0.04058313799166058,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2042,7 +3698,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=45, criterion=""absolute_error"", maxDepth=1, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'absolute_error', 'maxDepth': 3, 'randomState': 2022}",0.5266666666666666,0.5040816326530613,0.229248150589614,0.2163959466754023,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2070,7 +3749,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=45, criterion=""absolute_error"", maxDepth=3, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'absolute_error', 'maxDepth': 5, 'randomState': 2022}",0.5174149659863946,0.4928571428571429,0.23348139079846397,0.23840807929318553,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2098,7 +3800,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=45, criterion=""absolute_error"", maxDepth=5, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'absolute_error', 'maxDepth': 7, 'randomState': 2022}",0.5110997732426303,0.4959183673469388,0.2449184487326677,0.25710759321926413,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2126,7 +3851,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=45, criterion=""absolute_error"", maxDepth=7, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'absolute_error', 'maxDepth': 9, 'randomState': 2022}",0.5079591836734694,0.5020408163265306,0.25370671286602786,0.270039503414489,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2154,7 +3902,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=45, criterion=""absolute_error"", maxDepth=9, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'poisson', 'maxDepth': 1, 'randomState': 2022}",0.6517045177595423,0.29489795918367345,0.16741741741741742,-0.0004863125104275223,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2182,7 +3953,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=45, criterion=""poisson"", maxDepth=1, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'poisson', 'maxDepth': 3, 'randomState': 2022}",0.6533135778999193,0.29489795918367345,0.16741741741741742,-0.006442021045679258,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2210,7 +4004,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=45, criterion=""poisson"", maxDepth=3, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'poisson', 'maxDepth': 5, 'randomState': 2022}",0.6538841780135012,0.29489795918367345,0.1672120726998776,-0.008894724990193614,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2238,7 +4055,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=45, criterion=""poisson"", maxDepth=5, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'poisson', 'maxDepth': 7, 'randomState': 2022}",0.6537656045055202,0.2979591836734694,0.16833819882600373,-0.007830962642474626,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2266,7 +4106,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=45, criterion=""poisson"", maxDepth=7, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 45, 'criterion': 'poisson', 'maxDepth': 9, 'randomState': 2022}",0.6518834503768288,0.3020408163265306,0.170145505057285,0.002010257696444917,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2294,7 +4157,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=45, criterion=""poisson"", maxDepth=9, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'squared_error', 'maxDepth': 1, 'randomState': 2022}",0.6538467378478796,0.4357142857142857,0.21100543051762566,0.16834819342838692,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2322,7 +4208,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=55, criterion=""squared_error"", maxDepth=1, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'squared_error', 'maxDepth': 3, 'randomState': 2022}",0.5746206576966086,0.4530612244897959,0.21656543302884768,0.30461540081818117,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2350,7 +4259,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=55, criterion=""squared_error"", maxDepth=3, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'squared_error', 'maxDepth': 5, 'randomState': 2022}",0.546740406970984,0.46224489795918366,0.2444148852685438,0.36948829827367624,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2378,7 +4310,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=55, criterion=""squared_error"", maxDepth=5, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'squared_error', 'maxDepth': 7, 'randomState': 2022}",0.523156140840107,0.46938775510204084,0.26121997525733903,0.4108842381741774,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2406,7 +4361,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=55, criterion=""squared_error"", maxDepth=7, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'squared_error', 'maxDepth': 9, 'randomState': 2022}",0.4945423761787158,0.4704081632653061,0.27629281182732146,0.4546343617849623,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2434,7 +4412,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=55, criterion=""squared_error"", maxDepth=9, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'absolute_error', 'maxDepth': 1, 'randomState': 2022}",0.5862708719851578,0.46530612244897956,0.2093652886335813,0.037464159241686446,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2462,7 +4463,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=55, criterion=""absolute_error"", maxDepth=1, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'absolute_error', 'maxDepth': 3, 'randomState': 2022}",0.5261595547309833,0.5040816326530613,0.229248150589614,0.2144054899268486,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2490,7 +4514,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=55, criterion=""absolute_error"", maxDepth=3, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'absolute_error', 'maxDepth': 5, 'randomState': 2022}",0.5175231910946196,0.49081632653061225,0.22864991539096366,0.23521425026980058,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2518,7 +4565,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=55, criterion=""absolute_error"", maxDepth=5, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'absolute_error', 'maxDepth': 7, 'randomState': 2022}",0.5109554730983302,0.49183673469387756,0.238825073127097,0.25523983570157127,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2546,7 +4616,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=55, criterion=""absolute_error"", maxDepth=7, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'absolute_error', 'maxDepth': 9, 'randomState': 2022}",0.5079406307977736,0.49387755102040815,0.2447837321345365,0.26824063250393004,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2574,7 +4667,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=55, criterion=""absolute_error"", maxDepth=9, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'poisson', 'maxDepth': 1, 'randomState': 2022}",0.6522284114311597,0.29489795918367345,0.16741741741741742,-0.0003641732936316977,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2602,7 +4718,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=55, criterion=""poisson"", maxDepth=1, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'poisson', 'maxDepth': 3, 'randomState': 2022}",0.6540069362124524,0.29489795918367345,0.16741741741741742,-0.006543897838074519,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2630,7 +4769,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=55, criterion=""poisson"", maxDepth=3, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'poisson', 'maxDepth': 5, 'randomState': 2022}",0.6544430673842059,0.29591836734693877,0.16758744807525294,-0.009230761096453044,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2658,7 +4820,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=55, criterion=""poisson"", maxDepth=5, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'poisson', 'maxDepth': 7, 'randomState': 2022}",0.6543205908644799,0.2979591836734694,0.16833819882600373,-0.00840369087460835,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2686,7 +4871,30 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=55, criterion=""poisson"", maxDepth=7, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
 RandomForestRegressor,"{'nEstimator': 55, 'criterion': 'poisson', 'maxDepth': 9, 'randomState': 2022}",0.6529045960744603,0.3,0.16939475430653425,-0.00017632296660452518,"# Imports ----------------------------------------------------------------------
 from simpleml.dataset import loadDataset
 from simpleml.metrics import meanAbsoluteError,accuracy,balancedAccuracy,r2
@@ -2714,4 +4922,27 @@ def exampleWorkflow():
 if __name__ == '__main__':
     np.random.seed(2022)
     exampleWorkflow()
-"
+","package example
+
+import simpleml.metrics.meanAbsoluteError
+import simpleml.metrics.accuracy
+import simpleml.metrics.balancedAccuracy
+import simpleml.metrics.r2
+
+import simpleml.dataset.loadDataset
+import simpleml.dataset.StandardScaler
+import simpleml.model.supervised.regression.RandomForestRegressor
+
+workflow exampleWorkflow {
+    val dataset1 = loadDataset(""WhiteWineQuality"");
+    val dataset2 = dataset1.dropAllMissingValues();
+    val dataset3 = dataset2.transformDatatypes();
+    val dataset4 = dataset3.setTargetAttribute(""quality"");
+    val dataset5 = StandardScaler().scale(dataset4);
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);
+    
+    val model = RandomForestRegressor(nEstimator=55, criterion=""poisson"", maxDepth=9, randomState=2022);
+    val lr = model.fit(X_train, y_train);
+    val y_pred = lr.predict(X_test);
+    
+}"
