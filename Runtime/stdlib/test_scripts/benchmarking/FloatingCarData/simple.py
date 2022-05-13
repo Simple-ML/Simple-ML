@@ -20,5 +20,6 @@ def exampleWorkflow():
 
     print("MAE:", meanAbsoluteError(y_test, y_pred))
 
+
 if __name__ == "__main__":
     exampleWorkflow()
