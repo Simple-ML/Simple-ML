@@ -83,42 +83,60 @@ def exampleWorkflow():
                     parameters=cur_param,
                     random_seed="2022",
                 )
-                source_code = code_generation(metric_names=metrics_zoo['metric_names'],
-                                              model_name=model_name,
-                                              dataset_name=DATASET_NAME,
-                                              target_var=TARGET_VAR,
-                                              parameters=cur_param,
-                                              random_seed='2022'
-                                              )
-                dsl_code = dsl_code_generation(metric_names=metrics_zoo['metric_names'],
-                                               model_name=model_name,
-                                               dataset_name=DATASET_NAME,
-                                               target_var=TARGET_VAR,
-                                               parameters=cur_param,
-                                               # random_seed='2022'
-                                               )
+                source_code = code_generation(
+                    metric_names=metrics_zoo["metric_names"],
+                    model_name=model_name,
+                    dataset_name=DATASET_NAME,
+                    target_var=TARGET_VAR,
+                    parameters=cur_param,
+                    random_seed="2022",
+                )
+                dsl_code = dsl_code_generation(
+                    metric_names=metrics_zoo["metric_names"],
+                    model_name=model_name,
+                    dataset_name=DATASET_NAME,
+                    target_var=TARGET_VAR,
+                    parameters=cur_param,
+                    # random_seed='2022'
+                )
 
-                cur_results = pd.DataFrame([[model_name,
-                                             str(cur_param) if cur_param is not {} else 'None',
-                                             *[metric_func(y_test, y_pred) for metric_func in metrics_zoo['metric']],
-                                             source_code,
-                                             dsl_code
-                                             ]],
-                                           columns=['model', 'parameters', *metrics_zoo['metric_names'], 'source_code',
-                                                    'dsl_code']
-                                           )
+                cur_results = pd.DataFrame(
+                    [
+                        [
+                            model_name,
+                            str(cur_param) if cur_param is not {} else "None",
+                            *[
+                                metric_func(y_test, y_pred)
+                                for metric_func in metrics_zoo["metric"]
+                            ],
+                            source_code,
+                            dsl_code,
+                        ]
+                    ],
+                    columns=[
+                        "model",
+                        "parameters",
+                        *metrics_zoo["metric_names"],
+                        "source_code",
+                        "dsl_code",
+                    ],
+                )
                 results = pd.concat([results, cur_results])
             except Exception as error_type:
-                print(*[[error_type] * len(metrics_zoo['metric'])])
-                cur_results = pd.DataFrame([['ERROR' + model_name,
-                                             str(cur_param) if cur_param is not {} else 'None',
-                                             *[error_type for _ in metrics_zoo['metric']]
-                                             ]],
-                                           columns=['model', 'parameters', *metrics_zoo['metric_names']]
-                                           )
+                print(*[[error_type] * len(metrics_zoo["metric"])])
+                cur_results = pd.DataFrame(
+                    [
+                        [
+                            "ERROR" + model_name,
+                            str(cur_param) if cur_param is not {} else "None",
+                            *[error_type for _ in metrics_zoo["metric"]],
+                        ]
+                    ],
+                    columns=["model", "parameters", *metrics_zoo["metric_names"]],
+                )
                 results = pd.concat([results, cur_results])
 
-    results.to_csv(DATASET_NAME + '_benchmarking.csv', index=False)
+    results.to_csv(DATASET_NAME + "_benchmarking.csv", index=False)
 
 
 if __name__ == "__main__":
