@@ -16,7 +16,8 @@ export default class SimpleMapChart extends React.Component {
         };
         this.mapContainer = React.createRef();
 
-        mapboxgl.accessToken = 'pk.eyJ1IjoicHJvamVrdGlvbmlzdGVuIiwiYSI6ImNsMW5pZzEzaDAxbnMzYm84aXNxeHdlMTgifQ.mkaHkV8wFYmRm8sUyTNcAQ';
+        // Please fill in your mapbox-accessToken here.
+        mapboxgl.accessToken = 'XXXX';
 
 	}
 
