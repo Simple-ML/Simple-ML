@@ -47,6 +47,13 @@ object StdlibAnnotations {
     val Description: QualifiedName = StdlibPackages.lang.append("Description")
 
     /**
+     * This parameter should only be used by expert users.
+     *
+     * @see isExpert
+     */
+    val Expert: QualifiedName = StdlibPackages.lang.append("Expert")
+
+    /**
      * The function has no side effects.
      *
      * @see hasNoSideEffects
@@ -132,6 +139,13 @@ fun SmlParameter.isConstant(): Boolean {
  */
 fun SmlAbstractDeclaration.isDeprecated(): Boolean {
     return hasAnnotationCallTo(StdlibAnnotations.Deprecated)
+}
+
+/**
+ * Checks if the parameter is annotated with the `simpleml.lang.Expert` annotation.
+ */
+fun SmlParameter.isExpert(): Boolean {
+    return hasAnnotationCallTo(StdlibAnnotations.Expert)
 }
 
 /**
