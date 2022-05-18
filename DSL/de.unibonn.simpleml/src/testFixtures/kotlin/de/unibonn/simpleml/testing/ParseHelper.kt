@@ -90,7 +90,7 @@ class ParseHelper @Inject constructor(
             return null
         }
 
-        return Files.readString(resourcePath)
+        return Files.readString(resourcePath).replace("\r\n", "\n")
     }
 
     /**
