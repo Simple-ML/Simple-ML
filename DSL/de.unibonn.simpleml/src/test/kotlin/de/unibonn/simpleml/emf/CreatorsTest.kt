@@ -247,6 +247,15 @@ class CreatorsTest {
     }
 
     @Test
+    fun `createSmlClass should not omit empty parameter lists`() {
+        val `class` = createSmlClass(
+            "Test",
+            parameters = emptyList()
+        )
+        `class`.parameterList.shouldBeInstanceOf<SmlParameterList>()
+    }
+
+    @Test
     fun `createSmlClass should omit empty parent type list`() {
         val `class` = createSmlClass(
             "Test",
