@@ -132,7 +132,7 @@ def build_benchmark_graph(dataset_name, generate_small_ttl=False):
             )
         )
 
-    g.serialize('{0}/{0}_graph.ttl'.format(dataset_name), format='turtle')
+    g.serialize("{0}/{0}_graph.ttl".format(dataset_name), format="turtle")
 
 
 def build_benchmark_graphs(dataset_names, generate_small_ttl=False):
