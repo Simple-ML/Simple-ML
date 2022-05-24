@@ -404,7 +404,7 @@ fun createSmlClass(
         this.name = name
         this.annotationCallList = createSmlAnnotationCallList(annotationCalls)
         this.typeParameterList = typeParameters.nullIfEmptyElse(::createSmlTypeParameterList)
-        this.parameterList = parameters?.nullIfEmptyElse(::createSmlParameterList)
+        this.parameterList = parameters?.let { createSmlParameterList(it) }
         this.parentTypeList = parentTypes.nullIfEmptyElse(::createSmlParentTypeList)
         this.constraintList = constraints.nullIfEmptyElse(::createSmlConstraintList)
         protocol?.let { addMember(it) }
