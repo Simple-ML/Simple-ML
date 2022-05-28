@@ -1,22 +1,22 @@
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix seas: <https://w3id.org/seas/> .
 @prefix sml: <https://simple-ml.de/resource/> .
-@prefix smlMobility: <https://simple-ml.de/resource/mobility/> .
+@prefix sml-mob: <https://simple-ml.de/resource/mobility/> .
 @prefix time: <http://www.w3.org/2006/time#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 sml:simple-ml dcat:dataset sml:SpeedAverages .
 
 sml:SpeedAverages a dcat:Dataset ;
-    dct:description "Durchschnittsgeschwindigkeit auf niedersächsischen Straßen in einem halbstündigen Intervall."@de,
+    dcterms:description "Durchschnittsgeschwindigkeit auf niedersächsischen Straßen in einem halbstündigen Intervall."@de,
         "Average speeds on streets in Niedersachsen in a half-hourly interval."@en ;
-    dct:identifier "SpeedAverages" ;
-    dct:subject "Verkehr"@de,
+    dcterms:identifier "SpeedAverages" ;
+    dcterms:subject "Verkehr"@de,
         "Traffic"@en ;
-    dct:title "Durchschnittsgeschwindigkeit auf niedersächsischen Straßen"@de,
+    dcterms:title "Durchschnittsgeschwindigkeit auf niedersächsischen Straßen"@de,
         "Average speed per road in Niedersachsen"@en ;
     sml:coordinateSystem "3857"^^xsd:nonNegativeInteger ;
     sml:creatorId "0"^^xsd:nonNegativeInteger ;
@@ -38,11 +38,11 @@ sml:SpeedAverages a dcat:Dataset ;
     sml:numberOfInstances "1000"^^xsd:nonNegativeInteger .
 
 sml:SpeedAveragesAttributeAverageSpeed a sml:Attribute ;
-    dct:identifier "average_speed" ;
+    dcterms:identifier "average_speed" ;
     sml:columnIndex "7"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/SpeedAverages_sml_mobility/TrafficFlow> ;
-    sml:mapsToProperty smlMobility:averageSpeed ;
+    sml:mapsToProperty sml-mob:averageSpeed ;
     sml:valueType xsd:double ;
     seas:evaluation sml:SpeedAveragesAttributeAverageSpeedAverageNumberOfDigits,
         sml:SpeedAveragesAttributeAverageSpeedDecile0,
@@ -234,7 +234,7 @@ sml:SpeedAveragesAttributeAverageSpeedStandardDeviation a seas:DistributionStand
     seas:evaluatedValue "22.631980652155217"^^xsd:float .
 
 sml:SpeedAveragesAttributeDayType a sml:Attribute ;
-    dct:identifier "day_type" ;
+    dcterms:identifier "day_type" ;
     sml:columnIndex "11"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:SpeedAverages_time_DayOfWeek ;
@@ -321,11 +321,11 @@ sml:SpeedAveragesAttributeDayTypeValueDistributionValue6 a sml:ValueDistribution
     sml:numberOfInstancesOfValue "132"^^xsd:nonNegativeInteger .
 
 sml:SpeedAveragesAttributeDaylight a sml:Attribute ;
-    dct:identifier "daylight" ;
+    dcterms:identifier "daylight" ;
     sml:columnIndex "9"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/SpeedAverages_sml_mobility/WeatherRecord> ;
-    sml:mapsToProperty smlMobility:hasDaylight ;
+    sml:mapsToProperty sml-mob:hasDaylight ;
     sml:valueType xsd:string ;
     seas:evaluation sml:SpeedAveragesAttributeDaylightAverageNumberOfCapitalisedValues,
         sml:SpeedAveragesAttributeDaylightAverageNumberOfCharacters,
@@ -393,7 +393,7 @@ sml:SpeedAveragesAttributeDaylightValueDistributionValue3 a sml:ValueDistributio
     sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
 
 sml:SpeedAveragesAttributeEndTime a sml:Attribute ;
-    dct:identifier "end_time" ;
+    dcterms:identifier "end_time" ;
     sml:columnIndex "4"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:SpeedAverages_time_2 ;
@@ -581,7 +581,7 @@ sml:SpeedAveragesAttributeEndTimeQuartile4 a seas:DistributionQuartileEvaluation
     seas:rank 4 .
 
 sml:SpeedAveragesAttributeGeometry a sml:Attribute ;
-    dct:identifier "geometry" ;
+    dcterms:identifier "geometry" ;
     sml:columnIndex "12"^^xsd:nonNegativeInteger ;
     sml:hasSpatialDistribution sml:SpeedAveragesAttributeGeometrySpatialDistribution ;
     sml:isVirtual false ;
@@ -782,11 +782,11 @@ sml:SpeedAveragesAttributeGeometrySpatialDistributionLocationAreaDeNi9 a sml:Spa
     sml:numberOfInstancesInRegion "5"^^xsd:nonNegativeInteger .
 
 sml:SpeedAveragesAttributeIsWeekend a sml:Attribute ;
-    dct:identifier "is_weekend" ;
+    dcterms:identifier "is_weekend" ;
     sml:columnIndex "10"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:SpeedAverages_time_1 ;
-    sml:mapsToProperty smlMobility:isWeekend ;
+    sml:mapsToProperty sml-mob:isWeekend ;
     sml:valueType xsd:boolean ;
     seas:evaluation sml:SpeedAveragesAttributeIsWeekendNumberOfInvalidValues,
         sml:SpeedAveragesAttributeIsWeekendNumberOfNullValues,
@@ -820,11 +820,11 @@ sml:SpeedAveragesAttributeIsWeekendValueDistributionValue1 a sml:ValueDistributi
     sml:numberOfInstancesOfValue "301"^^xsd:nonNegativeInteger .
 
 sml:SpeedAveragesAttributeMaxSpeed a sml:Attribute ;
-    dct:identifier "max_speed" ;
+    dcterms:identifier "max_speed" ;
     sml:columnIndex "2"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/SpeedAverages_sml_mobility/SpeedLimit> ;
-    sml:mapsToProperty smlMobility:maxSpeed ;
+    sml:mapsToProperty sml-mob:maxSpeed ;
     sml:valueType xsd:string ;
     seas:evaluation sml:SpeedAveragesAttributeMaxSpeedAverageNumberOfCapitalisedValues,
         sml:SpeedAveragesAttributeMaxSpeedAverageNumberOfCharacters,
@@ -922,11 +922,11 @@ sml:SpeedAveragesAttributeMaxSpeedValueDistributionValue9 a sml:ValueDistributio
     sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
 
 sml:SpeedAveragesAttributeNumberOfDrivers a sml:Attribute ;
-    dct:identifier "number_of_drivers" ;
+    dcterms:identifier "number_of_drivers" ;
     sml:columnIndex "6"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/SpeedAverages_sml_mobility/TrafficFlow> ;
-    sml:mapsToProperty smlMobility:numberOfVehicles ;
+    sml:mapsToProperty sml-mob:numberOfVehicles ;
     sml:valueType xsd:nonNegativeInteger ;
     seas:evaluation sml:SpeedAveragesAttributeNumberOfDriversAverageNumberOfDigits,
         sml:SpeedAveragesAttributeNumberOfDriversDecile0,
@@ -1113,11 +1113,11 @@ sml:SpeedAveragesAttributeNumberOfDriversStandardDeviation a seas:DistributionSt
     seas:evaluatedValue "7.49848539928453"^^xsd:float .
 
 sml:SpeedAveragesAttributeNumberOfRecords a sml:Attribute ;
-    dct:identifier "number_of_records" ;
+    dcterms:identifier "number_of_records" ;
     sml:columnIndex "5"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/SpeedAverages_sml_mobility/TrafficFlow> ;
-    sml:mapsToProperty smlMobility:numberOfRecords ;
+    sml:mapsToProperty sml-mob:numberOfRecords ;
     sml:valueType xsd:nonNegativeInteger ;
     seas:evaluation sml:SpeedAveragesAttributeNumberOfRecordsAverageNumberOfDigits,
         sml:SpeedAveragesAttributeNumberOfRecordsDecile0,
@@ -1304,11 +1304,11 @@ sml:SpeedAveragesAttributeNumberOfRecordsStandardDeviation a seas:DistributionSt
     seas:evaluatedValue "24.099223567919708"^^xsd:float .
 
 sml:SpeedAveragesAttributeOsmId a sml:Attribute ;
-    dct:identifier "osm_id" ;
+    dcterms:identifier "osm_id" ;
     sml:columnIndex "0"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/SpeedAverages_sml_mobility/StreetSegment> ;
-    sml:mapsToProperty smlMobility:osmId ;
+    sml:mapsToProperty sml-mob:osmId ;
     sml:valueType xsd:string ;
     seas:evaluation sml:SpeedAveragesAttributeOsmIdAverageNumberOfCapitalisedValues,
         sml:SpeedAveragesAttributeOsmIdAverageNumberOfCharacters,
@@ -1406,11 +1406,11 @@ sml:SpeedAveragesAttributeOsmIdValueDistributionValue9 a sml:ValueDistributionVa
     sml:numberOfInstancesOfValue "4"^^xsd:nonNegativeInteger .
 
 sml:SpeedAveragesAttributeSeason a sml:Attribute ;
-    dct:identifier "season" ;
+    dcterms:identifier "season" ;
     sml:columnIndex "8"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/SpeedAverages_sml_mobility/WeatherRecord> ;
-    sml:mapsToProperty smlMobility:hasSeason ;
+    sml:mapsToProperty sml-mob:hasSeason ;
     sml:valueType xsd:string ;
     seas:evaluation sml:SpeedAveragesAttributeSeasonAverageNumberOfCapitalisedValues,
         sml:SpeedAveragesAttributeSeasonAverageNumberOfCharacters,
@@ -1473,7 +1473,7 @@ sml:SpeedAveragesAttributeSeasonValueDistributionValue2 a sml:ValueDistributionV
     sml:numberOfInstancesOfValue "188"^^xsd:nonNegativeInteger .
 
 sml:SpeedAveragesAttributeStartTime a sml:Attribute ;
-    dct:identifier "start_time" ;
+    dcterms:identifier "start_time" ;
     sml:columnIndex "3"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:SpeedAverages_time_1 ;
@@ -1661,7 +1661,7 @@ sml:SpeedAveragesAttributeStartTimeQuartile4 a seas:DistributionQuartileEvaluati
     seas:rank 4 .
 
 sml:SpeedAveragesAttributeStreetType a sml:Attribute ;
-    dct:identifier "street_type" ;
+    dcterms:identifier "street_type" ;
     sml:columnIndex "1"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/SpeedAverages_sml_mobility/LocationType> ;
@@ -1758,7 +1758,7 @@ sml:SpeedAveragesAttributeStreetTypeValueDistributionValue8 a sml:ValueDistribut
     sml:numberOfInstancesOfValue "8"^^xsd:nonNegativeInteger .
 
 sml:SpeedAveragesFile a sml:TextFile ;
-    dct:format "text/comma-separated-values" ;
+    dcterms:format "text/comma-separated-values" ;
     csvw:header false ;
     csvw:null "" ;
     csvw:separator "," ;
@@ -1822,10 +1822,10 @@ sml:SpeedAveragesSampleLine9 a sml:DatasetSampleLine ;
     sml:rank 9 .
 
 <https://simple-ml.de/resource/SpeedAverages_sml_mobility/LocationType> a sml:ClassInstance ;
-    sml:mapsTo smlMobility:LocationType .
+    sml:mapsTo sml-mob:LocationType .
 
 <https://simple-ml.de/resource/SpeedAverages_sml_mobility/SpeedLimit> a sml:ClassInstance ;
-    sml:mapsTo smlMobility:SpeedLimit .
+    sml:mapsTo sml-mob:SpeedLimit .
 
 sml:SpeedAverages_time_2 a sml:ClassInstance ;
     sml:classInstance 2 ;
@@ -1835,19 +1835,19 @@ sml:SpeedAverages_time_DayOfWeek a sml:ClassInstance ;
     sml:mapsTo time:DayOfWeek .
 
 <https://simple-ml.de/resource/SpeedAverages_sml_mobility/StreetSegment> a sml:ClassInstance ;
-    sml:mapsTo smlMobility:StreetSegment ;
-    smlMobility:hasLocationType <https://simple-ml.de/resource/SpeedAverages_sml_mobility/LocationType> ;
-    smlMobility:hasSpeedLimit <https://simple-ml.de/resource/SpeedAverages_sml_mobility/SpeedLimit> .
+    sml:mapsTo sml-mob:StreetSegment ;
+    sml-mob:hasLocationType <https://simple-ml.de/resource/SpeedAverages_sml_mobility/LocationType> ;
+    sml-mob:hasSpeedLimit <https://simple-ml.de/resource/SpeedAverages_sml_mobility/SpeedLimit> .
 
 <https://simple-ml.de/resource/SpeedAverages_sml_mobility/TrafficFlow> a sml:ClassInstance ;
-    dct:spatial <https://simple-ml.de/resource/SpeedAverages_sml_mobility/StreetSegment> ;
+    dcterms:spatial <https://simple-ml.de/resource/SpeedAverages_sml_mobility/StreetSegment> ;
     time:hasBeginning sml:SpeedAverages_time_1 ;
     time:hasEnd sml:SpeedAverages_time_2 ;
-    sml:mapsTo smlMobility:TrafficFlow ;
-    smlMobility:hasWeatherRecord <https://simple-ml.de/resource/SpeedAverages_sml_mobility/WeatherRecord> .
+    sml:mapsTo sml-mob:TrafficFlow ;
+    sml-mob:hasWeatherRecord <https://simple-ml.de/resource/SpeedAverages_sml_mobility/WeatherRecord> .
 
 <https://simple-ml.de/resource/SpeedAverages_sml_mobility/WeatherRecord> a sml:ClassInstance ;
-    sml:mapsTo smlMobility:WeatherRecord .
+    sml:mapsTo sml-mob:WeatherRecord .
 
 sml:SpeedAverages_time_1 a sml:ClassInstance ;
     time:dayOfWeek sml:SpeedAverages_time_DayOfWeek ;

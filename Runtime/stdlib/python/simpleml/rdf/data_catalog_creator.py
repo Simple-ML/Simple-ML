@@ -17,10 +17,8 @@ dataCatalogFolderPath = os.getenv(
 
 for filename in os.listdir(metadataFolderPath):
     print(filename)
-    if "TrafficWarnings.tsv" in filename:
-        continue
 
-    if "FloatingCarData.tsv" not in filename and "SpeedAverages.tsv" not in filename:
+    if "TrafficWarnings" in filename:
         continue
 
     print(filename)

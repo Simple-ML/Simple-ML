@@ -1,6 +1,6 @@
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
-@prefix dc: <http://purl.org/dc/terms/> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix schema: <http://schema.org/> .
 @prefix seas: <https://w3id.org/seas/> .
@@ -12,12 +12,12 @@
 sml:simple-ml dcat:dataset sml:HannoverEvents .
 
 sml:HannoverEvents a dcat:Dataset ;
-    dc:description "Ereignisse in Hannover."@de,
+    dcterms:description "Ereignisse in Hannover."@de,
         "Events in Hannover, Germany."@en ;
-    dc:identifier "HannoverEvents" ;
-    dc:subject "Ereignisse"@de,
+    dcterms:identifier "HannoverEvents" ;
+    dcterms:subject "Ereignisse"@de,
         "Events"@en ;
-    dc:title "Events in Hannover"@de,
+    dcterms:title "Events in Hannover"@de,
         "Events in Hannover (Germany)"@en ;
     sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
     sml:creatorId "0"^^xsd:nonNegativeInteger ;
@@ -31,7 +31,7 @@ sml:HannoverEvents a dcat:Dataset ;
     sml:numberOfInstances "161"^^xsd:nonNegativeInteger .
 
 sml:HannoverEventsAttributeCategory a sml:Attribute ;
-    dc:identifier "Category" ;
+    dcterms:identifier "Category" ;
     sml:columnIndex "2"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:HannoverEvents_so_Event ;
@@ -118,7 +118,7 @@ sml:HannoverEventsAttributeCategoryValueDistributionValue6 a sml:ValueDistributi
     sml:numberOfInstancesOfValue "6"^^xsd:nonNegativeInteger .
 
 sml:HannoverEventsAttributeName a sml:Attribute ;
-    dc:identifier "Name" ;
+    dcterms:identifier "Name" ;
     sml:columnIndex "0"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:HannoverEvents_so_Event ;
@@ -220,7 +220,7 @@ sml:HannoverEventsAttributeNameValueDistributionValue9 a sml:ValueDistributionVa
     sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
 
 sml:HannoverEventsAttributeNoParticipants a sml:Attribute ;
-    dc:identifier "No Participants" ;
+    dcterms:identifier "No Participants" ;
     sml:columnIndex "4"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:HannoverEvents_so_Event ;
@@ -416,7 +416,7 @@ sml:HannoverEventsAttributeNoParticipantsStandardDeviation a seas:DistributionSt
     seas:evaluatedValue "29595.132529115916"^^xsd:float .
 
 sml:HannoverEventsAttributeStartTime a sml:Attribute ;
-    dc:identifier "Start Time" ;
+    dcterms:identifier "Start Time" ;
     sml:columnIndex "3"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:HannoverEvents_time_DateTimeDescription ;
@@ -604,7 +604,7 @@ sml:HannoverEventsAttributeStartTimeQuartile4 a seas:DistributionQuartileEvaluat
     seas:rank 4 .
 
 sml:HannoverEventsAttributeVenue a sml:Attribute ;
-    dc:identifier "Venue" ;
+    dcterms:identifier "Venue" ;
     sml:columnIndex "1"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:HannoverEvents_dcterms_Location ;
@@ -691,7 +691,7 @@ sml:HannoverEventsAttributeVenueValueDistributionValue6 a sml:ValueDistributionV
     sml:numberOfInstancesOfValue "6"^^xsd:nonNegativeInteger .
 
 sml:HannoverEventsFile a sml:TextFile ;
-    dc:format "text/comma-separated-values" ;
+    dcterms:format "text/comma-separated-values" ;
     csvw:header false ;
     csvw:null "" ;
     csvw:separator "	" ;
@@ -755,13 +755,13 @@ sml:HannoverEventsSampleLine9 a sml:DatasetSampleLine ;
     sml:rank 9 .
 
 sml:HannoverEvents_dcterms_Location a sml:ClassInstance ;
-    sml:mapsTo dc:Location .
+    sml:mapsTo dcterms:Location .
 
 sml:HannoverEvents_time_DateTimeDescription a sml:ClassInstance ;
     sml:mapsTo time:DateTimeDescription .
 
 sml:HannoverEvents_so_Event a sml:ClassInstance ;
-    dc:spatial sml:HannoverEvents_dcterms_Location ;
+    dcterms:spatial sml:HannoverEvents_dcterms_Location ;
     time:hasTime sml:HannoverEvents_time_DateTimeDescription ;
     sml:mapsTo schema:Event .
 

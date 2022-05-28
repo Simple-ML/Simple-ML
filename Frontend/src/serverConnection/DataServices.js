@@ -1,4 +1,3 @@
-
 import dataEndpoint from './dataEndpoint';
 
 /**
@@ -16,8 +15,8 @@ export default class DataServices {
             data: JSON.stringify({
                 "operation": "create_project",
                 "options": {
-                    "title":"test",
-                    "description":"test"
+                    "title": "test",
+                    "description": "test"
                 }
             }),
             success: function (data) {
@@ -40,9 +39,7 @@ export default class DataServices {
             },
             data: JSON.stringify({
                 "operation": "view_datasets",
-                "options": {
-
-                }
+                "options": {}
             }),
             success: function (data) {
                 console.log(data);
@@ -57,16 +54,14 @@ export default class DataServices {
     static getDataSetMetadata(projectId) {
         const tempProjectId = projectId ? projectId : window.deb.d.l3s.projectId
         window.$.ajax({
-            url: dataEndpoint.host + '/projects/' + tempProjectId + '/datasets/ADACAugust/runOperation',
+            url: dataEndpoint.host + '/projects/' + tempProjectId + '/datasets/XXX/runOperation',
             method: 'POST',
             headers: {
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8"
             },
             data: JSON.stringify({
                 "operation": "view_dataset",
-                "options": {
-
-                }
+                "options": {}
             }),
             success: function (data) {
                 console.log(data);

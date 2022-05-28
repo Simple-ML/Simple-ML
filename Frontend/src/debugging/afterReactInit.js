@@ -1,8 +1,7 @@
 import XtextServices from '../serverConnection/XtextServices';
 import EmfModelHelper from '../helper/EmfModelHelper';
 import TextEditorWrapper from '../components/EditorView/TextEditor/TextEditorWrapper';
-import { debugInterface } from './exposeToBrowserConsole';
-import store from '../reduxStore';
+import {debugInterface} from './exposeToBrowserConsole';
 
 let afterReactInit = () => {
     TextEditorWrapper.setText(
@@ -14,15 +13,15 @@ let afterReactInit = () => {
         "workflow predictSpeed {\n" +
         "\n" +
         "    // Load and prepare data\n" +
-        '    val adacAugustSample = loadDataset("ADACAugust").sample(nInstances = 1000);\n' +
-        "    val features = adacAugustSample.keepAttributes(\n" +
+        '    val sample = loadDataset("SpeedAverages").sample(nInstances = 1000);\n' +
+        "    val features = sample.keepAttributes(\n" +
         "        2  /* Floating Car Data point: has time (hour) */,\n" +
         "        3  /* Floating Car Data point: has time (day of week) */, \n" +
         "        4  /* Floating Car Data point: has time (month of year) */,\n" +
         "        6  /* Floating Car Data point: vehicle type (label) */,\n" +
         "        12 /* Street: type (label) */\n" +
         "    );\n" +
-        "    val target = adacAugustSample.keepAttributes(\n" +
+        "    val target = sample.keepAttributes(\n" +
         "        7  /* Floating Car Data point: has speed */\n" +
         "    );\n" +
         "\n" +
@@ -41,7 +40,7 @@ let afterReactInit = () => {
     );
 
     TextEditorWrapper.setText(
-`package example
+        `package example
 
 import simpleml.dataset.loadDataset
 import simpleml.model.classification.DecisionTreeClassifier
@@ -81,10 +80,10 @@ workflow winebasic {
     //     '    yield message = "Hello, world!";\n' +
     //     "}\n" 
     // );
-    
+
     XtextServices.addSuccessListener((serviceType, result) => {
         debugInterface.d.lsr = result;
-        if(result.emfModel) {
+        if (result.emfModel) {
             let emfModel = JSON.parse(result.emfModel);
             debugInterface.d.emf = {inSync: true, data: emfModel};
             debugInterface.d.emf_flat = EmfModelHelper.flattenEmfModelTree(emfModel);
@@ -94,7 +93,7 @@ workflow winebasic {
             debugInterface.d.emf.inSync = false;
         }
     });
-    
+
 
     XtextServices.addSuccessListener((serviceType, result) => {
         console.log({serviceType, result})
