@@ -1,6 +1,6 @@
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
-@prefix dc: <http://purl.org/dc/terms/> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix seas: <https://w3id.org/seas/> .
 @prefix sml: <https://simple-ml.de/resource/> .
 @prefix sml-wine: <https://simple-ml.de/resource/wine/> .
@@ -9,12 +9,12 @@
 sml:simple-ml dcat:dataset sml:WhiteWineQualityBinary .
 
 sml:WhiteWineQualityBinary a dcat:Dataset ;
-    dc:description "Qualität (0/1) von Weißweinen aus dem Norden Portugals"@de,
+    dcterms:description "Qualität (0/1) von Weißweinen aus dem Norden Portugals"@de,
         "Quality (0/1) of white vinho verde wine samples, from the north of Portugal (two qualitites of wine)"@en ;
-    dc:identifier "WhiteWineQualityBinary" ;
-    dc:subject "Wein"@de,
+    dcterms:identifier "WhiteWineQualityBinary" ;
+    dcterms:subject "Wein"@de,
         "Wine"@en ;
-    dc:title "Weißwein-Qualität (binär)"@de,
+    dcterms:title "Weißwein-Qualität (binär)"@de,
         "White Wine Quality (binary)"@en ;
     sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
     sml:creatorId "0"^^xsd:nonNegativeInteger ;
@@ -35,7 +35,7 @@ sml:WhiteWineQualityBinary a dcat:Dataset ;
     sml:numberOfInstances "4898"^^xsd:nonNegativeInteger .
 
 sml:WhiteWineQualityBinaryAttributeAlcohol a sml:Attribute ;
-    dc:identifier "alcohol" ;
+    dcterms:identifier "alcohol" ;
     sml:columnIndex "10"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/WhiteWineQualityBinary_sml_wine/Wine> ;
@@ -231,7 +231,7 @@ sml:WhiteWineQualityBinaryAttributeAlcoholStandardDeviation a seas:DistributionS
     seas:evaluatedValue "1.230620567757318"^^xsd:float .
 
 sml:WhiteWineQualityBinaryAttributeChlorides a sml:Attribute ;
-    dc:identifier "chlorides" ;
+    dcterms:identifier "chlorides" ;
     sml:columnIndex "4"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/WhiteWineQualityBinary_sml_wine/Wine> ;
@@ -427,7 +427,7 @@ sml:WhiteWineQualityBinaryAttributeChloridesStandardDeviation a seas:Distributio
     seas:evaluatedValue "0.021847968093728798"^^xsd:float .
 
 sml:WhiteWineQualityBinaryAttributeCitricAcid a sml:Attribute ;
-    dc:identifier "citric acid" ;
+    dcterms:identifier "citric acid" ;
     sml:columnIndex "2"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/WhiteWineQualityBinary_sml_wine/Wine> ;
@@ -623,7 +623,7 @@ sml:WhiteWineQualityBinaryAttributeCitricAcidStandardDeviation a seas:Distributi
     seas:evaluatedValue "0.12101980420298249"^^xsd:float .
 
 sml:WhiteWineQualityBinaryAttributeDensity a sml:Attribute ;
-    dc:identifier "density" ;
+    dcterms:identifier "density" ;
     sml:columnIndex "7"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/WhiteWineQualityBinary_sml_wine/Wine> ;
@@ -819,7 +819,7 @@ sml:WhiteWineQualityBinaryAttributeDensityStandardDeviation a seas:DistributionS
     seas:evaluatedValue "0.0029909069169369337"^^xsd:float .
 
 sml:WhiteWineQualityBinaryAttributeFixedAcidity a sml:Attribute ;
-    dc:identifier "fixed acidity" ;
+    dcterms:identifier "fixed acidity" ;
     sml:columnIndex "0"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/WhiteWineQualityBinary_sml_wine/Wine> ;
@@ -1015,7 +1015,7 @@ sml:WhiteWineQualityBinaryAttributeFixedAcidityStandardDeviation a seas:Distribu
     seas:evaluatedValue "0.843868227687513"^^xsd:float .
 
 sml:WhiteWineQualityBinaryAttributeFreeSulfurDioxide a sml:Attribute ;
-    dc:identifier "free sulfur dioxide" ;
+    dcterms:identifier "free sulfur dioxide" ;
     sml:columnIndex "5"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/WhiteWineQualityBinary_sml_wine/Wine> ;
@@ -1361,7 +1361,7 @@ sml:WhiteWineQualityBinaryAttributePHStandardDeviation a seas:DistributionStanda
     seas:evaluatedValue "0.1510005996150668"^^xsd:float .
 
 sml:WhiteWineQualityBinaryAttributePh a sml:Attribute ;
-    dc:identifier "pH" ;
+    dcterms:identifier "pH" ;
     sml:columnIndex "8"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/WhiteWineQualityBinary_sml_wine/Wine> ;
@@ -1407,7 +1407,7 @@ sml:WhiteWineQualityBinaryAttributePh a sml:Attribute ;
         sml:WhiteWineQualityBinaryAttributePHStandardDeviation .
 
 sml:WhiteWineQualityBinaryAttributeQuality a sml:Attribute ;
-    dc:identifier "quality" ;
+    dcterms:identifier "quality" ;
     sml:columnIndex "11"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/WhiteWineQualityBinary_sml_wine/Wine> ;
@@ -1495,7 +1495,7 @@ sml:WhiteWineQualityBinaryAttributeQualityStandardDeviation a seas:DistributionS
     seas:evaluatedValue "0.41184232352712985"^^xsd:float .
 
 sml:WhiteWineQualityBinaryAttributeResidualSugar a sml:Attribute ;
-    dc:identifier "residual sugar" ;
+    dcterms:identifier "residual sugar" ;
     sml:columnIndex "3"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/WhiteWineQualityBinary_sml_wine/Wine> ;
@@ -1691,7 +1691,7 @@ sml:WhiteWineQualityBinaryAttributeResidualSugarStandardDeviation a seas:Distrib
     seas:evaluatedValue "5.072057784014881"^^xsd:float .
 
 sml:WhiteWineQualityBinaryAttributeSulphates a sml:Attribute ;
-    dc:identifier "sulphates" ;
+    dcterms:identifier "sulphates" ;
     sml:columnIndex "9"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/WhiteWineQualityBinary_sml_wine/Wine> ;
@@ -1887,7 +1887,7 @@ sml:WhiteWineQualityBinaryAttributeSulphatesStandardDeviation a seas:Distributio
     seas:evaluatedValue "0.1141258339488323"^^xsd:float .
 
 sml:WhiteWineQualityBinaryAttributeTotalSulfurDioxide a sml:Attribute ;
-    dc:identifier "total sulfur dioxide" ;
+    dcterms:identifier "total sulfur dioxide" ;
     sml:columnIndex "6"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/WhiteWineQualityBinary_sml_wine/Wine> ;
@@ -2083,7 +2083,7 @@ sml:WhiteWineQualityBinaryAttributeTotalSulfurDioxideStandardDeviation a seas:Di
     seas:evaluatedValue "42.49806455414291"^^xsd:float .
 
 sml:WhiteWineQualityBinaryAttributeVolatileAcidity a sml:Attribute ;
-    dc:identifier "volatile acidity" ;
+    dcterms:identifier "volatile acidity" ;
     sml:columnIndex "1"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/WhiteWineQualityBinary_sml_wine/Wine> ;
@@ -2279,7 +2279,7 @@ sml:WhiteWineQualityBinaryAttributeVolatileAcidityStandardDeviation a seas:Distr
     seas:evaluatedValue "0.10079454842486534"^^xsd:float .
 
 sml:WhiteWineQualityBinaryFile a sml:TextFile ;
-    dc:format "text/comma-separated-values" ;
+    dcterms:format "text/comma-separated-values" ;
     csvw:header false ;
     csvw:null "" ;
     csvw:separator ";" ;

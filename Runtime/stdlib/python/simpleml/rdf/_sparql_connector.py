@@ -5,7 +5,7 @@ import os
 import requests
 from SPARQLWrapper import JSON, SPARQLWrapper
 
-sparqlURI = "***REMOVED***/sparqlJSON"
+sparqlURI = "http://smldapi.l3s.uni-hannover.de/sparqlJSON"
 
 
 # sparqlURI = "http://localhost:4567/sparqlJSON"

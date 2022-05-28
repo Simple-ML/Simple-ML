@@ -1,6 +1,6 @@
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
-@prefix dc: <http://purl.org/dc/terms/> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix seas: <https://w3id.org/seas/> .
@@ -12,12 +12,12 @@
 sml:simple-ml dcat:dataset sml:TrafficTweets .
 
 sml:TrafficTweets a dcat:Dataset ;
-    dc:description "Deutsche Tweets von Accounts mit Verkehrsbezug."@de,
+    dcterms:description "Deutsche Tweets von Accounts mit Verkehrsbezug."@de,
         "German Tweets from traffic-related accounts."@en ;
-    dc:identifier "TrafficTweets" ;
-    dc:subject "Verkehr"@de,
+    dcterms:identifier "TrafficTweets" ;
+    dcterms:subject "Verkehr"@de,
         "Traffic"@en ;
-    dc:title "Verkehrsbezoegene deutsche Tweets"@de,
+    dcterms:title "Verkehrsbezoegene deutsche Tweets"@de,
         "Traffic-related German tweets"@en ;
     sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
     sml:creatorId "0"^^xsd:nonNegativeInteger ;
@@ -32,7 +32,7 @@ sml:TrafficTweets a dcat:Dataset ;
     sml:numberOfInstances "13388"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeName a sml:Attribute ;
-    dc:identifier "name" ;
+    dcterms:identifier "name" ;
     sml:columnIndex "0"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:TrafficTweets_sioc_UserAccount ;
@@ -134,7 +134,7 @@ sml:TrafficTweetsAttributeNameValueDistributionValue9 a sml:ValueDistributionVal
     sml:numberOfInstancesOfValue "250"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetdatetime a sml:Attribute ;
-    dc:identifier "tweetdatetime" ;
+    dcterms:identifier "tweetdatetime" ;
     sml:columnIndex "2"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:TrafficTweets_time_DateTimeDescription ;
@@ -322,7 +322,7 @@ sml:TrafficTweetsAttributeTweetdatetimeQuartile4 a seas:DistributionQuartileEval
     seas:rank 4 .
 
 sml:TrafficTweetsAttributeTweetext a sml:Attribute ;
-    dc:identifier "tweetext" ;
+    dcterms:identifier "tweetext" ;
     sml:columnIndex "4"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:TrafficTweets_sioc_Post ;
@@ -424,11 +424,11 @@ sml:TrafficTweetsAttributeTweetextValueDistributionValue9 a sml:ValueDistributio
     sml:numberOfInstancesOfValue "2"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeTweetid a sml:Attribute ;
-    dc:identifier "tweetid" ;
+    dcterms:identifier "tweetid" ;
     sml:columnIndex "3"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:TrafficTweets_sioc_Post ;
-    sml:mapsToProperty dc:identifier ;
+    sml:mapsToProperty dcterms:identifier ;
     sml:valueType rdfs:Literal ;
     seas:evaluation sml:TrafficTweetsAttributeTweetidAverageNumberOfCapitalisedValues,
         sml:TrafficTweetsAttributeTweetidAverageNumberOfCharacters,
@@ -526,7 +526,7 @@ sml:TrafficTweetsAttributeTweetidValueDistributionValue9 a sml:ValueDistribution
     sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsAttributeUserid a sml:Attribute ;
-    dc:identifier "userid" ;
+    dcterms:identifier "userid" ;
     sml:columnIndex "1"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:TrafficTweets_sioc_UserAccount ;
@@ -628,7 +628,7 @@ sml:TrafficTweetsAttributeUseridValueDistributionValue9 a sml:ValueDistributionV
     sml:numberOfInstancesOfValue "250"^^xsd:nonNegativeInteger .
 
 sml:TrafficTweetsFile a sml:TextFile ;
-    dc:format "text/comma-separated-values" ;
+    dcterms:format "text/comma-separated-values" ;
     csvw:header false ;
     csvw:null "" ;
     csvw:separator "	" ;

@@ -1,6 +1,6 @@
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
-@prefix dc: <http://purl.org/dc/terms/> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix seas: <https://w3id.org/seas/> .
 @prefix sml: <https://simple-ml.de/resource/> .
@@ -11,12 +11,12 @@
 sml:simple-ml dcat:dataset sml:PublicHolidaysNiedersachsen .
 
 sml:PublicHolidaysNiedersachsen a dcat:Dataset ;
-    dc:description "Gesetzliche in Niedersachsen."@de,
+    dcterms:description "Gesetzliche in Niedersachsen."@de,
         "Public holidays in Lower Saxony, Germany."@en ;
-    dc:identifier "PublicHolidaysNiedersachsen" ;
-    dc:subject "Ereignisse"@de,
+    dcterms:identifier "PublicHolidaysNiedersachsen" ;
+    dcterms:subject "Ereignisse"@de,
         "Events"@en ;
-    dc:title "Gesetzliche Feiertage in Niedersachsen"@de,
+    dcterms:title "Gesetzliche Feiertage in Niedersachsen"@de,
         "Public holidays in Lower Saxony (Germany)"@en ;
     sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
     sml:creatorId "0"^^xsd:nonNegativeInteger ;
@@ -28,7 +28,7 @@ sml:PublicHolidaysNiedersachsen a dcat:Dataset ;
     sml:numberOfInstances "97"^^xsd:nonNegativeInteger .
 
 sml:PublicHolidaysNiedersachsenAttributeEndTime a sml:Attribute ;
-    dc:identifier "end_time" ;
+    dcterms:identifier "end_time" ;
     sml:columnIndex "2"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:PublicHolidaysNiedersachsen_time_2 ;
@@ -216,7 +216,7 @@ sml:PublicHolidaysNiedersachsenAttributeEndTimeQuartile4 a seas:DistributionQuar
     seas:rank 4 .
 
 sml:PublicHolidaysNiedersachsenAttributeName a sml:Attribute ;
-    dc:identifier "name" ;
+    dcterms:identifier "name" ;
     sml:columnIndex "0"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/PublicHolidaysNiedersachsen_sml_mobility/Holiday> ;
@@ -318,7 +318,7 @@ sml:PublicHolidaysNiedersachsenAttributeNameValueDistributionValue9 a sml:ValueD
     sml:numberOfInstancesOfValue "7"^^xsd:nonNegativeInteger .
 
 sml:PublicHolidaysNiedersachsenAttributeStartTime a sml:Attribute ;
-    dc:identifier "start_time" ;
+    dcterms:identifier "start_time" ;
     sml:columnIndex "1"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:PublicHolidaysNiedersachsen_time_1 ;
@@ -506,7 +506,7 @@ sml:PublicHolidaysNiedersachsenAttributeStartTimeQuartile4 a seas:DistributionQu
     seas:rank 4 .
 
 sml:PublicHolidaysNiedersachsenFile a sml:TextFile ;
-    dc:format "text/comma-separated-values" ;
+    dcterms:format "text/comma-separated-values" ;
     csvw:header false ;
     csvw:null "" ;
     csvw:separator "," ;

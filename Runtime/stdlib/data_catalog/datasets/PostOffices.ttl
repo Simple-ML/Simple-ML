@@ -1,6 +1,6 @@
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
-@prefix dc: <http://purl.org/dc/terms/> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix seas: <https://w3id.org/seas/> .
 @prefix sml: <https://simple-ml.de/resource/> .
@@ -10,14 +10,14 @@
 sml:simple-ml dcat:dataset sml:PostOffices .
 
 sml:PostOffices a dcat:Dataset ;
-    dc:description "Postämter, Paketstationen und Warenhäuser, die aus OpenStreetMap extrahiert wurden."@de,
+    dcterms:description "Postämter, Paketstationen und Warenhäuser, die aus OpenStreetMap extrahiert wurden."@de,
         "Post offices, data ware houses and delivery stations extracted from OpenStreetMap."@en ;
-    dc:identifier "PostOffices" ;
-    dc:subject "Logistik"@de,
+    dcterms:identifier "PostOffices" ;
+    dcterms:subject "Logistik"@de,
         "Verkehr"@de,
         "Logistics"@en,
         "Traffic"@en ;
-    dc:title "Post-relevante Orte"@de,
+    dcterms:title "Post-relevante Orte"@de,
         "Post related locations"@en ;
     sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
     sml:creatorId "0"^^xsd:nonNegativeInteger ;
@@ -31,7 +31,7 @@ sml:PostOffices a dcat:Dataset ;
     sml:numberOfInstances "1021"^^xsd:nonNegativeInteger .
 
 sml:PostOfficesAttributeGeometry a sml:Attribute ;
-    dc:identifier "geometry" ;
+    dcterms:identifier "geometry" ;
     sml:columnIndex "2"^^xsd:nonNegativeInteger ;
     sml:hasSpatialDistribution sml:PostOfficesAttributeGeometrySpatialDistribution ;
     sml:isVirtual false ;
@@ -337,7 +337,7 @@ sml:PostOfficesAttributeGeometrySpatialDistributionLocationAreaDeNi9 a sml:Spati
     sml:numberOfInstancesInRegion "34"^^xsd:nonNegativeInteger .
 
 sml:PostOfficesAttributeName a sml:Attribute ;
-    dc:identifier "name" ;
+    dcterms:identifier "name" ;
     sml:columnIndex "3"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:PostOffices_dcterms_Location ;
@@ -512,7 +512,7 @@ sml:PostOfficesAttributeOsmIdValueDistributionValue9 a sml:ValueDistributionValu
     sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
 
 sml:PostOfficesAttributeOsmid a sml:Attribute ;
-    dc:identifier "osmId" ;
+    dcterms:identifier "osmId" ;
     sml:columnIndex "0"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:PostOffices_dcterms_Location ;
@@ -582,7 +582,7 @@ sml:PostOfficesAttributeTypeOfBuildingValueDistributionValue1 a sml:ValueDistrib
     sml:numberOfInstancesOfValue "9"^^xsd:nonNegativeInteger .
 
 sml:PostOfficesAttributeTypeofbuilding a sml:Attribute ;
-    dc:identifier "typeOfBuilding" ;
+    dcterms:identifier "typeOfBuilding" ;
     sml:columnIndex "1"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/PostOffices_sml_mobility/LocationType> ;
@@ -603,7 +603,7 @@ sml:PostOfficesAttributeTypeofbuilding a sml:Attribute ;
         sml:PostOfficesAttributeTypeOfBuildingValueDistributionValue1 .
 
 sml:PostOfficesFile a sml:TextFile ;
-    dc:format "text/comma-separated-values" ;
+    dcterms:format "text/comma-separated-values" ;
     csvw:header false ;
     csvw:null "" ;
     csvw:separator "," ;
@@ -670,6 +670,6 @@ sml:PostOfficesSampleLine9 a sml:DatasetSampleLine ;
     sml:mapsTo sml-mob:LocationType .
 
 sml:PostOffices_dcterms_Location a sml:ClassInstance ;
-    sml:mapsTo dc:Location ;
+    sml:mapsTo dcterms:Location ;
     sml-mob:hasLocationType <https://simple-ml.de/resource/PostOffices_sml_mobility/LocationType> .
 
