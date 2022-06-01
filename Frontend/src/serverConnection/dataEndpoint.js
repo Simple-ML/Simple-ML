@@ -1,6 +1,6 @@
 
 const dataEndpoint = {
-    host: "http://smldapi.l3s.uni-hannover.de",
+    host: "***REMOVED***",
     pathname: "/",
     port: "8080",
     protocol: "http:"
