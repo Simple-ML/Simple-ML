@@ -9,16 +9,14 @@ import category_encoders as ce  # For one hot encoding
 import geopandas
 import networkx as nx
 import pandas as pd  # For data processing
+import simpleml.util.global_configurations as global_config
+import simpleml.util.jsonLabels_util as config
 from libpysal.weights import Kernel
 from node2vec import Node2Vec
 from rdflib import Namespace
 from sentence_transformers import SentenceTransformer
 from shapely import geometry, wkb, wkt
 from shapely.errors import WKBReadingError, WKTReadingError
-from sklearn.model_selection import train_test_split
-
-import simpleml.util.global_configurations as global_config
-import simpleml.util.jsonLabels_util as config
 from simpleml.dataset._instance import Instance
 from simpleml.dataset._stats import getStatistics
 from simpleml.util import (
@@ -37,26 +35,28 @@ from simpleml.util import (
     type_geometry,
     type_numeric_list,
 )
+from sklearn.model_selection import train_test_split
+
 from ._attribute import Attribute
 from ._conversion import AttributeTransformer
 
 
 class Dataset:
     def __init__(
-            self,
-            id,
-            title: str,
-            description: str = None,
-            fileName: str = None,
-            hasHeader: bool = True,
-            null_value="",
-            separator=",",
-            number_of_instances: int = None,
-            titles: dict = {},
-            descriptions: dict = {},
-            subjects: dict = {},
-            coordinate_system: int = 4326,
-            lat_before_lon: bool = False,
+        self,
+        id,
+        title: str,
+        description: str = None,
+        fileName: str = None,
+        hasHeader: bool = True,
+        null_value="",
+        separator=",",
+        number_of_instances: int = None,
+        titles: dict = {},
+        descriptions: dict = {},
+        subjects: dict = {},
+        coordinate_system: int = 4326,
+        lat_before_lon: bool = False,
     ):
         self.id = id
         self.title = title
@@ -124,7 +124,7 @@ class Dataset:
         return self
 
     def keepAttributes(
-            self, attributeIDs: list[str], recompute_statistics: bool = True
+        self, attributeIDs: list[str], recompute_statistics: bool = True
     ) -> Dataset:
 
         if not isinstance(attributeIDs, list):
@@ -148,13 +148,13 @@ class Dataset:
         return copy.provide_statistics(recompute_statistics)
 
     def keepAttribute(
-            self, attributeID: str, recompute_statistics: bool = True
+        self, attributeID: str, recompute_statistics: bool = True
     ) -> Dataset:
 
         return self.keepAttributes([attributeID], recompute_statistics)
 
     def dropAttributes(
-            self, attributeIDs: list[str], recompute_statistics: bool = True
+        self, attributeIDs: list[str], recompute_statistics: bool = True
     ) -> Dataset:
         copy = self.copy_and_read()
 
@@ -167,7 +167,7 @@ class Dataset:
         return copy.provide_statistics(recompute_statistics)
 
     def dropAttribute(
-            self, attributeID: str, recompute_statistics: bool = True
+        self, attributeID: str, recompute_statistics: bool = True
     ) -> Dataset:
         return self.dropAttributes([attributeID], recompute_statistics)
 
@@ -190,10 +190,10 @@ class Dataset:
         return copy.provide_statistics()
 
     def addAttribute(
-            self,
-            newAttributeId,
-            transformer: AttributeTransformer,
-            newAttributeLabel: str = None,
+        self,
+        newAttributeId,
+        transformer: AttributeTransformer,
+        newAttributeLabel: str = None,
     ) -> Dataset:
 
         copy = self.add_attribute_data(newAttributeId, transformer.transform)
@@ -230,7 +230,7 @@ class Dataset:
         return copy.provide_statistics()
 
     def splitIntoTrainAndTestAndLabels(
-            self, trainRatio: float, randomState=None
+        self, trainRatio: float, randomState=None
     ) -> Tuple[Dataset, Dataset, Dataset, Dataset]:
 
         if not self.target_attribute:
@@ -255,7 +255,7 @@ class Dataset:
         )
 
     def splitIntoTrainAndTest(
-            self, trainRatio: float, randomState=None
+        self, trainRatio: float, randomState=None
     ) -> Tuple[Dataset, Dataset]:
 
         copy = self.copy_and_read()
@@ -353,11 +353,11 @@ class Dataset:
             del self.stats[attribute.id]
 
     def add_column_description(
-            self,
-            attribute_id: str,
-            label: str,
-            python_data_type: type,
-            sml_data_type: str = None,
+        self,
+        attribute_id: str,
+        label: str,
+        python_data_type: type,
+        sml_data_type: str = None,
     ):
 
         if not sml_data_type:
@@ -688,17 +688,17 @@ class Dataset:
             lon_lat_pair_number += 1
 
     def addColumnDescription(
-            self,
-            attribute_identifier,
-            resource_node,
-            domain_node,
-            property_node,
-            rdf_value_type,
-            value_type,
-            attribute_label,
-            is_geometry: bool,
-            resource_rank: int = None,
-            is_virtual: bool = False,
+        self,
+        attribute_identifier,
+        resource_node,
+        domain_node,
+        property_node,
+        rdf_value_type,
+        value_type,
+        attribute_label,
+        is_geometry: bool,
+        resource_rank: int = None,
+        is_virtual: bool = False,
     ):
 
         attribute = Attribute(
@@ -724,7 +724,7 @@ class Dataset:
         self.create_simple_type(attribute, value_type, is_geometry=is_geometry)
 
     def create_simple_type(
-            self, attribute, value_type: type, is_geometry: bool = False
+        self, attribute, value_type: type, is_geometry: bool = False
     ):
 
         if is_geometry:
@@ -823,14 +823,14 @@ def loadDataset(datasetID: str) -> Dataset:
 
 
 def readDataSetFromCSV(
-        fileName: str,
-        datasetId: str,
-        separator: str,
-        hasHeader: bool,
-        nullValue: str,
-        datasetName: str = None,
-        coordinateSystem=3857,
-        lon_lat_pairs=[],
+    fileName: str,
+    datasetId: str,
+    separator: str,
+    hasHeader: bool,
+    nullValue: str,
+    datasetName: str = None,
+    coordinateSystem=3857,
+    lon_lat_pairs=[],
 ) -> Dataset:
     dir_name = os.path.dirname(__file__)
     data_file_path = os.path.join(dir_name, global_config.data_folder_name, fileName)
@@ -903,12 +903,12 @@ def readDataSetFromCSV(
 
 
 def joinTwoDatasets(
-        dataset1: Dataset,
-        dataset2: Dataset,
-        attributeId1: str,
-        attributeId2: str,
-        suffix1: str,
-        suffix2: str,
+    dataset1: Dataset,
+    dataset2: Dataset,
+    attributeId1: str,
+    attributeId2: str,
+    suffix1: str,
+    suffix2: str,
 ) -> Dataset:
     # TODO: check that types are join_column_name_1 and join_column_name_2 are the same
     if dataset1.data[attributeId1].dtypes == dataset2.data[attributeId2].dtypes:
@@ -940,7 +940,10 @@ def joinTwoDatasets(
 
         for attribute in dataset1.attributes.values():
             attribute_copy = attribute.copy()
-            if attribute_copy.id != attributeId1 and attribute_copy.id not in joint_data.columns:
+            if (
+                attribute_copy.id != attributeId1
+                and attribute_copy.id not in joint_data.columns
+            ):
                 attribute_copy.id = attribute.id + suffix1
 
             dataset.attributes[attribute_copy.id] = attribute_copy
