@@ -918,6 +918,7 @@ def joinTwoDatasets(
             right_on=attributeId2,
             suffixes=(suffix1, suffix2),
         )
+
         # TODO: how to join based on two column names
         # joint_data = first_data._data.append(second_data._data, sort=False)
         # print(joint_data.shape[0])
@@ -939,8 +940,12 @@ def joinTwoDatasets(
 
         for attribute in dataset1.attributes.values():
             attribute_copy = attribute.copy()
-            if attribute_copy.id != attributeId1:
+            if (
+                attribute_copy.id != attributeId1
+                and attribute_copy.id not in joint_data.columns
+            ):
                 attribute_copy.id = attribute.id + suffix1
+
             dataset.attributes[attribute_copy.id] = attribute_copy
 
         for attribute in dataset2.attributes.values():
@@ -948,12 +953,15 @@ def joinTwoDatasets(
             # only use joint attribute once
             if attribute_copy.id == attributeId1:
                 continue
-            attribute_copy.id = attribute.id + suffix2
+            if attribute_copy.id not in joint_data.columns:
+                attribute_copy.id = attribute.id + suffix2
+
             dataset.attributes[attribute_copy.id] = attribute_copy
 
         dataset.data = joint_data
     else:
         raise TypeError("Datatypes of joined columns do not match.")
+
     return dataset
 
 
