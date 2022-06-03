@@ -1,6 +1,6 @@
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix dc: <http://purl.org/dc/terms/> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix seas: <https://w3id.org/seas/> .
 @prefix sml: <https://simple-ml.de/resource/> .
@@ -10,12 +10,12 @@
 sml:simple-ml dcat:dataset sml:RossmannStores .
 
 sml:RossmannStores a dcat:Dataset ;
-    dcterms:description "1115 Rossmann-Geschäfte (Quelle: Kaggle)"@de,
+    dc:description "1115 Rossmann-Geschäfte (Quelle: Kaggle)"@de,
         "1,115 Rossmann stores (Source: Kaggle)"@en ;
-    dcterms:identifier "RossmannStores" ;
-    dcterms:subject "Logistik"@de,
+    dc:identifier "RossmannStores" ;
+    dc:subject "Logistik"@de,
         "Logistics"@en ;
-    dcterms:title "1115 Rossmann-Geschäfte"@de,
+    dc:title "1115 Rossmann-Geschäfte"@de,
         "1,115 Rossmann stores"@en ;
     sml:coordinateSystem "3857"^^xsd:nonNegativeInteger ;
     sml:creatorId "0"^^xsd:nonNegativeInteger ;
@@ -29,7 +29,7 @@ sml:RossmannStores a dcat:Dataset ;
     sml:numberOfInstances "1115"^^xsd:nonNegativeInteger .
 
 sml:RossmannStoresAttributeAssortment a sml:Attribute ;
-    dcterms:identifier "Assortment" ;
+    dc:identifier "Assortment" ;
     sml:columnIndex "2"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannStores_sml_logistics/Assortment> ;
@@ -246,7 +246,7 @@ sml:RossmannStoresAttributeCompetitionDistanceStandardDeviation a seas:Distribut
     seas:evaluatedValue "7663.174720367944"^^xsd:float .
 
 sml:RossmannStoresAttributeCompetitiondistance a sml:Attribute ;
-    dcterms:identifier "CompetitionDistance" ;
+    dc:identifier "CompetitionDistance" ;
     sml:columnIndex "3"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannStores_sml_logistics/Store> ;
@@ -292,48 +292,159 @@ sml:RossmannStoresAttributeCompetitiondistance a sml:Attribute ;
         sml:RossmannStoresAttributeCompetitionDistanceStandardDeviation .
 
 sml:RossmannStoresAttributeStore a sml:Attribute ;
-    dcterms:identifier "Store" ;
+    dc:identifier "Store" ;
     sml:columnIndex "0"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannStores_sml_logistics/Store> ;
     sml:mapsToProperty sml-log:storeId ;
-    sml:valueType xsd:string ;
-    seas:evaluation sml:RossmannStoresAttributeStoreAverageNumberOfCapitalisedValues,
-        sml:RossmannStoresAttributeStoreAverageNumberOfCharacters,
-        sml:RossmannStoresAttributeStoreAverageNumberOfDigits,
-        sml:RossmannStoresAttributeStoreAverageNumberOfSpecialCharacters,
-        sml:RossmannStoresAttributeStoreAverageNumberOfTokens,
+    sml:valueType xsd:nonNegativeInteger ;
+    seas:evaluation sml:RossmannStoresAttributeStoreAverageNumberOfDigits,
+        sml:RossmannStoresAttributeStoreDecile0,
+        sml:RossmannStoresAttributeStoreDecile1,
+        sml:RossmannStoresAttributeStoreDecile10,
+        sml:RossmannStoresAttributeStoreDecile2,
+        sml:RossmannStoresAttributeStoreDecile3,
+        sml:RossmannStoresAttributeStoreDecile4,
+        sml:RossmannStoresAttributeStoreDecile5,
+        sml:RossmannStoresAttributeStoreDecile6,
+        sml:RossmannStoresAttributeStoreDecile7,
+        sml:RossmannStoresAttributeStoreDecile8,
+        sml:RossmannStoresAttributeStoreDecile9,
+        sml:RossmannStoresAttributeStoreHistogram0,
+        sml:RossmannStoresAttributeStoreHistogram1,
+        sml:RossmannStoresAttributeStoreHistogram2,
+        sml:RossmannStoresAttributeStoreHistogram3,
+        sml:RossmannStoresAttributeStoreHistogram4,
+        sml:RossmannStoresAttributeStoreHistogram5,
+        sml:RossmannStoresAttributeStoreHistogram6,
+        sml:RossmannStoresAttributeStoreHistogram7,
+        sml:RossmannStoresAttributeStoreHistogram8,
+        sml:RossmannStoresAttributeStoreHistogram9,
+        sml:RossmannStoresAttributeStoreMaximum,
+        sml:RossmannStoresAttributeStoreMean,
+        sml:RossmannStoresAttributeStoreMedian,
+        sml:RossmannStoresAttributeStoreMinimum,
         sml:RossmannStoresAttributeStoreNumberOfDistinctValues,
         sml:RossmannStoresAttributeStoreNumberOfInvalidValues,
         sml:RossmannStoresAttributeStoreNumberOfNullValues,
         sml:RossmannStoresAttributeStoreNumberOfValidNonNullValues,
         sml:RossmannStoresAttributeStoreNumberOfValidValues,
-        sml:RossmannStoresAttributeStoreNumberOfValues ;
-    seas:valueDistributionValue sml:RossmannStoresAttributeStoreValueDistributionValue0,
-        sml:RossmannStoresAttributeStoreValueDistributionValue1,
-        sml:RossmannStoresAttributeStoreValueDistributionValue2,
-        sml:RossmannStoresAttributeStoreValueDistributionValue3,
-        sml:RossmannStoresAttributeStoreValueDistributionValue4,
-        sml:RossmannStoresAttributeStoreValueDistributionValue5,
-        sml:RossmannStoresAttributeStoreValueDistributionValue6,
-        sml:RossmannStoresAttributeStoreValueDistributionValue7,
-        sml:RossmannStoresAttributeStoreValueDistributionValue8,
-        sml:RossmannStoresAttributeStoreValueDistributionValue9 .
-
-sml:RossmannStoresAttributeStoreAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
-    seas:evaluatedValue "0.0"^^xsd:float .
-
-sml:RossmannStoresAttributeStoreAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
-    seas:evaluatedValue "3.0071748878923765"^^xsd:float .
+        sml:RossmannStoresAttributeStoreNumberOfValues,
+        sml:RossmannStoresAttributeStoreQuartile0,
+        sml:RossmannStoresAttributeStoreQuartile1,
+        sml:RossmannStoresAttributeStoreQuartile2,
+        sml:RossmannStoresAttributeStoreQuartile3,
+        sml:RossmannStoresAttributeStoreQuartile4,
+        sml:RossmannStoresAttributeStoreStandardDeviation .
 
 sml:RossmannStoresAttributeStoreAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
     seas:evaluatedValue "3.0071748878923765"^^xsd:float .
 
-sml:RossmannStoresAttributeStoreAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
-    seas:evaluatedValue "0.0"^^xsd:float .
+sml:RossmannStoresAttributeStoreDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float ;
+    seas:rank 0 .
 
-sml:RossmannStoresAttributeStoreAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
-    seas:evaluatedValue "1.0"^^xsd:float .
+sml:RossmannStoresAttributeStoreDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "112.4"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RossmannStoresAttributeStoreDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1115.0"^^xsd:float ;
+    seas:rank 10 .
+
+sml:RossmannStoresAttributeStoreDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "223.8"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RossmannStoresAttributeStoreDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "335.20000000000005"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RossmannStoresAttributeStoreDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "446.6"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RossmannStoresAttributeStoreDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "558.0"^^xsd:float ;
+    seas:rank 5 .
+
+sml:RossmannStoresAttributeStoreDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "669.4000000000001"^^xsd:float ;
+    seas:rank 6 .
+
+sml:RossmannStoresAttributeStoreDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "780.8000000000001"^^xsd:float ;
+    seas:rank 7 .
+
+sml:RossmannStoresAttributeStoreDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "892.2"^^xsd:float ;
+    seas:rank 8 .
+
+sml:RossmannStoresAttributeStoreDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1003.6"^^xsd:float ;
+    seas:rank 9 .
+
+sml:RossmannStoresAttributeStoreHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "112.4"^^xsd:float ;
+    sml:bucketMinimum "1.0"^^xsd:float ;
+    sml:instancesInBucket "112"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "223.8"^^xsd:float ;
+    sml:bucketMinimum "112.4"^^xsd:float ;
+    sml:instancesInBucket "111"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "335.20000000000005"^^xsd:float ;
+    sml:bucketMinimum "223.8"^^xsd:float ;
+    sml:instancesInBucket "112"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "446.6"^^xsd:float ;
+    sml:bucketMinimum "335.20000000000005"^^xsd:float ;
+    sml:instancesInBucket "111"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "558.0"^^xsd:float ;
+    sml:bucketMinimum "446.6"^^xsd:float ;
+    sml:instancesInBucket "111"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "669.4000000000001"^^xsd:float ;
+    sml:bucketMinimum "558.0"^^xsd:float ;
+    sml:instancesInBucket "112"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "780.8000000000001"^^xsd:float ;
+    sml:bucketMinimum "669.4000000000001"^^xsd:float ;
+    sml:instancesInBucket "111"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "892.2"^^xsd:float ;
+    sml:bucketMinimum "780.8000000000001"^^xsd:float ;
+    sml:instancesInBucket "112"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1003.6"^^xsd:float ;
+    sml:bucketMinimum "892.2"^^xsd:float ;
+    sml:instancesInBucket "111"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1115"^^xsd:float ;
+    sml:bucketMinimum "1003.6"^^xsd:float ;
+    sml:instancesInBucket "112"^^xsd:nonNegativeInteger .
+
+sml:RossmannStoresAttributeStoreMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue 1115 .
+
+sml:RossmannStoresAttributeStoreMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "558.0"^^xsd:float .
+
+sml:RossmannStoresAttributeStoreMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "558.0"^^xsd:float .
+
+sml:RossmannStoresAttributeStoreMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue 1 .
 
 sml:RossmannStoresAttributeStoreNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
     seas:evaluatedValue 1115 .
@@ -352,6 +463,29 @@ sml:RossmannStoresAttributeStoreNumberOfValidValues a sml:DistributionNumberOfVa
 
 sml:RossmannStoresAttributeStoreNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
     seas:evaluatedValue 1115 .
+
+sml:RossmannStoresAttributeStoreQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float ;
+    seas:rank 0 .
+
+sml:RossmannStoresAttributeStoreQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "279.5"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RossmannStoresAttributeStoreQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "558.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RossmannStoresAttributeStoreQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "836.5"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RossmannStoresAttributeStoreQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "1115.0"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RossmannStoresAttributeStoreStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "322.0170802923348"^^xsd:float .
 
 sml:RossmannStoresAttributeStoreTypeAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
     seas:evaluatedValue "0.0"^^xsd:float .
@@ -402,48 +536,8 @@ sml:RossmannStoresAttributeStoreTypeValueDistributionValue3 a sml:ValueDistribut
     sml:instancesOfValue "b" ;
     sml:numberOfInstancesOfValue "17"^^xsd:nonNegativeInteger .
 
-sml:RossmannStoresAttributeStoreValueDistributionValue0 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "1" ;
-    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
-
-sml:RossmannStoresAttributeStoreValueDistributionValue1 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "9" ;
-    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
-
-sml:RossmannStoresAttributeStoreValueDistributionValue2 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "4" ;
-    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
-
-sml:RossmannStoresAttributeStoreValueDistributionValue3 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "5" ;
-    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
-
-sml:RossmannStoresAttributeStoreValueDistributionValue4 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "6" ;
-    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
-
-sml:RossmannStoresAttributeStoreValueDistributionValue5 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "7" ;
-    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
-
-sml:RossmannStoresAttributeStoreValueDistributionValue6 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "8" ;
-    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
-
-sml:RossmannStoresAttributeStoreValueDistributionValue7 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "34" ;
-    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
-
-sml:RossmannStoresAttributeStoreValueDistributionValue8 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "11" ;
-    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
-
-sml:RossmannStoresAttributeStoreValueDistributionValue9 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "35" ;
-    sml:numberOfInstancesOfValue "1"^^xsd:nonNegativeInteger .
-
 sml:RossmannStoresAttributeStoretype a sml:Attribute ;
-    dcterms:identifier "StoreType" ;
+    dc:identifier "StoreType" ;
     sml:columnIndex "1"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannStores_sml_logistics/StoreType> ;
@@ -466,7 +560,7 @@ sml:RossmannStoresAttributeStoretype a sml:Attribute ;
         sml:RossmannStoresAttributeStoreTypeValueDistributionValue3 .
 
 sml:RossmannStoresFile a sml:TextFile ;
-    dcterms:format "text/comma-separated-values" ;
+    dc:format "text/comma-separated-values" ;
     csvw:header false ;
     csvw:null "" ;
     csvw:separator "," ;

@@ -1,94 +1,81 @@
-@prefix sml:      <http://simple-ml.de/ml/resource/> .
+@prefix sml: <http://simple-ml.de/ml/resource/> .
 @prefix mex-algo: <http://mex.aksw.org/mex-algo#> .
 @prefix mex-core: <http://mex.aksw.org/mex-core#> .
 @prefix mex-perf: <http://mex.aksw.org/mex-perf#> .
-@prefix owl:      <http://www.w3.org/2002/07/owl#> .
-@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix prov:     <http://www.w3.org/ns/prov-o#> .
-@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
-@prefix dct:      <http://purl.org/dc/terms/> .
-@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix dcat:     <http://www.w3.org/ns/dcat#> .
-@prefix :         <http://simple-ml.de/ml/resource/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov: <http://www.w3.org/ns/prov-o#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix : <http://simple-ml.de/ml/resource/> .
 @base <http://simple-ml.de/ml/resource/> .
 
-:Benchmark
-    rdf:type        owl:Class ;
-    rdfs:subClassOf mex-algo:Algorithm .
+:Benchmark rdf:type owl:Class ;
+	rdfs:subClassOf mex-algo:Algorithm .
 
-:targetAttribute
-    rdf:type    owl:ObjectProperty ;
-    rdfs:domain :Benchmark ;
-    rdfs:range  sml:Attribute .
+:targetAttribute rdf:type owl:ObjectProperty ;
+	rdfs:domain :Benchmark ;
+	rdfs:range sml:Attribute .
 
-:targetDataSet
-    rdf:type    owl:ObjectProperty ;
-    rdfs:domain :Benchmark ;
-    rdfs:range  dcat:Dataset .
+:targetDataSet rdf:type owl:ObjectProperty ;
+	rdfs:domain :Benchmark ;
+	rdfs:range dcat:Dataset .
 
-:trainingSplit
-    rdf:type    owl:DatatypeProperty ;
-    rdfs:domain :Benchmark ;
-    rdfs:range  xsd:double .
-
-:samplingMethod
-    rdf:type    owl:DatatypeProperty ;
-    rdfs:domain :Benchmark ;
-    rdfs:range  xsd:string .
-
-:samplingSeed
-    rdf:type    owl:DatatypeProperty ;
-    rdfs:domain :Benchmark ;
-    rdfs:range  xsd:integer .
-
-:performance
-    rdf:type    owl:ObjectProperty ;
-    rdfs:domain :Benchmark ;
-    rdfs:range  mex-perf:PerformanceMeasure .
+:trainingSplit rdf:type owl:DatatypeProperty ;
+	rdfs:domain :Benchmark ;
+	rdfs:range xsd:double .
+	
+:samplingMethod rdf:type owl:DatatypeProperty ;
+	rdfs:domain :Benchmark ;
+	rdfs:range xsd:string .
+	
+:samplingSeed rdf:type owl:DatatypeProperty ;
+	rdfs:domain :Benchmark ;
+	rdfs:range xsd:integer .
+	
+:performance rdf:type owl:ObjectProperty ;
+	rdfs:domain :Benchmark ;
+	rdfs:range mex-perf:PerformanceMeasure .
 
 
 ### MEX Algo
 
-:RegressionProblem
-    rdf:type        owl:Class ;
-    rdfs:subClassOf :LearningProblem .
+:RegressionProblem rdf:type owl:Class ;
+	rdfs:subClassOf :LearningProblem .
 
 ### Benchmark 1
 
-:ExampleBenchmark1
-    a                           :Benchmark ;
-    dct:title                   "Example Benchmark (Linear Regression)"@en,
-                                "Beispiel-Benchmark (Lineare Regression)"@de ;
-    dct:identifier              "example_benchmark_01" ;
-    :targetDataSet              sml:SpeedAverages ;
-    :targetAttribute            :SpeedAveragesAttributeAverageSpeed ;
-    :trainingSplit              "0.8"^^xsd:double ;
-    :samplingSeed               "111"^^xsd:integer ;
-    :samplingMethod             "top-down" ;
-    :performance                :ExampleBenchmark1Performance ;
-    mex-algo:hasAlgorithmClass  mex-algo:LinearRegression ;
-    mex-algo:hasLearningProblem mex-algo:RegressionProblem .
+:ADACBenchmark1 a :Benchmark ;
+	dct:title "ADAC Benchmark (Linear Regression)"@en, "ADAC-Benchmark (Lineare Regression)"@de ;
+	dct:identifier "adac_benchmark_01" ;
+	:targetDataSet sml:SpeedAverages ;
+	:targetAttribute :SpeedAveragesAttributeAverageSpeed ;
+	:trainingSplit "0.8"^^xsd:double ;
+	:samplingSeed "111"^^xsd:integer ;
+	:samplingMethod "top-down" ;
+	:performance :ADACBenchmark1Performance ;
+	mex-algo:hasAlgorithmClass mex-algo:LinearRegression ;
+	mex-algo:hasLearningProblem mex-algo:RegressionProblem .
 
-:ExampleBenchmark1Performance
-    rdf:type                  mex-perf:RegressionMeasure ;
-    mex-perf:meanSquaredError "52.67"^^xsd:double .
-
+:ADACBenchmark1Performance rdf:type mex-perf:RegressionMeasure ;
+	mex-perf:meanSquaredError "52.67"^^xsd:double .
+	
 ### Benchmark 2
 
-:ExampleBenchmark2
-    a                           :Benchmark ;
-    dct:title                   "Example Benchmark (Random Forest)"@en, "Beispiel-Benchmark (Random Forest)"@de ;
-    dct:identifier              "example_benchmark_02" ;
-    :targetDataSet              sml:SpeedAverages ;
-    :targetAttribute            :SpeedAveragesAttributeAverageSpeed ;
-    :trainingSplit              "0.8"^^xsd:double ;
-    :samplingSeed               "111"^^xsd:integer ;
-    :samplingMethod             "top-down" ;
-    :performance                :ExampleBenchmark2Performance ;
-    mex-algo:hasAlgorithmClass  mex-algo:RandomForest ;
-    mex-algo:hasLearningProblem mex-algo:RegressionProblem .
+:ADACBenchmark2 a :Benchmark ;
+	dct:title "ADAC Benchmark (Random Forest)"@en, "ADAC-Benchmark (Random Forest)"@de ;
+	dct:identifier "adac_benchmark_02" ;
+	:targetDataSet sml:SpeedAverages ;
+	:targetAttribute :SpeedAveragesAttributeAverageSpeed ;
+	:trainingSplit "0.8"^^xsd:double ;
+	:samplingSeed "111"^^xsd:integer ;
+	:samplingMethod "top-down" ;
+	:performance :ADACBenchmark2Performance ;
+	mex-algo:hasAlgorithmClass mex-algo:RandomForest ;
+	mex-algo:hasLearningProblem mex-algo:RegressionProblem .
 
-:ExampleBenchmark2Performance
-    rdf:type                  mex-perf:RegressionMeasure ;
-    mex-perf:meanSquaredError "26.55"^^xsd:double .
+:ADACBenchmark2Performance rdf:type mex-perf:RegressionMeasure ;
+	mex-perf:meanSquaredError "26.55"^^xsd:double .
 

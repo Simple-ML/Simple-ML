@@ -1,6 +1,6 @@
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix dc: <http://purl.org/dc/terms/> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix seas: <https://w3id.org/seas/> .
 @prefix sml: <https://simple-ml.de/resource/> .
@@ -11,12 +11,12 @@
 sml:simple-ml dcat:dataset sml:PublicHolidaysGermany .
 
 sml:PublicHolidaysGermany a dcat:Dataset ;
-    dcterms:description "Gesetzliche in Deutschland."@de,
+    dc:description "Gesetzliche in Deutschland."@de,
         "Public holidays in Germany."@en ;
-    dcterms:identifier "PublicHolidaysGermany" ;
-    dcterms:subject "Ereignisse"@de,
+    dc:identifier "PublicHolidaysGermany" ;
+    dc:subject "Ereignisse"@de,
         "Events"@en ;
-    dcterms:title "Gesetzliche Feiertage in Deutschland"@de,
+    dc:title "Gesetzliche Feiertage in Deutschland"@de,
         "Public holidays in Germany"@en ;
     sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
     sml:creatorId "0"^^xsd:nonNegativeInteger ;
@@ -28,7 +28,7 @@ sml:PublicHolidaysGermany a dcat:Dataset ;
     sml:numberOfInstances "186"^^xsd:nonNegativeInteger .
 
 sml:PublicHolidaysGermanyAttributeEndTime a sml:Attribute ;
-    dcterms:identifier "end_time" ;
+    dc:identifier "end_time" ;
     sml:columnIndex "2"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:PublicHolidaysGermany_time_2 ;
@@ -216,7 +216,7 @@ sml:PublicHolidaysGermanyAttributeEndTimeQuartile4 a seas:DistributionQuartileEv
     seas:rank 4 .
 
 sml:PublicHolidaysGermanyAttributeName a sml:Attribute ;
-    dcterms:identifier "name" ;
+    dc:identifier "name" ;
     sml:columnIndex "0"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/PublicHolidaysGermany_sml_mobility/Holiday> ;
@@ -318,7 +318,7 @@ sml:PublicHolidaysGermanyAttributeNameValueDistributionValue9 a sml:ValueDistrib
     sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
 
 sml:PublicHolidaysGermanyAttributeStartTime a sml:Attribute ;
-    dcterms:identifier "start_time" ;
+    dc:identifier "start_time" ;
     sml:columnIndex "1"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:PublicHolidaysGermany_time_1 ;
@@ -506,7 +506,7 @@ sml:PublicHolidaysGermanyAttributeStartTimeQuartile4 a seas:DistributionQuartile
     seas:rank 4 .
 
 sml:PublicHolidaysGermanyFile a sml:TextFile ;
-    dcterms:format "text/comma-separated-values" ;
+    dc:format "text/comma-separated-values" ;
     csvw:header false ;
     csvw:null "" ;
     csvw:separator "," ;

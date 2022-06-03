@@ -1,41 +1,24 @@
 # Imports ----------------------------------------------------------------------
-from simpleml.dataset import StandardScaler, joinTwoDatasets, loadDataset
-from simpleml.metrics import meanAbsoluteError
-from simpleml.model.supervised.regression import RidgeRegression
+from simpleml.dataset import loadDataset
+from simpleml.util import exportDictionaryAsJSON
 
 # Workflow steps ---------------------------------------------------------------
 
 
 def exampleWorkflow():
-    dataset_sales = loadDataset("RossmannSales").sample(1000)
-    dataset_stores = loadDataset("RossmannStores").sample(1000)
+    dataset = loadDataset("RossmannSales")
+    print(exportDictionaryAsJSON(dataset.getProfile()))
+    # sample = dataset.sample(100)
 
-    datastore_joined = joinTwoDatasets(
-        dataset_sales,
-        dataset_stores,
-        attributeId1="Store",
-        attributeId2="Store",
-        suffix1="_Sales",
-        suffix2="_Stores",
-    )  # .sample(1000)
-    datastore_joined.setTargetAttribute("Sales")
-    datastore_joined = datastore_joined.dropAllMissingValues()
-    datastore_joined = datastore_joined.transformDatatypes()
-    datastore_joined = StandardScaler().scale(datastore_joined)
+    train, test = dataset.splitIntoTrainAndTest(trainRatio=0.75, randomState=1)
+    X_train = train.dropAttribute("Sales")
+    X_test = test.dropAttribute("Sales")
+    y_train = train.keepAttributes("Sales")
 
-    print(datastore_joined.data)
-    for column in datastore_joined.data:
-        print(column)
-        print(datastore_joined.data[column])
-
-    X_train, X_test, y_train, y_test = datastore_joined.splitIntoTrainAndTestAndLabels(
-        0.8
-    )
-
-    rr = RidgeRegression().fit(X_train, y_train)
-    y_pred = rr.predict(X_test)
-
-    print("MAE:", meanAbsoluteError(y_test, y_pred))
+    # compute statistics from the dataset
+    print(exportDictionaryAsJSON(X_train.getProfile()))
+    print(exportDictionaryAsJSON(y_train.getProfile()))
+    print(exportDictionaryAsJSON(X_test.getProfile()))
 
 
 if __name__ == "__main__":
