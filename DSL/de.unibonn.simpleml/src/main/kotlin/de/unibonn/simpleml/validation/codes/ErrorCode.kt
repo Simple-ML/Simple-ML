@@ -88,5 +88,7 @@ enum class ErrorCode {
 
     BlockLambdaPrefix,
 
-    WrongType
+    WrongType,
+
+    ExpertMustBeOptional
 }

@@ -1,6 +1,6 @@
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix dc: <http://purl.org/dc/terms/> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix seas: <https://w3id.org/seas/> .
 @prefix sml: <https://simple-ml.de/resource/> .
@@ -11,12 +11,12 @@
 sml:simple-ml dcat:dataset sml:SchoolHolidaysNiedersachsen .
 
 sml:SchoolHolidaysNiedersachsen a dcat:Dataset ;
-    dcterms:description "Schulferien in Niedersachsen."@de,
+    dc:description "Schulferien in Niedersachsen."@de,
         "School holidays in Lower Saxony, Germany."@en ;
-    dcterms:identifier "SchoolHolidaysNiedersachsen" ;
-    dcterms:subject "Ereignisse"@de,
+    dc:identifier "SchoolHolidaysNiedersachsen" ;
+    dc:subject "Ereignisse"@de,
         "Events"@en ;
-    dcterms:title "Schulferien in Niedersachsen"@de,
+    dc:title "Schulferien in Niedersachsen"@de,
         "School holidays in Lower Saxony (Germany)"@en ;
     sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
     sml:creatorId "0"^^xsd:nonNegativeInteger ;
@@ -28,7 +28,7 @@ sml:SchoolHolidaysNiedersachsen a dcat:Dataset ;
     sml:numberOfInstances "70"^^xsd:nonNegativeInteger .
 
 sml:SchoolHolidaysNiedersachsenAttributeEndTime a sml:Attribute ;
-    dcterms:identifier "end_time" ;
+    dc:identifier "end_time" ;
     sml:columnIndex "2"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:SchoolHolidaysNiedersachsen_time_2 ;
@@ -216,7 +216,7 @@ sml:SchoolHolidaysNiedersachsenAttributeEndTimeQuartile4 a seas:DistributionQuar
     seas:rank 4 .
 
 sml:SchoolHolidaysNiedersachsenAttributeName a sml:Attribute ;
-    dcterms:identifier "name" ;
+    dc:identifier "name" ;
     sml:columnIndex "0"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/SchoolHolidaysNiedersachsen_sml_mobility/Holiday> ;
@@ -298,7 +298,7 @@ sml:SchoolHolidaysNiedersachsenAttributeNameValueDistributionValue5 a sml:ValueD
     sml:numberOfInstancesOfValue "10"^^xsd:nonNegativeInteger .
 
 sml:SchoolHolidaysNiedersachsenAttributeStartTime a sml:Attribute ;
-    dcterms:identifier "start_time" ;
+    dc:identifier "start_time" ;
     sml:columnIndex "1"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:SchoolHolidaysNiedersachsen_time_1 ;
@@ -486,7 +486,7 @@ sml:SchoolHolidaysNiedersachsenAttributeStartTimeQuartile4 a seas:DistributionQu
     seas:rank 4 .
 
 sml:SchoolHolidaysNiedersachsenFile a sml:TextFile ;
-    dcterms:format "text/comma-separated-values" ;
+    dc:format "text/comma-separated-values" ;
     csvw:header false ;
     csvw:null "" ;
     csvw:separator "," ;

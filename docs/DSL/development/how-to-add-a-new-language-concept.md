@@ -27,7 +27,7 @@
 1. Update the scope provider if your concept has cross-references.
    1. Create [scoping tests][scoping-tests].
    1. Run the tests (`./gradlew test`). There should be failures.
-   1. Update the [local scope provider][scope-provider].
+   1. Update the [local scope provider][local-scope-provider].
    1. Run the tests again (`./gradlew test`). Tests should now pass.
 
 1. Update the [resource description strategy][resource-description-strategy] if your concept is a declaration that should be visible from another file.

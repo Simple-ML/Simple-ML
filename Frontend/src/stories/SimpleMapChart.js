@@ -1,120 +1,115 @@
-import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import './simpleMapChart.css';
+import React, { useRef } from "react";
+import PropTypes from "prop-types";
+import "mapbox-gl/dist/mapbox-gl.css";
+import "./simpleMapChart.css";
 // eslint-disable-next-line import/no-webpack-loader-syntax
-import mapboxgl from '!mapbox-gl';
+import mapboxgl from "!mapbox-gl";
 
 export default class SimpleMapChart extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      lng: 9.845198414832966,
+      lat: 52.635241061248344,
+      zoom: 6.5,
+    };
+    this.mapContainer = React.createRef();
 
-	constructor(props) {
-		super(props);
-        this.state = {
-            lng: 9.845198414832966,
-            lat: 52.635241061248344,
-            zoom: 6.5
+    // Please fill in your mapbox-accessToken here.
+    mapboxgl.accessToken = "XXXX";
+  }
+
+  componentDidMount() {
+    const { lng, lat, zoom } = this.state;
+    const map = new mapboxgl.Map({
+      container: this.mapContainer.current,
+      style: "mapbox://styles/mapbox/light-v10",
+      center: [lng, lat],
+      zoom: zoom,
+      antialias: true,
+    });
+
+    var center = function (arr) {
+      var x = arr.map((xy) => xy[0]);
+      var y = arr.map((xy) => xy[1]);
+      var cx = (Math.min(...x) + Math.max(...x)) / 2;
+      var cy = (Math.min(...y) + Math.max(...y)) / 2;
+      return [cx, cy];
+    };
+
+    map.on("load", () => {
+      const data = this.data();
+      const maxValue = this.maxValue();
+
+      // Create a popup, but don't add it to the map yet.
+      const popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false,
+      });
+
+      for (const areaId of Object.keys(data)) {
+        const coordinates = data[areaId].coordinates;
+        const value = data[areaId].value;
+        const name_en = data[areaId].name_en;
+
+        const geoJson = {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            properties: {
+              height: value * 100,
+              base_height: 0,
+              color: "#461f4c",
+              description: name_en + ": " + value,
+            },
+            geometry: {
+              type: "Polygon",
+              coordinates: [[...coordinates]],
+            },
+          },
         };
-        this.mapContainer = React.createRef();
+        console.log("geoJson: " + JSON.stringify(geoJson));
 
-        mapboxgl.accessToken = 'pk.eyJ1IjoicHJvamVrdGlvbmlzdGVuIiwiYSI6ImNsMW5pZzEzaDAxbnMzYm84aXNxeHdlMTgifQ.mkaHkV8wFYmRm8sUyTNcAQ';
+        map.addSource(areaId, geoJson);
 
-	}
+        // Add a new layer to visualize the polygon.
+        map.addLayer({
+          id: areaId,
+          type: "fill-extrusion",
+          source: areaId, // reference the data source
+          paint: {
+            // Get the `fill-extrusion-color` from the source `color` property.
+            "fill-extrusion-color": ["get", "color"],
 
-    componentDidMount() {
-        const { lng, lat, zoom } = this.state;
-        const map = new mapboxgl.Map({
-            container: this.mapContainer.current,
-            style: 'mapbox://styles/mapbox/light-v10',
-            center: [lng, lat],
-            zoom: zoom,
-            antialias: true
+            // Get `fill-extrusion-height` from the source `height` property.
+            "fill-extrusion-height": ["get", "height"],
+
+            // Get `fill-extrusion-base` from the source `base_height` property.
+            "fill-extrusion-base": ["get", "base_height"],
+
+            // Make extrusions slightly opaque to see through indoor walls.
+            "fill-extrusion-opacity": 0.5 + (value / maxValue) * 0.5,
+          },
         });
 
-        var center = function (arr) {
-            var x = arr.map (xy => xy[0]);
-            var y = arr.map (xy => xy[1]);
-            var cx = (Math.min (...x) + Math.max (...x)) / 2;
-            var cy = (Math.min (...y) + Math.max (...y)) / 2;
-            return [cx, cy];
-        }    
+        map.on("mouseenter", areaId, (e) => {
+          map.getCanvas().style.cursor = "pointer";
 
-        map.on('load', () => {
-            const data = this.data();
-            const maxValue = this.maxValue();
+          const coordinates = center(e.features[0].geometry.coordinates[0]);
+          const description = e.features[0].properties.description;
 
-            // Create a popup, but don't add it to the map yet.
-            const popup = new mapboxgl.Popup({
-                closeButton: false,
-                closeOnClick: false
-            });
-            
-            
-            for (const areaId of Object.keys(data)) {
-                
-                const coordinates = data[areaId].coordinates;
-                const value = data[areaId].value;
-                const name_en = data[areaId].name_en;
-
-                const geoJson = {
-                    'type': 'geojson',
-                    'data': {
-                        'type': 'Feature',
-                        'properties': {
-                            'height': value * 100,
-                            'base_height': 0,
-                            'color': '#461f4c',
-                            'description': name_en + ': ' + value
-                        },
-                        'geometry': {
-                            'type': 'Polygon',
-                            'coordinates': [[...coordinates]]
-                        }
-                    }
-                };
-                console.log('geoJson: ' + JSON.stringify(geoJson));
-
-                map.addSource(areaId, geoJson);
-                
-                // Add a new layer to visualize the polygon.
-                map.addLayer({
-                    'id': areaId,
-                    'type': 'fill-extrusion',
-                    'source': areaId, // reference the data source
-                    'paint': {
-                        // Get the `fill-extrusion-color` from the source `color` property.
-                        'fill-extrusion-color': ['get', 'color'],
-                         
-                        // Get `fill-extrusion-height` from the source `height` property.
-                        'fill-extrusion-height': ['get', 'height'],
-                         
-                        // Get `fill-extrusion-base` from the source `base_height` property.
-                        'fill-extrusion-base': ['get', 'base_height'],
-                         
-                        // Make extrusions slightly opaque to see through indoor walls.
-                        'fill-extrusion-opacity': 0.5 + (value / maxValue) * 0.5
-                    }
-                });
-
-                map.on('mouseenter', areaId, (e) => {
-                    map.getCanvas().style.cursor = 'pointer';
-                    
-                    const coordinates = center(e.features[0].geometry.coordinates[0]);
-                    const description = e.features[0].properties.description;
-                                        
-                    popup.setLngLat(coordinates).setHTML(description).addTo(map);
-                });
-                
-                map.on('mouseleave', areaId, () => {
-                    map.getCanvas().style.cursor = '';
-                    popup.remove();
-                });
-            }
+          popup.setLngLat(coordinates).setHTML(description).addTo(map);
         });
 
-    }
+        map.on("mouseleave", areaId, () => {
+          map.getCanvas().style.cursor = "";
+          popup.remove();
+        });
+      }
+    });
+  }
 
-    ni_areas_tsv = 
-    `area_de_ni_10	Vierhöfen	Vierhöfen	POLYGON ((10.2492488 53.296461299102624, 10.2505047 53.2959970991026, 10.2531984 53.29840759910275, 10.254784700000002 53.299532899102836, 10.2528843 53.30014519910287, 10.2515954 53.298910699102784, 10.2492488 53.296461299102624))
+  ni_areas_tsv = `area_de_ni_10	Vierhöfen	Vierhöfen	POLYGON ((10.2492488 53.296461299102624, 10.2505047 53.2959970991026, 10.2531984 53.29840759910275, 10.254784700000002 53.299532899102836, 10.2528843 53.30014519910287, 10.2515954 53.298910699102784, 10.2492488 53.296461299102624))
 area_de_ni_11	Winsen (Luhe)	Winsen (Luhe)	POLYGON ((10.299452800000001 53.330401099105046, 10.3067319 53.329293399104955, 10.3073376 53.33046689910503, 10.300873999999999 53.33151629910514, 10.299452800000001 53.330401099105046))
 area_de_ni_18	Nordseeinsel Memmert	Nordseeinsel Memmert	POLYGON ((6.863767700000001 53.642483099134644, 6.8915927 53.62416809913254, 6.894141099999998 53.64376959913479, 6.9092816 53.65032329913556, 6.863767700000001 53.642483099134644))
 area_de_ni_47	Dörverden	Dörverden	POLYGON ((9.3277031 52.76667839908418, 9.3277149 52.766471099084164, 9.3310509 52.76564129908415, 9.3312302 52.765845499084165, 9.3321084 52.76602019908417, 9.3313779 52.76652109908415, 9.329571299999998 52.76670909908416, 9.3285775 52.76676419908416, 9.3277031 52.76667839908418))
@@ -183,137 +178,138 @@ area_de_ni_64	Wriedel	Wriedel	POLYGON ((10.1458469 53.04685259908945, 10.1507721
 area_de_ni_65	Wriedel	Wriedel	POLYGON ((10.199030400000002 53.0669706990902, 10.199375100000001 53.066399899090186, 10.199946700000002 53.065950299090154, 10.2022334 53.06472779909011, 10.203612099999997 53.06520259909013, 10.204049200000002 53.065414799090114, 10.202536 53.06623819909017, 10.2023006 53.06668269909017, 10.201770999999999 53.06745559909022, 10.201515500000001 53.06801769909025, 10.201409500000002 53.06850829909027, 10.201238100000001 53.069046299090274, 10.200796200000001 53.06916679909028, 10.1992923 53.06935319909028, 10.1991764 53.06916409909028, 10.199080800000003 53.06881439909026, 10.199030400000002 53.0669706990902))
 area_de_ni_68	Wolfsburg	Wolfsburg	POLYGON ((10.6471143 52.444135699090005, 10.6709137 52.379450099092644, 10.7154761 52.37184549909298, 10.721108200000002 52.3540243990938, 10.743698 52.356109399093704, 10.7747846 52.33898149909453, 10.821951300000002 52.345488999094236, 10.806995800000001 52.330031699094974, 10.851328800000001 52.31764699909561, 10.846011 52.324416499095264, 10.8866505 52.34545439909422, 10.851248400000001 52.36470829909332, 10.880635000000003 52.37393519909288, 10.8678707 52.38685159909233, 10.8964362 52.39766259909186, 10.906841300000002 52.413859299091186, 10.8774238 52.414939499091126, 10.896197400000002 52.41936049909096, 10.881292100000001 52.42369859909079, 10.8931052 52.43268159909043, 10.8758057 52.43571019909031, 10.8911761 52.456889899089546, 10.875190199999999 52.47454379908893, 10.853199700000001 52.47046219908907, 10.817233900000002 52.48829589908847, 10.795689200000004 52.483383399088645, 10.7814592 52.49508599908826, 10.743524400000002 52.46651399908921, 10.7385805 52.44311159909003, 10.7361035 52.45001059908979, 10.673945000000002 52.46257549908934, 10.6471143 52.444135699090005))`;
 
-    statistics =  {
-        "spatialValueDistribution": this.props.mapChart ?? {
-            "type": "spatial_value_distribution",
-            "areas": {
-                "area_de_ni_1": "10",
-                "area_de_ni_12": "48",
-                "area_de_ni_14": "89",
-                "area_de_ni_15": "8",
-                "area_de_ni_22": "30",
-                "area_de_ni_23": "33",
-                "area_de_ni_24": "12",
-                "area_de_ni_25": "35",
-                "area_de_ni_27": "1",
-                "area_de_ni_28": "9",
-                "area_de_ni_29": "45",
-                "area_de_ni_3": "31",
-                "area_de_ni_30": "12",
-                "area_de_ni_32": "48",
-                "area_de_ni_33": "35",
-                "area_de_ni_37": "6",
-                "area_de_ni_38": "2",
-                "area_de_ni_40": "29",
-                "area_de_ni_41": "44",
-                "area_de_ni_42": "21",
-                "area_de_ni_43": "8",
-                "area_de_ni_44": "17",
-                "area_de_ni_45": "48",
-                "area_de_ni_46": "22",
-                "area_de_ni_48": "47",
-                "area_de_ni_50": "1",
-                "area_de_ni_55": "3",
-                "area_de_ni_57": "1",
-                "area_de_ni_59": "15",
-                "area_de_ni_60": "141",
-                "area_de_ni_61": "40",
-                "area_de_ni_62": "6",
-                "area_de_ni_63": "29",
-                "area_de_ni_9": "5"
-            }
-        }
-    };
+  statistics = {
+    spatialValueDistribution: this.props.mapChart ?? {
+      type: "spatial_value_distribution",
+      areas: {
+        area_de_ni_1: "10",
+        area_de_ni_12: "48",
+        area_de_ni_14: "89",
+        area_de_ni_15: "8",
+        area_de_ni_22: "30",
+        area_de_ni_23: "33",
+        area_de_ni_24: "12",
+        area_de_ni_25: "35",
+        area_de_ni_27: "1",
+        area_de_ni_28: "9",
+        area_de_ni_29: "45",
+        area_de_ni_3: "31",
+        area_de_ni_30: "12",
+        area_de_ni_32: "48",
+        area_de_ni_33: "35",
+        area_de_ni_37: "6",
+        area_de_ni_38: "2",
+        area_de_ni_40: "29",
+        area_de_ni_41: "44",
+        area_de_ni_42: "21",
+        area_de_ni_43: "8",
+        area_de_ni_44: "17",
+        area_de_ni_45: "48",
+        area_de_ni_46: "22",
+        area_de_ni_48: "47",
+        area_de_ni_50: "1",
+        area_de_ni_55: "3",
+        area_de_ni_57: "1",
+        area_de_ni_59: "15",
+        area_de_ni_60: "141",
+        area_de_ni_61: "40",
+        area_de_ni_62: "6",
+        area_de_ni_63: "29",
+        area_de_ni_9: "5",
+      },
+    },
+  };
 
-    maxValue = () => {
-        const areas = this.statistics.spatialValueDistribution.areas;
+  maxValue = () => {
+    const areas = this.statistics.spatialValueDistribution.areas;
 
-        let returnMax = 0;
-        for (const areaId of Object.keys(areas)) {
-            const value = parseFloat(areas[areaId]);
-            returnMax = Math.max(returnMax, value);
-        }
-        return returnMax;
+    let returnMax = 0;
+    for (const areaId of Object.keys(areas)) {
+      const value = parseFloat(areas[areaId]);
+      returnMax = Math.max(returnMax, value);
+    }
+    return returnMax;
+  };
+
+  data = () => {
+    const ni_areas = {};
+    const regexp = /\n/gm;
+    const matches_array = this.ni_areas_tsv.split(regexp);
+    let count = 0;
+    for (const line of matches_array) {
+      const matches_array = line.split(/\t/g);
+      //console.log(count + ': ' + matches_array[1]);
+
+      const polygon_simple_line = matches_array[3]
+        ?.replace("POLYGON ((", "")
+        .replace("))", "")
+        .replace("), (", ", ")
+        ?.split(",");
+      const polygon_simple = [];
+      for (const coord of polygon_simple_line) {
+        const ar_coord = coord.trim().split(" ");
+        const ar_coord_num = [parseFloat(ar_coord[0]), parseFloat(ar_coord[1])];
+        polygon_simple.push(ar_coord_num);
+      }
+      const ni_areas_item = {
+        name_en: matches_array[1],
+        name_de: matches_array[2],
+        coordinates: polygon_simple,
+      };
+
+      ni_areas[matches_array[0]] = ni_areas_item;
+      count = count + 1;
     }
 
-    data = () => {
+    const areas = this.statistics.spatialValueDistribution.areas;
 
-        const ni_areas = {};
-        const regexp = /\n/gm;
-        const matches_array = this.ni_areas_tsv.split(regexp);
-        let count = 0;
-        for (const line of matches_array) {
-            const matches_array = line.split(/\t/g);
-            //console.log(count + ': ' + matches_array[1]);
-            
-            const polygon_simple_line = matches_array[3]?.replace('POLYGON ((', '').replace('))', '').replace('), (', ', ')?.split(',');
-            const polygon_simple = [];
-            for (const coord of polygon_simple_line) {
-                const ar_coord = coord.trim().split(' ');
-                const ar_coord_num = [parseFloat(ar_coord[0]), parseFloat(ar_coord[1])];
-                polygon_simple.push(ar_coord_num);
-            }
-            const ni_areas_item = {
-                name_en: matches_array[1],
-                name_de: matches_array[2],
-                coordinates: polygon_simple
-            };
-            
-            ni_areas[matches_array[0]] = ni_areas_item; 
-            count = count + 1;      
-        }
-
-        const areas = this.statistics.spatialValueDistribution.areas;
-
-        const returnData = {};
-        for (const areaId of Object.keys(areas)) {
-            const value = areas[areaId];
-            const ni_area = ni_areas[areaId];
-            ni_area.value = parseFloat(value);
-            if (ni_area) {
-                returnData[areaId] = ni_area;
-            }
-        }
-
-        console.log(JSON.stringify(returnData));
-
-        return returnData;
+    const returnData = {};
+    for (const areaId of Object.keys(areas)) {
+      const value = areas[areaId];
+      const ni_area = ni_areas[areaId];
+      ni_area.value = parseFloat(value);
+      if (ni_area) {
+        returnData[areaId] = ni_area;
+      }
     }
 
+    console.log(JSON.stringify(returnData));
 
-	render() {
+    return returnData;
+  };
 
-		return (
-			<div>
-				<div className="MapChartBackground">
-					<div style={{ width: this.props.width, height: this.props.height }}>
-                        <div ref={this.mapContainer} className="map-container" />
-					</div>
-				</div>
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div>
+        <div className="MapChartBackground">
+          <div style={{ width: this.props.width, height: this.props.height }}>
+            <div ref={this.mapContainer} className="map-container" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 //<div>{JSON.stringify(items)}</div>
 SimpleMapChart.defaultProps = {
-	width: '100%',
-	height: '300px' 
+  width: "100%",
+  height: "300px",
 };
 SimpleMapChart.propTypes = {
-	/**
-	   * String for thWochentage title
-	 */
-	title: PropTypes.string,
-	/**
-	 * BoxPlot Chart Object
-	 */
-	mapChart: PropTypes.object,
-	/**
-	 * How high the chart is supposed to be can't be 0 else wont render (Logo string for the project name
-	 */
-	height: PropTypes.string,
-	/**
-	 * How wide the chart is supposed to be can't be 0 else wont render (Logo string for the project name
-	 */
-	width: PropTypes.string,
-}; 
+  /**
+   * String for thWochentage title
+   */
+  title: PropTypes.string,
+  /**
+   * BoxPlot Chart Object
+   */
+  mapChart: PropTypes.object,
+  /**
+   * How high the chart is supposed to be can't be 0 else wont render (Logo string for the project name
+   */
+  height: PropTypes.string,
+  /**
+   * How wide the chart is supposed to be can't be 0 else wont render (Logo string for the project name
+   */
+  width: PropTypes.string,
+};

@@ -1,6 +1,6 @@
 @prefix csvw: <http://www.w3.org/ns/csvw#> .
+@prefix dc: <http://purl.org/dc/terms/> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix seas: <https://w3id.org/seas/> .
 @prefix sml: <https://simple-ml.de/resource/> .
@@ -11,12 +11,12 @@
 sml:simple-ml dcat:dataset sml:RossmannSales .
 
 sml:RossmannSales a dcat:Dataset ;
-    dcterms:description "Historische Verkaufsdaten von 1115 Rossmann-Geschäften. Jede Zeile repräsentiert den Umsatz eines Tages eines Geschäftes."@de,
+    dc:description "Historische Verkaufsdaten von 1115 Rossmann-Geschäften. Jede Zeile repräsentiert den Umsatz eines Tages eines Geschäftes."@de,
         "Historical sales data for 1,115 Rossmann stores. Each row represents the turnover for a given day in a store."@en ;
-    dcterms:identifier "RossmannSales" ;
-    dcterms:subject "Logistik"@de,
+    dc:identifier "RossmannSales" ;
+    dc:subject "Logistik"@de,
         "Logistics"@en ;
-    dcterms:title "Historische Verkaufsdaten von 1115 Rossmann-Geschäften"@de,
+    dc:title "Historische Verkaufsdaten von 1115 Rossmann-Geschäften"@de,
         "Historical sales data for 1,115 Rossmann stores"@en ;
     sml:coordinateSystem "4326"^^xsd:nonNegativeInteger ;
     sml:creatorId "0"^^xsd:nonNegativeInteger ;
@@ -35,7 +35,7 @@ sml:RossmannSales a dcat:Dataset ;
     sml:numberOfInstances "1017209"^^xsd:nonNegativeInteger .
 
 sml:RossmannSalesAttributeCustomers a sml:Attribute ;
-    dcterms:identifier "Customers" ;
+    dc:identifier "Customers" ;
     sml:columnIndex "4"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannSales_sml_logistics/Turnover> ;
@@ -226,7 +226,7 @@ sml:RossmannSalesAttributeCustomersStandardDeviation a seas:DistributionStandard
     seas:evaluatedValue "464.4117338866325"^^xsd:float .
 
 sml:RossmannSalesAttributeDate a sml:Attribute ;
-    dcterms:identifier "Date" ;
+    dc:identifier "Date" ;
     sml:columnIndex "2"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:RossmannSales_time_DateTimeDescription ;
@@ -475,7 +475,7 @@ sml:RossmannSalesAttributeDayOfWeekValueDistributionValue6 a sml:ValueDistributi
     sml:numberOfInstancesOfValue "144730"^^xsd:nonNegativeInteger .
 
 sml:RossmannSalesAttributeDayofweek a sml:Attribute ;
-    dcterms:identifier "DayOfWeek" ;
+    dc:identifier "DayOfWeek" ;
     sml:columnIndex "1"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain sml:RossmannSales_time_DayOfWeek ;
@@ -501,7 +501,7 @@ sml:RossmannSalesAttributeDayofweek a sml:Attribute ;
         sml:RossmannSalesAttributeDayOfWeekValueDistributionValue6 .
 
 sml:RossmannSalesAttributeOpen a sml:Attribute ;
-    dcterms:identifier "Open" ;
+    dc:identifier "Open" ;
     sml:columnIndex "5"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannSales_sml_logistics/Turnover> ;
@@ -539,7 +539,7 @@ sml:RossmannSalesAttributeOpenValueDistributionValue1 a sml:ValueDistributionVal
     sml:numberOfInstancesOfValue "172817"^^xsd:nonNegativeInteger .
 
 sml:RossmannSalesAttributePromo a sml:Attribute ;
-    dcterms:identifier "Promo" ;
+    dc:identifier "Promo" ;
     sml:columnIndex "6"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannSales_sml_logistics/Turnover> ;
@@ -577,7 +577,7 @@ sml:RossmannSalesAttributePromoValueDistributionValue1 a sml:ValueDistributionVa
     sml:numberOfInstancesOfValue "388080"^^xsd:nonNegativeInteger .
 
 sml:RossmannSalesAttributeSales a sml:Attribute ;
-    dcterms:identifier "Sales" ;
+    dc:identifier "Sales" ;
     sml:columnIndex "3"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannSales_sml_logistics/Turnover> ;
@@ -791,7 +791,7 @@ sml:RossmannSalesAttributeSchoolHolidayValueDistributionValue1 a sml:ValueDistri
     sml:numberOfInstancesOfValue "181721"^^xsd:nonNegativeInteger .
 
 sml:RossmannSalesAttributeSchoolholiday a sml:Attribute ;
-    dcterms:identifier "SchoolHoliday" ;
+    dc:identifier "SchoolHoliday" ;
     sml:columnIndex "8"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannSales_sml_logistics/Turnover> ;
@@ -855,7 +855,7 @@ sml:RossmannSalesAttributeStateHolidayValueDistributionValue3 a sml:ValueDistrib
     sml:numberOfInstancesOfValue "4100"^^xsd:nonNegativeInteger .
 
 sml:RossmannSalesAttributeStateholiday a sml:Attribute ;
-    dcterms:identifier "StateHoliday" ;
+    dc:identifier "StateHoliday" ;
     sml:columnIndex "7"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannSales_sml_logistics/StateHoliday> ;
@@ -878,48 +878,159 @@ sml:RossmannSalesAttributeStateholiday a sml:Attribute ;
         sml:RossmannSalesAttributeStateHolidayValueDistributionValue3 .
 
 sml:RossmannSalesAttributeStore a sml:Attribute ;
-    dcterms:identifier "Store" ;
+    dc:identifier "Store" ;
     sml:columnIndex "0"^^xsd:nonNegativeInteger ;
     sml:isVirtual false ;
     sml:mapsToDomain <https://simple-ml.de/resource/RossmannSales_sml_logistics/Store> ;
     sml:mapsToProperty sml-log:storeId ;
-    sml:valueType xsd:string ;
-    seas:evaluation sml:RossmannSalesAttributeStoreAverageNumberOfCapitalisedValues,
-        sml:RossmannSalesAttributeStoreAverageNumberOfCharacters,
-        sml:RossmannSalesAttributeStoreAverageNumberOfDigits,
-        sml:RossmannSalesAttributeStoreAverageNumberOfSpecialCharacters,
-        sml:RossmannSalesAttributeStoreAverageNumberOfTokens,
+    sml:valueType xsd:nonNegativeInteger ;
+    seas:evaluation sml:RossmannSalesAttributeStoreAverageNumberOfDigits,
+        sml:RossmannSalesAttributeStoreDecile0,
+        sml:RossmannSalesAttributeStoreDecile1,
+        sml:RossmannSalesAttributeStoreDecile10,
+        sml:RossmannSalesAttributeStoreDecile2,
+        sml:RossmannSalesAttributeStoreDecile3,
+        sml:RossmannSalesAttributeStoreDecile4,
+        sml:RossmannSalesAttributeStoreDecile5,
+        sml:RossmannSalesAttributeStoreDecile6,
+        sml:RossmannSalesAttributeStoreDecile7,
+        sml:RossmannSalesAttributeStoreDecile8,
+        sml:RossmannSalesAttributeStoreDecile9,
+        sml:RossmannSalesAttributeStoreHistogram0,
+        sml:RossmannSalesAttributeStoreHistogram1,
+        sml:RossmannSalesAttributeStoreHistogram2,
+        sml:RossmannSalesAttributeStoreHistogram3,
+        sml:RossmannSalesAttributeStoreHistogram4,
+        sml:RossmannSalesAttributeStoreHistogram5,
+        sml:RossmannSalesAttributeStoreHistogram6,
+        sml:RossmannSalesAttributeStoreHistogram7,
+        sml:RossmannSalesAttributeStoreHistogram8,
+        sml:RossmannSalesAttributeStoreHistogram9,
+        sml:RossmannSalesAttributeStoreMaximum,
+        sml:RossmannSalesAttributeStoreMean,
+        sml:RossmannSalesAttributeStoreMedian,
+        sml:RossmannSalesAttributeStoreMinimum,
         sml:RossmannSalesAttributeStoreNumberOfDistinctValues,
         sml:RossmannSalesAttributeStoreNumberOfInvalidValues,
         sml:RossmannSalesAttributeStoreNumberOfNullValues,
         sml:RossmannSalesAttributeStoreNumberOfValidNonNullValues,
         sml:RossmannSalesAttributeStoreNumberOfValidValues,
-        sml:RossmannSalesAttributeStoreNumberOfValues ;
-    seas:valueDistributionValue sml:RossmannSalesAttributeStoreValueDistributionValue0,
-        sml:RossmannSalesAttributeStoreValueDistributionValue1,
-        sml:RossmannSalesAttributeStoreValueDistributionValue2,
-        sml:RossmannSalesAttributeStoreValueDistributionValue3,
-        sml:RossmannSalesAttributeStoreValueDistributionValue4,
-        sml:RossmannSalesAttributeStoreValueDistributionValue5,
-        sml:RossmannSalesAttributeStoreValueDistributionValue6,
-        sml:RossmannSalesAttributeStoreValueDistributionValue7,
-        sml:RossmannSalesAttributeStoreValueDistributionValue8,
-        sml:RossmannSalesAttributeStoreValueDistributionValue9 .
-
-sml:RossmannSalesAttributeStoreAverageNumberOfCapitalisedValues a sml:DistributionAverageNumberOfCapitalisedValuesEvaluation ;
-    seas:evaluatedValue "0.0"^^xsd:float .
-
-sml:RossmannSalesAttributeStoreAverageNumberOfCharacters a sml:DistributionAverageNumberOfCharactersEvaluation ;
-    seas:evaluatedValue "3.0066849585483415"^^xsd:float .
+        sml:RossmannSalesAttributeStoreNumberOfValues,
+        sml:RossmannSalesAttributeStoreQuartile0,
+        sml:RossmannSalesAttributeStoreQuartile1,
+        sml:RossmannSalesAttributeStoreQuartile2,
+        sml:RossmannSalesAttributeStoreQuartile3,
+        sml:RossmannSalesAttributeStoreQuartile4,
+        sml:RossmannSalesAttributeStoreStandardDeviation .
 
 sml:RossmannSalesAttributeStoreAverageNumberOfDigits a sml:DistributionAverageNumberOfDigitsEvaluation ;
     seas:evaluatedValue "3.0066849585483415"^^xsd:float .
 
-sml:RossmannSalesAttributeStoreAverageNumberOfSpecialCharacters a sml:DistributionAverageNumberOfSpecialCharactersEvaluation ;
-    seas:evaluatedValue "0.0"^^xsd:float .
+sml:RossmannSalesAttributeStoreDecile0 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float ;
+    seas:rank 0 .
 
-sml:RossmannSalesAttributeStoreAverageNumberOfTokens a sml:DistributionAverageNumberOfTokensEvaluation ;
-    seas:evaluatedValue "1.0"^^xsd:float .
+sml:RossmannSalesAttributeStoreDecile1 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "112.0"^^xsd:float ;
+    seas:rank 1 .
+
+sml:RossmannSalesAttributeStoreDecile10 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1115.0"^^xsd:float ;
+    seas:rank 10 .
+
+sml:RossmannSalesAttributeStoreDecile2 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "225.0"^^xsd:float ;
+    seas:rank 2 .
+
+sml:RossmannSalesAttributeStoreDecile3 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "336.0"^^xsd:float ;
+    seas:rank 3 .
+
+sml:RossmannSalesAttributeStoreDecile4 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "446.20000000001164"^^xsd:float ;
+    seas:rank 4 .
+
+sml:RossmannSalesAttributeStoreDecile5 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "558.0"^^xsd:float ;
+    seas:rank 5 .
+
+sml:RossmannSalesAttributeStoreDecile6 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "670.0"^^xsd:float ;
+    seas:rank 6 .
+
+sml:RossmannSalesAttributeStoreDecile7 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "782.0"^^xsd:float ;
+    seas:rank 7 .
+
+sml:RossmannSalesAttributeStoreDecile8 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "893.0"^^xsd:float ;
+    seas:rank 8 .
+
+sml:RossmannSalesAttributeStoreDecile9 a seas:DistributionDecileEvaluation ;
+    seas:evaluatedValue "1004.0"^^xsd:float ;
+    seas:rank 9 .
+
+sml:RossmannSalesAttributeStoreHistogram0 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "112.4"^^xsd:float ;
+    sml:bucketMinimum "1.0"^^xsd:float ;
+    sml:instancesInBucket "102376"^^xsd:nonNegativeInteger .
+
+sml:RossmannSalesAttributeStoreHistogram1 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "223.8"^^xsd:float ;
+    sml:bucketMinimum "112.4"^^xsd:float ;
+    sml:instancesInBucket "99778"^^xsd:nonNegativeInteger .
+
+sml:RossmannSalesAttributeStoreHistogram2 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "335.20000000000005"^^xsd:float ;
+    sml:bucketMinimum "223.8"^^xsd:float ;
+    sml:instancesInBucket "102928"^^xsd:nonNegativeInteger .
+
+sml:RossmannSalesAttributeStoreHistogram3 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "446.6"^^xsd:float ;
+    sml:bucketMinimum "335.20000000000005"^^xsd:float ;
+    sml:instancesInBucket "101802"^^xsd:nonNegativeInteger .
+
+sml:RossmannSalesAttributeStoreHistogram4 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "558.0"^^xsd:float ;
+    sml:bucketMinimum "446.6"^^xsd:float ;
+    sml:instancesInBucket "101066"^^xsd:nonNegativeInteger .
+
+sml:RossmannSalesAttributeStoreHistogram5 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "669.4000000000001"^^xsd:float ;
+    sml:bucketMinimum "558.0"^^xsd:float ;
+    sml:instancesInBucket "101824"^^xsd:nonNegativeInteger .
+
+sml:RossmannSalesAttributeStoreHistogram6 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "780.8000000000001"^^xsd:float ;
+    sml:bucketMinimum "669.4000000000001"^^xsd:float ;
+    sml:instancesInBucket "100698"^^xsd:nonNegativeInteger .
+
+sml:RossmannSalesAttributeStoreHistogram7 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "892.2"^^xsd:float ;
+    sml:bucketMinimum "780.8000000000001"^^xsd:float ;
+    sml:instancesInBucket "102928"^^xsd:nonNegativeInteger .
+
+sml:RossmannSalesAttributeStoreHistogram8 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1003.6"^^xsd:float ;
+    sml:bucketMinimum "892.2"^^xsd:float ;
+    sml:instancesInBucket "101617"^^xsd:nonNegativeInteger .
+
+sml:RossmannSalesAttributeStoreHistogram9 a sml:DistributionHistogramEvaluation ;
+    sml:bucketMaximum "1115"^^xsd:float ;
+    sml:bucketMinimum "1003.6"^^xsd:float ;
+    sml:instancesInBucket "102192"^^xsd:nonNegativeInteger .
+
+sml:RossmannSalesAttributeStoreMaximum a seas:DistributionMaximumEvaluation ;
+    seas:evaluatedValue 1115 .
+
+sml:RossmannSalesAttributeStoreMean a seas:DistributionMeanEvaluation ;
+    seas:evaluatedValue "558.4297268309659"^^xsd:float .
+
+sml:RossmannSalesAttributeStoreMedian a seas:DistributionMedianEvaluation ;
+    seas:evaluatedValue "558.0"^^xsd:float .
+
+sml:RossmannSalesAttributeStoreMinimum a seas:DistributionMinimumEvaluation ;
+    seas:evaluatedValue 1 .
 
 sml:RossmannSalesAttributeStoreNumberOfDistinctValues a sml:DistributionNumberOfDistinctValuesEvaluation ;
     seas:evaluatedValue 1115 .
@@ -939,48 +1050,31 @@ sml:RossmannSalesAttributeStoreNumberOfValidValues a sml:DistributionNumberOfVal
 sml:RossmannSalesAttributeStoreNumberOfValues a sml:DistributionNumberOfValuesEvaluation ;
     seas:evaluatedValue 1017209 .
 
-sml:RossmannSalesAttributeStoreValueDistributionValue0 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "1" ;
-    sml:numberOfInstancesOfValue "942"^^xsd:nonNegativeInteger .
+sml:RossmannSalesAttributeStoreQuartile0 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "1.0"^^xsd:float ;
+    seas:rank 0 .
 
-sml:RossmannSalesAttributeStoreValueDistributionValue1 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "261" ;
-    sml:numberOfInstancesOfValue "942"^^xsd:nonNegativeInteger .
+sml:RossmannSalesAttributeStoreQuartile1 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "280.0"^^xsd:float ;
+    seas:rank 1 .
 
-sml:RossmannSalesAttributeStoreValueDistributionValue2 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "248" ;
-    sml:numberOfInstancesOfValue "942"^^xsd:nonNegativeInteger .
+sml:RossmannSalesAttributeStoreQuartile2 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "558.0"^^xsd:float ;
+    seas:rank 2 .
 
-sml:RossmannSalesAttributeStoreValueDistributionValue3 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "249" ;
-    sml:numberOfInstancesOfValue "942"^^xsd:nonNegativeInteger .
+sml:RossmannSalesAttributeStoreQuartile3 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "838.0"^^xsd:float ;
+    seas:rank 3 .
 
-sml:RossmannSalesAttributeStoreValueDistributionValue4 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "250" ;
-    sml:numberOfInstancesOfValue "942"^^xsd:nonNegativeInteger .
+sml:RossmannSalesAttributeStoreQuartile4 a seas:DistributionQuartileEvaluation ;
+    seas:evaluatedValue "1115.0"^^xsd:float ;
+    seas:rank 4 .
 
-sml:RossmannSalesAttributeStoreValueDistributionValue5 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "251" ;
-    sml:numberOfInstancesOfValue "942"^^xsd:nonNegativeInteger .
-
-sml:RossmannSalesAttributeStoreValueDistributionValue6 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "252" ;
-    sml:numberOfInstancesOfValue "942"^^xsd:nonNegativeInteger .
-
-sml:RossmannSalesAttributeStoreValueDistributionValue7 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "253" ;
-    sml:numberOfInstancesOfValue "942"^^xsd:nonNegativeInteger .
-
-sml:RossmannSalesAttributeStoreValueDistributionValue8 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "254" ;
-    sml:numberOfInstancesOfValue "942"^^xsd:nonNegativeInteger .
-
-sml:RossmannSalesAttributeStoreValueDistributionValue9 a sml:ValueDistributionValue ;
-    sml:instancesOfValue "255" ;
-    sml:numberOfInstancesOfValue "942"^^xsd:nonNegativeInteger .
+sml:RossmannSalesAttributeStoreStandardDeviation a seas:DistributionStandardDeviationEvaluation ;
+    seas:evaluatedValue "321.9086511434535"^^xsd:float .
 
 sml:RossmannSalesFile a sml:TextFile ;
-    dcterms:format "text/comma-separated-values" ;
+    dc:format "text/comma-separated-values" ;
     csvw:header false ;
     csvw:null "" ;
     csvw:separator "," ;

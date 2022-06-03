@@ -1,0 +1,3245 @@
+@prefix mex-algo: <http://mex.aksw.org/mex-algo#> .
+@prefix mex-perf: <http://mex.aksw.org/mex-perf#> .
+@prefix sml: <https://simple-ml.de/resource/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sml:Benchmark0LinearRegression a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:LinearRegression ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.LinearRegression\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = LinearRegression();\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:perfomance sml:Benchmark0LinearRegressionPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark10RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=5, criterion="absolute_error", maxDepth=1, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark10RandomForestRegressorParameter0,
+        sml:Benchmark10RandomForestRegressorParameter1,
+        sml:Benchmark10RandomForestRegressorParameter2,
+        sml:Benchmark10RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark10RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark11RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=5, criterion="absolute_error", maxDepth=3, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark11RandomForestRegressorParameter0,
+        sml:Benchmark11RandomForestRegressorParameter1,
+        sml:Benchmark11RandomForestRegressorParameter2,
+        sml:Benchmark11RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark11RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark12RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=5, criterion="absolute_error", maxDepth=5, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark12RandomForestRegressorParameter0,
+        sml:Benchmark12RandomForestRegressorParameter1,
+        sml:Benchmark12RandomForestRegressorParameter2,
+        sml:Benchmark12RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark12RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark13RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=5, criterion="poisson", maxDepth=1, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark13RandomForestRegressorParameter0,
+        sml:Benchmark13RandomForestRegressorParameter1,
+        sml:Benchmark13RandomForestRegressorParameter2,
+        sml:Benchmark13RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark13RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark14RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=5, criterion="poisson", maxDepth=3, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark14RandomForestRegressorParameter0,
+        sml:Benchmark14RandomForestRegressorParameter1,
+        sml:Benchmark14RandomForestRegressorParameter2,
+        sml:Benchmark14RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark14RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark15RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=5, criterion="poisson", maxDepth=5, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark15RandomForestRegressorParameter0,
+        sml:Benchmark15RandomForestRegressorParameter1,
+        sml:Benchmark15RandomForestRegressorParameter2,
+        sml:Benchmark15RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark15RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark16RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=15, criterion="squared_error", maxDepth=1, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark16RandomForestRegressorParameter0,
+        sml:Benchmark16RandomForestRegressorParameter1,
+        sml:Benchmark16RandomForestRegressorParameter2,
+        sml:Benchmark16RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark16RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark17RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=15, criterion="squared_error", maxDepth=3, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark17RandomForestRegressorParameter0,
+        sml:Benchmark17RandomForestRegressorParameter1,
+        sml:Benchmark17RandomForestRegressorParameter2,
+        sml:Benchmark17RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark17RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark18RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=15, criterion="squared_error", maxDepth=5, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark18RandomForestRegressorParameter0,
+        sml:Benchmark18RandomForestRegressorParameter1,
+        sml:Benchmark18RandomForestRegressorParameter2,
+        sml:Benchmark18RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark18RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark19RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=15, criterion="absolute_error", maxDepth=1, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark19RandomForestRegressorParameter0,
+        sml:Benchmark19RandomForestRegressorParameter1,
+        sml:Benchmark19RandomForestRegressorParameter2,
+        sml:Benchmark19RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark19RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark1RidgeRegression a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RidgeRegression ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RidgeRegression\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RidgeRegression();\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:perfomance sml:Benchmark1RidgeRegressionPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark20RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=15, criterion="absolute_error", maxDepth=3, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark20RandomForestRegressorParameter0,
+        sml:Benchmark20RandomForestRegressorParameter1,
+        sml:Benchmark20RandomForestRegressorParameter2,
+        sml:Benchmark20RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark20RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark21RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=15, criterion="absolute_error", maxDepth=5, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark21RandomForestRegressorParameter0,
+        sml:Benchmark21RandomForestRegressorParameter1,
+        sml:Benchmark21RandomForestRegressorParameter2,
+        sml:Benchmark21RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark21RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark22RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=15, criterion="poisson", maxDepth=1, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark22RandomForestRegressorParameter0,
+        sml:Benchmark22RandomForestRegressorParameter1,
+        sml:Benchmark22RandomForestRegressorParameter2,
+        sml:Benchmark22RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark22RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark23RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=15, criterion="poisson", maxDepth=3, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark23RandomForestRegressorParameter0,
+        sml:Benchmark23RandomForestRegressorParameter1,
+        sml:Benchmark23RandomForestRegressorParameter2,
+        sml:Benchmark23RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark23RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark24RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=15, criterion="poisson", maxDepth=5, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark24RandomForestRegressorParameter0,
+        sml:Benchmark24RandomForestRegressorParameter1,
+        sml:Benchmark24RandomForestRegressorParameter2,
+        sml:Benchmark24RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark24RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark25RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=25, criterion="squared_error", maxDepth=1, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark25RandomForestRegressorParameter0,
+        sml:Benchmark25RandomForestRegressorParameter1,
+        sml:Benchmark25RandomForestRegressorParameter2,
+        sml:Benchmark25RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark25RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark26RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=25, criterion="squared_error", maxDepth=3, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark26RandomForestRegressorParameter0,
+        sml:Benchmark26RandomForestRegressorParameter1,
+        sml:Benchmark26RandomForestRegressorParameter2,
+        sml:Benchmark26RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark26RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark27RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=25, criterion="squared_error", maxDepth=5, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark27RandomForestRegressorParameter0,
+        sml:Benchmark27RandomForestRegressorParameter1,
+        sml:Benchmark27RandomForestRegressorParameter2,
+        sml:Benchmark27RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark27RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark28RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=25, criterion="absolute_error", maxDepth=1, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark28RandomForestRegressorParameter0,
+        sml:Benchmark28RandomForestRegressorParameter1,
+        sml:Benchmark28RandomForestRegressorParameter2,
+        sml:Benchmark28RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark28RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark29RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=25, criterion="absolute_error", maxDepth=3, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark29RandomForestRegressorParameter0,
+        sml:Benchmark29RandomForestRegressorParameter1,
+        sml:Benchmark29RandomForestRegressorParameter2,
+        sml:Benchmark29RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark29RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark2DecisionTreeRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:DecisionTreeRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.DecisionTreeRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = DecisionTreeRegressor(maxDepth=1);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark2DecisionTreeRegressorParameter0 ;
+    sml:perfomance sml:Benchmark2DecisionTreeRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark30RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=25, criterion="absolute_error", maxDepth=5, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark30RandomForestRegressorParameter0,
+        sml:Benchmark30RandomForestRegressorParameter1,
+        sml:Benchmark30RandomForestRegressorParameter2,
+        sml:Benchmark30RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark30RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark31RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=25, criterion="poisson", maxDepth=1, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark31RandomForestRegressorParameter0,
+        sml:Benchmark31RandomForestRegressorParameter1,
+        sml:Benchmark31RandomForestRegressorParameter2,
+        sml:Benchmark31RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark31RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark32RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=25, criterion="poisson", maxDepth=3, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark32RandomForestRegressorParameter0,
+        sml:Benchmark32RandomForestRegressorParameter1,
+        sml:Benchmark32RandomForestRegressorParameter2,
+        sml:Benchmark32RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark32RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark33RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=25, criterion="poisson", maxDepth=5, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark33RandomForestRegressorParameter0,
+        sml:Benchmark33RandomForestRegressorParameter1,
+        sml:Benchmark33RandomForestRegressorParameter2,
+        sml:Benchmark33RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark33RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark34RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=35, criterion="squared_error", maxDepth=1, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark34RandomForestRegressorParameter0,
+        sml:Benchmark34RandomForestRegressorParameter1,
+        sml:Benchmark34RandomForestRegressorParameter2,
+        sml:Benchmark34RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark34RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark35RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=35, criterion="squared_error", maxDepth=3, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark35RandomForestRegressorParameter0,
+        sml:Benchmark35RandomForestRegressorParameter1,
+        sml:Benchmark35RandomForestRegressorParameter2,
+        sml:Benchmark35RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark35RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark36RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=35, criterion="squared_error", maxDepth=5, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark36RandomForestRegressorParameter0,
+        sml:Benchmark36RandomForestRegressorParameter1,
+        sml:Benchmark36RandomForestRegressorParameter2,
+        sml:Benchmark36RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark36RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark37RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=35, criterion="absolute_error", maxDepth=1, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark37RandomForestRegressorParameter0,
+        sml:Benchmark37RandomForestRegressorParameter1,
+        sml:Benchmark37RandomForestRegressorParameter2,
+        sml:Benchmark37RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark37RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark38RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=35, criterion="absolute_error", maxDepth=3, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark38RandomForestRegressorParameter0,
+        sml:Benchmark38RandomForestRegressorParameter1,
+        sml:Benchmark38RandomForestRegressorParameter2,
+        sml:Benchmark38RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark38RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark39RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=35, criterion="absolute_error", maxDepth=5, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark39RandomForestRegressorParameter0,
+        sml:Benchmark39RandomForestRegressorParameter1,
+        sml:Benchmark39RandomForestRegressorParameter2,
+        sml:Benchmark39RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark39RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark3DecisionTreeRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:DecisionTreeRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.DecisionTreeRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = DecisionTreeRegressor(maxDepth=3);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark3DecisionTreeRegressorParameter0 ;
+    sml:perfomance sml:Benchmark3DecisionTreeRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark40RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=35, criterion="poisson", maxDepth=1, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark40RandomForestRegressorParameter0,
+        sml:Benchmark40RandomForestRegressorParameter1,
+        sml:Benchmark40RandomForestRegressorParameter2,
+        sml:Benchmark40RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark40RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark41RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=35, criterion="poisson", maxDepth=3, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark41RandomForestRegressorParameter0,
+        sml:Benchmark41RandomForestRegressorParameter1,
+        sml:Benchmark41RandomForestRegressorParameter2,
+        sml:Benchmark41RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark41RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark42RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=35, criterion="poisson", maxDepth=5, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark42RandomForestRegressorParameter0,
+        sml:Benchmark42RandomForestRegressorParameter1,
+        sml:Benchmark42RandomForestRegressorParameter2,
+        sml:Benchmark42RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark42RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark43RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=45, criterion="squared_error", maxDepth=1, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark43RandomForestRegressorParameter0,
+        sml:Benchmark43RandomForestRegressorParameter1,
+        sml:Benchmark43RandomForestRegressorParameter2,
+        sml:Benchmark43RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark43RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark44RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=45, criterion="squared_error", maxDepth=3, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark44RandomForestRegressorParameter0,
+        sml:Benchmark44RandomForestRegressorParameter1,
+        sml:Benchmark44RandomForestRegressorParameter2,
+        sml:Benchmark44RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark44RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark45RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=45, criterion="squared_error", maxDepth=5, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark45RandomForestRegressorParameter0,
+        sml:Benchmark45RandomForestRegressorParameter1,
+        sml:Benchmark45RandomForestRegressorParameter2,
+        sml:Benchmark45RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark45RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark46RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=45, criterion="absolute_error", maxDepth=1, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark46RandomForestRegressorParameter0,
+        sml:Benchmark46RandomForestRegressorParameter1,
+        sml:Benchmark46RandomForestRegressorParameter2,
+        sml:Benchmark46RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark46RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark47RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=45, criterion="absolute_error", maxDepth=3, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark47RandomForestRegressorParameter0,
+        sml:Benchmark47RandomForestRegressorParameter1,
+        sml:Benchmark47RandomForestRegressorParameter2,
+        sml:Benchmark47RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark47RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark48RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=45, criterion="absolute_error", maxDepth=5, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark48RandomForestRegressorParameter0,
+        sml:Benchmark48RandomForestRegressorParameter1,
+        sml:Benchmark48RandomForestRegressorParameter2,
+        sml:Benchmark48RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark48RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark49RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=45, criterion="poisson", maxDepth=1, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark49RandomForestRegressorParameter0,
+        sml:Benchmark49RandomForestRegressorParameter1,
+        sml:Benchmark49RandomForestRegressorParameter2,
+        sml:Benchmark49RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark49RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark4DecisionTreeRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:DecisionTreeRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.DecisionTreeRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = DecisionTreeRegressor(maxDepth=5);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark4DecisionTreeRegressorParameter0 ;
+    sml:perfomance sml:Benchmark4DecisionTreeRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark50RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=45, criterion="poisson", maxDepth=3, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark50RandomForestRegressorParameter0,
+        sml:Benchmark50RandomForestRegressorParameter1,
+        sml:Benchmark50RandomForestRegressorParameter2,
+        sml:Benchmark50RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark50RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark51RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=45, criterion="poisson", maxDepth=5, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark51RandomForestRegressorParameter0,
+        sml:Benchmark51RandomForestRegressorParameter1,
+        sml:Benchmark51RandomForestRegressorParameter2,
+        sml:Benchmark51RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark51RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark52RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=55, criterion="squared_error", maxDepth=1, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark52RandomForestRegressorParameter0,
+        sml:Benchmark52RandomForestRegressorParameter1,
+        sml:Benchmark52RandomForestRegressorParameter2,
+        sml:Benchmark52RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark52RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark53RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=55, criterion="squared_error", maxDepth=3, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark53RandomForestRegressorParameter0,
+        sml:Benchmark53RandomForestRegressorParameter1,
+        sml:Benchmark53RandomForestRegressorParameter2,
+        sml:Benchmark53RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark53RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark54RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=55, criterion="squared_error", maxDepth=5, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark54RandomForestRegressorParameter0,
+        sml:Benchmark54RandomForestRegressorParameter1,
+        sml:Benchmark54RandomForestRegressorParameter2,
+        sml:Benchmark54RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark54RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark55RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=55, criterion="absolute_error", maxDepth=1, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark55RandomForestRegressorParameter0,
+        sml:Benchmark55RandomForestRegressorParameter1,
+        sml:Benchmark55RandomForestRegressorParameter2,
+        sml:Benchmark55RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark55RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark56RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=55, criterion="absolute_error", maxDepth=3, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark56RandomForestRegressorParameter0,
+        sml:Benchmark56RandomForestRegressorParameter1,
+        sml:Benchmark56RandomForestRegressorParameter2,
+        sml:Benchmark56RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark56RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark57RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=55, criterion="absolute_error", maxDepth=5, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark57RandomForestRegressorParameter0,
+        sml:Benchmark57RandomForestRegressorParameter1,
+        sml:Benchmark57RandomForestRegressorParameter2,
+        sml:Benchmark57RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark57RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark58RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=55, criterion="poisson", maxDepth=1, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark58RandomForestRegressorParameter0,
+        sml:Benchmark58RandomForestRegressorParameter1,
+        sml:Benchmark58RandomForestRegressorParameter2,
+        sml:Benchmark58RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark58RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark59RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=55, criterion="poisson", maxDepth=3, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark59RandomForestRegressorParameter0,
+        sml:Benchmark59RandomForestRegressorParameter1,
+        sml:Benchmark59RandomForestRegressorParameter2,
+        sml:Benchmark59RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark59RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark5DecisionTreeRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:DecisionTreeRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.DecisionTreeRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = DecisionTreeRegressor(maxDepth=7);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark5DecisionTreeRegressorParameter0 ;
+    sml:perfomance sml:Benchmark5DecisionTreeRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark60RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=55, criterion="poisson", maxDepth=5, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark60RandomForestRegressorParameter0,
+        sml:Benchmark60RandomForestRegressorParameter1,
+        sml:Benchmark60RandomForestRegressorParameter2,
+        sml:Benchmark60RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark60RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark6DecisionTreeRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:DecisionTreeRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.DecisionTreeRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = DecisionTreeRegressor(maxDepth=9);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark6DecisionTreeRegressorParameter0 ;
+    sml:perfomance sml:Benchmark6DecisionTreeRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark7RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=5, criterion="squared_error", maxDepth=1, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark7RandomForestRegressorParameter0,
+        sml:Benchmark7RandomForestRegressorParameter1,
+        sml:Benchmark7RandomForestRegressorParameter2,
+        sml:Benchmark7RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark7RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark8RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=5, criterion="squared_error", maxDepth=3, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark8RandomForestRegressorParameter0,
+        sml:Benchmark8RandomForestRegressorParameter1,
+        sml:Benchmark8RandomForestRegressorParameter2,
+        sml:Benchmark8RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark8RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark9RandomForestRegressor a sml:Benchmark ;
+    mex-algo:hasAlgorithmClass mex-algo:RandomForestRegressor ;
+    sml:dslCode """package example\r
+\r
+import simpleml.metrics.meanAbsoluteError\r
+import simpleml.metrics.accuracy\r
+import simpleml.metrics.balancedAccuracy\r
+import simpleml.metrics.r2\r
+\r
+import simpleml.dataset.loadDataset\r
+import simpleml.dataset.StandardScaler\r
+import simpleml.model.supervised.regression.RandomForestRegressor\r
+\r
+workflow exampleWorkflow {\r
+    val dataset1 = loadDataset("FloatingCarData");\r
+    val dataset2 = dataset1.dropAllMissingValues();\r
+    val dataset3 = dataset2.transformDatatypes();\r
+    val dataset4 = dataset3.setTargetAttribute("speed");\r
+    val dataset5 = StandardScaler().scale(dataset4);\r
+    val X_train, val X_test, val y_train, val y_test = dataset5.splitIntoTrainAndTestAndLabels(0.8);\r
+    \r
+    val model = RandomForestRegressor(nEstimator=5, criterion="squared_error", maxDepth=5, randomState=2022);\r
+    val lr = model.fit(X_train, y_train);\r
+    val y_pred = lr.predict(X_test);\r
+    \r
+}""" ;
+    sml:hasParameter sml:Benchmark9RandomForestRegressorParameter0,
+        sml:Benchmark9RandomForestRegressorParameter1,
+        sml:Benchmark9RandomForestRegressorParameter2,
+        sml:Benchmark9RandomForestRegressorParameter3 ;
+    sml:perfomance sml:Benchmark9RandomForestRegressorPerfomance ;
+    sml:targetDataSet sml:FloatingCarData .
+
+sml:Benchmark0LinearRegressionPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 3.947368e-02 ;
+    mex-perf:balancedAccuracy 2.525253e-02 ;
+    mex-perf:meanAbsoluteError 1.56325e+01 ;
+    mex-perf:r2 6.851913e-01 .
+
+sml:Benchmark10RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark10RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "absolute_error" .
+
+sml:Benchmark10RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark10RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark10RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.11e+01 ;
+    mex-perf:r2 4.675766e-01 .
+
+sml:Benchmark11RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark11RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "absolute_error" .
+
+sml:Benchmark11RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark11RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark11RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 3.947368e-02 ;
+    mex-perf:balancedAccuracy 4.166667e-02 ;
+    mex-perf:meanAbsoluteError 1.579342e+01 ;
+    mex-perf:r2 6.449021e-01 .
+
+sml:Benchmark12RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark12RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "absolute_error" .
+
+sml:Benchmark12RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark12RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark12RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 2.631579e-02 ;
+    mex-perf:balancedAccuracy 1.704545e-02 ;
+    mex-perf:meanAbsoluteError 1.651842e+01 ;
+    mex-perf:r2 6.483232e-01 .
+
+sml:Benchmark13RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark13RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "poisson" .
+
+sml:Benchmark13RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark13RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark13RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 3.947368e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.862904e+01 ;
+    mex-perf:r2 4.553433e-02 .
+
+sml:Benchmark14RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark14RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "poisson" .
+
+sml:Benchmark14RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark14RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark14RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.815173e+01 ;
+    mex-perf:r2 1.064214e-01 .
+
+sml:Benchmark15RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark15RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "poisson" .
+
+sml:Benchmark15RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark15RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark15RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.809344e+01 ;
+    mex-perf:r2 1.101601e-01 .
+
+sml:Benchmark16RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 15 .
+
+sml:Benchmark16RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "squared_error" .
+
+sml:Benchmark16RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark16RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark16RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 0e+00 ;
+    mex-perf:balancedAccuracy 0e+00 ;
+    mex-perf:meanAbsoluteError 2.137059e+01 ;
+    mex-perf:r2 4.537523e-01 .
+
+sml:Benchmark17RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 15 .
+
+sml:Benchmark17RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "squared_error" .
+
+sml:Benchmark17RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark17RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark17RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 5.681818e-03 ;
+    mex-perf:meanAbsoluteError 1.619812e+01 ;
+    mex-perf:r2 6.402463e-01 .
+
+sml:Benchmark18RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 15 .
+
+sml:Benchmark18RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "squared_error" .
+
+sml:Benchmark18RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark18RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark18RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 0e+00 ;
+    mex-perf:balancedAccuracy 0e+00 ;
+    mex-perf:meanAbsoluteError 1.645787e+01 ;
+    mex-perf:r2 6.505223e-01 .
+
+sml:Benchmark19RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 15 .
+
+sml:Benchmark19RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "absolute_error" .
+
+sml:Benchmark19RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark19RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark19RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 2.631579e-02 ;
+    mex-perf:balancedAccuracy 4.545455e-02 ;
+    mex-perf:meanAbsoluteError 2.082895e+01 ;
+    mex-perf:r2 4.775706e-01 .
+
+sml:Benchmark1RidgeRegressionPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 3.947368e-02 ;
+    mex-perf:balancedAccuracy 1.388889e-02 ;
+    mex-perf:meanAbsoluteError 1.560198e+01 ;
+    mex-perf:r2 6.840843e-01 .
+
+sml:Benchmark20RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 15 .
+
+sml:Benchmark20RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "absolute_error" .
+
+sml:Benchmark20RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark20RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark20RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 0e+00 ;
+    mex-perf:balancedAccuracy 0e+00 ;
+    mex-perf:meanAbsoluteError 1.603904e+01 ;
+    mex-perf:r2 6.671464e-01 .
+
+sml:Benchmark21RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 15 .
+
+sml:Benchmark21RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "absolute_error" .
+
+sml:Benchmark21RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark21RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark21RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 1.73693e+01 ;
+    mex-perf:r2 6.408526e-01 .
+
+sml:Benchmark22RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 15 .
+
+sml:Benchmark22RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "poisson" .
+
+sml:Benchmark22RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark22RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark22RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.886386e+01 ;
+    mex-perf:r2 1.550596e-02 .
+
+sml:Benchmark23RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 15 .
+
+sml:Benchmark23RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "poisson" .
+
+sml:Benchmark23RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark23RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark23RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 3.947368e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.780168e+01 ;
+    mex-perf:r2 1.267654e-01 .
+
+sml:Benchmark24RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 15 .
+
+sml:Benchmark24RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "poisson" .
+
+sml:Benchmark24RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark24RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark24RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.785959e+01 ;
+    mex-perf:r2 1.330039e-01 .
+
+sml:Benchmark25RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 25 .
+
+sml:Benchmark25RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "squared_error" .
+
+sml:Benchmark25RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark25RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark25RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 0e+00 ;
+    mex-perf:balancedAccuracy 0e+00 ;
+    mex-perf:meanAbsoluteError 2.136008e+01 ;
+    mex-perf:r2 4.52965e-01 .
+
+sml:Benchmark26RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 25 .
+
+sml:Benchmark26RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "squared_error" .
+
+sml:Benchmark26RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark26RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark26RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 5.681818e-03 ;
+    mex-perf:meanAbsoluteError 1.665174e+01 ;
+    mex-perf:r2 6.396265e-01 .
+
+sml:Benchmark27RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 25 .
+
+sml:Benchmark27RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "squared_error" .
+
+sml:Benchmark27RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark27RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark27RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 1.657016e+01 ;
+    mex-perf:r2 6.678938e-01 .
+
+sml:Benchmark28RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 25 .
+
+sml:Benchmark28RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "absolute_error" .
+
+sml:Benchmark28RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark28RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark28RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 2.631579e-02 ;
+    mex-perf:balancedAccuracy 4.545455e-02 ;
+    mex-perf:meanAbsoluteError 2.067526e+01 ;
+    mex-perf:r2 4.817855e-01 .
+
+sml:Benchmark29RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 25 .
+
+sml:Benchmark29RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "absolute_error" .
+
+sml:Benchmark29RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark29RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark29RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 5.681818e-03 ;
+    mex-perf:meanAbsoluteError 1.628579e+01 ;
+    mex-perf:r2 6.603032e-01 .
+
+sml:Benchmark2DecisionTreeRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark2DecisionTreeRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 0e+00 ;
+    mex-perf:balancedAccuracy 0e+00 ;
+    mex-perf:meanAbsoluteError 2.227118e+01 ;
+    mex-perf:r2 4.149988e-01 .
+
+sml:Benchmark30RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 25 .
+
+sml:Benchmark30RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "absolute_error" .
+
+sml:Benchmark30RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark30RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark30RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 0e+00 ;
+    mex-perf:balancedAccuracy 0e+00 ;
+    mex-perf:meanAbsoluteError 1.710921e+01 ;
+    mex-perf:r2 6.461338e-01 .
+
+sml:Benchmark31RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 25 .
+
+sml:Benchmark31RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "poisson" .
+
+sml:Benchmark31RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark31RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark31RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.891431e+01 ;
+    mex-perf:r2 9.132749e-03 .
+
+sml:Benchmark32RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 25 .
+
+sml:Benchmark32RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "poisson" .
+
+sml:Benchmark32RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark32RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark32RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 3.947368e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.809151e+01 ;
+    mex-perf:r2 9.409371e-02 .
+
+sml:Benchmark33RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 25 .
+
+sml:Benchmark33RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "poisson" .
+
+sml:Benchmark33RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark33RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark33RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.810455e+01 ;
+    mex-perf:r2 9.926867e-02 .
+
+sml:Benchmark34RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 35 .
+
+sml:Benchmark34RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "squared_error" .
+
+sml:Benchmark34RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark34RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark34RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 0e+00 ;
+    mex-perf:balancedAccuracy 0e+00 ;
+    mex-perf:meanAbsoluteError 2.140375e+01 ;
+    mex-perf:r2 4.507434e-01 .
+
+sml:Benchmark35RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 35 .
+
+sml:Benchmark35RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "squared_error" .
+
+sml:Benchmark35RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark35RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark35RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 0e+00 ;
+    mex-perf:balancedAccuracy 0e+00 ;
+    mex-perf:meanAbsoluteError 1.700436e+01 ;
+    mex-perf:r2 6.333464e-01 .
+
+sml:Benchmark36RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 35 .
+
+sml:Benchmark36RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "squared_error" .
+
+sml:Benchmark36RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark36RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark36RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 0e+00 ;
+    mex-perf:balancedAccuracy 0e+00 ;
+    mex-perf:meanAbsoluteError 1.671235e+01 ;
+    mex-perf:r2 6.619608e-01 .
+
+sml:Benchmark37RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 35 .
+
+sml:Benchmark37RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "absolute_error" .
+
+sml:Benchmark37RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark37RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark37RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 2.631579e-02 ;
+    mex-perf:balancedAccuracy 4.545455e-02 ;
+    mex-perf:meanAbsoluteError 2.070526e+01 ;
+    mex-perf:r2 4.813206e-01 .
+
+sml:Benchmark38RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 35 .
+
+sml:Benchmark38RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "absolute_error" .
+
+sml:Benchmark38RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark38RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark38RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 0e+00 ;
+    mex-perf:balancedAccuracy 0e+00 ;
+    mex-perf:meanAbsoluteError 1.65953e+01 ;
+    mex-perf:r2 6.560252e-01 .
+
+sml:Benchmark39RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 35 .
+
+sml:Benchmark39RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "absolute_error" .
+
+sml:Benchmark39RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark39RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark39RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 1.70641e+01 ;
+    mex-perf:r2 6.404301e-01 .
+
+sml:Benchmark3DecisionTreeRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark3DecisionTreeRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 2.631579e-02 ;
+    mex-perf:balancedAccuracy 4.545455e-02 ;
+    mex-perf:meanAbsoluteError 1.603948e+01 ;
+    mex-perf:r2 6.431029e-01 .
+
+sml:Benchmark40RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 35 .
+
+sml:Benchmark40RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "poisson" .
+
+sml:Benchmark40RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark40RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark40RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.893954e+01 ;
+    mex-perf:r2 6.330707e-03 .
+
+sml:Benchmark41RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 35 .
+
+sml:Benchmark41RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "poisson" .
+
+sml:Benchmark41RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark41RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark41RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 3.947368e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.822647e+01 ;
+    mex-perf:r2 8.728741e-02 .
+
+sml:Benchmark42RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 35 .
+
+sml:Benchmark42RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "poisson" .
+
+sml:Benchmark42RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark42RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark42RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.818197e+01 ;
+    mex-perf:r2 9.406586e-02 .
+
+sml:Benchmark43RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 45 .
+
+sml:Benchmark43RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "squared_error" .
+
+sml:Benchmark43RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark43RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark43RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 0e+00 ;
+    mex-perf:balancedAccuracy 0e+00 ;
+    mex-perf:meanAbsoluteError 2.12897e+01 ;
+    mex-perf:r2 4.553891e-01 .
+
+sml:Benchmark44RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 45 .
+
+sml:Benchmark44RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "squared_error" .
+
+sml:Benchmark44RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark44RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark44RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 1.700748e+01 ;
+    mex-perf:r2 6.439028e-01 .
+
+sml:Benchmark45RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 45 .
+
+sml:Benchmark45RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "squared_error" .
+
+sml:Benchmark45RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark45RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark45RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 7.575758e-03 ;
+    mex-perf:meanAbsoluteError 1.657552e+01 ;
+    mex-perf:r2 6.703349e-01 .
+
+sml:Benchmark46RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 45 .
+
+sml:Benchmark46RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "absolute_error" .
+
+sml:Benchmark46RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark46RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark46RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 2.631579e-02 ;
+    mex-perf:balancedAccuracy 4.545455e-02 ;
+    mex-perf:meanAbsoluteError 2.064415e+01 ;
+    mex-perf:r2 4.827002e-01 .
+
+sml:Benchmark47RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 45 .
+
+sml:Benchmark47RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "absolute_error" .
+
+sml:Benchmark47RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark47RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark47RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 2.631579e-02 ;
+    mex-perf:balancedAccuracy 1.704545e-02 ;
+    mex-perf:meanAbsoluteError 1.663026e+01 ;
+    mex-perf:r2 6.54571e-01 .
+
+sml:Benchmark48RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 45 .
+
+sml:Benchmark48RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "absolute_error" .
+
+sml:Benchmark48RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark48RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark48RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 1.705058e+01 ;
+    mex-perf:r2 6.492373e-01 .
+
+sml:Benchmark49RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 45 .
+
+sml:Benchmark49RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "poisson" .
+
+sml:Benchmark49RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark49RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark49RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.89554e+01 ;
+    mex-perf:r2 4.743422e-03 .
+
+sml:Benchmark4DecisionTreeRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark4DecisionTreeRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 1.594512e+01 ;
+    mex-perf:r2 6.014985e-01 .
+
+sml:Benchmark50RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 45 .
+
+sml:Benchmark50RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "poisson" .
+
+sml:Benchmark50RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark50RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark50RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 3.947368e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.825535e+01 ;
+    mex-perf:r2 8.726003e-02 .
+
+sml:Benchmark51RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 45 .
+
+sml:Benchmark51RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "poisson" .
+
+sml:Benchmark51RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark51RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark51RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.810142e+01 ;
+    mex-perf:r2 1.031878e-01 .
+
+sml:Benchmark52RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 55 .
+
+sml:Benchmark52RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "squared_error" .
+
+sml:Benchmark52RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark52RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark52RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 0e+00 ;
+    mex-perf:balancedAccuracy 0e+00 ;
+    mex-perf:meanAbsoluteError 2.128929e+01 ;
+    mex-perf:r2 4.580421e-01 .
+
+sml:Benchmark53RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 55 .
+
+sml:Benchmark53RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "squared_error" .
+
+sml:Benchmark53RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark53RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark53RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 1.7093e+01 ;
+    mex-perf:r2 6.412516e-01 .
+
+sml:Benchmark54RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 55 .
+
+sml:Benchmark54RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "squared_error" .
+
+sml:Benchmark54RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark54RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark54RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 0e+00 ;
+    mex-perf:balancedAccuracy 0e+00 ;
+    mex-perf:meanAbsoluteError 1.672165e+01 ;
+    mex-perf:r2 6.657501e-01 .
+
+sml:Benchmark55RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 55 .
+
+sml:Benchmark55RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "absolute_error" .
+
+sml:Benchmark55RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark55RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark55RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 2.631579e-02 ;
+    mex-perf:balancedAccuracy 4.545455e-02 ;
+    mex-perf:meanAbsoluteError 2.067081e+01 ;
+    mex-perf:r2 4.821318e-01 .
+
+sml:Benchmark56RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 55 .
+
+sml:Benchmark56RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "absolute_error" .
+
+sml:Benchmark56RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark56RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark56RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 2.631579e-02 ;
+    mex-perf:balancedAccuracy 1.704545e-02 ;
+    mex-perf:meanAbsoluteError 1.653541e+01 ;
+    mex-perf:r2 6.535781e-01 .
+
+sml:Benchmark57RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 55 .
+
+sml:Benchmark57RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "absolute_error" .
+
+sml:Benchmark57RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark57RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark57RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 0e+00 ;
+    mex-perf:balancedAccuracy 0e+00 ;
+    mex-perf:meanAbsoluteError 1.689665e+01 ;
+    mex-perf:r2 6.503413e-01 .
+
+sml:Benchmark58RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 55 .
+
+sml:Benchmark58RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "poisson" .
+
+sml:Benchmark58RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark58RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark58RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.891237e+01 ;
+    mex-perf:r2 8.398923e-03 .
+
+sml:Benchmark59RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 55 .
+
+sml:Benchmark59RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "poisson" .
+
+sml:Benchmark59RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark59RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark59RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 3.947368e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.819625e+01 ;
+    mex-perf:r2 9.214851e-02 .
+
+sml:Benchmark5DecisionTreeRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 7 .
+
+sml:Benchmark5DecisionTreeRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 2.631579e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 1.847139e+01 ;
+    mex-perf:r2 4.728263e-01 .
+
+sml:Benchmark60RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 55 .
+
+sml:Benchmark60RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "poisson" .
+
+sml:Benchmark60RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark60RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark60RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.803728e+01 ;
+    mex-perf:r2 1.122387e-01 .
+
+sml:Benchmark6DecisionTreeRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 9 .
+
+sml:Benchmark6DecisionTreeRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 3.947368e-02 ;
+    mex-perf:balancedAccuracy 4.545455e-02 ;
+    mex-perf:meanAbsoluteError 1.981826e+01 ;
+    mex-perf:r2 4.166813e-01 .
+
+sml:Benchmark7RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark7RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "squared_error" .
+
+sml:Benchmark7RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 1 .
+
+sml:Benchmark7RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark7RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 2.272727e-02 ;
+    mex-perf:meanAbsoluteError 2.183669e+01 ;
+    mex-perf:r2 4.288874e-01 .
+
+sml:Benchmark8RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark8RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "squared_error" .
+
+sml:Benchmark8RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 3 .
+
+sml:Benchmark8RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark8RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 0e+00 ;
+    mex-perf:balancedAccuracy 0e+00 ;
+    mex-perf:meanAbsoluteError 1.738931e+01 ;
+    mex-perf:r2 5.601817e-01 .
+
+sml:Benchmark9RandomForestRegressorParameter0 a sml:Parameter ;
+    sml:ParameterName "nEstimator" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark9RandomForestRegressorParameter1 a sml:Parameter ;
+    sml:ParameterName "criterion" ;
+    sml:ParameterValue "squared_error" .
+
+sml:Benchmark9RandomForestRegressorParameter2 a sml:Parameter ;
+    sml:ParameterName "maxDepth" ;
+    sml:ParameterValue 5 .
+
+sml:Benchmark9RandomForestRegressorParameter3 a sml:Parameter ;
+    sml:ParameterName "randomState" ;
+    sml:ParameterValue 2022 .
+
+sml:Benchmark9RandomForestRegressorPerfomance a mex-perf:RegressionMeasure ;
+    mex-perf:accuracy 1.315789e-02 ;
+    mex-perf:balancedAccuracy 7.575758e-03 ;
+    mex-perf:meanAbsoluteError 1.71726e+01 ;
+    mex-perf:r2 5.596142e-01 .
+

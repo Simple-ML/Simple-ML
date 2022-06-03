@@ -11,3 +11,7 @@ annotation Since(
     @Description("The version in which a declaration was added.")
     version: String
 )
+
+@Description("This parameter should only be used by expert users.")
+@Target(AnnotationTarget.Parameter)
+annotation Expert

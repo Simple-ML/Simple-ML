@@ -2,11 +2,15 @@ package de.unibonn.simpleml.validation.declarations
 
 import de.unibonn.simpleml.emf.closestAncestorOrNull
 import de.unibonn.simpleml.emf.isOptional
+import de.unibonn.simpleml.emf.isRequired
 import de.unibonn.simpleml.simpleML.SimpleMLPackage.Literals
 import de.unibonn.simpleml.simpleML.SmlAbstractLambda
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlParameterList
 import de.unibonn.simpleml.staticAnalysis.partialEvaluation.toConstantExpressionOrNull
+import de.unibonn.simpleml.stdlibAccess.StdlibAnnotations
+import de.unibonn.simpleml.stdlibAccess.annotationCallsOrEmpty
+import de.unibonn.simpleml.stdlibAccess.isExpert
 import de.unibonn.simpleml.validation.AbstractSimpleMLChecker
 import de.unibonn.simpleml.validation.codes.ErrorCode
 import org.eclipse.xtext.validation.Check
@@ -46,6 +50,20 @@ class ParameterChecker : AbstractSimpleMLChecker() {
                 Literals.SML_ABSTRACT_DECLARATION__NAME,
                 ErrorCode.VariadicParametersMustNotHaveDefaultValue
             )
+        }
+    }
+
+    @Check
+    fun expertMustBeOptional(smlParameter: SmlParameter) {
+        if (smlParameter.isRequired() && smlParameter.isExpert()) {
+            smlParameter.annotationCallsOrEmpty(StdlibAnnotations.Expert).forEach {
+                error(
+                    "An expert parameter must be optional.",
+                    it,
+                    null,
+                    ErrorCode.MustBeConstant
+                )
+            }
         }
     }
 }
