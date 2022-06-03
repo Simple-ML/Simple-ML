@@ -44,7 +44,7 @@ sml-log:storeId a owl:DatatypeProperty ;
         rdfs:label "store ID"@en ;
         rdfs:label "ID"@de ;
         rdfs:domain sml-log:Store ;
-        rdfs:range xsd:string .
+        rdfs:range xsd:nonNegativeInteger .
 
 sml-log:store a owl:ObjectProperty ;
         rdfs:label "store"@en ;
