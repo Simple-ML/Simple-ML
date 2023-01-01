@@ -1,4 +1,4 @@
-FROM continuumio/miniconda3:4.10.3-alpine
+FROM continuumio/miniconda3:22.11.1-alpine
 
 WORKDIR /app/
 
