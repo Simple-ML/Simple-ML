@@ -1,4 +1,4 @@
-FROM gradle:7-jdk11 as cache
+FROM gradle:8-jdk11 as cache
 
 RUN mkdir -p /home/gradle/cache_home
 
@@ -14,7 +14,7 @@ WORKDIR /home/gradle/java-code/
 
 RUN gradle dependencies -i --stacktrace
 
-FROM gradle:7-jdk11 as builder
+FROM gradle:8-jdk11 as builder
 
 COPY --from=cache /home/gradle/cache_home/ /home/gradle/.gradle/
 COPY . /app/
